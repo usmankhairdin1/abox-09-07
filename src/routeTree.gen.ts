@@ -14,6 +14,8 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
+import { Route as M1IndexRouteImport } from './routes/m1.index'
+import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +42,16 @@ const ObjectRoute = ObjectRouteImport.update({
   path: '/object',
   getParentRoute: () => rootRouteImport,
 } as any)
+const M1IndexRoute = M1IndexRouteImport.update({
+  id: '/m1/',
+  path: '/m1/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const M1ScreenRoute = M1ScreenRouteImport.update({
+  id: '/m1/$screen',
+  path: '/m1/$screen',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +59,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/m1/$screen': typeof M1ScreenRoute
+  '/m1/': typeof M1IndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +68,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/m1/$screen': typeof M1ScreenRoute
+  '/m1': typeof M1IndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +78,37 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/m1/$screen': typeof M1ScreenRoute
+  '/m1/': typeof M1IndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/dashboard' | '/my-work' | '/object'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/dashboard'
+    | '/my-work'
+    | '/object'
+    | '/m1/$screen'
+    | '/m1/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/dashboard' | '/my-work' | '/object'
-  id: '__root__' | '/' | '/admin' | '/dashboard' | '/my-work' | '/object'
+  to:
+    | '/'
+    | '/admin'
+    | '/dashboard'
+    | '/my-work'
+    | '/object'
+    | '/m1/$screen'
+    | '/m1'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/dashboard'
+    | '/my-work'
+    | '/object'
+    | '/m1/$screen'
+    | '/m1/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +117,8 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
+  M1ScreenRoute: typeof M1ScreenRoute
+  M1IndexRoute: typeof M1IndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +158,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ObjectRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/m1/': {
+      id: '/m1/'
+      path: '/m1'
+      fullPath: '/m1/'
+      preLoaderRoute: typeof M1IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/m1/$screen': {
+      id: '/m1/$screen'
+      path: '/m1/$screen'
+      fullPath: '/m1/$screen'
+      preLoaderRoute: typeof M1ScreenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +181,8 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
+  M1ScreenRoute: M1ScreenRoute,
+  M1IndexRoute: M1IndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
