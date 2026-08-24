@@ -58,25 +58,28 @@ function M1ScreenPage() {
     );
   }
 
+  const drawer = screen.drawer;
+
   return (
     <AppShell
       drawerTitle={`${screen.id} context`}
       assistantContext={screen.name.toLowerCase()}
-      drawerBody={
-        screen.drawer
-          ? {
-              Context: <Annotation>{screen.drawer[0]}</Annotation>,
-              Summary: <Annotation>{screen.drawer[1]}</Annotation>,
-              Guidance: <Annotation>{screen.drawer[2]}</Annotation>,
-              Audit: <Annotation>{screen.drawer[4]}</Annotation>,
-              "Next actions": <Annotation>{screen.drawer[5]}</Annotation>,
-            }
-          : undefined
-      }
+      {...(drawer
+        ? {
+            drawerBody: {
+              Context: <Annotation>{drawer[0]}</Annotation>,
+              Summary: <Annotation>{drawer[1]}</Annotation>,
+              Guidance: <Annotation>{drawer[2]}</Annotation>,
+              Audit: <Annotation>{drawer[4]}</Annotation>,
+              "Next actions": <Annotation>{drawer[5]}</Annotation>,
+            },
+          }
+        : {})}
     >
       {body}
     </AppShell>
   );
+
 }
 
 function M1ScreenNotFound() {
