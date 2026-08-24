@@ -1,5 +1,5 @@
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 import { Badge, Btn, Card } from "@/components/hf/ui";
 import {
@@ -23,7 +23,7 @@ import {
 } from "@/components/hf/screens-consumer";
 import { HF_BY_SLUG, HF_SLUGS, type HfScreen } from "@/lib/hf";
 
-const RENDERERS: Record<string, () => JSX.Element> = {
+const RENDERERS: Record<string, () => ReactNode> = {
   "internal-shell": InternalShellScreen,
   "my-work": MyWorkScreen,
   dashboard: DashboardScreen,

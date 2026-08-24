@@ -51,8 +51,8 @@ export function Card({
   as: As = "div",
 }: {
   children: ReactNode;
-  className?: string;
-  as?: "div" | "section" | "article" | "li";
+  className?: string | undefined;
+  as?: "div" | "section" | "article" | "li" | undefined;
 }) {
   return (
     <As
@@ -74,12 +74,12 @@ export function Panel({
   className,
   bodyClassName,
 }: {
-  title?: string;
-  meta?: string;
+  title?: string | undefined;
+  meta?: string | undefined;
   actions?: ReactNode;
   children: ReactNode;
-  className?: string;
-  bodyClassName?: string;
+  className?: string | undefined;
+  bodyClassName?: string | undefined;
 }) {
   return (
     <Card as="section" className={className}>
@@ -298,7 +298,15 @@ export function Choice({
   );
 }
 
-export function Check({ label, checked, hint }: { label: string; checked?: boolean; hint?: string }) {
+export function Check({
+  label,
+  checked,
+  hint,
+}: {
+  label: string;
+  checked?: boolean | undefined;
+  hint?: string | undefined;
+}) {
   return (
     <div className="flex items-start gap-2.5">
       <span
