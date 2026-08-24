@@ -36,6 +36,7 @@ import {
   WORKSPACES,
   type DrawerTab,
   type LabelKey,
+  type ModuleDef,
 } from "@/lib/abox";
 import { cn } from "@/lib/utils";
 
@@ -125,8 +126,8 @@ export function ShellProvider({ children }: { children: ReactNode }) {
 
 function useVisibleModules() {
   const { workspaceId, roleId } = useShell();
-  const ws = WORKSPACES.find((w) => w.id === workspaceId) ?? WORKSPACES[1];
-  const role = ROLES.find((r) => r.id === roleId) ?? ROLES[1];
+  const ws = WORKSPACES.find((w) => w.id === workspaceId) ?? WORKSPACES[1]!;
+  const role = ROLES.find((r) => r.id === roleId) ?? ROLES[1]!;
 
   const ids = ws.modules.filter((id) => {
     if (id === "MOD_COMMISSIONS" && !role.commissions) return false;
@@ -134,7 +135,7 @@ function useVisibleModules() {
     return true;
   });
 
-  return { ws, role, modules: ids.map((id) => MODULE_BY_ID[id]).filter(Boolean) };
+  return { ws, role, modules: ids.map((id) => MODULE_BY_ID[id]).filter((m): m is ModuleDef => Boolean(m)) };
 }
 
 function BarButton({
@@ -216,7 +217,7 @@ export function AppShell({
     null | "workspace" | "entity" | "search" | "notifications" | "tasks" | "profile" | "role"
   >(null);
 
-  const entity = ENTITIES.find((e) => e.id === shell.entityId) ?? ENTITIES[0];
+  const entity = ENTITIES.find((e) => e.id === shell.entityId) ?? ENTITIES[0]!;
   const drawerTabs = DRAWER_TABS.filter((t) => t !== "Audit" || role.audit);
 
   return (

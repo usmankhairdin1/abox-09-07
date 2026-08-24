@@ -47,7 +47,7 @@ interface ObjectType {
 
 function ObjectPage() {
   const { labels, roleId } = useShell();
-  const role = ROLES.find((r) => r.id === roleId) ?? ROLES[1];
+  const role = ROLES.find((r) => r.id === roleId) ?? ROLES[1]!;
 
   const TYPES: ObjectType[] = [
     {
@@ -95,7 +95,7 @@ function ObjectPage() {
   ];
 
   const [typeId, setTypeId] = useState("OBJ_LEAD");
-  const obj = TYPES.find((t) => t.id === typeId) ?? TYPES[0];
+  const obj = TYPES.find((t) => t.id === typeId) ?? TYPES[0]!;
   const tabs = role.audit ? [...obj.tabs, "Audit"] : obj.tabs;
   const [tab, setTab] = useState("Overview");
   const activeTab = tabs.includes(tab) ? tab : "Overview";

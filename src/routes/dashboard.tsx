@@ -36,7 +36,7 @@ export const Route = createFileRoute("/dashboard")({
 
 function DashboardPage() {
   const { labels, roleId } = useShell();
-  const role = ROLES.find((r) => r.id === roleId) ?? ROLES[1];
+  const role = ROLES.find((r) => r.id === roleId) ?? ROLES[1]!;
 
   return (
     <AppShell drawerTitle="Dashboard context" assistantContext="this dashboard">
