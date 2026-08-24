@@ -96,7 +96,7 @@ function DashboardPage() {
               (s, i) => (
                 <div key={s} className="flex items-center gap-2">
                   <span className="w-36 shrink-0 text-[11px] text-muted-foreground">{s}</span>
-                  <WBox className="h-6 flex-1" style={undefined}>
+                  <WBox className="h-6 flex-1 justify-start p-0">
                     <div
                       className="h-full rounded bg-muted"
                       style={{ width: `${100 - i * 14}%` }}
@@ -104,6 +104,7 @@ function DashboardPage() {
                     />
                   </WBox>
                 </div>
+
               ),
             )}
           </div>
