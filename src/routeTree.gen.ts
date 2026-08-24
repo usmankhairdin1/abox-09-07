@@ -14,6 +14,8 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
+import { Route as HfIndexRouteImport } from './routes/hf.index'
+import { Route as HfScreenRouteImport } from './routes/hf.$screen'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
@@ -44,6 +46,16 @@ const ObjectRoute = ObjectRouteImport.update({
   path: '/object',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HfIndexRoute = HfIndexRouteImport.update({
+  id: '/hf/',
+  path: '/hf/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HfScreenRoute = HfScreenRouteImport.update({
+  id: '/hf/$screen',
+  path: '/hf/$screen',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const M1IndexRoute = M1IndexRouteImport.update({
   id: '/m1/',
   path: '/m1/',
@@ -71,8 +83,10 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/hf/$screen': typeof HfScreenRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
+  '/hf/': typeof HfIndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
 }
@@ -82,8 +96,10 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/hf/$screen': typeof HfScreenRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
+  '/hf': typeof HfIndexRoute
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
 }
@@ -94,8 +110,10 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/hf/$screen': typeof HfScreenRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
+  '/hf/': typeof HfIndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
 }
@@ -107,8 +125,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/my-work'
     | '/object'
+    | '/hf/$screen'
     | '/m1/$screen'
     | '/p1/$screen'
+    | '/hf/'
     | '/m1/'
     | '/p1/'
   fileRoutesByTo: FileRoutesByTo
@@ -118,8 +138,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/my-work'
     | '/object'
+    | '/hf/$screen'
     | '/m1/$screen'
     | '/p1/$screen'
+    | '/hf'
     | '/m1'
     | '/p1'
   id:
@@ -129,8 +151,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/my-work'
     | '/object'
+    | '/hf/$screen'
     | '/m1/$screen'
     | '/p1/$screen'
+    | '/hf/'
     | '/m1/'
     | '/p1/'
   fileRoutesById: FileRoutesById
@@ -141,8 +165,10 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
+  HfScreenRoute: typeof HfScreenRoute
   M1ScreenRoute: typeof M1ScreenRoute
   P1ScreenRoute: typeof P1ScreenRoute
+  HfIndexRoute: typeof HfIndexRoute
   M1IndexRoute: typeof M1IndexRoute
   P1IndexRoute: typeof P1IndexRoute
 }
@@ -184,6 +210,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ObjectRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hf/': {
+      id: '/hf/'
+      path: '/hf'
+      fullPath: '/hf/'
+      preLoaderRoute: typeof HfIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hf/$screen': {
+      id: '/hf/$screen'
+      path: '/hf/$screen'
+      fullPath: '/hf/$screen'
+      preLoaderRoute: typeof HfScreenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/m1/': {
       id: '/m1/'
       path: '/m1'
@@ -221,8 +261,10 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
+  HfScreenRoute: HfScreenRoute,
   M1ScreenRoute: M1ScreenRoute,
   P1ScreenRoute: P1ScreenRoute,
+  HfIndexRoute: HfIndexRoute,
   M1IndexRoute: M1IndexRoute,
   P1IndexRoute: P1IndexRoute,
 }
