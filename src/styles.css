@@ -144,38 +144,86 @@
 }
 
 /*
- * Wireframe pass — deliberately neutral.
- * Zero-chroma greys so nothing in Batch 1 reads as final branding.
- * Real brand tokens land later, driven by Admin > Branding settings.
+ * ABox Phase 1 design-system direction — platform token layer.
+ *
+ * Palette: Navy Trust (#0f1b3d / #1e3a5f / #3b6fa0 / #e8edf3) expressed in oklch.
+ * Structure is carried by near-neutral surfaces and hairline borders; the accent
+ * is reserved for action and active state only. Status tokens are semantic:
+ * warning = needs review, destructive = blocked, success = complete, ai = AI-assisted.
+ *
+ * These are PLATFORM tokens. The tenant brand layer (--brand-*) maps into
+ * --primary / --ring / --sidebar-primary at runtime via Admin > Branding, with
+ * contrast validation, so white labeling can never produce an unreadable surface.
  */
 :root {
-  --background: oklch(0.985 0 0);
-  --foreground: oklch(0.18 0 0);
+  --background: oklch(0.985 0.003 250);
+  --foreground: oklch(0.21 0.045 264);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0 0);
+  --card-foreground: oklch(0.21 0.045 264);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0 0);
-  --primary: oklch(0.28 0 0);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.955 0 0);
-  --secondary-foreground: oklch(0.22 0 0);
-  --muted: oklch(0.925 0 0);
-  --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.945 0 0);
-  --accent-foreground: oklch(0.22 0 0);
-  --border: oklch(0.875 0 0);
-  --input: oklch(0.875 0 0);
-  --ring: oklch(0.65 0 0);
-  --sidebar: oklch(0.97 0 0);
-  --sidebar-foreground: oklch(0.18 0 0);
-  --sidebar-border: oklch(0.875 0 0);
+  --popover-foreground: oklch(0.21 0.045 264);
+  --primary: oklch(0.29 0.075 264);
+  --primary-foreground: oklch(0.98 0.005 250);
+  --secondary: oklch(0.955 0.008 250);
+  --secondary-foreground: oklch(0.25 0.05 264);
+  --muted: oklch(0.928 0.01 250);
+  --muted-foreground: oklch(0.52 0.03 258);
+  --accent: oklch(0.94 0.018 250);
+  --accent-foreground: oklch(0.25 0.05 264);
+  --destructive: oklch(0.55 0.2 27);
+  --destructive-foreground: oklch(0.98 0.005 250);
+  --border: oklch(0.885 0.012 250);
+  --input: oklch(0.885 0.012 250);
+  --ring: oklch(0.55 0.11 254);
+  --sidebar: oklch(0.968 0.008 250);
+  --sidebar-foreground: oklch(0.21 0.045 264);
+  --sidebar-primary: oklch(0.29 0.075 264);
+  --sidebar-primary-foreground: oklch(0.98 0.005 250);
+  --sidebar-accent: oklch(0.93 0.018 250);
+  --sidebar-accent-foreground: oklch(0.25 0.05 264);
+  --sidebar-border: oklch(0.885 0.012 250);
   --radius: 0.5rem;
+
+  /* Semantic status + surface layers used by the pattern library. */
+  --brand-accent: oklch(0.55 0.11 254);
+  --warning: oklch(0.72 0.15 72);
+  --warning-foreground: oklch(0.24 0.05 72);
+  --success: oklch(0.58 0.11 158);
+  --success-foreground: oklch(0.98 0.005 158);
+  --ai: oklch(0.56 0.14 292);
+  --ai-foreground: oklch(0.98 0.005 292);
+  --surface-1: oklch(1 0 0);
+  --surface-2: oklch(0.972 0.005 250);
+  --surface-3: oklch(0.945 0.01 250);
+  --shadow-overlay: 0 16px 40px -12px oklch(0.21 0.045 264 / 22%);
+}
+
+.dark {
+  --warning: oklch(0.78 0.15 72);
+  --warning-foreground: oklch(0.2 0.05 72);
+  --success: oklch(0.68 0.12 158);
+  --success-foreground: oklch(0.16 0.03 158);
+  --ai: oklch(0.68 0.14 292);
+  --ai-foreground: oklch(0.16 0.03 292);
+  --surface-1: oklch(0.24 0.045 264);
+  --surface-2: oklch(0.21 0.042 264);
+  --surface-3: oklch(0.18 0.04 264);
+  --shadow-overlay: 0 16px 40px -12px oklch(0 0 0 / 55%);
 }
 
 @theme inline {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-ai: var(--ai);
+  --color-ai-foreground: var(--ai-foreground);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
 }
 
 @layer base {
