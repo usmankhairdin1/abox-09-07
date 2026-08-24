@@ -110,7 +110,7 @@ export function MarketplaceLandingScreen() {
         >
           <div className="grid gap-4 md:grid-cols-2">
             <Card className="flex flex-col p-6">
-              <Badge tone="ai">Guided</Badge>
+              <Badge tone="ai" className="self-start">Guided</Badge>
               <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">Help me choose</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Answer a few questions about budget, doctors and prescriptions. We suggest a short
@@ -119,7 +119,7 @@ export function MarketplaceLandingScreen() {
               <Btn className="mt-5 self-start">Start guided shopping</Btn>
             </Card>
             <Card className="flex flex-col p-6">
-              <Badge>Self-directed</Badge>
+              <Badge className="self-start">Self-directed</Badge>
               <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">Browse all plans</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Go straight to every plan available in your county, with filters for carrier,
