@@ -8,7 +8,6 @@ import {
   Btn,
   Card,
   Check,
-  Choice,
   Disclosure,
   Field,
   Panel,
@@ -16,7 +15,6 @@ import {
   PlanCard,
   Skeleton,
   Stepper,
-  Table,
   Timeline,
 } from "@/components/hf/ui";
 
@@ -1090,9 +1088,3 @@ export function SharedQuoteScreen() {
     </HfConsumerShell>
   );
 }
-
-/* --------------------------------------------------------- unused re-export */
-
-export const CONSUMER_TABLE_HELPER = Table;
-export const CONSUMER_CHOICE_HELPER = Choice;
-export const CONSUMER_SECTION_HELPER = Section;
