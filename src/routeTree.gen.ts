@@ -16,6 +16,7 @@ import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
+import { Route as P1IndexRouteImport } from './routes/p1.index'
 import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
 
 const IndexRoute = IndexRouteImport.update({
@@ -53,6 +54,11 @@ const M1ScreenRoute = M1ScreenRouteImport.update({
   path: '/m1/$screen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const P1IndexRoute = P1IndexRouteImport.update({
+  id: '/p1/',
+  path: '/p1/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const P1ScreenRoute = P1ScreenRouteImport.update({
   id: '/p1/$screen',
   path: '/p1/$screen',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/m1/': typeof M1IndexRoute
+  '/p1/': typeof P1IndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/m1': typeof M1IndexRoute
+  '/p1': typeof P1IndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/m1/': typeof M1IndexRoute
+  '/p1/': typeof P1IndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | '/m1/$screen'
     | '/p1/$screen'
     | '/m1/'
+    | '/p1/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/m1/$screen'
     | '/p1/$screen'
     | '/m1'
+    | '/p1'
   id:
     | '__root__'
     | '/'
@@ -121,6 +132,7 @@ export interface FileRouteTypes {
     | '/m1/$screen'
     | '/p1/$screen'
     | '/m1/'
+    | '/p1/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +144,7 @@ export interface RootRouteChildren {
   M1ScreenRoute: typeof M1ScreenRoute
   P1ScreenRoute: typeof P1ScreenRoute
   M1IndexRoute: typeof M1IndexRoute
+  P1IndexRoute: typeof P1IndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof M1ScreenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/p1/': {
+      id: '/p1/'
+      path: '/p1'
+      fullPath: '/p1/'
+      preLoaderRoute: typeof P1IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/p1/$screen': {
       id: '/p1/$screen'
       path: '/p1/$screen'
@@ -204,6 +224,7 @@ const rootRouteChildren: RootRouteChildren = {
   M1ScreenRoute: M1ScreenRoute,
   P1ScreenRoute: P1ScreenRoute,
   M1IndexRoute: M1IndexRoute,
+  P1IndexRoute: P1IndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
