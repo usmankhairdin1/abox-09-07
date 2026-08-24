@@ -158,7 +158,7 @@ export const MODULES: ModuleDef[] = [
   { id: "MOD_MY_WORK", label: "My Work", to: "/my-work", phase: "P1-Build", packet: "P1-Later", acl: "any authenticated internal user", screens: 4 },
   { id: "MOD_REPORTING", label: "Dashboards & Analytics", to: "/dashboard", phase: "P1-Build", packet: "P1-Later", acl: "reporting.view + entity data scope", screens: 2 },
   { id: "MOD_LEADS_CUSTOMERS", label: "Customers & Leads", to: "/object", phase: "P1-Build", packet: "P1-Later", acl: "leads.view, scoped by assignment and downline", screens: 4 },
-  { id: "MOD_MARKETPLACE_SALES", label: "Marketplace & Sales", phase: "P1-Build", packet: "M1", acl: "quote.create + marketplace and product access", screens: 13 },
+  { id: "MOD_MARKETPLACE_SALES", label: "Marketplace & Sales", to: "/m1", phase: "P1-Build", packet: "M1", acl: "quote.create + marketplace and product access", screens: 13 },
   { id: "MOD_FORMS_ENROLLMENT", label: "Forms & Enrollment", phase: "P1-Build", packet: "M2-Cand", acl: "enrollment.submit + sellability and paper access", screens: 10 },
   { id: "MOD_PRODUCTS_PLANS", label: "Products, Plans & Rates", phase: "P1-Build", packet: "M2-Cand", acl: "product.manage (platform) / product.view (agency)", screens: 3 },
   { id: "MOD_AGENCY_ENTITY", label: "Agency & Entity Management", phase: "P1-Build", packet: "M2-Cand", acl: "entity.manage within own subtree", screens: 5 },
