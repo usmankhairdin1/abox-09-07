@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as MyWorkRouteImport } from './routes/my-work'
+import { Route as ObjectRouteImport } from './routes/object'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const MyWorkRoute = MyWorkRouteImport.update({
   path: '/my-work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ObjectRoute = ObjectRouteImport.update({
+  id: '/object',
+  path: '/object',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
+  '/object': typeof ObjectRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
+  '/object': typeof ObjectRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
+  '/object': typeof ObjectRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/my-work'
+  fullPaths: '/' | '/dashboard' | '/my-work' | '/object'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/my-work'
-  id: '__root__' | '/' | '/dashboard' | '/my-work'
+  to: '/' | '/dashboard' | '/my-work' | '/object'
+  id: '__root__' | '/' | '/dashboard' | '/my-work' | '/object'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
   MyWorkRoute: typeof MyWorkRoute
+  ObjectRoute: typeof ObjectRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MyWorkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/object': {
+      id: '/object'
+      path: '/object'
+      fullPath: '/object'
+      preLoaderRoute: typeof ObjectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
   MyWorkRoute: MyWorkRoute,
+  ObjectRoute: ObjectRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
