@@ -187,7 +187,7 @@ function Zone({ zone }: { zone: P1Zone }) {
         return items.length ? (
           <div className="space-y-1.5">
             {items.map((i) => (
-              <WRow key={i} label={i} />
+              <WRow key={i} primary={i} />
             ))}
           </div>
         ) : (
