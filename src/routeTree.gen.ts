@@ -17,6 +17,7 @@ import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
 import { Route as HfIndexRouteImport } from './routes/hf.index'
 import { Route as HfScreenRouteImport } from './routes/hf.$screen'
+import { Route as LucieIndexRouteImport } from './routes/lucie.index'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
@@ -62,6 +63,11 @@ const HfScreenRoute = HfScreenRouteImport.update({
   path: '/hf/$screen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LucieIndexRoute = LucieIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LucieRoute,
+} as any)
 const M1IndexRoute = M1IndexRouteImport.update({
   id: '/m1/',
   path: '/m1/',
@@ -87,13 +93,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
-  '/lucie': typeof LucieRoute
+  '/lucie': typeof LucieRouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/hf/': typeof HfIndexRoute
+  '/lucie/': typeof LucieIndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
 }
@@ -101,13 +108,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
-  '/lucie': typeof LucieRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/hf': typeof HfIndexRoute
+  '/lucie': typeof LucieIndexRoute
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
 }
@@ -116,13 +123,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
-  '/lucie': typeof LucieRoute
+  '/lucie': typeof LucieRouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/hf/': typeof HfIndexRoute
+  '/lucie/': typeof LucieIndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
 }
@@ -139,6 +147,7 @@ export interface FileRouteTypes {
     | '/m1/$screen'
     | '/p1/$screen'
     | '/hf/'
+    | '/lucie/'
     | '/m1/'
     | '/p1/'
   fileRoutesByTo: FileRoutesByTo
@@ -146,13 +155,13 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/dashboard'
-    | '/lucie'
     | '/my-work'
     | '/object'
     | '/hf/$screen'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/hf'
+    | '/lucie'
     | '/m1'
     | '/p1'
   id:
@@ -167,6 +176,7 @@ export interface FileRouteTypes {
     | '/m1/$screen'
     | '/p1/$screen'
     | '/hf/'
+    | '/lucie/'
     | '/m1/'
     | '/p1/'
   fileRoutesById: FileRoutesById
@@ -175,7 +185,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   DashboardRoute: typeof DashboardRoute
-  LucieRoute: typeof LucieRoute
+  LucieRoute: typeof LucieRouteWithChildren
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
   HfScreenRoute: typeof HfScreenRoute
@@ -244,6 +254,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HfScreenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lucie/': {
+      id: '/lucie/'
+      path: '/'
+      fullPath: '/lucie/'
+      preLoaderRoute: typeof LucieIndexRouteImport
+      parentRoute: typeof LucieRoute
+    }
     '/m1/': {
       id: '/m1/'
       path: '/m1'
@@ -275,11 +292,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface LucieRouteChildren {
+  LucieIndexRoute: typeof LucieIndexRoute
+}
+
+const LucieRouteChildren: LucieRouteChildren = {
+  LucieIndexRoute: LucieIndexRoute,
+}
+
+const LucieRouteWithChildren = LucieRoute._addFileChildren(LucieRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   DashboardRoute: DashboardRoute,
-  LucieRoute: LucieRoute,
+  LucieRoute: LucieRouteWithChildren,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
   HfScreenRoute: HfScreenRoute,
