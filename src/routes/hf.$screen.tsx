@@ -75,7 +75,6 @@ const RENDERERS: Record<string, () => ReactNode> = {
   "audit-log": AuditLogScreen,
 };
 
-
 export const Route = createFileRoute("/hf/$screen")({
   loader: ({ params }) => {
     const screen = HF_BY_SLUG[params.screen];
@@ -174,7 +173,9 @@ function HfScreenPage() {
             </div>
 
             <div className="mt-3 flex flex-wrap gap-1.5">
-              <Badge tone="accent">{screen.shell === "consumer" ? "Externally branded" : "Internal shell"}</Badge>
+              <Badge tone="accent">
+                {screen.shell === "consumer" ? "Externally branded" : "Internal shell"}
+              </Badge>
               <Badge>{screen.workspace}</Badge>
               <Badge>{screen.module}</Badge>
               <Badge>{screen.user}</Badge>
@@ -189,8 +190,9 @@ function HfScreenPage() {
             {screen.dataFlow ? (
               <NoteBlock title="Data flow implications" items={screen.dataFlow} />
             ) : null}
-            {screen.assumptions ? <NoteBlock title="Assumptions" items={screen.assumptions} /> : null}
-
+            {screen.assumptions ? (
+              <NoteBlock title="Assumptions" items={screen.assumptions} />
+            ) : null}
 
             <div className="mt-5 border-t border-border pt-4">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">

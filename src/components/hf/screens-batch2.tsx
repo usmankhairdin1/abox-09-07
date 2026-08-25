@@ -14,7 +14,6 @@ import {
   Field,
   Panel,
   Stat,
-
   Table,
   Timeline,
   type TimelineEntry,
@@ -42,7 +41,9 @@ function PageHead({
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-0.5 font-display text-[1.375rem] font-semibold tracking-tight">{title}</h1>
+        <h1 className="mt-0.5 font-display text-[1.375rem] font-semibold tracking-tight">
+          {title}
+        </h1>
         {sub ? <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{sub}</p> : null}
       </div>
       {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
@@ -84,7 +85,15 @@ function Kv({ rows }: { rows: [string, ReactNode][] }) {
 }
 
 /** Sentence-shaped rule token, used by the configurator and scheduler. */
-function RuleToken({ label, value, tone = "neutral" }: { label: string; value: string; tone?: "neutral" | "accent" }) {
+function RuleToken({
+  label,
+  value,
+  tone = "neutral",
+}: {
+  label: string;
+  value: string;
+  tone?: "neutral" | "accent";
+}) {
   return (
     <span className="inline-flex items-center gap-1.5 rounded-[var(--radius)] border border-border bg-card px-2 py-1 text-xs">
       <span className="text-muted-foreground">{label}</span>
@@ -197,40 +206,83 @@ export function OffexIntakeScreen() {
           <Panel
             title="Applicant"
             meta="Search before create — intake attaches to an existing lead or member"
-            actions={<Btn size="sm" variant="outline">Change applicant</Btn>}
+            actions={
+              <Btn size="sm" variant="outline">
+                Change applicant
+              </Btn>
+            }
           >
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Applicant" value="Marisol Herrera" hint="Lead L-20418 · created 12 Aug" />
-              <Field label="Date of birth" value="•• / •• / 1987" sensitive suffix={<Badge tone="warning">reveal</Badge>} />
-              <Field label="SSN" value="•••-••-••••" sensitive suffix={<Badge tone="warning">reveal</Badge>} />
+              <Field
+                label="Applicant"
+                value="Marisol Herrera"
+                hint="Lead L-20418 · created 12 Aug"
+              />
+              <Field
+                label="Date of birth"
+                value="•• / •• / 1987"
+                sensitive
+                suffix={<Badge tone="warning">reveal</Badge>}
+              />
+              <Field
+                label="SSN"
+                value="•••-••-••••"
+                sensitive
+                suffix={<Badge tone="warning">reveal</Badge>}
+              />
               <Field label="Residence ZIP" value="85718" hint="Pima County · rating area 4" />
             </div>
           </Panel>
 
-          <Panel title="Product & effective date" meta="Only products this agency is enabled and appointed for appear here">
+          <Panel
+            title="Product & effective date"
+            meta="Only products this agency is enabled and appointed for appear here"
+          >
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Product" value="Cascade Dental Preferred 1500" hint="Off-exchange · enrollable" />
+              <Field
+                label="Product"
+                value="Cascade Dental Preferred 1500"
+                hint="Off-exchange · enrollable"
+              />
               <Field label="Carrier" value="Cascade Care" />
-              <Field label="Effective date" value="1 Oct 2026" hint="Inside availability window (1 Sep 2026 – 31 Dec 2026)" />
+              <Field
+                label="Effective date"
+                value="1 Oct 2026"
+                hint="Inside availability window (1 Sep 2026 – 31 Dec 2026)"
+              />
               <Field label="Coverage type" value="Applicant + spouse" />
             </div>
             <div className="mt-4">
-              <Alert tone="accent" title="Form set resolved: CASC-DEN-IND-2026 v3" action={<Btn size="sm" variant="outline">Open form record</Btn>}>
-                Resolved from product + state (AZ) + carrier + effective date. This version is pinned to the
-                submission; a later published version will not change this application.
+              <Alert
+                tone="accent"
+                title="Form set resolved: CASC-DEN-IND-2026 v3"
+                action={
+                  <Btn size="sm" variant="outline">
+                    Open form record
+                  </Btn>
+                }
+              >
+                Resolved from product + state (AZ) + carrier + effective date. This version is
+                pinned to the submission; a later published version will not change this
+                application.
               </Alert>
             </div>
           </Panel>
 
           <Panel title="Submission path" meta="Where this application goes when it is released">
             <div className="grid gap-3 sm:grid-cols-3">
-              <Choice label="Standard EDI template" hint="834-derived carrier template, generated at release" selected />
+              <Choice
+                label="Standard EDI template"
+                hint="834-derived carrier template, generated at release"
+                selected
+              />
               <Choice label="Carrier API hook" hint="Not enabled for Cascade Care" />
               <Choice label="Manual carrier portal" hint="Fallback with attached packet" />
             </div>
             <Disclosure className="mt-4">
-              Off-exchange is a first-party ABox application. There is no exchange redirect on this path — ABox
-              owns the full application record, the submitted output and the submission status.
+              Off-exchange is a first-party ABox application. There is no exchange redirect on this
+              path — ABox owns the full application record, the submitted output and the submission
+              status.
             </Disclosure>
           </Panel>
         </div>
@@ -240,10 +292,20 @@ export function OffexIntakeScreen() {
             <div className="space-y-3">
               <Check checked label="Applicant identity captured" hint="Name, DOB, SSN, residence" />
               <Check checked label="Form set resolved and pinned" hint="CASC-DEN-IND-2026 v3" />
-              <Check checked label="Appointment valid at effective date" hint="A-4471 verified · expires 14 Mar 2027" />
-              <Check label="Required documents attached" hint="2 outstanding: proof of residence, dependent verification" />
+              <Check
+                checked
+                label="Appointment valid at effective date"
+                hint="A-4471 verified · expires 14 Mar 2027"
+              />
+              <Check
+                label="Required documents attached"
+                hint="2 outstanding: proof of residence, dependent verification"
+              />
               <Check label="Signature captured" hint="Not yet requested" />
-              <Check label="Payment method captured" hint="Capture at submission — tenant setting" />
+              <Check
+                label="Payment method captured"
+                hint="Capture at submission — tenant setting"
+              />
             </div>
             <div className="mt-4 rounded-[var(--radius)] border border-border bg-muted/40 px-3 py-2.5">
               <p className="text-[11px] text-muted-foreground">Hard blockers remaining</p>
@@ -340,7 +402,10 @@ export function DynamicFormScreen() {
         </Card>
 
         <div className="space-y-4">
-          <Panel title="4 · Dependents" meta="Section state saves independently so resume is lossless">
+          <Panel
+            title="4 · Dependents"
+            meta="Section state saves independently so resume is lossless"
+          >
             <div className="grid gap-3 sm:grid-cols-2">
               <Field label="Spouse legal name" value="Daniel Herrera" />
               <Field label="Spouse date of birth" value="•• / •• / 1985" sensitive />
@@ -356,16 +421,22 @@ export function DynamicFormScreen() {
             <div className="mt-4 rounded-[var(--radius)] border border-primary/25 bg-primary/[0.05] px-3.5 py-3">
               <p className="text-[11px] font-semibold text-primary">Shown by rule</p>
               <p className="mt-1 text-xs leading-relaxed text-foreground/80">
-                These four fields appear because <span className="font-medium">Coverage type = Applicant + spouse</span>.
-                Changing coverage type hides them and clears their answers with a confirmation.
+                These four fields appear because{" "}
+                <span className="font-medium">Coverage type = Applicant + spouse</span>. Changing
+                coverage type hides them and clears their answers with a confirmation.
               </p>
             </div>
 
             <div className="mt-4">
               <Alert tone="danger" title="2 validation errors in this section">
                 <ul className="mt-1 space-y-1">
-                  <li>Relationship start date cannot precede spouse date of birth — jump to field</li>
-                  <li>Dependent verification document is required for spouse coverage — jump to section 7</li>
+                  <li>
+                    Relationship start date cannot precede spouse date of birth — jump to field
+                  </li>
+                  <li>
+                    Dependent verification document is required for spouse coverage — jump to
+                    section 7
+                  </li>
                 </ul>
               </Alert>
             </div>
@@ -376,9 +447,27 @@ export function DynamicFormScreen() {
               <Table
                 columns={["Document", "Required for", "State"]}
                 rows={[
-                  ["Photo ID", "Submission", <Badge tone="success" dot>Attached</Badge>],
-                  ["Proof of residence", "Submission", <Badge tone="danger" dot>Missing</Badge>],
-                  ["Dependent verification", "Spouse coverage", <Badge tone="danger" dot>Missing</Badge>],
+                  [
+                    "Photo ID",
+                    "Submission",
+                    <Badge tone="success" dot>
+                      Attached
+                    </Badge>,
+                  ],
+                  [
+                    "Proof of residence",
+                    "Submission",
+                    <Badge tone="danger" dot>
+                      Missing
+                    </Badge>,
+                  ],
+                  [
+                    "Dependent verification",
+                    "Spouse coverage",
+                    <Badge tone="danger" dot>
+                      Missing
+                    </Badge>,
+                  ],
                 ]}
               />
               <Btn className="mt-3" size="sm" variant="outline">
@@ -388,13 +477,20 @@ export function DynamicFormScreen() {
 
             <Panel title="8 · Signature" meta="Signer identity is captured and audited">
               <div className="space-y-3">
-                <Choice label="Applicant signs in session" hint="Typed or drawn, captured with timestamp and IP" selected />
-                <Choice label="Send signature request" hint="Emailed link, expires per tenant setting" />
+                <Choice
+                  label="Applicant signs in session"
+                  hint="Typed or drawn, captured with timestamp and IP"
+                  selected
+                />
+                <Choice
+                  label="Send signature request"
+                  hint="Emailed link, expires per tenant setting"
+                />
                 <Choice label="Wet signature upload" hint="Fallback — allowed for this carrier" />
               </div>
               <Disclosure className="mt-4">
-                No role may sign on behalf of an applicant. Support impersonation can read this form but
-                cannot apply a signature or capture payment.
+                No role may sign on behalf of an applicant. Support impersonation can read this form
+                but cannot apply a signature or capture payment.
               </Disclosure>
             </Panel>
           </div>
@@ -498,15 +594,48 @@ export function FormConfiguratorScreen() {
         </Card>
 
         <div className="space-y-4">
-          <Panel title="Field canvas — 4 · Dependents" meta="Drag to reorder · click a field to inspect">
+          <Panel
+            title="Field canvas — 4 · Dependents"
+            meta="Drag to reorder · click a field to inspect"
+          >
             <Table
               columns={["Field", "Type", "Required", "Sensitivity", "Conditional"]}
               rows={[
-                ["Spouse legal name", "Text", "Yes", <Badge>standard</Badge>, <Badge tone="accent">rule R-07</Badge>],
-                ["Spouse date of birth", "Date", "Yes", <Badge tone="warning">sensitive</Badge>, <Badge tone="accent">rule R-07</Badge>],
-                ["Spouse SSN", "Masked text", "Yes", <Badge tone="danger">high</Badge>, <Badge tone="accent">rule R-07</Badge>],
-                ["Child count", "Number", "No", <Badge>standard</Badge>, <Badge tone="accent">rule R-08</Badge>],
-                ["Prior coverage carrier", "Text", "No", <Badge>standard</Badge>, <Badge tone="neutral">deprecated</Badge>],
+                [
+                  "Spouse legal name",
+                  "Text",
+                  "Yes",
+                  <Badge>standard</Badge>,
+                  <Badge tone="accent">rule R-07</Badge>,
+                ],
+                [
+                  "Spouse date of birth",
+                  "Date",
+                  "Yes",
+                  <Badge tone="warning">sensitive</Badge>,
+                  <Badge tone="accent">rule R-07</Badge>,
+                ],
+                [
+                  "Spouse SSN",
+                  "Masked text",
+                  "Yes",
+                  <Badge tone="danger">high</Badge>,
+                  <Badge tone="accent">rule R-07</Badge>,
+                ],
+                [
+                  "Child count",
+                  "Number",
+                  "No",
+                  <Badge>standard</Badge>,
+                  <Badge tone="accent">rule R-08</Badge>,
+                ],
+                [
+                  "Prior coverage carrier",
+                  "Text",
+                  "No",
+                  <Badge>standard</Badge>,
+                  <Badge tone="neutral">deprecated</Badge>,
+                ],
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
@@ -514,14 +643,26 @@ export function FormConfiguratorScreen() {
             </p>
           </Panel>
 
-          <Panel title="Conditional logic" meta="Written as sentences, reviewable by a non-engineer">
+          <Panel
+            title="Conditional logic"
+            meta="Written as sentences, reviewable by a non-engineer"
+          >
             <div className="space-y-2.5">
               {[
                 ["R-07", "Show", "Spouse fields", "when", "Coverage type is Applicant + spouse"],
                 ["R-08", "Show", "Child fields", "when", "Coverage type includes dependents"],
-                ["R-12", "Require", "Dependent verification document", "when", "Any dependent is added"],
+                [
+                  "R-12",
+                  "Require",
+                  "Dependent verification document",
+                  "when",
+                  "Any dependent is added",
+                ],
               ].map(([id, verb, target, conj, cond]) => (
-                <div key={id} className="flex flex-wrap items-center gap-2 rounded-[var(--radius)] border border-border px-3 py-2.5">
+                <div
+                  key={id}
+                  className="flex flex-wrap items-center gap-2 rounded-[var(--radius)] border border-border px-3 py-2.5"
+                >
                   <Badge tone="accent">{id}</Badge>
                   <RuleToken label={verb as string} value={target as string} tone="accent" />
                   <span className="text-xs text-muted-foreground">{conj}</span>
@@ -541,7 +682,10 @@ export function FormConfiguratorScreen() {
                   Cross-field validation
                 </p>
                 <Check checked label="Relationship start date must follow spouse date of birth" />
-                <Check checked label="Effective date must fall inside product availability window" />
+                <Check
+                  checked
+                  label="Effective date must fall inside product availability window"
+                />
                 <Check checked label="ZIP must resolve to a served rating area" />
               </div>
               <div className="space-y-2.5">
@@ -562,7 +706,11 @@ export function FormConfiguratorScreen() {
               <Field label="Label" value="Spouse SSN" />
               <Field label="Type" value="Masked text" />
               <Field label="Sensitivity" value="High — masked, reveal audited" sensitive />
-              <Field label="EDI mapping" value="INS·REF·0F" hint="Maps the answer to the carrier template segment" />
+              <Field
+                label="EDI mapping"
+                value="INS·REF·0F"
+                hint="Maps the answer to the carrier template segment"
+              />
               <Check checked label="Applicant may complete via resume link" />
               <Check checked label="Required before release" />
             </div>
@@ -646,75 +794,128 @@ export function ProductCatalogScreen() {
 
       <Card className="p-2">
         <div className="flex flex-wrap gap-1.5">
-          {["All lines", "Medical — on-exchange", "Medical — off-exchange", "Dental", "Vision", "Accident / CI", "ICHRA (quote only)"].map(
-            (t, i) => (
-              <span
-                key={t}
-                className={cn(
-                  "rounded-full px-3 py-1.5 text-xs",
-                  i === 0 ? "bg-foreground text-background font-medium" : "text-muted-foreground hover:bg-muted",
-                )}
-              >
-                {t}
-              </span>
-            ),
-          )}
+          {[
+            "All lines",
+            "Medical — on-exchange",
+            "Medical — off-exchange",
+            "Dental",
+            "Vision",
+            "Accident / CI",
+            "ICHRA (quote only)",
+          ].map((t, i) => (
+            <span
+              key={t}
+              className={cn(
+                "rounded-full px-3 py-1.5 text-xs",
+                i === 0
+                  ? "bg-foreground text-background font-medium"
+                  : "text-muted-foreground hover:bg-muted",
+              )}
+            >
+              {t}
+            </span>
+          ))}
         </div>
       </Card>
 
-      <Panel title="Catalog" meta="A working list, not a card gallery" actions={<Btn size="sm" variant="outline">Export</Btn>}>
+      <Panel
+        title="Catalog"
+        meta="A working list, not a card gallery"
+        actions={
+          <Btn size="sm" variant="outline">
+            Export
+          </Btn>
+        }
+      >
         <Table
-          columns={["Product", "Line", "Carrier", "States", "Quotable", "Enrollable", "Agencies", "Rate health"]}
+          columns={[
+            "Product",
+            "Line",
+            "Carrier",
+            "States",
+            "Quotable",
+            "Enrollable",
+            "Agencies",
+            "Rate health",
+          ]}
           rows={[
             [
               "Summit Silver 3500 HSA",
               "Medical — on-exchange",
               "Blue Summit",
               "AZ, NM, NV",
-              <Badge tone="success" dot>Yes</Badge>,
-              <Badge tone="success" dot>Yes</Badge>,
+              <Badge tone="success" dot>
+                Yes
+              </Badge>,
+              <Badge tone="success" dot>
+                Yes
+              </Badge>,
               "34",
-              <Badge tone="success" dot>Current</Badge>,
+              <Badge tone="success" dot>
+                Current
+              </Badge>,
             ],
             [
               "Cascade Dental Preferred 1500",
               "Dental",
               "Cascade Care",
               "AZ, NM",
-              <Badge tone="success" dot>Yes</Badge>,
-              <Badge tone="success" dot>Yes</Badge>,
+              <Badge tone="success" dot>
+                Yes
+              </Badge>,
+              <Badge tone="success" dot>
+                Yes
+              </Badge>,
               "21",
-              <Badge tone="success" dot>Current</Badge>,
+              <Badge tone="success" dot>
+                Current
+              </Badge>,
             ],
             [
               "Meridian Vision Complete",
               "Vision",
               "Meridian",
               "AZ",
-              <Badge tone="success" dot>Yes</Badge>,
-              <Badge tone="success" dot>Yes</Badge>,
+              <Badge tone="success" dot>
+                Yes
+              </Badge>,
+              <Badge tone="success" dot>
+                Yes
+              </Badge>,
               "9",
-              <Badge tone="warning" dot>Stale 6 days</Badge>,
+              <Badge tone="warning" dot>
+                Stale 6 days
+              </Badge>,
             ],
             [
               "Northwind ICHRA Illustration",
               "ICHRA",
               "n/a — quoting model",
               "AZ, NM, TX",
-              <Badge tone="success" dot>Yes</Badge>,
+              <Badge tone="success" dot>
+                Yes
+              </Badge>,
               <Badge tone="neutral">No — quote only</Badge>,
               "4",
-              <Badge tone="success" dot>Current</Badge>,
+              <Badge tone="success" dot>
+                Current
+              </Badge>,
             ],
             [
               "Cascade Accident Secure",
               "Accident / CI",
               "Cascade Care",
               "AZ",
-              <Badge tone="danger" dot>Stopped</Badge>,
-              <Badge tone="danger" dot>Stopped</Badge>,
+              <Badge tone="danger" dot>
+                Stopped
+              </Badge>,
+              <Badge tone="danger" dot>
+                Stopped
+              </Badge>,
               "6",
-              <Badge tone="danger" dot>Stale 31 days</Badge>,
+              <Badge tone="danger" dot>
+                Stale 31 days
+              </Badge>,
             ],
           ]}
         />
@@ -725,22 +926,50 @@ export function ProductCatalogScreen() {
           <Table
             columns={["Agency", "Enabled", "Effective", "Appointment"]}
             rows={[
-              ["Northwind Master", <Badge tone="success" dot>Enabled</Badge>, "1 Jan 2026", <Badge tone="success" dot>A-4471 verified</Badge>],
-              ["Harbor Point", <Badge tone="success" dot>Enabled</Badge>, "1 Mar 2026", <Badge tone="success" dot>Inherited</Badge>],
-              ["Cedar Ridge", <Badge tone="danger" dot>Blocked</Badge>, "—", <Badge tone="danger" dot>No appointment</Badge>],
+              [
+                "Northwind Master",
+                <Badge tone="success" dot>
+                  Enabled
+                </Badge>,
+                "1 Jan 2026",
+                <Badge tone="success" dot>
+                  A-4471 verified
+                </Badge>,
+              ],
+              [
+                "Harbor Point",
+                <Badge tone="success" dot>
+                  Enabled
+                </Badge>,
+                "1 Mar 2026",
+                <Badge tone="success" dot>
+                  Inherited
+                </Badge>,
+              ],
+              [
+                "Cedar Ridge",
+                <Badge tone="danger" dot>
+                  Blocked
+                </Badge>,
+                "—",
+                <Badge tone="danger" dot>
+                  No appointment
+                </Badge>,
+              ],
             ]}
           />
           <Alert tone="warning" title="Enablement without appointment is blocked">
-            Cedar Ridge cannot be enabled for this carrier until an appointment path exists. The block names
-            the missing appointment and offers a request-to-write action.
+            Cedar Ridge cannot be enabled for this carrier until an appointment path exists. The
+            block names the missing appointment and offers a request-to-write action.
           </Alert>
         </Panel>
 
         <Panel title="Quote-only fence" meta="ICHRA in Phase 1">
           <p className="text-xs leading-relaxed text-muted-foreground">
-            ICHRA products carry an explicit quote-only marker. There is no application, no election capture
-            and no enrollment path — the enroll action does not exist on the product rather than appearing
-            disabled. Any attempt to start an application against them is blocked at intake.
+            ICHRA products carry an explicit quote-only marker. There is no application, no election
+            capture and no enrollment path — the enroll action does not exist on the product rather
+            than appearing disabled. Any attempt to start an application against them is blocked at
+            intake.
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Badge tone="accent">quote-only</Badge>
@@ -748,8 +977,9 @@ export function ProductCatalogScreen() {
             <Badge>employer-facing illustration only</Badge>
           </div>
           <Disclosure className="mt-4">
-            Retire is available; delete is not. Historical quotes and policies must keep resolving their
-            product, so a retired product leaves new quoting while remaining referenceable forever.
+            Retire is available; delete is not. Historical quotes and policies must keep resolving
+            their product, so a retired product leaves new quoting while remaining referenceable
+            forever.
           </Disclosure>
         </Panel>
       </div>
@@ -804,11 +1034,23 @@ export function ProductBuilderScreen() {
           <Panel title="Definition" meta="Line template pre-fills the rest of this screen">
             <div className="grid gap-3 sm:grid-cols-2">
               <Field label="Product name" value="Cascade Vision Clear 200" />
-              <Field label="Consumer display name" value="Vision Clear" hint="What the marketplace shows" />
-              <Field label="Line template" value="Vision" hint="Pre-fills rating inputs and attribute slots" />
+              <Field
+                label="Consumer display name"
+                value="Vision Clear"
+                hint="What the marketplace shows"
+              />
+              <Field
+                label="Line template"
+                value="Vision"
+                hint="Pre-fills rating inputs and attribute slots"
+              />
               <Field label="Carrier" value="Cascade Care" />
               <Field label="States" value="AZ, NM" />
-              <Field label="Enrollment mode" value="Enrollable" hint="Quote-only removes the enrollment path entirely" />
+              <Field
+                label="Enrollment mode"
+                value="Enrollable"
+                hint="Quote-only removes the enrollment path entirely"
+              />
             </div>
           </Panel>
 
@@ -819,7 +1061,10 @@ export function ProductBuilderScreen() {
                 <Check checked label="ZIP / rating area" />
                 <Check label="Tobacco" hint="Not rated for vision" />
                 <Check checked label="Family composition" />
-                <Check label="Custom input" hint="Named inputs only — no free-form formulas in Phase 1" />
+                <Check
+                  label="Custom input"
+                  hint="Named inputs only — no free-form formulas in Phase 1"
+                />
               </div>
               <p className="mt-3 text-[11px] text-muted-foreground">
                 The wizard collects exactly these inputs and nothing more.
@@ -846,20 +1091,35 @@ export function ProductBuilderScreen() {
 
           <Panel title="Bindings" meta="A visible contract — publish is gated on this list">
             <div className="grid gap-3 sm:grid-cols-2">
-              <Check checked label="Rate source bound" hint="CASC-VIS-FEED · daily · last load 06:10" />
+              <Check
+                checked
+                label="Rate source bound"
+                hint="CASC-VIS-FEED · daily · last load 06:10"
+              />
               <Check checked label="Availability rules set" hint="AZ, NM · 1 Nov 2026 onward" />
-              <Check checked label="Commission schedule assignable" hint="Authored in Commissions, not here" />
-              <Check label="Form resolution rule bound" hint="Required because this product is enrollable" />
+              <Check
+                checked
+                label="Commission schedule assignable"
+                hint="Authored in Commissions, not here"
+              />
+              <Check
+                label="Form resolution rule bound"
+                hint="Required because this product is enrollable"
+              />
             </div>
             <Alert tone="danger" title="Publish blocked — 1 binding missing">
-              An enrollable product without a form resolution rule cannot be published. Bind a form set in
-              the configurator, then return here.
+              An enrollable product without a form resolution rule cannot be published. Bind a form
+              set in the configurator, then return here.
             </Alert>
           </Panel>
 
           <Panel title="Bundling & cart behaviour">
             <div className="grid gap-3 sm:grid-cols-3">
-              <Choice label="Can be added with medical" hint="Appears as additional coverage" selected />
+              <Choice
+                label="Can be added with medical"
+                hint="Appears as additional coverage"
+                selected
+              />
               <Choice label="Standalone only" hint="Own cart, own checkout" />
               <Choice label="Requires medical in cart" hint="Blocks standalone purchase" />
             </div>
@@ -869,8 +1129,12 @@ export function ProductBuilderScreen() {
         <div className="space-y-4">
           <Panel title="Consumer preview" meta="Branded skin · the author sees the consequence">
             <Card className="p-4">
-              <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Cascade Care</p>
-              <p className="font-display text-base font-semibold leading-snug tracking-tight">Vision Clear</p>
+              <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                Cascade Care
+              </p>
+              <p className="font-display text-base font-semibold leading-snug tracking-tight">
+                Vision Clear
+              </p>
               <div className="mt-1.5 flex flex-wrap gap-1.5">
                 <Badge>Vision</Badge>
                 <Badge>PPO network</Badge>
@@ -895,9 +1159,9 @@ export function ProductBuilderScreen() {
 
           <Panel title="Ancillary extensibility">
             <p className="text-xs leading-relaxed text-muted-foreground">
-              Dental was the minimum ancillary proof required by the blueprint. Vision, accident and critical
-              illness are built through the same line templates and the same four bindings — no per-line
-              screens, no hardcoded dental behaviour.
+              Dental was the minimum ancillary proof required by the blueprint. Vision, accident and
+              critical illness are built through the same line templates and the same four bindings
+              — no per-line screens, no hardcoded dental behaviour.
             </p>
             <div className="mt-3 flex flex-wrap gap-1.5">
               {["Dental — live", "Vision — building", "Accident / CI — template ready"].map((t) => (
@@ -914,10 +1178,33 @@ export function ProductBuilderScreen() {
 /* ------------------------------------------------------------------- HF-21 */
 
 const APPOINTMENT_TIMELINE: TimelineEntry[] = [
-  { kind: "human", title: "NPN override applied", body: "Writing NPN set to 8842119 (Northwind Master) with reason 'master paper arrangement'.", meta: "18 Aug 2026 · 09:41", actor: "R. Osei" },
-  { kind: "status", title: "Appointment verified", body: "Carrier confirmation letter attached and matched to licence AZ-114872.", meta: "3 Apr 2026 · 14:02", actor: "Compliance" },
-  { kind: "system", title: "Expiry warning raised", body: "60-day window notice sent to agency admin and compliance queue.", meta: "13 Jan 2027 · 06:00" },
-  { kind: "human", title: "Appointment created", body: "Cascade Care · dental, vision · AZ, NM.", meta: "28 Mar 2026 · 11:18", actor: "A. Rivera" },
+  {
+    kind: "human",
+    title: "NPN override applied",
+    body: "Writing NPN set to 8842119 (Northwind Master) with reason 'master paper arrangement'.",
+    meta: "18 Aug 2026 · 09:41",
+    actor: "R. Osei",
+  },
+  {
+    kind: "status",
+    title: "Appointment verified",
+    body: "Carrier confirmation letter attached and matched to licence AZ-114872.",
+    meta: "3 Apr 2026 · 14:02",
+    actor: "Compliance",
+  },
+  {
+    kind: "system",
+    title: "Expiry warning raised",
+    body: "60-day window notice sent to agency admin and compliance queue.",
+    meta: "13 Jan 2027 · 06:00",
+  },
+  {
+    kind: "human",
+    title: "Appointment created",
+    body: "Cascade Care · dental, vision · AZ, NM.",
+    meta: "28 Mar 2026 · 11:18",
+    actor: "A. Rivera",
+  },
 ];
 
 export function AppointmentSetupScreen() {
@@ -975,8 +1262,9 @@ export function AppointmentSetupScreen() {
       />
 
       <Alert tone="warning" title="Expires in 201 days — 14 Mar 2027">
-        A lapsed appointment silently stops sales, so the dated warning band opens 60 days out and creates a
-        compliance task. Renewal documents can be attached before expiry without interrupting live business.
+        A lapsed appointment silently stops sales, so the dated warning band opens 60 days out and
+        creates a compliance task. Renewal documents can be attached before expiry without
+        interrupting live business.
       </Alert>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
@@ -984,11 +1272,19 @@ export function AppointmentSetupScreen() {
           <Panel title="Appointment record">
             <div className="grid gap-3 sm:grid-cols-2">
               <Field label="Carrier" value="Cascade Care" />
-              <Field label="Paper owner" value="Northwind Master" hint="Only the paper owner may edit this record" />
+              <Field
+                label="Paper owner"
+                value="Northwind Master"
+                hint="Only the paper owner may edit this record"
+              />
               <Field label="Lines" value="Dental, Vision" />
               <Field label="States" value="AZ, NM" />
               <Field label="Effective date" value="28 Mar 2026" />
-              <Field label="Termination date" value="—" hint="Blocked while in-flight submissions depend on it" />
+              <Field
+                label="Termination date"
+                value="—"
+                hint="Blocked while in-flight submissions depend on it"
+              />
               <Field label="Carrier appointment number" value="CC-AZ-2026-4471" />
               <Field
                 label="Writing NPN"
@@ -1008,12 +1304,16 @@ export function AppointmentSetupScreen() {
                 <Check label="Renewal documentation for 2027" hint="Not yet required" />
               </div>
               <Alert tone="accent" title="'Active, unverified' is a distinct state">
-                It is a real and dangerous condition, so it is chipped separately rather than collapsed into
-                a single boolean. Tenant policy decides whether unverified appointments may quote.
+                It is a real and dangerous condition, so it is chipped separately rather than
+                collapsed into a single boolean. Tenant policy decides whether unverified
+                appointments may quote.
               </Alert>
             </Panel>
 
-            <Panel title="Downstream consequence" meta="An appointment nobody can trace is a compliance risk">
+            <Panel
+              title="Downstream consequence"
+              meta="An appointment nobody can trace is a compliance risk"
+            >
               <Kv
                 rows={[
                   ["Products unlocked", "14"],
@@ -1038,9 +1338,24 @@ export function AppointmentSetupScreen() {
             <Table
               columns={["Document", "State"]}
               rows={[
-                ["Carrier confirmation", <Badge tone="success" dot>Verified</Badge>],
-                ["E&O certificate", <Badge tone="success" dot>Current</Badge>],
-                ["W-9", <Badge tone="success" dot>On file</Badge>],
+                [
+                  "Carrier confirmation",
+                  <Badge tone="success" dot>
+                    Verified
+                  </Badge>,
+                ],
+                [
+                  "E&O certificate",
+                  <Badge tone="success" dot>
+                    Current
+                  </Badge>,
+                ],
+                [
+                  "W-9",
+                  <Badge tone="success" dot>
+                    On file
+                  </Badge>,
+                ],
                 ["2027 renewal packet", <Badge tone="neutral">Not required yet</Badge>],
               ]}
             />
@@ -1059,8 +1374,8 @@ export function AppointmentSetupScreen() {
               </Btn>
             </div>
             <Disclosure className="mt-4">
-              Termination is blocked while in-flight submissions depend on this appointment, and the block
-              lists them. Overrides and terminations require a reason code and are reported.
+              Termination is blocked while in-flight submissions depend on this appointment, and the
+              block lists them. Overrides and terminations require a reason code and are reported.
             </Disclosure>
           </Panel>
         </div>
@@ -1140,13 +1455,35 @@ export function PaperSplitsScreen() {
             </div>
           </Panel>
 
-          <Panel title="Access grants" meta="Upline sees the arrangement · downline sees only its own row">
+          <Panel
+            title="Access grants"
+            meta="Upline sees the arrangement · downline sees only its own row"
+          >
             <Table
               columns={["Entity", "Relationship", "Access", "Effective"]}
               rows={[
-                ["Harbor Point", "Downline", <Badge tone="success" dot>Write</Badge>, "1 Mar 2026"],
-                ["Cedar Ridge", "Downline", <Badge tone="warning" dot>Quote only</Badge>, "1 Jun 2026"],
-                ["Bright Referral", "Referral partner", <Badge tone="neutral">Refer only</Badge>, "14 Aug 2026"],
+                [
+                  "Harbor Point",
+                  "Downline",
+                  <Badge tone="success" dot>
+                    Write
+                  </Badge>,
+                  "1 Mar 2026",
+                ],
+                [
+                  "Cedar Ridge",
+                  "Downline",
+                  <Badge tone="warning" dot>
+                    Quote only
+                  </Badge>,
+                  "1 Jun 2026",
+                ],
+                [
+                  "Bright Referral",
+                  "Referral partner",
+                  <Badge tone="neutral">Refer only</Badge>,
+                  "14 Aug 2026",
+                ],
               ]}
             />
           </Panel>
@@ -1186,7 +1523,11 @@ export function PaperSplitsScreen() {
           <Panel
             title="Revenue split — v4"
             meta="Effective 1 Sep 2026 · previous versions are never rewritten"
-            actions={<Badge tone="success" dot>Totals 100%</Badge>}
+            actions={
+              <Badge tone="success" dot>
+                Totals 100%
+              </Badge>
+            }
           >
             <Table
               columns={["Party", "Role", "Share", "Basis"]}
@@ -1204,12 +1545,15 @@ export function PaperSplitsScreen() {
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
-              An arithmetic error here is a payment dispute, so the remainder row recalculates as you type and
-              publish is blocked until it reaches zero.
+              An arithmetic error here is a payment dispute, so the remainder row recalculates as
+              you type and publish is blocked until it reaches zero.
             </p>
           </Panel>
 
-          <Panel title="Markers set on every submission" meta="The keys attribution and reporting join on">
+          <Panel
+            title="Markers set on every submission"
+            meta="The keys attribution and reporting join on"
+          >
             <div className="grid gap-3 sm:grid-cols-2">
               <Field label="Selling agency marker" value="Harbor Point" />
               <Field label="Selling agent marker" value="D. Okafor · NPN 7712045" />
@@ -1220,13 +1564,15 @@ export function PaperSplitsScreen() {
 
           <Panel title="B2B2C nesting">
             <p className="text-xs leading-relaxed text-muted-foreground">
-              A partner writing on a downline&apos;s granted paper produces a multi-party split on this same
-              arrangement — not a new entity type and not a parallel hierarchy. Nesting is expressed as
-              additional split rows with their own roles, which is why access and splits belong on one screen.
+              A partner writing on a downline&apos;s granted paper produces a multi-party split on
+              this same arrangement — not a new entity type and not a parallel hierarchy. Nesting is
+              expressed as additional split rows with their own roles, which is why access and
+              splits belong on one screen.
             </p>
             <Disclosure className="mt-3">
-              A policy resolves exactly one split arrangement version, pinned at effective date. Commission
-              calculation, projection and statements all resolve through that pinned version.
+              A policy resolves exactly one split arrangement version, pinned at effective date.
+              Commission calculation, projection and statements all resolve through that pinned
+              version.
             </Disclosure>
           </Panel>
         </div>
@@ -1279,7 +1625,10 @@ export function ReferralRewardsScreen() {
         }
       />
 
-      <Panel title="Reward model" meta="The model choice changes the form, not just a dropdown value">
+      <Panel
+        title="Reward model"
+        meta="The model choice changes the form, not just a dropdown value"
+      >
         <div className="grid gap-3 sm:grid-cols-4">
           <Choice label="One-time per enrollment" hint="Fixed amount on the qualifying event" />
           <Choice label="Recurring monthly" hint="Paid while the policy persists" />
@@ -1296,12 +1645,19 @@ export function ReferralRewardsScreen() {
               <Field label="Recurring reward" value="$4.00 / month" />
               <Field label="Recurring duration" value="12 months" />
               <Field label="Cap per partner per year" value="$25,000" />
-              <Field label="Cap per referred policy" value="$93.00" hint="One-time + 12 recurring" />
+              <Field
+                label="Cap per referred policy"
+                value="$93.00"
+                hint="One-time + 12 recurring"
+              />
               <Field label="Payout timing" value="Monthly, with statement posting" />
             </div>
           </Panel>
 
-          <Panel title="Qualifying event & attribution" meta="Attribution is part of the reward definition">
+          <Panel
+            title="Qualifying event & attribution"
+            meta="Attribution is part of the reward definition"
+          >
             <div className="grid gap-3 md:grid-cols-2">
               <div className="space-y-3">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -1310,14 +1666,21 @@ export function ReferralRewardsScreen() {
                 <Choice label="Lead created" hint="Highest risk — second approver required" />
                 <Choice label="Application submitted" />
                 <Choice label="Policy effective" selected />
-                <Choice label="Policy persists 90 days" hint="Lowest risk, slowest partner payout" />
+                <Choice
+                  label="Policy persists 90 days"
+                  hint="Lowest risk, slowest partner payout"
+                />
               </div>
               <div className="space-y-3">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                   Attribution
                 </p>
                 <Field label="Window" value="30 days from referral" />
-                <Field label="Model" value="First touch" hint="Last touch also available per tenant" />
+                <Field
+                  label="Model"
+                  value="First touch"
+                  hint="Last touch also available per tenant"
+                />
                 <Field label="Clawback" value="Full reversal if cancelled inside 60 days" />
                 <Check checked label="Attribution recorded on lead, quote and submission" />
               </div>
@@ -1331,11 +1694,16 @@ export function ReferralRewardsScreen() {
                 ["Qualifying enrollments this month", "18", "$810.00 one-time"],
                 ["Active recurring policies", "126", "$504.00 recurring"],
                 ["Projected reversals (60-day cancels)", "2", "− $90.00"],
-                [<span className="font-semibold">Total accrual</span>, "—", <span className="font-semibold">$1,224.00</span>],
+                [
+                  <span className="font-semibold">Total accrual</span>,
+                  "—",
+                  <span className="font-semibold">$1,224.00</span>,
+                ],
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
-              Recalculates live as the admin types. Against the $25,000 annual cap: 4.9% used this month.
+              Recalculates live as the admin types. Against the $25,000 annual cap: 4.9% used this
+              month.
             </p>
           </Panel>
         </div>
@@ -1343,14 +1711,18 @@ export function ReferralRewardsScreen() {
         <div className="space-y-4">
           <Panel title="Approval & disclosure">
             <div className="space-y-2.5">
-              <Check checked label="Disclosure text authored" hint="Required before activation, versioned with the program" />
+              <Check
+                checked
+                label="Disclosure text authored"
+                hint="Required before activation, versioned with the program"
+              />
               <Check checked label="Partner acceptance captured" hint="14 Aug 2026" />
               <Check label="Second approver" hint="Not required for policy-effective programs" />
             </div>
             <Disclosure className="mt-4">
-              Referral rewards are distinct from commission splits and never alter a licensed agent&apos;s
-              commission. Partner-facing views show only the partner&apos;s own reward, never the
-              agency&apos;s underlying commission.
+              Referral rewards are distinct from commission splits and never alter a licensed
+              agent&apos;s commission. Partner-facing views show only the partner&apos;s own reward,
+              never the agency&apos;s underlying commission.
             </Disclosure>
           </Panel>
 
@@ -1364,8 +1736,8 @@ export function ReferralRewardsScreen() {
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
-              Accruals appear on statements as a distinct reward line. ABox exports for payment; it does not
-              disburse funds in Phase 1.
+              Accruals appear on statements as a distinct reward line. ABox exports for payment; it
+              does not disburse funds in Phase 1.
             </p>
           </Panel>
         </div>
@@ -1404,7 +1776,10 @@ export function CommissionScheduleScreen() {
         ),
         Audit: (
           <DrawerList
-            items={["v2 published — 1 Jan 2026, approver R. Osei.", "PMPM rate changed — 20 Aug, draft."]}
+            items={[
+              "v2 published — 1 Jan 2026, approver R. Osei.",
+              "PMPM rate changed — 20 Aug, draft.",
+            ]}
           />
         ),
       }}
@@ -1432,18 +1807,26 @@ export function CommissionScheduleScreen() {
             ["% of premium", "Percentage of paid premium", false],
             ["Contingent", "Category-based, at risk", false],
           ].map(([label, hint, sel]) => (
-            <Choice key={label as string} label={label as string} hint={hint as string} selected={sel as boolean} />
+            <Choice
+              key={label as string}
+              label={label as string}
+              hint={hint as string}
+              selected={sel as boolean}
+            />
           ))}
         </div>
         <p className="mt-3 text-[11px] text-muted-foreground">
-          PCPM is per covered person and is deliberately distinct from PMPM at the member-count definition
-          level — conflating them misprices family business.
+          PCPM is per covered person and is deliberately distinct from PMPM at the member-count
+          definition level — conflating them misprices family business.
         </p>
       </Panel>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_21rem]">
         <div className="space-y-4">
-          <Panel title="Rate rows — PMPM base" meta="Effective-dated and stacked, never overwritten">
+          <Panel
+            title="Rate rows — PMPM base"
+            meta="Effective-dated and stacked, never overwritten"
+          >
             <Table
               columns={["Effective from", "Effective to", "Rate", "Member basis", "State"]}
               rows={[
@@ -1462,7 +1845,11 @@ export function CommissionScheduleScreen() {
               {[
                 ["Base", "PMPM $2.85 to selling agency", "accent"],
                 ["Override", "$0.40 PMPM to Northwind Master on downline production", "neutral"],
-                ["Upline bonus", "$0.15 PMPM above 1,500 lives in the measurement period", "neutral"],
+                [
+                  "Upline bonus",
+                  "$0.15 PMPM above 1,500 lives in the measurement period",
+                  "neutral",
+                ],
                 ["Super bonus", "$18,000 annual at 95% persistence and 2,500 lives", "warning"],
               ].map(([label, body, tone], i) => (
                 <li key={label as string} className="flex items-start gap-3">
@@ -1472,7 +1859,9 @@ export function CommissionScheduleScreen() {
                   <div className="min-w-0 flex-1 rounded-[var(--radius)] border border-border px-3 py-2">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="text-sm font-medium">{label}</p>
-                      <Badge tone={tone as "accent" | "neutral" | "warning"}>{tone === "warning" ? "annual" : "monthly"}</Badge>
+                      <Badge tone={tone as "accent" | "neutral" | "warning"}>
+                        {tone === "warning" ? "annual" : "monthly"}
+                      </Badge>
                     </div>
                     <p className="mt-0.5 text-xs text-muted-foreground">{body}</p>
                   </div>
@@ -1488,8 +1877,16 @@ export function CommissionScheduleScreen() {
                 ["Base PMPM", "1,000 × $2.85", "$2,850.00"],
                 ["Override", "1,000 × $0.40", "$400.00"],
                 ["Upline bonus", "Not met — 1,000 of 1,500 lives", "$0.00"],
-                ["Contingent quality category", "Excluded from projection by default", <Badge tone="warning">at risk</Badge>],
-                [<span className="font-semibold">Total commissionable</span>, "—", <span className="font-semibold">$3,250.00</span>],
+                [
+                  "Contingent quality category",
+                  "Excluded from projection by default",
+                  <Badge tone="warning">at risk</Badge>,
+                ],
+                [
+                  <span className="font-semibold">Total commissionable</span>,
+                  "—",
+                  <span className="font-semibold">$3,250.00</span>,
+                ],
               ]}
             />
           </Panel>
@@ -1502,7 +1899,11 @@ export function CommissionScheduleScreen() {
               <Field label="Carrier" value="Cascade Care" />
               <Field label="Paper" value="Northwind Master · A-4471" />
               <Field label="Entity scope" value="Northwind Master + downline" />
-              <Field label="Effective rule" value="Next plan year" hint="Immediate and next-period also available" />
+              <Field
+                label="Effective rule"
+                value="Next plan year"
+                hint="Immediate and next-period also available"
+              />
             </div>
             <p className="mt-3 text-[11px] text-muted-foreground">
               Schedules bind to catalog products and appointment paper; they never define either.
@@ -1511,16 +1912,24 @@ export function CommissionScheduleScreen() {
 
           <Panel title="Contingent categories">
             <div className="space-y-2.5">
-              <Check checked label="Quality / persistence bonus" hint="Contingent — excluded from projection" />
-              <Check checked label="Growth incentive" hint="Contingent — excluded from projection" />
+              <Check
+                checked
+                label="Quality / persistence bonus"
+                hint="Contingent — excluded from projection"
+              />
+              <Check
+                checked
+                label="Growth incentive"
+                hint="Contingent — excluded from projection"
+              />
               <Check label="Include contingent in projections" hint="Explicit opt-in per tenant" />
             </div>
           </Panel>
 
           <Panel title="Publish">
             <Alert tone="warning" title="Two-step approval · 1,842 policies affected">
-              Publishing recalculates projections forward only. Posted statement periods are immutable and
-              are never retroactively repriced.
+              Publishing recalculates projections forward only. Posted statement periods are
+              immutable and are never retroactively repriced.
             </Alert>
             <Btn className="mt-3" full>
               Request approval
@@ -1581,13 +1990,18 @@ export function CommissionProjectionScreen() {
           <Badge>All products</Badge>
           <Badge>Base + override</Badge>
           <span className="ml-auto text-[11px] text-muted-foreground">
-            Scope bar is always visible — the user can always answer &ldquo;what am I looking at&rdquo;
+            Scope bar is always visible — the user can always answer &ldquo;what am I looking
+            at&rdquo;
           </span>
         </div>
       </Card>
 
       <div className="grid gap-3 sm:grid-cols-4">
-        <Stat label="Projected 12-month" value="$412,800" hint="Base + override, contingent excluded" />
+        <Stat
+          label="Projected 12-month"
+          value="$412,800"
+          hint="Base + override, contingent excluded"
+        />
         <Stat label="In-force component" value="$338,100" delta="82%" deltaTone="neutral" />
         <Stat label="Pending (weighted)" value="$74,700" hint="40% close rate applied" />
         <Stat label="Bonus accruals" value="$18,000" hint="Super bonus, at-risk" />
@@ -1606,7 +2020,8 @@ export function CommissionProjectionScreen() {
                 <span className="size-2 rounded-sm bg-primary" aria-hidden="true" /> Projected
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="size-2 rounded-sm bg-muted" aria-hidden="true" /> Prior 12 months actual
+                <span className="size-2 rounded-sm bg-muted" aria-hidden="true" /> Prior 12 months
+                actual
               </span>
             </div>
             <div className="mt-4">
@@ -1622,7 +2037,10 @@ export function CommissionProjectionScreen() {
             </div>
           </Panel>
 
-          <Panel title="Internal projection inside quote & cart" meta="Never rendered on a consumer surface">
+          <Panel
+            title="Internal projection inside quote & cart"
+            meta="Never rendered on a consumer surface"
+          >
             <div className="rounded-[var(--radius)] border border-border bg-muted/40 px-3.5 py-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
@@ -1635,12 +2053,14 @@ export function CommissionProjectionScreen() {
                 </div>
                 <div className="text-right">
                   <p className="font-display text-xl font-semibold tabular-nums">$93.60</p>
-                  <p className="text-[11px] text-muted-foreground">first-year expected · base + override</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    first-year expected · base + override
+                  </p>
                 </div>
               </div>
               <p className="mt-2 text-[11px] text-muted-foreground">
-                Same calculation engine as the portfolio view — one engine, two surfaces. For roles without
-                commission.view this strip does not render at all.
+                Same calculation engine as the portfolio view — one engine, two surfaces. For roles
+                without commission.view this strip does not render at all.
               </p>
             </div>
           </Panel>
@@ -1667,9 +2087,9 @@ export function CommissionProjectionScreen() {
               ]}
             />
             <Disclosure className="mt-4">
-              Estimate only. Projection reads policies, submissions, schedules and splits and writes nothing
-              except the run record kept for audit. Statement posting supersedes projection for closed
-              periods, so the two never disagree for a posted month.
+              Estimate only. Projection reads policies, submissions, schedules and splits and writes
+              nothing except the run record kept for audit. Statement posting supersedes projection
+              for closed periods, so the two never disagree for a posted month.
             </Disclosure>
           </Panel>
         </div>
@@ -1732,7 +2152,12 @@ export function AgencyStatementScreen() {
 
       <div className="grid gap-3 sm:grid-cols-4">
         <Stat label="Gross earned" value="$41,980" hint="Base + override + bonus" />
-        <Stat label="Adjustments" value="− $1,120" deltaTone="danger" hint="3 adjustments, 1 reversal" />
+        <Stat
+          label="Adjustments"
+          value="− $1,120"
+          deltaTone="danger"
+          hint="3 adjustments, 1 reversal"
+        />
         <Stat label="Allocated to downline & partners" value="$17,340" />
         <Stat label="Net retained" value="$24,640" delta="+4.1% vs Jun" deltaTone="success" />
       </div>
@@ -1742,16 +2167,70 @@ export function AgencyStatementScreen() {
           <Panel
             title="Summary ledger"
             meta="Drill through to policy level — defensible line by line"
-            actions={<Btn size="sm" variant="outline">Expand all</Btn>}
+            actions={
+              <Btn size="sm" variant="outline">
+                Expand all
+              </Btn>
+            }
           >
             <Table
-              columns={["Component", "Basis", "Policies", "Amount", "Carrier reported", "Reconciliation"]}
+              columns={[
+                "Component",
+                "Basis",
+                "Policies",
+                "Amount",
+                "Carrier reported",
+                "Reconciliation",
+              ]}
               rows={[
-                ["Base commission", "PMPM $2.85 · CS-2026-DEN-AZ v2", "1,842", "$31,240", "$31,240", <Badge tone="success" dot>Matched</Badge>],
-                ["Override", "$0.40 PMPM on downline production", "1,104", "$8,740", "$8,128", <Badge tone="warning" dot>Variance $612</Badge>],
-                ["Super bonus accrual", "Annual · 1/12 recognised", "—", "$1,500", "—", <Badge tone="neutral">Not carrier-reported</Badge>],
-                ["Adjustments", "3 items · retro rate", "27", "− $1,120", "− $1,120", <Badge tone="success" dot>Matched</Badge>],
-                ["Reversal", "Cancelled inside 60 days", "1", "− $380", "− $380", <Badge tone="success" dot>Matched</Badge>],
+                [
+                  "Base commission",
+                  "PMPM $2.85 · CS-2026-DEN-AZ v2",
+                  "1,842",
+                  "$31,240",
+                  "$31,240",
+                  <Badge tone="success" dot>
+                    Matched
+                  </Badge>,
+                ],
+                [
+                  "Override",
+                  "$0.40 PMPM on downline production",
+                  "1,104",
+                  "$8,740",
+                  "$8,128",
+                  <Badge tone="warning" dot>
+                    Variance $612
+                  </Badge>,
+                ],
+                [
+                  "Super bonus accrual",
+                  "Annual · 1/12 recognised",
+                  "—",
+                  "$1,500",
+                  "—",
+                  <Badge tone="neutral">Not carrier-reported</Badge>,
+                ],
+                [
+                  "Adjustments",
+                  "3 items · retro rate",
+                  "27",
+                  "− $1,120",
+                  "− $1,120",
+                  <Badge tone="success" dot>
+                    Matched
+                  </Badge>,
+                ],
+                [
+                  "Reversal",
+                  "Cancelled inside 60 days",
+                  "1",
+                  "− $380",
+                  "− $380",
+                  <Badge tone="success" dot>
+                    Matched
+                  </Badge>,
+                ],
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
@@ -1759,14 +2238,53 @@ export function AgencyStatementScreen() {
             </p>
           </Panel>
 
-          <Panel title="Policy-level detail" meta="Expanded from the override row — 14 variance lines">
+          <Panel
+            title="Policy-level detail"
+            meta="Expanded from the override row — 14 variance lines"
+          >
             <Table
               columns={["Policy", "Member months", "Expected", "Carrier", "Variance", "Status"]}
               rows={[
-                ["POL-44120", "3", "$1.20", "$1.20", "—", <Badge tone="success" dot>Matched</Badge>],
-                ["POL-44188", "4", "$1.60", "$0.00", "$1.60", <Badge tone="danger" dot>Missing</Badge>],
-                ["POL-44205", "2", "$0.80", "$0.60", "$0.20", <Badge tone="warning" dot>Variance</Badge>],
-                ["POL-44311", "6", "$2.40", "$2.40", "—", <Badge tone="success" dot>Matched</Badge>],
+                [
+                  "POL-44120",
+                  "3",
+                  "$1.20",
+                  "$1.20",
+                  "—",
+                  <Badge tone="success" dot>
+                    Matched
+                  </Badge>,
+                ],
+                [
+                  "POL-44188",
+                  "4",
+                  "$1.60",
+                  "$0.00",
+                  "$1.60",
+                  <Badge tone="danger" dot>
+                    Missing
+                  </Badge>,
+                ],
+                [
+                  "POL-44205",
+                  "2",
+                  "$0.80",
+                  "$0.60",
+                  "$0.20",
+                  <Badge tone="warning" dot>
+                    Variance
+                  </Badge>,
+                ],
+                [
+                  "POL-44311",
+                  "6",
+                  "$2.40",
+                  "$2.40",
+                  "—",
+                  <Badge tone="success" dot>
+                    Matched
+                  </Badge>,
+                ],
               ]}
             />
             <Btn className="mt-3" size="sm" variant="outline">
@@ -1784,8 +2302,8 @@ export function AgencyStatementScreen() {
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
-              One posting event produces both sides — these allocations are Harbor Point&apos;s own statement
-              lines, so the two statements can never disagree.
+              One posting event produces both sides — these allocations are Harbor Point&apos;s own
+              statement lines, so the two statements can never disagree.
             </p>
           </Panel>
         </div>
@@ -1793,7 +2311,11 @@ export function AgencyStatementScreen() {
         <div className="space-y-4">
           <Panel title="Reconciliation">
             <div className="space-y-2.5">
-              <Check checked label="Carrier statement ingested" hint="4 Aug · 1,828 rows normalised" />
+              <Check
+                checked
+                label="Carrier statement ingested"
+                hint="4 Aug · 1,828 rows normalised"
+              />
               <Check label="All rows matched" hint="14 exceptions outstanding" />
               <Check checked label="Within tolerance threshold" hint="Tolerance ±$25 per line" />
             </div>
@@ -1812,8 +2334,8 @@ export function AgencyStatementScreen() {
               ]}
             />
             <Alert tone="warning" title="Posted periods are immutable">
-              Corrections appear as dated adjustments in a later period, never as a rewrite of a posted
-              month. Adjustments require statement.adjust plus a reason code.
+              Corrections appear as dated adjustments in a later period, never as a rewrite of a
+              posted month. Adjustments require statement.adjust plus a reason code.
             </Alert>
           </Panel>
 
@@ -1889,7 +2411,10 @@ export function AgentStatementScreen() {
 
       <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
         <div className="space-y-4">
-          <Panel title="Why this differs from June" meta="Answered on the page, not left as a diff exercise">
+          <Panel
+            title="Why this differs from June"
+            meta="Answered on the page, not left as a diff exercise"
+          >
             <Table
               columns={["Change", "Detail", "Effect"]}
               rows={[
@@ -1897,7 +2422,11 @@ export function AgentStatementScreen() {
                 ["Cancellations", "1 policy cancelled in 41 days", "− $38"],
                 ["Adjustment", "Carrier retro rate applied to 3 policies", "− $22"],
                 ["Own referral reward", "Program RP-12 · 2 qualifying", "+$90"],
-                [<span className="font-semibold">Net change</span>, "—", <span className="font-semibold text-success">+$314</span>],
+                [
+                  <span className="font-semibold">Net change</span>,
+                  "—",
+                  <span className="font-semibold text-success">+$314</span>,
+                ],
               ]}
             />
           </Panel>
@@ -1906,26 +2435,86 @@ export function AgentStatementScreen() {
             <Table
               columns={["Policy", "Member", "Product", "Basis", "Amount", "State"]}
               rows={[
-                ["POL-44120", "M. Herrera", "Cascade Dental 1500", "PMPM × 3", "$1.20", <Badge tone="success" dot>Paid</Badge>],
-                ["POL-44188", "T. Nakamura", "Cascade Dental 1500", "PMPM × 4", "$1.60", <Badge tone="warning" dot>Pending</Badge>],
-                ["POL-44205", "J. Alvarez", "Vision Clear", "PMPM × 2", "$0.80", <Badge tone="warning" dot>Pending</Badge>],
-                ["POL-44311", "S. Whitfield", "Cascade Dental 1500", "PMPM × 6", "$2.40", <Badge tone="success" dot>Paid</Badge>],
+                [
+                  "POL-44120",
+                  "M. Herrera",
+                  "Cascade Dental 1500",
+                  "PMPM × 3",
+                  "$1.20",
+                  <Badge tone="success" dot>
+                    Paid
+                  </Badge>,
+                ],
+                [
+                  "POL-44188",
+                  "T. Nakamura",
+                  "Cascade Dental 1500",
+                  "PMPM × 4",
+                  "$1.60",
+                  <Badge tone="warning" dot>
+                    Pending
+                  </Badge>,
+                ],
+                [
+                  "POL-44205",
+                  "J. Alvarez",
+                  "Vision Clear",
+                  "PMPM × 2",
+                  "$0.80",
+                  <Badge tone="warning" dot>
+                    Pending
+                  </Badge>,
+                ],
+                [
+                  "POL-44311",
+                  "S. Whitfield",
+                  "Cascade Dental 1500",
+                  "PMPM × 6",
+                  "$2.40",
+                  <Badge tone="success" dot>
+                    Paid
+                  </Badge>,
+                ],
               ]}
             />
           </Panel>
 
-          <Panel title="Pending — and why" meta="The single largest driver of commission support tickets">
+          <Panel
+            title="Pending — and why"
+            meta="The single largest driver of commission support tickets"
+          >
             <Table
               columns={["Policy", "Amount", "Reason", "Action"]}
               rows={[
-                ["POL-44188", "$1.60", "Carrier has not yet reported this policy", <Btn size="sm" variant="outline">Raise dispute</Btn>],
-                ["POL-44205", "$0.80", "First premium not yet received", <Btn size="sm" variant="outline">Raise dispute</Btn>],
-                ["POL-44402", "$2.10", "Awaiting selling-agent attribution confirmation", <Btn size="sm" variant="outline">Raise dispute</Btn>],
+                [
+                  "POL-44188",
+                  "$1.60",
+                  "Carrier has not yet reported this policy",
+                  <Btn size="sm" variant="outline">
+                    Raise dispute
+                  </Btn>,
+                ],
+                [
+                  "POL-44205",
+                  "$0.80",
+                  "First premium not yet received",
+                  <Btn size="sm" variant="outline">
+                    Raise dispute
+                  </Btn>,
+                ],
+                [
+                  "POL-44402",
+                  "$2.10",
+                  "Awaiting selling-agent attribution confirmation",
+                  <Btn size="sm" variant="outline">
+                    Raise dispute
+                  </Btn>,
+                ],
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
-              A dispute opens a task against the statement line with its context attached, routed to the
-              agency work queue — not an untracked message.
+              A dispute opens a task against the statement line with its context attached, routed to
+              the agency work queue — not an untracked message.
             </p>
           </Panel>
         </div>
@@ -1940,9 +2529,9 @@ export function AgentStatementScreen() {
               <Check label="Another agent's rate" hint="Never available on any surface" />
             </div>
             <Disclosure className="mt-4">
-              This statement is complete about my own line and silent about everything else. A manager
-              viewing it does so through the agency statement drill-through, which is audited as a sensitive
-              read.
+              This statement is complete about my own line and silent about everything else. A
+              manager viewing it does so through the agency statement drill-through, which is
+              audited as a sensitive read.
             </Disclosure>
           </Panel>
 
@@ -1956,7 +2545,8 @@ export function AgentStatementScreen() {
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
-              Historical statements stay immutable and viewable even after an appointment or licence lapses.
+              Historical statements stay immutable and viewable even after an appointment or licence
+              lapses.
             </p>
           </Panel>
         </div>
@@ -1993,7 +2583,13 @@ export function NotificationSchedulerScreen() {
           />
         ),
         "Next actions": (
-          <DrawerList items={["Dry-run the abandoned-cart program", "Review 212 suppressions", "Activate draft"]} />
+          <DrawerList
+            items={[
+              "Dry-run the abandoned-cart program",
+              "Review 212 suppressions",
+              "Activate draft",
+            ]}
+          />
         ),
       }}
     >
@@ -2019,24 +2615,83 @@ export function NotificationSchedulerScreen() {
       <Panel
         title="Programs"
         meta="What will go out this week, answerable in one glance"
-        actions={<Btn size="sm" variant="outline">Filter</Btn>}
+        actions={
+          <Btn size="sm" variant="outline">
+            Filter
+          </Btn>
+        }
       >
         <Table
           columns={["Program", "Trigger", "Channel", "Audience", "Schedule", "State"]}
           rows={[
-            ["Shared quote delivered", "Event · quote shared", "Email + SMS", "Quote recipient", "Immediate", <Badge tone="success" dot>Active</Badge>],
-            ["Application saved — resume nudge", "Event · submission saved", "Email", "Applicant", "+24h, then +72h", <Badge tone="success" dot>Active</Badge>],
-            ["Submission status changed", "Event · status change", "In-app + email", "Agent + applicant", "Immediate", <Badge tone="success" dot>Active</Badge>],
-            ["Open enrollment reminder", "Time · 15 Oct 06:00", "Email", "Members without 2027 election", "Recurring annual", <Badge tone="warning" dot>Scheduled</Badge>],
-            ["Statement posted", "Event · statement posted", "Email", "Agents, agency admins", "Immediate", <Badge tone="success" dot>Active</Badge>],
-            ["Appointment expiring", "Time · 60 days before expiry", "In-app + email", "Agency admin, compliance", "Recurring daily check", <Badge tone="neutral">Paused</Badge>],
+            [
+              "Shared quote delivered",
+              "Event · quote shared",
+              "Email + SMS",
+              "Quote recipient",
+              "Immediate",
+              <Badge tone="success" dot>
+                Active
+              </Badge>,
+            ],
+            [
+              "Application saved — resume nudge",
+              "Event · submission saved",
+              "Email",
+              "Applicant",
+              "+24h, then +72h",
+              <Badge tone="success" dot>
+                Active
+              </Badge>,
+            ],
+            [
+              "Submission status changed",
+              "Event · status change",
+              "In-app + email",
+              "Agent + applicant",
+              "Immediate",
+              <Badge tone="success" dot>
+                Active
+              </Badge>,
+            ],
+            [
+              "Open enrollment reminder",
+              "Time · 15 Oct 06:00",
+              "Email",
+              "Members without 2027 election",
+              "Recurring annual",
+              <Badge tone="warning" dot>
+                Scheduled
+              </Badge>,
+            ],
+            [
+              "Statement posted",
+              "Event · statement posted",
+              "Email",
+              "Agents, agency admins",
+              "Immediate",
+              <Badge tone="success" dot>
+                Active
+              </Badge>,
+            ],
+            [
+              "Appointment expiring",
+              "Time · 60 days before expiry",
+              "In-app + email",
+              "Agency admin, compliance",
+              "Recurring daily check",
+              <Badge tone="neutral">Paused</Badge>,
+            ],
           ]}
         />
       </Panel>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
         <div className="space-y-4">
-          <Panel title="Trigger builder" meta="Configuration that reads as prose gets reviewed properly">
+          <Panel
+            title="Trigger builder"
+            meta="Configuration that reads as prose gets reviewed properly"
+          >
             <div className="flex flex-wrap items-center gap-2 rounded-[var(--radius)] border border-border bg-muted/30 px-3.5 py-3">
               <RuleToken label="when" value="Submission saved & incomplete" tone="accent" />
               <RuleToken label="wait" value="24 hours" />
@@ -2045,10 +2700,22 @@ export function NotificationSchedulerScreen() {
               <RuleToken label="via" value="Email, then SMS at +72h" />
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <Field label="Audience" value="Applicants in my subtree" hint="Cannot express another agency's contacts" />
+              <Field
+                label="Audience"
+                value="Applicants in my subtree"
+                hint="Cannot express another agency's contacts"
+              />
               <Field label="Recurrence" value="Two-step sequence, then stop" />
-              <Field label="Quiet hours" value="21:00 – 08:00 local" hint="Tenant guardrail, shown inline" />
-              <Field label="Frequency cap" value="4 / contact / week" hint="Tenant guardrail, shown inline" />
+              <Field
+                label="Quiet hours"
+                value="21:00 – 08:00 local"
+                hint="Tenant guardrail, shown inline"
+              />
+              <Field
+                label="Frequency cap"
+                value="4 / contact / week"
+                hint="Tenant guardrail, shown inline"
+              />
             </div>
           </Panel>
 
@@ -2060,8 +2727,8 @@ export function NotificationSchedulerScreen() {
                 </p>
                 <p className="mt-2 text-sm font-medium">Your Northwind application is waiting</p>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Hi Marisol — your Cascade Dental Preferred 1500 application is saved and takes about four
-                  minutes to finish. Resume where you left off.
+                  Hi Marisol — your Cascade Dental Preferred 1500 application is saved and takes
+                  about four minutes to finish. Resume where you left off.
                 </p>
                 <Btn className="mt-3" size="sm">
                   Resume application
@@ -2072,8 +2739,8 @@ export function NotificationSchedulerScreen() {
                   SMS · +72h
                 </p>
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  Northwind: your dental application is still saved. Finish here: nwbn.co/r/8f2k. Reply STOP
-                  to opt out.
+                  Northwind: your dental application is still saved. Finish here: nwbn.co/r/8f2k.
+                  Reply STOP to opt out.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   <Badge tone="warning">consent required</Badge>
@@ -2085,7 +2752,10 @@ export function NotificationSchedulerScreen() {
         </div>
 
         <div className="space-y-4">
-          <Panel title="Consent & suppression" meta="A program never silently drops half its audience">
+          <Panel
+            title="Consent & suppression"
+            meta="A program never silently drops half its audience"
+          >
             <Table
               columns={["Reason", "Contacts"]}
               rows={[
@@ -2103,9 +2773,25 @@ export function NotificationSchedulerScreen() {
           <Panel title="Communication timeline" meta="Written onto the related object">
             <Timeline
               entries={[
-                { kind: "system", title: "Resume nudge sent", body: "Email · template v3 · delivered.", meta: "24 Aug 09:00" },
-                { kind: "human", title: "Manual message sent", body: "Agent follow-up on dental application.", meta: "23 Aug 16:12", actor: "D. Okafor" },
-                { kind: "status", title: "Task created", body: "Call applicant — auto-created from second nudge with no response.", meta: "26 Aug 09:00" },
+                {
+                  kind: "system",
+                  title: "Resume nudge sent",
+                  body: "Email · template v3 · delivered.",
+                  meta: "24 Aug 09:00",
+                },
+                {
+                  kind: "human",
+                  title: "Manual message sent",
+                  body: "Agent follow-up on dental application.",
+                  meta: "23 Aug 16:12",
+                  actor: "D. Okafor",
+                },
+                {
+                  kind: "status",
+                  title: "Task created",
+                  body: "Call applicant — auto-created from second nudge with no response.",
+                  meta: "26 Aug 09:00",
+                },
               ]}
             />
           </Panel>
@@ -2113,8 +2799,8 @@ export function NotificationSchedulerScreen() {
       </div>
 
       <Disclosure>
-        Shared-quote notifications in Module 1 are produced by programs configured here. The Module 1 screens
-        are unchanged — this is the configuration seam, not new Module 1 behaviour.
+        Shared-quote notifications in Module 1 are produced by programs configured here. The Module
+        1 screens are unchanged — this is the configuration seam, not new Module 1 behaviour.
       </Disclosure>
     </HfShell>
   );
@@ -2148,7 +2834,12 @@ export function BrandingSettingsScreen() {
           />
         ),
         Audit: (
-          <DrawerList items={["v5 published — 2 Jul, R. Osei (token diff attached).", "Domain verified — 28 Jun, platform."]} />
+          <DrawerList
+            items={[
+              "v5 published — 2 Jul, R. Osei (token diff attached).",
+              "Domain verified — 28 Jun, platform.",
+            ]}
+          />
         ),
       }}
     >
@@ -2171,7 +2862,12 @@ export function BrandingSettingsScreen() {
           <Panel title="Identity">
             <div className="grid gap-3 sm:grid-cols-2">
               <Field label="Marketplace name" value="Northwind Benefits" />
-              <Field label="Domain" value="northwind.abox.market" hint="Platform action · verified" suffix={<Badge tone="success">verified</Badge>} />
+              <Field
+                label="Domain"
+                value="northwind.abox.market"
+                hint="Platform action · verified"
+                suffix={<Badge tone="success">verified</Badge>}
+              />
               <Field label="Logo" value="northwind-mark.svg" hint="Min 240×64, SVG or PNG" />
               <Field label="Favicon" value="northwind-icon.png" />
             </div>
@@ -2179,7 +2875,11 @@ export function BrandingSettingsScreen() {
 
           <Panel title="Brand tokens" meta="Tokens, not per-screen overrides">
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Primary" value="oklch(0.42 0.11 254)" suffix={<span className="size-4 rounded bg-primary" aria-hidden="true" />} />
+              <Field
+                label="Primary"
+                value="oklch(0.42 0.11 254)"
+                suffix={<span className="size-4 rounded bg-primary" aria-hidden="true" />}
+              />
               <Field label="Ring / focus" value="oklch(0.55 0.11 254)" />
               <Field label="Accent surface" value="oklch(0.955 0.02 254)" />
               <Field label="Radius" value="0.625rem" />
@@ -2188,18 +2888,28 @@ export function BrandingSettingsScreen() {
             </div>
             <div className="mt-4">
               <Alert tone="danger" title="Contrast check failed for one token">
-                Primary on white measures 4.1:1 and fails AA for body text. Suggested corrected value{" "}
-                <span className="font-medium">oklch(0.40 0.11 254)</span> passes at 4.8:1. A tenant cannot
-                publish an inaccessible marketplace.
+                Primary on white measures 4.1:1 and fails AA for body text. Suggested corrected
+                value <span className="font-medium">oklch(0.40 0.11 254)</span> passes at 4.8:1. A
+                tenant cannot publish an inaccessible marketplace.
               </Alert>
             </div>
             <div className="mt-3 space-y-2.5">
-              <Check label="Destructive / warning / success / AI tokens" hint="Platform-locked — absent from the agency editor" />
-              <Check checked label="Layout, spacing and components" hint="Platform-owned, not tenant-configurable in Phase 1" />
+              <Check
+                label="Destructive / warning / success / AI tokens"
+                hint="Platform-locked — absent from the agency editor"
+              />
+              <Check
+                checked
+                label="Layout, spacing and components"
+                hint="Platform-owned, not tenant-configurable in Phase 1"
+              />
             </div>
           </Panel>
 
-          <Panel title="Label dictionary" meta="Renaming is white labeling too — same screen as colour">
+          <Panel
+            title="Label dictionary"
+            meta="Renaming is white labeling too — same screen as colour"
+          >
             <Table
               columns={["Platform term", "Tenant label", "Applies to"]}
               rows={[
@@ -2210,8 +2920,8 @@ export function BrandingSettingsScreen() {
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
-              No label is hardcoded in a screen — the shell, drawer, help content and outputs all read this
-              dictionary.
+              No label is hardcoded in a screen — the shell, drawer, help content and outputs all
+              read this dictionary.
             </p>
           </Panel>
         </div>
@@ -2238,7 +2948,8 @@ export function BrandingSettingsScreen() {
                   Coverage that fits your household
                 </p>
                 <p className="mt-1.5 max-w-sm text-xs leading-relaxed text-muted-foreground">
-                  Compare plans from local carriers in a few minutes. No account needed to see prices.
+                  Compare plans from local carriers in a few minutes. No account needed to see
+                  prices.
                 </p>
                 <div className="mt-3 flex gap-2">
                   <Btn size="sm">Start</Btn>
@@ -2294,11 +3005,15 @@ export function BrandingSettingsScreen() {
               <Check checked label="Member workspace" />
               <Check checked label="Generated documents" />
               <Check checked label="Email and SMS templates" />
-              <Check label="Internal shell" hint="Neutral by design — internal chrome stays platform-branded" />
+              <Check
+                label="Internal shell"
+                hint="Neutral by design — internal chrome stays platform-branded"
+              />
             </div>
             <Disclosure className="mt-4">
-              Publishing is effective immediately for web surfaces and from the next generation for documents
-              already issued. Every publish is audited with a before/after token diff and is revertible.
+              Publishing is effective immediately for web surfaces and from the next generation for
+              documents already issued. Every publish is audited with a before/after token diff and
+              is revertible.
             </Disclosure>
           </Panel>
         </div>
@@ -2312,8 +3027,12 @@ export function BrandingSettingsScreen() {
 function MatrixCell({ state }: { state: "yes" | "no" | "locked" }) {
   if (state === "locked") {
     return (
-      <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground" title="Cannot be granted by your role">
-        <span className="size-3 rounded-sm border border-border bg-muted" aria-hidden="true" /> locked
+      <span
+        className="inline-flex items-center gap-1 text-[11px] text-muted-foreground"
+        title="Cannot be granted by your role"
+      >
+        <span className="size-3 rounded-sm border border-border bg-muted" aria-hidden="true" />{" "}
+        locked
       </span>
     );
   }
@@ -2321,7 +3040,9 @@ function MatrixCell({ state }: { state: "yes" | "no" | "locked" }) {
     <span
       className={cn(
         "grid size-4 place-items-center rounded border text-[9px]",
-        state === "yes" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background",
+        state === "yes"
+          ? "border-primary bg-primary text-primary-foreground"
+          : "border-border bg-background",
       )}
       aria-label={state === "yes" ? "granted" : "not granted"}
     >
@@ -2356,7 +3077,9 @@ export function AclConfigScreen() {
           />
         ),
         Audit: (
-          <DrawerList items={["Template v4 published — 12 Aug, platform security, 34 users affected."]} />
+          <DrawerList
+            items={["Template v4 published — 12 Aug, platform security, 34 users affected."]}
+          />
         ),
       }}
     >
@@ -2374,28 +3097,80 @@ export function AclConfigScreen() {
       />
 
       <Alert tone="warning" title="Platform guardrails — the ceiling you are working under">
-        Local overrides may narrow this template but never widen it. Cells locked by the platform template are
-        not editable and say why, rather than being greyed with no explanation.
+        Local overrides may narrow this template but never widen it. Cells locked by the platform
+        template are not editable and say why, rather than being greyed with no explanation.
       </Alert>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_21rem]">
         <div className="space-y-4">
-          <Panel title="Permission matrix" meta="Grouped by module · read as a grid, not a checkbox list">
+          <Panel
+            title="Permission matrix"
+            meta="Grouped by module · read as a grid, not a checkbox list"
+          >
             <Table
               columns={["Module", "View", "Create", "Edit", "Approve", "Export"]}
               rows={[
-                ["My Work", <MatrixCell state="yes" />, <MatrixCell state="yes" />, <MatrixCell state="yes" />, <MatrixCell state="no" />, <MatrixCell state="no" />],
-                ["Customers & Leads", <MatrixCell state="yes" />, <MatrixCell state="yes" />, <MatrixCell state="yes" />, <MatrixCell state="no" />, <MatrixCell state="yes" />],
-                ["Forms & Enrollment", <MatrixCell state="yes" />, <MatrixCell state="yes" />, <MatrixCell state="yes" />, <MatrixCell state="yes" />, <MatrixCell state="no" />],
-                ["Products, Plans & Rates", <MatrixCell state="yes" />, <MatrixCell state="locked" />, <MatrixCell state="locked" />, <MatrixCell state="locked" />, <MatrixCell state="no" />],
-                ["Commissions & Revenue", <MatrixCell state="yes" />, <MatrixCell state="no" />, <MatrixCell state="no" />, <MatrixCell state="no" />, <MatrixCell state="yes" />],
-                ["Agency & Entity", <MatrixCell state="yes" />, <MatrixCell state="no" />, <MatrixCell state="no" />, <MatrixCell state="no" />, <MatrixCell state="no" />],
-                ["Admin & Configuration", <MatrixCell state="no" />, <MatrixCell state="locked" />, <MatrixCell state="locked" />, <MatrixCell state="locked" />, <MatrixCell state="no" />],
+                [
+                  "My Work",
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="no" />,
+                  <MatrixCell state="no" />,
+                ],
+                [
+                  "Customers & Leads",
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="no" />,
+                  <MatrixCell state="yes" />,
+                ],
+                [
+                  "Forms & Enrollment",
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="no" />,
+                ],
+                [
+                  "Products, Plans & Rates",
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="locked" />,
+                  <MatrixCell state="locked" />,
+                  <MatrixCell state="locked" />,
+                  <MatrixCell state="no" />,
+                ],
+                [
+                  "Commissions & Revenue",
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="no" />,
+                  <MatrixCell state="no" />,
+                  <MatrixCell state="no" />,
+                  <MatrixCell state="yes" />,
+                ],
+                [
+                  "Agency & Entity",
+                  <MatrixCell state="yes" />,
+                  <MatrixCell state="no" />,
+                  <MatrixCell state="no" />,
+                  <MatrixCell state="no" />,
+                  <MatrixCell state="no" />,
+                ],
+                [
+                  "Admin & Configuration",
+                  <MatrixCell state="no" />,
+                  <MatrixCell state="locked" />,
+                  <MatrixCell state="locked" />,
+                  <MatrixCell state="locked" />,
+                  <MatrixCell state="no" />,
+                ],
               ]}
             />
             <p className="mt-3 text-[11px] text-muted-foreground">
-              A role can never grant a permission it does not itself hold. Removing view removes the module
-              from the nav entirely.
+              A role can never grant a permission it does not itself hold. Removing view removes the
+              module from the nav entirely.
             </p>
           </Panel>
 
@@ -2427,10 +3202,17 @@ export function AclConfigScreen() {
             <div className="grid gap-2.5 sm:grid-cols-2">
               <Check checked label="Marketplace & Sales" />
               <Check checked label="Forms & Enrollment" />
-              <Check checked label="Commissions & Revenue" hint="View only — projection and own statements" />
+              <Check
+                checked
+                label="Commissions & Revenue"
+                hint="View only — projection and own statements"
+              />
               <Check label="Admin & Configuration" hint="Absent from the nav for this template" />
               <Check checked label="Documents & Outputs" />
-              <Check label="Feature flag: ICHRA quoting" hint="Flag removes the module without a release" />
+              <Check
+                label="Feature flag: ICHRA quoting"
+                hint="Flag removes the module without a release"
+              />
             </div>
           </Panel>
         </div>
@@ -2445,8 +3227,8 @@ export function AclConfigScreen() {
             </div>
             <div className="mt-4 space-y-3">
               <Alert tone="danger" title="Not visible">
-                Denied by data-visibility scope &ldquo;own entity&rdquo; — the statement belongs to a parent
-                entity. Rule: <span className="font-medium">GUARD-DV-04</span>.
+                Denied by data-visibility scope &ldquo;own entity&rdquo; — the statement belongs to
+                a parent entity. Rule: <span className="font-medium">GUARD-DV-04</span>.
               </Alert>
               <Alert tone="success" title="Visible: own agent statement Jul 2026">
                 Granted by template &ldquo;Agency manager&rdquo; → commission.view, scoped by
@@ -2462,9 +3244,9 @@ export function AclConfigScreen() {
               <Check checked label="Affected user count computed" hint="34 users" />
             </div>
             <Disclosure className="mt-4">
-              Publishing re-resolves sessions on the next request. In-flight approvals keep the rule version
-              they were raised under. Denied access attempts are written to the audit log and surfaced as a
-              security report, not only as a UI message.
+              Publishing re-resolves sessions on the next request. In-flight approvals keep the rule
+              version they were raised under. Denied access attempts are written to the audit log
+              and surfaced as a security report, not only as a UI message.
             </Disclosure>
           </Panel>
         </div>
@@ -2526,31 +3308,49 @@ export function AuditLogScreen() {
           <Field label="Window" value="Last 30 days" />
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {["Sensitive reveals (34)", "Exports (6)", "Impersonation (2)", "Config changes (58)", "AI interactions (412)"].map(
-            (t) => (
-              <Badge key={t} tone={t.startsWith("Sensitive") || t.startsWith("Impersonation") ? "warning" : "neutral"}>
-                {t}
-              </Badge>
-            ),
-          )}
+          {[
+            "Sensitive reveals (34)",
+            "Exports (6)",
+            "Impersonation (2)",
+            "Config changes (58)",
+            "AI interactions (412)",
+          ].map((t) => (
+            <Badge
+              key={t}
+              tone={
+                t.startsWith("Sensitive") || t.startsWith("Impersonation") ? "warning" : "neutral"
+              }
+            >
+              {t}
+            </Badge>
+          ))}
         </div>
       </Panel>
 
-      <Panel title="Entries" meta="Rows expand in place to a diff — never navigate away from a list you are working">
+      <Panel
+        title="Entries"
+        meta="Rows expand in place to a diff — never navigate away from a list you are working"
+      >
         <Table
           columns={["When", "Actor", "Action", "Object", "Entity", "Class"]}
           rows={[
             [
               "25 Aug 11:07",
-              <span className="flex items-center gap-1.5"><Badge tone="accent">Person</Badge> A. Rivera</span>,
+              <span className="flex items-center gap-1.5">
+                <Badge tone="accent">Person</Badge> A. Rivera
+              </span>,
               "Revealed SSN",
               "Submission SUB-8841",
               "Northwind Master",
-              <Badge tone="warning" dot>Sensitive read</Badge>,
+              <Badge tone="warning" dot>
+                Sensitive read
+              </Badge>,
             ],
             [
               "25 Aug 11:04",
-              <span className="flex items-center gap-1.5"><Badge>System</Badge> Form resolver</span>,
+              <span className="flex items-center gap-1.5">
+                <Badge>System</Badge> Form resolver
+              </span>,
               "Resolved form set CASC-DEN-IND-2026 v3",
               "Submission SUB-8841",
               "Northwind Master",
@@ -2558,7 +3358,9 @@ export function AuditLogScreen() {
             ],
             [
               "25 Aug 10:52",
-              <span className="flex items-center gap-1.5"><Badge tone="ai">AI</Badge> Plan-O ranking</span>,
+              <span className="flex items-center gap-1.5">
+                <Badge tone="ai">AI</Badge> Plan-O ranking
+              </span>,
               "Produced recommendation with 4 grounded records",
               "Quote Q-31204",
               "Harbor Point",
@@ -2566,23 +3368,33 @@ export function AuditLogScreen() {
             ],
             [
               "24 Aug 16:31",
-              <span className="flex items-center gap-1.5"><Badge tone="accent">Person</Badge> R. Osei</span>,
+              <span className="flex items-center gap-1.5">
+                <Badge tone="accent">Person</Badge> R. Osei
+              </span>,
               "Published split arrangement v4",
               "Paper · Cascade Care",
               "Northwind Master",
-              <Badge tone="warning" dot>Config change</Badge>,
+              <Badge tone="warning" dot>
+                Config change
+              </Badge>,
             ],
             [
               "24 Aug 09:12",
-              <span className="flex items-center gap-1.5"><Badge tone="accent">Person</Badge> Support (impersonating D. Okafor)</span>,
+              <span className="flex items-center gap-1.5">
+                <Badge tone="accent">Person</Badge> Support (impersonating D. Okafor)
+              </span>,
               "Viewed agent statement Jul 2026",
               "Statement ST-7742",
               "Harbor Point",
-              <Badge tone="danger" dot>Impersonation</Badge>,
+              <Badge tone="danger" dot>
+                Impersonation
+              </Badge>,
             ],
             [
               "22 Aug 08:40",
-              <span className="flex items-center gap-1.5"><Badge>Integration</Badge> Carrier statement feed</span>,
+              <span className="flex items-center gap-1.5">
+                <Badge>Integration</Badge> Carrier statement feed
+              </span>,
               "Ingested 1,828 rows · 14 unmatched",
               "Statement ST-7701",
               "Northwind Master",
@@ -2605,24 +3417,37 @@ export function AuditLogScreen() {
             ]}
           />
           <p className="mt-3 text-[11px] text-muted-foreground">
-            Field values inside a diff respect sensitive-field rules — a masked field stays masked here.
+            Field values inside a diff respect sensitive-field rules — a masked field stays masked
+            here.
           </p>
         </Panel>
 
         <Panel title="Immutability & retention">
           <div className="space-y-2.5">
-            <Check checked label="Append-only store" hint="No role can edit or delete an entry — the UI offers no such action" />
-            <Check checked label="Retention 7 years" hint="Within platform minimum; shortening it is itself an audited change" />
-            <Check checked label="Export writes its own audit entry" hint="Including the applied filters" />
+            <Check
+              checked
+              label="Append-only store"
+              hint="No role can edit or delete an entry — the UI offers no such action"
+            />
+            <Check
+              checked
+              label="Retention 7 years"
+              hint="Within platform minimum; shortening it is itself an audited change"
+            />
+            <Check
+              checked
+              label="Export writes its own audit entry"
+              hint="Including the applied filters"
+            />
             <Check checked label="High-risk classes can alert and create compliance tasks" />
           </div>
           <Alert tone="accent" title="One store, many views">
-            The Audit section in the right drawer of every screen is a filtered view of this same log. There
-            is no separate shadow log for support or security.
+            The Audit section in the right drawer of every screen is a filtered view of this same
+            log. There is no separate shadow log for support or security.
           </Alert>
           <Disclosure className="mt-3">
-            AI interaction logging from the governance module lands here with the model surface, the prompt
-            context reference and the records the answer was grounded in.
+            AI interaction logging from the governance module lands here with the model surface, the
+            prompt context reference and the records the answer was grounded in.
           </Disclosure>
         </Panel>
       </div>

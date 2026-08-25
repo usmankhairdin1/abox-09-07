@@ -37,11 +37,7 @@ export interface HfScreen {
 }
 
 /** Groups that belong to batch 2 (broader Phase 1 operations & configuration). */
-export const HF_BATCH1_GROUPS = [
-  "Foundation",
-  "Module 1 · consumer",
-  "Module 1 · internal",
-];
+export const HF_BATCH1_GROUPS = ["Foundation", "Module 1 · consumer", "Module 1 · internal"];
 
 export const HF_BATCH2_GROUPS = [
   "Off-exchange enrollment & forms",
@@ -50,7 +46,6 @@ export const HF_BATCH2_GROUPS = [
   "Commissions & statements",
   "Operations, configuration & audit",
 ];
-
 
 export const HF_SCREENS: HfScreen[] = [
   {
@@ -209,7 +204,8 @@ export const HF_SCREENS: HfScreen[] = [
       "Ancillary lines are configured, not coded — dental is the minimum proof line, extensibility is the point.",
       "Availability messaging text.",
     ],
-    source: "ABox_Module1_V4_Hardening_Package (UX-002); Phase 1 Blueprint (product lines, ancillary extensibility).",
+    source:
+      "ABox_Module1_V4_Hardening_Package (UX-002); Phase 1 Blueprint (product lines, ancillary extensibility).",
     scope: "Protected Module 1 scope",
   },
   {
@@ -334,7 +330,8 @@ export const HF_SCREENS: HfScreen[] = [
       "Maximum compare count.",
       "Whether comparison output can be emailed or downloaded (ties to the outputs module).",
     ],
-    source: "ABox_Module1_V4_Hardening_Package (UX-012); Phase 1 Blueprint (benefit comparison output).",
+    source:
+      "ABox_Module1_V4_Hardening_Package (UX-012); Phase 1 Blueprint (benefit comparison output).",
     scope: "Protected Module 1 scope",
   },
   {
@@ -426,7 +423,8 @@ export const HF_SCREENS: HfScreen[] = [
       "Whether the handoff opens in the same tab or a new one; return-path messaging.",
       "Agent escalation target for the secondary action.",
     ],
-    source: "ABox_Module1_V4_Hardening_Package (UX-016); Reconciliation package (EDE stays a handoff in Module 1).",
+    source:
+      "ABox_Module1_V4_Hardening_Package (UX-016); Reconciliation package (EDE stays a handoff in Module 1).",
     scope: "Protected Module 1 scope — no on-platform on-exchange enrollment",
   },
   {
@@ -457,7 +455,8 @@ export const HF_SCREENS: HfScreen[] = [
       "Which fields appear on the shared view.",
       "Notification templates fired on send, on first view, and on action.",
     ],
-    source: "ABox_Module1_V4_Hardening_Package (UX-017, UX-021); Phase 1 Blueprint (shared quote notifications).",
+    source:
+      "ABox_Module1_V4_Hardening_Package (UX-017, UX-021); Phase 1 Blueprint (shared quote notifications).",
     scope: "Protected Module 1 scope",
   },
   {
@@ -489,7 +488,8 @@ export const HF_SCREENS: HfScreen[] = [
       "Default effective date logic and default sort of results.",
       "Send channels (email, SMS), templates and branding.",
     ],
-    source: "ABox_Module1_V4_Hardening_Package (UX-020, UX-021); IA package (internal shell alignment).",
+    source:
+      "ABox_Module1_V4_Hardening_Package (UX-020, UX-021); IA package (internal shell alignment).",
     scope: "Protected Module 1 scope",
   },
   {
@@ -1382,7 +1382,6 @@ export const HF_SCREENS: HfScreen[] = [
     scope: "Broader Phase 1 — governs every screen including Module 1",
   },
 ];
-
 
 export const HF_BY_SLUG: Record<string, HfScreen> = Object.fromEntries(
   HF_SCREENS.map((s) => [s.slug, s]),

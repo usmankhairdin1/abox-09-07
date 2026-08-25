@@ -53,7 +53,9 @@ function GroupList({ groups }: { groups: string[] }) {
                           {s.module}
                         </span>
                       </div>
-                      <p className="mt-2 font-display text-sm font-semibold tracking-tight">{s.name}</p>
+                      <p className="mt-2 font-display text-sm font-semibold tracking-tight">
+                        {s.name}
+                      </p>
                       <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
                         {s.purpose}
                       </p>
@@ -84,12 +86,13 @@ function HfIndex() {
             Core experience, operations &amp; configuration
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Thirty-one screens taken from grey-box structure to visual fidelity on the proposed design
-            system: Navy Trust tokens, Sora and Manrope, neutral internal chrome with the accent reserved
-            for action, and a branded consumer skin driven entirely by tenant tokens. Open any screen and
-            use <span className="font-medium text-foreground">Design notes</span> for primary user,
-            workspace, module, objects used, configuration points, ACL notes, data flow implications,
-            assumptions and source basis.
+            Thirty-one screens taken from grey-box structure to visual fidelity on the proposed
+            design system: Navy Trust tokens, Sora and Manrope, neutral internal chrome with the
+            accent reserved for action, and a branded consumer skin driven entirely by tenant
+            tokens. Open any screen and use{" "}
+            <span className="font-medium text-foreground">Design notes</span> for primary user,
+            workspace, module, objects used, configuration points, ACL notes, data flow
+            implications, assumptions and source basis.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             <Link to="/hf/$screen" params={{ screen: "internal-shell" }}>
@@ -146,7 +149,10 @@ function HfIndex() {
               "One append-only audit store; every per-screen Audit drawer section is a filtered view of it.",
             ].map((i) => (
               <li key={i} className="flex gap-2">
-                <span className="mt-1.5 size-1 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                <span
+                  className="mt-1.5 size-1 shrink-0 rounded-full bg-primary"
+                  aria-hidden="true"
+                />
                 <span>{i}</span>
               </li>
             ))}
@@ -154,12 +160,12 @@ function HfIndex() {
         </Card>
 
         <Disclosure>
-          Higher-fidelity presentation only. Module 1 scope remains as ratified in the V4 hardening and
-          reconciliation packages — nothing in these batches adds a Module 1 capability, and every broader
-          Phase 1 surface referenced here is a configuration seam, not new Module 1 behaviour.
+          Higher-fidelity presentation only. Module 1 scope remains as ratified in the V4 hardening
+          and reconciliation packages — nothing in these batches adds a Module 1 capability, and
+          every broader Phase 1 surface referenced here is a configuration seam, not new Module 1
+          behaviour.
         </Disclosure>
       </main>
     </div>
   );
 }
-
