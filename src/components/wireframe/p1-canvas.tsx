@@ -55,7 +55,10 @@ function Zone({ zone }: { zone: P1Zone }) {
         return (
           <dl className="grid gap-2 sm:grid-cols-2">
             {items.map((i) => (
-              <div key={i} className="flex items-center justify-between gap-3 border-b border-border/60 pb-1.5">
+              <div
+                key={i}
+                className="flex items-center justify-between gap-3 border-b border-border/60 pb-1.5"
+              >
                 <dt className="text-[11px] text-muted-foreground">{i}</dt>
                 <dd>
                   <WLine w="70px" />
@@ -68,8 +71,14 @@ function Zone({ zone }: { zone: P1Zone }) {
         return (
           <ul className="space-y-1.5">
             {items.map((i) => (
-              <li key={i} className="flex items-center gap-2 rounded border border-border bg-card px-2.5 py-2">
-                <span className="size-1.5 shrink-0 rounded-full bg-muted-foreground" aria-hidden="true" />
+              <li
+                key={i}
+                className="flex items-center gap-2 rounded border border-border bg-card px-2.5 py-2"
+              >
+                <span
+                  className="size-1.5 shrink-0 rounded-full bg-muted-foreground"
+                  aria-hidden="true"
+                />
                 <span className="text-[11px] leading-snug text-foreground/80">{i}</span>
               </li>
             ))}
@@ -80,13 +89,19 @@ function Zone({ zone }: { zone: P1Zone }) {
           <div className="overflow-hidden rounded border border-border">
             <div className="flex gap-2 border-b border-border bg-muted/40 px-2.5 py-2">
               {items.map((h) => (
-                <span key={h} className="flex-1 truncate font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <span
+                  key={h}
+                  className="flex-1 truncate font-mono text-[10px] uppercase tracking-wider text-muted-foreground"
+                >
                   {h}
                 </span>
               ))}
             </div>
             {[0, 1, 2, 3].map((r) => (
-              <div key={r} className="flex gap-2 border-b border-border/60 px-2.5 py-2 last:border-b-0">
+              <div
+                key={r}
+                className="flex gap-2 border-b border-border/60 px-2.5 py-2 last:border-b-0"
+              >
                 {items.map((h) => (
                   <span key={h} className="flex-1">
                     <WLine w={r % 2 === 0 ? "80%" : "62%"} />
@@ -137,7 +152,10 @@ function Zone({ zone }: { zone: P1Zone }) {
           <ul className="space-y-1.5">
             {items.map((i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="mt-0.5 size-3.5 shrink-0 rounded-sm border border-muted-foreground/60" aria-hidden="true" />
+                <span
+                  className="mt-0.5 size-3.5 shrink-0 rounded-sm border border-muted-foreground/60"
+                  aria-hidden="true"
+                />
                 <span className="text-[11px] leading-snug text-foreground/80">{i}</span>
               </li>
             ))}
@@ -163,7 +181,10 @@ function Zone({ zone }: { zone: P1Zone }) {
           <ol className="space-y-2 border-l border-border pl-3">
             {items.map((i) => (
               <li key={i} className="relative text-[11px] leading-snug text-foreground/80">
-                <span className="absolute -left-[17px] top-1 size-2 rounded-full border border-border bg-card" aria-hidden="true" />
+                <span
+                  className="absolute -left-[17px] top-1 size-2 rounded-full border border-border bg-card"
+                  aria-hidden="true"
+                />
                 {i}
               </li>
             ))}
@@ -214,7 +235,10 @@ function Notes({ items }: { items: string[] }) {
     <ul className="space-y-1.5">
       {items.map((i) => (
         <li key={i} className="flex gap-2 text-xs leading-relaxed text-foreground/80">
-          <span className="mt-1.5 size-1 shrink-0 rounded-full bg-muted-foreground" aria-hidden="true" />
+          <span
+            className="mt-1.5 size-1 shrink-0 rounded-full bg-muted-foreground"
+            aria-hidden="true"
+          />
           <span>{i}</span>
         </li>
       ))}
@@ -237,8 +261,12 @@ export function P1Frame({ screen }: { screen: P1Screen }) {
         description={screen.purpose}
         actions={
           <>
-            <Pill>{screen.packet === "M2-Cand" ? "Module 2 candidate" : "Later Phase 1 packet"}</Pill>
-            <Pill>{screen.shell === "consumer" ? "External branded chrome" : "Internal unified shell"}</Pill>
+            <Pill>
+              {screen.packet === "M2-Cand" ? "Module 2 candidate" : "Later Phase 1 packet"}
+            </Pill>
+            <Pill>
+              {screen.shell === "consumer" ? "External branded chrome" : "Internal unified shell"}
+            </Pill>
           </>
         }
       />
@@ -258,7 +286,13 @@ export function P1Frame({ screen }: { screen: P1Screen }) {
 
       <div className="grid gap-3 lg:grid-cols-2">
         <WPanel title="Workspace & module" id={`${screen.id}-PLACE`}>
-          <Notes items={[`Workspace: ${screen.workspace}`, `Module: ${screen.module}`, `Primary user: ${screen.user}`]} />
+          <Notes
+            items={[
+              `Workspace: ${screen.workspace}`,
+              `Module: ${screen.module}`,
+              `Primary user: ${screen.user}`,
+            ]}
+          />
         </WPanel>
         <WPanel title="Primary actions" id={`${screen.id}-ACTIONS`}>
           <div className="flex flex-wrap gap-1.5">
@@ -290,7 +324,9 @@ export function P1Frame({ screen }: { screen: P1Screen }) {
         </WPanel>
 
         <WPanel title="Source basis" id={`${screen.id}-SOURCE`} className="lg:col-span-2">
-          <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">{screen.source}</p>
+          <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+            {screen.source}
+          </p>
           {screen.m1Seam ? (
             <Annotation className="mt-2">Module 1 seam — read only: {screen.m1Seam}</Annotation>
           ) : null}
@@ -308,7 +344,10 @@ export function P1Frame({ screen }: { screen: P1Screen }) {
               ← {P1_BY_SLUG[prev]?.id}
             </Link>
           ) : null}
-          <Link to="/p1" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">
+          <Link
+            to="/p1"
+            className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+          >
             Phase 1 index
           </Link>
           {next ? (

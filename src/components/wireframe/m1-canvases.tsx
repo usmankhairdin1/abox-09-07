@@ -23,7 +23,9 @@ function Btn({ label, primary = false }: { label: string; primary?: boolean }) {
     <span
       className={cn(
         "inline-flex items-center rounded-md border px-3 py-1.5 text-xs",
-        primary ? "border-foreground/50 bg-muted font-medium" : "border-border text-muted-foreground",
+        primary
+          ? "border-foreground/50 bg-muted font-medium"
+          : "border-border text-muted-foreground",
       )}
     >
       {label}
@@ -66,7 +68,9 @@ function Stepper({ steps, active }: { steps: string[]; active: number }) {
           key={s}
           className={cn(
             "rounded-full border px-2.5 py-1 text-[11px]",
-            i === active ? "border-foreground/50 bg-muted font-medium" : "border-border text-muted-foreground",
+            i === active
+              ? "border-foreground/50 bg-muted font-medium"
+              : "border-border text-muted-foreground",
           )}
         >
           {i + 1}. {s}
@@ -89,7 +93,9 @@ function PlanCard({ rec = false }: { rec?: boolean }) {
       <div className="mt-3 grid grid-cols-4 gap-2">
         {["Premium", "After credit*", "Deductible", "MOOP"].map((m) => (
           <div key={m} className="rounded border border-dashed border-border p-2">
-            <p className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">{m}</p>
+            <p className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
+              {m}
+            </p>
             <WLine w="70%" className="mt-1.5" />
           </div>
         ))}
@@ -144,14 +150,22 @@ const canvases: Record<string, () => ReactNode> = {
         </div>
       </Zone>
       <div className="grid gap-3 md:grid-cols-2">
-        <Zone title="Entry card A — guided" id="UX-001-PLANO-ENTRY" note="Routes to UX-003 then UX-005.">
+        <Zone
+          title="Entry card A — guided"
+          id="UX-001-PLANO-ENTRY"
+          note="Routes to UX-003 then UX-005."
+        >
           <WLine w="60%" />
           <WLine w="80%" className="mt-2 h-1.5 bg-muted/70" />
           <div className="mt-3">
             <Btn label="Help me choose" primary />
           </div>
         </Zone>
-        <Zone title="Entry card B — browse" id="UX-001-BROWSE-ENTRY" note="Routes to UX-003 then UX-009 (All plans tab).">
+        <Zone
+          title="Entry card B — browse"
+          id="UX-001-BROWSE-ENTRY"
+          note="Routes to UX-003 then UX-009 (All plans tab)."
+        >
           <WLine w="60%" />
           <WLine w="80%" className="mt-2 h-1.5 bg-muted/70" />
           <div className="mt-3">
@@ -209,7 +223,9 @@ const canvases: Record<string, () => ReactNode> = {
           </div>
         </Zone>
       </div>
-      <Annotation>Path choice is stored on the quote for later audit of how the consumer was guided.</Annotation>
+      <Annotation>
+        Path choice is stored on the quote for later audit of how the consumer was guided.
+      </Annotation>
     </div>
   ),
 
@@ -223,8 +239,8 @@ const canvases: Record<string, () => ReactNode> = {
           <Field label="State (derived, read-only)" />
         </div>
         <Annotation className="mt-2">
-          Multi-county ZIP shows a selectable county list. Defaulting silently is not permitted —
-          it changes rating.
+          Multi-county ZIP shows a selectable county list. Defaulting silently is not permitted — it
+          changes rating.
         </Annotation>
       </Zone>
       <Zone title="Coverage timing" id="UX-003-DATE">
@@ -249,7 +265,10 @@ const canvases: Record<string, () => ReactNode> = {
       <Stepper steps={["Product & path", "Location & date", "Household", "Results"]} active={2} />
       <Zone title="Household member rows" id="UX-004-MEMBERS">
         {[0, 1, 2].map((i) => (
-          <div key={i} className="grid gap-2 border-b border-border/60 py-2 last:border-b-0 sm:grid-cols-5">
+          <div
+            key={i}
+            className="grid gap-2 border-b border-border/60 py-2 last:border-b-0 sm:grid-cols-5"
+          >
             <Field label="Relationship" />
             <Field label="Date of birth" />
             <Field label="Tobacco" />
@@ -264,7 +283,11 @@ const canvases: Record<string, () => ReactNode> = {
           <Pill>3 in household · 2 applying</Pill>
         </div>
       </Zone>
-      <Zone title="Optional subsidy entry point" id="UX-004-SUBSIDY-LINK" note="Routes to UX-007. Skippable.">
+      <Zone
+        title="Optional subsidy entry point"
+        id="UX-004-SUBSIDY-LINK"
+        note="Routes to UX-007. Skippable."
+      >
         <Btn label="Check if I qualify for savings" />
       </Zone>
       <Disclosure>
@@ -304,7 +327,11 @@ const canvases: Record<string, () => ReactNode> = {
           <Field label="Monthly budget range" />
         </Zone>
       </div>
-      <Zone title="Optional provider & drug entry" id="UX-005-PROVIDER-LINK" note="Routes to UX-006.">
+      <Zone
+        title="Optional provider & drug entry"
+        id="UX-005-PROVIDER-LINK"
+        note="Routes to UX-006."
+      >
         <Btn label="Add my doctors and prescriptions" />
       </Zone>
       <Disclosure>
@@ -381,7 +408,10 @@ const canvases: Record<string, () => ReactNode> = {
     <div className="space-y-3">
       <Zone title="Estimate result" id="UX-008-RESULT">
         <div className="grid gap-3 sm:grid-cols-2">
-          <WBox className="h-24" label="estimated monthly credit (labeled ESTIMATE adjacent to the number)" />
+          <WBox
+            className="h-24"
+            label="estimated monthly credit (labeled ESTIMATE adjacent to the number)"
+          />
           <WBox className="h-24" label="cost-sharing reduction tier indicator" />
         </div>
       </Zone>
@@ -417,7 +447,10 @@ const canvases: Record<string, () => ReactNode> = {
           </span>
         </div>
       </Zone>
-      <WBox className="h-10" label="banner: estimated credit from UX-008 applied to displayed premiums" />
+      <WBox
+        className="h-10"
+        label="banner: estimated credit from UX-008 applied to displayed premiums"
+      />
       <div className="grid gap-3 lg:grid-cols-[240px_1fr]">
         <Zone title="Filter rail" id="UX-009-FILTERS">
           <div className="space-y-2">
@@ -436,7 +469,11 @@ const canvases: Record<string, () => ReactNode> = {
           </div>
         </Zone>
         <div className="space-y-3">
-          <Zone title="Plan-O recommendation panel" id="UX-009-PLANO" note="Ranking basis disclosed on-screen; consumer can change inputs from here.">
+          <Zone
+            title="Plan-O recommendation panel"
+            id="UX-009-PLANO"
+            note="Ranking basis disclosed on-screen; consumer can change inputs from here."
+          >
             <div className="space-y-2">
               <PlanCard rec />
               <PlanCard rec />
@@ -452,7 +489,10 @@ const canvases: Record<string, () => ReactNode> = {
               <PlanCard />
               <PlanCard />
             </div>
-            <WBox className="mt-2 h-12" label="no-results state with filter-relaxation suggestions" />
+            <WBox
+              className="mt-2 h-12"
+              label="no-results state with filter-relaxation suggestions"
+            />
           </Zone>
           <Zone title="Compare tray" id="UX-009-COMPARE-TRAY">
             <div className="flex flex-wrap items-center gap-2">
@@ -495,8 +535,20 @@ const canvases: Record<string, () => ReactNode> = {
         </div>
       </Zone>
       <Zone title="Benefit table" id="UX-010-BENEFITS">
-        {["Primary care", "Specialist", "Urgent care", "Emergency room", "Generic drugs", "Specialty drugs", "Imaging", "Maternity"].map((b) => (
-          <div key={b} className="flex items-center gap-3 border-b border-border/60 py-2 last:border-b-0">
+        {[
+          "Primary care",
+          "Specialist",
+          "Urgent care",
+          "Emergency room",
+          "Generic drugs",
+          "Specialty drugs",
+          "Imaging",
+          "Maternity",
+        ].map((b) => (
+          <div
+            key={b}
+            className="flex items-center gap-3 border-b border-border/60 py-2 last:border-b-0"
+          >
             <span className="w-40 shrink-0 text-xs text-foreground/80">{b}</span>
             <WLine w="40%" />
           </div>
@@ -507,7 +559,11 @@ const canvases: Record<string, () => ReactNode> = {
           <WRow trailing={<Pill>In network</Pill>} />
           <WRow trailing={<Pill>Not covered</Pill>} />
         </Zone>
-        <Zone title="Documents" id="UX-010-DOCS" note="SBC and formulary must be reachable before add-to-cart.">
+        <Zone
+          title="Documents"
+          id="UX-010-DOCS"
+          note="SBC and formulary must be reachable before add-to-cart."
+        >
           <div className="flex flex-wrap gap-2">
             <Btn label="Summary of Benefits & Coverage" />
             <Btn label="Formulary" />
@@ -565,7 +621,8 @@ const canvases: Record<string, () => ReactNode> = {
       </div>
       <Disclosure>
         The same attribute set is shown for every plan — selective omission that favors a carrier is
-        not permitted. Estimated annual cost carries the estimate label and links to its assumptions.
+        not permitted. Estimated annual cost carries the estimate label and links to its
+        assumptions.
       </Disclosure>
     </div>
   ),
@@ -635,9 +692,9 @@ const canvases: Record<string, () => ReactNode> = {
         </div>
       </Zone>
       <Disclosure>
-        The cart is a saved selection, not a purchase. No payment is collected in Module 1 and totals
-        are labeled estimated. One medical plan at a time. Add, remove and change events are written
-        to the quote audit trail with actor and timestamp.
+        The cart is a saved selection, not a purchase. No payment is collected in Module 1 and
+        totals are labeled estimated. One medical plan at a time. Add, remove and change events are
+        written to the quote audit trail with actor and timestamp.
       </Disclosure>
     </div>
   ),
@@ -646,7 +703,14 @@ const canvases: Record<string, () => ReactNode> = {
     <div className="space-y-3">
       <Zone title="Read-only review summary" id="UX-014-SUMMARY">
         <div className="grid gap-2 sm:grid-cols-3">
-          {["Household", "Location & county", "Effective date", "Selected plan", "Estimated credit*", "Estimated monthly cost*"].map((s) => (
+          {[
+            "Household",
+            "Location & county",
+            "Effective date",
+            "Selected plan",
+            "Estimated credit*",
+            "Estimated monthly cost*",
+          ].map((s) => (
             <WBox key={s} className="h-16" label={s} />
           ))}
         </div>
@@ -659,15 +723,27 @@ const canvases: Record<string, () => ReactNode> = {
       <Zone title="Ancillary interest summary" id="UX-014-ANCILLARY">
         <WRow trailing={<Pill>Interest only</Pill>} />
       </Zone>
-      <Zone title="What happens next" id="UX-014-NEXT" note="Same wording as UX-023 so the consumer is never surprised.">
+      <Zone
+        title="What happens next"
+        id="UX-014-NEXT"
+        note="Same wording as UX-023 so the consumer is never surprised."
+      >
         <WLine w="80%" />
         <WLine w="65%" className="mt-2 h-1.5 bg-muted/70" />
       </Zone>
       <Zone title="Consent & acknowledgement block" id="UX-014-CONSENT">
         <div className="space-y-2">
-          {["Agent of record acknowledgement (agent-attributed sessions)", "Consent to share information for enrollment", "Consent to contact", "Terms & privacy acknowledgement"].map((c) => (
+          {[
+            "Agent of record acknowledgement (agent-attributed sessions)",
+            "Consent to share information for enrollment",
+            "Consent to contact",
+            "Terms & privacy acknowledgement",
+          ].map((c) => (
             <div key={c} className="flex items-start gap-2 rounded-md border border-border p-2">
-              <div className="mt-0.5 size-4 shrink-0 rounded border border-border" aria-hidden="true" />
+              <div
+                className="mt-0.5 size-4 shrink-0 rounded border border-border"
+                aria-hidden="true"
+              />
               <p className="text-xs text-foreground/80">{c}</p>
             </div>
           ))}
@@ -724,8 +800,8 @@ const canvases: Record<string, () => ReactNode> = {
       <Disclosure>
         Credentials are held by the platform identity service. Account creation links the anonymous
         session's quote to the member record and stamps the merge in the audit trail. Lead
-        attribution (agency, agent, marketplace source) locks at account creation. Consent to contact
-        is recorded separately from terms acceptance.
+        attribution (agency, agent, marketplace source) locks at account creation. Consent to
+        contact is recorded separately from terms acceptance.
       </Disclosure>
     </div>
   ),
@@ -749,7 +825,11 @@ const canvases: Record<string, () => ReactNode> = {
           <WRow trailing={<Pill>Expired</Pill>} />
           <WRow trailing={<Pill>Handed off</Pill>} />
         </Zone>
-        <Zone title="Application status (mirror of handoff state)" id="UX-016-APP-STATUS" note="Labeled as the status ABox received, with the timestamp — not a live exchange determination.">
+        <Zone
+          title="Application status (mirror of handoff state)"
+          id="UX-016-APP-STATUS"
+          note="Labeled as the status ABox received, with the timestamp — not a live exchange determination."
+        >
           <WBox className="h-20" label="status + reference id + received at" />
         </Zone>
         <Zone title="Household" id="UX-016-HOUSEHOLD">
@@ -759,7 +839,11 @@ const canvases: Record<string, () => ReactNode> = {
         <Zone title="My agent" id="UX-016-AGENT">
           <WRow trailing={<Btn label="Request a call" />} />
         </Zone>
-        <Zone title="Documents & notices" id="UX-016-DOCS" note="Module 1 scope: quote summary and handoff confirmation only.">
+        <Zone
+          title="Documents & notices"
+          id="UX-016-DOCS"
+          note="Module 1 scope: quote summary and handoff confirmation only."
+        >
           <WRow />
         </Zone>
         <Zone title="Notifications" id="UX-016-NOTIFS">
@@ -798,7 +882,10 @@ const canvases: Record<string, () => ReactNode> = {
         </div>
       </Zone>
       <Zone title="Licensing & appointment gate" id="UX-017-GATE">
-        <WBox className="h-14" label="blocked: no active appointment for this state / product — with remediation path" />
+        <WBox
+          className="h-14"
+          label="blocked: no active appointment for this state / product — with remediation path"
+        />
       </Zone>
       <Zone title="Recent quick quotes" id="UX-017-RECENT">
         <WRow trailing={<Pill>Resume</Pill>} />
@@ -853,8 +940,8 @@ const canvases: Record<string, () => ReactNode> = {
       </div>
       <Disclosure>
         Agents see the same result set the consumer would for the same inputs — differences can only
-        come from sellability rules. Sensitive prospect fields are masked by default and unmasking is
-        logged. AI-drafted consumer-facing text must pass UX-026 before it leaves the platform.
+        come from sellability rules. Sensitive prospect fields are masked by default and unmasking
+        is logged. AI-drafted consumer-facing text must pass UX-026 before it leaves the platform.
         Quote versions are immutable once shared.
       </Disclosure>
     </div>
@@ -873,7 +960,10 @@ const canvases: Record<string, () => ReactNode> = {
             <Btn label="Email" primary />
             <Btn label="SMS (requires consent)" />
           </div>
-          <WBox className="mt-2 h-12" label="consent state per channel — blocks send when missing" />
+          <WBox
+            className="mt-2 h-12"
+            label="consent state per channel — blocks send when missing"
+          />
         </Zone>
         <Zone title="Included plans & expiry" id="UX-019-CONTENT">
           <WRow trailing={<Pill>Included</Pill>} />
@@ -892,7 +982,11 @@ const canvases: Record<string, () => ReactNode> = {
           <Pill>AI draft must pass UX-026 review</Pill>
         </div>
       </Zone>
-      <Zone title="Preview as consumer" id="UX-019-PREVIEW" note="Renders UX-020 exactly as the recipient will see it.">
+      <Zone
+        title="Preview as consumer"
+        id="UX-019-PREVIEW"
+        note="Renders UX-020 exactly as the recipient will see it."
+      >
         <WBox className="h-20" label="read-only shared quote preview" />
       </Zone>
       <div className="flex flex-wrap justify-end gap-2">
@@ -903,7 +997,8 @@ const canvases: Record<string, () => ReactNode> = {
         Licensing and appointment are re-verified at send time for every included product. Platform
         appends required disclosures and licensed-entity identification — the agent cannot remove
         them. SMS requires its own consent record and opt-out language. Send events record actor,
-        channel, recipient, quote version, expiry and message version, and sending locks the version.
+        channel, recipient, quote version, expiry and message version, and sending locks the
+        version.
       </Disclosure>
     </div>
   ),
@@ -944,7 +1039,10 @@ const canvases: Record<string, () => ReactNode> = {
         </div>
       </Zone>
       <Zone title="Expired-link state" id="UX-020-EXPIRED">
-        <WBox className="h-14" label="neutral expiry screen — discloses no PII, offers request-a-new-quote" />
+        <WBox
+          className="h-14"
+          label="neutral expiry screen — discloses no PII, offers request-a-new-quote"
+        />
       </Zone>
       <Disclosure>
         Read-only by construction: the recipient cannot alter household, rating inputs or the plan
@@ -958,12 +1056,23 @@ const canvases: Record<string, () => ReactNode> = {
     <div className="space-y-3">
       <Zone title="Milestone strip" id="UX-021-MILESTONES">
         <div className="flex flex-wrap gap-2">
-          {["Lead created", "Quote started", "Quote shared", "Quote viewed", "Plan selected", "Account created", "Handoff initiated", "Handoff confirmed"].map((m, i) => (
+          {[
+            "Lead created",
+            "Quote started",
+            "Quote shared",
+            "Quote viewed",
+            "Plan selected",
+            "Account created",
+            "Handoff initiated",
+            "Handoff confirmed",
+          ].map((m, i) => (
             <span
               key={m}
               className={cn(
                 "rounded-full border px-2.5 py-1 text-[11px]",
-                i <= 3 ? "border-foreground/50 bg-muted" : "border-dashed border-border text-muted-foreground",
+                i <= 3
+                  ? "border-foreground/50 bg-muted"
+                  : "border-dashed border-border text-muted-foreground",
               )}
             >
               {m}
@@ -1013,7 +1122,10 @@ const canvases: Record<string, () => ReactNode> = {
   "ux-022": () => (
     <div className="space-y-3">
       <Zone title="Interest confirmation" id="UX-022-CONTEXT">
-        <WBox className="h-14" label="what you're interested in: quote / specific plan / ancillary line" />
+        <WBox
+          className="h-14"
+          label="what you're interested in: quote / specific plan / ancillary line"
+        />
       </Zone>
       <div className="grid gap-3 md:grid-cols-2">
         <Zone title="Contact preference" id="UX-022-PREF">
@@ -1022,7 +1134,11 @@ const canvases: Record<string, () => ReactNode> = {
             <Btn label="Pick a time" />
           </div>
         </Zone>
-        <Zone title="Simple availability picker" id="UX-022-SLOTS" note="Time windows, not booked calendar slots.">
+        <Zone
+          title="Simple availability picker"
+          id="UX-022-SLOTS"
+          note="Time windows, not booked calendar slots."
+        >
           <div className="grid grid-cols-3 gap-2">
             {["Mon AM", "Mon PM", "Tue AM", "Tue PM", "Wed AM", "Wed PM"].map((s) => (
               <WBox key={s} className="h-10" label={s} />
@@ -1045,7 +1161,10 @@ const canvases: Record<string, () => ReactNode> = {
         <WBox className="mt-2 h-16" label="optional message" />
       </Zone>
       <Zone title="Confirmation state" id="UX-022-CONFIRM">
-        <WBox className="h-14" label="request received · expected response window from UX-025 business hours" />
+        <WBox
+          className="h-14"
+          label="request received · expected response window from UX-025 business hours"
+        />
       </Zone>
       <Disclosure>
         This is a request for a time window, not a confirmed booking — confirmation copy must not
@@ -1068,7 +1187,11 @@ const canvases: Record<string, () => ReactNode> = {
           <WRow primary="50%" secondary="35%" />
           <WRow primary="55%" secondary="25%" />
         </Zone>
-        <Zone title="What does not transfer" id="UX-023-NOT-TRANSFERS" note="Consumer is told these will be asked again on the exchange application.">
+        <Zone
+          title="What does not transfer"
+          id="UX-023-NOT-TRANSFERS"
+          note="Consumer is told these will be asked again on the exchange application."
+        >
           <WRow primary="45%" secondary="30%" />
           <WRow primary="55%" secondary="25%" />
         </Zone>
@@ -1104,7 +1227,11 @@ const canvases: Record<string, () => ReactNode> = {
             <Btn label="Return to my dashboard" />
           </div>
         </Zone>
-        <Zone title="Error / unavailable state" id="UX-023-ERROR" note="A failed handoff must never render as success.">
+        <Zone
+          title="Error / unavailable state"
+          id="UX-023-ERROR"
+          note="A failed handoff must never render as success."
+        >
           <WBox className="h-14" label="handoff unavailable — retry / contact my agent" />
         </Zone>
       </div>
@@ -1135,11 +1262,22 @@ const canvases: Record<string, () => ReactNode> = {
           <WBox className="mt-2 h-16" label="footer disclosure text (required before publish)" />
         </Zone>
         <Zone title="Product line enablement" id="UX-024-PRODUCTS">
-          {["IFP on-exchange", "Dental (display + interest)", "Vision (display + interest)", "Accident"].map((p) => (
-            <div key={p} className="flex items-center gap-3 border-b border-border/60 py-2 last:border-b-0">
+          {[
+            "IFP on-exchange",
+            "Dental (display + interest)",
+            "Vision (display + interest)",
+            "Accident",
+          ].map((p) => (
+            <div
+              key={p}
+              className="flex items-center gap-3 border-b border-border/60 py-2 last:border-b-0"
+            >
               <span className="flex-1 text-xs text-foreground/80">{p}</span>
               <Pill>States available</Pill>
-              <div className="h-5 w-9 rounded-full border border-border bg-muted" aria-hidden="true" />
+              <div
+                className="h-5 w-9 rounded-full border border-border bg-muted"
+                aria-hidden="true"
+              />
             </div>
           ))}
           <Annotation className="mt-2">
@@ -1169,8 +1307,16 @@ const canvases: Record<string, () => ReactNode> = {
   "ux-025": () => (
     <div className="space-y-3">
       <Zone title="Lead routing rules (ordered)" id="UX-025-ROUTING">
-        {["By state / licensure", "By product line", "Round robin within team", "Named default owner"].map((r, i) => (
-          <div key={r} className="flex items-center gap-3 border-b border-border/60 py-2 last:border-b-0">
+        {[
+          "By state / licensure",
+          "By product line",
+          "Round robin within team",
+          "Named default owner",
+        ].map((r, i) => (
+          <div
+            key={r}
+            className="flex items-center gap-3 border-b border-border/60 py-2 last:border-b-0"
+          >
             <span className="font-mono text-[10px] text-muted-foreground">{i + 1}</span>
             <span className="flex-1 text-xs text-foreground/80">{r}</span>
             <Pill>Move up</Pill>
@@ -1185,13 +1331,25 @@ const canvases: Record<string, () => ReactNode> = {
       </Zone>
       <Zone title="Notification matrix" id="UX-025-NOTIFS">
         <div className="grid grid-cols-[1.6fr_repeat(3,1fr)] gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Event</span>
+          <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+            Event
+          </span>
           {["Consumer", "Agent", "Agency"].map((h) => (
-            <span key={h} className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+            <span
+              key={h}
+              className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground"
+            >
               {h}
             </span>
           ))}
-          {["Quote shared", "Link opened", "Interest expressed", "Call requested", "Handoff initiated", "Handoff confirmed"].map((e) => (
+          {[
+            "Quote shared",
+            "Link opened",
+            "Interest expressed",
+            "Call requested",
+            "Handoff initiated",
+            "Handoff confirmed",
+          ].map((e) => (
             <MatrixRow key={e} label={e} />
           ))}
         </div>
@@ -1221,18 +1379,34 @@ const canvases: Record<string, () => ReactNode> = {
             <Pill>Model / ruleset version</Pill>
             <Pill>Generated 12:04</Pill>
           </div>
-          <WBox className="h-32" label="draft body with change tracking against the original generation" />
+          <WBox
+            className="h-32"
+            label="draft body with change tracking against the original generation"
+          />
         </Zone>
         <div className="space-y-3">
           <Zone title="Basis / sources" id="UX-026-BASIS">
             <WRow primary="60%" secondary="30%" />
             <WRow primary="50%" secondary="35%" />
-            <Annotation className="mt-2">Records and inputs the output was derived from.</Annotation>
+            <Annotation className="mt-2">
+              Records and inputs the output was derived from.
+            </Annotation>
           </Zone>
           <Zone title="Guardrail checks" id="UX-026-GUARDRAILS">
-            {["No prohibited advice language", "Required disclosures present", "No unmasked PII", "No eligibility or cost guarantee"].map((g) => (
-              <div key={g} className="flex items-center gap-2 border-b border-border/60 py-2 last:border-b-0">
-                <div className="size-3 rounded-full border border-border bg-muted" aria-hidden="true" />
+            {[
+              "No prohibited advice language",
+              "Required disclosures present",
+              "No unmasked PII",
+              "No eligibility or cost guarantee",
+            ].map((g) => (
+              <div
+                key={g}
+                className="flex items-center gap-2 border-b border-border/60 py-2 last:border-b-0"
+              >
+                <div
+                  className="size-3 rounded-full border border-border bg-muted"
+                  aria-hidden="true"
+                />
                 <span className="text-xs text-foreground/80">{g}</span>
               </div>
             ))}
@@ -1246,7 +1420,10 @@ const canvases: Record<string, () => ReactNode> = {
           <Btn label="Edit & confirm" />
           <Btn label="Confirm and continue" primary />
         </div>
-        <WBox className="mt-2 h-14" label="rejection reason capture (retained, never silently discarded)" />
+        <WBox
+          className="mt-2 h-14"
+          label="rejection reason capture (retained, never silently discarded)"
+        />
       </Zone>
       <Disclosure>
         No AI output reaches a consumer without explicit human confirmation recorded against a named
@@ -1276,7 +1453,10 @@ function MatrixRow({ label }: { label: string }) {
     <>
       <span className="self-center text-xs text-foreground/80">{label}</span>
       {[0, 1, 2].map((i) => (
-        <div key={i} className="flex items-center gap-1 rounded border border-dashed border-border p-2">
+        <div
+          key={i}
+          className="flex items-center gap-1 rounded border border-dashed border-border p-2"
+        >
           <Pill>Email</Pill>
           <Pill>SMS</Pill>
         </div>

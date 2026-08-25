@@ -95,7 +95,13 @@ export function WPanel({
 }
 
 /** Stable ID chip — IDs are permanent and always shown on wireframes. */
-export function IdChip({ children, tone = "default" }: { children: ReactNode; tone?: "default" | "prov" }) {
+export function IdChip({
+  children,
+  tone = "default",
+}: {
+  children: ReactNode;
+  tone?: "default" | "prov";
+}) {
   return (
     <span
       className={cn(
@@ -113,12 +119,7 @@ export function IdChip({ children, tone = "default" }: { children: ReactNode; to
 /** Wireframe annotation. Mono, bracketed, clearly not product copy. */
 export function Annotation({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <p
-      className={cn(
-        "font-mono text-[11px] leading-relaxed text-muted-foreground",
-        className,
-      )}
-    >
+    <p className={cn("font-mono text-[11px] leading-relaxed text-muted-foreground", className)}>
       <span aria-hidden="true">[ </span>
       {children}
       <span aria-hidden="true"> ]</span>

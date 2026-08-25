@@ -50,18 +50,24 @@ function P1Index() {
         ),
         Summary: (
           <Annotation>
-            {P1_SCREENS.length} broader Phase 1 screens across 10 capability groups. {m2} are Module 2
-            candidates; the rest sit in later Phase 1 packets.
+            {P1_SCREENS.length} broader Phase 1 screens across 10 capability groups. {m2} are Module
+            2 candidates; the rest sit in later Phase 1 packets.
           </Annotation>
         ),
         Guidance: (
           <Annotation>
-            None of these screens changes active Module 1. Where a screen touches Module 1, the seam is
-            recorded read-only on the screen itself.
+            None of these screens changes active Module 1. Where a screen touches Module 1, the seam
+            is recorded read-only on the screen itself.
           </Annotation>
         ),
-        Audit: <Annotation>Every screen carries its own audit expectations in its drawer notes.</Annotation>,
-        "Next actions": <Annotation>Open a group, walk its screens, then mark packet sequencing.</Annotation>,
+        Audit: (
+          <Annotation>
+            Every screen carries its own audit expectations in its drawer notes.
+          </Annotation>
+        ),
+        "Next actions": (
+          <Annotation>Open a group, walk its screens, then mark packet sequencing.</Annotation>
+        ),
       }}
     >
       <PageHeading
@@ -73,7 +79,10 @@ function P1Index() {
           <>
             <Pill>{P1_SCREENS.length} screens</Pill>
             <Pill>10 groups</Pill>
-            <Link to="/m1" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">
+            <Link
+              to="/m1"
+              className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+            >
               Module 1 set →
             </Link>
           </>
@@ -83,10 +92,11 @@ function P1Index() {
       <div className="mt-4 grid gap-3 lg:grid-cols-3">
         <WPanel title="Scope fence" id="P1-FENCE" className="lg:col-span-2">
           <AclNote>
-            Active Module 1 is untouched. These wireframes describe capability that the Reconciliation
-            Package places in Module 2 or a later Phase 1 packet. Where a screen configures something
-            Module 1 renders — marketplace setup, routing, help content, the EDE integration record,
-            Plan-O ranking — the Module 1 screen itself is unchanged and the seam is annotated.
+            Active Module 1 is untouched. These wireframes describe capability that the
+            Reconciliation Package places in Module 2 or a later Phase 1 packet. Where a screen
+            configures something Module 1 renders — marketplace setup, routing, help content, the
+            EDE integration record, Plan-O ranking — the Module 1 screen itself is unchanged and the
+            seam is annotated.
           </AclNote>
         </WPanel>
         <WPanel title="Packet split" id="P1-PACKETS">

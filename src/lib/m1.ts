@@ -192,7 +192,13 @@ export const M1_SCREENS: M1Screen[] = [
       "Optional provider and drug entry point (routes to UX-006)",
       "Explanation panel: what Plan-O does and does not do",
     ],
-    actions: ["Set priorities", "Set expected usage", "Add providers/drugs", "See my recommendations", "Skip to browse"],
+    actions: [
+      "Set priorities",
+      "Set expected usage",
+      "Add providers/drugs",
+      "See my recommendations",
+      "Skip to browse",
+    ],
     drawer: null,
     assistant:
       "Copilot-style prompts help the consumer express priorities. All assistant output is framed as informational, never as a recommendation to enroll.",
@@ -222,7 +228,8 @@ export const M1_SCREENS: M1Screen[] = [
     ],
     actions: ["Search provider", "Add provider", "Search drug", "Add drug", "Skip", "Continue"],
     drawer: null,
-    assistant: "Help on why network and formulary data may be out of date and how to verify with the carrier.",
+    assistant:
+      "Help on why network and formulary data may be out of date and how to verify with the carrier.",
     compliance: [
       "Network and formulary indicators must be labeled as carrier-supplied and subject to change; the consumer is told to confirm directly with the carrier before relying on them.",
       "Data source and last-refresh date are displayed wherever a match/no-match indicator appears.",
@@ -250,7 +257,8 @@ export const M1_SCREENS: M1Screen[] = [
     ],
     actions: ["Estimate my savings", "Skip this step", "Back"],
     drawer: null,
-    assistant: "Explains estimate vs official determination and what happens on the exchange later.",
+    assistant:
+      "Explains estimate vs official determination and what happens on the exchange later.",
     compliance: [
       "The step must be genuinely optional — results are reachable without it.",
       "Income is collected as an estimate for display purposes only; it is not an application attestation.",
@@ -338,8 +346,7 @@ export const M1_SCREENS: M1Screen[] = [
     group: "Consumer shopping",
     shell: "consumer",
     user: "Consumer (D2C), agent, or shared-quote recipient",
-    purpose:
-      "Full detail for a single plan so the consumer can evaluate it before adding to cart.",
+    purpose: "Full detail for a single plan so the consumer can evaluate it before adding to cart.",
     components: [
       "Header: carrier, plan name, metal tier, plan id, network type",
       "Cost summary: premium, premium after estimated credit, deductible, MOOP, coinsurance",
@@ -378,7 +385,13 @@ export const M1_SCREENS: M1Screen[] = [
       "Per-column add-to-cart action",
       "Remove-from-comparison control",
     ],
-    actions: ["Remove a plan", "Highlight differences", "Add to cart", "Back to results", "Share comparison"],
+    actions: [
+      "Remove a plan",
+      "Highlight differences",
+      "Add to cart",
+      "Back to results",
+      "Share comparison",
+    ],
     drawer: null,
     assistant: "Explains what each compared attribute means; does not rank the compared plans.",
     compliance: [
@@ -407,7 +420,8 @@ export const M1_SCREENS: M1Screen[] = [
     ],
     actions: ["Express interest", "Learn more", "Continue without adding"],
     drawer: null,
-    assistant: "FAQ on how ancillary coverage differs from the medical plan and what happens after expressing interest.",
+    assistant:
+      "FAQ on how ancillary coverage differs from the medical plan and what happens after expressing interest.",
     compliance: [
       "No ancillary enrollment in Module 1 — the reconciliation package holds ancillary enrollment for a later packet. This screen must not present a purchase or checkout path.",
       "Interest capture creates a lead activity, and the consumer is told an agent will follow up.",
@@ -437,7 +451,8 @@ export const M1_SCREENS: M1Screen[] = [
     ],
     actions: ["Remove item", "Change plan", "Save quote", "Share quote", "Continue to review"],
     drawer: null,
-    assistant: "Explains that the cart is a saved selection, not a purchase, and that enrollment happens on the exchange.",
+    assistant:
+      "Explains that the cart is a saved selection, not a purchase, and that enrollment happens on the exchange.",
     compliance: [
       "The cart must never read as a completed purchase; totals are labeled estimated and no payment is collected in Module 1.",
       "Only one medical plan may be active in the cart at a time.",
@@ -464,9 +479,15 @@ export const M1_SCREENS: M1Screen[] = [
       "Edit links back to each contributing step",
       "Primary action: create account and continue",
     ],
-    actions: ["Edit selection", "Accept disclosures", "Create account & continue", "Save for later"],
+    actions: [
+      "Edit selection",
+      "Accept disclosures",
+      "Create account & continue",
+      "Save for later",
+    ],
     drawer: null,
-    assistant: "Answers 'what happens after I click continue' in the same wording as the handoff explanation screen.",
+    assistant:
+      "Answers 'what happens after I click continue' in the same wording as the handoff explanation screen.",
     compliance: [
       "Required consents must be affirmative and individually recorded with timestamp, IP and the exact disclosure text version presented.",
       "Agent-of-record consent is captured here when the session is agent-attributed.",
@@ -496,7 +517,8 @@ export const M1_SCREENS: M1Screen[] = [
     ],
     actions: ["Create account", "Sign in", "Verify code", "Resend code", "Back to review"],
     drawer: null,
-    assistant: "Help with verification codes and account recovery only. No shopping advice at the gate.",
+    assistant:
+      "Help with verification codes and account recovery only. No shopping advice at the gate.",
     compliance: [
       "Credentials handled by the platform identity service; no password is stored or displayed in application data.",
       "Account creation links the anonymous session's quote to the member record and stamps the merge in the audit trail.",
@@ -525,9 +547,16 @@ export const M1_SCREENS: M1Screen[] = [
       "My agent card with contact and request-a-call action",
       "Notifications list",
     ],
-    actions: ["Resume quote", "Open a saved quote", "Start a new quote", "Contact my agent", "Request a call"],
+    actions: [
+      "Resume quote",
+      "Open a saved quote",
+      "Start a new quote",
+      "Contact my agent",
+      "Request a call",
+    ],
     drawer: null,
-    assistant: "Member-voice help: where is my application, how do I resume, how do I reach my agent.",
+    assistant:
+      "Member-voice help: where is my application, how do I resume, how do I reach my agent.",
     compliance: [
       "Member sees only their own household's records; agent-only fields and internal notes never render here.",
       "Application status is a mirror of the state ABox received from the exchange handoff — it must be labeled as such and timestamped, not presented as a live exchange determination.",
@@ -563,7 +592,8 @@ export const M1_SCREENS: M1Screen[] = [
       "Audit: who started this quote and under which entity",
       "Next actions: send quote, schedule a call, log an activity",
     ],
-    assistant: "Copilot for agents: prefill hints from the matched lead, reminders about missing rating inputs.",
+    assistant:
+      "Copilot for agents: prefill hints from the matched lead, reminders about missing rating inputs.",
     compliance: [
       "Agent must hold an active license and appointment for the state and product before the quote can proceed; the gate is enforced here, not at send time only.",
       "The writing entity chosen determines commission attribution and is recorded on the quote.",
@@ -636,7 +666,14 @@ export const M1_SCREENS: M1Screen[] = [
       "Preview of the consumer's read-only view",
       "Send confirmation state with a copyable link",
     ],
-    actions: ["Select plans to include", "Choose channel", "Edit message", "Preview as consumer", "Send", "Copy link"],
+    actions: [
+      "Select plans to include",
+      "Choose channel",
+      "Edit message",
+      "Preview as consumer",
+      "Send",
+      "Copy link",
+    ],
     drawer: [
       "Context: recipient, channel, consent state",
       "Summary: quote version being shared and its expiry",
@@ -645,7 +682,8 @@ export const M1_SCREENS: M1Screen[] = [
       "Audit: prior sends for this lead",
       "Next actions: schedule follow-up, create task",
     ],
-    assistant: "Drafts the accompanying message; the draft is labeled AI-generated and must be reviewed in UX-026 before send.",
+    assistant:
+      "Drafts the accompanying message; the draft is labeled AI-generated and must be reviewed in UX-026 before send.",
     compliance: [
       "Consent to contact on the chosen channel must exist before send; SMS requires its own consent record and opt-out language.",
       "Agent licensing and appointment are re-verified at send time for every product included.",
@@ -675,9 +713,16 @@ export const M1_SCREENS: M1Screen[] = [
       "Action bar: I'm interested, request a call, continue to enroll",
       "Expired-link state with a request-a-new-quote action",
     ],
-    actions: ["Open plan detail", "Compare included plans", "I'm interested", "Request a call", "Continue to enroll"],
+    actions: [
+      "Open plan detail",
+      "Compare included plans",
+      "I'm interested",
+      "Request a call",
+      "Continue to enroll",
+    ],
     drawer: null,
-    assistant: "Consumer-voice help limited to understanding the quote and reaching the agent. No editing capability is offered.",
+    assistant:
+      "Consumer-voice help limited to understanding the quote and reaching the agent. No editing capability is offered.",
     compliance: [
       "Read-only by construction: the recipient cannot alter household, rating inputs or the plan set — any change requires a new quote from the agent.",
       "Tokenized link with expiry; expired or revoked tokens show a neutral expiry screen and disclose no PII.",
@@ -705,7 +750,13 @@ export const M1_SCREENS: M1Screen[] = [
       "Quick actions: log note, create task, resume quote, send quote, request call",
       "Related objects: quotes, shared links, account, handoff record",
     ],
-    actions: ["Filter timeline", "Log a note", "Create a task", "Open related quote", "Resume the consumer's quote"],
+    actions: [
+      "Filter timeline",
+      "Log a note",
+      "Create a task",
+      "Open related quote",
+      "Resume the consumer's quote",
+    ],
     drawer: [
       "Context: lead ownership, agency, agent of record",
       "Summary: current milestone and days in stage",
@@ -714,7 +765,8 @@ export const M1_SCREENS: M1Screen[] = [
       "Audit: full event log including system events",
       "Next actions: send quote, schedule call, create task",
     ],
-    assistant: "Summarizes the lead's history and suggests the next Module 1 action, always citing the events it used.",
+    assistant:
+      "Summarizes the lead's history and suggests the next Module 1 action, always citing the events it used.",
     compliance: [
       "Timeline is append-only; entries cannot be edited or deleted, only annotated.",
       "System events (link opens, notification sends, handoff callbacks) are distinguishable from human actions.",
@@ -743,9 +795,16 @@ export const M1_SCREENS: M1Screen[] = [
       "Optional message field",
       "Confirmation state with what happens next and expected response window",
     ],
-    actions: ["Request a call", "Pick a time window", "Confirm contact details", "Submit", "Cancel"],
+    actions: [
+      "Request a call",
+      "Pick a time window",
+      "Confirm contact details",
+      "Submit",
+      "Cancel",
+    ],
     drawer: null,
-    assistant: "Explains response times and how to reach the agency directly; does not attempt to answer plan questions here.",
+    assistant:
+      "Explains response times and how to reach the agency directly; does not attempt to answer plan questions here.",
     compliance: [
       "Consent to be contacted is explicit and separately recorded per channel, with opt-out language for SMS.",
       "Scheduling in Module 1 is a request for a time window, not a booked calendar appointment — the confirmation copy must not promise a confirmed booking.",
@@ -775,7 +834,13 @@ export const M1_SCREENS: M1Screen[] = [
       "Post-initiation confirmation state: reference id, timestamp, status and how to return to ABox",
       "Error / unavailable state with retry and agent-contact path",
     ],
-    actions: ["Read disclosures", "Consent and continue", "Save and finish later", "Copy reference id", "Return to my dashboard"],
+    actions: [
+      "Read disclosures",
+      "Consent and continue",
+      "Save and finish later",
+      "Copy reference id",
+      "Return to my dashboard",
+    ],
     drawer: null,
     assistant:
       "Answers what EDE is, why the consumer leaves ABox, and whether they lose their work. Assistant does not provide eligibility or enrollment advice.",
@@ -809,7 +874,14 @@ export const M1_SCREENS: M1Screen[] = [
       "Preview-as-consumer action",
       "Guardrail notes where platform policy overrides agency choice",
     ],
-    actions: ["Upload logo", "Edit marketplace name", "Enable/disable a product line", "Toggle Plan-O", "Preview as consumer", "Save"],
+    actions: [
+      "Upload logo",
+      "Edit marketplace name",
+      "Enable/disable a product line",
+      "Toggle Plan-O",
+      "Preview as consumer",
+      "Save",
+    ],
     drawer: [
       "Context: entity being configured and inheritance from the parent agency",
       "Summary: what is enabled today",
@@ -818,7 +890,8 @@ export const M1_SCREENS: M1Screen[] = [
       "Audit: configuration change history with actor and timestamp",
       "Next actions: preview, publish",
     ],
-    assistant: "Explains the effect of each setting on the consumer marketplace and which settings the platform locks.",
+    assistant:
+      "Explains the effect of each setting on the consumer marketplace and which settings the platform locks.",
     compliance: [
       "Product enablement cannot exceed the agency's licensing and appointments — the UI shows why a line is unavailable rather than allowing an invalid configuration.",
       "Disclosure and licensed-entity text is required before a marketplace can be published.",
@@ -847,7 +920,15 @@ export const M1_SCREENS: M1Screen[] = [
       "Template selection per notification from agency-approved templates",
       "Test-send action",
     ],
-    actions: ["Add routing rule", "Reorder rules", "Set fallback owner", "Toggle a notification", "Choose a template", "Send test", "Save"],
+    actions: [
+      "Add routing rule",
+      "Reorder rules",
+      "Set fallback owner",
+      "Toggle a notification",
+      "Choose a template",
+      "Send test",
+      "Save",
+    ],
     drawer: [
       "Context: entity being configured and inherited rules from the parent",
       "Summary: active rules and enabled notifications",
@@ -885,7 +966,13 @@ export const M1_SCREENS: M1Screen[] = [
       "Rejection reason capture",
       "Model / ruleset version and generation timestamp",
     ],
-    actions: ["Review basis", "Edit draft", "Regenerate", "Reject with reason", "Confirm and continue"],
+    actions: [
+      "Review basis",
+      "Edit draft",
+      "Regenerate",
+      "Reject with reason",
+      "Confirm and continue",
+    ],
     drawer: [
       "Context: the action the output belongs to and the record it affects",
       "Summary: guardrail check results",
@@ -894,7 +981,8 @@ export const M1_SCREENS: M1Screen[] = [
       "Audit: generation, edits, decision and actor",
       "Next actions: send, save draft, escalate",
     ],
-    assistant: "The assistant does not self-approve here; the panel is the control surface over the assistant's own output.",
+    assistant:
+      "The assistant does not self-approve here; the panel is the control surface over the assistant's own output.",
     compliance: [
       "No AI output reaches a consumer without an explicit human confirmation recorded against a named user.",
       "AI must not generate plan recommendations phrased as advice, eligibility determinations, or guarantees of coverage or cost; the guardrail check blocks confirmation when such language is detected.",

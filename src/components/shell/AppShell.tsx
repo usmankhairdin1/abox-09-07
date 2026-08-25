@@ -16,14 +16,7 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { Annotation, IdChip, WLine, WRow } from "@/components/wireframe/primitives";
 import {
@@ -135,7 +128,11 @@ function useVisibleModules() {
     return true;
   });
 
-  return { ws, role, modules: ids.map((id) => MODULE_BY_ID[id]).filter((m): m is ModuleDef => Boolean(m)) };
+  return {
+    ws,
+    role,
+    modules: ids.map((id) => MODULE_BY_ID[id]).filter((m): m is ModuleDef => Boolean(m)),
+  };
 }
 
 function BarButton({
@@ -182,7 +179,12 @@ function Tray({
           <span className="text-xs font-semibold">{title}</span>
           <IdChip tone="prov">{id}</IdChip>
         </div>
-        <button type="button" onClick={onClose} aria-label="Close" className="text-muted-foreground hover:text-foreground">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="text-muted-foreground hover:text-foreground"
+        >
           <X className="size-3.5" />
         </button>
       </div>
@@ -240,11 +242,17 @@ export function AppShell({
               onClick={() => setOpenMenu(openMenu === "workspace" ? null : "workspace")}
             >
               <LayoutGrid className="size-3.5" />
-              <span className="max-w-[10rem] truncate">{ws.short} {shell.labels.workspace.toLowerCase()}</span>
+              <span className="max-w-[10rem] truncate">
+                {ws.short} {shell.labels.workspace.toLowerCase()}
+              </span>
               <ChevronDown className="size-3" />
             </BarButton>
             {openMenu === "workspace" ? (
-              <Tray title="Workspace switcher" id="SHELL_WS_SWITCH" onClose={() => setOpenMenu(null)}>
+              <Tray
+                title="Workspace switcher"
+                id="SHELL_WS_SWITCH"
+                onClose={() => setOpenMenu(null)}
+              >
                 <ul className="space-y-1">
                   {WORKSPACES.map((w) => (
                     <li key={w.id}>
@@ -262,7 +270,9 @@ export function AppShell({
                       >
                         <span>
                           <span className="block font-medium">{w.name}</span>
-                          <span className="font-mono text-[10px] text-muted-foreground">{w.id}</span>
+                          <span className="font-mono text-[10px] text-muted-foreground">
+                            {w.id}
+                          </span>
                         </span>
                         <span className="shrink-0 font-mono text-[10px] text-muted-foreground">
                           {w.kind === "external" ? "external shell" : w.phase}
@@ -290,7 +300,11 @@ export function AppShell({
               <ChevronDown className="size-3" />
             </BarButton>
             {openMenu === "entity" ? (
-              <Tray title="Entity switcher" id="SHELL_ENTITY_SWITCH" onClose={() => setOpenMenu(null)}>
+              <Tray
+                title="Entity switcher"
+                id="SHELL_ENTITY_SWITCH"
+                onClose={() => setOpenMenu(null)}
+              >
                 <ul className="space-y-1">
                   {ENTITIES.map((e) => (
                     <li key={e.id}>
@@ -410,7 +424,9 @@ export function AppShell({
             {openMenu === "tasks" ? (
               <Tray title="Tasks" id="SHELL_TASKS" onClose={() => setOpenMenu(null)}>
                 <WRow /> <WRow />
-                <Annotation className="mt-2">Deep-links to SCR_TASKS in Customers &amp; Leads.</Annotation>
+                <Annotation className="mt-2">
+                  Deep-links to SCR_TASKS in Customers &amp; Leads.
+                </Annotation>
               </Tray>
             ) : null}
           </div>
@@ -437,13 +453,17 @@ export function AppShell({
             {openMenu === "profile" ? (
               <Tray title="Profile & settings" id="SHELL_PROFILE" onClose={() => setOpenMenu(null)}>
                 <ul className="space-y-1 text-xs">
-                  {["Profile", "Preferences & landing page", "Language", "Support access", "Sign out"].map(
-                    (i) => (
-                      <li key={i} className="rounded-md px-2 py-1.5 hover:bg-muted">
-                        {i}
-                      </li>
-                    ),
-                  )}
+                  {[
+                    "Profile",
+                    "Preferences & landing page",
+                    "Language",
+                    "Support access",
+                    "Sign out",
+                  ].map((i) => (
+                    <li key={i} className="rounded-md px-2 py-1.5 hover:bg-muted">
+                      {i}
+                    </li>
+                  ))}
                 </ul>
                 <div className="mt-3 border-t border-border pt-2">
                   <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
@@ -461,7 +481,9 @@ export function AppShell({
                         )}
                       >
                         <span>{r.label}</span>
-                        <span className="font-mono text-[10px] text-muted-foreground">{r.scope}</span>
+                        <span className="font-mono text-[10px] text-muted-foreground">
+                          {r.scope}
+                        </span>
                       </button>
                     ))}
                   </div>
@@ -505,13 +527,18 @@ export function AppShell({
                 aria-label={navCollapsed ? "Expand navigation" : "Collapse navigation"}
                 className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
               >
-                {navCollapsed ? <ChevronsRight className="size-4" /> : <ChevronsLeft className="size-4" />}
+                {navCollapsed ? (
+                  <ChevronsRight className="size-4" />
+                ) : (
+                  <ChevronsLeft className="size-4" />
+                )}
               </button>
             </div>
 
             <ul className="space-y-0.5">
               {modules.map((m) => {
-                const active = m.to === pathname || (m.to === "/my-work" && pathname === "/my-work");
+                const active =
+                  m.to === pathname || (m.to === "/my-work" && pathname === "/my-work");
                 const content = (
                   <span className="flex min-w-0 flex-1 items-center gap-2">
                     <span
@@ -519,7 +546,9 @@ export function AppShell({
                       aria-hidden="true"
                     />
                     {navCollapsed ? null : (
-                      <span className="min-w-0 flex-1 truncate">{moduleLabel(m.id, m.label, shell.labels)}</span>
+                      <span className="min-w-0 flex-1 truncate">
+                        {moduleLabel(m.id, m.label, shell.labels)}
+                      </span>
                     )}
                   </span>
                 );
@@ -559,7 +588,10 @@ export function AppShell({
                 </p>
                 <ul className="space-y-1 px-1">
                   {MODULES.filter((m) => m.nested).map((m) => (
-                    <li key={m.id} className="flex items-start gap-2 text-[11px] text-muted-foreground">
+                    <li
+                      key={m.id}
+                      className="flex items-start gap-2 text-[11px] text-muted-foreground"
+                    >
                       <Lock className="mt-0.5 size-3 shrink-0" />
                       <span>
                         {m.label}
@@ -604,7 +636,11 @@ export function AppShell({
                 aria-label={drawerOpen ? "Collapse drawer" : "Expand drawer"}
                 className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
               >
-                {drawerOpen ? <PanelRightClose className="size-4" /> : <PanelRightOpen className="size-4" />}
+                {drawerOpen ? (
+                  <PanelRightClose className="size-4" />
+                ) : (
+                  <PanelRightOpen className="size-4" />
+                )}
               </button>
             </div>
 
@@ -653,7 +689,11 @@ export function AppShell({
                 <span className="text-xs font-semibold">Assistant</span>
                 <IdChip tone="prov">SHELL_ASSISTANT</IdChip>
               </div>
-              <button type="button" onClick={() => setAssistantOpen(false)} aria-label="Close assistant">
+              <button
+                type="button"
+                onClick={() => setAssistantOpen(false)}
+                aria-label="Close assistant"
+              >
                 <X className="size-3.5 text-muted-foreground" />
               </button>
             </div>
@@ -709,7 +749,10 @@ export function AppShell({
                     "Explain the next action",
                     "Check what is blocking submission",
                   ].map((q) => (
-                    <li key={q} className="flex items-center gap-2 rounded-md border border-dashed border-border px-2 py-1.5">
+                    <li
+                      key={q}
+                      className="flex items-center gap-2 rounded-md border border-dashed border-border px-2 py-1.5"
+                    >
                       <Sparkles className="size-3" /> {q}
                     </li>
                   ))}
@@ -745,7 +788,11 @@ function moduleLabel(id: string, fallback: string, labels: Record<LabelKey, stri
 
 function DefaultDrawerBody({ tab }: { tab: DrawerTab }) {
   const items: Record<DrawerTab, string[]> = {
-    Context: ["Workspace and entity in effect", "Why this page is visible to you", "Applied filters"],
+    Context: [
+      "Workspace and entity in effect",
+      "Why this page is visible to you",
+      "Applied filters",
+    ],
     Summary: ["Key fields", "Counts and status", "Owner and dates"],
     Guidance: ["What to do on this page", "Configured page guidance", "Policy reminders"],
     "Help & FAQ": ["Top questions for this page", "Link to full help", "Contact support"],
@@ -755,7 +802,10 @@ function DefaultDrawerBody({ tab }: { tab: DrawerTab }) {
   return (
     <div className="space-y-2">
       {items[tab].map((i) => (
-        <div key={i} className="rounded-md border border-dashed border-border bg-muted/30 px-2 py-2">
+        <div
+          key={i}
+          className="rounded-md border border-dashed border-border bg-muted/30 px-2 py-2"
+        >
           <p className="text-[11px] text-foreground/80">{i}</p>
           <WLine w="65%" className="mt-1.5 h-1.5 bg-muted/70" />
         </div>

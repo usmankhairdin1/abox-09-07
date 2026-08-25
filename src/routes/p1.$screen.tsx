@@ -14,7 +14,9 @@ export const Route = createFileRoute("/p1/$screen")({
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Unavailable — ABox Phase 1" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [{ title: "Unavailable — ABox Phase 1" }, { name: "robots", content: "noindex" }],
+      };
     }
     const { screen } = loaderData;
     const title = `${screen.id} ${screen.name} — ABox Phase 1 Wireframe`;
@@ -39,9 +41,7 @@ function P1ScreenPage() {
   const body = <P1Frame screen={screen} />;
 
   if (screen.shell === "consumer") {
-    return (
-      <ConsumerShell assistantContext={screen.name.toLowerCase()}>{body}</ConsumerShell>
-    );
+    return <ConsumerShell assistantContext={screen.name.toLowerCase()}>{body}</ConsumerShell>;
   }
 
   const d = screen.drawer;
@@ -65,7 +65,10 @@ function P1ScreenPage() {
 function P1ScreenNotFound() {
   return (
     <AppShell>
-      <WBox className="h-32" label="no broader Phase 1 screen with that id — see /p1 for the full inventory" />
+      <WBox
+        className="h-32"
+        label="no broader Phase 1 screen with that id — see /p1 for the full inventory"
+      />
     </AppShell>
   );
 }

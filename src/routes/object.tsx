@@ -107,9 +107,14 @@ function ObjectPage() {
       drawerBody={{
         Summary: (
           <div className="space-y-2">
-            <Annotation>Drawer mirrors the object summary so it stays visible while scrolling.</Annotation>
+            <Annotation>
+              Drawer mirrors the object summary so it stays visible while scrolling.
+            </Annotation>
             {["Status", "Owner", "Entity", "Created", "Last activity", "Attribution"].map((f) => (
-              <div key={f} className="flex items-center justify-between gap-2 border-b border-border/60 pb-1.5">
+              <div
+                key={f}
+                className="flex items-center justify-between gap-2 border-b border-border/60 pb-1.5"
+              >
                 <span className="text-[11px] text-muted-foreground">{f}</span>
                 <WLine w="45%" />
               </div>
@@ -136,7 +141,11 @@ function ObjectPage() {
         actions={<Pill>Applies to all 43 objects</Pill>}
       />
 
-      <WPanel title="Object type" id="PATTERN_OBJECT_SWITCH" meta="Wireframe control — proves reuse rather than five bespoke layouts">
+      <WPanel
+        title="Object type"
+        id="PATTERN_OBJECT_SWITCH"
+        meta="Wireframe control — proves reuse rather than five bespoke layouts"
+      >
         <div className="flex flex-wrap gap-2">
           {TYPES.map((t) => (
             <button
@@ -144,7 +153,9 @@ function ObjectPage() {
               type="button"
               onClick={() => setTypeId(t.id)}
               className={`rounded-md border px-3 py-1.5 text-xs ${
-                t.id === typeId ? "border-foreground/50 bg-muted font-medium" : "border-border hover:bg-muted"
+                t.id === typeId
+                  ? "border-foreground/50 bg-muted font-medium"
+                  : "border-border hover:bg-muted"
               }`}
             >
               {t.name}
@@ -185,7 +196,9 @@ function ObjectPage() {
         <div className="grid gap-3 border-b border-border p-4 md:grid-cols-4">
           {["Key fields", "Status detail", "Dates", "Flags & exceptions"].map((g) => (
             <div key={g} className="rounded-md border border-dashed border-border bg-muted/25 p-3">
-              <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{g}</p>
+              <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                {g}
+              </p>
               <div className="mt-2 space-y-1.5">
                 <WLine w="80%" />
                 <WLine w="60%" />
@@ -203,7 +216,9 @@ function ObjectPage() {
               type="button"
               onClick={() => setTab(t)}
               className={`rounded-md border px-2.5 py-1.5 text-xs ${
-                t === activeTab ? "border-border bg-muted font-medium" : "border-transparent text-muted-foreground hover:bg-muted"
+                t === activeTab
+                  ? "border-border bg-muted font-medium"
+                  : "border-transparent text-muted-foreground hover:bg-muted"
               }`}
             >
               {t}
@@ -214,7 +229,11 @@ function ObjectPage() {
         <div className="p-4">
           <div className="grid gap-3 lg:grid-cols-3">
             <div className="space-y-3 lg:col-span-2">
-              <WPanel title={`${activeTab} section`} id="PATTERN_SECTION" meta="Section content is defined per object type in a later batch">
+              <WPanel
+                title={`${activeTab} section`}
+                id="PATTERN_SECTION"
+                meta="Section content is defined per object type in a later batch"
+              >
                 <div className="grid gap-2 sm:grid-cols-2">
                   {Array.from({ length: 6 }).map((_, i) => (
                     <div key={i} className="rounded-md border border-border p-2.5">
@@ -225,23 +244,38 @@ function ObjectPage() {
                 </div>
               </WPanel>
 
-              <WPanel title="Timeline" id="PATTERN_TIMELINE" meta="Event stream from the platform event model — same source as reporting">
+              <WPanel
+                title="Timeline"
+                id="PATTERN_TIMELINE"
+                meta="Event stream from the platform event model — same source as reporting"
+              >
                 <div className="space-y-3">
-                  {["Created", "Quote started", "Shared", "Application submitted", "Document uploaded"].map(
-                    (e) => (
-                      <div key={e} className="flex gap-3">
-                        <div className="mt-1 size-2 shrink-0 rounded-full bg-muted-foreground/50" aria-hidden="true" />
-                        <div className="flex-1 border-b border-border/60 pb-2">
-                          <p className="text-xs font-medium">{e}</p>
-                          <WLine w="55%" className="mt-1.5 h-1.5 bg-muted/70" />
-                        </div>
+                  {[
+                    "Created",
+                    "Quote started",
+                    "Shared",
+                    "Application submitted",
+                    "Document uploaded",
+                  ].map((e) => (
+                    <div key={e} className="flex gap-3">
+                      <div
+                        className="mt-1 size-2 shrink-0 rounded-full bg-muted-foreground/50"
+                        aria-hidden="true"
+                      />
+                      <div className="flex-1 border-b border-border/60 pb-2">
+                        <p className="text-xs font-medium">{e}</p>
+                        <WLine w="55%" className="mt-1.5 h-1.5 bg-muted/70" />
                       </div>
-                    ),
-                  )}
+                    </div>
+                  ))}
                 </div>
               </WPanel>
 
-              <WPanel title="Notes" id="PATTERN_NOTES" meta="Internal notes; visibility scoped to entity, never shown to consumers">
+              <WPanel
+                title="Notes"
+                id="PATTERN_NOTES"
+                meta="Internal notes; visibility scoped to entity, never shown to consumers"
+              >
                 <WBox className="h-16" label="add a note" />
                 <div className="mt-2">
                   <WRow /> <WRow />
@@ -249,7 +283,11 @@ function ObjectPage() {
               </WPanel>
 
               {obj.docs ? (
-                <WPanel title="Documents" id="PATTERN_DOCS" meta="Uploads, generated outputs and carrier artefacts">
+                <WPanel
+                  title="Documents"
+                  id="PATTERN_DOCS"
+                  meta="Uploads, generated outputs and carrier artefacts"
+                >
                   <WRow trailing={<Pill>Download</Pill>} />
                   <WRow trailing={<Pill>Download</Pill>} />
                   <Annotation className="mt-2">
@@ -259,31 +297,46 @@ function ObjectPage() {
               ) : null}
 
               {activeTab === "Audit" ? (
-                <WPanel title="Audit" id="PATTERN_AUDIT" meta="Who changed what and when, including impersonation events">
+                <WPanel
+                  title="Audit"
+                  id="PATTERN_AUDIT"
+                  meta="Who changed what and when, including impersonation events"
+                >
                   <WRow /> <WRow /> <WRow />
                   <Annotation className="mt-2">
-                    Tab exists only for roles with audit permission. Export is separately permissioned
-                    and itself audited.
+                    Tab exists only for roles with audit permission. Export is separately
+                    permissioned and itself audited.
                   </Annotation>
                 </WPanel>
               ) : null}
             </div>
 
             <div className="space-y-3">
-              <WPanel title="Related records" id="PATTERN_RELATED" meta="Follows the relationship graph, not free-form links">
-                {["Household members", "Quotes", "Applications", `Owning ${labels.agency.toLowerCase()}`, "Referral source"].map(
-                  (r) => (
-                    <div key={r} className="border-b border-border/60 py-2 last:border-b-0">
-                      <p className="text-xs">{r}</p>
-                      <WLine w="55%" className="mt-1.5 h-1.5 bg-muted/70" />
-                    </div>
-                  ),
-                )}
+              <WPanel
+                title="Related records"
+                id="PATTERN_RELATED"
+                meta="Follows the relationship graph, not free-form links"
+              >
+                {[
+                  "Household members",
+                  "Quotes",
+                  "Applications",
+                  `Owning ${labels.agency.toLowerCase()}`,
+                  "Referral source",
+                ].map((r) => (
+                  <div key={r} className="border-b border-border/60 py-2 last:border-b-0">
+                    <p className="text-xs">{r}</p>
+                    <WLine w="55%" className="mt-1.5 h-1.5 bg-muted/70" />
+                  </div>
+                ))}
               </WPanel>
 
               <WPanel title="Owner & context" id="PATTERN_OWNER">
                 {["Assigned to", "Entity", "Workspace", "Attribution", "Sensitivity"].map((f) => (
-                  <div key={f} className="flex items-center justify-between gap-2 border-b border-border/60 py-2 last:border-b-0">
+                  <div
+                    key={f}
+                    className="flex items-center justify-between gap-2 border-b border-border/60 py-2 last:border-b-0"
+                  >
                     <span className="text-[11px] text-muted-foreground">{f}</span>
                     <WLine w="45%" />
                   </div>
@@ -296,8 +349,8 @@ function ObjectPage() {
 
       <AclNote>
         Access requires entity scope plus object permission. Sensitive fields (SSN, income, health
-        answers) render masked with an unmask action that requires a reason and is logged. Actions are
-        additionally gated by licensing, appointment and paper access — an unappointed{" "}
+        answers) render masked with an unmask action that requires a reason and is logged. Actions
+        are additionally gated by licensing, appointment and paper access — an unappointed{" "}
         {labels.agent.toLowerCase()} sees the record but not the submit action.
       </AclNote>
     </AppShell>

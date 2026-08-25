@@ -52,7 +52,9 @@ export function HfConsumerShell({
             onClick={() => setBrandId(b.id)}
             className={cn(
               "rounded-full border px-2 py-0.5",
-              b.id === brandId ? "border-foreground/40 bg-card font-medium text-foreground" : "border-border",
+              b.id === brandId
+                ? "border-foreground/40 bg-card font-medium text-foreground"
+                : "border-border",
             )}
           >
             {b.name}
@@ -70,7 +72,9 @@ export function HfConsumerShell({
               {brand.mark}
             </span>
             <div className="min-w-0">
-              <p className="truncate font-display text-sm font-semibold tracking-tight">{brand.name}</p>
+              <p className="truncate font-display text-sm font-semibold tracking-tight">
+                {brand.name}
+              </p>
               <p className="truncate text-[11px] text-muted-foreground">
                 {variant === "shared-link" ? "Quote prepared by your agent" : brand.marketplace}
               </p>
@@ -80,7 +84,10 @@ export function HfConsumerShell({
           {variant === "marketplace" ? (
             <nav className="ml-auto hidden items-center gap-1 md:flex">
               {["How it works", "Products", "Help"].map((n) => (
-                <span key={n} className="rounded-[var(--radius)] px-2.5 py-1.5 text-[13px] text-foreground/75">
+                <span
+                  key={n}
+                  className="rounded-[var(--radius)] px-2.5 py-1.5 text-[13px] text-foreground/75"
+                >
                   {n}
                 </span>
               ))}
@@ -91,7 +98,11 @@ export function HfConsumerShell({
             </nav>
           ) : (
             <div className="ml-auto flex items-center gap-2">
-              {variant === "focused" ? <Btn variant="ghost" size="sm">Save &amp; finish later</Btn> : null}
+              {variant === "focused" ? (
+                <Btn variant="ghost" size="sm">
+                  Save &amp; finish later
+                </Btn>
+              ) : null}
               <Badge>1-800-555-0142</Badge>
             </div>
           )}
@@ -117,7 +128,10 @@ export function HfConsumerShell({
             </div>
             {[
               ["Shopping", ["Health plans", "Dental", "Guided help", "Talk to an agent"]],
-              ["Legal", ["Privacy notice", "Terms of use", "Non-discrimination", "Language access"]],
+              [
+                "Legal",
+                ["Privacy notice", "Terms of use", "Non-discrimination", "Language access"],
+              ],
               ["Support", ["Contact us", "Help center", "Accessibility", "Report an issue"]],
             ].map(([h, items]) => (
               <div key={h as string}>
