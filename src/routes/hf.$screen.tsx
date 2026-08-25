@@ -21,6 +21,24 @@ import {
   RegistrationGateScreen,
   SharedQuoteScreen,
 } from "@/components/hf/screens-consumer";
+import {
+  AclConfigScreen,
+  AgencyStatementScreen,
+  AgentStatementScreen,
+  AppointmentSetupScreen,
+  AuditLogScreen,
+  BrandingSettingsScreen,
+  CommissionProjectionScreen,
+  CommissionScheduleScreen,
+  DynamicFormScreen,
+  FormConfiguratorScreen,
+  NotificationSchedulerScreen,
+  OffexIntakeScreen,
+  PaperSplitsScreen,
+  ProductBuilderScreen,
+  ProductCatalogScreen,
+  ReferralRewardsScreen,
+} from "@/components/hf/screens-batch2";
 import { HF_BY_SLUG, HF_SLUGS, type HfScreen } from "@/lib/hf";
 
 const RENDERERS: Record<string, () => ReactNode> = {
@@ -39,7 +57,24 @@ const RENDERERS: Record<string, () => ReactNode> = {
   "shared-quote": SharedQuoteScreen,
   "agent-quick-quote": AgentQuickQuoteScreen,
   "lead-detail": LeadDetailScreen,
+  "offex-intake": OffexIntakeScreen,
+  "dynamic-form": DynamicFormScreen,
+  "form-configurator": FormConfiguratorScreen,
+  "product-catalog": ProductCatalogScreen,
+  "product-builder": ProductBuilderScreen,
+  "appointment-setup": AppointmentSetupScreen,
+  "paper-splits": PaperSplitsScreen,
+  "referral-rewards": ReferralRewardsScreen,
+  "commission-schedule": CommissionScheduleScreen,
+  "commission-projection": CommissionProjectionScreen,
+  "agency-statement": AgencyStatementScreen,
+  "agent-statement": AgentStatementScreen,
+  "notification-scheduler": NotificationSchedulerScreen,
+  "branding-settings": BrandingSettingsScreen,
+  "acl-config": AclConfigScreen,
+  "audit-log": AuditLogScreen,
 };
+
 
 export const Route = createFileRoute("/hf/$screen")({
   loader: ({ params }) => {
