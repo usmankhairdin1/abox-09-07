@@ -21,6 +21,24 @@ import {
   RegistrationGateScreen,
   SharedQuoteScreen,
 } from "@/components/hf/screens-consumer";
+import {
+  AclConfigScreen,
+  AgencyStatementScreen,
+  AgentStatementScreen,
+  AppointmentSetupScreen,
+  AuditLogScreen,
+  BrandingSettingsScreen,
+  CommissionProjectionScreen,
+  CommissionScheduleScreen,
+  DynamicFormScreen,
+  FormConfiguratorScreen,
+  NotificationSchedulerScreen,
+  OffexIntakeScreen,
+  PaperSplitsScreen,
+  ProductBuilderScreen,
+  ProductCatalogScreen,
+  ReferralRewardsScreen,
+} from "@/components/hf/screens-batch2";
 import { HF_BY_SLUG, HF_SLUGS, type HfScreen } from "@/lib/hf";
 
 const RENDERERS: Record<string, () => ReactNode> = {
@@ -39,6 +57,22 @@ const RENDERERS: Record<string, () => ReactNode> = {
   "shared-quote": SharedQuoteScreen,
   "agent-quick-quote": AgentQuickQuoteScreen,
   "lead-detail": LeadDetailScreen,
+  "offex-intake": OffexIntakeScreen,
+  "dynamic-form": DynamicFormScreen,
+  "form-configurator": FormConfiguratorScreen,
+  "product-catalog": ProductCatalogScreen,
+  "product-builder": ProductBuilderScreen,
+  "appointment-setup": AppointmentSetupScreen,
+  "paper-splits": PaperSplitsScreen,
+  "referral-rewards": ReferralRewardsScreen,
+  "commission-schedule": CommissionScheduleScreen,
+  "commission-projection": CommissionProjectionScreen,
+  "agency-statement": AgencyStatementScreen,
+  "agent-statement": AgentStatementScreen,
+  "notification-scheduler": NotificationSchedulerScreen,
+  "branding-settings": BrandingSettingsScreen,
+  "acl-config": AclConfigScreen,
+  "audit-log": AuditLogScreen,
 };
 
 export const Route = createFileRoute("/hf/$screen")({
@@ -53,7 +87,7 @@ export const Route = createFileRoute("/hf/$screen")({
         meta: [{ title: "Screen unavailable — ABox" }, { name: "robots", content: "noindex" }],
       };
     }
-    const t = `${loaderData.screen.id} ${loaderData.screen.name} — ABox Batch 1`;
+    const t = `${loaderData.screen.id} ${loaderData.screen.name} — ABox higher fidelity`;
     const d = loaderData.screen.purpose.slice(0, 155);
     return {
       meta: [
@@ -139,7 +173,9 @@ function HfScreenPage() {
             </div>
 
             <div className="mt-3 flex flex-wrap gap-1.5">
-              <Badge tone="accent">{screen.shell === "consumer" ? "Externally branded" : "Internal shell"}</Badge>
+              <Badge tone="accent">
+                {screen.shell === "consumer" ? "Externally branded" : "Internal shell"}
+              </Badge>
               <Badge>{screen.workspace}</Badge>
               <Badge>{screen.module}</Badge>
               <Badge>{screen.user}</Badge>
@@ -148,8 +184,15 @@ function HfScreenPage() {
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{screen.purpose}</p>
 
             <NoteBlock title="Key design decisions" items={screen.decisions} />
-            <NoteBlock title="ACL behavior" items={screen.acl} />
+            {screen.objects ? <NoteBlock title="Objects used" items={screen.objects} /> : null}
             <NoteBlock title="Configuration points" items={screen.config} />
+            <NoteBlock title="ACL notes" items={screen.acl} />
+            {screen.dataFlow ? (
+              <NoteBlock title="Data flow implications" items={screen.dataFlow} />
+            ) : null}
+            {screen.assumptions ? (
+              <NoteBlock title="Assumptions" items={screen.assumptions} />
+            ) : null}
 
             <div className="mt-5 border-t border-border pt-4">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">

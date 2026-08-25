@@ -2,13 +2,7 @@ import type { ReactNode } from "react";
 
 import { Link } from "@tanstack/react-router";
 
-import {
-  Annotation,
-  IdChip,
-  PageHeading,
-  Pill,
-  WPanel,
-} from "@/components/wireframe/primitives";
+import { Annotation, IdChip, PageHeading, Pill, WPanel } from "@/components/wireframe/primitives";
 import { M1_BY_SLUG, type M1Screen } from "@/lib/m1";
 
 /** Bullet list used by the annotation rail. */
@@ -17,7 +11,10 @@ function Notes({ items }: { items: string[] }) {
     <ul className="space-y-1.5">
       {items.map((i) => (
         <li key={i} className="flex gap-2 text-xs leading-relaxed text-foreground/80">
-          <span className="mt-1.5 size-1 shrink-0 rounded-full bg-muted-foreground" aria-hidden="true" />
+          <span
+            className="mt-1.5 size-1 shrink-0 rounded-full bg-muted-foreground"
+            aria-hidden="true"
+          />
           <span>{i}</span>
         </li>
       ))}
@@ -46,7 +43,9 @@ export function ScreenFrame({ screen, children }: { screen: M1Screen; children: 
         actions={
           <>
             <Pill>{screen.scope}</Pill>
-            <Pill>{screen.shell === "consumer" ? "External branded chrome" : "Internal unified shell"}</Pill>
+            <Pill>
+              {screen.shell === "consumer" ? "External branded chrome" : "Internal unified shell"}
+            </Pill>
           </>
         }
       />
@@ -124,7 +123,10 @@ export function ScreenFrame({ screen, children }: { screen: M1Screen; children: 
               ← {M1_BY_SLUG[prev]?.id}
             </Link>
           ) : null}
-          <Link to="/m1" className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted">
+          <Link
+            to="/m1"
+            className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+          >
             Module 1 index
           </Link>
           {next ? (

@@ -110,8 +110,12 @@ export function MarketplaceLandingScreen() {
         >
           <div className="grid gap-4 md:grid-cols-2">
             <Card className="flex flex-col p-6">
-              <Badge tone="ai" className="self-start">Guided</Badge>
-              <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">Help me choose</h3>
+              <Badge tone="ai" className="self-start">
+                Guided
+              </Badge>
+              <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">
+                Help me choose
+              </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Answer a few questions about budget, doctors and prescriptions. We suggest a short
                 list and explain the tradeoff behind each one. You can see all plans at any time.
@@ -120,7 +124,9 @@ export function MarketplaceLandingScreen() {
             </Card>
             <Card className="flex flex-col p-6">
               <Badge className="self-start">Self-directed</Badge>
-              <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">Browse all plans</h3>
+              <h3 className="mt-3 font-display text-xl font-semibold tracking-tight">
+                Browse all plans
+              </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Go straight to every plan available in your county, with filters for carrier,
                 network, deductible and metal level. Compare up to three side by side.
@@ -132,7 +138,10 @@ export function MarketplaceLandingScreen() {
           </div>
         </Section>
 
-        <Section title="What you can shop here" sub="Availability depends on your state and start date.">
+        <Section
+          title="What you can shop here"
+          sub="Availability depends on your state and start date."
+        >
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               ["Individual & family health", "On-exchange and off-exchange medical plans"],
@@ -148,9 +157,9 @@ export function MarketplaceLandingScreen() {
         </Section>
 
         <Disclosure>
-          Northwind Benefits is a licensed insurance agency. This site is not HealthCare.gov, a state
-          exchange, or a government website. Applying for coverage through the health insurance
-          exchange is also possible without using an agent.
+          Northwind Benefits is a licensed insurance agency. This site is not HealthCare.gov, a
+          state exchange, or a government website. Applying for coverage through the health
+          insurance exchange is also possible without using an agent.
         </Disclosure>
       </div>
     </HfConsumerShell>
@@ -208,15 +217,14 @@ export function ProductSelectionScreen() {
               disabled: true,
             },
           ].map((p) => (
-            <Card
-              key={p.t}
-              className={`flex flex-col p-5 ${p.disabled ? "opacity-70" : ""}`}
-            >
+            <Card key={p.t} className={`flex flex-col p-5 ${p.disabled ? "opacity-70" : ""}`}>
               <div className="flex items-start justify-between gap-2">
                 <h2 className="font-display text-base font-semibold leading-snug tracking-tight">
                   {p.t}
                 </h2>
-                <Badge tone={p.disabled ? "warning" : p.primary ? "accent" : "neutral"}>{p.tag}</Badge>
+                <Badge tone={p.disabled ? "warning" : p.primary ? "accent" : "neutral"}>
+                  {p.tag}
+                </Badge>
               </div>
               <dl className="mt-4 space-y-3 text-xs">
                 <div>
@@ -263,12 +271,19 @@ export function QuoteWizardScreen() {
   return (
     <HfConsumerShell
       variant="focused"
-      progress={<Stepper steps={["Where and when", "Who is covered", "Savings check (optional)"]} current={1} />}
+      progress={
+        <Stepper
+          steps={["Where and when", "Who is covered", "Savings check (optional)"]}
+          current={1}
+        />
+      }
     >
       <div className="mx-auto grid max-w-4xl gap-6 lg:grid-cols-[1fr_15rem]">
         <div className="max-w-[45rem] space-y-5">
           <div>
-            <h1 className="font-display text-2xl font-semibold tracking-tight">Who needs coverage?</h1>
+            <h1 className="font-display text-2xl font-semibold tracking-tight">
+              Who needs coverage?
+            </h1>
             <p className="mt-1.5 text-sm text-muted-foreground">
               Add everyone who should be on the plan. You can leave people off and add them later.
             </p>
@@ -292,7 +307,11 @@ export function QuoteWizardScreen() {
 
           <Panel title="Person 3">
             <div className="grid gap-3 sm:grid-cols-3">
-              <Field label="Date of birth" placeholder="MM / DD / YYYY" hint="Enter a date to continue" />
+              <Field
+                label="Date of birth"
+                placeholder="MM / DD / YYYY"
+                hint="Enter a date to continue"
+              />
               <Field label="Uses tobacco" value="No" />
               <Field label="Relationship" value="Child" />
             </div>
@@ -474,8 +493,8 @@ export function PlanResultsScreen() {
               14 plans for your household
             </h1>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              King County, WA · 2 adults and 1 child · coverage starting 1 January 2027 · prices shown
-              after an estimated $344/mo premium tax credit
+              King County, WA · 2 adults and 1 child · coverage starting 1 January 2027 · prices
+              shown after an estimated $344/mo premium tax credit
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -567,8 +586,8 @@ export function PlanResultsScreen() {
         <Disclosure>
           Premiums shown reflect an estimated advance premium tax credit based on the income you
           entered. Final eligibility and amount are determined by the health insurance exchange.
-          Plans shown are those available for your county and start date from carriers this agency is
-          appointed with.
+          Plans shown are those available for your county and start date from carriers this agency
+          is appointed with.
         </Disclosure>
       </div>
     </HfConsumerShell>
@@ -616,7 +635,10 @@ export function PlanCompareScreen() {
           <table className="w-full min-w-[46rem] border-collapse text-sm">
             <thead>
               <tr className="border-b border-border">
-                <th scope="col" className="sticky left-0 z-10 bg-card px-4 py-4 text-left align-bottom">
+                <th
+                  scope="col"
+                  className="sticky left-0 z-10 bg-card px-4 py-4 text-left align-bottom"
+                >
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                     Plan details
                   </span>
@@ -626,7 +648,9 @@ export function PlanCompareScreen() {
                     <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
                       {c.carrier}
                     </p>
-                    <p className="mt-0.5 font-display text-sm font-semibold leading-snug">{c.name}</p>
+                    <p className="mt-0.5 font-display text-sm font-semibold leading-snug">
+                      {c.name}
+                    </p>
                     <Badge className="mt-1.5">{c.metal}</Badge>
                   </th>
                 ))}
@@ -648,7 +672,13 @@ export function PlanCompareScreen() {
                     </th>
                     {values.map((v, i) => (
                       <td key={i} className="px-4 py-3 text-sm tabular-nums">
-                        <span className={best === i ? "font-semibold underline decoration-primary decoration-2 underline-offset-4" : ""}>
+                        <span
+                          className={
+                            best === i
+                              ? "font-semibold underline decoration-primary decoration-2 underline-offset-4"
+                              : ""
+                          }
+                        >
                           {v}
                         </span>
                         {best === i ? (
@@ -683,9 +713,9 @@ export function PlanCompareScreen() {
         </div>
 
         <Disclosure>
-          Comparison covers the attributes shown and is not the complete plan document. Refer to each
-          plan&apos;s Summary of Benefits and Coverage for full terms. Emailed and downloaded copies
-          carry these same disclosures.
+          Comparison covers the attributes shown and is not the complete plan document. Refer to
+          each plan&apos;s Summary of Benefits and Coverage for full terms. Emailed and downloaded
+          copies carry these same disclosures.
         </Disclosure>
       </div>
     </HfConsumerShell>
@@ -854,8 +884,17 @@ export function RegistrationGateScreen() {
             <Field label="First name" value="Maria" />
             <Field label="Last name" value="Delgado" />
             <Field label="Email" value="maria.d@example.com" className="sm:col-span-2" />
-            <Field label="Password" value="••••••••••" hint="At least 10 characters" className="sm:col-span-2" />
-            <Field label="Mobile number (optional)" placeholder="(206) 555-0000" className="sm:col-span-2" />
+            <Field
+              label="Password"
+              value="••••••••••"
+              hint="At least 10 characters"
+              className="sm:col-span-2"
+            />
+            <Field
+              label="Mobile number (optional)"
+              placeholder="(206) 555-0000"
+              className="sm:col-span-2"
+            />
           </div>
 
           <div className="mt-4 space-y-2.5">
@@ -893,7 +932,8 @@ export function RegistrationGateScreen() {
               </li>
             </ul>
             <p className="mt-3 border-t border-border pt-2 text-sm font-semibold">
-              $180 <span className="text-xs font-normal text-muted-foreground">/month estimated</span>
+              $180{" "}
+              <span className="text-xs font-normal text-muted-foreground">/month estimated</span>
             </p>
           </Card>
           <Card className="p-4">
@@ -976,8 +1016,8 @@ export function EdeHandoffScreen() {
         </div>
 
         <Alert tone="neutral" title="Your dental plan stays here">
-          BrightSmile Dental Plus is not part of the exchange application. You will finish that one on
-          this site when you return.
+          BrightSmile Dental Plus is not part of the exchange application. You will finish that one
+          on this site when you return.
         </Alert>
 
         <div className="flex flex-wrap items-center gap-3">
@@ -992,7 +1032,8 @@ export function EdeHandoffScreen() {
         <Disclosure>
           Enroll Bridge is an approved enhanced direct enrollment partner operating under the health
           insurance exchange. Only the information listed above is transferred, and the transfer is
-          recorded. You may also apply directly at HealthCare.gov without using this site or an agent.
+          recorded. You may also apply directly at HealthCare.gov without using this site or an
+          agent.
         </Disclosure>
       </div>
     </HfConsumerShell>
@@ -1035,8 +1076,8 @@ export function SharedQuoteScreen() {
             Three plans for the Delgado household
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            King County, WA · 2 adults and 1 child · coverage starting 1 January 2027 · prices reflect
-            an estimated $344/mo premium tax credit
+            King County, WA · 2 adults and 1 child · coverage starting 1 January 2027 · prices
+            reflect an estimated $344/mo premium tax credit
           </p>
         </div>
 
@@ -1047,13 +1088,18 @@ export function SharedQuoteScreen() {
         </div>
 
         <Card className="flex flex-wrap items-center gap-3 p-4">
-          <p className="min-w-0 flex-1 text-sm font-medium">Ready to move forward with one of these?</p>
+          <p className="min-w-0 flex-1 text-sm font-medium">
+            Ready to move forward with one of these?
+          </p>
           <Btn>Continue this quote</Btn>
           <Btn variant="outline">Ask Dana a question</Btn>
           <Btn variant="ghost">Request a call</Btn>
         </Card>
 
-        <Panel title="If this link has expired" meta="What the recipient sees after the validity window">
+        <Panel
+          title="If this link has expired"
+          meta="What the recipient sees after the validity window"
+        >
           <div className="rounded-[var(--radius)] border border-dashed border-border bg-surface-2 px-4 py-5 text-center">
             <p className="font-display text-sm font-semibold">This quote is no longer current</p>
             <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
@@ -1065,24 +1111,34 @@ export function SharedQuoteScreen() {
             </Btn>
           </div>
           <p className="mt-2.5 text-[11px] leading-relaxed text-muted-foreground">
-            Expiry and revocation are enforced server-side — a revoked link cannot be reopened from a
-            cached page.
+            Expiry and revocation are enforced server-side — a revoked link cannot be reopened from
+            a cached page.
           </p>
         </Panel>
 
         <Panel title="What the agent sees" meta="Engagement written back to the quote timeline">
           <Timeline
             entries={[
-              { kind: "system", title: "Link opened", body: "Mobile · Seattle, WA", meta: "24 Aug, 11:48" },
-              { kind: "human", title: "Quote sent by email and SMS", meta: "24 Aug, 09:12", actor: "Dana Okafor" },
+              {
+                kind: "system",
+                title: "Link opened",
+                body: "Mobile · Seattle, WA",
+                meta: "24 Aug, 11:48",
+              },
+              {
+                kind: "human",
+                title: "Quote sent by email and SMS",
+                meta: "24 Aug, 09:12",
+                actor: "Dana Okafor",
+              },
             ]}
           />
         </Panel>
 
         <Disclosure>
           This quote is read-only and reflects plans and pricing available on the date shown. It is
-          not an offer of coverage or a guarantee of eligibility. Viewing this page does not create an
-          application.
+          not an offer of coverage or a guarantee of eligibility. Viewing this page does not create
+          an application.
         </Disclosure>
       </div>
     </HfConsumerShell>

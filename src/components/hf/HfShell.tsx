@@ -176,7 +176,10 @@ export function HfShell({
 
           {/* entity switcher */}
           <div className="relative">
-            <BarBtn active={menu === "entity"} onClick={() => setMenu(menu === "entity" ? null : "entity")}>
+            <BarBtn
+              active={menu === "entity"}
+              onClick={() => setMenu(menu === "entity" ? null : "entity")}
+            >
               <Building2 className="size-3.5" />
               <span className="max-w-[8rem] truncate">{entity.label}</span>
               <ChevronDown className="size-3" />
@@ -197,8 +200,8 @@ export function HfShell({
                   />
                 ))}
                 <p className="mt-2 border-t border-border pt-2 text-[11px] leading-relaxed text-muted-foreground">
-                  Derived from parent / child / upline / downline / partner relationships and clipped
-                  to your subtree.
+                  Derived from parent / child / upline / downline / partner relationships and
+                  clipped to your subtree.
                 </p>
               </Menu>
             ) : null}
@@ -217,7 +220,10 @@ export function HfShell({
           </button>
 
           <div className="relative">
-            <BarBtn active={menu === "notif"} onClick={() => setMenu(menu === "notif" ? null : "notif")}>
+            <BarBtn
+              active={menu === "notif"}
+              onClick={() => setMenu(menu === "notif" ? null : "notif")}
+            >
               <Bell className="size-4" />
               <span className="grid size-4 place-items-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
                 6
@@ -237,7 +243,10 @@ export function HfShell({
           </div>
 
           <div className="relative">
-            <BarBtn active={menu === "tasks"} onClick={() => setMenu(menu === "tasks" ? null : "tasks")}>
+            <BarBtn
+              active={menu === "tasks"}
+              onClick={() => setMenu(menu === "tasks" ? null : "tasks")}
+            >
               <CheckSquare className="size-4" />
               <span className="hidden text-xs sm:inline">11</span>
             </BarBtn>
@@ -259,7 +268,10 @@ export function HfShell({
           </BarBtn>
 
           <div className="relative">
-            <BarBtn active={menu === "profile"} onClick={() => setMenu(menu === "profile" ? null : "profile")}>
+            <BarBtn
+              active={menu === "profile"}
+              onClick={() => setMenu(menu === "profile" ? null : "profile")}
+            >
               <CircleUser className="size-4" />
             </BarBtn>
             {menu === "profile" ? (
@@ -281,7 +293,9 @@ export function HfShell({
                         onClick={() => setDensity(d)}
                         className={cn(
                           "rounded-[var(--radius)] border px-2 py-1 text-[11px] capitalize",
-                          density === d ? "border-primary bg-primary/10 text-primary" : "border-border",
+                          density === d
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border",
                         )}
                       >
                         {d}
@@ -309,7 +323,8 @@ export function HfShell({
                     ))}
                   </div>
                   <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
-                    Switch roles to watch modules and drawer sections disappear rather than grey out.
+                    Switch roles to watch modules and drawer sections disappear rather than grey
+                    out.
                   </p>
                 </div>
               </Menu>
@@ -355,7 +370,9 @@ export function HfShell({
                         )}
                         aria-hidden="true"
                       />
-                      {collapsed ? null : <span className="min-w-0 flex-1 truncate">{n.label}</span>}
+                      {collapsed ? null : (
+                        <span className="min-w-0 flex-1 truncate">{n.label}</span>
+                      )}
                     </span>
                   </li>
                 );
@@ -374,15 +391,23 @@ export function HfShell({
               onClick={() => setCollapsed((v) => !v)}
               className="mt-auto flex items-center gap-2 rounded-[var(--radius)] px-2.5 py-2 text-xs text-muted-foreground hover:bg-sidebar-accent/60"
             >
-              {collapsed ? <ChevronsRight className="size-4" /> : <ChevronsLeft className="size-4" />}
+              {collapsed ? (
+                <ChevronsRight className="size-4" />
+              ) : (
+                <ChevronsLeft className="size-4" />
+              )}
               {collapsed ? null : "Collapse"}
             </button>
           </div>
         </nav>
 
         {/* -------------------------------------------------- page canvas */}
-        <main className={cn("min-w-0 flex-1 px-4 lg:px-6", density === "compact" ? "py-4" : "py-6")}>
-          <div className={cn("mx-auto max-w-5xl", density === "compact" ? "space-y-4" : "space-y-5")}>
+        <main
+          className={cn("min-w-0 flex-1 px-4 lg:px-6", density === "compact" ? "py-4" : "py-6")}
+        >
+          <div
+            className={cn("mx-auto max-w-5xl", density === "compact" ? "space-y-4" : "space-y-5")}
+          >
             {children}
           </div>
         </main>
@@ -406,7 +431,11 @@ export function HfShell({
                 aria-label={drawerOpen ? "Collapse drawer" : "Expand drawer"}
                 className="ml-auto rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
               >
-                {drawerOpen ? <PanelRightClose className="size-4" /> : <PanelRightOpen className="size-4" />}
+                {drawerOpen ? (
+                  <PanelRightClose className="size-4" />
+                ) : (
+                  <PanelRightOpen className="size-4" />
+                )}
               </button>
             </div>
             {drawerOpen ? (
@@ -466,21 +495,23 @@ export function HfShell({
                 Three quotes on your list expire this week. Want me to draft follow-ups for the two
                 that were viewed but not acted on?
               </div>
-              {["Summarise this record", "Draft a follow-up", "What is blocking submission?"].map((q) => (
-                <button
-                  key={q}
-                  type="button"
-                  className="flex w-full items-center gap-2 rounded-[var(--radius)] border border-border px-2.5 py-1.5 text-left text-xs hover:bg-muted"
-                >
-                  <Sparkles className="size-3 text-ai" /> {q}
-                </button>
-              ))}
+              {["Summarise this record", "Draft a follow-up", "What is blocking submission?"].map(
+                (q) => (
+                  <button
+                    key={q}
+                    type="button"
+                    className="flex w-full items-center gap-2 rounded-[var(--radius)] border border-border px-2.5 py-1.5 text-left text-xs hover:bg-muted"
+                  >
+                    <Sparkles className="size-3 text-ai" /> {q}
+                  </button>
+                ),
+              )}
               <div className="flex h-9 items-center rounded-[var(--radius)] border border-input px-2.5 text-xs text-muted-foreground">
                 Ask about {assistantContext}…
               </div>
               <p className="text-[11px] leading-relaxed text-muted-foreground">
-                Answers are grounded in records you can already see, logged to the AI interaction log,
-                and escalate to a licensed person for advice.
+                Answers are grounded in records you can already see, logged to the AI interaction
+                log, and escalate to a licensed person for advice.
               </p>
             </div>
           </Card>

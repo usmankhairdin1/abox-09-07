@@ -43,7 +43,9 @@ function PageHead({
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-0.5 font-display text-[1.375rem] font-semibold tracking-tight">{title}</h1>
+        <h1 className="mt-0.5 font-display text-[1.375rem] font-semibold tracking-tight">
+          {title}
+        </h1>
         {sub ? <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{sub}</p> : null}
       </div>
       {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
@@ -131,7 +133,11 @@ export function InternalShellScreen() {
       <Panel
         title="Region map"
         meta="What lives where, and why it lives there"
-        actions={<Btn size="sm" variant="outline">Open help model</Btn>}
+        actions={
+          <Btn size="sm" variant="outline">
+            Open help model
+          </Btn>
+        }
       >
         <Table
           columns={["Region", "Holds", "Rule"]}
@@ -194,7 +200,11 @@ export function InternalShellScreen() {
             tone="acl"
             title="Nothing visible in this scope"
             body="You are viewing Harbor Point as an agency manager, which shows your own entity only. Records owned by downline agencies exist but are outside your data visibility."
-            action={<Btn size="sm" variant="outline">Request wider access</Btn>}
+            action={
+              <Btn size="sm" variant="outline">
+                Request wider access
+              </Btn>
+            }
           />
         </Panel>
       </div>
@@ -248,13 +258,24 @@ export function MyWorkScreen() {
       <Alert
         tone="warning"
         title="Needs you — 6 items"
-        action={<Btn size="sm" variant="outline">Review all</Btn>}
+        action={
+          <Btn size="sm" variant="outline">
+            Review all
+          </Btn>
+        }
       >
-        2 callback requests overdue · 3 applications waiting on documents · 1 quote expires in 2 days
+        2 callback requests overdue · 3 applications waiting on documents · 1 quote expires in 2
+        days
       </Alert>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Open quotes" value="38" delta="+6 this week" deltaTone="success" hint="Across 3 agencies" />
+        <Stat
+          label="Open quotes"
+          value="38"
+          delta="+6 this week"
+          deltaTone="success"
+          hint="Across 3 agencies"
+        />
         <Stat label="Awaiting handoff" value="9" hint="On-exchange, redirected" />
         <Stat label="Submitted, off-exchange" value="14" delta="+2" deltaTone="success" />
         <Stat label="Conversion, 30 days" value="21%" delta="−2 pts" deltaTone="danger" />
@@ -268,25 +289,29 @@ export function MyWorkScreen() {
             <Btn size="sm" variant="ghost">
               <Filter className="size-3.5" /> Filters
             </Btn>
-            <Btn size="sm" variant="outline">Assign</Btn>
+            <Btn size="sm" variant="outline">
+              Assign
+            </Btn>
           </>
         }
         bodyClassName="p-0"
       >
         <div className="px-4 pt-3">
           <div className="flex flex-wrap gap-1.5">
-            {["All (17)", "Callbacks (2)", "Documents (3)", "Expiring (4)", "New leads (8)"].map((t, i) => (
-              <span
-                key={t}
-                className={
-                  i === 0
-                    ? "rounded-full border border-primary bg-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-primary"
-                    : "rounded-full border border-border px-2.5 py-0.5 text-[11px] text-muted-foreground"
-                }
-              >
-                {t}
-              </span>
-            ))}
+            {["All (17)", "Callbacks (2)", "Documents (3)", "Expiring (4)", "New leads (8)"].map(
+              (t, i) => (
+                <span
+                  key={t}
+                  className={
+                    i === 0
+                      ? "rounded-full border border-primary bg-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-primary"
+                      : "rounded-full border border-border px-2.5 py-0.5 text-[11px] text-muted-foreground"
+                  }
+                >
+                  {t}
+                </span>
+              ),
+            )}
           </div>
         </div>
         <div className="mt-3">
@@ -299,7 +324,9 @@ export function MyWorkScreen() {
                 "IFP on-exchange",
                 "You",
                 "2h",
-                <Badge key="s" tone="danger" dot>Overdue</Badge>,
+                <Badge key="s" tone="danger" dot>
+                  Overdue
+                </Badge>,
               ],
               [
                 "Maria Delgado",
@@ -307,7 +334,9 @@ export function MyWorkScreen() {
                 "IFP on-exchange",
                 "You",
                 "1d",
-                <Badge key="s" tone="warning" dot>Needs review</Badge>,
+                <Badge key="s" tone="warning" dot>
+                  Needs review
+                </Badge>,
               ],
               [
                 "Aaron Beck",
@@ -315,7 +344,9 @@ export function MyWorkScreen() {
                 "Dental",
                 "Harbor Point",
                 "2d",
-                <Badge key="s" tone="warning" dot>Needs review</Badge>,
+                <Badge key="s" tone="warning" dot>
+                  Needs review
+                </Badge>,
               ],
               [
                 "The Nakamura household",
@@ -323,7 +354,9 @@ export function MyWorkScreen() {
                 "IFP off-exchange",
                 "R. Ellis",
                 "5d",
-                <Badge key="s" tone="accent" dot>In progress</Badge>,
+                <Badge key="s" tone="accent" dot>
+                  In progress
+                </Badge>,
               ],
               [
                 "Priya Raman",
@@ -331,7 +364,9 @@ export function MyWorkScreen() {
                 "IFP on-exchange",
                 "Unassigned",
                 "3h",
-                <Badge key="s" dot>New</Badge>,
+                <Badge key="s" dot>
+                  New
+                </Badge>,
               ],
             ]}
           />
@@ -339,7 +374,15 @@ export function MyWorkScreen() {
       </Panel>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <Panel title="My tasks" meta="Created by events, or by you" actions={<Btn size="sm" variant="ghost">Add</Btn>}>
+        <Panel
+          title="My tasks"
+          meta="Created by events, or by you"
+          actions={
+            <Btn size="sm" variant="ghost">
+              Add
+            </Btn>
+          }
+        >
           <ul className="space-y-3">
             {[
               ["Call J. Whitfield", "Auto-created from callback request · due today"],
@@ -364,7 +407,9 @@ export function MyWorkScreen() {
                   <p className="truncate text-sm font-medium">{a}</p>
                   <p className="truncate text-xs text-muted-foreground">{b}</p>
                 </div>
-                <Btn size="sm" variant="ghost">Open</Btn>
+                <Btn size="sm" variant="ghost">
+                  Open
+                </Btn>
               </li>
             ))}
           </ul>
@@ -436,10 +481,28 @@ export function DashboardScreen() {
       </Card>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Quotes created" value="1,284" delta="+11%" deltaTone="success" hint="vs prior period" />
+        <Stat
+          label="Quotes created"
+          value="1,284"
+          delta="+11%"
+          deltaTone="success"
+          hint="vs prior period"
+        />
         <Stat label="Enrollments" value="268" delta="+4%" deltaTone="success" />
-        <Stat label="Handoff completion" value="64%" delta="−3 pts" deltaTone="danger" hint="On-exchange only" />
-        <Stat label="Plan O sessions" value="411" delta="+38%" deltaTone="success" hint="32% of all quotes" />
+        <Stat
+          label="Handoff completion"
+          value="64%"
+          delta="−3 pts"
+          deltaTone="danger"
+          hint="On-exchange only"
+        />
+        <Stat
+          label="Plan O sessions"
+          value="411"
+          delta="+38%"
+          deltaTone="success"
+          hint="32% of all quotes"
+        />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-5">
@@ -447,7 +510,11 @@ export function DashboardScreen() {
           title="Quotes and enrollments"
           meta="Accent = current period, neutral = prior period"
           className="lg:col-span-3"
-          actions={<Btn size="sm" variant="ghost">Drill through</Btn>}
+          actions={
+            <Btn size="sm" variant="ghost">
+              Drill through
+            </Btn>
+          }
         >
           <Bars
             series={[142, 168, 155, 190, 176, 205, 188, 248]}
@@ -484,15 +551,42 @@ export function DashboardScreen() {
             <Table
               columns={["Agency", "Quotes", "Enrolled", "Rate", "Trend"]}
               rows={[
-                ["Northwind Master", "612", "148", "24%", <Badge key="a" tone="success" dot>Up</Badge>],
-                ["Harbor Point", "398", "79", "20%", <Badge key="b" dot>Flat</Badge>],
-                ["Cedar Ridge", "274", "41", "15%", <Badge key="c" tone="danger" dot>Down</Badge>],
+                [
+                  "Northwind Master",
+                  "612",
+                  "148",
+                  "24%",
+                  <Badge key="a" tone="success" dot>
+                    Up
+                  </Badge>,
+                ],
+                [
+                  "Harbor Point",
+                  "398",
+                  "79",
+                  "20%",
+                  <Badge key="b" dot>
+                    Flat
+                  </Badge>,
+                ],
+                [
+                  "Cedar Ridge",
+                  "274",
+                  "41",
+                  "15%",
+                  <Badge key="c" tone="danger" dot>
+                    Down
+                  </Badge>,
+                ],
               ]}
             />
           </div>
         </Panel>
 
-        <Panel title="AI interaction reporting" meta="Governance view of assistant and Plan O usage">
+        <Panel
+          title="AI interaction reporting"
+          meta="Governance view of assistant and Plan O usage"
+        >
           <div className="rounded-[var(--radius)] border border-ai/30 bg-ai/[0.06] px-3 py-2.5">
             <p className="flex items-center gap-1.5 text-[11px] font-semibold text-ai">
               <span className="size-1.5 rounded-full bg-ai" aria-hidden="true" /> AI-derived insight
@@ -552,9 +646,9 @@ export function AgentQuickQuoteScreen() {
               ]}
             />
             <p className="text-[11px] leading-relaxed text-muted-foreground">
-              Visible because your role holds commission.view. Without it this section is absent, not
-              zeroed — and it never renders inside the quote body, so it cannot leak into a shared
-              output.
+              Visible because your role holds commission.view. Without it this section is absent,
+              not zeroed — and it never renders inside the quote body, so it cannot leak into a
+              shared output.
             </p>
           </div>
         ),
@@ -603,10 +697,12 @@ export function AgentQuickQuoteScreen() {
           <Panel title="Attribution">
             <ul className="space-y-2 text-xs text-muted-foreground">
               <li>
-                Lead: <span className="font-medium text-foreground">Delgado household (L-7688)</span>
+                Lead:{" "}
+                <span className="font-medium text-foreground">Delgado household (L-7688)</span>
               </li>
               <li>
-                Selling agency: <span className="font-medium text-foreground">Northwind Master</span>
+                Selling agency:{" "}
+                <span className="font-medium text-foreground">Northwind Master</span>
               </li>
               <li>
                 Selling agent: <span className="font-medium text-foreground">You</span>
@@ -690,7 +786,7 @@ const TIMELINE: TimelineEntry[] = [
   {
     kind: "human",
     title: "Callback requested",
-    body: "\"Best after 6pm.\" Task auto-created and assigned to you.",
+    body: '"Best after 6pm." Task auto-created and assigned to you.',
     meta: "23 Aug, 18:02",
     actor: "Consumer",
   },
@@ -738,7 +834,11 @@ export function LeadDetailScreen() {
         ),
         "Next actions": (
           <DrawerList
-            items={["Call after 6pm today", "Re-send quote with 2 lower-deductible options", "Add dental to cart"]}
+            items={[
+              "Call after 6pm today",
+              "Re-send quote with 2 lower-deductible options",
+              "Add dental to cart",
+            ]}
           />
         ),
       }}
@@ -775,18 +875,20 @@ export function LeadDetailScreen() {
       </div>
 
       <div className="flex flex-wrap gap-1.5 border-b border-border pb-2">
-        {["Overview", "Quotes (1)", "Applications (0)", "Documents (2)", "Messages (4)"].map((t, i) => (
-          <span
-            key={t}
-            className={
-              i === 0
-                ? "border-b-2 border-primary px-2.5 pb-1.5 text-[13px] font-semibold"
-                : "px-2.5 pb-1.5 text-[13px] text-muted-foreground"
-            }
-          >
-            {t}
-          </span>
-        ))}
+        {["Overview", "Quotes (1)", "Applications (0)", "Documents (2)", "Messages (4)"].map(
+          (t, i) => (
+            <span
+              key={t}
+              className={
+                i === 0
+                  ? "border-b-2 border-primary px-2.5 pb-1.5 text-[13px] font-semibold"
+                  : "px-2.5 pb-1.5 text-[13px] text-muted-foreground"
+              }
+            >
+              {t}
+            </span>
+          ),
+        )}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_18rem]">

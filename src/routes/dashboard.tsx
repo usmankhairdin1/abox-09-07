@@ -53,7 +53,11 @@ function DashboardPage() {
         }
       />
 
-      <WPanel title="Filter bar" id="SCR_DASHBOARD_FILTERS" meta="Filters cascade: entity options are limited by workspace, product options by sellability">
+      <WPanel
+        title="Filter bar"
+        id="SCR_DASHBOARD_FILTERS"
+        meta="Filters cascade: entity options are limited by workspace, product options by sellability"
+      >
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
           {[
             `${labels.workspace}`,
@@ -63,7 +67,9 @@ function DashboardPage() {
             `${labels.agent} / team`,
           ].map((f) => (
             <div key={f} className="rounded-md border border-border px-2.5 py-2">
-              <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{f}</p>
+              <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                {f}
+              </p>
               <WLine w="70%" className="mt-1.5" />
             </div>
           ))}
@@ -81,7 +87,9 @@ function DashboardPage() {
           { id: "KPI_ACTIVE", label: `Active ${labels.member.toLowerCase()}s` },
         ].map((k) => (
           <div key={k.id} className="rounded-lg border border-border bg-card p-3">
-            <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{k.id}</p>
+            <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+              {k.id}
+            </p>
             <p className="mt-1 text-sm font-medium">{k.label}</p>
             <WLine w="45%" className="mt-2 h-4" />
             <WLine w="65%" className="mt-2 h-1.5 bg-muted/70" />
@@ -90,23 +98,31 @@ function DashboardPage() {
       </div>
 
       <div className="grid gap-3 lg:grid-cols-2">
-        <WPanel title="Funnel" id="SCR_DASHBOARD_FUNNEL" meta="Shop → quote → cart → application → submitted → effectuated">
+        <WPanel
+          title="Funnel"
+          id="SCR_DASHBOARD_FUNNEL"
+          meta="Shop → quote → cart → application → submitted → effectuated"
+        >
           <div className="space-y-1.5">
-            {["Shopping sessions", "Quotes", "Carts", "Applications", "Submitted", "Effectuated"].map(
-              (s, i) => (
-                <div key={s} className="flex items-center gap-2">
-                  <span className="w-36 shrink-0 text-[11px] text-muted-foreground">{s}</span>
-                  <WBox className="h-6 flex-1 justify-start p-0">
-                    <div
-                      className="h-full rounded bg-muted"
-                      style={{ width: `${100 - i * 14}%` }}
-                      aria-hidden="true"
-                    />
-                  </WBox>
-                </div>
-
-              ),
-            )}
+            {[
+              "Shopping sessions",
+              "Quotes",
+              "Carts",
+              "Applications",
+              "Submitted",
+              "Effectuated",
+            ].map((s, i) => (
+              <div key={s} className="flex items-center gap-2">
+                <span className="w-36 shrink-0 text-[11px] text-muted-foreground">{s}</span>
+                <WBox className="h-6 flex-1 justify-start p-0">
+                  <div
+                    className="h-full rounded bg-muted"
+                    style={{ width: `${100 - i * 14}%` }}
+                    aria-hidden="true"
+                  />
+                </WBox>
+              </div>
+            ))}
           </div>
           <Annotation className="mt-2">
             Stage names must match the Module 1 event model. Off-exchange and ancillary lines enter
@@ -114,7 +130,11 @@ function DashboardPage() {
           </Annotation>
         </WPanel>
 
-        <WPanel title="Quote activity" id="SCR_DASHBOARD_QUOTES" meta="By day, channel (D2C vs agent assisted) and product">
+        <WPanel
+          title="Quote activity"
+          id="SCR_DASHBOARD_QUOTES"
+          meta="By day, channel (D2C vs agent assisted) and product"
+        >
           <WChart bars={12} />
           <div className="mt-2 flex flex-wrap gap-1.5">
             {["D2C", "Agent assisted", "Shared quote", "Quick quote"].map((s) => (
@@ -123,7 +143,11 @@ function DashboardPage() {
           </div>
         </WPanel>
 
-        <WPanel title={`${labels.lead} activity`} id="SCR_DASHBOARD_LEADS" meta="Source, status, ageing and assignment">
+        <WPanel
+          title={`${labels.lead} activity`}
+          id="SCR_DASHBOARD_LEADS"
+          meta="Source, status, ageing and assignment"
+        >
           <WChart bars={9} />
           <div className="mt-3">
             <WRow trailing={<Pill>Open</Pill>} />
@@ -147,8 +171,8 @@ function DashboardPage() {
             </div>
             <WChart bars={10} height={100} />
             <Annotation className="mt-2">
-              Covers PMPM, PEPM, PCPM, flat fee, contingent, overrides, upline and super bonuses, and
-              recurring/annual bonus models as configured on the schedule.
+              Covers PMPM, PEPM, PCPM, flat fee, contingent, overrides, upline and super bonuses,
+              and recurring/annual bonus models as configured on the schedule.
             </Annotation>
           </WPanel>
         ) : (
@@ -178,10 +202,10 @@ function DashboardPage() {
       </div>
 
       <AclNote>
-        Every metric is entity scoped: an {labels.agent.toLowerCase()} sees only their own production,
-        an {labels.agency.toLowerCase()} admin sees their entity plus downline, platform admins see
-        all. Cross-entity comparison is only available where the relationship grants it. Exports
-        inherit the same scope and are logged.
+        Every metric is entity scoped: an {labels.agent.toLowerCase()} sees only their own
+        production, an {labels.agency.toLowerCase()} admin sees their entity plus downline, platform
+        admins see all. Cross-entity comparison is only available where the relationship grants it.
+        Exports inherit the same scope and are logged.
       </AclNote>
     </AppShell>
   );

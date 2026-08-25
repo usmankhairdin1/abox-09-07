@@ -1,6 +1,7 @@
 import { SRC_BLUEPRINT, SRC_IA, SRC_RECON, screens } from "./types";
 
-const WS = "WS_PLATFORM (authoring) — WS_AGENCY read-only where an agency may view its assigned forms";
+const WS =
+  "WS_PLATFORM (authoring) — WS_AGENCY read-only where an agency may view its assigned forms";
 const MOD = "MOD_FORMS_ENROLLMENT (configurator area)";
 const SRC = `${SRC_BLUEPRINT} (form configurator, dynamic forms, validation, signature settings); ${SRC_IA} (SCR_FORMCFG_*); ${SRC_RECON} — configurator is explicitly outside Module 1`;
 
@@ -17,9 +18,25 @@ export const FORM_CONFIGURATOR = screens([
     user: "Platform form administrator; agency admin in read-only where permitted",
     purpose:
       "The catalog of every form ABox can run: which product, state and carrier each serves, which version is live, and what is in draft. Entry point to every other configurator screen.",
-    actions: ["Search and filter forms", "Create a form", "Duplicate a form as a new draft", "Open a version", "Publish or retire a version", "Compare two versions"],
-    objects: ["Form", "Form version", "Assignment rules (product / state / carrier)", "Usage count of live applications on each version"],
-    config: ["Naming and ID conventions", "Ownership: platform-authored vs agency-authored forms", "Who may publish"],
+    actions: [
+      "Search and filter forms",
+      "Create a form",
+      "Duplicate a form as a new draft",
+      "Open a version",
+      "Publish or retire a version",
+      "Compare two versions",
+    ],
+    objects: [
+      "Form",
+      "Form version",
+      "Assignment rules (product / state / carrier)",
+      "Usage count of live applications on each version",
+    ],
+    config: [
+      "Naming and ID conventions",
+      "Ownership: platform-authored vs agency-authored forms",
+      "Who may publish",
+    ],
     acl: [
       "form.author is platform-level; form.view may be granted to agency admins",
       "Publishing is a distinct permission from editing",
@@ -33,14 +50,48 @@ export const FORM_CONFIGURATOR = screens([
       "Audit: version publish and retire history",
       "Next actions: open field builder, edit rules, preview",
     ],
-    assistant: "Finds forms by product or state and explains version states. It does not author or publish.",
+    assistant:
+      "Finds forms by product or state and explains version states. It does not author or publish.",
     source: SRC,
-    assumptions: ["Forms are platform-governed by default; agency-authored forms are a permissioned exception, not the norm."],
+    assumptions: [
+      "Forms are platform-governed by default; agency-authored forms are a permissioned exception, not the norm.",
+    ],
     canvas: [
-      { title: "Filters", id: "LIB-FILTERS", kind: "actions", items: ["Product line", "State", "Carrier", "Status", "Owner"], wide: true },
-      { title: "Form list", id: "LIB-LIST", kind: "table", items: ["Form name", "Product", "States", "Carrier", "Live version", "Draft", "In-flight apps", "Updated"], wide: true },
-      { title: "Version panel", id: "LIB-VERSIONS", kind: "list", items: ["v3 — live since date", "v4 — draft", "v2 — retired, 12 applications still pinned"] },
-      { title: "Create", id: "LIB-CREATE", kind: "actions", items: ["New form", "Duplicate as draft", "Import from template"] },
+      {
+        title: "Filters",
+        id: "LIB-FILTERS",
+        kind: "actions",
+        items: ["Product line", "State", "Carrier", "Status", "Owner"],
+        wide: true,
+      },
+      {
+        title: "Form list",
+        id: "LIB-LIST",
+        kind: "table",
+        items: [
+          "Form name",
+          "Product",
+          "States",
+          "Carrier",
+          "Live version",
+          "Draft",
+          "In-flight apps",
+          "Updated",
+        ],
+        wide: true,
+      },
+      {
+        title: "Version panel",
+        id: "LIB-VERSIONS",
+        kind: "list",
+        items: ["v3 — live since date", "v4 — draft", "v2 — retired, 12 applications still pinned"],
+      },
+      {
+        title: "Create",
+        id: "LIB-CREATE",
+        kind: "actions",
+        items: ["New form", "Duplicate as draft", "Import from template"],
+      },
     ],
   },
   {
@@ -55,10 +106,31 @@ export const FORM_CONFIGURATOR = screens([
     user: "Platform form administrator",
     purpose:
       "Decides which form version runs for a given product, state, carrier and effective date. This is the resolver — without it, the runtime cannot know which form to render.",
-    actions: ["Add a rule", "Set precedence", "Set effective date range", "Test resolution against a sample case", "Detect conflicts", "Publish rule set"],
-    objects: ["Resolution rule", "Rule precedence order", "Effective date window", "Conflict report", "Resolution test result"],
-    config: ["Rule dimensions in use", "Precedence model (most specific wins)", "Default/fallback form when no rule matches"],
-    acl: ["form.rules.manage, platform only", "Rule changes are versioned and take effect only on publish", "No agency-level override of a platform resolution rule"],
+    actions: [
+      "Add a rule",
+      "Set precedence",
+      "Set effective date range",
+      "Test resolution against a sample case",
+      "Detect conflicts",
+      "Publish rule set",
+    ],
+    objects: [
+      "Resolution rule",
+      "Rule precedence order",
+      "Effective date window",
+      "Conflict report",
+      "Resolution test result",
+    ],
+    config: [
+      "Rule dimensions in use",
+      "Precedence model (most specific wins)",
+      "Default/fallback form when no rule matches",
+    ],
+    acl: [
+      "form.rules.manage, platform only",
+      "Rule changes are versioned and take effect only on publish",
+      "No agency-level override of a platform resolution rule",
+    ],
     drawer: [
       "Context: the rule set being edited and its publish state",
       "Summary: rule count, conflicts detected",
@@ -69,12 +141,49 @@ export const FORM_CONFIGURATOR = screens([
     ],
     assistant: "Explains why a test case resolved to a particular version. It cannot add rules.",
     source: SRC,
-    assumptions: ["Resolution is evaluated at application start and pinned; it is not re-evaluated mid-application."],
+    assumptions: [
+      "Resolution is evaluated at application start and pinned; it is not re-evaluated mid-application.",
+    ],
     canvas: [
-      { title: "Rule table", id: "RULES-TABLE", kind: "table", items: ["Product", "State", "Carrier", "Effective from", "Effective to", "Form version", "Precedence"], wide: true },
-      { title: "Conflict detection", id: "RULES-CONFLICT", kind: "checks", items: ["Overlapping windows for the same key", "Unreachable rule (shadowed by a more specific one)", "Gap: state with no matching rule"] },
-      { title: "Resolution test", id: "RULES-TEST", kind: "fields", items: ["Product", "State", "Carrier", "Effective date"], note: "Returns the resolved form version and the rule that produced it." },
-      { title: "Fallback", id: "RULES-FALLBACK", kind: "box", note: "No match must fail loudly — the product becomes non-sellable off-exchange rather than silently running a default form.", wide: true },
+      {
+        title: "Rule table",
+        id: "RULES-TABLE",
+        kind: "table",
+        items: [
+          "Product",
+          "State",
+          "Carrier",
+          "Effective from",
+          "Effective to",
+          "Form version",
+          "Precedence",
+        ],
+        wide: true,
+      },
+      {
+        title: "Conflict detection",
+        id: "RULES-CONFLICT",
+        kind: "checks",
+        items: [
+          "Overlapping windows for the same key",
+          "Unreachable rule (shadowed by a more specific one)",
+          "Gap: state with no matching rule",
+        ],
+      },
+      {
+        title: "Resolution test",
+        id: "RULES-TEST",
+        kind: "fields",
+        items: ["Product", "State", "Carrier", "Effective date"],
+        note: "Returns the resolved form version and the rule that produced it.",
+      },
+      {
+        title: "Fallback",
+        id: "RULES-FALLBACK",
+        kind: "box",
+        note: "No match must fail loudly — the product becomes non-sellable off-exchange rather than silently running a default form.",
+        wide: true,
+      },
     ],
   },
   {
@@ -89,8 +198,22 @@ export const FORM_CONFIGURATOR = screens([
     user: "Platform form administrator",
     purpose:
       "Builds the sections and fields of a form version: field type, label, help text, data binding to the canonical object model, sensitivity and who may complete it.",
-    actions: ["Add section", "Add field", "Reorder by drag", "Bind a field to a canonical attribute", "Mark applicant-only", "Mark sensitive", "Set default value"],
-    objects: ["Section", "Field", "Canonical attribute binding", "Sensitivity classification", "Completion role restriction"],
+    actions: [
+      "Add section",
+      "Add field",
+      "Reorder by drag",
+      "Bind a field to a canonical attribute",
+      "Mark applicant-only",
+      "Mark sensitive",
+      "Set default value",
+    ],
+    objects: [
+      "Section",
+      "Field",
+      "Canonical attribute binding",
+      "Sensitivity classification",
+      "Completion role restriction",
+    ],
     config: [
       "Field types available (text, date, select, multi-select, address, currency, attestation, upload trigger)",
       "Canonical attribute dictionary the field can bind to",
@@ -110,14 +233,54 @@ export const FORM_CONFIGURATOR = screens([
       "Audit: field-level change history",
       "Next actions: add logic, add validation, preview",
     ],
-    assistant: "Suggests an existing canonical attribute for a new field so authors do not create duplicates. Suggestions require human confirmation.",
+    assistant:
+      "Suggests an existing canonical attribute for a new field so authors do not create duplicates. Suggestions require human confirmation.",
     source: SRC,
-    assumptions: ["A canonical attribute dictionary exists per the North Star object model; unbound free fields are permitted but flagged."],
+    assumptions: [
+      "A canonical attribute dictionary exists per the North Star object model; unbound free fields are permitted but flagged.",
+    ],
     canvas: [
-      { title: "Section tree", id: "FIELDS-TREE", kind: "tree", items: ["Applicant", "Household", "Coverage history", "Eligibility questions", "Documents", "Signature"] },
-      { title: "Field list", id: "FIELDS-LIST", kind: "table", items: ["Label", "Type", "Bound attribute", "Required", "Sensitive", "Applicant-only"] },
-      { title: "Field inspector", id: "FIELDS-INSPECT", kind: "fields", items: ["Label", "Help text", "Type", "Bound attribute", "Default", "Sensitivity class", "Completion role"], wide: true },
-      { title: "Unbound warning", id: "FIELDS-UNBOUND", kind: "box", note: "Unbound fields cannot appear in reports or EDI mappings. The builder shows the count and blocks publish above a configured threshold.", wide: true },
+      {
+        title: "Section tree",
+        id: "FIELDS-TREE",
+        kind: "tree",
+        items: [
+          "Applicant",
+          "Household",
+          "Coverage history",
+          "Eligibility questions",
+          "Documents",
+          "Signature",
+        ],
+      },
+      {
+        title: "Field list",
+        id: "FIELDS-LIST",
+        kind: "table",
+        items: ["Label", "Type", "Bound attribute", "Required", "Sensitive", "Applicant-only"],
+      },
+      {
+        title: "Field inspector",
+        id: "FIELDS-INSPECT",
+        kind: "fields",
+        items: [
+          "Label",
+          "Help text",
+          "Type",
+          "Bound attribute",
+          "Default",
+          "Sensitivity class",
+          "Completion role",
+        ],
+        wide: true,
+      },
+      {
+        title: "Unbound warning",
+        id: "FIELDS-UNBOUND",
+        kind: "box",
+        note: "Unbound fields cannot appear in reports or EDI mappings. The builder shows the count and blocks publish above a configured threshold.",
+        wide: true,
+      },
     ],
   },
   {
@@ -132,10 +295,29 @@ export const FORM_CONFIGURATOR = screens([
     user: "Platform form administrator",
     purpose:
       "Defines when sections, fields and document requirements appear, based on prior answers and known member facts, and proves the logic is reachable and terminating.",
-    actions: ["Add a rule", "Group conditions", "Target a section, field or document requirement", "Simulate an answer path", "Detect unreachable branches", "View logic as a graph"],
-    objects: ["Logic rule", "Condition group", "Target element", "Simulation path", "Reachability report"],
-    config: ["Available operators", "Whether cross-section conditions are allowed", "Whether logic may reference member record facts, not just answers"],
-    acl: ["form.author; logic that references sensitive attributes needs the sensitive-data authoring permission"],
+    actions: [
+      "Add a rule",
+      "Group conditions",
+      "Target a section, field or document requirement",
+      "Simulate an answer path",
+      "Detect unreachable branches",
+      "View logic as a graph",
+    ],
+    objects: [
+      "Logic rule",
+      "Condition group",
+      "Target element",
+      "Simulation path",
+      "Reachability report",
+    ],
+    config: [
+      "Available operators",
+      "Whether cross-section conditions are allowed",
+      "Whether logic may reference member record facts, not just answers",
+    ],
+    acl: [
+      "form.author; logic that references sensitive attributes needs the sensitive-data authoring permission",
+    ],
     drawer: [
       "Context: form version and selected rule",
       "Summary: rule count, unreachable targets",
@@ -144,14 +326,47 @@ export const FORM_CONFIGURATOR = screens([
       "Audit: logic changes",
       "Next actions: simulate, fix unreachable, preview",
     ],
-    assistant: "Explains why a field did or did not appear on a simulated path. It cannot write rules.",
+    assistant:
+      "Explains why a field did or did not appear on a simulated path. It cannot write rules.",
     source: SRC,
-    assumptions: ["Logic is declarative rule data, not script, so it can be versioned and audited."],
+    assumptions: [
+      "Logic is declarative rule data, not script, so it can be versioned and audited.",
+    ],
     canvas: [
-      { title: "Rule builder", id: "LOGIC-BUILD", kind: "editor", items: ["WHEN answer to <field> <operator> <value>", "AND / OR condition group", "THEN show / require / skip <target>"], wide: true },
-      { title: "Logic graph", id: "LOGIC-GRAPH", kind: "box", note: "Node-and-edge view of section flow so a reviewer can see branches at a glance." },
-      { title: "Simulation", id: "LOGIC-SIM", kind: "list", items: ["Set answers", "Step through resulting sections", "Show which rule fired"] },
-      { title: "Reachability", id: "LOGIC-REACH", kind: "checks", items: ["Every section reachable on some path", "No required field on an unreachable path", "No circular condition"], wide: true },
+      {
+        title: "Rule builder",
+        id: "LOGIC-BUILD",
+        kind: "editor",
+        items: [
+          "WHEN answer to <field> <operator> <value>",
+          "AND / OR condition group",
+          "THEN show / require / skip <target>",
+        ],
+        wide: true,
+      },
+      {
+        title: "Logic graph",
+        id: "LOGIC-GRAPH",
+        kind: "box",
+        note: "Node-and-edge view of section flow so a reviewer can see branches at a glance.",
+      },
+      {
+        title: "Simulation",
+        id: "LOGIC-SIM",
+        kind: "list",
+        items: ["Set answers", "Step through resulting sections", "Show which rule fired"],
+      },
+      {
+        title: "Reachability",
+        id: "LOGIC-REACH",
+        kind: "checks",
+        items: [
+          "Every section reachable on some path",
+          "No required field on an unreachable path",
+          "No circular condition",
+        ],
+        wide: true,
+      },
     ],
   },
   {
@@ -166,8 +381,21 @@ export const FORM_CONFIGURATOR = screens([
     user: "Platform form administrator",
     purpose:
       "Declares what proof a form version demands and how it must be signed — the two settings that drive the runtime document-capture and e-signature screens.",
-    actions: ["Add a document requirement", "Make a requirement conditional", "Set accepted file types", "Configure signer roles and order", "Choose signature method", "Set disclosure text"],
-    objects: ["Document requirement", "Conditional trigger", "Signer role definition", "Signature method", "Disclosure text block"],
+    actions: [
+      "Add a document requirement",
+      "Make a requirement conditional",
+      "Set accepted file types",
+      "Configure signer roles and order",
+      "Choose signature method",
+      "Set disclosure text",
+    ],
+    objects: [
+      "Document requirement",
+      "Conditional trigger",
+      "Signer role definition",
+      "Signature method",
+      "Disclosure text block",
+    ],
     config: [
       "Requirement name, description and example shown to the applicant",
       "Blocking vs advisory requirement",
@@ -189,12 +417,47 @@ export const FORM_CONFIGURATOR = screens([
     ],
     assistant: "Explains how a setting will look at runtime. It cannot edit disclosure text.",
     source: SRC,
-    assumptions: ["Disclosure text is treated as compliance-controlled content requiring dual approval."],
+    assumptions: [
+      "Disclosure text is treated as compliance-controlled content requiring dual approval.",
+    ],
     canvas: [
-      { title: "Document requirements", id: "DOCSIG-DOCS", kind: "table", items: ["Requirement", "Condition", "Accepted types", "Blocking", "Applicant-visible description"], wide: true },
-      { title: "Signer configuration", id: "DOCSIG-SIGNERS", kind: "list", items: ["Applicant — required", "Spouse — conditional on household", "Agent attestation — required in assisted mode"] },
-      { title: "Signature method", id: "DOCSIG-METHOD", kind: "actions", items: ["Typed adoption", "Drawn", "Third-party provider"] },
-      { title: "Disclosures", id: "DOCSIG-DISCLOSE", kind: "editor", items: ["Truthfulness attestation", "State fraud warning", "E-sign consent"], wide: true, note: "Compliance-gated content. Edits route to a second approver before they can be published." },
+      {
+        title: "Document requirements",
+        id: "DOCSIG-DOCS",
+        kind: "table",
+        items: [
+          "Requirement",
+          "Condition",
+          "Accepted types",
+          "Blocking",
+          "Applicant-visible description",
+        ],
+        wide: true,
+      },
+      {
+        title: "Signer configuration",
+        id: "DOCSIG-SIGNERS",
+        kind: "list",
+        items: [
+          "Applicant — required",
+          "Spouse — conditional on household",
+          "Agent attestation — required in assisted mode",
+        ],
+      },
+      {
+        title: "Signature method",
+        id: "DOCSIG-METHOD",
+        kind: "actions",
+        items: ["Typed adoption", "Drawn", "Third-party provider"],
+      },
+      {
+        title: "Disclosures",
+        id: "DOCSIG-DISCLOSE",
+        kind: "editor",
+        items: ["Truthfulness attestation", "State fraud warning", "E-sign consent"],
+        wide: true,
+        note: "Compliance-gated content. Edits route to a second approver before they can be published.",
+      },
     ],
   },
   {
@@ -209,10 +472,23 @@ export const FORM_CONFIGURATOR = screens([
     user: "Platform form administrator",
     purpose:
       "Defines what counts as an acceptable answer: format, range, cross-field consistency and carrier-specific constraints, each with the message the applicant sees and whether it blocks.",
-    actions: ["Add a validation rule", "Set severity", "Author the error message", "Test against sample values", "Import carrier constraint set"],
+    actions: [
+      "Add a validation rule",
+      "Set severity",
+      "Author the error message",
+      "Test against sample values",
+      "Import carrier constraint set",
+    ],
     objects: ["Validation rule", "Severity (blocking / warning)", "Error message", "Test case set"],
-    config: ["Rule types available", "Message copy and tone", "Which rules run client-side vs server-side", "Carrier constraint packs"],
-    acl: ["form.author; downgrading a blocking rule to a warning is logged and reported because it changes submission quality"],
+    config: [
+      "Rule types available",
+      "Message copy and tone",
+      "Which rules run client-side vs server-side",
+      "Carrier constraint packs",
+    ],
+    acl: [
+      "form.author; downgrading a blocking rule to a warning is logged and reported because it changes submission quality",
+    ],
     drawer: [
       "Context: form version and field under validation",
       "Summary: rule count by severity",
@@ -223,12 +499,40 @@ export const FORM_CONFIGURATOR = screens([
     ],
     assistant: "Drafts clearer error copy on request; the author must confirm before it is saved.",
     source: SRC,
-    assumptions: ["All blocking validations are enforced server-side regardless of client-side behaviour."],
+    assumptions: [
+      "All blocking validations are enforced server-side regardless of client-side behaviour.",
+    ],
     canvas: [
-      { title: "Rules", id: "VAL-RULES", kind: "table", items: ["Field(s)", "Rule", "Severity", "Message", "Runs on"], wide: true },
-      { title: "Cross-field rules", id: "VAL-CROSS", kind: "list", items: ["Effective date after signature date", "Dependent DOB consistent with relationship", "SEP answer requires a qualifying event date"] },
-      { title: "Test values", id: "VAL-TEST", kind: "fields", items: ["Sample value", "Expected result"] },
-      { title: "Server enforcement", id: "VAL-SERVER", kind: "box", note: "Client-side validation is a convenience only. Every blocking rule is re-checked on save and at submission release.", wide: true },
+      {
+        title: "Rules",
+        id: "VAL-RULES",
+        kind: "table",
+        items: ["Field(s)", "Rule", "Severity", "Message", "Runs on"],
+        wide: true,
+      },
+      {
+        title: "Cross-field rules",
+        id: "VAL-CROSS",
+        kind: "list",
+        items: [
+          "Effective date after signature date",
+          "Dependent DOB consistent with relationship",
+          "SEP answer requires a qualifying event date",
+        ],
+      },
+      {
+        title: "Test values",
+        id: "VAL-TEST",
+        kind: "fields",
+        items: ["Sample value", "Expected result"],
+      },
+      {
+        title: "Server enforcement",
+        id: "VAL-SERVER",
+        kind: "box",
+        note: "Client-side validation is a convenience only. Every blocking rule is re-checked on save and at submission release.",
+        wide: true,
+      },
     ],
   },
   {
@@ -243,10 +547,26 @@ export const FORM_CONFIGURATOR = screens([
     user: "Platform form administrator, compliance reviewer",
     purpose:
       "Runs a draft form version exactly as an applicant or agent would experience it, in a sandbox that creates no application record and submits nothing.",
-    actions: ["Preview as consumer", "Preview as assisting agent", "Preview a specific state/carrier resolution", "Walk a simulated answer path", "Export a PDF of the whole form for compliance review"],
-    objects: ["Draft form version", "Simulated answer set", "Preview session (discarded, never an application)", "Compliance export"],
-    config: ["Which personas are available to preview as", "Whether synthetic data may pre-fill preview sessions"],
-    acl: ["form.view; preview never writes an application, never submits, and is watermarked as preview throughout"],
+    actions: [
+      "Preview as consumer",
+      "Preview as assisting agent",
+      "Preview a specific state/carrier resolution",
+      "Walk a simulated answer path",
+      "Export a PDF of the whole form for compliance review",
+    ],
+    objects: [
+      "Draft form version",
+      "Simulated answer set",
+      "Preview session (discarded, never an application)",
+      "Compliance export",
+    ],
+    config: [
+      "Which personas are available to preview as",
+      "Whether synthetic data may pre-fill preview sessions",
+    ],
+    acl: [
+      "form.view; preview never writes an application, never submits, and is watermarked as preview throughout",
+    ],
     drawer: [
       "Context: version and resolution being previewed",
       "Summary: sections shown on the current path",
@@ -259,10 +579,42 @@ export const FORM_CONFIGURATOR = screens([
     source: SRC,
     assumptions: ["Preview uses synthetic data only; it never reads a real member record."],
     canvas: [
-      { title: "Preview controls", id: "PREV-CTRL", kind: "actions", items: ["As consumer", "As assisting agent", "State / carrier", "Effective date", "Reset path"], wide: true },
-      { title: "Rendered form", id: "PREV-RENDER", kind: "box", note: "Full runtime rendering inside a watermarked preview frame. No application record is created.", wide: true },
-      { title: "Path trace", id: "PREV-TRACE", kind: "list", items: ["Section shown — rule that showed it", "Field hidden — rule that hid it", "Requirement triggered"] },
-      { title: "Compliance export", id: "PREV-EXPORT", kind: "actions", items: ["Export full form PDF", "Export logic summary", "Export disclosure text"] },
+      {
+        title: "Preview controls",
+        id: "PREV-CTRL",
+        kind: "actions",
+        items: [
+          "As consumer",
+          "As assisting agent",
+          "State / carrier",
+          "Effective date",
+          "Reset path",
+        ],
+        wide: true,
+      },
+      {
+        title: "Rendered form",
+        id: "PREV-RENDER",
+        kind: "box",
+        note: "Full runtime rendering inside a watermarked preview frame. No application record is created.",
+        wide: true,
+      },
+      {
+        title: "Path trace",
+        id: "PREV-TRACE",
+        kind: "list",
+        items: [
+          "Section shown — rule that showed it",
+          "Field hidden — rule that hid it",
+          "Requirement triggered",
+        ],
+      },
+      {
+        title: "Compliance export",
+        id: "PREV-EXPORT",
+        kind: "actions",
+        items: ["Export full form PDF", "Export logic summary", "Export disclosure text"],
+      },
     ],
   },
   {
@@ -277,9 +629,26 @@ export const FORM_CONFIGURATOR = screens([
     user: "Platform form administrator, compliance reviewer, auditor",
     purpose:
       "Controls the lifecycle of form versions and proves what was in force when any given application was completed — the evidence trail a carrier or regulator asks for.",
-    actions: ["Compare two versions", "Publish a draft", "Retire a version", "View applications pinned to a version", "Export an audit pack for a date range", "Roll forward a change into a new draft"],
-    objects: ["Form version", "Change set diff", "Publish record with approver", "Pinned application list", "Audit pack export"],
-    config: ["Approval requirement before publish", "Retention period for retired versions", "Whether concurrent drafts are allowed"],
+    actions: [
+      "Compare two versions",
+      "Publish a draft",
+      "Retire a version",
+      "View applications pinned to a version",
+      "Export an audit pack for a date range",
+      "Roll forward a change into a new draft",
+    ],
+    objects: [
+      "Form version",
+      "Change set diff",
+      "Publish record with approver",
+      "Pinned application list",
+      "Audit pack export",
+    ],
+    config: [
+      "Approval requirement before publish",
+      "Retention period for retired versions",
+      "Whether concurrent drafts are allowed",
+    ],
     acl: [
       "form.publish is separate from form.author and should not be held by the same person for compliance-gated content",
       "Audit pack export is a logged, high-sensitivity action because it contains disclosure text and application references",
@@ -297,10 +666,32 @@ export const FORM_CONFIGURATOR = screens([
     source: SRC,
     assumptions: ["Published versions are immutable; corrections are new versions."],
     canvas: [
-      { title: "Version timeline", id: "VER-TIMELINE", kind: "timeline", items: ["v1 published", "v2 published", "v2 retired", "v3 live", "v4 draft"], wide: true },
-      { title: "Diff", id: "VER-DIFF", kind: "table", items: ["Element", "v3", "v4", "Change type", "Compliance-gated"] },
-      { title: "Publish record", id: "VER-PUBLISH", kind: "kv", items: ["Author", "Approver", "Published at", "Change summary", "Effective from"] },
-      { title: "Pinned applications", id: "VER-PINNED", kind: "box", note: "Lists applications still running on each version so a retirement never breaks a live application.", wide: true },
+      {
+        title: "Version timeline",
+        id: "VER-TIMELINE",
+        kind: "timeline",
+        items: ["v1 published", "v2 published", "v2 retired", "v3 live", "v4 draft"],
+        wide: true,
+      },
+      {
+        title: "Diff",
+        id: "VER-DIFF",
+        kind: "table",
+        items: ["Element", "v3", "v4", "Change type", "Compliance-gated"],
+      },
+      {
+        title: "Publish record",
+        id: "VER-PUBLISH",
+        kind: "kv",
+        items: ["Author", "Approver", "Published at", "Change summary", "Effective from"],
+      },
+      {
+        title: "Pinned applications",
+        id: "VER-PINNED",
+        kind: "box",
+        note: "Lists applications still running on each version so a retirement never breaks a live application.",
+        wide: true,
+      },
     ],
   },
 ]);

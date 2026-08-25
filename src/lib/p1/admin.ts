@@ -17,7 +17,15 @@ export const ADMIN = screens([
     user: "Platform administrator provisioning tenants; agency admin configuring their own marketplace",
     purpose:
       "Provisions a tenant and the consumer marketplaces it presents: domain, identity, which products are exposed, which entry paths are enabled, and which entity is legally presenting it.",
-    actions: ["Create a tenant", "Create a marketplace", "Bind a domain or subdomain", "Select exposed products", "Enable entry paths", "Set the presenting entity and licensure line", "Publish the marketplace"],
+    actions: [
+      "Create a tenant",
+      "Create a marketplace",
+      "Bind a domain or subdomain",
+      "Select exposed products",
+      "Enable entry paths",
+      "Set the presenting entity and licensure line",
+      "Publish the marketplace",
+    ],
     objects: [
       "Tenant",
       "Marketplace",
@@ -47,15 +55,55 @@ export const ADMIN = screens([
       "Audit: creation, product exposure and publish events",
       "Next actions: preview marketplace, configure branding, publish",
     ],
-    assistant: "Explains why a product cannot be exposed on a marketplace by tracing enablement, availability and appointment.",
+    assistant:
+      "Explains why a product cannot be exposed on a marketplace by tracing enablement, availability and appointment.",
     source: SRC,
-    assumptions: ["One agency may present multiple marketplaces; each has its own branding, product exposure and attribution."],
-    m1Seam: "Configures the marketplace that Module 1's landing (UX-001) renders, extending the minimal Module 1 configuration in UX-024 without changing it.",
+    assumptions: [
+      "One agency may present multiple marketplaces; each has its own branding, product exposure and attribution.",
+    ],
+    m1Seam:
+      "Configures the marketplace that Module 1's landing (UX-001) renders, extending the minimal Module 1 configuration in UX-024 without changing it.",
     canvas: [
-      { title: "Tenant", id: "TEN-REC", kind: "fields", items: ["Tenant name", "Owning entity", "Status", "Environment", "Created"], wide: true },
-      { title: "Marketplaces", id: "TEN-MKT", kind: "table", items: ["Marketplace", "Domain", "Presenting entity", "Products exposed", "Entry paths", "Published"], wide: true },
-      { title: "Entry paths", id: "TEN-PATHS", kind: "checks", items: ["Guided (Plan-O)", "Manual browse", "Agent-assisted", "Shared quote link", "Member workspace"] },
-      { title: "Presenting entity block", id: "TEN-PRESENT", kind: "box", note: "Legal name, licensure line and required consumer disclosures. Locked content — configurable identity, non-removable disclosure.", wide: true },
+      {
+        title: "Tenant",
+        id: "TEN-REC",
+        kind: "fields",
+        items: ["Tenant name", "Owning entity", "Status", "Environment", "Created"],
+        wide: true,
+      },
+      {
+        title: "Marketplaces",
+        id: "TEN-MKT",
+        kind: "table",
+        items: [
+          "Marketplace",
+          "Domain",
+          "Presenting entity",
+          "Products exposed",
+          "Entry paths",
+          "Published",
+        ],
+        wide: true,
+      },
+      {
+        title: "Entry paths",
+        id: "TEN-PATHS",
+        kind: "checks",
+        items: [
+          "Guided (Plan-O)",
+          "Manual browse",
+          "Agent-assisted",
+          "Shared quote link",
+          "Member workspace",
+        ],
+      },
+      {
+        title: "Presenting entity block",
+        id: "TEN-PRESENT",
+        kind: "box",
+        note: "Legal name, licensure line and required consumer disclosures. Locked content — configurable identity, non-removable disclosure.",
+        wide: true,
+      },
     ],
   },
   {
@@ -110,13 +158,59 @@ export const ADMIN = screens([
     ],
     assistant: "Shows where a label appears across the platform before it is changed.",
     source: SRC,
-    assumptions: ["Every screen renders labels from the dictionary rather than hardcoded strings; this is a design rule locked in the charter."],
+    assumptions: [
+      "Every screen renders labels from the dictionary rather than hardcoded strings; this is a design rule locked in the charter.",
+    ],
     canvas: [
-      { title: "External marketplace brand", id: "BRN-EXT", kind: "fields", items: ["Logo", "Colours", "Typography", "Marketplace name", "Hero treatment", "Footer content"], wide: true },
-      { title: "Internal shell brand", id: "BRN-INT", kind: "fields", items: ["Platform display name", "Logo", "Accent colour", "Login screen treatment"], wide: true },
-      { title: "Label dictionary", id: "BRN-LABELS", kind: "table", items: ["Term", "Default", "Tenant override", "Locked", "Where it appears"], wide: true },
-      { title: "Locked terms", id: "BRN-LOCKED", kind: "checks", items: ["Regulated product names", "Required disclosure wording", "Non-discrimination notice", "Terms carrying legal meaning"] },
-      { title: "Inheritance", id: "BRN-INHERIT", kind: "list", items: ["Child inherits parent brand", "Child may override logo only", "Child is fully independent"] },
+      {
+        title: "External marketplace brand",
+        id: "BRN-EXT",
+        kind: "fields",
+        items: [
+          "Logo",
+          "Colours",
+          "Typography",
+          "Marketplace name",
+          "Hero treatment",
+          "Footer content",
+        ],
+        wide: true,
+      },
+      {
+        title: "Internal shell brand",
+        id: "BRN-INT",
+        kind: "fields",
+        items: ["Platform display name", "Logo", "Accent colour", "Login screen treatment"],
+        wide: true,
+      },
+      {
+        title: "Label dictionary",
+        id: "BRN-LABELS",
+        kind: "table",
+        items: ["Term", "Default", "Tenant override", "Locked", "Where it appears"],
+        wide: true,
+      },
+      {
+        title: "Locked terms",
+        id: "BRN-LOCKED",
+        kind: "checks",
+        items: [
+          "Regulated product names",
+          "Required disclosure wording",
+          "Non-discrimination notice",
+          "Terms carrying legal meaning",
+        ],
+      },
+      {
+        title: "Inheritance",
+        id: "BRN-INHERIT",
+        kind: "list",
+        items: [
+          "Child inherits parent brand",
+          "Child may override logo only",
+          "Child is fully independent",
+        ],
+      },
     ],
   },
   {
@@ -131,7 +225,14 @@ export const ADMIN = screens([
     user: "Platform administrator; agency admin within delegated bounds",
     purpose:
       "Defines which workspaces a tenant has, what each contains, and how the left navigation is composed per role — the configurability the charter requires, without letting configuration become a security boundary.",
-    actions: ["Enable a workspace for a tenant", "Set the module set per workspace", "Order and group menu items", "Rename menu items", "Set default landing per role", "Preview navigation as a role"],
+    actions: [
+      "Enable a workspace for a tenant",
+      "Set the module set per workspace",
+      "Order and group menu items",
+      "Rename menu items",
+      "Set default landing per role",
+      "Preview navigation as a role",
+    ],
     objects: [
       "Workspace definition and enablement",
       "Module-to-workspace assignment",
@@ -161,14 +262,46 @@ export const ADMIN = screens([
       "Audit: workspace and menu changes",
       "Next actions: preview as role, reorder, publish",
     ],
-    assistant: "Explains, for a given role, why each module is present or absent — distinguishing ACL from menu configuration.",
+    assistant:
+      "Explains, for a given role, why each module is present or absent — distinguishing ACL from menu configuration.",
     source: SRC,
-    assumptions: ["Workspace switching, entity switching and the global bar are platform-fixed; only their contents and labels are configurable."],
+    assumptions: [
+      "Workspace switching, entity switching and the global bar are platform-fixed; only their contents and labels are configurable.",
+    ],
     canvas: [
-      { title: "Workspaces", id: "WSC-LIST", kind: "table", items: ["Workspace", "Enabled", "Modules", "Default landing", "Audience"], wide: true },
-      { title: "Menu composition", id: "WSC-MENU", kind: "tree", items: ["Group: Work", "Group: Sales", "Group: Administration", "Nested: Appointments, Paper & Referrals", "Nested: AI, Plan-O & Governance"] },
-      { title: "Role preview", id: "WSC-PREVIEW", kind: "fields", items: ["Role", "Entity", "Workspace"], note: "Renders the navigation that role would see, annotating each hidden item with the reason: ACL or configuration." },
-      { title: "Guardrail note", id: "WSC-GUARD", kind: "box", note: "Hiding a module is cosmetic. Access is decided by ACL at every request, so a hidden module is still enforced server-side.", wide: true },
+      {
+        title: "Workspaces",
+        id: "WSC-LIST",
+        kind: "table",
+        items: ["Workspace", "Enabled", "Modules", "Default landing", "Audience"],
+        wide: true,
+      },
+      {
+        title: "Menu composition",
+        id: "WSC-MENU",
+        kind: "tree",
+        items: [
+          "Group: Work",
+          "Group: Sales",
+          "Group: Administration",
+          "Nested: Appointments, Paper & Referrals",
+          "Nested: AI, Plan-O & Governance",
+        ],
+      },
+      {
+        title: "Role preview",
+        id: "WSC-PREVIEW",
+        kind: "fields",
+        items: ["Role", "Entity", "Workspace"],
+        note: "Renders the navigation that role would see, annotating each hidden item with the reason: ACL or configuration.",
+      },
+      {
+        title: "Guardrail note",
+        id: "WSC-GUARD",
+        kind: "box",
+        note: "Hiding a module is cosmetic. Access is decided by ACL at every request, so a hidden module is still enforced server-side.",
+        wide: true,
+      },
     ],
   },
   {
@@ -183,7 +316,14 @@ export const ADMIN = screens([
     user: "Platform administrator; agency admin for the flags delegated to them",
     purpose:
       "Controls staged rollout of capabilities per tenant and the synthetic mode used for demos, training and sales — with an unmistakable indication whenever data is not real.",
-    actions: ["Toggle a flag per tenant", "Set a rollout scope", "Enable synthetic mode", "Load a demo dataset", "Reset synthetic data", "View flag change history"],
+    actions: [
+      "Toggle a flag per tenant",
+      "Set a rollout scope",
+      "Enable synthetic mode",
+      "Load a demo dataset",
+      "Reset synthetic data",
+      "View flag change history",
+    ],
     objects: [
       "Feature flag",
       "Flag scope (platform, tenant, entity, role)",
@@ -215,12 +355,45 @@ export const ADMIN = screens([
     ],
     assistant: "Reports which flags are affecting the current tenant and what each enables.",
     source: SRC,
-    assumptions: ["Synthetic mode is a hard sandbox: outbound communications, carrier submissions and payment authorizations are all blocked, not merely discouraged."],
+    assumptions: [
+      "Synthetic mode is a hard sandbox: outbound communications, carrier submissions and payment authorizations are all blocked, not merely discouraged.",
+    ],
     canvas: [
-      { title: "Flags", id: "FLG-LIST", kind: "table", items: ["Flag", "Scope", "State", "Delegable", "Changed by", "Changed at"], wide: true },
-      { title: "Synthetic mode", id: "FLG-SYNTH", kind: "box", note: "When on, every screen carries a persistent synthetic-data banner and outbound sends, submissions and payment authorizations are blocked.", wide: true },
-      { title: "Demo datasets", id: "FLG-DEMO", kind: "list", items: ["IFP shopping demo", "Agency with downline demo", "Commission statement demo", "Reset all synthetic data"] },
-      { title: "Flag vs permission", id: "FLG-NOTE", kind: "checks", items: ["A flag can hide a capability", "A flag can never grant access", "ACL is evaluated independently of every flag"] },
+      {
+        title: "Flags",
+        id: "FLG-LIST",
+        kind: "table",
+        items: ["Flag", "Scope", "State", "Delegable", "Changed by", "Changed at"],
+        wide: true,
+      },
+      {
+        title: "Synthetic mode",
+        id: "FLG-SYNTH",
+        kind: "box",
+        note: "When on, every screen carries a persistent synthetic-data banner and outbound sends, submissions and payment authorizations are blocked.",
+        wide: true,
+      },
+      {
+        title: "Demo datasets",
+        id: "FLG-DEMO",
+        kind: "list",
+        items: [
+          "IFP shopping demo",
+          "Agency with downline demo",
+          "Commission statement demo",
+          "Reset all synthetic data",
+        ],
+      },
+      {
+        title: "Flag vs permission",
+        id: "FLG-NOTE",
+        kind: "checks",
+        items: [
+          "A flag can hide a capability",
+          "A flag can never grant access",
+          "ACL is evaluated independently of every flag",
+        ],
+      },
     ],
   },
   {
@@ -235,7 +408,15 @@ export const ADMIN = screens([
     user: "Agency admin, platform administrator",
     purpose:
       "Decides who gets what: which agent or queue receives a lead, a callback request, a review task or an escalation — with fallbacks, capacity limits and a trace explaining every assignment.",
-    actions: ["Create a routing rule", "Set matching conditions", "Set the target and strategy", "Set fallback", "Set capacity and availability rules", "Simulate routing", "View the routing decision log"],
+    actions: [
+      "Create a routing rule",
+      "Set matching conditions",
+      "Set the target and strategy",
+      "Set fallback",
+      "Set capacity and availability rules",
+      "Simulate routing",
+      "View the routing decision log",
+    ],
     objects: [
       "Routing rule",
       "Matching conditions (product, state, source, language, value band, entity)",
@@ -266,13 +447,44 @@ export const ADMIN = screens([
     ],
     assistant: "Explains why a specific lead or task routed where it did.",
     source: SRC,
-    assumptions: ["Licensing and appointment eligibility are hard filters applied before any distribution strategy runs."],
-    m1Seam: "Generalises the minimal Module 1 routing configuration (UX-025) to all lead, task and escalation types. UX-025 is unchanged.",
+    assumptions: [
+      "Licensing and appointment eligibility are hard filters applied before any distribution strategy runs.",
+    ],
+    m1Seam:
+      "Generalises the minimal Module 1 routing configuration (UX-025) to all lead, task and escalation types. UX-025 is unchanged.",
     canvas: [
-      { title: "Rules", id: "RTE-RULES", kind: "table", items: ["Order", "Conditions", "Target", "Strategy", "Fallback", "Active"], wide: true },
-      { title: "Eligibility filter", id: "RTE-ELIG", kind: "checks", items: ["Agent licensed in the state", "Agent appointed for the carrier where writing is implied", "Agent within capacity", "Agent available in working hours"] },
-      { title: "Simulation", id: "RTE-SIM", kind: "fields", items: ["Lead source", "State", "Product", "Value band", "Time of day"], note: "Returns the assigned target and the rule and strategy that produced it." },
-      { title: "Decision log", id: "RTE-LOG", kind: "table", items: ["When", "Object", "Rule", "Target", "Strategy", "Reassigned"], wide: true },
+      {
+        title: "Rules",
+        id: "RTE-RULES",
+        kind: "table",
+        items: ["Order", "Conditions", "Target", "Strategy", "Fallback", "Active"],
+        wide: true,
+      },
+      {
+        title: "Eligibility filter",
+        id: "RTE-ELIG",
+        kind: "checks",
+        items: [
+          "Agent licensed in the state",
+          "Agent appointed for the carrier where writing is implied",
+          "Agent within capacity",
+          "Agent available in working hours",
+        ],
+      },
+      {
+        title: "Simulation",
+        id: "RTE-SIM",
+        kind: "fields",
+        items: ["Lead source", "State", "Product", "Value band", "Time of day"],
+        note: "Returns the assigned target and the rule and strategy that produced it.",
+      },
+      {
+        title: "Decision log",
+        id: "RTE-LOG",
+        kind: "table",
+        items: ["When", "Object", "Rule", "Target", "Strategy", "Reassigned"],
+        wide: true,
+      },
     ],
   },
   {
@@ -287,7 +499,15 @@ export const ADMIN = screens([
     user: "Platform operations; agency admin sees health only",
     purpose:
       "Every external connection in one register: EDE partner, carrier EDI and API endpoints, rate feeds, e-signature, payment processor, communications providers and identity — with health, credentials by reference, and the events each publishes or consumes.",
-    actions: ["Register an integration", "Set environment and endpoints", "Reference credentials", "Test the connection", "View health and error rates", "Enable or disable", "View the event contract"],
+    actions: [
+      "Register an integration",
+      "Set environment and endpoints",
+      "Reference credentials",
+      "Test the connection",
+      "View health and error rates",
+      "Enable or disable",
+      "View the event contract",
+    ],
     objects: [
       "Integration record",
       "Environment and endpoint configuration",
@@ -316,15 +536,61 @@ export const ADMIN = screens([
       "Audit: configuration changes, credential rotations, enable/disable events",
       "Next actions: test, rotate credentials, view events",
     ],
-    assistant: "Classifies recent errors and identifies which products an integration affects. It cannot change configuration or view credentials.",
+    assistant:
+      "Classifies recent errors and identifies which products an integration affects. It cannot change configuration or view credentials.",
     source: SRC,
-    assumptions: ["The EDE partner handoff used by Module 1 is one integration among many and is registered here without altering the Module 1 handoff screen."],
-    m1Seam: "Registers the EDE partner connection behind Module 1's handoff (UX-023). UX-023 itself is unchanged.",
+    assumptions: [
+      "The EDE partner handoff used by Module 1 is one integration among many and is registered here without altering the Module 1 handoff screen.",
+    ],
+    m1Seam:
+      "Registers the EDE partner connection behind Module 1's handoff (UX-023). UX-023 itself is unchanged.",
     canvas: [
-      { title: "Integration register", id: "INT-REG", kind: "table", items: ["Integration", "Type", "Environment", "Health", "Last success", "Error rate", "Dependent products"], wide: true },
-      { title: "Configuration", id: "INT-CFG", kind: "fields", items: ["Endpoint", "Auth method", "Credential reference", "Timeout", "Retry policy", "Alert threshold"], wide: true },
-      { title: "Event contract", id: "INT-EVENTS", kind: "list", items: ["Events published to ABox", "Events ABox sends", "Payload version", "Backfill support"] },
-      { title: "Credential rule", id: "INT-CRED", kind: "box", note: "Screens display credential names, owners and rotation dates only. No interface in ABox reveals a secret value." },
+      {
+        title: "Integration register",
+        id: "INT-REG",
+        kind: "table",
+        items: [
+          "Integration",
+          "Type",
+          "Environment",
+          "Health",
+          "Last success",
+          "Error rate",
+          "Dependent products",
+        ],
+        wide: true,
+      },
+      {
+        title: "Configuration",
+        id: "INT-CFG",
+        kind: "fields",
+        items: [
+          "Endpoint",
+          "Auth method",
+          "Credential reference",
+          "Timeout",
+          "Retry policy",
+          "Alert threshold",
+        ],
+        wide: true,
+      },
+      {
+        title: "Event contract",
+        id: "INT-EVENTS",
+        kind: "list",
+        items: [
+          "Events published to ABox",
+          "Events ABox sends",
+          "Payload version",
+          "Backfill support",
+        ],
+      },
+      {
+        title: "Credential rule",
+        id: "INT-CRED",
+        kind: "box",
+        note: "Screens display credential names, owners and rotation dates only. No interface in ABox reveals a secret value.",
+      },
     ],
   },
   {
@@ -378,15 +644,66 @@ export const ADMIN = screens([
       "Audit: this console's own use is audited",
       "Next actions: approve exports, export audit pack, adjust policy",
     ],
-    assistant: "Helps locate events and explains guardrails. It cannot approve exports, change policy or alter records.",
+    assistant:
+      "Helps locate events and explains guardrails. It cannot approve exports, change policy or alter records.",
     source: SRC,
-    assumptions: ["The event stream follows the North Star event model, so audit, reporting, notifications and integrations all read one consistent set of events."],
+    assumptions: [
+      "The event stream follows the North Star event model, so audit, reporting, notifications and integrations all read one consistent set of events.",
+    ],
     canvas: [
-      { title: "Event stream", id: "GOV-EVENTS", kind: "table", items: ["When", "Event type", "Object", "Actor", "Entity", "Payload version"], wide: true },
-      { title: "Audit log", id: "GOV-AUDIT", kind: "table", items: ["When", "Actor", "Action", "Object", "Before / after", "Justification", "Sensitive"], wide: true },
-      { title: "Global vs local ACL", id: "GOV-ACL", kind: "list", items: ["Global guardrail permissions (never overridable)", "Platform-delegable permissions", "Local overrides in effect across the tenant", "Refused override attempts"] },
-      { title: "Export controls", id: "GOV-EXPORT", kind: "fields", items: ["Role", "Formats permitted", "Row limit", "Approval threshold", "Watermark policy", "Sensitive-field rule"], wide: true },
-      { title: "Retention & legal hold", id: "GOV-RETAIN", kind: "kv", items: ["Record class", "Retention period", "Legal hold", "Deletion behaviour"] },
+      {
+        title: "Event stream",
+        id: "GOV-EVENTS",
+        kind: "table",
+        items: ["When", "Event type", "Object", "Actor", "Entity", "Payload version"],
+        wide: true,
+      },
+      {
+        title: "Audit log",
+        id: "GOV-AUDIT",
+        kind: "table",
+        items: [
+          "When",
+          "Actor",
+          "Action",
+          "Object",
+          "Before / after",
+          "Justification",
+          "Sensitive",
+        ],
+        wide: true,
+      },
+      {
+        title: "Global vs local ACL",
+        id: "GOV-ACL",
+        kind: "list",
+        items: [
+          "Global guardrail permissions (never overridable)",
+          "Platform-delegable permissions",
+          "Local overrides in effect across the tenant",
+          "Refused override attempts",
+        ],
+      },
+      {
+        title: "Export controls",
+        id: "GOV-EXPORT",
+        kind: "fields",
+        items: [
+          "Role",
+          "Formats permitted",
+          "Row limit",
+          "Approval threshold",
+          "Watermark policy",
+          "Sensitive-field rule",
+        ],
+        wide: true,
+      },
+      {
+        title: "Retention & legal hold",
+        id: "GOV-RETAIN",
+        kind: "kv",
+        items: ["Record class", "Retention period", "Legal hold", "Deletion behaviour"],
+      },
     ],
   },
   {
@@ -401,7 +718,15 @@ export const ADMIN = screens([
     user: "Agency admin, platform content administrator",
     purpose:
       "Authors the content that fills the right drawer and the bottom assistant on every screen — page guidance, FAQs and copilot knowledge — per screen, per audience and per tenant.",
-    actions: ["Select a screen", "Author page guidance", "Manage the FAQ set", "Attach copilot knowledge", "Set audience visibility", "Preview in the drawer and assistant", "Publish"],
+    actions: [
+      "Select a screen",
+      "Author page guidance",
+      "Manage the FAQ set",
+      "Attach copilot knowledge",
+      "Set audience visibility",
+      "Preview in the drawer and assistant",
+      "Publish",
+    ],
     objects: [
       "Help content record keyed by screen id and audience",
       "Page guidance block",
@@ -435,13 +760,45 @@ export const ADMIN = screens([
     assumptions: [
       "Every screen id in the inventory is a valid key for help content, so drawer and assistant content is complete by construction rather than retrofitted.",
     ],
-    m1Seam: "Supplies the drawer and help content rendered by Module 1 screens, including UX-024 and UX-025's minimal configuration. Module 1 screens are unchanged.",
+    m1Seam:
+      "Supplies the drawer and help content rendered by Module 1 screens, including UX-024 and UX-025's minimal configuration. Module 1 screens are unchanged.",
     canvas: [
-      { title: "Screen selector", id: "HLP-SCREEN", kind: "fields", items: ["Workspace", "Module", "Screen id", "Audience"], wide: true },
-      { title: "Page guidance", id: "HLP-GUIDE", kind: "editor", items: ["What this screen is for", "What the user should do here", "Common mistakes"] },
-      { title: "FAQ set", id: "HLP-FAQ", kind: "list", items: ["Question and answer pair", "Audience scope", "Order", "Published"] },
-      { title: "Copilot knowledge", id: "HLP-COPILOT", kind: "list", items: ["Attached approved sources", "Escalation triggers inherited from AI governance", "Disclaimers applied"] },
-      { title: "Live preview", id: "HLP-PREVIEW", kind: "box", note: "Renders the drawer and assistant exactly as the selected audience would see them on the selected screen.", wide: true },
+      {
+        title: "Screen selector",
+        id: "HLP-SCREEN",
+        kind: "fields",
+        items: ["Workspace", "Module", "Screen id", "Audience"],
+        wide: true,
+      },
+      {
+        title: "Page guidance",
+        id: "HLP-GUIDE",
+        kind: "editor",
+        items: ["What this screen is for", "What the user should do here", "Common mistakes"],
+      },
+      {
+        title: "FAQ set",
+        id: "HLP-FAQ",
+        kind: "list",
+        items: ["Question and answer pair", "Audience scope", "Order", "Published"],
+      },
+      {
+        title: "Copilot knowledge",
+        id: "HLP-COPILOT",
+        kind: "list",
+        items: [
+          "Attached approved sources",
+          "Escalation triggers inherited from AI governance",
+          "Disclaimers applied",
+        ],
+      },
+      {
+        title: "Live preview",
+        id: "HLP-PREVIEW",
+        kind: "box",
+        note: "Renders the drawer and assistant exactly as the selected audience would see them on the selected screen.",
+        wide: true,
+      },
     ],
   },
 ]);

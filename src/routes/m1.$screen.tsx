@@ -49,7 +49,11 @@ function M1ScreenPage() {
     return (
       <ConsumerShell
         variant={
-          screen.slug === "ux-016" ? "member" : screen.slug === "ux-020" ? "shared-link" : "marketplace"
+          screen.slug === "ux-016"
+            ? "member"
+            : screen.slug === "ux-020"
+              ? "shared-link"
+              : "marketplace"
         }
         assistantContext={screen.name.toLowerCase()}
       >
@@ -79,13 +83,15 @@ function M1ScreenPage() {
       {body}
     </AppShell>
   );
-
 }
 
 function M1ScreenNotFound() {
   return (
     <AppShell>
-      <WBox className="h-32" label="no Module 1 screen with that id — see /m1 for UX-001 … UX-026" />
+      <WBox
+        className="h-32"
+        label="no Module 1 screen with that id — see /m1 for UX-001 … UX-026"
+      />
     </AppShell>
   );
 }

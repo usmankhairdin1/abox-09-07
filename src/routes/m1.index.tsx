@@ -101,7 +101,10 @@ function M1Index() {
       >
         <div className="grid gap-2 md:grid-cols-2">
           {M1_REQUEST_MAP.map((m) => (
-            <div key={m.req} className="flex flex-wrap items-center gap-2 border-b border-border/60 py-2">
+            <div
+              key={m.req}
+              className="flex flex-wrap items-center gap-2 border-b border-border/60 py-2"
+            >
               <span className="flex-1 text-xs text-foreground/80">{m.req}</span>
               {m.ids.map((id) => (
                 <IdChip key={id}>{id}</IdChip>
@@ -135,10 +138,10 @@ function M1Index() {
 
       <AclNote>
         Internal Module 1 screens (UX-017, 018, 019, 021, 024, 025, 026) render inside the unified
-        shell with workspace and entity context and are gated by role: agents reach quick quote, send
-        quote and the lead timeline; the configuration screens require agency-admin permission.
-        Consumer and member screens are externally branded, carry no internal drawer, and expose only
-        the household's own records.
+        shell with workspace and entity context and are gated by role: agents reach quick quote,
+        send quote and the lead timeline; the configuration screens require agency-admin permission.
+        Consumer and member screens are externally branded, carry no internal drawer, and expose
+        only the household's own records.
       </AclNote>
     </AppShell>
   );

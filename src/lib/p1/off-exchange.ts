@@ -80,7 +80,14 @@ export const OFF_EXCHANGE = screens([
         title: "Applicant",
         id: "INTAKE-APPLICANT",
         kind: "fields",
-        items: ["Legal name", "Date of birth", "SSN (masked)", "Tobacco use", "Residential address", "County"],
+        items: [
+          "Legal name",
+          "Date of birth",
+          "SSN (masked)",
+          "Tobacco use",
+          "Residential address",
+          "County",
+        ],
         note: "Carried from the quote where available; changed values re-trigger rating and sellability checks.",
       },
       {
@@ -94,7 +101,11 @@ export const OFF_EXCHANGE = screens([
         title: "Coverage & effective date",
         id: "INTAKE-COVERAGE",
         kind: "fields",
-        items: ["Requested effective date", "Qualifying event (if outside open enrollment)", "Prior coverage"],
+        items: [
+          "Requested effective date",
+          "Qualifying event (if outside open enrollment)",
+          "Prior coverage",
+        ],
       },
       {
         title: "Consents at intake",
@@ -166,7 +177,14 @@ export const OFF_EXCHANGE = screens([
         title: "Section stepper",
         id: "DYN-STEPS",
         kind: "tabs",
-        items: ["Applicant", "Household", "Coverage history", "Health / eligibility questions", "Documents", "Review & sign"],
+        items: [
+          "Applicant",
+          "Household",
+          "Coverage history",
+          "Health / eligibility questions",
+          "Documents",
+          "Review & sign",
+        ],
         wide: true,
         note: "Steps are produced by the form version, not by the screen.",
       },
@@ -174,14 +192,24 @@ export const OFF_EXCHANGE = screens([
         title: "Rendered section",
         id: "DYN-SECTION",
         kind: "fields",
-        items: ["Configured field", "Configured field (required)", "Configured field with help text", "Conditional field — shown only when the trigger answer matches"],
+        items: [
+          "Configured field",
+          "Configured field (required)",
+          "Configured field with help text",
+          "Conditional field — shown only when the trigger answer matches",
+        ],
         wide: true,
       },
       {
         title: "Validation panel",
         id: "DYN-VALIDATION",
         kind: "checks",
-        items: ["Format rules", "Cross-field rules", "Carrier-specific rules", "Blocking vs warning distinction"],
+        items: [
+          "Format rules",
+          "Cross-field rules",
+          "Carrier-specific rules",
+          "Blocking vs warning distinction",
+        ],
       },
       {
         title: "Assist controls",
@@ -211,7 +239,12 @@ export const OFF_EXCHANGE = screens([
       "Transfer completion to an agent",
       "Withdraw the application",
     ],
-    objects: ["Application draft", "Pinned form version", "Resume token and its expiry", "Outstanding requirements list"],
+    objects: [
+      "Application draft",
+      "Pinned form version",
+      "Resume token and its expiry",
+      "Outstanding requirements list",
+    ],
     config: [
       "Resume link lifetime and re-verification rules",
       "Draft retention period before auto-expiry",
@@ -230,9 +263,12 @@ export const OFF_EXCHANGE = screens([
       "Audit: every resume attempt, successful or not",
       "Next actions: continue, transfer to agent, withdraw",
     ],
-    assistant: "Explains why a link expired and how to request a new one. Cannot re-issue a link itself.",
+    assistant:
+      "Explains why a link expired and how to request a new one. Cannot re-issue a link itself.",
     source: SRC,
-    assumptions: ["Draft retention is a configurable tenant policy rather than a fixed platform constant."],
+    assumptions: [
+      "Draft retention is a configurable tenant policy rather than a fixed platform constant.",
+    ],
     canvas: [
       {
         title: "Identity verification",
@@ -245,7 +281,13 @@ export const OFF_EXCHANGE = screens([
         title: "Progress summary",
         id: "RESUME-PROGRESS",
         kind: "list",
-        items: ["Applicant — complete", "Household — complete", "Coverage history — incomplete", "Documents — 1 of 3 uploaded", "Signature — not started"],
+        items: [
+          "Applicant — complete",
+          "Household — complete",
+          "Coverage history — incomplete",
+          "Documents — 1 of 3 uploaded",
+          "Signature — not started",
+        ],
       },
       {
         title: "Version pin notice",
@@ -268,8 +310,19 @@ export const OFF_EXCHANGE = screens([
     user: "Applicant uploading proof, or agent uploading on their behalf",
     purpose:
       "Collects the documents the form version and carrier require, tracks which requirement each file satisfies, and shows what still blocks submission.",
-    actions: ["Upload a file", "Photograph with a phone camera", "Replace a rejected file", "Mark a requirement not applicable with reason", "Request a document from the applicant"],
-    objects: ["Document requirement list", "Uploaded document records", "Review status per document", "Application readiness impact"],
+    actions: [
+      "Upload a file",
+      "Photograph with a phone camera",
+      "Replace a rejected file",
+      "Mark a requirement not applicable with reason",
+      "Request a document from the applicant",
+    ],
+    objects: [
+      "Document requirement list",
+      "Uploaded document records",
+      "Review status per document",
+      "Application readiness impact",
+    ],
     config: [
       "Required document types per product/state/carrier (Form Configurator)",
       "Accepted file types and size limits",
@@ -289,7 +342,8 @@ export const OFF_EXCHANGE = screens([
       "Audit: upload, view, replace and delete events with actor",
       "Next actions: request from applicant, mark N/A, continue",
     ],
-    assistant: "Explains what each requirement means. It does not judge whether an uploaded document is acceptable — that is the reviewer's call.",
+    assistant:
+      "Explains what each requirement means. It does not judge whether an uploaded document is acceptable — that is the reviewer's call.",
     source: SRC,
     assumptions: ["Automated document classification is out of Phase 1 scope; review is human."],
     canvas: [
@@ -297,12 +351,33 @@ export const OFF_EXCHANGE = screens([
         title: "Requirement checklist",
         id: "DOCS-REQ",
         kind: "list",
-        items: ["Proof of identity — required — not uploaded", "Proof of residency — required — uploaded, pending review", "Qualifying event proof — conditional — triggered by SEP answer", "Prior coverage letter — optional"],
+        items: [
+          "Proof of identity — required — not uploaded",
+          "Proof of residency — required — uploaded, pending review",
+          "Qualifying event proof — conditional — triggered by SEP answer",
+          "Prior coverage letter — optional",
+        ],
         wide: true,
       },
-      { title: "Upload zone", id: "DOCS-UPLOAD", kind: "box", note: "Drag and drop, browse, or capture with camera. Progress and virus-scan state shown per file." },
-      { title: "Uploaded files", id: "DOCS-FILES", kind: "table", items: ["File", "Requirement satisfied", "Uploaded by", "Status", "Actions"] },
-      { title: "Blocking impact", id: "DOCS-BLOCK", kind: "box", note: "Outstanding required documents keep the submission-readiness check red; the applicant can still sign and wait.", wide: true },
+      {
+        title: "Upload zone",
+        id: "DOCS-UPLOAD",
+        kind: "box",
+        note: "Drag and drop, browse, or capture with camera. Progress and virus-scan state shown per file.",
+      },
+      {
+        title: "Uploaded files",
+        id: "DOCS-FILES",
+        kind: "table",
+        items: ["File", "Requirement satisfied", "Uploaded by", "Status", "Actions"],
+      },
+      {
+        title: "Blocking impact",
+        id: "DOCS-BLOCK",
+        kind: "box",
+        note: "Outstanding required documents keep the submission-readiness check red; the applicant can still sign and wait.",
+        wide: true,
+      },
     ],
   },
   {
@@ -317,8 +392,20 @@ export const OFF_EXCHANGE = screens([
     user: "Applicant and any additional required signer",
     purpose:
       "Presents the completed application for review and captures a legally attributable signature with the disclosures, consent and evidence record the carrier and regulators require.",
-    actions: ["Review the completed application", "Adopt a signature", "Sign", "Decline to sign", "Route to a second signer", "Download the signed copy"],
-    objects: ["Signature request", "Signer list and order", "Signed document artifact", "Signature evidence record (timestamp, IP, method, consent)"],
+    actions: [
+      "Review the completed application",
+      "Adopt a signature",
+      "Sign",
+      "Decline to sign",
+      "Route to a second signer",
+      "Download the signed copy",
+    ],
+    objects: [
+      "Signature request",
+      "Signer list and order",
+      "Signed document artifact",
+      "Signature evidence record (timestamp, IP, method, consent)",
+    ],
     config: [
       "Which forms require signature and by whom (Form Configurator signature settings)",
       "Signature method: typed adoption, drawn, or third-party provider",
@@ -338,16 +425,55 @@ export const OFF_EXCHANGE = screens([
       "Audit: full signature evidence record",
       "Next actions: remind signer, download, proceed to readiness check",
     ],
-    assistant: "May explain the signing mechanics only. It may not summarise or characterise what the applicant is agreeing to.",
+    assistant:
+      "May explain the signing mechanics only. It may not summarise or characterise what the applicant is agreeing to.",
     source: SRC,
     assumptions: [
       "E-signature may be native or delegated to a provider; the wireframe treats the provider as an integration seam, not a screen.",
     ],
     canvas: [
-      { title: "Application review", id: "SIGN-REVIEW", kind: "box", note: "Read-only rendering of every answer with an edit link per section. Editing returns to the form and clears any prior signature.", wide: true },
-      { title: "Disclosures & consent", id: "SIGN-DISCLOSE", kind: "checks", items: ["Truthfulness attestation", "Authorization to submit to carrier", "Electronic signature consent", "Fraud warning (state-specific)"] },
-      { title: "Signature block", id: "SIGN-BLOCK", kind: "fields", items: ["Signer name", "Adopted signature", "Date (system)", "Agent attestation block (when configured)"] },
-      { title: "Evidence record", id: "SIGN-EVIDENCE", kind: "kv", items: ["Timestamp", "IP address", "Authentication method", "Document hash", "Consent version"], wide: true },
+      {
+        title: "Application review",
+        id: "SIGN-REVIEW",
+        kind: "box",
+        note: "Read-only rendering of every answer with an edit link per section. Editing returns to the form and clears any prior signature.",
+        wide: true,
+      },
+      {
+        title: "Disclosures & consent",
+        id: "SIGN-DISCLOSE",
+        kind: "checks",
+        items: [
+          "Truthfulness attestation",
+          "Authorization to submit to carrier",
+          "Electronic signature consent",
+          "Fraud warning (state-specific)",
+        ],
+      },
+      {
+        title: "Signature block",
+        id: "SIGN-BLOCK",
+        kind: "fields",
+        items: [
+          "Signer name",
+          "Adopted signature",
+          "Date (system)",
+          "Agent attestation block (when configured)",
+        ],
+      },
+      {
+        title: "Evidence record",
+        id: "SIGN-EVIDENCE",
+        kind: "kv",
+        items: [
+          "Timestamp",
+          "IP address",
+          "Authentication method",
+          "Document hash",
+          "Consent version",
+        ],
+        wide: true,
+      },
     ],
   },
   {
@@ -362,8 +488,21 @@ export const OFF_EXCHANGE = screens([
     user: "Agent, agency admin or a back-office reviewer",
     purpose:
       "Internal quality gate between a signed application and submission. Reviewers check answers, documents and attribution, and either release the application or return it with reasons.",
-    actions: ["Open an application from the queue", "Approve for submission", "Return to applicant with reasons", "Reassign reviewer", "Add internal note", "Override a soft warning with justification"],
-    objects: ["Review queue", "Application", "Documents and their review states", "Reviewer assignment", "Internal notes (never consumer-visible)"],
+    actions: [
+      "Open an application from the queue",
+      "Approve for submission",
+      "Return to applicant with reasons",
+      "Reassign reviewer",
+      "Add internal note",
+      "Override a soft warning with justification",
+    ],
+    objects: [
+      "Review queue",
+      "Application",
+      "Documents and their review states",
+      "Reviewer assignment",
+      "Internal notes (never consumer-visible)",
+    ],
     config: [
       "Whether review is mandatory, sampled or off per product",
       "Queue routing rules (by product, state, agency, agent tenure)",
@@ -382,14 +521,46 @@ export const OFF_EXCHANGE = screens([
       "Audit: reviewer actions, overrides and justifications",
       "Next actions: approve, return, reassign",
     ],
-    assistant: "Can surface which checks failed and where. It cannot approve, and no AI-drafted return reason is sent without human confirmation.",
+    assistant:
+      "Can surface which checks failed and where. It cannot approve, and no AI-drafted return reason is sent without human confirmation.",
     source: SRC,
     assumptions: ["Review is a workflow state on the application, not a separate object."],
     canvas: [
-      { title: "Queue", id: "REVIEW-QUEUE", kind: "table", items: ["Applicant", "Product / carrier", "Agent", "Signed", "Readiness", "Age", "Assigned to"], wide: true },
-      { title: "Answer review", id: "REVIEW-ANSWERS", kind: "list", items: ["Section with change history", "Flagged answer", "Applicant-only field marker"] },
-      { title: "Document review", id: "REVIEW-DOCS", kind: "list", items: ["Accept", "Reject with reason", "Request replacement"] },
-      { title: "Decision", id: "REVIEW-DECISION", kind: "actions", items: ["Approve for submission", "Return with reasons", "Reassign", "Add internal note"], wide: true, note: "Return reasons are consumer-visible; internal notes are not. The distinction is explicit on screen." },
+      {
+        title: "Queue",
+        id: "REVIEW-QUEUE",
+        kind: "table",
+        items: [
+          "Applicant",
+          "Product / carrier",
+          "Agent",
+          "Signed",
+          "Readiness",
+          "Age",
+          "Assigned to",
+        ],
+        wide: true,
+      },
+      {
+        title: "Answer review",
+        id: "REVIEW-ANSWERS",
+        kind: "list",
+        items: ["Section with change history", "Flagged answer", "Applicant-only field marker"],
+      },
+      {
+        title: "Document review",
+        id: "REVIEW-DOCS",
+        kind: "list",
+        items: ["Accept", "Reject with reason", "Request replacement"],
+      },
+      {
+        title: "Decision",
+        id: "REVIEW-DECISION",
+        kind: "actions",
+        items: ["Approve for submission", "Return with reasons", "Reassign", "Add internal note"],
+        wide: true,
+        note: "Return reasons are consumer-visible; internal notes are not. The distinction is explicit on screen.",
+      },
     ],
   },
   {
@@ -404,8 +575,20 @@ export const OFF_EXCHANGE = screens([
     user: "Agent, agency admin, or the system acting before an automated submission",
     purpose:
       "Deterministic pre-flight: every condition that must be true before an application can leave ABox, shown as pass/fail with the blocking reason and the fix.",
-    actions: ["Run checks", "Open a failing check's record", "Waive a waivable check with justification", "Release to submission", "Schedule submission for a future date"],
-    objects: ["Check result set", "Application", "Appointment and licensing records for the writing agent", "Payment authorization state", "Carrier submission channel"],
+    actions: [
+      "Run checks",
+      "Open a failing check's record",
+      "Waive a waivable check with justification",
+      "Release to submission",
+      "Schedule submission for a future date",
+    ],
+    objects: [
+      "Check result set",
+      "Application",
+      "Appointment and licensing records for the writing agent",
+      "Payment authorization state",
+      "Carrier submission channel",
+    ],
     config: [
       "Which checks are blocking vs advisory per carrier",
       "Whether licensing/appointment checks run against live records or a cached snapshot",
@@ -426,7 +609,9 @@ export const OFF_EXCHANGE = screens([
     ],
     assistant: "Explains individual checks in plain language. It never releases a submission.",
     source: SRC,
-    assumptions: ["Checks are evaluated server-side at release time as well as displayed, so a stale screen cannot release a failing application."],
+    assumptions: [
+      "Checks are evaluated server-side at release time as well as displayed, so a stale screen cannot release a failing application.",
+    ],
     canvas: [
       {
         title: "Check results",
@@ -444,8 +629,22 @@ export const OFF_EXCHANGE = screens([
         ],
         wide: true,
       },
-      { title: "Blocking summary", id: "READY-BLOCK", kind: "box", note: "Blocking failures disable release. Advisory failures show a warning and are recorded if the user proceeds." },
-      { title: "Release", id: "READY-RELEASE", kind: "actions", items: ["Release to submission", "Schedule submission", "Waive advisory with justification"] },
+      {
+        title: "Blocking summary",
+        id: "READY-BLOCK",
+        kind: "box",
+        note: "Blocking failures disable release. Advisory failures show a warning and are recorded if the user proceeds.",
+      },
+      {
+        title: "Release",
+        id: "READY-RELEASE",
+        kind: "actions",
+        items: [
+          "Release to submission",
+          "Schedule submission",
+          "Waive advisory with justification",
+        ],
+      },
     ],
   },
   {
@@ -460,8 +659,21 @@ export const OFF_EXCHANGE = screens([
     user: "Agency admin or platform operations",
     purpose:
       "Shows the mapped EDI enrollment output for an application or batch: which template version, how application fields map to segments, validation of the generated file, and its transmission record.",
-    actions: ["Preview generated EDI", "Validate against the template", "Download file", "Reprocess a failed record", "Open the field mapping", "View transmission history"],
-    objects: ["EDI template version", "Field mapping", "Generated transaction / batch", "Validation errors", "Transmission log"],
+    actions: [
+      "Preview generated EDI",
+      "Validate against the template",
+      "Download file",
+      "Reprocess a failed record",
+      "Open the field mapping",
+      "View transmission history",
+    ],
+    objects: [
+      "EDI template version",
+      "Field mapping",
+      "Generated transaction / batch",
+      "Validation errors",
+      "Transmission log",
+    ],
     config: [
       "Template per carrier and transaction type",
       "Field mapping and default/derived values",
@@ -486,10 +698,39 @@ export const OFF_EXCHANGE = screens([
       "A standard template exists per carrier with per-carrier overrides; ABox does not negotiate ad-hoc formats per application.",
     ],
     canvas: [
-      { title: "Batch header", id: "EDI-HDR", kind: "kv", items: ["Carrier", "Template version", "Transaction type", "Environment", "Record count", "Generated at"], wide: true },
-      { title: "Field mapping", id: "EDI-MAP", kind: "table", items: ["Application field", "Segment / element", "Transform", "Default", "Required"] },
-      { title: "Validation", id: "EDI-VALID", kind: "list", items: ["Record passed", "Record rejected with element-level reason", "Reprocess control"] },
-      { title: "Transmission log", id: "EDI-TX", kind: "timeline", items: ["Generated", "Transmitted", "Acknowledged", "Carrier response received"], wide: true },
+      {
+        title: "Batch header",
+        id: "EDI-HDR",
+        kind: "kv",
+        items: [
+          "Carrier",
+          "Template version",
+          "Transaction type",
+          "Environment",
+          "Record count",
+          "Generated at",
+        ],
+        wide: true,
+      },
+      {
+        title: "Field mapping",
+        id: "EDI-MAP",
+        kind: "table",
+        items: ["Application field", "Segment / element", "Transform", "Default", "Required"],
+      },
+      {
+        title: "Validation",
+        id: "EDI-VALID",
+        kind: "list",
+        items: ["Record passed", "Record rejected with element-level reason", "Reprocess control"],
+      },
+      {
+        title: "Transmission log",
+        id: "EDI-TX",
+        kind: "timeline",
+        items: ["Generated", "Transmitted", "Acknowledged", "Carrier response received"],
+        wide: true,
+      },
     ],
   },
   {
@@ -504,8 +745,21 @@ export const OFF_EXCHANGE = screens([
     user: "Platform operations, with read access for agency admins",
     purpose:
       "The real-time alternative to EDI: shows the configured carrier API endpoint for a product, the request/response for a submission attempt, retry state and idempotency, so a failed submission is diagnosable without leaving ABox.",
-    actions: ["View connection config", "Send a test submission", "Retry a failed submission", "Open request/response detail", "Switch a product between EDI and API path", "Rotate credentials"],
-    objects: ["Carrier connection", "Submission attempt", "Request and redacted response payloads", "Retry policy and idempotency key", "Credential reference (never the value)"],
+    actions: [
+      "View connection config",
+      "Send a test submission",
+      "Retry a failed submission",
+      "Open request/response detail",
+      "Switch a product between EDI and API path",
+      "Rotate credentials",
+    ],
+    objects: [
+      "Carrier connection",
+      "Submission attempt",
+      "Request and redacted response payloads",
+      "Retry policy and idempotency key",
+      "Credential reference (never the value)",
+    ],
     config: [
       "Endpoint, auth method and environment per carrier",
       "Retry policy, backoff and dead-letter handling",
@@ -525,14 +779,52 @@ export const OFF_EXCHANGE = screens([
       "Audit: attempts, retries, credential rotations",
       "Next actions: retry, escalate, switch path",
     ],
-    assistant: "Classifies errors and points to the failing field. It cannot retry or change configuration.",
+    assistant:
+      "Classifies errors and points to the failing field. It cannot retry or change configuration.",
     source: SRC,
-    assumptions: ["Idempotency keys prevent duplicate carrier submissions on retry; this is an explicit design requirement, not an option."],
+    assumptions: [
+      "Idempotency keys prevent duplicate carrier submissions on retry; this is an explicit design requirement, not an option.",
+    ],
     canvas: [
-      { title: "Connection", id: "API-CONN", kind: "kv", items: ["Carrier", "Endpoint", "Auth method", "Credential reference", "Environment", "Status"], wide: true },
-      { title: "Attempt detail", id: "API-ATTEMPT", kind: "list", items: ["Request (redacted)", "Response (redacted)", "HTTP status / carrier code", "Idempotency key", "Duration"] },
-      { title: "Retry state", id: "API-RETRY", kind: "box", note: "Attempt 2 of 3, next retry in 15 minutes. Dead-letter after final failure raises a task to operations." },
-      { title: "Path selection", id: "API-PATH", kind: "actions", items: ["Use API path", "Use EDI path", "Send test submission"], wide: true },
+      {
+        title: "Connection",
+        id: "API-CONN",
+        kind: "kv",
+        items: [
+          "Carrier",
+          "Endpoint",
+          "Auth method",
+          "Credential reference",
+          "Environment",
+          "Status",
+        ],
+        wide: true,
+      },
+      {
+        title: "Attempt detail",
+        id: "API-ATTEMPT",
+        kind: "list",
+        items: [
+          "Request (redacted)",
+          "Response (redacted)",
+          "HTTP status / carrier code",
+          "Idempotency key",
+          "Duration",
+        ],
+      },
+      {
+        title: "Retry state",
+        id: "API-RETRY",
+        kind: "box",
+        note: "Attempt 2 of 3, next retry in 15 minutes. Dead-letter after final failure raises a task to operations.",
+      },
+      {
+        title: "Path selection",
+        id: "API-PATH",
+        kind: "actions",
+        items: ["Use API path", "Use EDI path", "Send test submission"],
+        wide: true,
+      },
     ],
   },
   {
@@ -547,8 +839,19 @@ export const OFF_EXCHANGE = screens([
     user: "Applicant; agent may assist but never handles card data directly",
     purpose:
       "Front-end seam for binding payment: captures the payment method and authorization the carrier requires at submission, while the money movement itself belongs to the carrier or a processor, not to ABox.",
-    actions: ["Choose payment method", "Enter payment details in the processor-hosted field", "Authorize initial and recurring draft", "Skip when the carrier bills directly", "Retry a declined authorization"],
-    objects: ["Payment authorization record", "Method token (never raw card/bank data)", "Draft schedule requested", "Carrier billing preference"],
+    actions: [
+      "Choose payment method",
+      "Enter payment details in the processor-hosted field",
+      "Authorize initial and recurring draft",
+      "Skip when the carrier bills directly",
+      "Retry a declined authorization",
+    ],
+    objects: [
+      "Payment authorization record",
+      "Method token (never raw card/bank data)",
+      "Draft schedule requested",
+      "Carrier billing preference",
+    ],
     config: [
       "Whether payment is captured at submission, after approval, or not at all per carrier/product",
       "Processor connection per agency or per carrier",
@@ -568,16 +871,43 @@ export const OFF_EXCHANGE = screens([
       "Audit: authorization attempts and results (no payload)",
       "Next actions: retry, change method, continue",
     ],
-    assistant: "Explains billing mechanics and timing. It never touches payment data and cannot quote an exact draft date the carrier has not confirmed.",
+    assistant:
+      "Explains billing mechanics and timing. It never touches payment data and cannot quote an exact draft date the carrier has not confirmed.",
     source: `${SRC}; payment front-end seam is P1-Build per the reconciliation review — money movement is out of ABox scope`,
     assumptions: [
       "ABox is not a merchant of record in Phase 1. This screen captures authorization and hands off; no ledger of member payments is built here.",
     ],
     canvas: [
-      { title: "Billing explanation", id: "PAY-EXPLAIN", kind: "box", note: "States plainly who bills the member, first draft timing and what this authorization covers.", wide: true },
-      { title: "Method selection", id: "PAY-METHOD", kind: "tabs", items: ["Bank draft (ACH)", "Card", "Carrier bills me directly"] },
-      { title: "Hosted fields", id: "PAY-FIELDS", kind: "box", note: "Processor-hosted iframe. ABox renders the frame and receives a token only — card and account numbers never reach ABox." },
-      { title: "Authorization", id: "PAY-AUTH", kind: "checks", items: ["Authorize initial payment", "Authorize recurring draft", "Understand that coverage is not active until the carrier confirms"], wide: true },
+      {
+        title: "Billing explanation",
+        id: "PAY-EXPLAIN",
+        kind: "box",
+        note: "States plainly who bills the member, first draft timing and what this authorization covers.",
+        wide: true,
+      },
+      {
+        title: "Method selection",
+        id: "PAY-METHOD",
+        kind: "tabs",
+        items: ["Bank draft (ACH)", "Card", "Carrier bills me directly"],
+      },
+      {
+        title: "Hosted fields",
+        id: "PAY-FIELDS",
+        kind: "box",
+        note: "Processor-hosted iframe. ABox renders the frame and receives a token only — card and account numbers never reach ABox.",
+      },
+      {
+        title: "Authorization",
+        id: "PAY-AUTH",
+        kind: "checks",
+        items: [
+          "Authorize initial payment",
+          "Authorize recurring draft",
+          "Understand that coverage is not active until the carrier confirms",
+        ],
+        wide: true,
+      },
     ],
   },
   {
@@ -592,8 +922,21 @@ export const OFF_EXCHANGE = screens([
     user: "Agent and agency admin internally; a simplified version renders in the branded member workspace",
     purpose:
       "One truthful status surface per application after release: where it is with the carrier, what came back, what the member sees, and what the agency must do next.",
-    actions: ["Filter by status", "Open an application", "Record a carrier response received off-platform", "Resubmit", "Notify the member", "Create a follow-up task"],
-    objects: ["Application", "Submission attempts (EDI or API)", "Carrier acknowledgements and responses", "Policy number when issued", "Member-visible status mapping"],
+    actions: [
+      "Filter by status",
+      "Open an application",
+      "Record a carrier response received off-platform",
+      "Resubmit",
+      "Notify the member",
+      "Create a follow-up task",
+    ],
+    objects: [
+      "Application",
+      "Submission attempts (EDI or API)",
+      "Carrier acknowledgements and responses",
+      "Policy number when issued",
+      "Member-visible status mapping",
+    ],
     config: [
       "Mapping from raw carrier status codes to ABox statuses and to member-facing language",
       "Which statuses trigger a notification and to whom",
@@ -611,14 +954,56 @@ export const OFF_EXCHANGE = screens([
       "Audit: every status transition with source (system or manual)",
       "Next actions: resubmit, notify member, create task",
     ],
-    assistant: "Explains statuses and expected timelines. It never predicts approval or promises an issue date.",
+    assistant:
+      "Explains statuses and expected timelines. It never predicts approval or promises an issue date.",
     source: SRC,
-    assumptions: ["Some carriers respond off-platform; manual status entry is supported and clearly labelled as manually recorded."],
+    assumptions: [
+      "Some carriers respond off-platform; manual status entry is supported and clearly labelled as manually recorded.",
+    ],
     canvas: [
-      { title: "Status board", id: "STATUS-BOARD", kind: "tabs", items: ["Draft", "In review", "Submitted", "Pending carrier", "Info requested", "Issued", "Declined", "Withdrawn"], wide: true },
-      { title: "Application list", id: "STATUS-LIST", kind: "table", items: ["Applicant", "Product", "Agent", "Channel", "Status", "Age", "Last event"], wide: true },
-      { title: "Application timeline", id: "STATUS-TIMELINE", kind: "timeline", items: ["Signed", "Released", "Transmitted", "Acknowledged", "Info requested", "Issued — policy number recorded"] },
-      { title: "Member-visible mapping", id: "STATUS-MEMBER", kind: "kv", items: ["Internal: PEND-INFO", "Member sees: 'The carrier needs one more document'"], note: "Every internal status must have an approved member-facing phrase before it can be surfaced externally." },
+      {
+        title: "Status board",
+        id: "STATUS-BOARD",
+        kind: "tabs",
+        items: [
+          "Draft",
+          "In review",
+          "Submitted",
+          "Pending carrier",
+          "Info requested",
+          "Issued",
+          "Declined",
+          "Withdrawn",
+        ],
+        wide: true,
+      },
+      {
+        title: "Application list",
+        id: "STATUS-LIST",
+        kind: "table",
+        items: ["Applicant", "Product", "Agent", "Channel", "Status", "Age", "Last event"],
+        wide: true,
+      },
+      {
+        title: "Application timeline",
+        id: "STATUS-TIMELINE",
+        kind: "timeline",
+        items: [
+          "Signed",
+          "Released",
+          "Transmitted",
+          "Acknowledged",
+          "Info requested",
+          "Issued — policy number recorded",
+        ],
+      },
+      {
+        title: "Member-visible mapping",
+        id: "STATUS-MEMBER",
+        kind: "kv",
+        items: ["Internal: PEND-INFO", "Member sees: 'The carrier needs one more document'"],
+        note: "Every internal status must have an approved member-facing phrase before it can be surfaced externally.",
+      },
     ],
   },
 ]);

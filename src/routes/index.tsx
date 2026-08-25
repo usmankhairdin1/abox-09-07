@@ -125,7 +125,10 @@ function ShellMapPage() {
           className="lg:col-span-2"
         >
           <div className="space-y-2">
-            <WBox className="h-10" label="SHELL_TOPBAR — brand · workspace · entity · search · notifications · tasks · assistant · profile" />
+            <WBox
+              className="h-10"
+              label="SHELL_TOPBAR — brand · workspace · entity · search · notifications · tasks · assistant · profile"
+            />
             <div className="flex gap-2">
               <WBox className="h-56 w-40 shrink-0" label="SHELL_LEFTNAV" />
               <WBox className="h-56 flex-1" label="SHELL_CANVAS" />
@@ -142,7 +145,11 @@ function ShellMapPage() {
         </WPanel>
 
         <div className="space-y-3">
-          <WPanel title="Batch 1 screens" id="BATCH_1" meta="Structure only — no colour or branding work">
+          <WPanel
+            title="Batch 1 screens"
+            id="BATCH_1"
+            meta="Structure only — no colour or branding work"
+          >
             <ul className="space-y-1.5 text-xs">
               {[
                 { to: "/", label: "Internal platform shell", id: "SHELL_MAP" },
@@ -165,14 +172,18 @@ function ShellMapPage() {
           </WPanel>
 
           <AclNote>
-            Switch the simulated role in Profile &amp; settings. As an agent you lose the Commissions
-            and Admin modules from the left nav and the Audit tab from the drawer — they vanish
-            rather than appear disabled.
+            Switch the simulated role in Profile &amp; settings. As an agent you lose the
+            Commissions and Admin modules from the left nav and the Audit tab from the drawer — they
+            vanish rather than appear disabled.
           </AclNote>
         </div>
       </div>
 
-      <WPanel title="Shell regions" id="SHELL_REGIONS" meta="Each region carries a stable ID that later batches reference">
+      <WPanel
+        title="Shell regions"
+        id="SHELL_REGIONS"
+        meta="Each region carries a stable ID that later batches reference"
+      >
         <div className="grid gap-2 md:grid-cols-2">
           {REGIONS.map((r) => (
             <div key={r.id} className="rounded-md border border-border p-3">
@@ -191,7 +202,10 @@ function ShellMapPage() {
         <WPanel title="Workspaces in the switcher" id="WS_REGISTER">
           <ul className="space-y-1.5">
             {WORKSPACES.map((w) => (
-              <li key={w.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border px-2.5 py-2">
+              <li
+                key={w.id}
+                className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border px-2.5 py-2"
+              >
                 <span className="text-xs">
                   <span className="font-medium">{w.name}</span>
                   <span className="block font-mono text-[10px] text-muted-foreground">{w.id}</span>
@@ -205,7 +219,11 @@ function ShellMapPage() {
           </ul>
         </WPanel>
 
-        <WPanel title="Module containers" id="MOD_REGISTER" meta="13 containers; nested ones never surface as top-level menu items">
+        <WPanel
+          title="Module containers"
+          id="MOD_REGISTER"
+          meta="13 containers; nested ones never surface as top-level menu items"
+        >
           <ul className="space-y-1.5">
             {MODULES.map((m) => (
               <li key={m.id} className="rounded-md border border-border px-2.5 py-2">

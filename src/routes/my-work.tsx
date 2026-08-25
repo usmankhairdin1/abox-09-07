@@ -44,13 +44,55 @@ function MyWorkPage() {
   const { labels, landing, setLanding } = useShell();
 
   const cards: { id: string; title: string; count: string; rows: number; note: string }[] = [
-    { id: "SCR_MY_WORK_TASKS", title: "My tasks", count: "11 open · 3 overdue", rows: 4, note: "Task type, due date, related object, owner." },
-    { id: "SCR_MY_WORK_LEADS", title: `Assigned ${labels.lead.toLowerCase()}s`, count: "24 assigned · 6 new today", rows: 4, note: `Only ${labels.lead.toLowerCase()}s assigned to me or my downline appear here.` },
-    { id: "SCR_MY_WORK_FOLLOWUP", title: "Follow-ups due", count: "9 today · 14 this week", rows: 3, note: "Cadence set by agency-configured follow-up rules." },
-    { id: "SCR_MY_WORK_MSGS", title: "Messages", count: "5 unread", rows: 3, note: "Inbound consumer replies across email, SMS and in-app." },
-    { id: "SCR_MY_WORK_QUOTES", title: "Quotes in progress", count: "17 active · 4 shared", rows: 4, note: "Includes shared quotes awaiting consumer action (Module 1 objects, read only here)." },
-    { id: "SCR_MY_WORK_HANDOFF", title: "Applications & handoffs needing action", count: "7 waiting", rows: 4, note: "Includes EDE handoff returns and off-exchange submissions awaiting a step." },
-    { id: "SCR_MY_WORK_EXCEPTIONS", title: "Exceptions", count: "3 blocking · 5 warnings", rows: 3, note: "Sellability, licensing, appointment, paper access and data validation failures." },
+    {
+      id: "SCR_MY_WORK_TASKS",
+      title: "My tasks",
+      count: "11 open · 3 overdue",
+      rows: 4,
+      note: "Task type, due date, related object, owner.",
+    },
+    {
+      id: "SCR_MY_WORK_LEADS",
+      title: `Assigned ${labels.lead.toLowerCase()}s`,
+      count: "24 assigned · 6 new today",
+      rows: 4,
+      note: `Only ${labels.lead.toLowerCase()}s assigned to me or my downline appear here.`,
+    },
+    {
+      id: "SCR_MY_WORK_FOLLOWUP",
+      title: "Follow-ups due",
+      count: "9 today · 14 this week",
+      rows: 3,
+      note: "Cadence set by agency-configured follow-up rules.",
+    },
+    {
+      id: "SCR_MY_WORK_MSGS",
+      title: "Messages",
+      count: "5 unread",
+      rows: 3,
+      note: "Inbound consumer replies across email, SMS and in-app.",
+    },
+    {
+      id: "SCR_MY_WORK_QUOTES",
+      title: "Quotes in progress",
+      count: "17 active · 4 shared",
+      rows: 4,
+      note: "Includes shared quotes awaiting consumer action (Module 1 objects, read only here).",
+    },
+    {
+      id: "SCR_MY_WORK_HANDOFF",
+      title: "Applications & handoffs needing action",
+      count: "7 waiting",
+      rows: 4,
+      note: "Includes EDE handoff returns and off-exchange submissions awaiting a step.",
+    },
+    {
+      id: "SCR_MY_WORK_EXCEPTIONS",
+      title: "Exceptions",
+      count: "3 blocking · 5 warnings",
+      rows: 3,
+      note: "Sellability, licensing, appointment, paper access and data validation failures.",
+    },
   ];
 
   return (
@@ -75,7 +117,9 @@ function MyWorkPage() {
               type="button"
               onClick={() => setLanding(o.to)}
               className={`rounded-md border px-3 py-1.5 text-xs ${
-                landing === o.to ? "border-foreground/50 bg-muted font-medium" : "border-border hover:bg-muted"
+                landing === o.to
+                  ? "border-foreground/50 bg-muted font-medium"
+                  : "border-border hover:bg-muted"
               }`}
             >
               {o.label}
@@ -83,8 +127,8 @@ function MyWorkPage() {
           ))}
         </div>
         <Annotation className="mt-2">
-          Current preference: {landing}. Stored per user. Options are limited to modules the role can
-          actually reach.
+          Current preference: {landing}. Stored per user. Options are limited to modules the role
+          can actually reach.
         </Annotation>
       </WPanel>
 
@@ -110,8 +154,8 @@ function MyWorkPage() {
           ))}
         </div>
         <Annotation className="mt-2">
-          Suggestions respect ACL: an action is only offered when the user could perform it manually.
-          Every suggestion is logged for governance review.
+          Suggestions respect ACL: an action is only offered when the user could perform it
+          manually. Every suggestion is logged for governance review.
         </Annotation>
       </WPanel>
 
@@ -136,7 +180,11 @@ function MyWorkPage() {
           </WPanel>
         ))}
 
-        <WPanel title="Configurable widget slot" id="SCR_MY_WORK_SLOT" meta="Admins add or hide cards per workspace and role">
+        <WPanel
+          title="Configurable widget slot"
+          id="SCR_MY_WORK_SLOT"
+          meta="Admins add or hide cards per workspace and role"
+        >
           <WBox className="h-28" label="empty widget slot" />
           <div className="mt-2 grid grid-cols-2 gap-2">
             <WLine w="70%" />
@@ -147,9 +195,9 @@ function MyWorkPage() {
 
       <AclNote>
         Rows are limited to records the user owns or inherits through the relationship graph.
-        Commission-bearing counts are hidden when the commission visibility flag is off for the role.
-        Sensitive consumer fields render masked in queue rows and unmask only on the object page with
-        a logged reason.
+        Commission-bearing counts are hidden when the commission visibility flag is off for the
+        role. Sensitive consumer fields render masked in queue rows and unmask only on the object
+        page with a logged reason.
       </AclNote>
     </AppShell>
   );

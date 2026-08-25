@@ -139,7 +139,9 @@ export function Badge({
         className,
       )}
     >
-      {dot ? <span className={cn("size-1.5 rounded-full", TONE_DOT[tone])} aria-hidden="true" /> : null}
+      {dot ? (
+        <span className={cn("size-1.5 rounded-full", TONE_DOT[tone])} aria-hidden="true" />
+      ) : null}
       {children}
     </span>
   );
@@ -164,7 +166,10 @@ export function Alert({
       )}
       role={tone === "danger" ? "alert" : undefined}
     >
-      <span className={cn("mt-1.5 size-1.5 shrink-0 rounded-full", TONE_DOT[tone])} aria-hidden="true" />
+      <span
+        className={cn("mt-1.5 size-1.5 shrink-0 rounded-full", TONE_DOT[tone])}
+        aria-hidden="true"
+      />
       <div className="min-w-0 flex-1">
         <p className="text-sm font-medium text-foreground">{title}</p>
         {children ? (
@@ -209,7 +214,9 @@ export function Stat({
     <Card className="px-4 py-3.5">
       <p className="text-xs text-muted-foreground">{label}</p>
       <div className="mt-1.5 flex flex-wrap items-baseline gap-2">
-        <span className="font-display text-2xl font-semibold tracking-tight tabular-nums">{value}</span>
+        <span className="font-display text-2xl font-semibold tracking-tight tabular-nums">
+          {value}
+        </span>
         {delta ? (
           <span
             className={cn(
@@ -252,7 +259,12 @@ export function Field({
         {sensitive ? <Badge tone="warning">sensitive</Badge> : null}
       </span>
       <span className="mt-1.5 flex h-10 items-center gap-2 rounded-[var(--radius)] border border-input bg-background px-3">
-        <span className={cn("flex-1 truncate text-sm", value ? "text-foreground" : "text-muted-foreground")}>
+        <span
+          className={cn(
+            "flex-1 truncate text-sm",
+            value ? "text-foreground" : "text-muted-foreground",
+          )}
+        >
           {value ?? placeholder}
         </span>
         {suffix}
@@ -312,19 +324,29 @@ export function Check({
       <span
         className={cn(
           "mt-0.5 grid size-4 shrink-0 place-items-center rounded border",
-          checked ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background",
+          checked
+            ? "border-primary bg-primary text-primary-foreground"
+            : "border-border bg-background",
         )}
         aria-hidden="true"
       >
         {checked ? (
-          <svg viewBox="0 0 10 10" className="size-2.5" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            viewBox="0 0 10 10"
+            className="size-2.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <path d="M1 5l2.5 2.5L9 2" />
           </svg>
         ) : null}
       </span>
       <span className="min-w-0 text-xs leading-relaxed text-foreground/80">
         {label}
-        {hint ? <span className="mt-0.5 block text-[11px] text-muted-foreground">{hint}</span> : null}
+        {hint ? (
+          <span className="mt-0.5 block text-[11px] text-muted-foreground">{hint}</span>
+        ) : null}
       </span>
     </div>
   );
@@ -341,7 +363,7 @@ export function Table({
 }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[36rem] border-collapse text-sm">
+      <table className="w-full min-w-[20rem] border-collapse text-sm">
         <thead>
           <tr className="border-b border-border">
             {columns.map((c) => (
@@ -406,7 +428,9 @@ export function Bars({
               aria-hidden="true"
             />
           </div>
-          <span className="truncate text-center text-[10px] text-muted-foreground">{labels[i]}</span>
+          <span className="truncate text-center text-[10px] text-muted-foreground">
+            {labels[i]}
+          </span>
         </div>
       ))}
     </div>
@@ -431,7 +455,9 @@ export function EmptyState({
   return (
     <div className="rounded-[var(--radius)] border border-dashed border-border bg-muted/25 px-5 py-8 text-center">
       <p className="font-display text-sm font-semibold">{title}</p>
-      <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">{body}</p>
+      <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
+        {body}
+      </p>
       {action ? <div className="mt-3 flex justify-center">{action}</div> : null}
       {tone === "acl" ? (
         <div className="mt-3 flex justify-center">
@@ -518,7 +544,13 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-sm font-medium">{e.title}</p>
               <Badge tone={e.kind === "ai" ? "ai" : e.kind === "status" ? "success" : "neutral"}>
-                {e.kind === "ai" ? "AI" : e.kind === "system" ? "System" : e.kind === "status" ? "Status" : "Person"}
+                {e.kind === "ai"
+                  ? "AI"
+                  : e.kind === "system"
+                    ? "System"
+                    : e.kind === "status"
+                      ? "Status"
+                      : "Person"}
               </Badge>
             </div>
             {e.body ? (
@@ -568,8 +600,12 @@ export function PlanCard({
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{plan.carrier}</p>
-          <p className="font-display text-base font-semibold leading-snug tracking-tight">{plan.name}</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+            {plan.carrier}
+          </p>
+          <p className="font-display text-base font-semibold leading-snug tracking-tight">
+            {plan.name}
+          </p>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             <Badge>{plan.metal}</Badge>
             <Badge>{plan.network}</Badge>
@@ -577,7 +613,9 @@ export function PlanCard({
           </div>
         </div>
         <div className="shrink-0 text-right">
-          <p className="font-display text-2xl font-semibold tracking-tight tabular-nums">{plan.net}</p>
+          <p className="font-display text-2xl font-semibold tracking-tight tabular-nums">
+            {plan.net}
+          </p>
           <p className="text-[11px] text-muted-foreground">
             <span className="line-through">{plan.gross}</span> before credit
           </p>
