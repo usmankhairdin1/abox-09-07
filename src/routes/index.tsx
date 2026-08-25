@@ -115,7 +115,16 @@ function ShellMapPage() {
         title="Global platform shell"
         id="SHELL_MAP"
         description="Annotated map of the shell you are currently inside. Every region below is live in this wireframe — open the switchers, search, trays, drawer and assistant to walk the structure."
+        actions={
+          <Link
+            to="/lucie"
+            className="rounded-md border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+          >
+            Lucie delivery spine →
+          </Link>
+        }
       />
+
 
       <div className="grid gap-3 lg:grid-cols-3">
         <WPanel
