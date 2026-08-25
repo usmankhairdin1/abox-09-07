@@ -201,7 +201,7 @@ export function OffexIntakeScreen() {
         }
       />
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Panel
             title="Applicant"
@@ -381,7 +381,7 @@ export function DynamicFormScreen() {
         }
       />
 
-      <div className="grid gap-4 lg:grid-cols-[15rem_1fr]">
+      <div className="grid gap-4 lg:grid-cols-[15rem_minmax(0,1fr)]">
         <Card className="p-3">
           <p className="px-2.5 pb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             Sections
@@ -570,7 +570,7 @@ export function FormConfiguratorScreen() {
         }
       />
 
-      <div className="grid gap-4 xl:grid-cols-[15rem_1fr_19rem]">
+      <div className="grid gap-4 xl:grid-cols-[15rem_minmax(0,1fr)_19rem]">
         <Card className="p-3">
           <p className="px-2.5 pb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             Form tree
@@ -1029,7 +1029,7 @@ export function ProductBuilderScreen() {
         }
       />
 
-      <div className="grid gap-4 xl:grid-cols-[1fr_21rem]">
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_21rem]">
         <div className="space-y-4">
           <Panel title="Definition" meta="Line template pre-fills the rest of this screen">
             <div className="grid gap-3 sm:grid-cols-2">
@@ -1267,7 +1267,7 @@ export function AppointmentSetupScreen() {
         interrupting live business.
       </Alert>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Panel title="Appointment record">
             <div className="grid gap-3 sm:grid-cols-2">
@@ -1637,7 +1637,7 @@ export function ReferralRewardsScreen() {
         </div>
       </Panel>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Panel title="Money mechanics" meta="Hybrid — both components required">
             <div className="grid gap-3 sm:grid-cols-2">
@@ -1821,7 +1821,7 @@ export function CommissionScheduleScreen() {
         </p>
       </Panel>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_21rem]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_21rem]">
         <div className="space-y-4">
           <Panel
             title="Rate rows — PMPM base"
@@ -2007,7 +2007,7 @@ export function CommissionProjectionScreen() {
         <Stat label="Bonus accruals" value="$18,000" hint="Super bonus, at-risk" />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Panel title="Projected commission by month" meta="One chart, one matching table">
             <Bars
@@ -2162,7 +2162,7 @@ export function AgencyStatementScreen() {
         <Stat label="Net retained" value="$24,640" delta="+4.1% vs Jun" deltaTone="success" />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Panel
             title="Summary ledger"
@@ -2409,7 +2409,7 @@ export function AgentStatementScreen() {
         <Stat label="Year to date" value="$14,902" delta="+11% vs last year" deltaTone="success" />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Panel
             title="Why this differs from June"
@@ -2686,7 +2686,7 @@ export function NotificationSchedulerScreen() {
         />
       </Panel>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-4">
           <Panel
             title="Trigger builder"
@@ -2856,7 +2856,7 @@ export function BrandingSettingsScreen() {
         }
       />
 
-      <div className="grid gap-4 xl:grid-cols-[1fr_1fr]">
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         {/* ---------------------------------------------------------- editor */}
         <div className="space-y-4">
           <Panel title="Identity">
@@ -3101,7 +3101,7 @@ export function AclConfigScreen() {
         template are not editable and say why, rather than being greyed with no explanation.
       </Alert>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_21rem]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_21rem]">
         <div className="space-y-4">
           <Panel
             title="Permission matrix"
