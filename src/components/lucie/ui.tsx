@@ -90,7 +90,7 @@ export function Section({
 }) {
   return (
     <section
-      className={cn("rounded-xl border border-border bg-card shadow-sm", className)}
+      className={cn("min-w-0 rounded-xl border border-border bg-card shadow-sm", className)}
       aria-label={title}
     >
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-border px-4 py-3">
