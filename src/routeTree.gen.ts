@@ -12,10 +12,21 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as LucieRouteImport } from './routes/lucie'
 import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
 import { Route as HfIndexRouteImport } from './routes/hf.index'
 import { Route as HfScreenRouteImport } from './routes/hf.$screen'
+import { Route as LucieIndexRouteImport } from './routes/lucie.index'
+import { Route as LucieGovernanceRouteImport } from './routes/lucie.governance'
+import { Route as LucieModule1RouteImport } from './routes/lucie.module1'
+import { Route as LucieModulesRouteImport } from './routes/lucie.modules'
+import { Route as LucieReconciliationRouteImport } from './routes/lucie.reconciliation'
+import { Route as LucieSlicesRouteImport } from './routes/lucie.slices'
+import { Route as LucieStatesRouteImport } from './routes/lucie.states'
+import { Route as LucieSurfacesRouteImport } from './routes/lucie.surfaces'
+import { Route as LucieTraceRouteImport } from './routes/lucie.trace'
+import { Route as LucieWorkstreamsRouteImport } from './routes/lucie.workstreams'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
@@ -34,6 +45,11 @@ const AdminRoute = AdminRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LucieRoute = LucieRouteImport.update({
+  id: '/lucie',
+  path: '/lucie',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyWorkRoute = MyWorkRouteImport.update({
@@ -55,6 +71,56 @@ const HfScreenRoute = HfScreenRouteImport.update({
   id: '/hf/$screen',
   path: '/hf/$screen',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LucieIndexRoute = LucieIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LucieRoute,
+} as any)
+const LucieGovernanceRoute = LucieGovernanceRouteImport.update({
+  id: '/governance',
+  path: '/governance',
+  getParentRoute: () => LucieRoute,
+} as any)
+const LucieModule1Route = LucieModule1RouteImport.update({
+  id: '/module1',
+  path: '/module1',
+  getParentRoute: () => LucieRoute,
+} as any)
+const LucieModulesRoute = LucieModulesRouteImport.update({
+  id: '/modules',
+  path: '/modules',
+  getParentRoute: () => LucieRoute,
+} as any)
+const LucieReconciliationRoute = LucieReconciliationRouteImport.update({
+  id: '/reconciliation',
+  path: '/reconciliation',
+  getParentRoute: () => LucieRoute,
+} as any)
+const LucieSlicesRoute = LucieSlicesRouteImport.update({
+  id: '/slices',
+  path: '/slices',
+  getParentRoute: () => LucieRoute,
+} as any)
+const LucieStatesRoute = LucieStatesRouteImport.update({
+  id: '/states',
+  path: '/states',
+  getParentRoute: () => LucieRoute,
+} as any)
+const LucieSurfacesRoute = LucieSurfacesRouteImport.update({
+  id: '/surfaces',
+  path: '/surfaces',
+  getParentRoute: () => LucieRoute,
+} as any)
+const LucieTraceRoute = LucieTraceRouteImport.update({
+  id: '/trace',
+  path: '/trace',
+  getParentRoute: () => LucieRoute,
+} as any)
+const LucieWorkstreamsRoute = LucieWorkstreamsRouteImport.update({
+  id: '/workstreams',
+  path: '/workstreams',
+  getParentRoute: () => LucieRoute,
 } as any)
 const M1IndexRoute = M1IndexRouteImport.update({
   id: '/m1/',
@@ -81,12 +147,23 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
+  '/lucie': typeof LucieRouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
+  '/lucie/governance': typeof LucieGovernanceRoute
+  '/lucie/module1': typeof LucieModule1Route
+  '/lucie/modules': typeof LucieModulesRoute
+  '/lucie/reconciliation': typeof LucieReconciliationRoute
+  '/lucie/slices': typeof LucieSlicesRoute
+  '/lucie/states': typeof LucieStatesRoute
+  '/lucie/surfaces': typeof LucieSurfacesRoute
+  '/lucie/trace': typeof LucieTraceRoute
+  '/lucie/workstreams': typeof LucieWorkstreamsRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/hf/': typeof HfIndexRoute
+  '/lucie/': typeof LucieIndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
 }
@@ -97,9 +174,19 @@ export interface FileRoutesByTo {
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
+  '/lucie/governance': typeof LucieGovernanceRoute
+  '/lucie/module1': typeof LucieModule1Route
+  '/lucie/modules': typeof LucieModulesRoute
+  '/lucie/reconciliation': typeof LucieReconciliationRoute
+  '/lucie/slices': typeof LucieSlicesRoute
+  '/lucie/states': typeof LucieStatesRoute
+  '/lucie/surfaces': typeof LucieSurfacesRoute
+  '/lucie/trace': typeof LucieTraceRoute
+  '/lucie/workstreams': typeof LucieWorkstreamsRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/hf': typeof HfIndexRoute
+  '/lucie': typeof LucieIndexRoute
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
 }
@@ -108,12 +195,23 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
+  '/lucie': typeof LucieRouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
+  '/lucie/governance': typeof LucieGovernanceRoute
+  '/lucie/module1': typeof LucieModule1Route
+  '/lucie/modules': typeof LucieModulesRoute
+  '/lucie/reconciliation': typeof LucieReconciliationRoute
+  '/lucie/slices': typeof LucieSlicesRoute
+  '/lucie/states': typeof LucieStatesRoute
+  '/lucie/surfaces': typeof LucieSurfacesRoute
+  '/lucie/trace': typeof LucieTraceRoute
+  '/lucie/workstreams': typeof LucieWorkstreamsRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/hf/': typeof HfIndexRoute
+  '/lucie/': typeof LucieIndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
 }
@@ -123,12 +221,23 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/dashboard'
+    | '/lucie'
     | '/my-work'
     | '/object'
     | '/hf/$screen'
+    | '/lucie/governance'
+    | '/lucie/module1'
+    | '/lucie/modules'
+    | '/lucie/reconciliation'
+    | '/lucie/slices'
+    | '/lucie/states'
+    | '/lucie/surfaces'
+    | '/lucie/trace'
+    | '/lucie/workstreams'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/hf/'
+    | '/lucie/'
     | '/m1/'
     | '/p1/'
   fileRoutesByTo: FileRoutesByTo
@@ -139,9 +248,19 @@ export interface FileRouteTypes {
     | '/my-work'
     | '/object'
     | '/hf/$screen'
+    | '/lucie/governance'
+    | '/lucie/module1'
+    | '/lucie/modules'
+    | '/lucie/reconciliation'
+    | '/lucie/slices'
+    | '/lucie/states'
+    | '/lucie/surfaces'
+    | '/lucie/trace'
+    | '/lucie/workstreams'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/hf'
+    | '/lucie'
     | '/m1'
     | '/p1'
   id:
@@ -149,12 +268,23 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/dashboard'
+    | '/lucie'
     | '/my-work'
     | '/object'
     | '/hf/$screen'
+    | '/lucie/governance'
+    | '/lucie/module1'
+    | '/lucie/modules'
+    | '/lucie/reconciliation'
+    | '/lucie/slices'
+    | '/lucie/states'
+    | '/lucie/surfaces'
+    | '/lucie/trace'
+    | '/lucie/workstreams'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/hf/'
+    | '/lucie/'
     | '/m1/'
     | '/p1/'
   fileRoutesById: FileRoutesById
@@ -163,6 +293,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   DashboardRoute: typeof DashboardRoute
+  LucieRoute: typeof LucieRouteWithChildren
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
   HfScreenRoute: typeof HfScreenRoute
@@ -196,6 +327,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lucie': {
+      id: '/lucie'
+      path: '/lucie'
+      fullPath: '/lucie'
+      preLoaderRoute: typeof LucieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/my-work': {
       id: '/my-work'
       path: '/my-work'
@@ -223,6 +361,76 @@ declare module '@tanstack/react-router' {
       fullPath: '/hf/$screen'
       preLoaderRoute: typeof HfScreenRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/lucie/': {
+      id: '/lucie/'
+      path: '/'
+      fullPath: '/lucie/'
+      preLoaderRoute: typeof LucieIndexRouteImport
+      parentRoute: typeof LucieRoute
+    }
+    '/lucie/governance': {
+      id: '/lucie/governance'
+      path: '/governance'
+      fullPath: '/lucie/governance'
+      preLoaderRoute: typeof LucieGovernanceRouteImport
+      parentRoute: typeof LucieRoute
+    }
+    '/lucie/module1': {
+      id: '/lucie/module1'
+      path: '/module1'
+      fullPath: '/lucie/module1'
+      preLoaderRoute: typeof LucieModule1RouteImport
+      parentRoute: typeof LucieRoute
+    }
+    '/lucie/modules': {
+      id: '/lucie/modules'
+      path: '/modules'
+      fullPath: '/lucie/modules'
+      preLoaderRoute: typeof LucieModulesRouteImport
+      parentRoute: typeof LucieRoute
+    }
+    '/lucie/reconciliation': {
+      id: '/lucie/reconciliation'
+      path: '/reconciliation'
+      fullPath: '/lucie/reconciliation'
+      preLoaderRoute: typeof LucieReconciliationRouteImport
+      parentRoute: typeof LucieRoute
+    }
+    '/lucie/slices': {
+      id: '/lucie/slices'
+      path: '/slices'
+      fullPath: '/lucie/slices'
+      preLoaderRoute: typeof LucieSlicesRouteImport
+      parentRoute: typeof LucieRoute
+    }
+    '/lucie/states': {
+      id: '/lucie/states'
+      path: '/states'
+      fullPath: '/lucie/states'
+      preLoaderRoute: typeof LucieStatesRouteImport
+      parentRoute: typeof LucieRoute
+    }
+    '/lucie/surfaces': {
+      id: '/lucie/surfaces'
+      path: '/surfaces'
+      fullPath: '/lucie/surfaces'
+      preLoaderRoute: typeof LucieSurfacesRouteImport
+      parentRoute: typeof LucieRoute
+    }
+    '/lucie/trace': {
+      id: '/lucie/trace'
+      path: '/trace'
+      fullPath: '/lucie/trace'
+      preLoaderRoute: typeof LucieTraceRouteImport
+      parentRoute: typeof LucieRoute
+    }
+    '/lucie/workstreams': {
+      id: '/lucie/workstreams'
+      path: '/workstreams'
+      fullPath: '/lucie/workstreams'
+      preLoaderRoute: typeof LucieWorkstreamsRouteImport
+      parentRoute: typeof LucieRoute
     }
     '/m1/': {
       id: '/m1/'
@@ -255,10 +463,39 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface LucieRouteChildren {
+  LucieGovernanceRoute: typeof LucieGovernanceRoute
+  LucieModule1Route: typeof LucieModule1Route
+  LucieModulesRoute: typeof LucieModulesRoute
+  LucieReconciliationRoute: typeof LucieReconciliationRoute
+  LucieSlicesRoute: typeof LucieSlicesRoute
+  LucieStatesRoute: typeof LucieStatesRoute
+  LucieSurfacesRoute: typeof LucieSurfacesRoute
+  LucieTraceRoute: typeof LucieTraceRoute
+  LucieWorkstreamsRoute: typeof LucieWorkstreamsRoute
+  LucieIndexRoute: typeof LucieIndexRoute
+}
+
+const LucieRouteChildren: LucieRouteChildren = {
+  LucieGovernanceRoute: LucieGovernanceRoute,
+  LucieModule1Route: LucieModule1Route,
+  LucieModulesRoute: LucieModulesRoute,
+  LucieReconciliationRoute: LucieReconciliationRoute,
+  LucieSlicesRoute: LucieSlicesRoute,
+  LucieStatesRoute: LucieStatesRoute,
+  LucieSurfacesRoute: LucieSurfacesRoute,
+  LucieTraceRoute: LucieTraceRoute,
+  LucieWorkstreamsRoute: LucieWorkstreamsRoute,
+  LucieIndexRoute: LucieIndexRoute,
+}
+
+const LucieRouteWithChildren = LucieRoute._addFileChildren(LucieRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   DashboardRoute: DashboardRoute,
+  LucieRoute: LucieRouteWithChildren,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
   HfScreenRoute: HfScreenRoute,
