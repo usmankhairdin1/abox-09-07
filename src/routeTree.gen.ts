@@ -18,6 +18,7 @@ import { Route as ObjectRouteImport } from './routes/object'
 import { Route as HfIndexRouteImport } from './routes/hf.index'
 import { Route as HfScreenRouteImport } from './routes/hf.$screen'
 import { Route as LucieIndexRouteImport } from './routes/lucie.index'
+import { Route as LucieModulesRouteImport } from './routes/lucie.modules'
 import { Route as LucieSlicesRouteImport } from './routes/lucie.slices'
 import { Route as LucieTraceRouteImport } from './routes/lucie.trace'
 import { Route as LucieWorkstreamsRouteImport } from './routes/lucie.workstreams'
@@ -71,6 +72,11 @@ const LucieIndexRoute = LucieIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LucieRoute,
 } as any)
+const LucieModulesRoute = LucieModulesRouteImport.update({
+  id: '/modules',
+  path: '/modules',
+  getParentRoute: () => LucieRoute,
+} as any)
 const LucieSlicesRoute = LucieSlicesRouteImport.update({
   id: '/slices',
   path: '/slices',
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
+  '/lucie/modules': typeof LucieModulesRoute
   '/lucie/slices': typeof LucieSlicesRoute
   '/lucie/trace': typeof LucieTraceRoute
   '/lucie/workstreams': typeof LucieWorkstreamsRoute
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
+  '/lucie/modules': typeof LucieModulesRoute
   '/lucie/slices': typeof LucieSlicesRoute
   '/lucie/trace': typeof LucieTraceRoute
   '/lucie/workstreams': typeof LucieWorkstreamsRoute
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
+  '/lucie/modules': typeof LucieModulesRoute
   '/lucie/slices': typeof LucieSlicesRoute
   '/lucie/trace': typeof LucieTraceRoute
   '/lucie/workstreams': typeof LucieWorkstreamsRoute
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/my-work'
     | '/object'
     | '/hf/$screen'
+    | '/lucie/modules'
     | '/lucie/slices'
     | '/lucie/trace'
     | '/lucie/workstreams'
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/my-work'
     | '/object'
     | '/hf/$screen'
+    | '/lucie/modules'
     | '/lucie/slices'
     | '/lucie/trace'
     | '/lucie/workstreams'
@@ -206,6 +217,7 @@ export interface FileRouteTypes {
     | '/my-work'
     | '/object'
     | '/hf/$screen'
+    | '/lucie/modules'
     | '/lucie/slices'
     | '/lucie/trace'
     | '/lucie/workstreams'
@@ -297,6 +309,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieIndexRouteImport
       parentRoute: typeof LucieRoute
     }
+    '/lucie/modules': {
+      id: '/lucie/modules'
+      path: '/modules'
+      fullPath: '/lucie/modules'
+      preLoaderRoute: typeof LucieModulesRouteImport
+      parentRoute: typeof LucieRoute
+    }
     '/lucie/slices': {
       id: '/lucie/slices'
       path: '/slices'
@@ -350,6 +369,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface LucieRouteChildren {
+  LucieModulesRoute: typeof LucieModulesRoute
   LucieSlicesRoute: typeof LucieSlicesRoute
   LucieTraceRoute: typeof LucieTraceRoute
   LucieWorkstreamsRoute: typeof LucieWorkstreamsRoute
@@ -357,6 +377,7 @@ interface LucieRouteChildren {
 }
 
 const LucieRouteChildren: LucieRouteChildren = {
+  LucieModulesRoute: LucieModulesRoute,
   LucieSlicesRoute: LucieSlicesRoute,
   LucieTraceRoute: LucieTraceRoute,
   LucieWorkstreamsRoute: LucieWorkstreamsRoute,
