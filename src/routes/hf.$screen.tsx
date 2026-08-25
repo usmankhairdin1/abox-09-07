@@ -88,7 +88,7 @@ export const Route = createFileRoute("/hf/$screen")({
         meta: [{ title: "Screen unavailable — ABox" }, { name: "robots", content: "noindex" }],
       };
     }
-    const t = `${loaderData.screen.id} ${loaderData.screen.name} — ABox Batch 1`;
+    const t = `${loaderData.screen.id} ${loaderData.screen.name} — ABox higher fidelity`;
     const d = loaderData.screen.purpose.slice(0, 155);
     return {
       meta: [
