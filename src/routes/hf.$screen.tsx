@@ -183,8 +183,14 @@ function HfScreenPage() {
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{screen.purpose}</p>
 
             <NoteBlock title="Key design decisions" items={screen.decisions} />
-            <NoteBlock title="ACL behavior" items={screen.acl} />
+            {screen.objects ? <NoteBlock title="Objects used" items={screen.objects} /> : null}
             <NoteBlock title="Configuration points" items={screen.config} />
+            <NoteBlock title="ACL notes" items={screen.acl} />
+            {screen.dataFlow ? (
+              <NoteBlock title="Data flow implications" items={screen.dataFlow} />
+            ) : null}
+            {screen.assumptions ? <NoteBlock title="Assumptions" items={screen.assumptions} /> : null}
+
 
             <div className="mt-5 border-t border-border pt-4">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
