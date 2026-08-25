@@ -341,7 +341,7 @@ export function Table({
 }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[36rem] border-collapse text-sm">
+      <table className="w-full min-w-[26rem] border-collapse text-sm">
         <thead>
           <tr className="border-b border-border">
             {columns.map((c) => (
