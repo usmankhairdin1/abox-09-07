@@ -133,6 +133,7 @@ import { Route as LucieAppAgencyIndexRouteImport } from './routes/lucie-app.agen
 import { Route as LucieAppAgencyMarketplacesRouteImport } from './routes/lucie-app.agency.marketplaces'
 import { Route as LucieAppAgencyProducersRouteImport } from './routes/lucie-app.agency.producers'
 import { Route as LucieAppEmployerIndexRouteImport } from './routes/lucie-app.employer.index'
+import { Route as LucieAppEmployerCensusRouteImport } from './routes/lucie-app.employer.census'
 import { Route as LucieAppShopIndexRouteImport } from './routes/lucie-app.shop.index'
 import { Route as LucieAppShopApplicationRouteImport } from './routes/lucie-app.shop.application'
 import { Route as LucieAppShopCartRouteImport } from './routes/lucie-app.shop.cart'
@@ -822,6 +823,11 @@ const LucieAppEmployerIndexRoute = LucieAppEmployerIndexRouteImport.update({
   path: '/employer/',
   getParentRoute: () => LucieAppRoute,
 } as any)
+const LucieAppEmployerCensusRoute = LucieAppEmployerCensusRouteImport.update({
+  id: '/employer/census',
+  path: '/employer/census',
+  getParentRoute: () => LucieAppRoute,
+} as any)
 const LucieAppShopIndexRoute = LucieAppShopIndexRouteImport.update({
   id: '/shop/',
   path: '/shop/',
@@ -1278,6 +1284,7 @@ export interface FileRoutesByFullPath {
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
   '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
+  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
   '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
   '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
   '/lucie-app/shop/compare': typeof LucieAppShopCompareRoute
@@ -1457,6 +1464,7 @@ export interface FileRoutesByTo {
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
   '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
+  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
   '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
   '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
   '/lucie-app/shop/compare': typeof LucieAppShopCompareRoute
@@ -1644,6 +1652,7 @@ export interface FileRoutesById {
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
   '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
+  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
   '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
   '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
   '/lucie-app/shop/compare': typeof LucieAppShopCompareRoute
@@ -1832,6 +1841,7 @@ export interface FileRouteTypes {
     | '/gov/$module/traceability'
     | '/lucie-app/agency/marketplaces'
     | '/lucie-app/agency/producers'
+    | '/lucie-app/employer/census'
     | '/lucie-app/shop/application'
     | '/lucie-app/shop/cart'
     | '/lucie-app/shop/compare'
@@ -2011,6 +2021,7 @@ export interface FileRouteTypes {
     | '/gov/$module/traceability'
     | '/lucie-app/agency/marketplaces'
     | '/lucie-app/agency/producers'
+    | '/lucie-app/employer/census'
     | '/lucie-app/shop/application'
     | '/lucie-app/shop/cart'
     | '/lucie-app/shop/compare'
@@ -2197,6 +2208,7 @@ export interface FileRouteTypes {
     | '/gov/$module/traceability'
     | '/lucie-app/agency/marketplaces'
     | '/lucie-app/agency/producers'
+    | '/lucie-app/employer/census'
     | '/lucie-app/shop/application'
     | '/lucie-app/shop/cart'
     | '/lucie-app/shop/compare'
@@ -3242,6 +3254,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieAppEmployerIndexRouteImport
       parentRoute: typeof LucieAppRoute
     }
+    '/lucie-app/employer/census': {
+      id: '/lucie-app/employer/census'
+      path: '/employer/census'
+      fullPath: '/lucie-app/employer/census'
+      preLoaderRoute: typeof LucieAppEmployerCensusRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
     '/lucie-app/shop/': {
       id: '/lucie-app/shop/'
       path: '/shop'
@@ -3771,6 +3790,7 @@ interface LucieAppRouteChildren {
   LucieAppIndexRoute: typeof LucieAppIndexRoute
   LucieAppAgencyMarketplacesRoute: typeof LucieAppAgencyMarketplacesRoute
   LucieAppAgencyProducersRoute: typeof LucieAppAgencyProducersRoute
+  LucieAppEmployerCensusRoute: typeof LucieAppEmployerCensusRoute
   LucieAppShopApplicationRoute: typeof LucieAppShopApplicationRoute
   LucieAppShopCartRoute: typeof LucieAppShopCartRoute
   LucieAppShopCompareRoute: typeof LucieAppShopCompareRoute
@@ -3792,6 +3812,7 @@ const LucieAppRouteChildren: LucieAppRouteChildren = {
   LucieAppIndexRoute: LucieAppIndexRoute,
   LucieAppAgencyMarketplacesRoute: LucieAppAgencyMarketplacesRoute,
   LucieAppAgencyProducersRoute: LucieAppAgencyProducersRoute,
+  LucieAppEmployerCensusRoute: LucieAppEmployerCensusRoute,
   LucieAppShopApplicationRoute: LucieAppShopApplicationRoute,
   LucieAppShopCartRoute: LucieAppShopCartRoute,
   LucieAppShopCompareRoute: LucieAppShopCompareRoute,
