@@ -5,7 +5,7 @@ import { DEFAULT_LABELS, type LabelKey } from "@/lib/abox";
 
 /* ------------------------------------------------------------------ context */
 
-interface ShellState {
+export interface ShellState {
   workspaceId: string;
   setWorkspaceId: (id: string) => void;
   entityId: string;
