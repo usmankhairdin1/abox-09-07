@@ -1,0 +1,1 @@
+ALTER FUNCTION lucie_m05.prevent_mutation() SET search_path = pg_catalog, public, lucie_m05;
