@@ -129,6 +129,7 @@ import { Route as GovModuleFlowsRouteImport } from './routes/gov.$module.flows'
 import { Route as GovModuleRegistersRouteImport } from './routes/gov.$module.registers'
 import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
 import { Route as GovModuleTraceabilityRouteImport } from './routes/gov.$module.traceability'
+import { Route as LucieAppAgencyIndexRouteImport } from './routes/lucie-app.agency.index'
 import { Route as LucieAppShopIndexRouteImport } from './routes/lucie-app.shop.index'
 import { Route as LucieAppShopApplicationRouteImport } from './routes/lucie-app.shop.application'
 import { Route as LucieAppShopCartRouteImport } from './routes/lucie-app.shop.cart'
@@ -797,6 +798,11 @@ const GovModuleTraceabilityRoute = GovModuleTraceabilityRouteImport.update({
   path: '/traceability',
   getParentRoute: () => GovModuleRoute,
 } as any)
+const LucieAppAgencyIndexRoute = LucieAppAgencyIndexRouteImport.update({
+  id: '/agency/',
+  path: '/agency/',
+  getParentRoute: () => LucieAppRoute,
+} as any)
 const LucieAppShopIndexRoute = LucieAppShopIndexRouteImport.update({
   id: '/shop/',
   path: '/shop/',
@@ -1277,6 +1283,7 @@ export interface FileRoutesByFullPath {
   '/app/agency/': typeof AppAgencyIndexRoute
   '/app/customers/': typeof AppCustomersIndexRoute
   '/gov/$module/': typeof GovModuleIndexRoute
+  '/lucie-app/agency/': typeof LucieAppAgencyIndexRoute
   '/lucie-app/shop/': typeof LucieAppShopIndexRoute
   '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
@@ -1452,6 +1459,7 @@ export interface FileRoutesByTo {
   '/app/agency': typeof AppAgencyIndexRoute
   '/app/customers': typeof AppCustomersIndexRoute
   '/gov/$module': typeof GovModuleIndexRoute
+  '/lucie-app/agency': typeof LucieAppAgencyIndexRoute
   '/lucie-app/shop': typeof LucieAppShopIndexRoute
   '/marketplace/admin': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces': typeof PlatformMarketplacesIndexRoute
@@ -1635,6 +1643,7 @@ export interface FileRoutesById {
   '/app/agency/': typeof AppAgencyIndexRoute
   '/app/customers/': typeof AppCustomersIndexRoute
   '/gov/$module/': typeof GovModuleIndexRoute
+  '/lucie-app/agency/': typeof LucieAppAgencyIndexRoute
   '/lucie-app/shop/': typeof LucieAppShopIndexRoute
   '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
@@ -1819,6 +1828,7 @@ export interface FileRouteTypes {
     | '/app/agency/'
     | '/app/customers/'
     | '/gov/$module/'
+    | '/lucie-app/agency/'
     | '/lucie-app/shop/'
     | '/marketplace/admin/'
     | '/platform/marketplaces/'
@@ -1994,6 +2004,7 @@ export interface FileRouteTypes {
     | '/app/agency'
     | '/app/customers'
     | '/gov/$module'
+    | '/lucie-app/agency'
     | '/lucie-app/shop'
     | '/marketplace/admin'
     | '/platform/marketplaces'
@@ -2176,6 +2187,7 @@ export interface FileRouteTypes {
     | '/app/agency/'
     | '/app/customers/'
     | '/gov/$module/'
+    | '/lucie-app/agency/'
     | '/lucie-app/shop/'
     | '/marketplace/admin/'
     | '/platform/marketplaces/'
@@ -3165,6 +3177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GovModuleTraceabilityRouteImport
       parentRoute: typeof GovModuleRoute
     }
+    '/lucie-app/agency/': {
+      id: '/lucie-app/agency/'
+      path: '/agency'
+      fullPath: '/lucie-app/agency/'
+      preLoaderRoute: typeof LucieAppAgencyIndexRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
     '/lucie-app/shop/': {
       id: '/lucie-app/shop/'
       path: '/shop'
@@ -3702,6 +3721,7 @@ interface LucieAppRouteChildren {
   LucieAppShopRegisterRoute: typeof LucieAppShopRegisterRoute
   LucieAppShopReviewRoute: typeof LucieAppShopReviewRoute
   LucieAppShopStatusRoute: typeof LucieAppShopStatusRoute
+  LucieAppAgencyIndexRoute: typeof LucieAppAgencyIndexRoute
   LucieAppShopIndexRoute: typeof LucieAppShopIndexRoute
   LucieAppShopPlansPlanIdRoute: typeof LucieAppShopPlansPlanIdRoute
   LucieAppShopPlansIndexRoute: typeof LucieAppShopPlansIndexRoute
@@ -3719,6 +3739,7 @@ const LucieAppRouteChildren: LucieAppRouteChildren = {
   LucieAppShopRegisterRoute: LucieAppShopRegisterRoute,
   LucieAppShopReviewRoute: LucieAppShopReviewRoute,
   LucieAppShopStatusRoute: LucieAppShopStatusRoute,
+  LucieAppAgencyIndexRoute: LucieAppAgencyIndexRoute,
   LucieAppShopIndexRoute: LucieAppShopIndexRoute,
   LucieAppShopPlansPlanIdRoute: LucieAppShopPlansPlanIdRoute,
   LucieAppShopPlansIndexRoute: LucieAppShopPlansIndexRoute,
