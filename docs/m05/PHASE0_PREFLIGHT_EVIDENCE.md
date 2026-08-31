@@ -74,3 +74,23 @@ for M00 under CCL-002). QA / UAT / Production separation remains outstanding.
 
 None. Every controlling artefact parsed. No material contradiction survived the source
 hierarchy at preflight.
+
+## PF-M05-08 Phase 2 — Database foundation applied (2026-08-31)
+
+V001–V007 applied to the Cloud Postgres in controlled order, unedited apart from the
+security hardening recorded as CCL-M05-005 (which adds no behaviour).
+
+Post-migration verification (`ABox_Lucie_M05_PostgreSQL_Verification_v1.0.sql`):
+
+| Check | Result |
+| --- | --- |
+| `tenant_table_has_rls` | true |
+| `organization_table_has_rls` | true |
+| `one_active_parent_index_exists` | true |
+| `history_trigger_exists` | true |
+| `canonical_table_count` | 34 |
+| forced RLS tables | 33 |
+| tenant-isolation policies | 33 |
+| `schema_version_evidence` | `M05-1.0-V007` |
+
+Database security linter: **no issues**.
