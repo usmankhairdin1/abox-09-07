@@ -4,6 +4,35 @@
  * All content is fabricated. Not real plans, not real people.
  */
 
+import type { PriorityKey, UsageLevel } from "./quote-store";
+
+export interface PlanMatchInputs {
+  priorities: PriorityKey[];
+  usage?: UsageLevel;
+  keepDoctor?: boolean;
+}
+
+/** Simple heuristic match score used by agent quick-quote and plan detail. */
+export function planMatchScore(plan: SamplePlan, inputs: PlanMatchInputs): number {
+  if (!inputs.priorities.length) return plan.planOMatch;
+  let score = plan.planOMatch;
+  const priorityBoost: Record<PriorityKey, number> = {
+    premium: -5,
+    deductible: 5,
+    doctor: 8,
+    rx: 5,
+    network: 6,
+    hsa: plan.hsaEligible ? 6 : -6,
+  };
+  inputs.priorities.forEach((p) => {
+    score += priorityBoost[p] ?? 0;
+  });
+  if (inputs.keepDoctor && plan.networkType === "PPO") score += 4;
+  if (inputs.usage === "low") score += plan.monthlyPremium < 380 ? 3 : -3;
+  if (inputs.usage === "high") score += plan.deductible < 2500 ? 6 : -4;
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
 export interface SamplePlan {
   id: string;
   carrier: string;
