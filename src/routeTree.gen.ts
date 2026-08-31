@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LucieRouteImport } from './routes/lucie'
+import { Route as M00RouteImport } from './routes/m00'
 import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
 import { Route as HfIndexRouteImport } from './routes/hf.index'
@@ -50,6 +51,11 @@ const DashboardRoute = DashboardRouteImport.update({
 const LucieRoute = LucieRouteImport.update({
   id: '/lucie',
   path: '/lucie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const M00Route = M00RouteImport.update({
+  id: '/m00',
+  path: '/m00',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyWorkRoute = MyWorkRouteImport.update({
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
+  '/m00': typeof M00Route
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
+  '/m00': typeof M00Route
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
@@ -196,6 +204,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
+  '/m00': typeof M00Route
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
@@ -222,6 +231,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/lucie'
+    | '/m00'
     | '/my-work'
     | '/object'
     | '/hf/$screen'
@@ -245,6 +255,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/dashboard'
+    | '/m00'
     | '/my-work'
     | '/object'
     | '/hf/$screen'
@@ -269,6 +280,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/lucie'
+    | '/m00'
     | '/my-work'
     | '/object'
     | '/hf/$screen'
@@ -294,6 +306,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   DashboardRoute: typeof DashboardRoute
   LucieRoute: typeof LucieRouteWithChildren
+  M00Route: typeof M00Route
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
   HfScreenRoute: typeof HfScreenRoute
@@ -332,6 +345,13 @@ declare module '@tanstack/react-router' {
       path: '/lucie'
       fullPath: '/lucie'
       preLoaderRoute: typeof LucieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/m00': {
+      id: '/m00'
+      path: '/m00'
+      fullPath: '/m00'
+      preLoaderRoute: typeof M00RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-work': {
@@ -496,6 +516,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   DashboardRoute: DashboardRoute,
   LucieRoute: LucieRouteWithChildren,
+  M00Route: M00Route,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
   HfScreenRoute: HfScreenRoute,
