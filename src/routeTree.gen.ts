@@ -32,6 +32,7 @@ import { Route as M00IndexRouteImport } from './routes/m00.index'
 import { Route as M00ApiRouteImport } from './routes/m00.api'
 import { Route as M00ConsoleRouteImport } from './routes/m00.console'
 import { Route as M00EventsRouteImport } from './routes/m00.events'
+import { Route as M00TestsRouteImport } from './routes/m00.tests'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
@@ -152,6 +153,11 @@ const M00EventsRoute = M00EventsRouteImport.update({
   path: '/events',
   getParentRoute: () => M00Route,
 } as any)
+const M00TestsRoute = M00TestsRouteImport.update({
+  id: '/tests',
+  path: '/tests',
+  getParentRoute: () => M00Route,
+} as any)
 const M1IndexRoute = M1IndexRouteImport.update({
   id: '/m1/',
   path: '/m1/',
@@ -194,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/m00/api': typeof M00ApiRoute
   '/m00/console': typeof M00ConsoleRoute
   '/m00/events': typeof M00EventsRoute
+  '/m00/tests': typeof M00TestsRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/hf/': typeof HfIndexRoute
@@ -221,6 +228,7 @@ export interface FileRoutesByTo {
   '/m00/api': typeof M00ApiRoute
   '/m00/console': typeof M00ConsoleRoute
   '/m00/events': typeof M00EventsRoute
+  '/m00/tests': typeof M00TestsRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/hf': typeof HfIndexRoute
@@ -251,6 +259,7 @@ export interface FileRoutesById {
   '/m00/api': typeof M00ApiRoute
   '/m00/console': typeof M00ConsoleRoute
   '/m00/events': typeof M00EventsRoute
+  '/m00/tests': typeof M00TestsRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/hf/': typeof HfIndexRoute
@@ -282,6 +291,7 @@ export interface FileRouteTypes {
     | '/m00/api'
     | '/m00/console'
     | '/m00/events'
+    | '/m00/tests'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/hf/'
@@ -309,6 +319,7 @@ export interface FileRouteTypes {
     | '/m00/api'
     | '/m00/console'
     | '/m00/events'
+    | '/m00/tests'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/hf'
@@ -338,6 +349,7 @@ export interface FileRouteTypes {
     | '/m00/api'
     | '/m00/console'
     | '/m00/events'
+    | '/m00/tests'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/hf/'
@@ -526,6 +538,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof M00EventsRouteImport
       parentRoute: typeof M00Route
     }
+    '/m00/tests': {
+      id: '/m00/tests'
+      path: '/tests'
+      fullPath: '/m00/tests'
+      preLoaderRoute: typeof M00TestsRouteImport
+      parentRoute: typeof M00Route
+    }
     '/m1/': {
       id: '/m1/'
       path: '/m1'
@@ -589,6 +608,7 @@ interface M00RouteChildren {
   M00ApiRoute: typeof M00ApiRoute
   M00ConsoleRoute: typeof M00ConsoleRoute
   M00EventsRoute: typeof M00EventsRoute
+  M00TestsRoute: typeof M00TestsRoute
   M00IndexRoute: typeof M00IndexRoute
 }
 
@@ -596,6 +616,7 @@ const M00RouteChildren: M00RouteChildren = {
   M00ApiRoute: M00ApiRoute,
   M00ConsoleRoute: M00ConsoleRoute,
   M00EventsRoute: M00EventsRoute,
+  M00TestsRoute: M00TestsRoute,
   M00IndexRoute: M00IndexRoute,
 }
 
