@@ -104,7 +104,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
 
       <div className="flex items-center justify-between gap-3 border-t border-hairline pt-4">
         <div className="flex items-center gap-2">
-          <MatchArc pct={plan.planOMatch} />
+          <MatchArc pct={matchScore ?? plan.planOMatch} />
           <div className="text-xs">
             <p className="inline-flex items-center gap-1 font-medium text-primary">
               <Sparkles className="h-3.5 w-3.5" aria-hidden /> Plan-O match
