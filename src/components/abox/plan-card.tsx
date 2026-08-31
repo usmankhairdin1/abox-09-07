@@ -18,6 +18,10 @@ interface Props {
   inCompare?: boolean;
   saved?: boolean;
   compact?: boolean;
+  /** Optional override for the Plan-AI match percentage. */
+  matchScore?: number;
+  /** Optional after-APTC price shown for on-exchange QHP plans. */
+  subsidizedPrice?: number;
 }
 
 function MatchArc({ pct }: { pct: number }) {
@@ -39,7 +43,8 @@ function MatchArc({ pct }: { pct: number }) {
   );
 }
 
-export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, inCompare, saved, compact }: Props) {
+export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, inCompare, saved, compact, matchScore, subsidizedPrice }: Props) {
+  const displayPrice = subsidizedPrice ?? plan.monthlyPremium;
   return (
     <article
       aria-labelledby={`plan-${plan.id}-name`}
@@ -73,8 +78,11 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
         </div>
         <div className="shrink-0 text-right">
           <div className="text-display text-5xl tabular-nums leading-none">
-            <span className="text-lg align-top text-muted-foreground">$</span>{plan.monthlyPremium}
+            <span className="text-lg align-top text-muted-foreground">$</span>{displayPrice}
           </div>
+          {subsidizedPrice !== undefined && (
+            <div className="text-xs text-muted-foreground line-through">${plan.monthlyPremium}/mo</div>
+          )}
           <div className="text-serial mt-1">per month</div>
           <div className="mt-2 inline-flex items-center gap-0.5 text-xs text-muted-foreground">
             <Star className="h-3 w-3 fill-primary text-primary" aria-hidden />
@@ -102,7 +110,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
 
       <div className="flex items-center justify-between gap-3 border-t border-hairline pt-4">
         <div className="flex items-center gap-2">
-          <MatchArc pct={plan.planOMatch} />
+          <MatchArc pct={matchScore ?? plan.planOMatch} />
           <div className="text-xs">
             <p className="inline-flex items-center gap-1 font-medium text-primary">
               <Sparkles className="h-3.5 w-3.5" aria-hidden /> Plan-O match

@@ -302,3 +302,37 @@ export function estimateMonthlyAPTC(income: number | undefined, hh: number | und
   const contribMonthly = (income * expectedContribPct) / 12;
   return Math.max(0, Math.round(benchmarkMonthly - contribMonthly));
 }
+
+/**
+ * Recommended exchange-view default (BR-006): on-exchange if the shopper
+ * checked subsidy and qualifies, off-exchange if checked and doesn't,
+ * otherwise "all" (no subsidy signal).
+ */
+export function recommendedExchangeView(
+  q: Pick<QuoteState, "skipSubsidy" | "income" | "taxHouseholdSize"> | null,
+): "all" | "on" | "off" {
+  if (!q || q.skipSubsidy || q.income == null || q.taxHouseholdSize == null) return "all";
+  const aptc = estimateMonthlyAPTC(q.income, q.taxHouseholdSize);
+  return aptc && aptc > 0 ? "on" : "off";
+}
+
+const SAVED_AT_KEY = "abox_quote_saved_at_v1";
+
+export function markProgressSaved(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(SAVED_AT_KEY, new Date().toISOString());
+  } catch {
+    /* ignore */
+  }
+}
+
+export function getLastSavedAt(): Date | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(SAVED_AT_KEY);
+    return raw ? new Date(raw) : null;
+  } catch {
+    return null;
+  }
+}

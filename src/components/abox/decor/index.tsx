@@ -99,6 +99,8 @@ export function CornerCrop({
   );
 }
 
+const round6 = (n: number) => parseFloat(n.toFixed(6));
+
 /* Radial ticks — dial markings around a circle. Great for hero + metric */
 export function RadialTicks({
   className, size = 260, count = 60, tone = "hairline",
@@ -111,12 +113,12 @@ export function RadialTicks({
     >
       {ticks.map((i) => {
         const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
-        const x1 = c + Math.cos(angle) * r;
-        const y1 = c + Math.sin(angle) * r;
+        const x1 = round6(c + Math.cos(angle) * r);
+        const y1 = round6(c + Math.sin(angle) * r);
         const long = i % 5 === 0;
         const inner = long ? r - 10 : r - 5;
-        const x2 = c + Math.cos(angle) * inner;
-        const y2 = c + Math.sin(angle) * inner;
+        const x2 = round6(c + Math.cos(angle) * inner);
+        const y2 = round6(c + Math.sin(angle) * inner);
         return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
           stroke={long ? "var(--ink)" : strokeOf(tone)}
           strokeWidth={long ? 1 : 0.6} opacity={long ? 0.6 : 0.35} />;
@@ -274,10 +276,10 @@ export function HealthPulseShield({
         const angle = Math.PI * (0.15 + t * 0.7);
         const cx = w * 0.5, cy = h * 0.55;
         const r1 = w * 0.36, r2 = w * 0.38;
-        const x1 = cx + Math.cos(angle) * r1;
-        const y1 = cy + Math.sin(angle) * r1;
-        const x2 = cx + Math.cos(angle) * r2;
-        const y2 = cy + Math.sin(angle) * r2;
+        const x1 = round6(cx + Math.cos(angle) * r1);
+        const y1 = round6(cy + Math.sin(angle) * r1);
+        const x2 = round6(cx + Math.cos(angle) * r2);
+        const y2 = round6(cy + Math.sin(angle) * r2);
         return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="var(--ink)" strokeOpacity="0.35" strokeWidth={0.75} />;
       })}
     </svg>

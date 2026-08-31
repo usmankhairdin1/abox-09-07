@@ -1,7 +1,7 @@
 /**
  * UX-009 — Plan Results
  * Filter, sort, save, compare, add to cart. Recommendations first,
- * with clear on/off-exchange labels and Plan-O explanation.
+ * with clear on/off-exchange labels and Plan-AI explanation.
  */
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -11,13 +11,13 @@ import { PageHeader } from "@/components/abox/page-header";
 import { PlanCard } from "@/components/abox/plan-card";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
-import { SAMPLE_PLANS, type SamplePlan } from "@/lib/sample-data";
+import { SAMPLE_PLANS, planMatchScore, type SamplePlan, type PlanMatchInputs } from "@/lib/sample-data";
 import { cartStore, useCart, PRODUCT_LABEL } from "@/lib/cart-store";
-import { loadQuoteState } from "@/lib/quote-store";
+import { loadQuoteState, estimateMonthlyAPTC, recommendedExchangeView } from "@/lib/quote-store";
 import { SCREENS } from "@/lib/screens";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/plans")({
+export const Route = createFileRoute("/plans/")({
   head: () => ({
     meta: [
       { title: `${SCREENS["UX-009"].name} — ABox` },
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/plans")({
 
 type SortKey = "plano" | "premium-asc" | "premium-desc" | "deductible-asc" | "rating";
 const SORT_LABELS: Record<SortKey, string> = {
-  plano: "Plan-O match (recommended)",
+  plano: "Plan-AI match (recommended)",
   "premium-asc": "Lowest premium",
   "premium-desc": "Highest premium",
   "deductible-asc": "Lowest deductible",
@@ -39,13 +39,24 @@ const SORT_LABELS: Record<SortKey, string> = {
 function Page() {
   const quote = typeof window === "undefined" ? null : loadQuoteState();
   const cart = useCart();
-  const [showExchange, setShowExchange] = useState<"all" | "on" | "off">("all");
+  const matchInputs: PlanMatchInputs | null = quote
+    ? { priorities: quote.priorities, usage: quote.usage, keepDoctor: quote.keepDoctor }
+    : null;
+  const monthlyAptc = quote ? estimateMonthlyAPTC(quote.income, quote.taxHouseholdSize) : undefined;
+  const matchOf = (p: SamplePlan) => planMatchScore(p, matchInputs ?? { priorities: [] });
+  const subsidizedPriceOf = (p: SamplePlan) =>
+    p.onExchange && monthlyAptc ? Math.max(0, p.monthlyPremium - monthlyAptc) : undefined;
+
+  const [showExchange, setShowExchange] = useState<"all" | "on" | "off">(() => recommendedExchangeView(quote));
   const [metals, setMetals] = useState<Set<SamplePlan["metalTier"]>>(new Set());
   const [networks, setNetworks] = useState<Set<SamplePlan["networkType"]>>(new Set());
   const [carriers, setCarriers] = useState<Set<string>>(new Set());
   const [hsaOnly, setHsaOnly] = useState(false);
   const [maxPremium, setMaxPremium] = useState<number>(1000);
-  const [sort, setSort] = useState<SortKey>("plano");
+  // Guided shoppers (with priorities from the wizard) default to Plan-AI
+  // match; pure browse — no goals collected — defaults to lowest premium
+  // per FR-044.
+  const [sort, setSort] = useState<SortKey>(() => (quote?.priorities?.length ? "plano" : "premium-asc"));
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const allCarriers = useMemo(() => Array.from(new Set(SAMPLE_PLANS.map((p) => p.carrier))), []);
@@ -63,14 +74,15 @@ function Page() {
     });
     const sorted = [...list].sort((a, b) => {
       switch (sort) {
-        case "premium-asc": return a.monthlyPremium - b.monthlyPremium;
-        case "premium-desc": return b.monthlyPremium - a.monthlyPremium;
-        case "deductible-asc": return a.deductible - b.deductible;
-        case "rating": return b.rating - a.rating;
-        default: return b.planOMatch - a.planOMatch;
+        case "premium-asc": return a.monthlyPremium - b.monthlyPremium || matchOf(b) - matchOf(a);
+        case "premium-desc": return b.monthlyPremium - a.monthlyPremium || matchOf(b) - matchOf(a);
+        case "deductible-asc": return a.deductible - b.deductible || matchOf(b) - matchOf(a);
+        case "rating": return b.rating - a.rating || matchOf(b) - matchOf(a);
+        default: return matchOf(b) - matchOf(a);
       }
     });
     return sorted;
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- matchOf/subsidizedPriceOf are derived from quote, stable per render
   }, [showExchange, metals, networks, carriers, hsaOnly, maxPremium, sort]);
 
   const clearFilters = () => {
@@ -118,7 +130,19 @@ function Page() {
               hsaOnly={hsaOnly} setHsaOnly={setHsaOnly}
               maxPremium={maxPremium} setMaxPremium={setMaxPremium}
               activeFilterCount={activeFilterCount} onClear={clearFilters}
+              hasSubsidyCheck={!!quote && !quote.skipSubsidy && quote.income != null}
             />
+
+            <div className="mt-5 rounded-2xl border border-border bg-card p-4">
+              <p className="text-eyebrow">Add-ons available</p>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {[PRODUCT_LABEL.dental, PRODUCT_LABEL.vision, PRODUCT_LABEL.life].map((l) => (
+                  <span key={l} className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">{l}</span>
+                ))}
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground">Pair extra coverage with your medical plan.</p>
+              <Link to="/coverage" className="mt-2 inline-flex text-sm font-medium text-primary story-link">Explore add-on coverage</Link>
+            </div>
           </aside>
 
           <div className="min-w-0 flex-1">
@@ -147,12 +171,12 @@ function Page() {
               </div>
             </div>
 
-            {/* Plan-O explanation */}
+            {/* Plan-AI explanation */}
             {sort === "plano" && quote?.priorities?.length ? (
               <div className="mb-5 flex items-start gap-3 rounded-2xl border border-primary/25 bg-primary-soft/40 p-4">
                 <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
                 <div className="text-sm">
-                  <p className="font-medium">Plan-O is ranking for your priorities</p>
+                  <p className="font-medium">Plan-AI is ranking for your priorities</p>
                   <p className="text-muted-foreground">
                     {quote.priorities.join(", ")} · {quote.usage ?? "moderate"} care usage
                   </p>
@@ -196,6 +220,8 @@ function Page() {
                   <PlanCard
                     key={plan.id}
                     plan={plan}
+                    matchScore={matchOf(plan)}
+                    subsidizedPrice={subsidizedPriceOf(plan)}
                     inCart={cart.items.some((i) => i.id === plan.id)}
                     inCompare={cart.compareIds.includes(plan.id)}
                     saved={cart.savedPlanIds.includes(plan.id)}
@@ -211,11 +237,6 @@ function Page() {
               </div>
             )}
 
-            <div className="mt-8 rounded-2xl border border-dashed border-border-strong bg-surface/50 p-5 text-sm">
-              <p className="text-eyebrow">Add-ons available</p>
-              <p className="mt-1">Consider {PRODUCT_LABEL.dental}, {PRODUCT_LABEL.vision}, or {PRODUCT_LABEL.life} coverage alongside your plan.</p>
-              <Link to="/coverage" className="mt-2 inline-flex text-sm font-medium text-primary story-link">Explore add-on coverage</Link>
-            </div>
           </div>
         </div>
 
@@ -239,6 +260,7 @@ function Page() {
                 hsaOnly={hsaOnly} setHsaOnly={setHsaOnly}
                 maxPremium={maxPremium} setMaxPremium={setMaxPremium}
                 activeFilterCount={activeFilterCount} onClear={clearFilters}
+                hasSubsidyCheck={!!quote && !quote.skipSubsidy && quote.income != null}
               />
             </div>
           </div>
@@ -264,6 +286,7 @@ interface FilterProps {
   setMaxPremium: (v: number) => void;
   activeFilterCount: number;
   onClear: () => void;
+  hasSubsidyCheck: boolean;
 }
 function FilterRail(p: FilterProps) {
   const METALS: SamplePlan["metalTier"][] = ["Bronze","Silver","Gold","Platinum","Catastrophic"];
@@ -293,6 +316,11 @@ function FilterRail(p: FilterProps) {
             </button>
           ))}
         </div>
+        {!p.hasSubsidyCheck && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            <Link to="/quote" search={{ step: 5 }} className="story-link text-primary">Check your subsidy eligibility</Link> for a personalized default here.
+          </p>
+        )}
       </fieldset>
 
       <fieldset>
@@ -358,7 +386,7 @@ function FilterRail(p: FilterProps) {
         <input
           type="range" min={100} max={1000} step={25} value={p.maxPremium}
           onChange={(e) => p.setMaxPremium(Number(e.target.value))}
-          className="w-full accent-[oklch(0.585_0.145_42)]"
+          className="w-full accent-[var(--primary)]"
           aria-label="Maximum monthly premium"
         />
         <div className="mt-1 flex justify-between text-xs text-muted-foreground tabular-nums">

@@ -4,6 +4,35 @@
  * All content is fabricated. Not real plans, not real people.
  */
 
+import type { PriorityKey, UsageLevel } from "./quote-store";
+
+export interface PlanMatchInputs {
+  priorities: PriorityKey[];
+  usage?: UsageLevel;
+  keepDoctor?: boolean;
+}
+
+/** Simple heuristic match score used by agent quick-quote and plan detail. */
+export function planMatchScore(plan: SamplePlan, inputs: PlanMatchInputs): number {
+  if (!inputs.priorities.length) return plan.planOMatch;
+  let score = plan.planOMatch;
+  const priorityBoost: Record<PriorityKey, number> = {
+    premium: -5,
+    deductible: 5,
+    doctor: 8,
+    rx: 5,
+    network: 6,
+    hsa: plan.hsaEligible ? 6 : -6,
+  };
+  inputs.priorities.forEach((p) => {
+    score += priorityBoost[p] ?? 0;
+  });
+  if (inputs.keepDoctor && plan.networkType === "PPO") score += 4;
+  if (inputs.usage === "low") score += plan.monthlyPremium < 380 ? 3 : -3;
+  if (inputs.usage === "high") score += plan.deductible < 2500 ? 6 : -4;
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
 export interface SamplePlan {
   id: string;
   carrier: string;
@@ -234,15 +263,16 @@ export interface SampleTimelineEvent {
   actor: string;
   eventType: string;
   summary: string;
+  leadName: string;
   planO?: boolean;
 }
 
 export const SAMPLE_TIMELINE: SampleTimelineEvent[] = [
-  { id: "T-1", when: "Today · 10:12", actor: "Renata Alvarez", eventType: "quote.viewed", summary: "Opened shared quote (3 plans compared)" },
-  { id: "T-2", when: "Today · 09:44", actor: "You", eventType: "quote.sent", summary: "Shared quote sent via email · expires Aug 3" },
-  { id: "T-3", when: "Today · 09:31", actor: "Plan-O", eventType: "planO.recommendation", summary: "Recommended 3 plans matching PCP + Rx tier 1 focus", planO: true },
-  { id: "T-4", when: "Yesterday · 16:20", actor: "You", eventType: "quote.built", summary: "Built quote (Silver PPO, household of 2)" },
-  { id: "T-5", when: "Yesterday · 15:58", actor: "Renata Alvarez", eventType: "lead.created", summary: "Lead created from marketplace landing" },
+  { id: "T-1", when: "Today · 10:12", actor: "Renata Alvarez", eventType: "quote.viewed", summary: "Opened shared quote (3 plans compared)", leadName: "Renata Alvarez" },
+  { id: "T-2", when: "Today · 09:44", actor: "You", eventType: "quote.sent", summary: "Shared quote sent via email · expires Aug 3", leadName: "Renata Alvarez" },
+  { id: "T-3", when: "Today · 09:31", actor: "Plan-O", eventType: "planO.recommendation", summary: "Recommended 3 plans matching PCP + Rx tier 1 focus", leadName: "Renata Alvarez", planO: true },
+  { id: "T-4", when: "Yesterday · 16:20", actor: "You", eventType: "quote.built", summary: "Built quote (Silver PPO, household of 2)", leadName: "Renata Alvarez" },
+  { id: "T-5", when: "Yesterday · 15:58", actor: "Renata Alvarez", eventType: "lead.created", summary: "Lead created from marketplace landing", leadName: "Renata Alvarez" },
 ];
 
 export interface SampleProduct {
