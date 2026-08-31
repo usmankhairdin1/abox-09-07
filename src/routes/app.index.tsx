@@ -92,7 +92,7 @@ function OperationsHome() {
       </section>
 
       <section className="grid gap-6 border-t border-hairline py-8 xl:grid-cols-[1.15fr_.85fr]">
-        <div>
+        <div className="min-w-0">
           <div className="mb-5 flex items-end justify-between gap-4">
             <div>
               <p className="text-eyebrow">Queue</p>
@@ -156,7 +156,7 @@ function OperationsHome() {
       </section>
 
       <section className="grid gap-6 border-t border-hairline py-8 xl:grid-cols-[1.2fr_.8fr]">
-        <div>
+        <div className="min-w-0">
           <div className="mb-5 flex items-center justify-between gap-4">
             <div>
               <p className="text-eyebrow">Live operations</p>
