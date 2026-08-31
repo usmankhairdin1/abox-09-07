@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { Link } from "@tanstack/react-router";
 
+import { DispositionBanner } from "@/components/LucieDisposition";
 import {
   Annotation,
   IdChip,
@@ -14,6 +15,7 @@ import {
   WRow,
 } from "@/components/wireframe/primitives";
 import { P1_BY_SLUG, P1_SLUGS, type P1Screen, type P1Zone } from "@/lib/p1";
+import { dispositionForGroup } from "@/lib/reconciliation-status";
 import { cn } from "@/lib/utils";
 
 function ZoneShell({ zone, children }: { zone: P1Zone; children: ReactNode }) {
