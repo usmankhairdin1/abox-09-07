@@ -578,9 +578,9 @@ const PlansIndexRoute = PlansIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlansPlanIdRoute = PlansPlanIdRouteImport.update({
-  id: '/plans/$planId',
-  path: '/plans/$planId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$planId',
+  path: '/$planId',
+  getParentRoute: () => PlansRoute,
 } as any)
 const RReferralTokenRoute = RReferralTokenRouteImport.update({
   id: '/r/$referralToken',
@@ -2079,7 +2079,6 @@ export interface RootRouteChildren {
   HfScreenRoute: typeof HfScreenRoute
   M1ScreenRoute: typeof M1ScreenRoute
   P1ScreenRoute: typeof P1ScreenRoute
-  PlansPlanIdRoute: typeof PlansPlanIdRoute
   RReferralTokenRoute: typeof RReferralTokenRoute
   SharedTokenRoute: typeof SharedTokenRoute
   StartPathwayRoute: typeof StartPathwayRoute
@@ -2707,10 +2706,10 @@ declare module '@tanstack/react-router' {
     }
     '/plans/$planId': {
       id: '/plans/$planId'
-      path: '/plans/$planId'
+      path: '/$planId'
       fullPath: '/plans/$planId'
       preLoaderRoute: typeof PlansPlanIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof PlansRoute
     }
     '/r/$referralToken': {
       id: '/r/$referralToken'
@@ -3540,7 +3539,6 @@ const rootRouteChildren: RootRouteChildren = {
   HfScreenRoute: HfScreenRoute,
   M1ScreenRoute: M1ScreenRoute,
   P1ScreenRoute: P1ScreenRoute,
-  PlansPlanIdRoute: PlansPlanIdRoute,
   RReferralTokenRoute: RReferralTokenRoute,
   SharedTokenRoute: SharedTokenRoute,
   StartPathwayRoute: StartPathwayRoute,
