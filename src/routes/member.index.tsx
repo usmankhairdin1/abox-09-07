@@ -92,7 +92,7 @@ function Page() {
           <span className="text-xs text-muted-foreground">3 open</span>
         </div>
         <ul className="mt-3 divide-y divide-border text-sm">
-          <TaskRow title="Review Plan-O explanation" due="Today" />
+          <TaskRow title="Review Plan-AI explanation" due="Today" />
           <TaskRow title="Confirm household info" due="Tomorrow" />
           <TaskRow title="Add dental if needed" due="This week" />
         </ul>

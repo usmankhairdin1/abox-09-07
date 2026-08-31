@@ -43,7 +43,7 @@ function Page() {
     ? { priorities: quote.priorities, usage: quote.usage, keepDoctor: quote.keepDoctor }
     : null;
   const monthlyAptc = quote ? estimateMonthlyAPTC(quote.income, quote.taxHouseholdSize) : undefined;
-  const matchOf = (p: SamplePlan) => planMatchScore(p, matchInputs ?? { priorities: [] });
+  const matchOf = (p: SamplePlan) => planMatchScore(p, matchInputs);
   const subsidizedPriceOf = (p: SamplePlan) =>
     p.onExchange && monthlyAptc ? Math.max(0, p.monthlyPremium - monthlyAptc) : undefined;
 

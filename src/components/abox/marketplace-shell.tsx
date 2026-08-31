@@ -4,13 +4,16 @@
  * plate. Full-bleed backgrounds are the norm; noise + aurora provide
  * atmosphere.
  */
-import { Link } from "@tanstack/react-router";
-import { LifeBuoy, LogIn, ArrowUpRight } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight } from "lucide-react";
 import { AboxMark } from "./logo";
-import { PlanAiAssistant } from "./planai-assistant";
+import { PlanOAssistant } from "./plan-o-assistant";
 import { ThemeToggle } from "./theme-toggle";
 import { DotField } from "./decor";
 import { cn } from "@/lib/utils";
+import { useAuthSession } from "@/lib/auth-session";
+import { supabase } from "@/integrations/supabase/client";
+import { useMarketplaceState, getActiveBrand } from "@/lib/marketplace-store";
 
 interface Props {
   children: React.ReactNode;
@@ -19,6 +22,12 @@ interface Props {
 }
 
 export function MarketplaceShell({ children, variant = "flow", showAssistant = true }: Props) {
+  const { session } = useAuthSession();
+  const navigate = useNavigate();
+  const mkt = useMarketplaceState();
+  const brand = getActiveBrand(mkt);
+  const brandName = brand?.display_name ?? "ABox";
+  const brandTagline = brand?.tagline_en ?? "Agency in a Box";
   return (
     <div className="relative flex min-h-dvh flex-col bg-background text-foreground">
       <DotField className="fixed inset-0 -z-10" />
@@ -30,13 +39,13 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
       </a>
 
       {/* Floating pill nav */}
-      <header className={cn("sticky top-4 z-30 flex justify-center px-4", variant === "landing" && "top-6")}>
-        <div className="glass flex w-full max-w-6xl items-center justify-between gap-2 rounded-full pl-3 pr-2 py-2 md:pl-4">
-          <Link to="/" className="group flex items-center gap-2.5" aria-label="ABox home">
+      <header className={cn("sticky top-4 z-30 flex justify-center px-4 md:px-8", variant === "landing" && "top-6")}>
+        <div className="glass flex w-full max-w-7xl items-center justify-between gap-2 rounded-full pl-3 pr-2 py-2 md:pl-4">
+          <Link to="/" className="group flex items-center gap-2.5" aria-label={`${brandName} home`}>
             <AboxMark size={34} tone="primary" />
             <div className="hidden flex-col leading-none md:flex">
-              <span className="text-display text-base tracking-tight">ABox</span>
-              <span className="text-serial mt-0.5">Agency in a Box</span>
+              <span className="text-display text-base tracking-tight">{brandName}</span>
+              <span className="text-serial mt-0.5">{brandTagline}</span>
             </div>
           </Link>
 
@@ -45,14 +54,27 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
             <PillLink to="/ichra">For employers</PillLink>
             <PillLink to="/schedule" icon={<LifeBuoy className="h-4 w-4" />}>Agent help</PillLink>
             <ThemeToggle />
-            <Link
-              to="/auth"
-              className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:scale-[1.03] min-h-10"
-              style={{ boxShadow: "var(--shadow-glow)" }}
-            >
-              <LogIn className="h-4 w-4" aria-hidden />
-              <span>Sign in</span>
-            </Link>
+            {session ? (
+              <button
+                onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/" }); }}
+                className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:scale-[1.03] min-h-10"
+                style={{ boxShadow: "var(--shadow-glow)" }}
+                title={session.user.email ?? session.user.phone ?? "Signed in"}
+              >
+                <User className="h-4 w-4" aria-hidden />
+                <span className="hidden sm:inline max-w-[10ch] truncate">{session.user.email ?? session.user.phone ?? "Account"}</span>
+                <LogOut className="h-3.5 w-3.5" aria-hidden />
+              </button>
+            ) : (
+              <Link
+                to="/auth"
+                className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:scale-[1.03] min-h-10"
+                style={{ boxShadow: "var(--shadow-glow)" }}
+              >
+                <LogIn className="h-4 w-4" aria-hidden />
+                <span>Sign in</span>
+              </Link>
+            )}
           </nav>
         </div>
       </header>
@@ -70,8 +92,8 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
               <div className="flex items-center gap-3">
                 <AboxMark size={40} tone="sidebar" />
                 <div>
-                  <p className="text-display text-xl">ABox</p>
-                  <p className="text-serial">A marketplace of marketplaces</p>
+                  <p className="text-display text-xl">{brandName}</p>
+                  <p className="text-serial">{brandTagline}</p>
                 </div>
               </div>
               <p className="mt-6 max-w-xs text-sm text-sidebar-foreground/70">
@@ -93,7 +115,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
           <div className="border-t border-sidebar-border">
             <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-5 text-xs text-sidebar-foreground/60 md:flex-row md:items-center md:justify-between md:px-12">
               <p>
-                © {new Date().getFullYear()} JET / ABox. Plan-O guidance is educational and non-binding.
+                © {new Date().getFullYear()} JET / ABox. Plan-AI guidance is educational and non-binding.
                 Not a substitute for licensed advice. QHP displays follow federal display rules.
               </p>
               <p className="text-serial">v Phase 1 · IA baseline · Module 1 V4</p>
@@ -102,7 +124,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
         </div>
       </footer>
 
-      {showAssistant && <PlanAiAssistant context="your coverage shopping" />}
+      {showAssistant && <PlanOAssistant surface="marketplace" />}
     </div>
   );
 }
@@ -122,7 +144,7 @@ function PillLink({ to, children, icon }: { to: string; children: React.ReactNod
 function FooterCol({ title, links }: { title: string; links: Array<[string, string]> }) {
   return (
     <div>
-      <p className="text-eyebrow mb-5" style={{ color: "oklch(0.72 0.02 90)" }}>{title}</p>
+      <p className="text-eyebrow mb-5 text-sidebar-foreground/60">{title}</p>
       <ul className="space-y-3">
         {links.map(([label, href]) => (
           <li key={label}>

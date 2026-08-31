@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/abox/page-header";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { cartStore, cartTotals, useCart, PRODUCT_LABEL, type ProductType } from "@/lib/cart-store";
+import { SaveContinueButton } from "@/components/abox/save-continue-button";
 import { SCREENS } from "@/lib/screens";
 
 export const Route = createFileRoute("/cart")({
@@ -21,18 +22,24 @@ function Page() {
   const grouped = cart.items.reduce<Record<string, typeof cart.items>>((acc, i) => {
     (acc[i.productType] = acc[i.productType] ?? []).push(i); return acc;
   }, {});
+  const missingAddOns = (["dental", "vision", "life"] as ProductType[]).filter(
+    (t) => !cart.items.some((i) => i.productType === t),
+  );
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-5xl px-4 py-8 md:px-8 md:py-10">
+      <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-10">
         <PageHeader
           scrId="UX-013" eyebrow="Your selections"
           title="Cart"
           description="Grouped by product type. Each item lists its effective term, plan, and status."
           actions={cart.items.length > 0 && (
-            <Link to="/review" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-              Review & enroll <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="flex items-center gap-2">
+              <SaveContinueButton />
+              <Link to="/review" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                Review & enroll <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           )}
         />
 
@@ -109,6 +116,19 @@ function Page() {
                   Clear cart
                 </button>
               </div>
+
+              {missingAddOns.length > 0 && (
+                <div className="rounded-2xl border border-border bg-card p-4">
+                  <p className="text-eyebrow">Add-ons available</p>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {missingAddOns.map((t) => (
+                      <span key={t} className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">{PRODUCT_LABEL[t]}</span>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground">Pair extra coverage with your medical plan.</p>
+                  <Link to="/coverage" className="mt-2 inline-flex text-sm font-medium text-primary story-link">Explore add-on coverage</Link>
+                </div>
+              )}
             </aside>
           </div>
         )}

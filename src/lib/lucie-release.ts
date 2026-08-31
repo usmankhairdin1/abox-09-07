@@ -72,7 +72,7 @@ export const PATHWAYS: Record<PathwayId, Pathway> = {
     label: "Off-exchange — application + EDI",
     summary: "Fixed versioned application, e-signature, then an EDI enrollment transaction prepared for the carrier.",
     terminalState: "EDI transaction generated",
-    notProof: "A generated EDI file is not a confirmed submission and is not an in-force policy.",
+    notProof: "A generated EDI file is not a confirmed submission and not an in-force policy.",
     collectsApplication: true,
     requiresSignature: true,
     output: "edi",

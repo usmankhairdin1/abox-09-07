@@ -1,5 +1,5 @@
 /**
- * UX-001 — Marketplace Landing. Atelier Bone.
+ * UX-001 — Marketplace Landing. Meridian Navy.
  * A hero built around an orbital chart, a horizontal path selector,
  * an asymmetric product bento, a large split employer plate, and a
  * trust ladder — nothing reuses the old three-card layout.
@@ -20,6 +20,17 @@ import {
 import { FadeRise, Stagger, StaggerItem } from "@/components/abox/motion";
 import { SAMPLE_PRODUCTS } from "@/lib/sample-data";
 import { cn } from "@/lib/utils";
+import { useMarketplaceState, getMarketplace, getActiveBrand, getAvailability } from "@/lib/marketplace-store";
+import { SuspendedMarketplaceNotice } from "@/components/abox/suspended-marketplace-notice";
+
+/** M04 REQ-M04-AVL-002: only these product keys are governed by marketplace
+ *  availability config; ancillary products (life/critical/accident/hospital)
+ *  and the employer-only ICHRA card sit outside M04's fixed catalogue. */
+const GOVERNED_PRODUCT_LINES: Record<string, ("IFP_ON_EXCHANGE" | "IFP_OFF_EXCHANGE" | "DENTAL" | "VISION")[]> = {
+  ifp: ["IFP_ON_EXCHANGE", "IFP_OFF_EXCHANGE"],
+  dental: ["DENTAL"],
+  vision: ["VISION"],
+};
 
 const PRODUCT_ICONS: Record<string, typeof HeartPulse> = {
   ifp: HeartPulse,
@@ -37,15 +48,26 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "ABox — Shop insurance with a guide, not a spreadsheet" },
-      { name: "description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from Plan-O, and pick coverage with confidence — or talk to a licensed agent in a click." },
+      { name: "description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from Plan-AI, and pick coverage with confidence — or talk to a licensed agent in a click." },
       { property: "og:title", content: "ABox — Shop insurance with a guide, not a spreadsheet" },
-      { property: "og:description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from Plan-O, and pick coverage with confidence — or talk to a licensed agent in a click." },
+      { property: "og:description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from Plan-AI, and pick coverage with confidence — or talk to a licensed agent in a click." },
     ],
   }),
   component: LandingPage,
 });
 
 function LandingPage() {
+  const mkt = useMarketplaceState();
+  const marketplace = getMarketplace(mkt);
+
+  if (marketplace.lifecycle_status === "SUSPENDED" || marketplace.lifecycle_status === "ENDED") {
+    return (
+      <MarketplaceShell variant="landing" showAssistant={false}>
+        <SuspendedMarketplaceNotice ended={marketplace.lifecycle_status === "ENDED"} />
+      </MarketplaceShell>
+    );
+  }
+
   return (
     <MarketplaceShell variant="landing">
       <Hero />
@@ -60,6 +82,11 @@ function LandingPage() {
 
 /* ============================ Hero ============================ */
 function Hero() {
+  const mkt = useMarketplaceState();
+  const brand = getActiveBrand(mkt);
+  const headline = brand?.headline_en || "Insurance, tuned to you.";
+  const intro = brand?.intro_en || "Health, dental, vision, life — compared side by side. Plan-AI helps you think it through without pushing. If you'd rather talk to a person, a licensed agent is one tap away.";
+  const [headlineLead, ...headlineRest] = headline.split(",");
   return (
     <section className="relative isolate overflow-hidden pb-20 pt-14 md:pb-32 md:pt-24">
       <Aurora />
@@ -68,15 +95,16 @@ function Hero() {
         <div>
           <MastheadMark label="Marketplace of marketplaces" />
           <h1 className="text-display mt-8 text-[52px] leading-[0.96] md:text-[104px]">
-            Insurance,
+            {headlineLead}{headlineRest.length > 0 && ","}
             <br />
-            <span className="italic font-normal" style={{ color: "var(--primary)" }}>
-              tuned to you.
-            </span>
+            {headlineRest.length > 0 && (
+              <span className="italic font-normal" style={{ color: "var(--primary)" }}>
+                {headlineRest.join(",").trim()}
+              </span>
+            )}
           </h1>
           <p className="mt-8 max-w-xl text-lg text-muted-foreground md:text-xl">
-            Health, dental, vision, life — compared side by side. Plan-O helps you think it through
-            without pushing. If you'd rather talk to a person, a licensed agent is one tap away.
+            {intro}
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <Link
@@ -110,7 +138,7 @@ function Hero() {
             <div className="flex items-center gap-3 border-b border-hairline pb-4">
               <AboxMark size={40} tone="primary" />
               <div className="flex-1">
-                <p className="text-sm font-semibold">Plan-O</p>
+                <p className="text-sm font-semibold">Plan-AI</p>
                 <p className="text-serial">Guidance · not binding</p>
               </div>
               <span className="rounded-full glass px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-widest text-sage">Live</span>
@@ -152,7 +180,7 @@ function Hero() {
               className="mt-1 flex items-center justify-between rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
               style={{ boxShadow: "var(--shadow-glow)" }}
             >
-              Try Plan-O with your own priorities
+              Try Plan-AI with your own priorities
               <ArrowUpRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
@@ -165,9 +193,9 @@ function Hero() {
 /* ============================ Path ticker ============================ */
 function PathTicker() {
   const paths = [
-    { title: "Guide me", body: "Plan-O narrows the list to plans that fit your priorities.", to: "/select?path=guided", icon: Sparkles },
+    { title: "Guide me", body: "Plan-AI narrows the list to plans that fit your priorities.", to: "/select?path=guided", icon: Sparkles },
     { title: "Browse myself", body: "See every plan in your ZIP with filters and compare.", to: "/select?path=browse", icon: Compass },
-    { title: "Talk to an agent", body: "A licensed human, one click away — Plan-O escalates.", to: "/schedule", icon: MessageSquareHeart },
+    { title: "Talk to an agent", body: "A licensed human, one click away — Plan-AI escalates.", to: "/schedule", icon: MessageSquareHeart },
   ];
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
@@ -177,12 +205,12 @@ function PathTicker() {
           <h2 className="text-display mt-3 text-4xl md:text-5xl">Three ways in. One outcome.</h2>
         </div>
         <p className="max-w-md text-sm text-muted-foreground">
-          Switch modes whenever you like — Plan-O and a licensed agent are always on the side.
+          Switch modes whenever you like — Plan-AI and a licensed agent are always on the side.
         </p>
       </div>
       <Stagger className="grid gap-5 md:grid-cols-3">
         {paths.map((p) => (
-          <StaggerItem key={p.title}>
+          <StaggerItem key={p.title} className="h-full">
             <Link
               to={p.to}
               className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-hairline bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 card-brackets edge-sheen"
@@ -195,9 +223,10 @@ function PathTicker() {
                 >
                   <p.icon className="h-8 w-8" />
                 </span>
-                <h3 className="text-display max-w-[72%] pt-1 text-3xl">{p.title}</h3>
-                <p className="mt-3 max-w-sm text-sm text-muted-foreground">{p.body}</p>
+                <h3 className="text-display max-w-[calc(100%-5rem)] pt-1 text-3xl">{p.title}</h3>
+                <p className="mt-3 max-w-[calc(100%-5rem)] text-sm text-muted-foreground">{p.body}</p>
               </div>
+
               <div className="relative mt-8 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                 Enter this path
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
@@ -213,7 +242,14 @@ function PathTicker() {
 
 /* ============================ Product bento ============================ */
 function ProductBento() {
-  const products = SAMPLE_PRODUCTS.filter((p) => p.emphasis !== "group");
+  const mkt = useMarketplaceState();
+  const availability = getAvailability(mkt);
+  const isEnabled = (key: string) => {
+    const lines = GOVERNED_PRODUCT_LINES[key];
+    if (!lines) return true; // outside M04's fixed catalogue — not gated
+    return availability.some((a) => lines.includes(a.product_line as never) && a.status === "ENABLED" && a.channels.includes("CONSUMER_DIRECT"));
+  };
+  const products = SAMPLE_PRODUCTS.filter((p) => p.emphasis !== "group" && isEnabled(p.key));
   const [feature, ...rest] = products;
   return (
     <section className="relative mx-4 overflow-hidden rounded-3xl border border-hairline bg-card md:mx-8">
@@ -309,13 +345,13 @@ function ProductBento() {
   );
 }
 
-/* ============================ Plan-O orbital ============================ */
+/* ============================ Plan-AI orbital ============================ */
 function PlanOOrbital() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
       <div className="grid items-center gap-14 md:grid-cols-[1fr_1.1fr]">
         <div>
-          <MastheadMark label="Meet Plan-O" />
+          <MastheadMark label="Meet Plan-AI" />
           <h2 className="text-display mt-6 text-4xl md:text-6xl">
             A guide,
             <br />
@@ -324,7 +360,7 @@ function PlanOOrbital() {
             </span>
           </h2>
           <p className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg">
-            Plan-O explains tradeoffs, translates jargon, and shortlists options. It never pretends
+            Plan-AI explains tradeoffs, translates jargon, and shortlists options. It never pretends
             to be a licensed agent, and it will hand you to one when the question calls for it.
           </p>
           <ul className="mt-8 space-y-3 text-sm">
@@ -393,7 +429,7 @@ function EmployerPlate() {
             </h2>
             <p className="mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
               ICHRA on ABox lets you give every employee a monthly allowance to shop the individual
-              marketplace — with Plan-O guidance and a licensed agent for anyone who wants one.
+              marketplace — with Plan-AI guidance and a licensed agent for anyone who wants one.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
@@ -437,7 +473,7 @@ function TrustLadder() {
   const cards = [
     { icon: ShieldCheck, title: "Every plan follows the display rules", body: "On-exchange QHPs are shown consistent with federal display and disclosure requirements. Off-exchange is clearly labeled." },
     { icon: HeartPulse, title: "Real doctors, real formularies", body: "Optional provider and prescription lookup uses NPPES and formulary data — with a clear skip for shoppers who don't want to bother." },
-    { icon: MessageSquareHeart, title: "A person, whenever you want one", body: "Every screen has a licensed-agent handoff. Plan-O tells you when it's the right call — and gets out of the way." },
+    { icon: MessageSquareHeart, title: "A person, whenever you want one", body: "Every screen has a licensed-agent handoff. Plan-AI tells you when it's the right call — and gets out of the way." },
   ];
   return (
     <section className="relative mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">

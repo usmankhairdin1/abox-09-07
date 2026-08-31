@@ -4,22 +4,59 @@
  * dot connected by a hairline arc. Content is contained in a rounded
  * glass canvas plate.
  */
-import { Link, useRouterState } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
 import { AboxMark } from "./logo";
-import { PlanAiAssistant } from "./planai-assistant";
+import { PlanOAssistant } from "./plan-o-assistant";
 import { ThemeToggle } from "./theme-toggle";
 import { DotField, Aurora } from "./decor";
 import { MEMBER_NAV } from "@/lib/nav-config";
 import { cn } from "@/lib/utils";
+import { useAuthSession } from "@/lib/auth-session";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   children: React.ReactNode;
-  memberName?: string;
 }
 
-export function MemberShell({ children, memberName = "Renata" }: Props) {
+/** Derives the greeting name from the REAL signed-in session — never a
+ *  hardcoded persona — so the Member Portal always reflects whoever is
+ *  actually logged in (full_name set at signup, else email/phone). */
+function memberDisplayName(session: ReturnType<typeof useAuthSession>["session"]): string {
+  if (!session) return "";
+  const fullName = session.user.user_metadata?.full_name as string | undefined;
+  if (fullName?.trim()) return fullName.trim().split(" ")[0];
+  if (session.user.email) return session.user.email.split("@")[0];
+  if (session.user.phone) return session.user.phone;
+  return "there";
+}
+
+export function MemberShell({ children }: Props) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { session, loading } = useAuthSession();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !session) navigate({ to: "/auth" });
+  }, [loading, session, navigate]);
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/" });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-background text-sm text-muted-foreground">
+        Loading your account…
+      </div>
+    );
+  }
+  if (!session) return null; // redirecting to /auth
+
+  const memberName = memberDisplayName(session);
+
   return (
     <div className="relative flex min-h-dvh flex-col bg-background text-foreground">
       <DotField className="fixed inset-0 -z-10" />
@@ -28,8 +65,8 @@ export function MemberShell({ children, memberName = "Renata" }: Props) {
         Skip to content
       </a>
 
-      <header className="sticky top-4 z-30 flex justify-center px-4">
-        <div className="glass flex w-full max-w-6xl items-center justify-between gap-3 rounded-full pl-4 pr-2 py-2">
+      <header className="sticky top-4 z-30 flex justify-center px-4 md:px-8">
+        <div className="glass flex w-full max-w-7xl items-center justify-between gap-3 rounded-full pl-4 pr-2 py-2">
           <Link to="/" className="flex items-center gap-2.5">
             <AboxMark size={32} tone="primary" />
             <div className="hidden flex-col leading-tight md:flex">
@@ -44,6 +81,7 @@ export function MemberShell({ children, memberName = "Renata" }: Props) {
             </span>
             <ThemeToggle />
             <button
+              onClick={signOut}
               className="inline-flex items-center gap-1.5 rounded-full glass px-3.5 py-2 text-sm font-medium hover:bg-accent min-h-10"
               aria-label="Sign out"
             >
@@ -54,14 +92,14 @@ export function MemberShell({ children, memberName = "Renata" }: Props) {
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-8 md:flex-row md:px-8 md:py-12">
+      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-8 md:flex-row md:px-8 md:py-12">
         {/* Arc dot rail */}
         <aside className="md:w-60 md:shrink-0" aria-label="Member navigation">
           <nav className="relative">
             {/* connecting arc */}
             <span aria-hidden className="pointer-events-none absolute left-[13px] top-4 bottom-4 hidden w-px bg-gradient-to-b from-primary/60 via-hairline to-transparent md:block" />
             <ul className="flex gap-1 overflow-x-auto md:flex-col md:gap-3 md:overflow-visible">
-              {MEMBER_NAV.map((item: (typeof MEMBER_NAV)[number]) => {
+              {MEMBER_NAV.map((item) => {
                 const active = pathname === item.to;
                 const Icon = item.icon;
                 return (
@@ -101,7 +139,7 @@ export function MemberShell({ children, memberName = "Renata" }: Props) {
         </main>
       </div>
 
-      <PlanAiAssistant context="your coverage shopping" />
+      <PlanOAssistant surface="marketplace" />
     </div>
   );
 }

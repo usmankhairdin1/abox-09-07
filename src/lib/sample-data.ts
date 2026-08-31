@@ -3,35 +3,7 @@
  * before Lovable Cloud is enabled and populated in Wave 2.
  * All content is fabricated. Not real plans, not real people.
  */
-
 import type { PriorityKey, UsageLevel } from "./quote-store";
-
-export interface PlanMatchInputs {
-  priorities: PriorityKey[];
-  usage?: UsageLevel;
-  keepDoctor?: boolean;
-}
-
-/** Simple heuristic match score used by agent quick-quote and plan detail. */
-export function planMatchScore(plan: SamplePlan, inputs: PlanMatchInputs): number {
-  if (!inputs.priorities.length) return plan.planOMatch;
-  let score = plan.planOMatch;
-  const priorityBoost: Record<PriorityKey, number> = {
-    premium: -5,
-    deductible: 5,
-    doctor: 8,
-    rx: 5,
-    network: 6,
-    hsa: plan.hsaEligible ? 6 : -6,
-  };
-  inputs.priorities.forEach((p) => {
-    score += priorityBoost[p] ?? 0;
-  });
-  if (inputs.keepDoctor && plan.networkType === "PPO") score += 4;
-  if (inputs.usage === "low") score += plan.monthlyPremium < 380 ? 3 : -3;
-  if (inputs.usage === "high") score += plan.deductible < 2500 ? 6 : -4;
-  return Math.max(0, Math.min(100, Math.round(score)));
-}
 
 export interface SamplePlan {
   id: string;
@@ -47,6 +19,9 @@ export interface SamplePlan {
   specialistCopay: number;
   genericRx: number;
   rating: number;
+  /** Baseline plan-quality prior (network breadth, carrier standing) used
+   *  as an input to `planMatchScore` — not the final match shown to the
+   *  shopper, which also weighs their priorities/usage. */
   planOMatch: number;
   highlights: string[];
   hsaEligible: boolean;
@@ -199,6 +174,62 @@ export const SAMPLE_PLANS: SamplePlan[] = [
   },
 ];
 
+const PREMIUMS = SAMPLE_PLANS.map((p) => p.monthlyPremium);
+const DEDUCTIBLES = SAMPLE_PLANS.map((p) => p.deductible);
+const OOP_MAXES = SAMPLE_PLANS.map((p) => p.oopMax);
+const PREMIUM_RANGE: [number, number] = [Math.min(...PREMIUMS), Math.max(...PREMIUMS)];
+const DEDUCTIBLE_RANGE: [number, number] = [Math.min(...DEDUCTIBLES), Math.max(...DEDUCTIBLES)];
+const OOP_RANGE: [number, number] = [Math.min(...OOP_MAXES), Math.max(...OOP_MAXES)];
+
+/** Lower raw value -> higher score. Flat range collapses to a neutral 50. */
+function scoreLowerIsBetter(value: number, [min, max]: [number, number]): number {
+  if (max === min) return 50;
+  return 100 * (1 - (value - min) / (max - min));
+}
+
+export interface PlanMatchInputs {
+  priorities: PriorityKey[];
+  usage?: UsageLevel;
+  keepDoctor: boolean;
+}
+
+/**
+ * Plan-AI match score for a shopper. Combines the plan's baseline quality
+ * prior (`planOMatch`) with how well it actually fits the priorities,
+ * expected usage, and keep-my-doctor preference collected in the quote
+ * wizard — recomputed whenever those inputs change (UX-005 goals /
+ * UX-007 usage), rather than a fixed per-plan constant. `null` inputs
+ * (pure browse mode, no quote on file) fall back to the baseline prior.
+ */
+export function planMatchScore(plan: SamplePlan, inputs: PlanMatchInputs | null): number {
+  if (!inputs || inputs.priorities.length === 0) return plan.planOMatch;
+
+  let priorityTotal = 0;
+  for (const p of inputs.priorities) {
+    switch (p) {
+      case "premium": priorityTotal += scoreLowerIsBetter(plan.monthlyPremium, PREMIUM_RANGE); break;
+      case "deductible": priorityTotal += scoreLowerIsBetter(plan.deductible, DEDUCTIBLE_RANGE); break;
+      case "doctor": priorityTotal += plan.networkType === "PPO" || plan.networkType === "POS" ? 90 : 55; break;
+      case "rx": priorityTotal += scoreLowerIsBetter(plan.genericRx, [0, 25]); break;
+      case "network": priorityTotal += plan.networkType === "PPO" ? 95 : plan.networkType === "POS" ? 80 : plan.networkType === "EPO" ? 60 : 45; break;
+      case "hsa": priorityTotal += plan.hsaEligible ? 100 : 20; break;
+    }
+  }
+  const priorityAvg = priorityTotal / inputs.priorities.length;
+
+  let usageAdj: number;
+  if (inputs.usage === "high") usageAdj = scoreLowerIsBetter(plan.oopMax, OOP_RANGE) * 0.15;
+  else if (inputs.usage === "low") usageAdj = scoreLowerIsBetter(plan.monthlyPremium, PREMIUM_RANGE) * 0.15;
+  else usageAdj = 7.5;
+
+  const keepDoctorAdj = inputs.keepDoctor
+    ? (plan.networkType === "PPO" ? 6 : plan.networkType === "POS" ? 3 : -4)
+    : 0;
+
+  const score = plan.planOMatch * 0.45 + priorityAvg * 0.4 + usageAdj + keepDoctorAdj;
+  return Math.round(Math.max(35, Math.min(99, score)));
+}
+
 export interface SampleAncillary {
   id: string;
   type: "Dental" | "Vision" | "Life" | "Critical Illness" | "Accident" | "Hospital Indemnity";
@@ -253,26 +284,27 @@ export const SAMPLE_NOTIFICATIONS: SampleNotification[] = [
   { id: "N-01", kind: "quote_viewed", title: "Priya opened your shared quote", body: "Viewed for 4 minutes · compared 3 plans", ago: "12m", unread: true },
   { id: "N-02", kind: "call_requested", title: "Marcus requested a callback", body: "Prefers today after 4pm ET", ago: "1h", unread: true },
   { id: "N-03", kind: "task_due", title: "Follow-up due — Renata Alvarez", body: "Send subsidy education recap", ago: "3h", unread: false },
-  { id: "N-04", kind: "plan_o_note", title: "Plan-O flagged an escalation", body: "Household mentioned specialty Rx — human review suggested", ago: "6h", unread: true },
+  { id: "N-04", kind: "plan_o_note", title: "Plan-AI flagged an escalation", body: "Household mentioned specialty Rx — human review suggested", ago: "6h", unread: true },
   { id: "N-05", kind: "system", title: "Effective date auto-updated", body: "Default effective date rolled to Aug 1", ago: "1d", unread: false },
 ];
 
 export interface SampleTimelineEvent {
   id: string;
+  /** Which lead's detail page this event belongs to (SampleLead.name). */
+  leadName: string;
   when: string;
   actor: string;
   eventType: string;
   summary: string;
-  leadName: string;
   planO?: boolean;
 }
 
 export const SAMPLE_TIMELINE: SampleTimelineEvent[] = [
-  { id: "T-1", when: "Today · 10:12", actor: "Renata Alvarez", eventType: "quote.viewed", summary: "Opened shared quote (3 plans compared)", leadName: "Renata Alvarez" },
-  { id: "T-2", when: "Today · 09:44", actor: "You", eventType: "quote.sent", summary: "Shared quote sent via email · expires Aug 3", leadName: "Renata Alvarez" },
-  { id: "T-3", when: "Today · 09:31", actor: "Plan-O", eventType: "planO.recommendation", summary: "Recommended 3 plans matching PCP + Rx tier 1 focus", leadName: "Renata Alvarez", planO: true },
-  { id: "T-4", when: "Yesterday · 16:20", actor: "You", eventType: "quote.built", summary: "Built quote (Silver PPO, household of 2)", leadName: "Renata Alvarez" },
-  { id: "T-5", when: "Yesterday · 15:58", actor: "Renata Alvarez", eventType: "lead.created", summary: "Lead created from marketplace landing", leadName: "Renata Alvarez" },
+  { id: "T-1", leadName: "Renata Alvarez", when: "Today · 10:12", actor: "Renata Alvarez", eventType: "quote.viewed", summary: "Opened shared quote (3 plans compared)" },
+  { id: "T-2", leadName: "Renata Alvarez", when: "Today · 09:44", actor: "You", eventType: "quote.sent", summary: "Shared quote sent via email · expires Aug 3" },
+  { id: "T-3", leadName: "Renata Alvarez", when: "Today · 09:31", actor: "Plan-AI", eventType: "planO.recommendation", summary: "Recommended 3 plans matching PCP + Rx tier 1 focus", planO: true },
+  { id: "T-4", leadName: "Renata Alvarez", when: "Yesterday · 16:20", actor: "You", eventType: "quote.built", summary: "Built quote (Silver PPO, household of 2)" },
+  { id: "T-5", leadName: "Renata Alvarez", when: "Yesterday · 15:58", actor: "Renata Alvarez", eventType: "lead.created", summary: "Lead created from marketplace landing" },
 ];
 
 export interface SampleProduct {
