@@ -244,16 +244,6 @@ export function clearQuoteState(): void {
   window.sessionStorage.removeItem(STORAGE_KEY);
 }
 
-/** Explicitly stamp that the shopper asked to save progress. */
-export function markProgressSaved(): void {
-  if (typeof window === "undefined") return;
-  try {
-    window.sessionStorage.setItem("abox_progress_saved_at", new Date().toISOString());
-  } catch {
-    /* quota / privacy mode — silently skip */
-  }
-}
-
 /* ------------------------------------------------------------------ */
 /* Utility                                                             */
 /* ------------------------------------------------------------------ */
