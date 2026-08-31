@@ -32,12 +32,12 @@ export function RegisterTable({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="stable ID or text"
-            className="w-56 rounded border border-border bg-background px-2 py-1 text-xs"
+            className="w-56 rounded border border-hairline bg-background px-2 py-1 text-xs"
           />
         </label>
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-border">
+      <div className="overflow-x-auto rounded-md border border-hairline">
         <table className="w-full min-w-[48rem] border-collapse text-left text-[11px]">
           <caption className="sr-only">{id} controlled register</caption>
           <thead className="bg-muted/40">
@@ -51,7 +51,7 @@ export function RegisterTable({
           </thead>
           <tbody>
             {visible.map((r, i) => (
-              <tr key={`${id}-${i}`} className="border-t border-border/60 align-top">
+              <tr key={`${id}-${i}`} className="border-t border-hairline align-top">
                 {columns.map((c) => (
                   <td key={c} className="max-w-[22rem] px-2 py-1.5 text-muted-foreground">
                     {r[c]}
@@ -74,7 +74,7 @@ export function RegisterTable({
         <button
           type="button"
           onClick={() => setShowAll((v) => !v)}
-          className="rounded border border-border px-2 py-1 font-mono text-[10px] uppercase hover:bg-muted"
+          className="rounded border border-hairline px-2 py-1 font-mono text-[10px] uppercase hover:bg-muted"
         >
           {showAll ? "Show first " + limit : `Show all ${filtered.length}`}
         </button>

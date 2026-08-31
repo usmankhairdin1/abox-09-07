@@ -93,7 +93,7 @@ export function GovernedFrame({
               onClick={() => setLang(l)}
               aria-pressed={lang === l}
               className={cn(
-                "rounded border border-border px-2 py-1 font-mono text-[10px] uppercase",
+                "rounded border border-hairline px-2 py-1 font-mono text-[10px] uppercase",
                 lang === l ? "bg-muted font-semibold" : "text-muted-foreground hover:bg-muted",
               )}
             >
@@ -121,7 +121,7 @@ export function GovernedFrame({
               onClick={() => setState(s)}
               aria-pressed={state === s}
               className={cn(
-                "rounded border border-border px-2 py-1 font-mono text-[10px]",
+                "rounded border border-hairline px-2 py-1 font-mono text-[10px]",
                 state === s ? "bg-muted font-semibold" : "text-muted-foreground hover:bg-muted",
               )}
             >
@@ -140,7 +140,7 @@ export function GovernedFrame({
         {screen.sections.map((section, i) => (
           <section
             key={section}
-            className="rounded-md border border-dashed border-border bg-muted/10 p-3"
+            className="rounded-md border border-dashed border-hairline bg-muted/10 p-3"
           >
             <header className="mb-2 flex flex-wrap items-center gap-2">
               <span className="text-xs font-semibold tracking-tight">{section}</span>

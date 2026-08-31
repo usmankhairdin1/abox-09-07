@@ -153,7 +153,7 @@ function BarButton({
       onClick={onClick}
       className={cn(
         "inline-flex h-8 items-center gap-1.5 rounded-md border border-transparent px-2 text-xs text-foreground/80 transition-colors hover:bg-muted",
-        active && "border-border bg-muted",
+        active && "border-hairline bg-muted",
       )}
     >
       {children}
@@ -173,7 +173,7 @@ function Tray({
   children: ReactNode;
 }) {
   return (
-    <div className="absolute right-0 top-10 z-40 w-80 rounded-lg border border-border bg-popover p-3 shadow-lg">
+    <div className="absolute right-0 top-10 z-40 w-80 rounded-2xl border border-hairline bg-popover p-3 shadow-elevated">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold">{title}</span>
@@ -225,10 +225,10 @@ export function AppShell({
   return (
     <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
       {/* ---------------------------------------------------- SHELL_TOPBAR */}
-      <header className="sticky top-0 z-30 border-b border-border bg-card">
+      <header className="sticky top-0 z-30 border-b border-hairline bg-card">
         <div className="relative flex h-12 items-center gap-2 px-3">
           <div className="flex items-center gap-2 pr-2">
-            <div className="flex size-6 items-center justify-center rounded border border-dashed border-border bg-muted text-[9px] font-mono text-muted-foreground">
+            <div className="flex size-6 items-center justify-center rounded border border-dashed border-hairline bg-muted text-[9px] font-mono text-muted-foreground">
               LOGO
             </div>
             <Link to="/" className="hidden text-sm font-semibold tracking-tight sm:inline">
@@ -237,13 +237,13 @@ export function AppShell({
             <IdChip>SHELL_TOPBAR</IdChip>
             <Link
               to="/lucie"
-              className="hidden rounded border border-border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:bg-muted md:inline"
+              className="hidden rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:bg-muted md:inline"
             >
               Lucie spine
             </Link>
             <Link
               to="/gov"
-              className="hidden rounded border border-border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:bg-muted md:inline"
+              className="hidden rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:bg-muted md:inline"
             >
               Build packets
             </Link>
@@ -358,7 +358,7 @@ export function AppShell({
             <button
               type="button"
               onClick={() => setOpenMenu(openMenu === "search" ? null : "search")}
-              className="flex h-8 w-full max-w-md items-center gap-2 rounded-md border border-border bg-background px-2 text-xs text-muted-foreground hover:bg-muted"
+              className="flex h-8 w-full max-w-md items-center gap-2 rounded-md border border-hairline bg-background px-2 text-xs text-muted-foreground hover:bg-muted"
             >
               <Search className="size-3.5" />
               <span className="truncate">
@@ -367,7 +367,7 @@ export function AppShell({
               </span>
             </button>
             {openMenu === "search" ? (
-              <div className="absolute left-0 top-10 z-40 w-full max-w-xl rounded-lg border border-border bg-popover p-3 shadow-lg">
+              <div className="absolute left-0 top-10 z-40 w-full max-w-xl rounded-2xl border border-hairline bg-popover p-3 shadow-elevated">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold">Global search</span>
@@ -480,7 +480,7 @@ export function AppShell({
                     </li>
                   ))}
                 </ul>
-                <div className="mt-3 border-t border-border pt-2">
+                <div className="mt-3 border-t border-hairline pt-2">
                   <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                     Wireframe control · simulated role
                   </p>
@@ -513,7 +513,7 @@ export function AppShell({
         </div>
 
         {/* context strip */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-border bg-muted/30 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-hairline bg-muted/30 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
           <span>{ws.id}</span>
           <span aria-hidden="true">·</span>
           <span>{entity.id}</span>
@@ -528,7 +528,7 @@ export function AppShell({
         {/* ------------------------------------------------ SHELL_LEFTNAV */}
         <nav
           className={cn(
-            "shrink-0 border-r border-border bg-sidebar transition-all",
+            "shrink-0 border-r border-hairline bg-sidebar transition-all",
             navCollapsed ? "w-14" : "w-64",
           )}
           aria-label="Modules"
@@ -557,7 +557,7 @@ export function AppShell({
                 const content = (
                   <span className="flex min-w-0 flex-1 items-center gap-2">
                     <span
-                      className="size-4 shrink-0 rounded border border-dashed border-border bg-muted"
+                      className="size-4 shrink-0 rounded border border-dashed border-hairline bg-muted"
                       aria-hidden="true"
                     />
                     {navCollapsed ? null : (
@@ -597,7 +597,7 @@ export function AppShell({
             </ul>
 
             {navCollapsed ? null : (
-              <div className="mt-4 space-y-2 border-t border-border pt-3">
+              <div className="mt-4 space-y-2 border-t border-hairline pt-3">
                 <p className="px-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                   Nested — never top level
                 </p>
@@ -632,13 +632,13 @@ export function AppShell({
         {/* ------------------------------------------------- SHELL_DRAWER */}
         <aside
           className={cn(
-            "hidden shrink-0 border-l border-border bg-card transition-all xl:block",
+            "hidden shrink-0 border-l border-hairline bg-card transition-all xl:block",
             drawerOpen ? "w-80" : "w-11",
           )}
           aria-label="Context drawer"
         >
           <div className="sticky top-[4.25rem] flex h-[calc(100vh-4.25rem)] flex-col overflow-y-auto">
-            <div className="flex items-center justify-between gap-2 border-b border-border px-2 py-2">
+            <div className="flex items-center justify-between gap-2 border-b border-hairline px-2 py-2">
               {drawerOpen ? (
                 <div className="flex min-w-0 items-center gap-2">
                   <span className="truncate text-xs font-semibold">{drawerTitle}</span>
@@ -661,7 +661,7 @@ export function AppShell({
 
             {drawerOpen ? (
               <>
-                <div className="flex flex-wrap gap-1 border-b border-border px-2 py-2">
+                <div className="flex flex-wrap gap-1 border-b border-hairline px-2 py-2">
                   {drawerTabs.map((t) => (
                     <button
                       key={t}
@@ -669,7 +669,7 @@ export function AppShell({
                       onClick={() => setDrawerTab(t)}
                       className={cn(
                         "rounded-md border border-transparent px-1.5 py-1 text-[11px] text-muted-foreground hover:bg-muted",
-                        drawerTab === t && "border-border bg-muted text-foreground",
+                        drawerTab === t && "border-hairline bg-muted text-foreground",
                       )}
                     >
                       {t}
@@ -698,8 +698,8 @@ export function AppShell({
       {/* ---------------------------------------------- SHELL_ASSISTANT */}
       <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2">
         {assistantOpen ? (
-          <div className="w-[19rem] rounded-lg border border-border bg-popover shadow-xl sm:w-80">
-            <div className="flex items-center justify-between border-b border-border px-3 py-2">
+          <div className="w-[19rem] rounded-2xl border border-hairline bg-popover shadow-elevated sm:w-80">
+            <div className="flex items-center justify-between border-b border-hairline px-3 py-2">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-semibold">Assistant</span>
                 <IdChip tone="prov">SHELL_ASSISTANT</IdChip>
@@ -712,7 +712,7 @@ export function AppShell({
                 <X className="size-3.5 text-muted-foreground" />
               </button>
             </div>
-            <div className="flex gap-1 border-b border-border px-2 py-2">
+            <div className="flex gap-1 border-b border-hairline px-2 py-2">
               {(["Chat", "FAQs", "Copilot"] as const).map((t) => (
                 <button
                   key={t}
@@ -720,7 +720,7 @@ export function AppShell({
                   onClick={() => setAssistantTab(t)}
                   className={cn(
                     "rounded-md border border-transparent px-2 py-1 text-[11px] text-muted-foreground hover:bg-muted",
-                    assistantTab === t && "border-border bg-muted text-foreground",
+                    assistantTab === t && "border-hairline bg-muted text-foreground",
                   )}
                 >
                   {t}
@@ -730,14 +730,14 @@ export function AppShell({
             <div className="space-y-2 p-3">
               {assistantTab === "Chat" ? (
                 <>
-                  <div className="rounded-md border border-dashed border-border bg-muted/40 p-2">
+                  <div className="rounded-md border border-dashed border-hairline bg-muted/40 p-2">
                     <WLine w="80%" />
                     <WLine w="60%" className="mt-1.5 h-1.5 bg-muted/70" />
                   </div>
-                  <div className="ml-6 rounded-md border border-border bg-background p-2">
+                  <div className="ml-6 rounded-md border border-hairline bg-background p-2">
                     <WLine w="70%" />
                   </div>
-                  <div className="rounded-md border border-border px-2 py-1.5 text-[11px] text-muted-foreground">
+                  <div className="rounded-md border border-hairline px-2 py-1.5 text-[11px] text-muted-foreground">
                     Ask a question about {assistantContext}…
                   </div>
                 </>
@@ -750,7 +750,7 @@ export function AppShell({
                     "How do I change a label?",
                     "Where do notifications come from?",
                   ].map((q) => (
-                    <li key={q} className="rounded-md border border-border px-2 py-1.5">
+                    <li key={q} className="rounded-md border border-hairline px-2 py-1.5">
                       {q}
                     </li>
                   ))}
@@ -766,7 +766,7 @@ export function AppShell({
                   ].map((q) => (
                     <li
                       key={q}
-                      className="flex items-center gap-2 rounded-md border border-dashed border-border px-2 py-1.5"
+                      className="flex items-center gap-2 rounded-md border border-dashed border-hairline px-2 py-1.5"
                     >
                       <Sparkles className="size-3" /> {q}
                     </li>
@@ -784,7 +784,7 @@ export function AppShell({
         <button
           type="button"
           onClick={() => setAssistantOpen((v) => !v)}
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-xs font-medium shadow-lg hover:bg-muted"
+          className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-3 py-2 text-xs font-medium shadow-elevated hover:bg-muted"
         >
           <HelpCircle className="size-4" />
           Help &amp; assistant
@@ -819,7 +819,7 @@ function DefaultDrawerBody({ tab }: { tab: DrawerTab }) {
       {items[tab].map((i) => (
         <div
           key={i}
-          className="rounded-md border border-dashed border-border bg-muted/30 px-2 py-2"
+          className="rounded-md border border-dashed border-hairline bg-muted/30 px-2 py-2"
         >
           <p className="text-[11px] text-foreground/80">{i}</p>
           <WLine w="65%" className="mt-1.5 h-1.5 bg-muted/70" />

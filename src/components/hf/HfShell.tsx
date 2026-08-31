@@ -126,7 +126,7 @@ export function HfShell({
   return (
     <div className="flex min-h-svh flex-col bg-background text-foreground">
       {/* ------------------------------------------------------- global bar */}
-      <header className="sticky top-0 z-30 border-b border-border bg-card">
+      <header className="sticky top-0 z-30 border-b border-hairline bg-card">
         {role.id === "ROLE_SUPPORT" ? (
           <div className="flex items-center justify-center gap-2 bg-warning/20 px-3 py-1 text-[11px] font-medium text-warning-foreground">
             <ShieldCheck className="size-3.5" />
@@ -166,7 +166,7 @@ export function HfShell({
                     secondary={w.id}
                   />
                 ))}
-                <p className="mt-2 border-t border-border pt-2 text-[11px] leading-relaxed text-muted-foreground">
+                <p className="mt-2 border-t border-hairline pt-2 text-[11px] leading-relaxed text-muted-foreground">
                   Same shell. Switching re-scopes modules, data, labels and defaults — it does not
                   open a different portal.
                 </p>
@@ -199,7 +199,7 @@ export function HfShell({
                     secondary={e.rel}
                   />
                 ))}
-                <p className="mt-2 border-t border-border pt-2 text-[11px] leading-relaxed text-muted-foreground">
+                <p className="mt-2 border-t border-hairline pt-2 text-[11px] leading-relaxed text-muted-foreground">
                   Derived from parent / child / upline / downline / partner relationships and
                   clipped to your subtree.
                 </p>
@@ -210,11 +210,11 @@ export function HfShell({
           {/* search */}
           <button
             type="button"
-            className="ml-auto flex h-8 min-w-0 flex-1 items-center gap-2 rounded-[var(--radius)] border border-border bg-background px-2.5 text-xs text-muted-foreground hover:bg-muted md:ml-2 md:max-w-sm"
+            className="ml-auto flex h-8 min-w-0 flex-1 items-center gap-2 rounded-[var(--radius)] border border-hairline bg-background px-2.5 text-xs text-muted-foreground hover:bg-muted md:ml-2 md:max-w-sm"
           >
             <Search className="size-3.5 shrink-0" />
             <span className="truncate">Search leads, members, quotes, plans…</span>
-            <span className="ml-auto hidden rounded border border-border px-1 font-mono text-[10px] sm:inline">
+            <span className="ml-auto hidden rounded border border-hairline px-1 font-mono text-[10px] sm:inline">
               ⌘K
             </span>
           </button>
@@ -281,7 +281,7 @@ export function HfShell({
                     <MenuRow key={i} primary={i} />
                   ))}
                 </div>
-                <div className="mt-2 border-t border-border pt-2">
+                <div className="mt-2 border-t border-hairline pt-2">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                     Density
                   </p>
@@ -295,7 +295,7 @@ export function HfShell({
                           "rounded-[var(--radius)] border px-2 py-1 text-[11px] capitalize",
                           density === d
                             ? "border-primary bg-primary/10 text-primary"
-                            : "border-border",
+                            : "border-hairline",
                         )}
                       >
                         {d}
@@ -303,7 +303,7 @@ export function HfShell({
                     ))}
                   </div>
                 </div>
-                <div className="mt-2 border-t border-border pt-2">
+                <div className="mt-2 border-t border-hairline pt-2">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                     Simulated role — wireframe control
                   </p>
@@ -338,7 +338,7 @@ export function HfShell({
         <nav
           aria-label="Modules"
           className={cn(
-            "hidden shrink-0 border-r border-border bg-sidebar transition-[width] md:block",
+            "hidden shrink-0 border-r border-hairline bg-sidebar transition-[width] md:block",
             collapsed ? "w-14" : "w-60",
           )}
         >
@@ -366,7 +366,7 @@ export function HfShell({
                       <span
                         className={cn(
                           "size-4 shrink-0 rounded-sm border",
-                          active ? "border-primary/60 bg-primary/20" : "border-border",
+                          active ? "border-primary/60 bg-primary/20" : "border-hairline",
                         )}
                         aria-hidden="true"
                       />
@@ -380,7 +380,7 @@ export function HfShell({
             </ul>
 
             {collapsed ? null : (
-              <p className="mt-3 border-t border-border px-2.5 pt-3 text-[11px] leading-relaxed text-muted-foreground">
+              <p className="mt-3 border-t border-hairline px-2.5 pt-3 text-[11px] leading-relaxed text-muted-foreground">
                 Modules you cannot access are absent, not greyed. Labels come from the tenant label
                 dictionary.
               </p>
@@ -416,12 +416,12 @@ export function HfShell({
         <aside
           aria-label="Context drawer"
           className={cn(
-            "hidden shrink-0 border-l border-border bg-card transition-[width] xl:block",
+            "hidden shrink-0 border-l border-hairline bg-card transition-[width] xl:block",
             drawerOpen ? "w-[19rem]" : "w-11",
           )}
         >
           <div className="sticky top-13 flex h-[calc(100svh-3.25rem)] flex-col overflow-y-auto">
-            <div className="flex items-center gap-2 border-b border-border px-2.5 py-2.5">
+            <div className="flex items-center gap-2 border-b border-hairline px-2.5 py-2.5">
               {drawerOpen ? (
                 <span className="truncate font-display text-xs font-semibold">{drawerTitle}</span>
               ) : null}
@@ -440,7 +440,7 @@ export function HfShell({
             </div>
             {drawerOpen ? (
               <>
-                <div className="flex flex-wrap gap-1 border-b border-border px-2 py-2">
+                <div className="flex flex-wrap gap-1 border-b border-hairline px-2 py-2">
                   {sections.map((s) => (
                     <button
                       key={s}
@@ -460,7 +460,7 @@ export function HfShell({
                 <div className="space-y-3 p-3 text-xs leading-relaxed">
                   {drawer?.[section] ?? <DefaultDrawer section={section} />}
                   {!has("audit.view") ? (
-                    <p className="border-t border-border pt-2 text-[11px] text-muted-foreground">
+                    <p className="border-t border-hairline pt-2 text-[11px] text-muted-foreground">
                       Audit section hidden for {role.label.toLowerCase()} — drawer sections are
                       permission-controlled.
                     </p>
@@ -476,7 +476,7 @@ export function HfShell({
       <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2">
         {assistantOpen ? (
           <Card className="w-[20rem] overflow-hidden shadow-[var(--shadow-overlay)]">
-            <div className="flex items-center gap-2 border-b border-border bg-ai/[0.06] px-3 py-2.5">
+            <div className="flex items-center gap-2 border-b border-hairline bg-ai/[0.06] px-3 py-2.5">
               <Sparkles className="size-3.5 text-ai" />
               <span className="font-display text-xs font-semibold">Assistant</span>
               <Badge tone="ai">AI</Badge>
@@ -500,7 +500,7 @@ export function HfShell({
                   <button
                     key={q}
                     type="button"
-                    className="flex w-full items-center gap-2 rounded-[var(--radius)] border border-border px-2.5 py-1.5 text-left text-xs hover:bg-muted"
+                    className="flex w-full items-center gap-2 rounded-[var(--radius)] border border-hairline px-2.5 py-1.5 text-left text-xs hover:bg-muted"
                   >
                     <Sparkles className="size-3 text-ai" /> {q}
                   </button>
@@ -516,7 +516,7 @@ export function HfShell({
             </div>
           </Card>
         ) : null}
-        <Btn variant="outline" onClick={() => setAssistantOpen((v) => !v)} className="shadow-lg">
+        <Btn variant="outline" onClick={() => setAssistantOpen((v) => !v)} className="shadow-elevated">
           <Sparkles className="size-4 text-ai" />
           Help &amp; assistant
         </Btn>
@@ -542,7 +542,7 @@ function BarBtn({
       onClick={onClick}
       className={cn(
         "inline-flex h-8 shrink-0 items-center gap-1.5 rounded-[var(--radius)] border border-transparent px-2 text-xs text-foreground/80 transition-colors hover:bg-muted",
-        active && "border-border bg-muted text-foreground",
+        active && "border-hairline bg-muted text-foreground",
       )}
     >
       {children}
@@ -560,7 +560,7 @@ function Menu({
   children: ReactNode;
 }) {
   return (
-    <div className="absolute left-0 top-10 z-40 w-72 rounded-[var(--radius)] border border-border bg-popover p-2.5 shadow-[var(--shadow-overlay)]">
+    <div className="absolute left-0 top-10 z-40 w-72 rounded-[var(--radius)] border border-hairline bg-popover p-2.5 shadow-[var(--shadow-overlay)]">
       <div className="mb-1.5 flex items-center justify-between">
         <span className="font-display text-xs font-semibold">{title}</span>
         <button type="button" onClick={onClose} aria-label="Close">
