@@ -40,6 +40,7 @@ import {
   ListTree,
   Link as LinkIcon,
   ShieldCheck,
+  BookOpen,
 } from "lucide-react";
 
 export type WorkspaceKey =
@@ -190,6 +191,7 @@ export const WORKSPACES: WorkspaceConfig[] = [
           { label: "AI / Plan-AI Governance", to: "/app/jet/ai-governance", icon: Sparkles, scrId: "SCR_JET_AI_GOV" },
           { label: "Audit Log", to: "/app/jet/audit", icon: History, scrId: "SCR_JET_AUDIT" },
           { label: "Integrations", to: "/app/jet/integrations", icon: Plug, scrId: "SCR_JET_INTEGRATIONS" },
+          { label: "Lucie Release Spine", to: "/lucie", icon: BookOpen, scrId: "SCR_LUCIE_SPINE" },
         ],
       },
     ],
