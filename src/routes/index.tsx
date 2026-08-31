@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Boxes, LayoutGrid, PanelsTopLeft, ShieldCheck } from "lucide-react";
 
+import { KpiCard } from "@/components/abox/kpi-card";
 import { AppShell } from "@/components/shell/AppShell";
 import {
   AclNote,
