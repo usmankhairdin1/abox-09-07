@@ -241,6 +241,13 @@ export function AppShell({
             >
               Lucie spine
             </Link>
+            <Link
+              to="/gov"
+              className="hidden rounded border border-border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:bg-muted md:inline"
+            >
+              Build packets
+            </Link>
+
           </div>
 
           {/* workspace switcher */}
