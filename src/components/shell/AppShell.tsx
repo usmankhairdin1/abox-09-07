@@ -474,7 +474,7 @@ export function AppShell({
           <span aria-hidden="true">·</span>
           <span>{role.id}</span>
           <span aria-hidden="true">·</span>
-          <span>low-fidelity wireframe — structure only</span>
+          <span>governed estate — meridian design system</span>
         </div>
       </header>
 
