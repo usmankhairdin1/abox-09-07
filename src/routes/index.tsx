@@ -116,13 +116,22 @@ function ShellMapPage() {
         id="SHELL_MAP"
         description="Annotated map of the shell you are currently inside. Every region below is live in this wireframe — open the switchers, search, trays, drawer and assistant to walk the structure."
         actions={
-          <Link
-            to="/lucie"
-            className="rounded-md border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
-          >
-            Lucie delivery spine →
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              to="/lucie"
+              className="rounded-md border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+            >
+              Lucie delivery spine →
+            </Link>
+            <Link
+              to="/gov"
+              className="rounded-md border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+            >
+              Governed build packets →
+            </Link>
+          </div>
         }
+
       />
 
 
