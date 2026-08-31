@@ -15,6 +15,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AgentUnavailableRouteImport } from './routes/agent-unavailable'
 import { Route as AiReviewRouteImport } from './routes/ai-review'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as ApplyRouteImport } from './routes/apply'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as CompareRouteImport } from './routes/compare'
@@ -24,13 +25,14 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as HandoffRouteImport } from './routes/handoff'
 import { Route as IchraRouteImport } from './routes/ichra'
+import { Route as JourneyChoiceRouteImport } from './routes/journey-choice'
 import { Route as LucieRouteImport } from './routes/lucie'
 import { Route as M00RouteImport } from './routes/m00'
 import { Route as M06RouteImport } from './routes/m06'
 import { Route as MemberRouteImport } from './routes/member'
 import { Route as MyWorkRouteImport } from './routes/my-work'
+import { Route as NoOptionsRouteImport } from './routes/no-options'
 import { Route as ObjectRouteImport } from './routes/object'
-import { Route as PlansRouteImport } from './routes/plans'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as ReviewRouteImport } from './routes/review'
@@ -86,8 +88,14 @@ import { Route as MemberQuotesRouteImport } from './routes/member.quotes'
 import { Route as MemberSettingsRouteImport } from './routes/member.settings'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
 import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
+import { Route as PlansIndexRouteImport } from './routes/plans.index'
 import { Route as PlansPlanIdRouteImport } from './routes/plans.$planId'
+import { Route as RReferralTokenRouteImport } from './routes/r.$referralToken'
 import { Route as SharedTokenRouteImport } from './routes/shared.$token'
+import { Route as StartPathwayRouteImport } from './routes/start.$pathway'
+import { Route as UnavailablePathwayRouteImport } from './routes/unavailable.pathway'
+import { Route as UnavailableSuspendedRouteImport } from './routes/unavailable.suspended'
+import { Route as UnavailableUnresolvedRouteImport } from './routes/unavailable.unresolved'
 import { Route as AgencyOrganizationDefaultsApplyRouteImport } from './routes/agency.organization-defaults.apply'
 import { Route as AgencyOrganizationImportsIndexRouteImport } from './routes/agency.organization-imports.index'
 import { Route as AgencyOrganizationImportsImportJobIdRouteImport } from './routes/agency.organization-imports.$importJobId'
@@ -197,6 +205,11 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApplyRoute = ApplyRouteImport.update({
+  id: '/apply',
+  path: '/apply',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -242,6 +255,11 @@ const IchraRoute = IchraRouteImport.update({
   path: '/ichra',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JourneyChoiceRoute = JourneyChoiceRouteImport.update({
+  id: '/journey-choice',
+  path: '/journey-choice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LucieRoute = LucieRouteImport.update({
   id: '/lucie',
   path: '/lucie',
@@ -267,14 +285,14 @@ const MyWorkRoute = MyWorkRouteImport.update({
   path: '/my-work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NoOptionsRoute = NoOptionsRouteImport.update({
+  id: '/no-options',
+  path: '/no-options',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ObjectRoute = ObjectRouteImport.update({
   id: '/object',
   path: '/object',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlansRoute = PlansRouteImport.update({
-  id: '/plans',
-  path: '/plans',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -554,14 +572,44 @@ const P1ScreenRoute = P1ScreenRouteImport.update({
   path: '/p1/$screen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlansIndexRoute = PlansIndexRouteImport.update({
+  id: '/plans/',
+  path: '/plans/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlansPlanIdRoute = PlansPlanIdRouteImport.update({
-  id: '/$planId',
-  path: '/$planId',
-  getParentRoute: () => PlansRoute,
+  id: '/plans/$planId',
+  path: '/plans/$planId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RReferralTokenRoute = RReferralTokenRouteImport.update({
+  id: '/r/$referralToken',
+  path: '/r/$referralToken',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const SharedTokenRoute = SharedTokenRouteImport.update({
   id: '/shared/$token',
   path: '/shared/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartPathwayRoute = StartPathwayRouteImport.update({
+  id: '/start/$pathway',
+  path: '/start/$pathway',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnavailablePathwayRoute = UnavailablePathwayRouteImport.update({
+  id: '/unavailable/pathway',
+  path: '/unavailable/pathway',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnavailableSuspendedRoute = UnavailableSuspendedRouteImport.update({
+  id: '/unavailable/suspended',
+  path: '/unavailable/suspended',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnavailableUnresolvedRoute = UnavailableUnresolvedRouteImport.update({
+  id: '/unavailable/unresolved',
+  path: '/unavailable/unresolved',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AgencyOrganizationDefaultsApplyRoute =
@@ -1003,6 +1051,7 @@ export interface FileRoutesByFullPath {
   '/agent-unavailable': typeof AgentUnavailableRoute
   '/ai-review': typeof AiReviewRoute
   '/app': typeof AppRouteWithChildren
+  '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/compare': typeof CompareRoute
@@ -1012,13 +1061,14 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/handoff': typeof HandoffRoute
   '/ichra': typeof IchraRoute
+  '/journey-choice': typeof JourneyChoiceRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
   '/m06': typeof M06RouteWithChildren
   '/member': typeof MemberRouteWithChildren
   '/my-work': typeof MyWorkRoute
+  '/no-options': typeof NoOptionsRoute
   '/object': typeof ObjectRoute
-  '/plans': typeof PlansRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/quote': typeof QuoteRoute
   '/review': typeof ReviewRoute
@@ -1066,7 +1116,12 @@ export interface FileRoutesByFullPath {
   '/member/settings': typeof MemberSettingsRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/plans/$planId': typeof PlansPlanIdRoute
+  '/r/$referralToken': typeof RReferralTokenRoute
   '/shared/$token': typeof SharedTokenRoute
+  '/start/$pathway': typeof StartPathwayRoute
+  '/unavailable/pathway': typeof UnavailablePathwayRoute
+  '/unavailable/suspended': typeof UnavailableSuspendedRoute
+  '/unavailable/unresolved': typeof UnavailableUnresolvedRoute
   '/app/': typeof AppIndexRoute
   '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
@@ -1076,6 +1131,7 @@ export interface FileRoutesByFullPath {
   '/m1/': typeof M1IndexRoute
   '/member/': typeof MemberIndexRoute
   '/p1/': typeof P1IndexRoute
+  '/plans/': typeof PlansIndexRoute
   '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
   '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
   '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
@@ -1161,6 +1217,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/agent-unavailable': typeof AgentUnavailableRoute
   '/ai-review': typeof AiReviewRoute
+  '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/compare': typeof CompareRoute
@@ -1170,9 +1227,10 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/handoff': typeof HandoffRoute
   '/ichra': typeof IchraRoute
+  '/journey-choice': typeof JourneyChoiceRoute
   '/my-work': typeof MyWorkRoute
+  '/no-options': typeof NoOptionsRoute
   '/object': typeof ObjectRoute
-  '/plans': typeof PlansRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/quote': typeof QuoteRoute
   '/review': typeof ReviewRoute
@@ -1219,7 +1277,12 @@ export interface FileRoutesByTo {
   '/member/settings': typeof MemberSettingsRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/plans/$planId': typeof PlansPlanIdRoute
+  '/r/$referralToken': typeof RReferralTokenRoute
   '/shared/$token': typeof SharedTokenRoute
+  '/start/$pathway': typeof StartPathwayRoute
+  '/unavailable/pathway': typeof UnavailablePathwayRoute
+  '/unavailable/suspended': typeof UnavailableSuspendedRoute
+  '/unavailable/unresolved': typeof UnavailableUnresolvedRoute
   '/app': typeof AppIndexRoute
   '/gov': typeof GovIndexRoute
   '/hf': typeof HfIndexRoute
@@ -1229,6 +1292,7 @@ export interface FileRoutesByTo {
   '/m1': typeof M1IndexRoute
   '/member': typeof MemberIndexRoute
   '/p1': typeof P1IndexRoute
+  '/plans': typeof PlansIndexRoute
   '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
   '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
   '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
@@ -1316,6 +1380,7 @@ export interface FileRoutesById {
   '/agent-unavailable': typeof AgentUnavailableRoute
   '/ai-review': typeof AiReviewRoute
   '/app': typeof AppRouteWithChildren
+  '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/compare': typeof CompareRoute
@@ -1325,13 +1390,14 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/handoff': typeof HandoffRoute
   '/ichra': typeof IchraRoute
+  '/journey-choice': typeof JourneyChoiceRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
   '/m06': typeof M06RouteWithChildren
   '/member': typeof MemberRouteWithChildren
   '/my-work': typeof MyWorkRoute
+  '/no-options': typeof NoOptionsRoute
   '/object': typeof ObjectRoute
-  '/plans': typeof PlansRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/quote': typeof QuoteRoute
   '/review': typeof ReviewRoute
@@ -1379,7 +1445,12 @@ export interface FileRoutesById {
   '/member/settings': typeof MemberSettingsRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/plans/$planId': typeof PlansPlanIdRoute
+  '/r/$referralToken': typeof RReferralTokenRoute
   '/shared/$token': typeof SharedTokenRoute
+  '/start/$pathway': typeof StartPathwayRoute
+  '/unavailable/pathway': typeof UnavailablePathwayRoute
+  '/unavailable/suspended': typeof UnavailableSuspendedRoute
+  '/unavailable/unresolved': typeof UnavailableUnresolvedRoute
   '/app/': typeof AppIndexRoute
   '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
@@ -1389,6 +1460,7 @@ export interface FileRoutesById {
   '/m1/': typeof M1IndexRoute
   '/member/': typeof MemberIndexRoute
   '/p1/': typeof P1IndexRoute
+  '/plans/': typeof PlansIndexRoute
   '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
   '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
   '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
@@ -1477,6 +1549,7 @@ export interface FileRouteTypes {
     | '/agent-unavailable'
     | '/ai-review'
     | '/app'
+    | '/apply'
     | '/auth'
     | '/cart'
     | '/compare'
@@ -1486,13 +1559,14 @@ export interface FileRouteTypes {
     | '/faq'
     | '/handoff'
     | '/ichra'
+    | '/journey-choice'
     | '/lucie'
     | '/m00'
     | '/m06'
     | '/member'
     | '/my-work'
+    | '/no-options'
     | '/object'
-    | '/plans'
     | '/privacy'
     | '/quote'
     | '/review'
@@ -1540,7 +1614,12 @@ export interface FileRouteTypes {
     | '/member/settings'
     | '/p1/$screen'
     | '/plans/$planId'
+    | '/r/$referralToken'
     | '/shared/$token'
+    | '/start/$pathway'
+    | '/unavailable/pathway'
+    | '/unavailable/suspended'
+    | '/unavailable/unresolved'
     | '/app/'
     | '/gov/'
     | '/hf/'
@@ -1550,6 +1629,7 @@ export interface FileRouteTypes {
     | '/m1/'
     | '/member/'
     | '/p1/'
+    | '/plans/'
     | '/agency/organization-defaults/apply'
     | '/agency/organization-imports/$importJobId'
     | '/agency/reference-organizations/request'
@@ -1635,6 +1715,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/agent-unavailable'
     | '/ai-review'
+    | '/apply'
     | '/auth'
     | '/cart'
     | '/compare'
@@ -1644,9 +1725,10 @@ export interface FileRouteTypes {
     | '/faq'
     | '/handoff'
     | '/ichra'
+    | '/journey-choice'
     | '/my-work'
+    | '/no-options'
     | '/object'
-    | '/plans'
     | '/privacy'
     | '/quote'
     | '/review'
@@ -1693,7 +1775,12 @@ export interface FileRouteTypes {
     | '/member/settings'
     | '/p1/$screen'
     | '/plans/$planId'
+    | '/r/$referralToken'
     | '/shared/$token'
+    | '/start/$pathway'
+    | '/unavailable/pathway'
+    | '/unavailable/suspended'
+    | '/unavailable/unresolved'
     | '/app'
     | '/gov'
     | '/hf'
@@ -1703,6 +1790,7 @@ export interface FileRouteTypes {
     | '/m1'
     | '/member'
     | '/p1'
+    | '/plans'
     | '/agency/organization-defaults/apply'
     | '/agency/organization-imports/$importJobId'
     | '/agency/reference-organizations/request'
@@ -1789,6 +1877,7 @@ export interface FileRouteTypes {
     | '/agent-unavailable'
     | '/ai-review'
     | '/app'
+    | '/apply'
     | '/auth'
     | '/cart'
     | '/compare'
@@ -1798,13 +1887,14 @@ export interface FileRouteTypes {
     | '/faq'
     | '/handoff'
     | '/ichra'
+    | '/journey-choice'
     | '/lucie'
     | '/m00'
     | '/m06'
     | '/member'
     | '/my-work'
+    | '/no-options'
     | '/object'
-    | '/plans'
     | '/privacy'
     | '/quote'
     | '/review'
@@ -1852,7 +1942,12 @@ export interface FileRouteTypes {
     | '/member/settings'
     | '/p1/$screen'
     | '/plans/$planId'
+    | '/r/$referralToken'
     | '/shared/$token'
+    | '/start/$pathway'
+    | '/unavailable/pathway'
+    | '/unavailable/suspended'
+    | '/unavailable/unresolved'
     | '/app/'
     | '/gov/'
     | '/hf/'
@@ -1862,6 +1957,7 @@ export interface FileRouteTypes {
     | '/m1/'
     | '/member/'
     | '/p1/'
+    | '/plans/'
     | '/agency/organization-defaults/apply'
     | '/agency/organization-imports/$importJobId'
     | '/agency/reference-organizations/request'
@@ -1949,6 +2045,7 @@ export interface RootRouteChildren {
   AgentUnavailableRoute: typeof AgentUnavailableRoute
   AiReviewRoute: typeof AiReviewRoute
   AppRoute: typeof AppRouteWithChildren
+  ApplyRoute: typeof ApplyRoute
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
   CompareRoute: typeof CompareRoute
@@ -1958,13 +2055,14 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   HandoffRoute: typeof HandoffRoute
   IchraRoute: typeof IchraRoute
+  JourneyChoiceRoute: typeof JourneyChoiceRoute
   LucieRoute: typeof LucieRouteWithChildren
   M00Route: typeof M00RouteWithChildren
   M06Route: typeof M06RouteWithChildren
   MemberRoute: typeof MemberRouteWithChildren
   MyWorkRoute: typeof MyWorkRoute
+  NoOptionsRoute: typeof NoOptionsRoute
   ObjectRoute: typeof ObjectRoute
-  PlansRoute: typeof PlansRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   QuoteRoute: typeof QuoteRoute
   ReviewRoute: typeof ReviewRoute
@@ -1981,11 +2079,18 @@ export interface RootRouteChildren {
   HfScreenRoute: typeof HfScreenRoute
   M1ScreenRoute: typeof M1ScreenRoute
   P1ScreenRoute: typeof P1ScreenRoute
+  PlansPlanIdRoute: typeof PlansPlanIdRoute
+  RReferralTokenRoute: typeof RReferralTokenRoute
   SharedTokenRoute: typeof SharedTokenRoute
+  StartPathwayRoute: typeof StartPathwayRoute
+  UnavailablePathwayRoute: typeof UnavailablePathwayRoute
+  UnavailableSuspendedRoute: typeof UnavailableSuspendedRoute
+  UnavailableUnresolvedRoute: typeof UnavailableUnresolvedRoute
   GovIndexRoute: typeof GovIndexRoute
   HfIndexRoute: typeof HfIndexRoute
   M1IndexRoute: typeof M1IndexRoute
   P1IndexRoute: typeof P1IndexRoute
+  PlansIndexRoute: typeof PlansIndexRoute
   AgencyOrganizationDefaultsApplyRoute: typeof AgencyOrganizationDefaultsApplyRoute
   AgencyOrganizationImportsImportJobIdRoute: typeof AgencyOrganizationImportsImportJobIdRoute
   AgencyReferenceOrganizationsRequestRoute: typeof AgencyReferenceOrganizationsRequestRoute
@@ -2082,6 +2187,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apply': {
+      id: '/apply'
+      path: '/apply'
+      fullPath: '/apply'
+      preLoaderRoute: typeof ApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -2145,6 +2257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IchraRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journey-choice': {
+      id: '/journey-choice'
+      path: '/journey-choice'
+      fullPath: '/journey-choice'
+      preLoaderRoute: typeof JourneyChoiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lucie': {
       id: '/lucie'
       path: '/lucie'
@@ -2180,18 +2299,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MyWorkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/no-options': {
+      id: '/no-options'
+      path: '/no-options'
+      fullPath: '/no-options'
+      preLoaderRoute: typeof NoOptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/object': {
       id: '/object'
       path: '/object'
       fullPath: '/object'
       preLoaderRoute: typeof ObjectRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/plans': {
-      id: '/plans'
-      path: '/plans'
-      fullPath: '/plans'
-      preLoaderRoute: typeof PlansRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -2579,18 +2698,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof P1ScreenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/plans/': {
+      id: '/plans/'
+      path: '/plans'
+      fullPath: '/plans/'
+      preLoaderRoute: typeof PlansIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/plans/$planId': {
       id: '/plans/$planId'
-      path: '/$planId'
+      path: '/plans/$planId'
       fullPath: '/plans/$planId'
       preLoaderRoute: typeof PlansPlanIdRouteImport
-      parentRoute: typeof PlansRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/r/$referralToken': {
+      id: '/r/$referralToken'
+      path: '/r/$referralToken'
+      fullPath: '/r/$referralToken'
+      preLoaderRoute: typeof RReferralTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/shared/$token': {
       id: '/shared/$token'
       path: '/shared/$token'
       fullPath: '/shared/$token'
       preLoaderRoute: typeof SharedTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/start/$pathway': {
+      id: '/start/$pathway'
+      path: '/start/$pathway'
+      fullPath: '/start/$pathway'
+      preLoaderRoute: typeof StartPathwayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unavailable/pathway': {
+      id: '/unavailable/pathway'
+      path: '/unavailable/pathway'
+      fullPath: '/unavailable/pathway'
+      preLoaderRoute: typeof UnavailablePathwayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unavailable/suspended': {
+      id: '/unavailable/suspended'
+      path: '/unavailable/suspended'
+      fullPath: '/unavailable/suspended'
+      preLoaderRoute: typeof UnavailableSuspendedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unavailable/unresolved': {
+      id: '/unavailable/unresolved'
+      path: '/unavailable/unresolved'
+      fullPath: '/unavailable/unresolved'
+      preLoaderRoute: typeof UnavailableUnresolvedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/agency/organization-defaults/apply': {
@@ -3293,16 +3454,6 @@ const MemberRouteChildren: MemberRouteChildren = {
 const MemberRouteWithChildren =
   MemberRoute._addFileChildren(MemberRouteChildren)
 
-interface PlansRouteChildren {
-  PlansPlanIdRoute: typeof PlansPlanIdRoute
-}
-
-const PlansRouteChildren: PlansRouteChildren = {
-  PlansPlanIdRoute: PlansPlanIdRoute,
-}
-
-const PlansRouteWithChildren = PlansRoute._addFileChildren(PlansRouteChildren)
-
 interface GovModuleFlowsRouteChildren {
   GovModuleFlowsFlowRoute: typeof GovModuleFlowsFlowRoute
 }
@@ -3355,6 +3506,7 @@ const rootRouteChildren: RootRouteChildren = {
   AgentUnavailableRoute: AgentUnavailableRoute,
   AiReviewRoute: AiReviewRoute,
   AppRoute: AppRouteWithChildren,
+  ApplyRoute: ApplyRoute,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
   CompareRoute: CompareRoute,
@@ -3364,13 +3516,14 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   HandoffRoute: HandoffRoute,
   IchraRoute: IchraRoute,
+  JourneyChoiceRoute: JourneyChoiceRoute,
   LucieRoute: LucieRouteWithChildren,
   M00Route: M00RouteWithChildren,
   M06Route: M06RouteWithChildren,
   MemberRoute: MemberRouteWithChildren,
   MyWorkRoute: MyWorkRoute,
+  NoOptionsRoute: NoOptionsRoute,
   ObjectRoute: ObjectRoute,
-  PlansRoute: PlansRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   QuoteRoute: QuoteRoute,
   ReviewRoute: ReviewRoute,
@@ -3387,11 +3540,18 @@ const rootRouteChildren: RootRouteChildren = {
   HfScreenRoute: HfScreenRoute,
   M1ScreenRoute: M1ScreenRoute,
   P1ScreenRoute: P1ScreenRoute,
+  PlansPlanIdRoute: PlansPlanIdRoute,
+  RReferralTokenRoute: RReferralTokenRoute,
   SharedTokenRoute: SharedTokenRoute,
+  StartPathwayRoute: StartPathwayRoute,
+  UnavailablePathwayRoute: UnavailablePathwayRoute,
+  UnavailableSuspendedRoute: UnavailableSuspendedRoute,
+  UnavailableUnresolvedRoute: UnavailableUnresolvedRoute,
   GovIndexRoute: GovIndexRoute,
   HfIndexRoute: HfIndexRoute,
   M1IndexRoute: M1IndexRoute,
   P1IndexRoute: P1IndexRoute,
+  PlansIndexRoute: PlansIndexRoute,
   AgencyOrganizationDefaultsApplyRoute: AgencyOrganizationDefaultsApplyRoute,
   AgencyOrganizationImportsImportJobIdRoute:
     AgencyOrganizationImportsImportJobIdRoute,
