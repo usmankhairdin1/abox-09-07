@@ -2,8 +2,10 @@ import type { ReactNode } from "react";
 
 import { Link } from "@tanstack/react-router";
 
+import { DispositionBanner } from "@/components/LucieDisposition";
 import { Annotation, IdChip, PageHeading, Pill, WPanel } from "@/components/wireframe/primitives";
 import { M1_BY_SLUG, type M1Screen } from "@/lib/m1";
+import { dispositionForScreen } from "@/lib/reconciliation-status";
 
 /** Bullet list used by the annotation rail. */
 function Notes({ items }: { items: string[] }) {
@@ -49,6 +51,8 @@ export function ScreenFrame({ screen, children }: { screen: M1Screen; children: 
           </>
         }
       />
+
+      <DispositionBanner info={dispositionForScreen(screen.id)} legacyId={screen.id} />
 
       <WPanel
         title="Wireframe canvas"

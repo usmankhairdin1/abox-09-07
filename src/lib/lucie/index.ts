@@ -243,8 +243,11 @@ export const COVERAGE_CHECKS: CoverageCheck[] = (() => {
   checks.push({
     id: "CHK-06",
     check: "Wireframe-required surfaces with an existing legacy antecedent",
-    status: "attention",
-    detail: `${covered.length} of ${wireframeRequired.length} wireframe-required surfaces have a reconciled legacy screen. The remainder need new wireframes in a later pass.`,
+    status: covered.length === wireframeRequired.length ? "pass" : "attention",
+    detail:
+      covered.length === wireframeRequired.length
+        ? `All ${wireframeRequired.length} wireframe-required surfaces have a reconciled legacy antecedent.`
+        : `${covered.length} of ${wireframeRequired.length} wireframe-required surfaces have a reconciled legacy screen. The remaining ${wireframeRequired.length - covered.length} need new wireframes in a later pass.`,
   });
 
   return checks;
