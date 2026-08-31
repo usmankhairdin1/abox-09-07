@@ -20,7 +20,7 @@ function parseNumeric(v: string | number): { n: number | null; prefix: string; s
   if (typeof v === "number") return { n: v, prefix: "", suffix: "" };
   const m = v.match(/^([^\d-]*)(-?[\d,]+(?:\.\d+)?)(.*)$/);
   if (!m) return { n: null, prefix: "", suffix: "" };
-  return { n: Number(m[2].replace(/,/g, "")), prefix: m[1], suffix: m[3] };
+  return { n: Number((m[2] ?? "0").replace(/,/g, "")), prefix: m[1] ?? "", suffix: m[3] ?? "" };
 }
 
 const TONE = {

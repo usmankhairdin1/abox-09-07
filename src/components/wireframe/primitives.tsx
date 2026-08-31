@@ -220,8 +220,8 @@ export function WChart({ bars = 9, height = 120 }: { bars?: number; height?: num
           key={i}
           className="flex-1 rounded-t-md bg-primary/70 transition-[height] duration-500"
           style={{
-            height: `${pattern[i % pattern.length]}%`,
-            opacity: 0.35 + (pattern[i % pattern.length] / 100) * 0.6,
+            height: `${pattern[i % pattern.length] ?? 60}%`,
+            opacity: 0.35 + ((pattern[i % pattern.length] ?? 60) / 100) * 0.6,
           }}
         />
       ))}

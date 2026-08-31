@@ -43,8 +43,8 @@ export function OrbitalRings({
         className={cn(animated && "animate-orbit")}
         style={{ transformBox: "view-box", transformOrigin: `${c}px ${c}px` }}
       >
-        <circle cx={c + rings[0]} cy={c} r={4} fill="var(--primary)" />
-        <circle cx={c + rings[0]} cy={c} r={9} fill="none" stroke="var(--primary)" strokeWidth={0.75} opacity={0.4} />
+        <circle cx={c + (rings[0] ?? 0)} cy={c} r={4} fill="var(--primary)" />
+        <circle cx={c + (rings[0] ?? 0)} cy={c} r={9} fill="none" stroke="var(--primary)" strokeWidth={0.75} opacity={0.4} />
       </g>
     </svg>
   );
@@ -409,5 +409,5 @@ export const HairlineGrid = DotField;
 export const ConcentricArcs = OrbitalRings;
 export const DiagonalWeave = DotField;
 export const PlateFrame = ({ children, className }: { children: React.ReactNode; className?: string; offset?: number }) => (
-  <GlassPanel className={className}>{children}</GlassPanel>
+  <GlassPanel {...(className ? { className } : {})}>{children}</GlassPanel>
 );
