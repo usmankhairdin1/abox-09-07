@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
+import { AboxMark } from "@/components/abox/logo";
+import { ThemeToggle } from "@/components/abox/theme-toggle";
 import { Annotation, IdChip, WLine, WRow } from "@/components/wireframe/primitives";
 import {
   DEFAULT_LABELS,
