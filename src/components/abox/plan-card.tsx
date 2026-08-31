@@ -18,6 +18,8 @@ interface Props {
   inCompare?: boolean;
   saved?: boolean;
   compact?: boolean;
+  /** Optional override for the Plan-AI match percentage. */
+  matchScore?: number;
 }
 
 function MatchArc({ pct }: { pct: number }) {
