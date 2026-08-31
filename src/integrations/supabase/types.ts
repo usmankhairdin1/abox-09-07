@@ -20,7 +20,39 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      m00_api: {
+        Args: {
+          p_idempotency_key?: string
+          p_is_platform_admin?: boolean
+          p_op: string
+          p_payload?: Json
+          p_tenant_id?: string
+          p_user_id?: string
+        }
+        Returns: Json
+      }
+      m00_emit: {
+        Args: {
+          p_actor: string
+          p_aggregate_id: string
+          p_aggregate_type: string
+          p_audit_code: string
+          p_correlation: string
+          p_event_name: string
+          p_payload: Json
+          p_tenant_id: string
+        }
+        Returns: string
+      }
+      m00_foundation_status: { Args: never; Returns: Json }
+      m00_set_request_context: {
+        Args: {
+          p_is_platform_admin: boolean
+          p_tenant_id: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
