@@ -30,7 +30,7 @@ function GovIndex() {
         <PageHeading
           id="GOV-INDEX"
           title="Governed build packets"
-          subtitle="Controlled Lucie modules rendered from their machine-readable registers. Low-fidelity wireframes only — structure, states, evidence and navigation."
+          description="Controlled Lucie modules rendered from their machine-readable registers. Low-fidelity wireframes only — structure, states, evidence and navigation."
         />
         <div className="grid gap-3 md:grid-cols-3">
           {GOVERNED_MODULES.map((m) => {
