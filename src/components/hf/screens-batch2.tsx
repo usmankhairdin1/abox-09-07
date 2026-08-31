@@ -95,7 +95,7 @@ function RuleToken({
   tone?: "neutral" | "accent";
 }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-[var(--radius)] border border-border bg-card px-2 py-1 text-xs">
+    <span className="inline-flex items-center gap-1.5 rounded-[var(--radius)] border border-hairline bg-card px-2 py-1 text-xs">
       <span className="text-muted-foreground">{label}</span>
       <span className={cn("font-medium", tone === "accent" && "text-primary")}>{value}</span>
     </span>
@@ -124,7 +124,7 @@ function SectionRail({
                 "grid size-4 shrink-0 place-items-center rounded-full border text-[9px]",
                 state === "done" && "border-success bg-success/15 text-success",
                 state === "current" && "border-primary bg-primary text-primary-foreground",
-                state === "todo" && "border-border text-muted-foreground",
+                state === "todo" && "border-hairline text-muted-foreground",
                 state === "blocked" && "border-destructive text-destructive",
               )}
               aria-hidden="true"
@@ -307,7 +307,7 @@ export function OffexIntakeScreen() {
                 hint="Capture at submission — tenant setting"
               />
             </div>
-            <div className="mt-4 rounded-[var(--radius)] border border-border bg-muted/40 px-3 py-2.5">
+            <div className="mt-4 rounded-[var(--radius)] border border-hairline bg-muted/40 px-3 py-2.5">
               <p className="text-[11px] text-muted-foreground">Hard blockers remaining</p>
               <p className="mt-0.5 font-display text-lg font-semibold">3</p>
               <p className="mt-1 text-[11px] text-muted-foreground">
@@ -661,7 +661,7 @@ export function FormConfiguratorScreen() {
               ].map(([id, verb, target, conj, cond]) => (
                 <div
                   key={id}
-                  className="flex flex-wrap items-center gap-2 rounded-[var(--radius)] border border-border px-3 py-2.5"
+                  className="flex flex-wrap items-center gap-2 rounded-[var(--radius)] border border-hairline px-3 py-2.5"
                 >
                   <Badge tone="accent">{id}</Badge>
                   <RuleToken label={verb as string} value={target as string} tone="accent" />
@@ -809,7 +809,7 @@ export function ProductCatalogScreen() {
                 "rounded-full px-3 py-1.5 text-xs",
                 i === 0
                   ? "bg-foreground text-background font-medium"
-                  : "text-muted-foreground hover:bg-muted",
+                  : "text-muted-foreground hover:bg-accent",
               )}
             >
               {t}
@@ -1141,7 +1141,7 @@ export function ProductBuilderScreen() {
               </div>
               <p className="mt-3 font-display text-2xl font-semibold tabular-nums">$14</p>
               <p className="text-[11px] text-muted-foreground">per month · estimate</p>
-              <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-border pt-3 text-xs">
+              <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-hairline pt-3 text-xs">
                 <div>
                   <dt className="text-muted-foreground">Exam copay</dt>
                   <dd className="mt-0.5 font-medium">$10</dd>
@@ -1490,7 +1490,7 @@ export function PaperSplitsScreen() {
 
           <Panel title="Requests to write" meta="An inbox on the record, not an email thread">
             <div className="space-y-3">
-              <div className="rounded-[var(--radius)] border border-border px-3.5 py-3">
+              <div className="rounded-[var(--radius)] border border-hairline px-3.5 py-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <p className="text-sm font-medium">Summit Partners LLC</p>
@@ -1853,10 +1853,10 @@ export function CommissionScheduleScreen() {
                 ["Super bonus", "$18,000 annual at 95% persistence and 2,500 lives", "warning"],
               ].map(([label, body, tone], i) => (
                 <li key={label as string} className="flex items-start gap-3">
-                  <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-border text-[11px] font-semibold">
+                  <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-hairline text-[11px] font-semibold">
                     {i + 1}
                   </span>
-                  <div className="min-w-0 flex-1 rounded-[var(--radius)] border border-border px-3 py-2">
+                  <div className="min-w-0 flex-1 rounded-[var(--radius)] border border-hairline px-3 py-2">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="text-sm font-medium">{label}</p>
                       <Badge tone={tone as "accent" | "neutral" | "warning"}>
@@ -2041,7 +2041,7 @@ export function CommissionProjectionScreen() {
             title="Internal projection inside quote & cart"
             meta="Never rendered on a consumer surface"
           >
-            <div className="rounded-[var(--radius)] border border-border bg-muted/40 px-3.5 py-3">
+            <div className="rounded-[var(--radius)] border border-hairline bg-muted/40 px-3.5 py-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -2692,7 +2692,7 @@ export function NotificationSchedulerScreen() {
             title="Trigger builder"
             meta="Configuration that reads as prose gets reviewed properly"
           >
-            <div className="flex flex-wrap items-center gap-2 rounded-[var(--radius)] border border-border bg-muted/30 px-3.5 py-3">
+            <div className="flex flex-wrap items-center gap-2 rounded-[var(--radius)] border border-hairline bg-muted/30 px-3.5 py-3">
               <RuleToken label="when" value="Submission saved & incomplete" tone="accent" />
               <RuleToken label="wait" value="24 hours" />
               <RuleToken label="if" value="Still incomplete and consent held" />
@@ -2929,8 +2929,8 @@ export function BrandingSettingsScreen() {
         {/* --------------------------------------------------------- preview */}
         <div className="space-y-4">
           <Panel title="Consumer surface preview" meta="The marketplace, not a swatch grid">
-            <div className="overflow-hidden rounded-[var(--radius)] border border-border">
-              <div className="flex items-center justify-between gap-3 border-b border-border bg-card px-4 py-3">
+            <div className="overflow-hidden rounded-[var(--radius)] border border-hairline">
+              <div className="flex items-center justify-between gap-3 border-b border-hairline bg-card px-4 py-3">
                 <div className="flex items-center gap-2">
                   <span className="grid size-7 place-items-center rounded bg-primary text-[11px] font-semibold text-primary-foreground">
                     NW
@@ -2964,7 +2964,7 @@ export function BrandingSettingsScreen() {
           <div className="grid gap-4 md:grid-cols-2">
             <Panel title="Document branding" meta="The brand must survive a PDF">
               <Card className="p-3.5">
-                <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center justify-between border-b border-hairline pb-2">
                   <span className="text-xs font-semibold">Northwind Benefits</span>
                   <span className="text-[10px] text-muted-foreground">Quote packet</span>
                 </div>
@@ -3031,7 +3031,7 @@ function MatrixCell({ state }: { state: "yes" | "no" | "locked" }) {
         className="inline-flex items-center gap-1 text-[11px] text-muted-foreground"
         title="Cannot be granted by your role"
       >
-        <span className="size-3 rounded-sm border border-border bg-muted" aria-hidden="true" />{" "}
+        <span className="size-3 rounded-sm border border-hairline bg-muted" aria-hidden="true" />{" "}
         locked
       </span>
     );
@@ -3042,7 +3042,7 @@ function MatrixCell({ state }: { state: "yes" | "no" | "locked" }) {
         "grid size-4 place-items-center rounded border text-[9px]",
         state === "yes"
           ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-background",
+          : "border-hairline bg-background",
       )}
       aria-label={state === "yes" ? "granted" : "not granted"}
     >

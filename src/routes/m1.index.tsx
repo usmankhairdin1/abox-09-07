@@ -79,7 +79,7 @@ function M1Index() {
                   key={s.slug}
                   to="/m1/$screen"
                   params={{ screen: s.slug }}
-                  className="rounded-md border border-border p-3 transition-colors hover:bg-muted"
+                  className="rounded-lg border border-hairline p-3 transition-colors hover:bg-accent"
                 >
                   <div className="flex flex-wrap items-center gap-2">
                     <IdChip>{s.id}</IdChip>
@@ -107,7 +107,7 @@ function M1Index() {
           {M1_REQUEST_MAP.map((m) => (
             <div
               key={m.req}
-              className="flex flex-wrap items-center gap-2 border-b border-border/60 py-2"
+              className="flex flex-wrap items-center gap-2 border-b border-hairline py-2"
             >
               <span className="flex-1 text-xs text-foreground/80">{m.req}</span>
               {m.ids.map((id) => (

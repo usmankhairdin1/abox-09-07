@@ -305,7 +305,7 @@ export function MyWorkScreen() {
                   className={
                     i === 0
                       ? "rounded-full border border-primary bg-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-primary"
-                      : "rounded-full border border-border px-2.5 py-0.5 text-[11px] text-muted-foreground"
+                      : "rounded-full border border-hairline px-2.5 py-0.5 text-[11px] text-muted-foreground"
                   }
                 >
                   {t}
@@ -469,7 +469,7 @@ export function DashboardScreen() {
         ].map(([l, v]) => (
           <span
             key={l}
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-2.5 py-1 text-xs"
+            className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface-2 px-2.5 py-1 text-xs"
           >
             <span className="text-muted-foreground">{l}</span>
             <span className="font-medium">{v}</span>
@@ -874,7 +874,7 @@ export function LeadDetailScreen() {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 border-b border-border pb-2">
+      <div className="flex flex-wrap gap-1.5 border-b border-hairline pb-2">
         {["Overview", "Quotes (1)", "Applications (0)", "Documents (2)", "Messages (4)"].map(
           (t, i) => (
             <span
@@ -913,7 +913,7 @@ export function LeadDetailScreen() {
                     className={
                       i === 0
                         ? "rounded-full border border-primary bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary"
-                        : "rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground"
+                        : "rounded-full border border-hairline px-2 py-0.5 text-[11px] text-muted-foreground"
                     }
                   >
                     {f}

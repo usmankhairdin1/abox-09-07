@@ -140,7 +140,7 @@ function M06Console() {
               onChange={(e) => setPayload(e.target.value)}
               spellCheck={false}
               rows={8}
-              className="w-full rounded-md border border-border bg-background p-2.5 font-mono text-xs normal-case tracking-normal text-foreground"
+              className="w-full rounded-lg border border-hairline bg-background p-2.5 font-mono text-xs normal-case tracking-normal text-foreground"
             />
           </label>
 
@@ -151,7 +151,7 @@ function M06Console() {
                 value={tenantId}
                 onChange={(e) => setTenantId(e.target.value)}
                 placeholder="tenant uuid"
-                className="min-w-[260px] rounded-md border border-border bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
+                className="min-w-[260px] rounded-lg border border-hairline bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
               />
             </label>
             <label className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
@@ -160,14 +160,14 @@ function M06Console() {
                 value={organizationId}
                 onChange={(e) => setOrganizationId(e.target.value)}
                 placeholder="organization uuid"
-                className="min-w-[260px] rounded-md border border-border bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
+                className="min-w-[260px] rounded-lg border border-hairline bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
               />
             </label>
             <button
               type="button"
               onClick={() => void run()}
               disabled={busy}
-              className="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
+              className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
             >
               {busy ? "Running…" : "Run operation"}
             </button>
@@ -184,7 +184,7 @@ function M06Console() {
               {result.permission ? ` — required permission ${result.permission}` : ""}
             </Note>
           )}
-          <pre className="mt-2 max-h-[420px] overflow-auto rounded-lg border border-border bg-muted/40 p-3 font-mono text-[11px] leading-relaxed">
+          <pre className="mt-2 max-h-[420px] overflow-auto rounded-lg border border-hairline bg-muted/40 p-3 font-mono text-[11px] leading-relaxed">
             {JSON.stringify(result.data ?? result, null, 2)}
           </pre>
         </Section>

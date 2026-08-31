@@ -84,7 +84,7 @@ function P1Index() {
             <Pill>10 groups</Pill>
             <Link
               to="/m1"
-              className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+              className="rounded-lg border border-hairline px-3 py-1.5 text-xs hover:bg-accent"
             >
               Module 1 set →
             </Link>
@@ -129,7 +129,7 @@ function P1Index() {
                   <Link
                     to="/p1/$screen"
                     params={{ screen: s.slug }}
-                    className="block rounded-md border border-border bg-card p-3 hover:bg-muted/50"
+                    className="block rounded-lg border border-hairline bg-card p-3 hover:bg-accent/50"
                   >
                     <div className="flex flex-wrap items-center gap-2">
                       <IdChip>{s.id}</IdChip>

@@ -13,7 +13,7 @@ function Field({ label, w = "" }: { label: string; w?: string }) {
       <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
         {label}
       </span>
-      <div className="mt-1 h-8 rounded-md border border-border bg-muted/30" />
+      <div className="mt-1 h-8 rounded-lg border border-hairline bg-muted/30" />
     </label>
   );
 }
@@ -22,10 +22,10 @@ function Btn({ label, primary = false }: { label: string; primary?: boolean }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-md border px-3 py-1.5 text-xs",
+        "inline-flex items-center rounded-lg border px-3 py-1.5 text-xs",
         primary
           ? "border-foreground/50 bg-muted font-medium"
-          : "border-border text-muted-foreground",
+          : "border-hairline text-muted-foreground",
       )}
     >
       {label}
@@ -47,7 +47,7 @@ function Zone({
   note?: string;
 }) {
   return (
-    <div className={cn("rounded-md border border-border bg-card p-3", className)}>
+    <div className={cn("rounded-lg border border-hairline bg-card p-3", className)}>
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
           {title}
@@ -70,7 +70,7 @@ function Stepper({ steps, active }: { steps: string[]; active: number }) {
             "rounded-full border px-2.5 py-1 text-[11px]",
             i === active
               ? "border-foreground/50 bg-muted font-medium"
-              : "border-border text-muted-foreground",
+              : "border-hairline text-muted-foreground",
           )}
         >
           {i + 1}. {s}
@@ -82,7 +82,7 @@ function Stepper({ steps, active }: { steps: string[]; active: number }) {
 
 function PlanCard({ rec = false }: { rec?: boolean }) {
   return (
-    <div className="rounded-md border border-border p-3">
+    <div className="rounded-lg border border-hairline p-3">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1 space-y-1.5">
           <WLine w="55%" />
@@ -92,7 +92,7 @@ function PlanCard({ rec = false }: { rec?: boolean }) {
       </div>
       <div className="mt-3 grid grid-cols-4 gap-2">
         {["Premium", "After credit*", "Deductible", "MOOP"].map((m) => (
-          <div key={m} className="rounded border border-dashed border-border p-2">
+          <div key={m} className="rounded border border-dashed border-hairline p-2">
             <p className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
               {m}
             </p>
@@ -120,7 +120,7 @@ function PlanCard({ rec = false }: { rec?: boolean }) {
 
 function Disclosure({ children }: { children: ReactNode }) {
   return (
-    <div className="rounded-md border border-dashed border-foreground/30 bg-muted/30 px-3 py-2">
+    <div className="rounded-lg border border-dashed border-foreground/30 bg-muted/30 px-3 py-2">
       <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
         Required disclosure
       </p>
@@ -267,7 +267,7 @@ const canvases: Record<string, () => ReactNode> = {
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="grid gap-2 border-b border-border/60 py-2 last:border-b-0 sm:grid-cols-5"
+            className="grid gap-2 border-b border-hairline py-2 last:border-b-0 sm:grid-cols-5"
           >
             <Field label="Relationship" />
             <Field label="Date of birth" />
@@ -547,7 +547,7 @@ const canvases: Record<string, () => ReactNode> = {
         ].map((b) => (
           <div
             key={b}
-            className="flex items-center gap-3 border-b border-border/60 py-2 last:border-b-0"
+            className="flex items-center gap-3 border-b border-hairline py-2 last:border-b-0"
           >
             <span className="w-40 shrink-0 text-xs text-foreground/80">{b}</span>
             <WLine w="40%" />
@@ -588,7 +588,7 @@ const canvases: Record<string, () => ReactNode> = {
         <div className="grid grid-cols-[160px_repeat(3,1fr)] gap-2">
           <div />
           {[0, 1, 2].map((i) => (
-            <div key={i} className="rounded-md border border-border p-2">
+            <div key={i} className="rounded-lg border border-hairline p-2">
               <WLine w="80%" />
               <WLine w="50%" className="mt-1.5 h-1.5 bg-muted/70" />
               <div className="mt-2 flex justify-between">
@@ -632,7 +632,7 @@ const canvases: Record<string, () => ReactNode> = {
       <Zone title="Additional coverage cards" id="UX-012-CARDS">
         <div className="grid gap-3 md:grid-cols-3">
           {["Dental (enabled)", "Vision (enabled)", "Accident (not enabled)"].map((c) => (
-            <div key={c} className="rounded-md border border-border p-3">
+            <div key={c} className="rounded-lg border border-hairline p-3">
               <WBox className="h-16" label={c} />
               <WLine w="70%" className="mt-2" />
               <div className="mt-3">
@@ -656,13 +656,13 @@ const canvases: Record<string, () => ReactNode> = {
   "ux-013": () => (
     <div className="space-y-3">
       <Zone title="Cart drawer (right-side overlay on the consumer surface)" id="UX-013-DRAWER">
-        <div className="rounded-md border border-dashed border-border p-3">
+        <div className="rounded-lg border border-dashed border-hairline p-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold">Your selection</span>
             <Pill>Close</Pill>
           </div>
           <div className="mt-3 space-y-2">
-            <div className="rounded-md border border-border p-2">
+            <div className="rounded-lg border border-hairline p-2">
               <WLine w="60%" />
               <WLine w="40%" className="mt-1.5 h-1.5 bg-muted/70" />
               <div className="mt-2 flex flex-wrap gap-1.5">
@@ -671,7 +671,7 @@ const canvases: Record<string, () => ReactNode> = {
                 <Pill>Remove</Pill>
               </div>
             </div>
-            <div className="rounded-md border border-dashed border-border p-2">
+            <div className="rounded-lg border border-dashed border-hairline p-2">
               <WLine w="45%" />
               <div className="mt-2 flex gap-1.5">
                 <Pill>Dental — interest only</Pill>
@@ -739,9 +739,9 @@ const canvases: Record<string, () => ReactNode> = {
             "Consent to contact",
             "Terms & privacy acknowledgement",
           ].map((c) => (
-            <div key={c} className="flex items-start gap-2 rounded-md border border-border p-2">
+            <div key={c} className="flex items-start gap-2 rounded-lg border border-hairline p-2">
               <div
-                className="mt-0.5 size-4 shrink-0 rounded border border-border"
+                className="mt-0.5 size-4 shrink-0 rounded border border-hairline"
                 aria-hidden="true"
               />
               <p className="text-xs text-foreground/80">{c}</p>
@@ -1072,7 +1072,7 @@ const canvases: Record<string, () => ReactNode> = {
                 "rounded-full border px-2.5 py-1 text-[11px]",
                 i <= 3
                   ? "border-foreground/50 bg-muted"
-                  : "border-dashed border-border text-muted-foreground",
+                  : "border-dashed border-hairline text-muted-foreground",
               )}
             >
               {m}
@@ -1152,8 +1152,8 @@ const canvases: Record<string, () => ReactNode> = {
           <Field label="Phone" />
           <Field label="Email" />
         </div>
-        <div className="mt-2 flex items-start gap-2 rounded-md border border-border p-2">
-          <div className="mt-0.5 size-4 shrink-0 rounded border border-border" aria-hidden="true" />
+        <div className="mt-2 flex items-start gap-2 rounded-lg border border-hairline p-2">
+          <div className="mt-0.5 size-4 shrink-0 rounded border border-hairline" aria-hidden="true" />
           <p className="text-xs text-foreground/80">
             Consent to be contacted by phone / SMS, with opt-out language. Recorded per channel.
           </p>
@@ -1204,8 +1204,8 @@ const canvases: Record<string, () => ReactNode> = {
         <WBox className="h-12" label="shown when the session is agent-attributed" />
       </Zone>
       <Zone title="Consent to transfer" id="UX-023-CONSENT">
-        <div className="flex items-start gap-2 rounded-md border border-border p-2">
-          <div className="mt-0.5 size-4 shrink-0 rounded border border-border" aria-hidden="true" />
+        <div className="flex items-start gap-2 rounded-lg border border-hairline p-2">
+          <div className="mt-0.5 size-4 shrink-0 rounded border border-hairline" aria-hidden="true" />
           <p className="text-xs text-foreground/80">
             Affirmative consent, with the versioned disclosure text displayed inline (not behind a
             link).
@@ -1270,12 +1270,12 @@ const canvases: Record<string, () => ReactNode> = {
           ].map((p) => (
             <div
               key={p}
-              className="flex items-center gap-3 border-b border-border/60 py-2 last:border-b-0"
+              className="flex items-center gap-3 border-b border-hairline py-2 last:border-b-0"
             >
               <span className="flex-1 text-xs text-foreground/80">{p}</span>
               <Pill>States available</Pill>
               <div
-                className="h-5 w-9 rounded-full border border-border bg-muted"
+                className="h-5 w-9 rounded-full border border-hairline bg-muted"
                 aria-hidden="true"
               />
             </div>
@@ -1315,7 +1315,7 @@ const canvases: Record<string, () => ReactNode> = {
         ].map((r, i) => (
           <div
             key={r}
-            className="flex items-center gap-3 border-b border-border/60 py-2 last:border-b-0"
+            className="flex items-center gap-3 border-b border-hairline py-2 last:border-b-0"
           >
             <span className="font-mono text-[10px] text-muted-foreground">{i + 1}</span>
             <span className="flex-1 text-xs text-foreground/80">{r}</span>
@@ -1401,10 +1401,10 @@ const canvases: Record<string, () => ReactNode> = {
             ].map((g) => (
               <div
                 key={g}
-                className="flex items-center gap-2 border-b border-border/60 py-2 last:border-b-0"
+                className="flex items-center gap-2 border-b border-hairline py-2 last:border-b-0"
               >
                 <div
-                  className="size-3 rounded-full border border-border bg-muted"
+                  className="size-3 rounded-full border border-hairline bg-muted"
                   aria-hidden="true"
                 />
                 <span className="text-xs text-foreground/80">{g}</span>
@@ -1440,7 +1440,7 @@ function ContrastRow({ label }: { label: string }) {
     <>
       <span className="self-center text-xs text-foreground/80">{label}</span>
       {[0, 1, 2].map((i) => (
-        <div key={i} className="rounded border border-dashed border-border p-2">
+        <div key={i} className="rounded border border-dashed border-hairline p-2">
           <WLine w="70%" />
         </div>
       ))}
@@ -1455,7 +1455,7 @@ function MatrixRow({ label }: { label: string }) {
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          className="flex items-center gap-1 rounded border border-dashed border-border p-2"
+          className="flex items-center gap-1 rounded border border-dashed border-hairline p-2"
         >
           <Pill>Email</Pill>
           <Pill>SMS</Pill>

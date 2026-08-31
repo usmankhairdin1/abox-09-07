@@ -23,7 +23,7 @@ const NAV: { to: string; label: string; hint: string }[] = [
 function LucieLayout() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-20 border-b border-border bg-card/95 backdrop-blur">
+      <header className="sticky top-0 z-20 border-b border-hairline bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
           <Link to="/lucie" className="flex items-baseline gap-2">
             <span className="text-sm font-semibold tracking-tight">ABox · Lucie Release</span>
@@ -33,7 +33,7 @@ function LucieLayout() {
             <Id>protected_detailed_module_baselines = [M01]</Id>
             <Link
               to="/"
-              className="rounded-md border border-border px-2.5 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted"
+              className="rounded-lg border border-hairline px-2.5 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-accent"
             >
               Wireframe estate
             </Link>
@@ -53,7 +53,7 @@ function LucieLayout() {
                   to={n.to}
                   activeOptions={{ exact: n.to === "/lucie" }}
                   activeProps={{ className: "border-primary/40 bg-primary/8" }}
-                  className="block rounded-lg border border-transparent px-2.5 py-2 transition-colors hover:bg-muted"
+                  className="block rounded-lg border border-transparent px-2.5 py-2 transition-colors hover:bg-accent"
                 >
                   <span className="block text-xs font-medium">{n.label}</span>
                   <span className="mt-0.5 block text-[11px] leading-snug text-muted-foreground">

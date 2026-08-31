@@ -44,7 +44,7 @@ function GovOverview() {
           {idx.workspaces.map((w) => {
             const screens = screensForWorkspace(module, w.workspace_id);
             return (
-              <section key={w.workspace_id} className="rounded-md border border-dashed border-border p-3">
+              <section key={w.workspace_id} className="rounded-lg border border-dashed border-hairline p-3">
                 <header className="mb-1 flex flex-wrap items-center gap-2">
                   <IdChip>{w.workspace_id}</IdChip>
                   <span className="text-xs font-semibold">{w.name}</span>
@@ -59,7 +59,7 @@ function GovOverview() {
                       key={s.id}
                       to="/gov/$module/screens/$screen"
                       params={{ module, screen: s.slug }}
-                      className="rounded border border-border px-1.5 py-0.5 font-mono text-[10px] hover:bg-muted"
+                      className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] hover:bg-accent"
                     >
                       {s.id}
                     </Link>
@@ -75,7 +75,7 @@ function GovOverview() {
         {metrics.length ? (
           <dl className="grid gap-2 sm:grid-cols-3 lg:grid-cols-4">
             {metrics.map(([k, v]) => (
-              <div key={k} className="rounded border border-dashed border-border p-2">
+              <div key={k} className="rounded border border-dashed border-hairline p-2">
                 <dt className="text-[10px] uppercase tracking-wide text-muted-foreground">
                   {k.replace(/_/g, " ")}
                 </dt>
@@ -98,7 +98,7 @@ function GovOverview() {
                 <Link
                   to="/gov/$module/flows/$flow"
                   params={{ module, flow: f.slug }}
-                  className="flex items-center gap-2 rounded border border-border px-2 py-1.5 text-xs hover:bg-muted"
+                  className="flex items-center gap-2 rounded border border-hairline px-2 py-1.5 text-xs hover:bg-accent"
                 >
                   <IdChip>{f.id}</IdChip>
                   <span className="truncate">{f.name}</span>

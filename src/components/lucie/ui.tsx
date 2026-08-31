@@ -6,7 +6,7 @@ export function Id({ children, className }: { children: ReactNode; className?: s
   return (
     <span
       className={cn(
-        "inline-block whitespace-nowrap rounded-md border border-hairline bg-surface px-2 py-0.5 font-mono text-[10.5px] uppercase leading-4 tracking-tight text-muted-foreground",
+        "inline-block whitespace-nowrap rounded-lg border border-hairline bg-surface px-2 py-0.5 font-mono text-[10.5px] uppercase leading-4 tracking-tight text-muted-foreground",
         className,
       )}
     >
@@ -149,7 +149,7 @@ export function Stat({ label, value, hint }: { label: string; value: ReactNode; 
 
 export function KV({ k, v }: { k: string; v: ReactNode }) {
   return (
-    <div className="grid gap-0.5 border-b border-border/60 py-2 last:border-0 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-3">
+    <div className="grid gap-0.5 border-b border-hairline py-2 last:border-0 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-3">
       <dt className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
         {k}
       </dt>
@@ -177,7 +177,7 @@ export function Table<T>({
 }) {
   if (!rows.length) {
     return (
-      <p className="rounded-2xl border border-dashed border-border-strong/60 bg-surface/40 px-3 py-10 text-center text-xs text-muted-foreground">
+      <p className="rounded-2xl border border-dashed border-hairline-strong/60 bg-surface/40 px-3 py-10 text-center text-xs text-muted-foreground">
         {empty}
       </p>
     );

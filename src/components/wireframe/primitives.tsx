@@ -15,7 +15,7 @@ export function WBox({
   return (
     <div
       className={cn(
-        "flex items-center justify-center rounded-md border border-dashed border-hairline bg-muted/40 p-3 text-center",
+        "flex items-center justify-center rounded-lg border border-dashed border-hairline bg-muted/40 p-3 text-center",
         className,
       )}
     >
@@ -130,7 +130,7 @@ export function Annotation({ children, className }: { children: ReactNode; class
 /** ACL / entity-context note. Every screen carries one. */
 export function AclNote({ children }: { children: ReactNode }) {
   return (
-    <div className="rounded-md border border-dashed border-hairline bg-muted/30 px-3 py-2">
+    <div className="rounded-lg border border-dashed border-hairline bg-muted/30 px-3 py-2">
       <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
         ACL &amp; entity context
       </p>
@@ -191,7 +191,7 @@ export function WChart({ bars = 9, height = 120 }: { bars?: number; height?: num
   const pattern = [42, 68, 55, 80, 61, 92, 74, 50, 86, 63, 71, 58];
   return (
     <div
-      className="flex items-end gap-1.5 rounded-md border border-dashed border-hairline bg-muted/20 p-3"
+      className="flex items-end gap-1.5 rounded-lg border border-dashed border-hairline bg-muted/20 p-3"
       style={{ height }}
       aria-hidden="true"
     >

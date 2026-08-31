@@ -228,7 +228,7 @@ function RosterPage() {
               value={tenantId}
               onChange={(e) => persist(e.target.value, organizationId)}
               placeholder="tenant uuid"
-              className="min-w-[290px] rounded-md border border-border bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
+              className="min-w-[290px] rounded-lg border border-hairline bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
             />
           </label>
           <label className="flex flex-col gap-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
@@ -237,13 +237,13 @@ function RosterPage() {
               value={organizationId}
               onChange={(e) => persist(tenantId, e.target.value)}
               placeholder="organization uuid"
-              className="min-w-[290px] rounded-md border border-border bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
+              className="min-w-[290px] rounded-lg border border-hairline bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
             />
           </label>
           <button
             type="button"
             onClick={() => persist(DEMO_TENANT, DEMO_ORG)}
-            className="rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:bg-muted"
+            className="rounded-lg border border-hairline px-2.5 py-1.5 text-xs font-medium hover:bg-accent"
           >
             Use development context
           </button>
@@ -251,7 +251,7 @@ function RosterPage() {
             type="button"
             onClick={() => void refresh()}
             disabled={busy}
-            className="rounded-md bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
+            className="rounded-lg bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
           >
             {busy ? "Working…" : "Refresh"}
           </button>
@@ -270,7 +270,7 @@ function RosterPage() {
             <input
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              className="min-w-[220px] rounded-md border border-border bg-background px-2 py-1.5 text-xs normal-case tracking-normal"
+              className="min-w-[220px] rounded-lg border border-hairline bg-background px-2 py-1.5 text-xs normal-case tracking-normal"
             />
           </label>
           <Select
@@ -288,7 +288,7 @@ function RosterPage() {
             <input
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
-              className="min-w-[200px] rounded-md border border-border bg-background px-2 py-1.5 text-xs normal-case tracking-normal"
+              className="min-w-[200px] rounded-lg border border-hairline bg-background px-2 py-1.5 text-xs normal-case tracking-normal"
             />
           </label>
           <label className="flex flex-col gap-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
@@ -296,14 +296,14 @@ function RosterPage() {
             <input
               value={newNpn}
               onChange={(e) => setNewNpn(e.target.value)}
-              className="min-w-[140px] rounded-md border border-border bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
+              className="min-w-[140px] rounded-lg border border-hairline bg-background px-2 py-1.5 font-mono text-xs normal-case tracking-normal"
             />
           </label>
           <button
             type="button"
             onClick={() => void createProfile()}
             disabled={busy || !newName.trim() || !tenantId || !organizationId}
-            className="rounded-md bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
+            className="rounded-lg bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
           >
             Create profile
           </button>
@@ -397,7 +397,7 @@ function ActionButton({ children, onClick }: { children: React.ReactNode; onClic
     <button
       type="button"
       onClick={onClick}
-      className="rounded-md border border-border px-2 py-1 text-[11px] font-medium transition-colors hover:bg-muted"
+      className="rounded-lg border border-hairline px-2 py-1 text-[11px] font-medium transition-colors hover:bg-accent"
     >
       {children}
     </button>

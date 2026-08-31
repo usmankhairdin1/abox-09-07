@@ -72,14 +72,14 @@ function GovLayout() {
           <p className="text-xs text-muted-foreground">{MODULE_PACKET[module]}</p>
         </header>
 
-        <nav aria-label="Module sections" className="flex flex-wrap gap-1.5 border-b border-border pb-2">
+        <nav aria-label="Module sections" className="flex flex-wrap gap-1.5 border-b border-hairline pb-2">
           {TABS.map((t) => (
             <Link
               key={t.label}
               to={t.to}
               params={{ module }}
               activeOptions={{ exact: "exact" in t ? t.exact : false }}
-              className="rounded border border-border px-2 py-1 text-xs hover:bg-muted"
+              className="rounded border border-hairline px-2 py-1 text-xs hover:bg-accent"
               activeProps={{ className: cn("bg-muted font-semibold") }}
             >
               {t.label}

@@ -329,7 +329,7 @@ export function QuoteWizardScreen() {
             pick up where you left off.
           </Alert>
 
-          <div className="flex flex-wrap items-center gap-3 border-t border-border pt-4">
+          <div className="flex flex-wrap items-center gap-3 border-t border-hairline pt-4">
             <Btn variant="outline">Back</Btn>
             <Btn>
               Continue <ArrowRight className="size-4" />
@@ -634,7 +634,7 @@ export function PlanCompareScreen() {
         <Card className="overflow-x-auto">
           <table className="w-full min-w-[46rem] border-collapse text-sm">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-hairline">
                 <th
                   scope="col"
                   className="sticky left-0 z-10 bg-card px-4 py-4 text-left align-bottom"
@@ -662,7 +662,7 @@ export function PlanCompareScreen() {
                 return (
                   <tr
                     key={label}
-                    className={`border-b border-border/70 ${same ? "opacity-45" : ""}`}
+                    className={`border-b border-hairline ${same ? "opacity-45" : ""}`}
                   >
                     <th
                       scope="row"
@@ -822,7 +822,7 @@ export function CartScreen() {
                 <dt className="text-muted-foreground">Dental</dt>
                 <dd className="tabular-nums">$38</dd>
               </div>
-              <div className="flex justify-between border-t border-border pt-2 font-semibold">
+              <div className="flex justify-between border-t border-hairline pt-2 font-semibold">
                 <dt>Estimated total</dt>
                 <dd className="tabular-nums">$180</dd>
               </div>
@@ -872,7 +872,7 @@ export function RegistrationGateScreen() {
           </ul>
 
           <div className="mt-6 flex gap-1.5 rounded-[var(--radius)] bg-surface-2 p-1">
-            <span className="flex-1 rounded-[calc(var(--radius)-2px)] bg-card px-3 py-1.5 text-center text-xs font-semibold shadow-sm">
+            <span className="flex-1 rounded-[calc(var(--radius)-2px)] bg-card px-3 py-1.5 text-center text-xs font-semibold shadow-card">
               Create account
             </span>
             <span className="flex-1 px-3 py-1.5 text-center text-xs text-muted-foreground">
@@ -931,7 +931,7 @@ export function RegistrationGateScreen() {
                 <p className="text-muted-foreground">$38/mo · dental</p>
               </li>
             </ul>
-            <p className="mt-3 border-t border-border pt-2 text-sm font-semibold">
+            <p className="mt-3 border-t border-hairline pt-2 text-sm font-semibold">
               $180{" "}
               <span className="text-xs font-normal text-muted-foreground">/month estimated</span>
             </p>
@@ -1100,7 +1100,7 @@ export function SharedQuoteScreen() {
           title="If this link has expired"
           meta="What the recipient sees after the validity window"
         >
-          <div className="rounded-[var(--radius)] border border-dashed border-border bg-surface-2 px-4 py-5 text-center">
+          <div className="rounded-[var(--radius)] border border-dashed border-hairline bg-surface-2 px-4 py-5 text-center">
             <p className="font-display text-sm font-semibold">This quote is no longer current</p>
             <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
               It was prepared on 24 August and prices change with rates and enrollment periods. Dana

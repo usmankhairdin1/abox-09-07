@@ -34,7 +34,7 @@ function ScreensLayout() {
                   <Link
                     to="/gov/$module/screens/$screen"
                     params={{ module, screen: s.slug }}
-                    className="block rounded border border-border p-2 hover:bg-muted"
+                    className="block rounded border border-hairline p-2 hover:bg-accent"
                   >
                     <span className="flex flex-wrap items-center gap-2">
                       <IdChip>{s.id}</IdChip>

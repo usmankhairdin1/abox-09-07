@@ -116,20 +116,20 @@ export function ScreenFrame({ screen, children }: { screen: M1Screen; children: 
         </WPanel>
       </div>
 
-      <nav className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4">
+      <nav className="flex flex-wrap items-center justify-between gap-2 border-t border-hairline pt-4">
         <div className="flex flex-wrap items-center gap-2">
           {prev ? (
             <Link
               to="/m1/$screen"
               params={{ screen: prev }}
-              className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+              className="rounded-lg border border-hairline px-3 py-1.5 text-xs hover:bg-accent"
             >
               ← {M1_BY_SLUG[prev]?.id}
             </Link>
           ) : null}
           <Link
             to="/m1"
-            className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+            className="rounded-lg border border-hairline px-3 py-1.5 text-xs hover:bg-accent"
           >
             Module 1 index
           </Link>
@@ -137,7 +137,7 @@ export function ScreenFrame({ screen, children }: { screen: M1Screen; children: 
             <Link
               to="/m1/$screen"
               params={{ screen: next }}
-              className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+              className="rounded-lg border border-hairline px-3 py-1.5 text-xs hover:bg-accent"
             >
               {M1_BY_SLUG[next]?.id} →
             </Link>
@@ -152,7 +152,7 @@ export function ScreenFrame({ screen, children }: { screen: M1Screen; children: 
               key={n}
               to="/m1/$screen"
               params={{ screen: n }}
-              className="rounded-md border border-dashed border-border px-2.5 py-1 text-xs hover:bg-muted"
+              className="rounded-lg border border-dashed border-hairline px-2.5 py-1 text-xs hover:bg-accent"
             >
               {M1_BY_SLUG[n]?.id ?? n}
             </Link>

@@ -36,7 +36,7 @@ function TraceabilityPage() {
             ["Launch gates", gates.length],
             ["Screens with REQ links", `${screensWithReq}/${idx.screens.length}`],
           ].map(([k, v]) => (
-            <div key={String(k)} className="rounded border border-dashed border-border p-2">
+            <div key={String(k)} className="rounded border border-dashed border-hairline p-2">
               <dt className="text-[10px] uppercase tracking-wide text-muted-foreground">{k}</dt>
               <dd className="font-mono text-sm">{String(v)}</dd>
             </div>

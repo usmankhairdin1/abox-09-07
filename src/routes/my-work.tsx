@@ -116,10 +116,10 @@ function MyWorkPage() {
               key={o.to}
               type="button"
               onClick={() => setLanding(o.to)}
-              className={`rounded-md border px-3 py-1.5 text-xs ${
+              className={`rounded-lg border px-3 py-1.5 text-xs ${
                 landing === o.to
                   ? "border-foreground/50 bg-muted font-medium"
-                  : "border-border hover:bg-muted"
+                  : "border-hairline hover:bg-accent"
               }`}
             >
               {o.label}
@@ -143,7 +143,7 @@ function MyWorkPage() {
             "2 applications blocked on missing income documents",
             "5 renewals with no follow-up in 14 days",
           ].map((s) => (
-            <div key={s} className="rounded-md border border-dashed border-border bg-muted/30 p-3">
+            <div key={s} className="rounded-lg border border-dashed border-hairline bg-muted/30 p-3">
               <p className="text-xs text-foreground/80">{s}</p>
               <div className="mt-2 flex gap-1.5">
                 <Pill>Act</Pill>

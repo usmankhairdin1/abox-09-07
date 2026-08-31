@@ -56,7 +56,7 @@ function FlowDetail() {
       <Link
         to="/gov/$module/flows"
         params={{ module }}
-        className="inline-block rounded border border-border px-2 py-1 font-mono text-[10px] uppercase hover:bg-muted"
+        className="inline-block rounded border border-hairline px-2 py-1 font-mono text-[10px] uppercase hover:bg-accent"
       >
         ← flow register
       </Link>
@@ -75,8 +75,8 @@ function FlowDetail() {
           {flow.screens.map((sid, i) => {
             const screen = screenById(module, sid);
             return (
-              <li key={sid} className="flex gap-3 rounded border border-dashed border-border p-2">
-                <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border border-border font-mono text-[10px]">
+              <li key={sid} className="flex gap-3 rounded border border-dashed border-hairline p-2">
+                <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border border-hairline font-mono text-[10px]">
                   {i + 1}
                 </span>
                 <div className="min-w-0 flex-1">
