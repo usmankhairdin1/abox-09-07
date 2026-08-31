@@ -1,0 +1,8 @@
+/**
+ * /member — Consumer member layout.
+ */
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/member")({
+  component: () => <Outlet />,
+});

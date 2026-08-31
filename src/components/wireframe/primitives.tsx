@@ -102,10 +102,10 @@ export function WPanel({
       <header className="flex flex-wrap items-start justify-between gap-2 border-b border-hairline bg-surface/50 px-5 py-3.5">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="font-display text-[15px] font-semibold">{title}</h2>
+            <h2 className="font-display text-lg font-semibold">{title}</h2>
             {id ? <IdChip>{id}</IdChip> : null}
           </div>
-          {meta ? <p className="mt-1 text-xs text-muted-foreground">{meta}</p> : null}
+          {meta ? <p className="mt-1 text-sm text-muted-foreground">{meta}</p> : null}
         </div>
         {actions ? <div className="flex items-center gap-2">{actions}</div> : null}
       </header>
@@ -114,26 +114,12 @@ export function WPanel({
   );
 }
 
-/** Stable ID chip — IDs are permanent and always shown. */
-export function IdChip({
-  children,
-  tone = "default",
-}: {
-  children: ReactNode;
-  tone?: "default" | "prov";
-}) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center whitespace-nowrap rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase leading-4",
-        tone === "prov"
-          ? "border-dashed border-border-strong text-muted-foreground"
-          : "border-hairline bg-surface text-muted-foreground",
-      )}
-    >
-      {children}
-    </span>
-  );
+/**
+ * Stable IDs remain in code as props/anchors, but they are internal authoring
+ * metadata — never rendered on product surfaces.
+ */
+export function IdChip(_props: { children: ReactNode; tone?: "default" | "prov" }) {
+  return null;
 }
 
 /** Governance annotation — quiet, editorial, clearly not product copy. */
@@ -141,7 +127,7 @@ export function Annotation({ children, className }: { children: ReactNode; class
   return (
     <p
       className={cn(
-        "relative border-l-2 border-primary/25 pl-3 text-[11.5px] leading-relaxed text-muted-foreground",
+        "relative border-l-2 border-primary/25 pl-3 text-[13px] leading-relaxed text-muted-foreground",
         className,
       )}
     >
@@ -155,7 +141,7 @@ export function AclNote({ children }: { children: ReactNode }) {
   return (
     <div className="rounded-xl border border-hairline bg-primary-soft/60 px-4 py-3">
       <p className="text-eyebrow">ACL &amp; entity context</p>
-      <p className="mt-1 text-xs leading-relaxed text-foreground/85">{children}</p>
+      <p className="mt-1 text-sm leading-relaxed text-foreground/85">{children}</p>
     </div>
   );
 }
@@ -189,14 +175,13 @@ export function PageHeading({
   actions?: ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline pb-5">
+    <div data-screen-id={id} className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline pb-5">
       <div className="min-w-0">
         {eyebrow ? <p className="text-eyebrow">{eyebrow}</p> : null}
         <div className="mt-1.5 flex flex-wrap items-center gap-2">
-          <h1 className="text-display text-2xl sm:text-[28px]">{title}</h1>
-          <IdChip>{id}</IdChip>
+          <h1 className="text-display text-3xl sm:text-4xl">{title}</h1>
         </div>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+        <p className="mt-3 max-w-3xl text-base leading-relaxed text-muted-foreground">
           {description}
         </p>
         <div className="mt-4 h-px w-24 origin-left animate-hairline bg-primary/40" aria-hidden />
