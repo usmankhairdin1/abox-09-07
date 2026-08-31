@@ -276,10 +276,10 @@ export function HealthPulseShield({
         const angle = Math.PI * (0.15 + t * 0.7);
         const cx = w * 0.5, cy = h * 0.55;
         const r1 = w * 0.36, r2 = w * 0.38;
-        const x1 = cx + Math.cos(angle) * r1;
-        const y1 = cy + Math.sin(angle) * r1;
-        const x2 = cx + Math.cos(angle) * r2;
-        const y2 = cy + Math.sin(angle) * r2;
+        const x1 = round6(cx + Math.cos(angle) * r1);
+        const y1 = round6(cy + Math.sin(angle) * r1);
+        const x2 = round6(cx + Math.cos(angle) * r2);
+        const y2 = round6(cy + Math.sin(angle) * r2);
         return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="var(--ink)" strokeOpacity="0.35" strokeWidth={0.75} />;
       })}
     </svg>
