@@ -44,6 +44,7 @@ import { Route as GovModuleDeltasRouteImport } from './routes/gov.$module.deltas
 import { Route as GovModuleFlowsRouteImport } from './routes/gov.$module.flows'
 import { Route as GovModuleRegistersRouteImport } from './routes/gov.$module.registers'
 import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
+import { Route as GovModuleTraceabilityRouteImport } from './routes/gov.$module.traceability'
 import { Route as GovModuleFlowsFlowRouteImport } from './routes/gov.$module.flows.$flow'
 import { Route as GovModuleScreensScreenRouteImport } from './routes/gov.$module.screens.$screen'
 
@@ -222,6 +223,11 @@ const GovModuleScreensRoute = GovModuleScreensRouteImport.update({
   path: '/screens',
   getParentRoute: () => GovModuleRoute,
 } as any)
+const GovModuleTraceabilityRoute = GovModuleTraceabilityRouteImport.update({
+  id: '/traceability',
+  path: '/traceability',
+  getParentRoute: () => GovModuleRoute,
+} as any)
 const GovModuleFlowsFlowRoute = GovModuleFlowsFlowRouteImport.update({
   id: '/$flow',
   path: '/$flow',
@@ -268,6 +274,7 @@ export interface FileRoutesByFullPath {
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
+  '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
   '/gov/$module/': typeof GovModuleIndexRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
   '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
@@ -304,6 +311,7 @@ export interface FileRoutesByTo {
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
+  '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
   '/gov/$module': typeof GovModuleIndexRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
   '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
@@ -344,6 +352,7 @@ export interface FileRoutesById {
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
+  '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
   '/gov/$module/': typeof GovModuleIndexRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
   '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
@@ -385,6 +394,7 @@ export interface FileRouteTypes {
     | '/gov/$module/flows'
     | '/gov/$module/registers'
     | '/gov/$module/screens'
+    | '/gov/$module/traceability'
     | '/gov/$module/'
     | '/gov/$module/flows/$flow'
     | '/gov/$module/screens/$screen'
@@ -421,6 +431,7 @@ export interface FileRouteTypes {
     | '/gov/$module/flows'
     | '/gov/$module/registers'
     | '/gov/$module/screens'
+    | '/gov/$module/traceability'
     | '/gov/$module'
     | '/gov/$module/flows/$flow'
     | '/gov/$module/screens/$screen'
@@ -460,6 +471,7 @@ export interface FileRouteTypes {
     | '/gov/$module/flows'
     | '/gov/$module/registers'
     | '/gov/$module/screens'
+    | '/gov/$module/traceability'
     | '/gov/$module/'
     | '/gov/$module/flows/$flow'
     | '/gov/$module/screens/$screen'
@@ -730,6 +742,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GovModuleScreensRouteImport
       parentRoute: typeof GovModuleRoute
     }
+    '/gov/$module/traceability': {
+      id: '/gov/$module/traceability'
+      path: '/traceability'
+      fullPath: '/gov/$module/traceability'
+      preLoaderRoute: typeof GovModuleTraceabilityRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
     '/gov/$module/flows/$flow': {
       id: '/gov/$module/flows/$flow'
       path: '/$flow'
@@ -821,6 +840,7 @@ interface GovModuleRouteChildren {
   GovModuleFlowsRoute: typeof GovModuleFlowsRouteWithChildren
   GovModuleRegistersRoute: typeof GovModuleRegistersRoute
   GovModuleScreensRoute: typeof GovModuleScreensRouteWithChildren
+  GovModuleTraceabilityRoute: typeof GovModuleTraceabilityRoute
   GovModuleIndexRoute: typeof GovModuleIndexRoute
 }
 
@@ -829,6 +849,7 @@ const GovModuleRouteChildren: GovModuleRouteChildren = {
   GovModuleFlowsRoute: GovModuleFlowsRouteWithChildren,
   GovModuleRegistersRoute: GovModuleRegistersRoute,
   GovModuleScreensRoute: GovModuleScreensRouteWithChildren,
+  GovModuleTraceabilityRoute: GovModuleTraceabilityRoute,
   GovModuleIndexRoute: GovModuleIndexRoute,
 }
 
