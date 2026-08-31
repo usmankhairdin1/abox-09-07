@@ -305,7 +305,7 @@ export function MyWorkScreen() {
                   className={
                     i === 0
                       ? "rounded-full border border-primary bg-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-primary"
-                      : "rounded-full border border-border px-2.5 py-0.5 text-[11px] text-muted-foreground"
+                      : "rounded-full border border-hairline px-2.5 py-0.5 text-[11px] text-muted-foreground"
                   }
                 >
                   {t}
@@ -469,7 +469,7 @@ export function DashboardScreen() {
         ].map(([l, v]) => (
           <span
             key={l}
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-2.5 py-1 text-xs"
+            className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface-2 px-2.5 py-1 text-xs"
           >
             <span className="text-muted-foreground">{l}</span>
             <span className="font-medium">{v}</span>
@@ -497,7 +497,7 @@ export function DashboardScreen() {
           hint="On-exchange only"
         />
         <Stat
-          label="Plan O sessions"
+          label="PlanAI sessions"
           value="411"
           delta="+38%"
           deltaTone="success"
@@ -532,7 +532,7 @@ export function DashboardScreen() {
             dense
             columns={["Source", "Quotes", "Enrolled"]}
             rows={[
-              ["Guided (Plan O)", "411", "104"],
+              ["Guided (PlanAI)", "411", "104"],
               ["Direct marketplace", "486", "88"],
               ["Agent quick quote", "297", "61"],
               ["Referral partner", "90", "15"],
@@ -585,7 +585,7 @@ export function DashboardScreen() {
 
         <Panel
           title="AI interaction reporting"
-          meta="Governance view of assistant and Plan O usage"
+          meta="Governance view of assistant and PlanAI usage"
         >
           <div className="rounded-[var(--radius)] border border-ai/30 bg-ai/[0.06] px-3 py-2.5">
             <p className="flex items-center gap-1.5 text-[11px] font-semibold text-ai">
@@ -772,10 +772,10 @@ const TIMELINE: TimelineEntry[] = [
   },
   {
     kind: "ai",
-    title: "Plan O ranking produced",
+    title: "PlanAI ranking produced",
     body: "Ranked 3 of 14 plans using stated budget, 2 preferred providers and 1 prescription. Consumer chose to view all plans afterwards.",
     meta: "23 Aug, 20:34",
-    actor: "Plan O · logged to AI interaction log",
+    actor: "PlanAI · logged to AI interaction log",
   },
   {
     kind: "status",
@@ -874,7 +874,7 @@ export function LeadDetailScreen() {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 border-b border-border pb-2">
+      <div className="flex flex-wrap gap-1.5 border-b border-hairline pb-2">
         {["Overview", "Quotes (1)", "Applications (0)", "Documents (2)", "Messages (4)"].map(
           (t, i) => (
             <span
@@ -913,7 +913,7 @@ export function LeadDetailScreen() {
                     className={
                       i === 0
                         ? "rounded-full border border-primary bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary"
-                        : "rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground"
+                        : "rounded-full border border-hairline px-2 py-0.5 text-[11px] text-muted-foreground"
                     }
                   >
                     {f}

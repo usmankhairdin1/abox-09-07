@@ -70,7 +70,7 @@ function AdminPage() {
 
       <div className="grid gap-3 lg:grid-cols-[14rem_1fr]">
         <nav
-          className="space-y-1 rounded-lg border border-border bg-card p-2"
+          className="space-y-1 rounded-lg border border-hairline bg-card p-2"
           aria-label="Configuration sections"
         >
           {SECTIONS.map((s) => (
@@ -78,7 +78,7 @@ function AdminPage() {
               key={s.id}
               type="button"
               onClick={() => setSection(s.id)}
-              className={`flex w-full flex-col items-start gap-0.5 rounded-md px-2 py-2 text-left text-xs hover:bg-muted ${
+              className={`flex w-full flex-col items-start gap-0.5 rounded-lg px-2 py-2 text-left text-xs hover:bg-accent ${
                 section === s.id ? "bg-muted font-medium" : ""
               }`}
             >
@@ -100,7 +100,7 @@ function AdminPage() {
                   {ROLES.map((r) => (
                     <div
                       key={r.id}
-                      className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border px-2.5 py-2"
+                      className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-hairline px-2.5 py-2"
                     >
                       <span className="text-xs">
                         <span className="font-medium">{r.label}</span>
@@ -125,7 +125,7 @@ function AdminPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[32rem] text-left text-[11px]">
                     <thead>
-                      <tr className="border-b border-border text-muted-foreground">
+                      <tr className="border-b border-hairline text-muted-foreground">
                         <th className="py-1.5 pr-2 font-normal">Module</th>
                         {["View", "Create", "Edit", "Submit", "Configure"].map((c) => (
                           <th key={c} className="py-1.5 pr-2 font-normal">
@@ -136,12 +136,12 @@ function AdminPage() {
                     </thead>
                     <tbody>
                       {MODULES.slice(0, 8).map((m) => (
-                        <tr key={m.id} className="border-b border-border/60">
+                        <tr key={m.id} className="border-b border-hairline">
                           <td className="py-1.5 pr-2">{m.label}</td>
                           {Array.from({ length: 5 }).map((_, i) => (
                             <td key={i} className="py-1.5 pr-2">
                               <span
-                                className="inline-block size-3.5 rounded border border-border bg-muted"
+                                className="inline-block size-3.5 rounded border border-hairline bg-muted"
                                 aria-hidden="true"
                               />
                             </td>
@@ -163,7 +163,7 @@ function AdminPage() {
               >
                 <div className="grid gap-2 sm:grid-cols-3">
                   {["User", "Workspace", "Entity"].map((f) => (
-                    <div key={f} className="rounded-md border border-border px-2.5 py-2">
+                    <div key={f} className="rounded-lg border border-hairline px-2.5 py-2">
                       <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                         {f}
                       </p>
@@ -184,7 +184,7 @@ function AdminPage() {
             >
               <div className="space-y-2">
                 {(Object.keys(LABEL_ALTERNATIVES) as LabelKey[]).map((k) => (
-                  <div key={k} className="rounded-md border border-border px-2.5 py-2">
+                  <div key={k} className="rounded-lg border border-hairline px-2.5 py-2">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="text-xs">
                         <span className="font-medium capitalize">{k}</span>
@@ -198,10 +198,10 @@ function AdminPage() {
                             key={alt}
                             type="button"
                             onClick={() => setLabel(k, alt)}
-                            className={`rounded-md border px-2 py-1 text-[11px] ${
+                            className={`rounded-lg border px-2 py-1 text-[11px] ${
                               labels[k] === alt
                                 ? "border-foreground/50 bg-muted font-medium"
-                                : "border-border hover:bg-muted"
+                                : "border-hairline hover:bg-accent"
                             }`}
                           >
                             {alt}
@@ -231,7 +231,7 @@ function AdminPage() {
                   return (
                     <div
                       key={m.id}
-                      className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border px-2.5 py-2"
+                      className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-hairline px-2.5 py-2"
                     >
                       <span className="text-xs">
                         <span
@@ -251,7 +251,7 @@ function AdminPage() {
                             off ? prev.filter((x) => x !== m.id) : [...prev, m.id],
                           )
                         }
-                        className="rounded-md border border-border px-2 py-1 text-[11px] hover:bg-muted"
+                        className="rounded-lg border border-hairline px-2 py-1 text-[11px] hover:bg-accent"
                       >
                         {off ? "Show" : "Hide"}
                       </button>
@@ -274,7 +274,7 @@ function AdminPage() {
             >
               <div className="space-y-1.5">
                 {WORKSPACES.map((w) => (
-                  <div key={w.id} className="rounded-md border border-border px-2.5 py-2">
+                  <div key={w.id} className="rounded-lg border border-hairline px-2.5 py-2">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="text-xs">
                         <span className="font-medium">{w.name}</span>
@@ -293,7 +293,7 @@ function AdminPage() {
                       {["Display label", "Default landing", "Entity types allowed"].map((f) => (
                         <div
                           key={f}
-                          className="rounded-md border border-dashed border-border px-2 py-1.5"
+                          className="rounded-lg border border-dashed border-hairline px-2 py-1.5"
                         >
                           <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                             {f}
@@ -335,7 +335,7 @@ function AdminPage() {
                     "Document & output template branding",
                     "Notification sender identity",
                   ].map((f) => (
-                    <div key={f} className="rounded-md border border-border px-2.5 py-2">
+                    <div key={f} className="rounded-lg border border-hairline px-2.5 py-2">
                       <p className="text-[11px] text-muted-foreground">{f}</p>
                       <WLine w="70%" className="mt-1.5" />
                     </div>
@@ -368,7 +368,7 @@ function AdminPage() {
                 {FEATURE_FLAGS.map((f, i) => (
                   <div
                     key={f.id}
-                    className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border px-2.5 py-2"
+                    className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-hairline px-2.5 py-2"
                   >
                     <span className="text-xs">
                       <span className="font-medium">{f.label}</span>
@@ -379,7 +379,7 @@ function AdminPage() {
                     <button
                       type="button"
                       onClick={() => setFlags((prev) => prev.map((v, j) => (j === i ? !v : v)))}
-                      className="rounded-md border border-border px-2 py-1 text-[11px] hover:bg-muted"
+                      className="rounded-lg border border-hairline px-2 py-1 text-[11px] hover:bg-accent"
                     >
                       {flags[i] ? "On" : "Off"}
                     </button>
@@ -387,7 +387,7 @@ function AdminPage() {
                 ))}
               </div>
               <Annotation className="mt-2">
-                Module 1 flags (Plan O, shared quote, EDE handoff) are read-only here in this batch
+                Module 1 flags (PlanAI, shared quote, EDE handoff) are read-only here in this batch
                 to avoid reopening active Module 1 behaviour.
               </Annotation>
             </WPanel>
@@ -409,7 +409,7 @@ function AdminPage() {
                     "Tone & disclaimer text",
                     "Publish / draft state",
                   ].map((f) => (
-                    <div key={f} className="rounded-md border border-border px-2.5 py-2">
+                    <div key={f} className="rounded-lg border border-hairline px-2.5 py-2">
                       <p className="text-[11px] text-muted-foreground">{f}</p>
                       <WLine w="70%" className="mt-1.5" />
                     </div>
@@ -430,7 +430,7 @@ function AdminPage() {
                 ].map((id) => (
                   <div
                     key={id}
-                    className="flex items-center justify-between gap-2 border-b border-border/60 py-2 last:border-b-0"
+                    className="flex items-center justify-between gap-2 border-b border-hairline py-2 last:border-b-0"
                   >
                     <IdChip>{id}</IdChip>
                     <WLine w="45%" />

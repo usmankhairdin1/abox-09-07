@@ -15,7 +15,7 @@ const NAV: { to: string; label: string; hint: string }[] = [
 function M06Layout() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-20 border-b border-border bg-card/95 backdrop-blur">
+      <header className="sticky top-0 z-20 border-b border-hairline bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
           <Link to="/m06" className="flex items-baseline gap-2">
             <span className="text-sm font-semibold tracking-tight">
@@ -28,13 +28,13 @@ function M06Layout() {
             <Link
               to="/gov/$module"
               params={{ module: "m06" }}
-              className="rounded-md border border-border px-2.5 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted"
+              className="rounded-lg border border-hairline px-2.5 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-accent"
             >
               Governed registers
             </Link>
             <Link
               to="/lucie"
-              className="rounded-md border border-border px-2.5 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted"
+              className="rounded-lg border border-hairline px-2.5 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-accent"
             >
               Lucie spine
             </Link>
@@ -48,7 +48,7 @@ function M06Layout() {
               title={n.hint}
               activeOptions={{ exact: n.to === "/m06" }}
               activeProps={{ className: "bg-primary/10 text-foreground border-primary/30" }}
-              className="rounded-md border border-transparent px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted"
+              className="rounded-lg border border-transparent px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent"
             >
               {n.label}
             </Link>

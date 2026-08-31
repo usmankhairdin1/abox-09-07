@@ -66,7 +66,7 @@ function DashboardPage() {
             "Product line",
             `${labels.agent} / team`,
           ].map((f) => (
-            <div key={f} className="rounded-md border border-border px-2.5 py-2">
+            <div key={f} className="rounded-lg border border-hairline px-2.5 py-2">
               <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                 {f}
               </p>
@@ -86,7 +86,7 @@ function DashboardPage() {
           { id: "KPI_CONVERSION", label: "Conversion rate" },
           { id: "KPI_ACTIVE", label: `Active ${labels.member.toLowerCase()}s` },
         ].map((k) => (
-          <div key={k.id} className="rounded-lg border border-border bg-card p-3">
+          <div key={k.id} className="rounded-lg border border-hairline bg-card p-3">
             <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
               {k.id}
             </p>
@@ -163,7 +163,7 @@ function DashboardPage() {
           >
             <div className="grid grid-cols-3 gap-2">
               {["Projected MTD", "Projected annualised", "Pending overrides"].map((k) => (
-                <div key={k} className="rounded-md border border-border p-2.5">
+                <div key={k} className="rounded-lg border border-hairline p-2.5">
                   <p className="text-[11px] text-muted-foreground">{k}</p>
                   <WLine w="60%" className="mt-2 h-3.5" />
                 </div>
@@ -193,7 +193,7 @@ function DashboardPage() {
           <div className="grid gap-2 md:grid-cols-3">
             <WChart bars={11} />
             <WChart bars={11} />
-            <div className="rounded-md border border-border p-3">
+            <div className="rounded-lg border border-hairline p-3">
               <p className="text-[11px] text-muted-foreground">Top storefronts</p>
               <WRow /> <WRow /> <WRow />
             </div>

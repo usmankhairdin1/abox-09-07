@@ -22,7 +22,7 @@ function ZoneShell({ zone, children }: { zone: P1Zone; children: ReactNode }) {
   return (
     <section
       className={cn(
-        "rounded-md border border-dashed border-border bg-muted/10 p-3",
+        "rounded-lg border border-dashed border-hairline bg-muted/10 p-3",
         zone.wide && "lg:col-span-2",
       )}
     >
@@ -59,7 +59,7 @@ function Zone({ zone }: { zone: P1Zone }) {
             {items.map((i) => (
               <div
                 key={i}
-                className="flex items-center justify-between gap-3 border-b border-border/60 pb-1.5"
+                className="flex items-center justify-between gap-3 border-b border-hairline pb-1.5"
               >
                 <dt className="text-[11px] text-muted-foreground">{i}</dt>
                 <dd>
@@ -75,7 +75,7 @@ function Zone({ zone }: { zone: P1Zone }) {
             {items.map((i) => (
               <li
                 key={i}
-                className="flex items-center gap-2 rounded border border-border bg-card px-2.5 py-2"
+                className="flex items-center gap-2 rounded border border-hairline bg-card px-2.5 py-2"
               >
                 <span
                   className="size-1.5 shrink-0 rounded-full bg-muted-foreground"
@@ -88,8 +88,8 @@ function Zone({ zone }: { zone: P1Zone }) {
         );
       case "table":
         return (
-          <div className="overflow-hidden rounded border border-border">
-            <div className="flex gap-2 border-b border-border bg-muted/40 px-2.5 py-2">
+          <div className="overflow-hidden rounded border border-hairline">
+            <div className="flex gap-2 border-b border-hairline bg-muted/40 px-2.5 py-2">
               {items.map((h) => (
                 <span
                   key={h}
@@ -102,7 +102,7 @@ function Zone({ zone }: { zone: P1Zone }) {
             {[0, 1, 2, 3].map((r) => (
               <div
                 key={r}
-                className="flex gap-2 border-b border-border/60 px-2.5 py-2 last:border-b-0"
+                className="flex gap-2 border-b border-hairline px-2.5 py-2 last:border-b-0"
               >
                 {items.map((h) => (
                   <span key={h} className="flex-1">
@@ -115,12 +115,12 @@ function Zone({ zone }: { zone: P1Zone }) {
         );
       case "tabs":
         return (
-          <div className="flex flex-wrap gap-1.5 border-b border-border pb-2">
+          <div className="flex flex-wrap gap-1.5 border-b border-hairline pb-2">
             {items.map((i, n) => (
               <span
                 key={i}
                 className={cn(
-                  "rounded-t border border-border px-2.5 py-1 text-[11px]",
+                  "rounded-t border border-hairline px-2.5 py-1 text-[11px]",
                   n === 0 ? "bg-card font-medium" : "bg-muted/40 text-muted-foreground",
                 )}
               >
@@ -133,7 +133,7 @@ function Zone({ zone }: { zone: P1Zone }) {
         return (
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
             {items.map((i) => (
-              <div key={i} className="rounded border border-border bg-card p-2.5">
+              <div key={i} className="rounded border border-hairline bg-card p-2.5">
                 <p className="text-[11px] font-medium leading-snug">{i}</p>
                 <WLine w="60%" className="mt-2" />
                 <WLine w="40%" className="mt-1.5" />
@@ -169,7 +169,7 @@ function Zone({ zone }: { zone: P1Zone }) {
             {items.map((i, n) => (
               <li
                 key={i}
-                className="flex items-center gap-2 rounded border border-border bg-card px-2.5 py-1.5"
+                className="flex items-center gap-2 rounded border border-hairline bg-card px-2.5 py-1.5"
                 style={{ marginLeft: `${Math.min(n, 3) * 14}px` }}
               >
                 <span className="font-mono text-[10px] text-muted-foreground">└</span>
@@ -180,11 +180,11 @@ function Zone({ zone }: { zone: P1Zone }) {
         );
       case "timeline":
         return (
-          <ol className="space-y-2 border-l border-border pl-3">
+          <ol className="space-y-2 border-l border-hairline pl-3">
             {items.map((i) => (
               <li key={i} className="relative text-[11px] leading-snug text-foreground/80">
                 <span
-                  className="absolute -left-[17px] top-1 size-2 rounded-full border border-border bg-card"
+                  className="absolute -left-[17px] top-1 size-2 rounded-full border border-hairline bg-card"
                   aria-hidden="true"
                 />
                 {i}
@@ -196,7 +196,7 @@ function Zone({ zone }: { zone: P1Zone }) {
         return (
           <div className="space-y-2">
             {items.map((i) => (
-              <div key={i} className="rounded border border-border bg-card p-2">
+              <div key={i} className="rounded border border-hairline bg-card p-2">
                 <p className="mb-1.5 text-[11px] text-muted-foreground">{i}</p>
                 <WLine w="94%" />
                 <WLine w="86%" className="mt-1.5" />
@@ -337,20 +337,20 @@ export function P1Frame({ screen }: { screen: P1Screen }) {
         </WPanel>
       </div>
 
-      <nav className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4">
+      <nav className="flex flex-wrap items-center justify-between gap-2 border-t border-hairline pt-4">
         <div className="flex flex-wrap items-center gap-2">
           {prev ? (
             <Link
               to="/p1/$screen"
               params={{ screen: prev }}
-              className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+              className="rounded-lg border border-hairline px-3 py-1.5 text-xs hover:bg-accent"
             >
               ← {P1_BY_SLUG[prev]?.id}
             </Link>
           ) : null}
           <Link
             to="/p1"
-            className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+            className="rounded-lg border border-hairline px-3 py-1.5 text-xs hover:bg-accent"
           >
             Phase 1 index
           </Link>
@@ -358,7 +358,7 @@ export function P1Frame({ screen }: { screen: P1Screen }) {
             <Link
               to="/p1/$screen"
               params={{ screen: next }}
-              className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-muted"
+              className="rounded-lg border border-hairline px-3 py-1.5 text-xs hover:bg-accent"
             >
               {P1_BY_SLUG[next]?.id} →
             </Link>

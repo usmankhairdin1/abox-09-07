@@ -27,7 +27,7 @@ function FlowsLayout() {
               <Link
                 to="/gov/$module/flows/$flow"
                 params={{ module, flow: f.slug }}
-                className="block rounded border border-border p-2 hover:bg-muted"
+                className="block rounded border border-hairline p-2 hover:bg-accent"
               >
                 <span className="flex flex-wrap items-center gap-2">
                   <IdChip>{f.id}</IdChip>

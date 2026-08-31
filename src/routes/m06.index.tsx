@@ -140,16 +140,16 @@ function M06Foundation() {
 
       <Section title="Where to go next">
         <div className="flex flex-wrap gap-2 text-xs">
-          <Link to="/m06/roster" className="rounded-md border border-border px-2.5 py-1.5 hover:bg-muted">
+          <Link to="/m06/roster" className="rounded-lg border border-hairline px-2.5 py-1.5 hover:bg-accent">
             Workforce roster (live)
           </Link>
-          <Link to="/m06/console" className="rounded-md border border-border px-2.5 py-1.5 hover:bg-muted">
+          <Link to="/m06/console" className="rounded-lg border border-hairline px-2.5 py-1.5 hover:bg-accent">
             Runtime console
           </Link>
           <Link
             to="/gov/$module"
             params={{ module: "m06" }}
-            className="rounded-md border border-border px-2.5 py-1.5 hover:bg-muted"
+            className="rounded-lg border border-hairline px-2.5 py-1.5 hover:bg-accent"
           >
             Screens, flows and registers
           </Link>

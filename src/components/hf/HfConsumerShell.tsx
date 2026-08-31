@@ -54,7 +54,7 @@ export function HfConsumerShell({
               "rounded-full border px-2 py-0.5",
               b.id === brandId
                 ? "border-foreground/40 bg-card font-medium text-foreground"
-                : "border-border",
+                : "border-hairline",
             )}
           >
             {b.name}
@@ -65,7 +65,7 @@ export function HfConsumerShell({
         </Link>
       </div>
 
-      <header className="border-b border-border bg-card">
+      <header className="border-b border-hairline bg-card">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-3.5">
           <div className="flex min-w-0 items-center gap-2.5">
             <span className="grid size-9 shrink-0 place-items-center rounded-[var(--radius)] bg-primary font-display text-xs font-bold text-primary-foreground">
@@ -108,7 +108,7 @@ export function HfConsumerShell({
           )}
         </div>
         {progress ? (
-          <div className="border-t border-border bg-surface-2">
+          <div className="border-t border-hairline bg-surface-2">
             <div className="mx-auto max-w-6xl px-4 py-2.5">{progress}</div>
           </div>
         ) : null}
@@ -116,7 +116,7 @@ export function HfConsumerShell({
 
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-6">{children}</main>
 
-      <footer className="border-t border-border bg-surface-2">
+      <footer className="border-t border-hairline bg-surface-2">
         <div className="mx-auto max-w-6xl space-y-4 px-4 py-8">
           <div className="grid gap-5 md:grid-cols-4">
             <div>
@@ -162,7 +162,7 @@ export function HfConsumerShell({
       <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2">
         {helpOpen ? (
           <Card className="w-[20rem] overflow-hidden shadow-[var(--shadow-overlay)]">
-            <div className="flex items-center gap-2 border-b border-border px-3 py-2.5">
+            <div className="flex items-center gap-2 border-b border-hairline px-3 py-2.5">
               <span className="font-display text-xs font-semibold">How can we help?</span>
               <button
                 type="button"
@@ -178,7 +178,7 @@ export function HfConsumerShell({
                 <button
                   key={t}
                   type="button"
-                  className="w-full rounded-[var(--radius)] border border-border px-2.5 py-2 text-left text-xs hover:bg-muted"
+                  className="w-full rounded-[var(--radius)] border border-hairline px-2.5 py-2 text-left text-xs hover:bg-accent"
                 >
                   {t}
                 </button>
@@ -196,7 +196,7 @@ export function HfConsumerShell({
             </div>
           </Card>
         ) : null}
-        <Btn onClick={() => setHelpOpen((v) => !v)} className="shadow-lg">
+        <Btn onClick={() => setHelpOpen((v) => !v)} className="shadow-elevated">
           <MessageCircle className="size-4" />
           Need help?
         </Btn>

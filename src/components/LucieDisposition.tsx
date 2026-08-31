@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 const TONE: Record<DispositionInfo["disposition"], string> = {
   reconciled: "border-primary/40 bg-primary/10 text-foreground",
   excluded: "border-destructive/40 bg-destructive/10 text-foreground",
-  "out-of-scope": "border-border bg-muted text-muted-foreground",
+  "out-of-scope": "border-hairline bg-muted text-muted-foreground",
 };
 
 /** Compact disposition chip, safe to place in dense index grids. */
@@ -52,7 +52,7 @@ export function DispositionBanner({
     return (
       <div
         className={cn(
-          "rounded-lg border border-dashed border-border bg-muted/40 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground",
+          "rounded-lg border border-dashed border-hairline bg-muted/40 px-3 py-2 text-[11px] leading-relaxed text-muted-foreground",
           className,
         )}
       >

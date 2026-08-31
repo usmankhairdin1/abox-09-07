@@ -31,8 +31,8 @@ export function Btn({
         size === "md" && "h-9 px-4 text-sm",
         size === "lg" && "h-11 px-6 text-[0.95rem]",
         variant === "primary" && "bg-primary text-primary-foreground hover:opacity-90",
-        variant === "outline" && "border border-border bg-card hover:bg-muted",
-        variant === "ghost" && "text-foreground/80 hover:bg-muted",
+        variant === "outline" && "border border-hairline bg-card hover:bg-accent",
+        variant === "ghost" && "text-foreground/80 hover:bg-accent",
         variant === "quiet" && "text-muted-foreground hover:text-foreground",
         full && "w-full",
         className,
@@ -57,7 +57,7 @@ export function Card({
   return (
     <As
       className={cn(
-        "rounded-[var(--radius)] border border-border bg-card shadow-[0_1px_2px_0_oklch(0_0_0/4%)]",
+        "rounded-[var(--radius)] border border-hairline bg-card shadow-[0_1px_2px_0_oklch(0_0_0/4%)]",
         className,
       )}
     >
@@ -84,7 +84,7 @@ export function Panel({
   return (
     <Card as="section" className={className}>
       {title ? (
-        <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
+        <header className="flex flex-wrap items-center justify-between gap-2 border-b border-hairline px-4 py-3">
           <div className="min-w-0">
             <h3 className="font-display text-sm font-semibold tracking-tight">{title}</h3>
             {meta ? <p className="mt-0.5 text-xs text-muted-foreground">{meta}</p> : null}
@@ -102,7 +102,7 @@ export function Panel({
 export type Tone = "neutral" | "accent" | "success" | "warning" | "danger" | "ai";
 
 const TONE_CLASS: Record<Tone, string> = {
-  neutral: "border-border bg-muted text-muted-foreground",
+  neutral: "border-hairline bg-muted text-muted-foreground",
   accent: "border-primary/25 bg-primary/10 text-primary",
   success: "border-success/30 bg-success/12 text-success",
   warning: "border-warning/35 bg-warning/15 text-warning-foreground",
@@ -186,7 +186,7 @@ export function Disclosure({ children, className }: { children: ReactNode; class
   return (
     <p
       className={cn(
-        "border-l-2 border-border pl-3 text-[11px] leading-relaxed text-muted-foreground",
+        "border-l-2 border-hairline pl-3 text-[11px] leading-relaxed text-muted-foreground",
         className,
       )}
     >
@@ -289,14 +289,14 @@ export function Choice({
     <div
       className={cn(
         "flex items-start gap-3 rounded-[var(--radius)] border px-3 py-2.5",
-        selected ? "border-primary bg-primary/[0.06]" : "border-border bg-card",
+        selected ? "border-primary bg-primary/[0.06]" : "border-hairline bg-card",
         className,
       )}
     >
       <span
         className={cn(
           "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border",
-          selected ? "border-primary" : "border-border",
+          selected ? "border-primary" : "border-hairline",
         )}
         aria-hidden="true"
       >
@@ -326,7 +326,7 @@ export function Check({
           "mt-0.5 grid size-4 shrink-0 place-items-center rounded border",
           checked
             ? "border-primary bg-primary text-primary-foreground"
-            : "border-border bg-background",
+            : "border-hairline bg-background",
         )}
         aria-hidden="true"
       >
@@ -365,7 +365,7 @@ export function Table({
     <div className="overflow-x-auto">
       <table className="w-full min-w-[20rem] border-collapse text-sm">
         <thead>
-          <tr className="border-b border-border">
+          <tr className="border-b border-hairline">
             {columns.map((c) => (
               <th
                 key={c}
@@ -379,7 +379,7 @@ export function Table({
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} className="border-b border-border/70 last:border-b-0 hover:bg-muted/40">
+            <tr key={i} className="border-b border-hairline last:border-b-0 hover:bg-accent/40">
               {r.map((cell, j) => (
                 <td
                   key={j}
@@ -411,7 +411,7 @@ export function Bars({
 }) {
   const max = Math.max(...series, ...(compare ?? [0]));
   return (
-    <div className="flex h-40 items-end gap-2 border-b border-l border-border pb-0 pl-1">
+    <div className="flex h-40 items-end gap-2 border-b border-l border-hairline pb-0 pl-1">
       {series.map((v, i) => (
         <div key={i} className="flex h-full flex-1 flex-col justify-end gap-1">
           <div className="flex h-full items-end gap-0.5">
@@ -453,7 +453,7 @@ export function EmptyState({
   tone?: "neutral" | "acl";
 }) {
   return (
-    <div className="rounded-[var(--radius)] border border-dashed border-border bg-muted/25 px-5 py-8 text-center">
+    <div className="rounded-[var(--radius)] border border-dashed border-hairline bg-muted/25 px-5 py-8 text-center">
       <p className="font-display text-sm font-semibold">{title}</p>
       <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
         {body}
@@ -483,7 +483,7 @@ export function Stepper({ steps, current }: { steps: string[]; current: number }
                 "grid size-6 place-items-center rounded-full border text-[11px] font-semibold",
                 active && "border-primary bg-primary text-primary-foreground",
                 done && "border-primary/40 bg-primary/10 text-primary",
-                !active && !done && "border-border bg-card text-muted-foreground",
+                !active && !done && "border-hairline bg-card text-muted-foreground",
               )}
             >
               {done ? "✓" : i + 1}
@@ -524,7 +524,7 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
             className={cn(
               "relative z-10 mt-1 grid size-[19px] shrink-0 place-items-center rounded-full border-2 bg-card",
               e.kind === "ai" && "border-ai",
-              e.kind === "system" && "border-border",
+              e.kind === "system" && "border-hairline",
               e.kind === "human" && "border-primary",
               e.kind === "status" && "border-success",
             )}
@@ -626,13 +626,13 @@ export function PlanCard({
       {plan.planO ? (
         <div className="rounded-[var(--radius)] border border-ai/30 bg-ai/[0.07] px-3 py-2">
           <p className="flex items-center gap-1.5 text-[11px] font-semibold text-ai">
-            <span className="size-1.5 rounded-full bg-ai" aria-hidden="true" /> Plan O reason
+            <span className="size-1.5 rounded-full bg-ai" aria-hidden="true" /> PlanAI reason
           </p>
           <p className="mt-1 text-xs leading-relaxed text-foreground/80">{plan.planO}</p>
         </div>
       ) : null}
 
-      <dl className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-border pt-3 text-xs">
+      <dl className="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-hairline pt-3 text-xs">
         <div>
           <dt className="text-muted-foreground">Deductible</dt>
           <dd className="mt-0.5 font-medium tabular-nums">{plan.deductible}</dd>
@@ -653,7 +653,7 @@ export function PlanCard({
             <span
               className={cn(
                 "grid size-4 place-items-center rounded border",
-                selected ? "border-primary bg-primary text-primary-foreground" : "border-border",
+                selected ? "border-primary bg-primary text-primary-foreground" : "border-hairline",
               )}
               aria-hidden="true"
             >

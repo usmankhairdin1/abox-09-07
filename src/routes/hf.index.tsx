@@ -81,7 +81,7 @@ function HfIndex() {
 
   return (
     <div className="min-h-svh bg-background text-foreground">
-      <header className="border-b border-border bg-card">
+      <header className="border-b border-hairline bg-card">
         <div className="mx-auto max-w-5xl px-4 py-8">
           <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             ABox Phase 1 · higher fidelity · batches 1 &amp; 2
@@ -126,7 +126,7 @@ function HfIndex() {
           <GroupList groups={HF_BATCH1_GROUPS} />
         </div>
 
-        <div className="space-y-10 border-t border-border pt-10">
+        <div className="space-y-10 border-t border-hairline pt-10">
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="font-display text-xl font-semibold tracking-tight">
               Batch 2 · operations &amp; configuration

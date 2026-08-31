@@ -119,13 +119,13 @@ function ShellMapPage() {
           <div className="flex flex-wrap gap-2">
             <Link
               to="/lucie"
-              className="rounded-md border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+              className="rounded-lg border border-hairline px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent"
             >
               Lucie delivery spine →
             </Link>
             <Link
               to="/gov"
-              className="rounded-md border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+              className="rounded-lg border border-hairline px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent"
             >
               Governed build packets →
             </Link>
@@ -179,7 +179,7 @@ function ShellMapPage() {
                 <li key={s.to}>
                   <Link
                     to={s.to}
-                    className="flex items-center justify-between gap-2 rounded-md border border-border px-2 py-2 hover:bg-muted"
+                    className="flex items-center justify-between gap-2 rounded-lg border border-hairline px-2 py-2 hover:bg-accent"
                   >
                     <span>{s.label}</span>
                     <IdChip>{s.id}</IdChip>
@@ -204,7 +204,7 @@ function ShellMapPage() {
       >
         <div className="grid gap-2 md:grid-cols-2">
           {REGIONS.map((r) => (
-            <div key={r.id} className="rounded-md border border-border p-3">
+            <div key={r.id} className="rounded-lg border border-hairline p-3">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm font-medium">{r.name}</span>
                 <IdChip>{r.id}</IdChip>
@@ -222,7 +222,7 @@ function ShellMapPage() {
             {WORKSPACES.map((w) => (
               <li
                 key={w.id}
-                className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border px-2.5 py-2"
+                className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-hairline px-2.5 py-2"
               >
                 <span className="text-xs">
                   <span className="font-medium">{w.name}</span>
@@ -244,7 +244,7 @@ function ShellMapPage() {
         >
           <ul className="space-y-1.5">
             {MODULES.map((m) => (
-              <li key={m.id} className="rounded-md border border-border px-2.5 py-2">
+              <li key={m.id} className="rounded-lg border border-hairline px-2.5 py-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="text-xs font-medium">
                     {m.label}

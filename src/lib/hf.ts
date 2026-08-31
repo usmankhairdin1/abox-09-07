@@ -158,7 +158,7 @@ export const HF_SCREENS: HfScreen[] = [
     module: "MOD_MARKETPLACE_SALES",
     user: "Consumer (unauthenticated)",
     purpose:
-      "Agency-branded entry point that establishes who is selling, offers guided (Plan O) or self-directed shopping, and carries required non-government disclosure above the fold.",
+      "Agency-branded entry point that establishes who is selling, offers guided (PlanAI) or self-directed shopping, and carries required non-government disclosure above the fold.",
     decisions: [
       "Hero + card grid: one clear promise, two shopping entries of equal visual weight, and the licensed-entity line inside the hero rather than buried in the footer.",
       "Guided and Browse are peers. Guided gets the accent fill, Browse gets the outline — a preference, not a lock-out.",
@@ -242,7 +242,7 @@ export const HF_SCREENS: HfScreen[] = [
   {
     id: "HF-07",
     slug: "plan-o",
-    name: "Plan O guided shopping",
+    name: "PlanAI guided shopping",
     group: "Module 1 · consumer",
     shell: "consumer",
     workspace: "WS_CONSUMER_MARKETPLACE",
@@ -258,7 +258,7 @@ export const HF_SCREENS: HfScreen[] = [
       "Disclaimer is attached to the recommendation block itself, so it travels with any shared or printed output.",
     ],
     acl: [
-      "Plan O availability is a tenant/marketplace feature flag; when off, the entry disappears and Browse is the only path.",
+      "PlanAI availability is a tenant/marketplace feature flag; when off, the entry disappears and Browse is the only path.",
       "Ranking inputs, prompts and outputs are logged to the AI interaction log for governance review.",
       "The assistant cannot make eligibility determinations or guarantee costs; it escalates to a licensed agent instead.",
     ],
@@ -298,7 +298,7 @@ export const HF_SCREENS: HfScreen[] = [
     config: [
       "Which filters and sorts exist, default sort, card fields shown, and badge rules per marketplace.",
       "Disclaimer and estimate copy; whether subsidy-applied pricing is shown.",
-      "Plan O badge on ranked plans is toggled with the Plan O flag.",
+      "PlanAI badge on ranked plans is toggled with the PlanAI flag.",
     ],
     source: "ABox_Module1_V4_Hardening_Package (UX-008, UX-009, UX-010).",
     scope: "Protected Module 1 scope",

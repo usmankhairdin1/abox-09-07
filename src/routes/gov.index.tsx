@@ -47,14 +47,14 @@ function GovIndex() {
                   <Link
                     to="/gov/$module"
                     params={{ module: m }}
-                    className="rounded border border-border px-2 py-1 text-xs hover:bg-muted"
+                    className="rounded border border-hairline px-2 py-1 text-xs hover:bg-accent"
                   >
                     Open estate
                   </Link>
                   <Link
                     to="/gov/$module/screens"
                     params={{ module: m }}
-                    className="rounded border border-border px-2 py-1 text-xs hover:bg-muted"
+                    className="rounded border border-hairline px-2 py-1 text-xs hover:bg-accent"
                   >
                     Screens
                   </Link>
@@ -62,7 +62,7 @@ function GovIndex() {
                     to="/gov/$module/registers"
                     params={{ module: m }}
                     search={{ r: "" }}
-                    className="rounded border border-border px-2 py-1 text-xs hover:bg-muted"
+                    className="rounded border border-hairline px-2 py-1 text-xs hover:bg-accent"
                   >
                     Registers
                   </Link>

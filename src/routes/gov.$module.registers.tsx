@@ -44,7 +44,7 @@ function RegistersPage() {
             }
             aria-current={n === active ? "true" : undefined}
             className={cn(
-              "rounded border border-border px-2 py-1 font-mono text-[10px] hover:bg-muted",
+              "rounded border border-hairline px-2 py-1 font-mono text-[10px] hover:bg-accent",
               n === active && "bg-muted font-semibold",
             )}
           >

@@ -6,7 +6,7 @@ export function Id({ children, className }: { children: ReactNode; className?: s
   return (
     <span
       className={cn(
-        "inline-block whitespace-nowrap rounded border border-border bg-muted/60 px-1.5 py-0.5 font-mono text-[10.5px] leading-4 tracking-tight text-muted-foreground",
+        "inline-block whitespace-nowrap rounded-lg border border-hairline bg-surface px-2 py-0.5 font-mono text-[10.5px] uppercase leading-4 tracking-tight text-muted-foreground",
         className,
       )}
     >
@@ -29,11 +29,11 @@ export function IdList({ ids, empty = "—" }: { ids: string[]; empty?: string }
 type Tone = "neutral" | "good" | "warn" | "stop" | "info";
 
 const TONE_CLASS: Record<Tone, string> = {
-  neutral: "border-border bg-muted/60 text-muted-foreground",
-  good: "border-chart-2/40 bg-chart-2/10 text-foreground",
-  warn: "border-chart-5/45 bg-chart-5/12 text-foreground",
-  stop: "border-destructive/40 bg-destructive/10 text-foreground",
-  info: "border-primary/25 bg-primary/8 text-foreground",
+  neutral: "border-hairline bg-surface text-muted-foreground",
+  good: "border-sage/35 bg-sage-soft text-foreground",
+  warn: "border-warning/45 bg-warning/15 text-foreground",
+  stop: "border-destructive/35 bg-destructive/10 text-foreground",
+  info: "border-primary/25 bg-primary-soft text-foreground",
 };
 
 export function Tag({
@@ -48,7 +48,7 @@ export function Tag({
   return (
     <span
       className={cn(
-        "inline-flex items-center whitespace-nowrap rounded-full border px-2 py-0.5 text-[11px] font-medium",
+        "inline-flex items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-[11px] font-medium",
         TONE_CLASS[tone],
         className,
       )}
@@ -90,20 +90,20 @@ export function Section({
 }) {
   return (
     <section
-      className={cn("min-w-0 rounded-xl border border-border bg-card shadow-sm", className)}
+      className={cn("min-w-0 overflow-hidden rounded-2xl border border-hairline bg-card shadow-card", className)}
       aria-label={title}
     >
-      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-border px-4 py-3">
-        <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
+      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-hairline bg-surface/50 px-5 py-3.5">
+        <h2 className="font-display text-[15px] font-semibold tracking-tight">{title}</h2>
         {id ? <Id>{id}</Id> : null}
         {meta ? <span className="ml-auto text-[11px] text-muted-foreground">{meta}</span> : null}
       </header>
       {description ? (
-        <p className="border-b border-border/70 px-4 py-2.5 text-xs leading-relaxed text-muted-foreground">
+        <p className="border-b border-hairline px-5 py-3 text-xs leading-relaxed text-muted-foreground">
           {description}
         </p>
       ) : null}
-      <div className="p-4">{children}</div>
+      <div className="p-5">{children}</div>
     </section>
   );
 }
@@ -120,12 +120,12 @@ export function PageHead({
   right?: ReactNode;
 }) {
   return (
-    <header className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5">
+    <header className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline pb-6">
       <div className="max-w-3xl">
-        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+        <p className="text-eyebrow tracking-[0.14em]">
           {eyebrow}
         </p>
-        <h1 className="mt-1.5 text-xl font-semibold tracking-tight sm:text-2xl">{title}</h1>
+        <h1 className="text-display mt-2 text-2xl sm:text-3xl">{title}</h1>
         {lede ? (
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{lede}</p>
         ) : null}
@@ -137,8 +137,8 @@ export function PageHead({
 
 export function Stat({ label, value, hint }: { label: string; value: ReactNode; hint?: string }) {
   return (
-    <div className="rounded-lg border border-border bg-card px-3 py-2.5">
-      <div className="text-lg font-semibold leading-none tabular-nums">{value}</div>
+    <div className="rounded-2xl border border-hairline bg-card px-4 py-3.5 shadow-card">
+      <div className="font-display text-2xl font-semibold leading-none tabular-nums">{value}</div>
       <div className="mt-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
         {label}
       </div>
@@ -149,7 +149,7 @@ export function Stat({ label, value, hint }: { label: string; value: ReactNode; 
 
 export function KV({ k, v }: { k: string; v: ReactNode }) {
   return (
-    <div className="grid gap-0.5 border-b border-border/60 py-2 last:border-0 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-3">
+    <div className="grid gap-0.5 border-b border-hairline py-2 last:border-0 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-3">
       <dt className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
         {k}
       </dt>
@@ -177,7 +177,7 @@ export function Table<T>({
 }) {
   if (!rows.length) {
     return (
-      <p className="rounded-lg border border-dashed border-border px-3 py-6 text-center text-xs text-muted-foreground">
+      <p className="rounded-2xl border border-dashed border-hairline-strong/60 bg-surface/40 px-3 py-10 text-center text-xs text-muted-foreground">
         {empty}
       </p>
     );
@@ -186,11 +186,11 @@ export function Table<T>({
     <div className="-mx-4 overflow-x-auto px-4">
       <table className="w-full min-w-[720px] border-collapse text-left align-top">
         <thead>
-          <tr className="border-b border-border">
+          <tr className="border-b border-hairline">
             {columns.map((c) => (
               <th
                 key={c.head}
-                className="px-2 py-2 text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground first:pl-0 last:pr-0"
+                className="px-2 py-2.5 text-[10.5px] font-semibold uppercase tracking-[0.08em] text-muted-foreground first:pl-0 last:pr-0"
               >
                 {c.head}
               </th>
@@ -199,7 +199,7 @@ export function Table<T>({
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={keyOf(row)} className="border-b border-border/60 align-top last:border-0">
+            <tr key={keyOf(row)} className="border-b border-hairline/70 align-top transition-colors last:border-0 hover:bg-surface/60">
               {columns.map((c) => (
                 <td
                   key={c.head}
@@ -221,7 +221,7 @@ export function Table<T>({
 
 export function Toolbar({ children }: { children: ReactNode }) {
   return (
-    <div className="mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-muted/40 p-2">
+    <div className="mb-4 flex flex-wrap items-center gap-2 rounded-full border border-hairline bg-surface px-3 py-2">
       {children}
     </div>
   );
@@ -244,7 +244,7 @@ export function Select({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-md border border-border bg-background px-2 py-1.5 text-xs font-normal normal-case tracking-normal text-foreground"
+        className="rounded-full border border-input bg-background px-3 py-1.5 text-xs font-normal normal-case tracking-normal text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>
@@ -271,7 +271,7 @@ export function Search({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="min-w-[200px] flex-1 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground"
+      className="min-w-[200px] flex-1 rounded-full border border-input bg-background px-3.5 py-1.5 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
     />
   );
 }
@@ -280,7 +280,7 @@ export function Note({ children, tone = "info" }: { children: ReactNode; tone?: 
   return (
     <p
       className={cn(
-        "rounded-lg border px-3 py-2.5 text-xs leading-relaxed",
+        "rounded-xl border px-4 py-3 text-xs leading-relaxed",
         TONE_CLASS[tone],
         "text-foreground/85",
       )}

@@ -46,7 +46,7 @@ function ScreenDetail() {
       <Link
         to="/gov/$module/screens"
         params={{ module }}
-        className="inline-block rounded border border-border px-2 py-1 font-mono text-[10px] uppercase hover:bg-muted"
+        className="inline-block rounded border border-hairline px-2 py-1 font-mono text-[10px] uppercase hover:bg-accent"
       >
         ← screen inventory
       </Link>

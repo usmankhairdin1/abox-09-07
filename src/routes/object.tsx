@@ -113,7 +113,7 @@ function ObjectPage() {
             {["Status", "Owner", "Entity", "Created", "Last activity", "Attribution"].map((f) => (
               <div
                 key={f}
-                className="flex items-center justify-between gap-2 border-b border-border/60 pb-1.5"
+                className="flex items-center justify-between gap-2 border-b border-hairline pb-1.5"
               >
                 <span className="text-[11px] text-muted-foreground">{f}</span>
                 <WLine w="45%" />
@@ -124,7 +124,7 @@ function ObjectPage() {
         "Next actions": (
           <div className="space-y-2">
             {obj.actions.map((a) => (
-              <div key={a} className="rounded-md border border-border px-2 py-1.5 text-[11px]">
+              <div key={a} className="rounded-lg border border-hairline px-2 py-1.5 text-[11px]">
                 {a}
               </div>
             ))}
@@ -152,10 +152,10 @@ function ObjectPage() {
               key={t.id}
               type="button"
               onClick={() => setTypeId(t.id)}
-              className={`rounded-md border px-3 py-1.5 text-xs ${
+              className={`rounded-lg border px-3 py-1.5 text-xs ${
                 t.id === typeId
                   ? "border-foreground/50 bg-muted font-medium"
-                  : "border-border hover:bg-muted"
+                  : "border-hairline hover:bg-accent"
               }`}
             >
               {t.name}
@@ -166,8 +166,8 @@ function ObjectPage() {
       </WPanel>
 
       {/* header */}
-      <section className="rounded-lg border border-border bg-card">
-        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border p-4">
+      <section className="rounded-lg border border-hairline bg-card">
+        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-hairline p-4">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="size-9 rounded-full bg-muted" aria-hidden="true" />
@@ -193,9 +193,9 @@ function ObjectPage() {
         </div>
 
         {/* summary */}
-        <div className="grid gap-3 border-b border-border p-4 md:grid-cols-4">
+        <div className="grid gap-3 border-b border-hairline p-4 md:grid-cols-4">
           {["Key fields", "Status detail", "Dates", "Flags & exceptions"].map((g) => (
-            <div key={g} className="rounded-md border border-dashed border-border bg-muted/25 p-3">
+            <div key={g} className="rounded-lg border border-dashed border-hairline bg-muted/25 p-3">
               <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                 {g}
               </p>
@@ -209,16 +209,16 @@ function ObjectPage() {
         </div>
 
         {/* tabs */}
-        <div className="flex flex-wrap gap-1 border-b border-border px-3 py-2">
+        <div className="flex flex-wrap gap-1 border-b border-hairline px-3 py-2">
           {tabs.map((t) => (
             <button
               key={t}
               type="button"
               onClick={() => setTab(t)}
-              className={`rounded-md border px-2.5 py-1.5 text-xs ${
+              className={`rounded-lg border px-2.5 py-1.5 text-xs ${
                 t === activeTab
-                  ? "border-border bg-muted font-medium"
-                  : "border-transparent text-muted-foreground hover:bg-muted"
+                  ? "border-hairline bg-muted font-medium"
+                  : "border-transparent text-muted-foreground hover:bg-accent"
               }`}
             >
               {t}
@@ -236,7 +236,7 @@ function ObjectPage() {
               >
                 <div className="grid gap-2 sm:grid-cols-2">
                   {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className="rounded-md border border-border p-2.5">
+                    <div key={i} className="rounded-lg border border-hairline p-2.5">
                       <WLine w="40%" className="h-1.5 bg-muted/70" />
                       <WLine w="75%" className="mt-2" />
                     </div>
@@ -262,7 +262,7 @@ function ObjectPage() {
                         className="mt-1 size-2 shrink-0 rounded-full bg-muted-foreground/50"
                         aria-hidden="true"
                       />
-                      <div className="flex-1 border-b border-border/60 pb-2">
+                      <div className="flex-1 border-b border-hairline pb-2">
                         <p className="text-xs font-medium">{e}</p>
                         <WLine w="55%" className="mt-1.5 h-1.5 bg-muted/70" />
                       </div>
@@ -324,7 +324,7 @@ function ObjectPage() {
                   `Owning ${labels.agency.toLowerCase()}`,
                   "Referral source",
                 ].map((r) => (
-                  <div key={r} className="border-b border-border/60 py-2 last:border-b-0">
+                  <div key={r} className="border-b border-hairline py-2 last:border-b-0">
                     <p className="text-xs">{r}</p>
                     <WLine w="55%" className="mt-1.5 h-1.5 bg-muted/70" />
                   </div>
@@ -335,7 +335,7 @@ function ObjectPage() {
                 {["Assigned to", "Entity", "Workspace", "Attribution", "Sensitivity"].map((f) => (
                   <div
                     key={f}
-                    className="flex items-center justify-between gap-2 border-b border-border/60 py-2 last:border-b-0"
+                    className="flex items-center justify-between gap-2 border-b border-hairline py-2 last:border-b-0"
                   >
                     <span className="text-[11px] text-muted-foreground">{f}</span>
                     <WLine w="45%" />
