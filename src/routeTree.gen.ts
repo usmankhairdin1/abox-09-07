@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LucieRouteImport } from './routes/lucie'
 import { Route as M00RouteImport } from './routes/m00'
+import { Route as M06RouteImport } from './routes/m06'
 import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
 import { Route as GovIndexRouteImport } from './routes/gov.index'
@@ -36,6 +37,9 @@ import { Route as M00ApiRouteImport } from './routes/m00.api'
 import { Route as M00ConsoleRouteImport } from './routes/m00.console'
 import { Route as M00EventsRouteImport } from './routes/m00.events'
 import { Route as M00TestsRouteImport } from './routes/m00.tests'
+import { Route as M06IndexRouteImport } from './routes/m06.index'
+import { Route as M06ConsoleRouteImport } from './routes/m06.console'
+import { Route as M06RosterRouteImport } from './routes/m06.roster'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
@@ -77,6 +81,11 @@ const LucieRoute = LucieRouteImport.update({
 const M00Route = M00RouteImport.update({
   id: '/m00',
   path: '/m00',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const M06Route = M06RouteImport.update({
+  id: '/m06',
+  path: '/m06',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyWorkRoute = MyWorkRouteImport.update({
@@ -184,6 +193,21 @@ const M00TestsRoute = M00TestsRouteImport.update({
   path: '/tests',
   getParentRoute: () => M00Route,
 } as any)
+const M06IndexRoute = M06IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => M06Route,
+} as any)
+const M06ConsoleRoute = M06ConsoleRouteImport.update({
+  id: '/console',
+  path: '/console',
+  getParentRoute: () => M06Route,
+} as any)
+const M06RosterRoute = M06RosterRouteImport.update({
+  id: '/roster',
+  path: '/roster',
+  getParentRoute: () => M06Route,
+} as any)
 const M1IndexRoute = M1IndexRouteImport.update({
   id: '/m1/',
   path: '/m1/',
@@ -252,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
+  '/m06': typeof M06RouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/gov/$module': typeof GovModuleRouteWithChildren
@@ -269,12 +294,15 @@ export interface FileRoutesByFullPath {
   '/m00/console': typeof M00ConsoleRoute
   '/m00/events': typeof M00EventsRoute
   '/m00/tests': typeof M00TestsRoute
+  '/m06/console': typeof M06ConsoleRoute
+  '/m06/roster': typeof M06RosterRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
   '/lucie/': typeof LucieIndexRoute
   '/m00/': typeof M00IndexRoute
+  '/m06/': typeof M06IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
   '/gov/$module/deltas': typeof GovModuleDeltasRoute
@@ -307,12 +335,15 @@ export interface FileRoutesByTo {
   '/m00/console': typeof M00ConsoleRoute
   '/m00/events': typeof M00EventsRoute
   '/m00/tests': typeof M00TestsRoute
+  '/m06/console': typeof M06ConsoleRoute
+  '/m06/roster': typeof M06RosterRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/gov': typeof GovIndexRoute
   '/hf': typeof HfIndexRoute
   '/lucie': typeof LucieIndexRoute
   '/m00': typeof M00IndexRoute
+  '/m06': typeof M06IndexRoute
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
   '/gov/$module/deltas': typeof GovModuleDeltasRoute
@@ -332,6 +363,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
+  '/m06': typeof M06RouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/gov/$module': typeof GovModuleRouteWithChildren
@@ -349,12 +381,15 @@ export interface FileRoutesById {
   '/m00/console': typeof M00ConsoleRoute
   '/m00/events': typeof M00EventsRoute
   '/m00/tests': typeof M00TestsRoute
+  '/m06/console': typeof M06ConsoleRoute
+  '/m06/roster': typeof M06RosterRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
   '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
   '/lucie/': typeof LucieIndexRoute
   '/m00/': typeof M00IndexRoute
+  '/m06/': typeof M06IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
   '/gov/$module/deltas': typeof GovModuleDeltasRoute
@@ -375,6 +410,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/lucie'
     | '/m00'
+    | '/m06'
     | '/my-work'
     | '/object'
     | '/gov/$module'
@@ -392,12 +428,15 @@ export interface FileRouteTypes {
     | '/m00/console'
     | '/m00/events'
     | '/m00/tests'
+    | '/m06/console'
+    | '/m06/roster'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/gov/'
     | '/hf/'
     | '/lucie/'
     | '/m00/'
+    | '/m06/'
     | '/m1/'
     | '/p1/'
     | '/gov/$module/deltas'
@@ -430,12 +469,15 @@ export interface FileRouteTypes {
     | '/m00/console'
     | '/m00/events'
     | '/m00/tests'
+    | '/m06/console'
+    | '/m06/roster'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/gov'
     | '/hf'
     | '/lucie'
     | '/m00'
+    | '/m06'
     | '/m1'
     | '/p1'
     | '/gov/$module/deltas'
@@ -454,6 +496,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/lucie'
     | '/m00'
+    | '/m06'
     | '/my-work'
     | '/object'
     | '/gov/$module'
@@ -471,12 +514,15 @@ export interface FileRouteTypes {
     | '/m00/console'
     | '/m00/events'
     | '/m00/tests'
+    | '/m06/console'
+    | '/m06/roster'
     | '/m1/$screen'
     | '/p1/$screen'
     | '/gov/'
     | '/hf/'
     | '/lucie/'
     | '/m00/'
+    | '/m06/'
     | '/m1/'
     | '/p1/'
     | '/gov/$module/deltas'
@@ -496,6 +542,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LucieRoute: typeof LucieRouteWithChildren
   M00Route: typeof M00RouteWithChildren
+  M06Route: typeof M06RouteWithChildren
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
   GovModuleRoute: typeof GovModuleRouteWithChildren
@@ -550,6 +597,13 @@ declare module '@tanstack/react-router' {
       path: '/m00'
       fullPath: '/m00'
       preLoaderRoute: typeof M00RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/m06': {
+      id: '/m06'
+      path: '/m06'
+      fullPath: '/m06'
+      preLoaderRoute: typeof M06RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-work': {
@@ -699,6 +753,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof M00TestsRouteImport
       parentRoute: typeof M00Route
     }
+    '/m06/': {
+      id: '/m06/'
+      path: '/'
+      fullPath: '/m06/'
+      preLoaderRoute: typeof M06IndexRouteImport
+      parentRoute: typeof M06Route
+    }
+    '/m06/console': {
+      id: '/m06/console'
+      path: '/console'
+      fullPath: '/m06/console'
+      preLoaderRoute: typeof M06ConsoleRouteImport
+      parentRoute: typeof M06Route
+    }
+    '/m06/roster': {
+      id: '/m06/roster'
+      path: '/roster'
+      fullPath: '/m06/roster'
+      preLoaderRoute: typeof M06RosterRouteImport
+      parentRoute: typeof M06Route
+    }
     '/m1/': {
       id: '/m1/'
       path: '/m1'
@@ -832,6 +907,20 @@ const M00RouteChildren: M00RouteChildren = {
 
 const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
 
+interface M06RouteChildren {
+  M06ConsoleRoute: typeof M06ConsoleRoute
+  M06RosterRoute: typeof M06RosterRoute
+  M06IndexRoute: typeof M06IndexRoute
+}
+
+const M06RouteChildren: M06RouteChildren = {
+  M06ConsoleRoute: M06ConsoleRoute,
+  M06RosterRoute: M06RosterRoute,
+  M06IndexRoute: M06IndexRoute,
+}
+
+const M06RouteWithChildren = M06Route._addFileChildren(M06RouteChildren)
+
 interface GovModuleFlowsRouteChildren {
   GovModuleFlowsFlowRoute: typeof GovModuleFlowsFlowRoute
 }
@@ -884,6 +973,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LucieRoute: LucieRouteWithChildren,
   M00Route: M00RouteWithChildren,
+  M06Route: M06RouteWithChildren,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
   GovModuleRoute: GovModuleRouteWithChildren,
