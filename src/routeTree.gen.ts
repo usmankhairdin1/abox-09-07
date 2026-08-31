@@ -130,6 +130,7 @@ import { Route as GovModuleRegistersRouteImport } from './routes/gov.$module.reg
 import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
 import { Route as GovModuleTraceabilityRouteImport } from './routes/gov.$module.traceability'
 import { Route as LucieAppAgencyIndexRouteImport } from './routes/lucie-app.agency.index'
+import { Route as LucieAppAgencyMarketplacesRouteImport } from './routes/lucie-app.agency.marketplaces'
 import { Route as LucieAppAgencyProducersRouteImport } from './routes/lucie-app.agency.producers'
 import { Route as LucieAppShopIndexRouteImport } from './routes/lucie-app.shop.index'
 import { Route as LucieAppShopApplicationRouteImport } from './routes/lucie-app.shop.application'
@@ -804,6 +805,12 @@ const LucieAppAgencyIndexRoute = LucieAppAgencyIndexRouteImport.update({
   path: '/agency/',
   getParentRoute: () => LucieAppRoute,
 } as any)
+const LucieAppAgencyMarketplacesRoute =
+  LucieAppAgencyMarketplacesRouteImport.update({
+    id: '/agency/marketplaces',
+    path: '/agency/marketplaces',
+    getParentRoute: () => LucieAppRoute,
+  } as any)
 const LucieAppAgencyProducersRoute = LucieAppAgencyProducersRouteImport.update({
   id: '/agency/producers',
   path: '/agency/producers',
@@ -1263,6 +1270,7 @@ export interface FileRoutesByFullPath {
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
   '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
   '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
@@ -1440,6 +1448,7 @@ export interface FileRoutesByTo {
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
   '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
   '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
@@ -1625,6 +1634,7 @@ export interface FileRoutesById {
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
   '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
   '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
@@ -1811,6 +1821,7 @@ export interface FileRouteTypes {
     | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/traceability'
+    | '/lucie-app/agency/marketplaces'
     | '/lucie-app/agency/producers'
     | '/lucie-app/shop/application'
     | '/lucie-app/shop/cart'
@@ -1988,6 +1999,7 @@ export interface FileRouteTypes {
     | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/traceability'
+    | '/lucie-app/agency/marketplaces'
     | '/lucie-app/agency/producers'
     | '/lucie-app/shop/application'
     | '/lucie-app/shop/cart'
@@ -2172,6 +2184,7 @@ export interface FileRouteTypes {
     | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/traceability'
+    | '/lucie-app/agency/marketplaces'
     | '/lucie-app/agency/producers'
     | '/lucie-app/shop/application'
     | '/lucie-app/shop/cart'
@@ -3196,6 +3209,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieAppAgencyIndexRouteImport
       parentRoute: typeof LucieAppRoute
     }
+    '/lucie-app/agency/marketplaces': {
+      id: '/lucie-app/agency/marketplaces'
+      path: '/agency/marketplaces'
+      fullPath: '/lucie-app/agency/marketplaces'
+      preLoaderRoute: typeof LucieAppAgencyMarketplacesRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
     '/lucie-app/agency/producers': {
       id: '/lucie-app/agency/producers'
       path: '/agency/producers'
@@ -3730,6 +3750,7 @@ const LucieRouteWithChildren = LucieRoute._addFileChildren(LucieRouteChildren)
 
 interface LucieAppRouteChildren {
   LucieAppIndexRoute: typeof LucieAppIndexRoute
+  LucieAppAgencyMarketplacesRoute: typeof LucieAppAgencyMarketplacesRoute
   LucieAppAgencyProducersRoute: typeof LucieAppAgencyProducersRoute
   LucieAppShopApplicationRoute: typeof LucieAppShopApplicationRoute
   LucieAppShopCartRoute: typeof LucieAppShopCartRoute
@@ -3749,6 +3770,7 @@ interface LucieAppRouteChildren {
 
 const LucieAppRouteChildren: LucieAppRouteChildren = {
   LucieAppIndexRoute: LucieAppIndexRoute,
+  LucieAppAgencyMarketplacesRoute: LucieAppAgencyMarketplacesRoute,
   LucieAppAgencyProducersRoute: LucieAppAgencyProducersRoute,
   LucieAppShopApplicationRoute: LucieAppShopApplicationRoute,
   LucieAppShopCartRoute: LucieAppShopCartRoute,
