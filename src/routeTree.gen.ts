@@ -41,6 +41,7 @@ import { Route as P1IndexRouteImport } from './routes/p1.index'
 import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
 import { Route as GovModuleIndexRouteImport } from './routes/gov.$module.index'
 import { Route as GovModuleFlowsRouteImport } from './routes/gov.$module.flows'
+import { Route as GovModuleRegistersRouteImport } from './routes/gov.$module.registers'
 import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
 import { Route as GovModuleFlowsFlowRouteImport } from './routes/gov.$module.flows.$flow'
 import { Route as GovModuleScreensScreenRouteImport } from './routes/gov.$module.screens.$screen'
@@ -205,6 +206,11 @@ const GovModuleFlowsRoute = GovModuleFlowsRouteImport.update({
   path: '/flows',
   getParentRoute: () => GovModuleRoute,
 } as any)
+const GovModuleRegistersRoute = GovModuleRegistersRouteImport.update({
+  id: '/registers',
+  path: '/registers',
+  getParentRoute: () => GovModuleRoute,
+} as any)
 const GovModuleScreensRoute = GovModuleScreensRouteImport.update({
   id: '/screens',
   path: '/screens',
@@ -253,6 +259,7 @@ export interface FileRoutesByFullPath {
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
+  '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/': typeof GovModuleIndexRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
@@ -287,6 +294,7 @@ export interface FileRoutesByTo {
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
+  '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module': typeof GovModuleIndexRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
@@ -325,6 +333,7 @@ export interface FileRoutesById {
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
+  '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/': typeof GovModuleIndexRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
@@ -364,6 +373,7 @@ export interface FileRouteTypes {
     | '/m1/'
     | '/p1/'
     | '/gov/$module/flows'
+    | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/'
     | '/gov/$module/flows/$flow'
@@ -398,6 +408,7 @@ export interface FileRouteTypes {
     | '/m1'
     | '/p1'
     | '/gov/$module/flows'
+    | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module'
     | '/gov/$module/flows/$flow'
@@ -435,6 +446,7 @@ export interface FileRouteTypes {
     | '/m1/'
     | '/p1/'
     | '/gov/$module/flows'
+    | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/'
     | '/gov/$module/flows/$flow'
@@ -685,6 +697,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GovModuleFlowsRouteImport
       parentRoute: typeof GovModuleRoute
     }
+    '/gov/$module/registers': {
+      id: '/gov/$module/registers'
+      path: '/registers'
+      fullPath: '/gov/$module/registers'
+      preLoaderRoute: typeof GovModuleRegistersRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
     '/gov/$module/screens': {
       id: '/gov/$module/screens'
       path: '/screens'
@@ -780,12 +799,14 @@ const GovModuleScreensRouteWithChildren =
 
 interface GovModuleRouteChildren {
   GovModuleFlowsRoute: typeof GovModuleFlowsRouteWithChildren
+  GovModuleRegistersRoute: typeof GovModuleRegistersRoute
   GovModuleScreensRoute: typeof GovModuleScreensRouteWithChildren
   GovModuleIndexRoute: typeof GovModuleIndexRoute
 }
 
 const GovModuleRouteChildren: GovModuleRouteChildren = {
   GovModuleFlowsRoute: GovModuleFlowsRouteWithChildren,
+  GovModuleRegistersRoute: GovModuleRegistersRoute,
   GovModuleScreensRoute: GovModuleScreensRouteWithChildren,
   GovModuleIndexRoute: GovModuleIndexRoute,
 }
