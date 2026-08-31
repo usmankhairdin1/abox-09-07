@@ -52,6 +52,7 @@ function GroupList({ groups }: { groups: string[] }) {
                         <span className="ml-auto truncate text-[10px] text-muted-foreground">
                           {s.module}
                         </span>
+                        <DispositionChip info={dispositionForScreen(s.id)} />
                       </div>
                       <p className="mt-2 font-display text-sm font-semibold tracking-tight">
                         {s.name}
