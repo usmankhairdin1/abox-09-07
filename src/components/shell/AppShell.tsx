@@ -151,11 +151,9 @@ export function AppShell({
       <header className="glass sticky top-0 z-30 border-x-0 border-t-0 border-b border-hairline">
         <div className="relative flex h-12 items-center gap-2 px-3">
           <div className="flex items-center gap-2 pr-2">
-            <div className="flex size-6 items-center justify-center rounded border border-dashed border-hairline bg-muted text-[9px] font-mono text-muted-foreground">
-              LOGO
-            </div>
-            <Link to="/" className="text-display hidden text-base sm:inline">
-              ABox
+            <Link to="/" className="flex items-center gap-2">
+              <AboxMark size={26} />
+              <span className="text-display hidden text-base sm:inline">ABox</span>
             </Link>
             <IdChip>SHELL_TOPBAR</IdChip>
             <Link
