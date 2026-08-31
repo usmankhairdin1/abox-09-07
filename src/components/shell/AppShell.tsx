@@ -327,6 +327,8 @@ export function AppShell({
           </div>
 
           {/* notifications */}
+          <ThemeToggle className="size-8 h-8 w-8" />
+
           <div className="relative">
             <BarButton
               title="Notifications"
