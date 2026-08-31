@@ -141,6 +141,7 @@ import { Route as LucieAppPlatformIndexRouteImport } from './routes/lucie-app.pl
 import { Route as LucieAppPlatformAuditRouteImport } from './routes/lucie-app.platform.audit'
 import { Route as LucieAppPlatformEntitlementsRouteImport } from './routes/lucie-app.platform.entitlements'
 import { Route as LucieAppPlatformExceptionsRouteImport } from './routes/lucie-app.platform.exceptions'
+import { Route as LucieAppPlatformGatesRouteImport } from './routes/lucie-app.platform.gates'
 import { Route as LucieAppPlatformHealthRouteImport } from './routes/lucie-app.platform.health'
 import { Route as LucieAppPlatformRolesRouteImport } from './routes/lucie-app.platform.roles'
 import { Route as LucieAppPlatformTenantsRouteImport } from './routes/lucie-app.platform.tenants'
@@ -877,6 +878,11 @@ const LucieAppPlatformExceptionsRoute =
     path: '/platform/exceptions',
     getParentRoute: () => LucieAppRoute,
   } as any)
+const LucieAppPlatformGatesRoute = LucieAppPlatformGatesRouteImport.update({
+  id: '/platform/gates',
+  path: '/platform/gates',
+  getParentRoute: () => LucieAppRoute,
+} as any)
 const LucieAppPlatformHealthRoute = LucieAppPlatformHealthRouteImport.update({
   id: '/platform/health',
   path: '/platform/health',
@@ -1355,6 +1361,7 @@ export interface FileRoutesByFullPath {
   '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
   '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
   '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
+  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
   '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
   '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
   '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
@@ -1545,6 +1552,7 @@ export interface FileRoutesByTo {
   '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
   '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
   '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
+  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
   '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
   '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
   '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
@@ -1743,6 +1751,7 @@ export interface FileRoutesById {
   '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
   '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
   '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
+  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
   '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
   '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
   '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
@@ -1942,6 +1951,7 @@ export interface FileRouteTypes {
     | '/lucie-app/platform/audit'
     | '/lucie-app/platform/entitlements'
     | '/lucie-app/platform/exceptions'
+    | '/lucie-app/platform/gates'
     | '/lucie-app/platform/health'
     | '/lucie-app/platform/roles'
     | '/lucie-app/platform/tenants'
@@ -2132,6 +2142,7 @@ export interface FileRouteTypes {
     | '/lucie-app/platform/audit'
     | '/lucie-app/platform/entitlements'
     | '/lucie-app/platform/exceptions'
+    | '/lucie-app/platform/gates'
     | '/lucie-app/platform/health'
     | '/lucie-app/platform/roles'
     | '/lucie-app/platform/tenants'
@@ -2329,6 +2340,7 @@ export interface FileRouteTypes {
     | '/lucie-app/platform/audit'
     | '/lucie-app/platform/entitlements'
     | '/lucie-app/platform/exceptions'
+    | '/lucie-app/platform/gates'
     | '/lucie-app/platform/health'
     | '/lucie-app/platform/roles'
     | '/lucie-app/platform/tenants'
@@ -3434,6 +3446,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieAppPlatformExceptionsRouteImport
       parentRoute: typeof LucieAppRoute
     }
+    '/lucie-app/platform/gates': {
+      id: '/lucie-app/platform/gates'
+      path: '/platform/gates'
+      fullPath: '/lucie-app/platform/gates'
+      preLoaderRoute: typeof LucieAppPlatformGatesRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
     '/lucie-app/platform/health': {
       id: '/lucie-app/platform/health'
       path: '/platform/health'
@@ -3991,6 +4010,7 @@ interface LucieAppRouteChildren {
   LucieAppPlatformAuditRoute: typeof LucieAppPlatformAuditRoute
   LucieAppPlatformEntitlementsRoute: typeof LucieAppPlatformEntitlementsRoute
   LucieAppPlatformExceptionsRoute: typeof LucieAppPlatformExceptionsRoute
+  LucieAppPlatformGatesRoute: typeof LucieAppPlatformGatesRoute
   LucieAppPlatformHealthRoute: typeof LucieAppPlatformHealthRoute
   LucieAppPlatformRolesRoute: typeof LucieAppPlatformRolesRoute
   LucieAppPlatformTenantsRoute: typeof LucieAppPlatformTenantsRoute
@@ -4023,6 +4043,7 @@ const LucieAppRouteChildren: LucieAppRouteChildren = {
   LucieAppPlatformAuditRoute: LucieAppPlatformAuditRoute,
   LucieAppPlatformEntitlementsRoute: LucieAppPlatformEntitlementsRoute,
   LucieAppPlatformExceptionsRoute: LucieAppPlatformExceptionsRoute,
+  LucieAppPlatformGatesRoute: LucieAppPlatformGatesRoute,
   LucieAppPlatformHealthRoute: LucieAppPlatformHealthRoute,
   LucieAppPlatformRolesRoute: LucieAppPlatformRolesRoute,
   LucieAppPlatformTenantsRoute: LucieAppPlatformTenantsRoute,
