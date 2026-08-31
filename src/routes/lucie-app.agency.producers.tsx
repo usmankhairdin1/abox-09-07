@@ -85,7 +85,7 @@ function ProducersPage() {
       email: draft.email.trim() || `${draft.name.trim().toLowerCase().replace(/\s+/g, ".")}@northgate-ins.example`,
       npn: draft.npn,
       states: [draft.state],
-      status: "pending_license",
+      status: "in_review",
       captive: draft.captive,
       onboarded: new Date().toISOString().slice(0, 10),
       licenses: [],
