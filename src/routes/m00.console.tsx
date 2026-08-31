@@ -85,7 +85,7 @@ function ConsolePage() {
               },
             })
           : await publicRead({ data: { op } });
-      setResult(res);
+      setResult(res as M00Result);
       void qc.invalidateQueries({ queryKey: ["m00", "status"] });
     } catch (err) {
       setResult({ ok: false, op, error: err instanceof Error ? err.message : String(err) });
