@@ -39,6 +39,7 @@ import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
 import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
+import { Route as GovModuleIndexRouteImport } from './routes/gov.$module.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -190,6 +191,11 @@ const P1ScreenRoute = P1ScreenRouteImport.update({
   path: '/p1/$screen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GovModuleIndexRoute = GovModuleIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GovModuleRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -200,7 +206,7 @@ export interface FileRoutesByFullPath {
   '/m00': typeof M00RouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
-  '/gov/$module': typeof GovModuleRoute
+  '/gov/$module': typeof GovModuleRouteWithChildren
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
   '/lucie/module1': typeof LucieModule1Route
@@ -222,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
+  '/gov/$module/': typeof GovModuleIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -230,7 +237,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
-  '/gov/$module': typeof GovModuleRoute
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
   '/lucie/module1': typeof LucieModule1Route
@@ -252,6 +258,7 @@ export interface FileRoutesByTo {
   '/m00': typeof M00IndexRoute
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
+  '/gov/$module': typeof GovModuleIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -263,7 +270,7 @@ export interface FileRoutesById {
   '/m00': typeof M00RouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
-  '/gov/$module': typeof GovModuleRoute
+  '/gov/$module': typeof GovModuleRouteWithChildren
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
   '/lucie/module1': typeof LucieModule1Route
@@ -285,6 +292,7 @@ export interface FileRoutesById {
   '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
+  '/gov/$module/': typeof GovModuleIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -319,6 +327,7 @@ export interface FileRouteTypes {
     | '/m00/'
     | '/m1/'
     | '/p1/'
+    | '/gov/$module/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -327,7 +336,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/my-work'
     | '/object'
-    | '/gov/$module'
     | '/hf/$screen'
     | '/lucie/governance'
     | '/lucie/module1'
@@ -349,6 +357,7 @@ export interface FileRouteTypes {
     | '/m00'
     | '/m1'
     | '/p1'
+    | '/gov/$module'
   id:
     | '__root__'
     | '/'
@@ -381,6 +390,7 @@ export interface FileRouteTypes {
     | '/m00/'
     | '/m1/'
     | '/p1/'
+    | '/gov/$module/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -392,7 +402,7 @@ export interface RootRouteChildren {
   M00Route: typeof M00RouteWithChildren
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
-  GovModuleRoute: typeof GovModuleRoute
+  GovModuleRoute: typeof GovModuleRouteWithChildren
   HfScreenRoute: typeof HfScreenRoute
   M1ScreenRoute: typeof M1ScreenRoute
   P1ScreenRoute: typeof P1ScreenRoute
@@ -613,6 +623,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof P1ScreenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gov/$module/': {
+      id: '/gov/$module/'
+      path: '/'
+      fullPath: '/gov/$module/'
+      preLoaderRoute: typeof GovModuleIndexRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
   }
 }
 
@@ -662,6 +679,18 @@ const M00RouteChildren: M00RouteChildren = {
 
 const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
 
+interface GovModuleRouteChildren {
+  GovModuleIndexRoute: typeof GovModuleIndexRoute
+}
+
+const GovModuleRouteChildren: GovModuleRouteChildren = {
+  GovModuleIndexRoute: GovModuleIndexRoute,
+}
+
+const GovModuleRouteWithChildren = GovModuleRoute._addFileChildren(
+  GovModuleRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
@@ -671,7 +700,7 @@ const rootRouteChildren: RootRouteChildren = {
   M00Route: M00RouteWithChildren,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
-  GovModuleRoute: GovModuleRoute,
+  GovModuleRoute: GovModuleRouteWithChildren,
   HfScreenRoute: HfScreenRoute,
   M1ScreenRoute: M1ScreenRoute,
   P1ScreenRoute: P1ScreenRoute,
