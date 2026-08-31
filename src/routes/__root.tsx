@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Low-fidelity wireframes for ABox, JET's AI enabled insurance distribution platform and marketplace of marketplaces.",
+          "Agency in a Box is a unified insurance distribution workspace for agencies, agents, marketplaces, and platform teams.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

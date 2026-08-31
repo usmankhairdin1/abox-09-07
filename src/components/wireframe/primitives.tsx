@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
  * semantics are unchanged.
  */
 
-/** Content region placeholder — a real surface plate, not a grey box. */
+/** Flexible product surface used by older screen contracts. */
 export function WBox({
   className,
   label,
@@ -25,13 +25,13 @@ export function WBox({
   return (
     <div
       className={cn(
-        "relative flex items-center justify-center overflow-hidden rounded-xl border border-hairline bg-surface/60 p-4 text-center",
+        "relative flex items-center justify-center overflow-hidden rounded-xl border border-hairline bg-card p-4 text-center shadow-card",
         className,
       )}
     >
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 noise-field opacity-40"
+        className="pointer-events-none absolute inset-0 noise-field opacity-20"
       />
       {children ?? (
         <span className="relative text-serial text-[10.5px] leading-relaxed">{label}</span>
@@ -40,7 +40,7 @@ export function WBox({
   );
 }
 
-/** Text placeholder line. */
+/** Compact progress or density indicator. */
 export function WLine({ w = "100%", className }: { w?: string; className?: string }) {
   return (
     <div
@@ -51,7 +51,7 @@ export function WLine({ w = "100%", className }: { w?: string; className?: strin
   );
 }
 
-/** Row placeholder used inside list cards. */
+/** Compact record row used inside list cards. */
 export function WRow({
   primary = "70%",
   secondary = "40%",
@@ -68,8 +68,8 @@ export function WRow({
         aria-hidden="true"
       />
       <div className="flex-1 space-y-1.5">
-        <WLine w={primary} />
-        <WLine w={secondary} className="h-1.5 bg-panel/70" />
+        <div className="text-sm font-medium">Active workspace record</div>
+        <div className="text-xs text-muted-foreground">Governed data · updated recently</div>
       </div>
       {trailing}
     </div>
@@ -102,7 +102,7 @@ export function WPanel({
       <header className="flex flex-wrap items-start justify-between gap-2 border-b border-hairline bg-surface/50 px-5 py-3.5">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="font-display text-[15px] font-semibold tracking-tight">{title}</h2>
+            <h2 className="font-display text-[15px] font-semibold">{title}</h2>
             {id ? <IdChip>{id}</IdChip> : null}
           </div>
           {meta ? <p className="mt-1 text-xs text-muted-foreground">{meta}</p> : null}
@@ -125,7 +125,7 @@ export function IdChip({
   return (
     <span
       className={cn(
-        "inline-flex items-center whitespace-nowrap rounded-lg border px-2 py-0.5 font-mono text-[10px] uppercase leading-4 tracking-tight",
+        "inline-flex items-center whitespace-nowrap rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase leading-4",
         tone === "prov"
           ? "border-dashed border-border-strong text-muted-foreground"
           : "border-hairline bg-surface text-muted-foreground",
@@ -191,7 +191,7 @@ export function PageHeading({
   return (
     <div className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline pb-5">
       <div className="min-w-0">
-        {eyebrow ? <p className="text-eyebrow tracking-[0.14em]">{eyebrow}</p> : null}
+        {eyebrow ? <p className="text-eyebrow">{eyebrow}</p> : null}
         <div className="mt-1.5 flex flex-wrap items-center gap-2">
           <h1 className="text-display text-2xl sm:text-[28px]">{title}</h1>
           <IdChip>{id}</IdChip>

@@ -1,275 +1,223 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Boxes, LayoutGrid, PanelsTopLeft, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  CheckCircle2,
+  Clock3,
+  FileCheck2,
+  ShieldCheck,
+  ShoppingBag,
+  UserPlus,
+  Users,
+} from "lucide-react";
 
 import { KpiCard } from "@/components/abox/kpi-card";
+import { MastheadMark } from "@/components/abox/decor";
+import { StatusBadge } from "@/components/abox/status-badge";
 import { AppShell } from "@/components/shell/AppShell";
-import {
-  AclNote,
-  Annotation,
-  IdChip,
-  PageHeading,
-  Pill,
-  WBox,
-  WPanel,
-} from "@/components/wireframe/primitives";
-import { MODULES, WORKSPACES } from "@/lib/abox";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ABox Platform Shell — Wireframe Map" },
+      { title: "Operations Home — Agency in a Box" },
       {
         name: "description",
-        content:
-          "Annotated low-fidelity wireframe of the ABox internal platform shell: top bar, workspace and entity switchers, left navigation, context drawer and assistant.",
+        content: "Manage agency work, customer activity, submissions, products, commissions, and governed operations in ABox.",
       },
-      { property: "og:title", content: "ABox Platform Shell — Wireframe Map" },
+      { property: "og:title", content: "Operations Home — Agency in a Box" },
       {
         property: "og:description",
-        content:
-          "Structure-only wireframe of the unified ABox shell with workspaces, permission-driven modules, context drawer and assistant.",
+        content: "A unified insurance distribution workspace for agencies, agents, marketplaces, and platform teams.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: ShellMapPage,
+  component: OperationsHome,
 });
 
-const REGIONS = [
+const PRIORITIES = [
   {
-    id: "SHELL_TOPBAR",
-    name: "Top global bar",
-    what: "Persistent across every internal screen. Holds brand slot, workspace switcher, entity switcher, global search, notifications, tasks, AI assistant entry, profile and settings.",
-    config: "Brand slot and menu visibility from Branding + Menu configuration.",
+    title: "Rivera family application",
+    detail: "Eligibility response needs review before submission",
+    meta: "Due today",
+    tone: "warning" as const,
+    icon: FileCheck2,
   },
   {
-    id: "SHELL_WS_SWITCH",
-    name: "Workspace switcher",
-    what: "Switches the experience, not the app. Changes module set, data scope, default landing, available actions and labels. External workspaces are branded and do not use this shell.",
-    config: "Workspace labels and availability configurable per tenant.",
+    title: "Morgan Lee renewal",
+    detail: "New plan recommendations are ready to share",
+    meta: "Due Sep 3",
+    tone: "primary" as const,
+    icon: Users,
   },
   {
-    id: "SHELL_ENTITY_SWITCH",
-    name: "Entity switcher",
-    what: "Relationship-graph tree: tenant, marketplace, parent agency, downline agencies, partners. Selection scopes every read and write on the page.",
-    config: "Derived from relationship rules; entity labels configurable.",
-  },
-  {
-    id: "SHELL_SEARCH",
-    name: "Global search",
-    what: "Cross-object palette grouped by object type. ACL and entity scoped; sensitive fields masked; out-of-scope objects absent from results.",
-    config: "Searchable object types configurable per workspace.",
-  },
-  {
-    id: "SHELL_NOTIFS",
-    name: "Notifications",
-    what: "Tray of recent events with a link to the full notification centre. Channel and template content is admin configured.",
-    config: "Templates, channels and branding from Communications config.",
-  },
-  {
-    id: "SHELL_TASKS",
-    name: "Tasks",
-    what: "Tray of open tasks and follow-ups assigned to the current user in the current entity scope.",
-    config: "Task types configurable; assignment follows relationship rules.",
-  },
-  {
-    id: "SHELL_ASSISTANT_ENTRY",
-    name: "AI assistant entry",
-    what: "Top-bar entry to the same assistant as the bottom-right launcher, so the assistant is reachable from anywhere.",
-    config: "Visibility per role; guardrails from AI governance.",
-  },
-  {
-    id: "SHELL_PROFILE",
-    name: "Profile & settings",
-    what: "User profile, preferences including landing page, language, support access, sign out. Also hosts the wireframe role simulator.",
-    config: "Preference set configurable per tenant.",
-  },
-  {
-    id: "SHELL_LEFTNAV",
-    name: "Left navigation",
-    what: "Module containers for the current workspace, permission filtered. Inaccessible modules are absent, not greyed. Appointments/Paper and AI stay nested. Collapses to an icon rail.",
-    config: "Labels, order and visibility from Menu + Label configuration.",
-  },
-  {
-    id: "SHELL_CANVAS",
-    name: "Main content canvas",
-    what: "Where module screens and object pages render. All page patterns fit inside this one canvas.",
-    config: "Page-level widgets and columns configurable where allowed.",
-  },
-  {
-    id: "SHELL_DRAWER",
-    name: "Right context drawer",
-    what: "Page-level context, object summary, guidance, help and FAQ, audit where permitted, and next actions. Collapsible, present on every internal screen.",
-    config: "Content authored in Help & FAQ configuration.",
-  },
-  {
-    id: "SHELL_ASSISTANT",
-    name: "Bottom-right assistant / help",
-    what: "Chatbot help, FAQs and copilot suggestions, contextual to the current page and object.",
-    config: "FAQ set, tone and allowed actions configurable; logged.",
+    title: "Harbor Point appointment",
+    detail: "Carrier documentation is awaiting approval",
+    meta: "2 documents",
+    tone: "info" as const,
+    icon: Building2,
   },
 ];
 
-function ShellMapPage() {
+const ACTIVITY = [
+  ["Quote created", "Sofia Patel", "Individual & Family", "8 min ago"],
+  ["Application submitted", "James Wilson", "Off-exchange", "24 min ago"],
+  ["Producer added", "Maya Chen", "Harbor Point", "1 hr ago"],
+  ["Commission statement", "August statement ready", "$18,420", "2 hrs ago"],
+];
+
+const ESTATES = [
+  { to: "/m1", title: "Marketplace & sales", detail: "Quote, compare, cart, and member journeys", icon: ShoppingBag },
+  { to: "/p1", title: "Phase 1 operations", detail: "Enrollment, products, agencies, and commissions", icon: Building2 },
+  { to: "/m06", title: "Agency network", detail: "Organizations, producers, hierarchy, and appointments", icon: Users },
+  { to: "/lucie", title: "Governance", detail: "Traceability, states, modules, and release controls", icon: ShieldCheck },
+] as const;
+
+function OperationsHome() {
   return (
-    <AppShell drawerTitle="Shell map context" assistantContext="the platform shell">
-      <PageHeading
-        eyebrow="ABox · Batch 1 · Internal platform shell"
-        title="Global platform shell"
-        id="SHELL_MAP"
-        description="Annotated map of the shell you are currently inside. Every region below is live in this wireframe — open the switchers, search, trays, drawer and assistant to walk the structure."
-        actions={
+    <AppShell drawerTitle="Today at a glance" assistantContext="your operations home">
+      <header className="relative overflow-hidden border-b border-hairline pb-10 pt-8 md:pb-12 md:pt-12">
+        <MastheadMark label="Agency workspace · Northwind Master" />
+        <div className="mt-7 flex flex-wrap items-end justify-between gap-8">
+          <div className="max-w-3xl">
+            <h1 className="text-display text-4xl leading-none sm:text-5xl md:text-6xl">Good morning, Elena.</h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+              Your book is moving. Three cases need attention today and seven new opportunities are ready for follow-up.
+            </p>
+          </div>
           <div className="flex flex-wrap gap-2">
-            <Link
-              to="/lucie"
-              className="rounded-lg border border-hairline px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent"
-            >
-              Lucie delivery spine →
-            </Link>
-            <Link
-              to="/gov"
-              className="rounded-lg border border-hairline px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent"
-            >
-              Governed build packets →
-            </Link>
+            <Button variant="outline" className="rounded-full" asChild>
+              <Link to="/object"><Users />Find customer</Link>
+            </Button>
+            <Button className="rounded-full" asChild>
+              <Link to="/m1"><UserPlus />Start a quote</Link>
+            </Button>
           </div>
-        }
-
-      />
-
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard label="Workspaces" value={WORKSPACES.length} icon={LayoutGrid} hint="switcher scoped" />
-        <KpiCard label="Module containers" value={MODULES.length} icon={Boxes} tone="primary" hint="permission filtered" />
-        <KpiCard label="Shell regions" value={REGIONS.length} icon={PanelsTopLeft} tone="sage" hint="stable IDs" />
-        <KpiCard label="Governed estates" value={5} icon={ShieldCheck} tone="warning" hint="M00 · M04 · M05 · M06 · Lucie" />
-      </div>
-
-
-      <div className="grid gap-3 lg:grid-cols-3">
-        <WPanel
-          title="Region diagram"
-          id="SHELL_DIAGRAM"
-          meta="One unified shell. Workspaces, not portals."
-          className="lg:col-span-2"
-        >
-          <div className="space-y-2">
-            <WBox
-              className="h-10"
-              label="SHELL_TOPBAR — brand · workspace · entity · search · notifications · tasks · assistant · profile"
-            />
-            <div className="flex gap-2">
-              <WBox className="h-56 w-40 shrink-0" label="SHELL_LEFTNAV" />
-              <WBox className="h-56 flex-1" label="SHELL_CANVAS" />
-              <WBox className="h-56 w-32 shrink-0" label="SHELL_DRAWER" />
-            </div>
-            <div className="flex justify-end">
-              <WBox className="h-9 w-48" label="SHELL_ASSISTANT" />
-            </div>
-          </div>
-          <Annotation className="mt-3">
-            Consumer marketplace and member workspace use a separate, externally branded and
-            simplified shell — not this chrome.
-          </Annotation>
-        </WPanel>
-
-        <div className="space-y-3">
-          <WPanel
-            title="Batch 1 screens"
-            id="BATCH_1"
-            meta="Structure only — no colour or branding work"
-          >
-            <ul className="space-y-1.5 text-xs">
-              {[
-                { to: "/", label: "Internal platform shell", id: "SHELL_MAP" },
-                { to: "/my-work", label: "My Work landing", id: "SCR_MY_WORK" },
-                { to: "/dashboard", label: "Dashboards & Analytics shell", id: "SCR_DASHBOARD" },
-                { to: "/object", label: "Object page framework", id: "PATTERN_OBJECT_PAGE" },
-                { to: "/admin", label: "Admin configuration shell", id: "SCR_ADMIN_HOME" },
-              ].map((s) => (
-                <li key={s.to}>
-                  <Link
-                    to={s.to}
-                    className="flex items-center justify-between gap-2 rounded-lg border border-hairline px-2 py-2 hover:bg-accent"
-                  >
-                    <span>{s.label}</span>
-                    <IdChip>{s.id}</IdChip>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </WPanel>
-
-          <AclNote>
-            Switch the simulated role in Profile &amp; settings. As an agent you lose the
-            Commissions and Admin modules from the left nav and the Audit tab from the drawer — they
-            vanish rather than appear disabled.
-          </AclNote>
         </div>
-      </div>
+      </header>
 
-      <WPanel
-        title="Shell regions"
-        id="SHELL_REGIONS"
-        meta="Each region carries a stable ID that later batches reference"
-      >
-        <div className="grid gap-2 md:grid-cols-2">
-          {REGIONS.map((r) => (
-            <div key={r.id} className="rounded-lg border border-hairline p-3">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm font-medium">{r.name}</span>
-                <IdChip>{r.id}</IdChip>
+      <section className="py-8" aria-labelledby="portfolio-heading">
+        <div className="mb-5 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-eyebrow">Book of business</p>
+            <h2 id="portfolio-heading" className="text-display mt-2 text-2xl">Performance snapshot</h2>
+          </div>
+          <Button variant="ghost" className="rounded-full" asChild>
+            <Link to="/dashboard">View analytics <ArrowRight /></Link>
+          </Button>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+          <KpiCard label="Active members" value="2,418" delta={{ pct: 8.4, label: "this month" }} icon={Users} />
+          <KpiCard label="Open opportunities" value={47} delta={{ pct: 12.1, label: "this week" }} icon={UserPlus} tone="primary" />
+          <KpiCard label="In-flight applications" value={18} hint="5 need attention" icon={FileCheck2} tone="warning" />
+          <KpiCard label="Placement rate" value="86%" delta={{ pct: 3.2, label: "vs. last month" }} icon={CheckCircle2} tone="sage" />
+        </div>
+      </section>
+
+      <section className="grid gap-6 border-t border-hairline py-8 xl:grid-cols-[1.15fr_.85fr]">
+        <div>
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-eyebrow">Queue</p>
+              <h2 className="text-display mt-2 text-2xl">Needs your attention</h2>
+            </div>
+            <StatusBadge tone="warning">3 priority</StatusBadge>
+          </div>
+          <div className="overflow-hidden rounded-2xl border border-hairline bg-card shadow-card">
+            {PRIORITIES.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <button key={item.title} type="button" className="group flex w-full items-center gap-4 border-b border-hairline p-5 text-left transition-colors last:border-0 hover:bg-accent/60">
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-hairline bg-surface text-primary">
+                    <Icon className="size-5" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-semibold">{item.title}</span>
+                    <span className="mt-1 block truncate text-sm text-muted-foreground">{item.detail}</span>
+                  </span>
+                  <span className="hidden text-right sm:block">
+                    <StatusBadge tone={item.tone}>{item.meta}</StatusBadge>
+                    <span className="mt-2 block text-xs text-muted-foreground">Priority {index + 1}</span>
+                  </span>
+                  <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div>
+          <div className="mb-5">
+            <p className="text-eyebrow">This month</p>
+            <h2 className="text-display mt-2 text-2xl">Production pace</h2>
+          </div>
+          <div className="rounded-2xl border border-hairline bg-primary p-6 text-primary-foreground shadow-elevated">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-medium uppercase">Placed premium</p>
+                <p className="text-display mt-3 text-4xl">$184.6k</p>
               </div>
-              <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{r.what}</p>
-              <Annotation className="mt-1.5">{r.config}</Annotation>
+              <span className="rounded-full border border-primary-foreground/20 px-3 py-1 text-xs">82% of goal</span>
             </div>
-          ))}
-        </div>
-      </WPanel>
-
-      <div className="grid gap-3 lg:grid-cols-2">
-        <WPanel title="Workspaces in the switcher" id="WS_REGISTER">
-          <ul className="space-y-1.5">
-            {WORKSPACES.map((w) => (
-              <li
-                key={w.id}
-                className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-hairline px-2.5 py-2"
-              >
-                <span className="text-xs">
-                  <span className="font-medium">{w.name}</span>
-                  <span className="block font-mono text-[10px] text-muted-foreground">{w.id}</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Pill>{w.kind === "external" ? "external shell" : "unified shell"}</Pill>
-                  <Pill>{w.phase}</Pill>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </WPanel>
-
-        <WPanel
-          title="Module containers"
-          id="MOD_REGISTER"
-          meta="13 containers; nested ones never surface as top-level menu items"
-        >
-          <ul className="space-y-1.5">
-            {MODULES.map((m) => (
-              <li key={m.id} className="rounded-lg border border-hairline px-2.5 py-2">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs font-medium">
-                    {m.label}
-                    {m.nested ? " (nested)" : ""}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <IdChip>{m.id}</IdChip>
-                    <Pill>{m.packet}</Pill>
-                  </span>
+            <Progress value={82} className="mt-8 bg-primary-foreground/20 [&_[data-slot=progress-indicator]]:bg-primary-foreground" />
+            <div className="mt-5 grid grid-cols-3 gap-3 border-t border-primary-foreground/15 pt-5">
+              {[["Goal", "$225k"], ["Pending", "$41k"], ["Days left", "12"]].map(([label, value]) => (
+                <div key={label}>
+                  <p className="text-xs text-primary-foreground/65">{label}</p>
+                  <p className="mt-1 font-semibold tabular-nums">{value}</p>
                 </div>
-                <Annotation className="mt-1">{m.acl}</Annotation>
-              </li>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="grid gap-6 border-t border-hairline py-8 xl:grid-cols-[1.2fr_.8fr]">
+        <div>
+          <div className="mb-5 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-eyebrow">Live operations</p>
+              <h2 className="text-display mt-2 text-2xl">Recent activity</h2>
+            </div>
+            <Button variant="ghost" className="rounded-full">View all <ArrowRight /></Button>
+          </div>
+          <div className="overflow-hidden rounded-2xl border border-hairline bg-card shadow-card">
+            {ACTIVITY.map(([event, subject, detail, time]) => (
+              <div key={`${event}-${subject}`} className="grid gap-2 border-b border-hairline px-5 py-4 last:border-0 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
+                <div>
+                  <p className="text-sm font-medium">{event}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{subject}</p>
+                </div>
+                <p className="text-sm text-muted-foreground">{detail}</p>
+                <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><Clock3 className="size-3.5" />{time}</p>
+              </div>
             ))}
-          </ul>
-        </WPanel>
-      </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="mb-5">
+            <p className="text-eyebrow">Explore</p>
+            <h2 className="text-display mt-2 text-2xl">ABox capabilities</h2>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+            {ESTATES.map((estate) => {
+              const Icon = estate.icon;
+              return (
+                <Link key={estate.to} to={estate.to} className="group rounded-2xl border border-hairline bg-card p-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-primary/30">
+                  <Icon className="size-5 text-primary" />
+                  <p className="mt-5 text-sm font-semibold">{estate.title}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{estate.detail}</p>
+                  <ArrowRight className="mt-4 size-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" />
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
     </AppShell>
   );
 }
