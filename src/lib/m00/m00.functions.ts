@@ -15,13 +15,15 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 import { RUNTIME_OP_BY_NAME } from "./runtime";
 
+export type M00Json = string | number | boolean | null | { [key: string]: M00Json } | M00Json[];
+
 export interface M00Result {
   ok: boolean;
   op: string;
-  replayed?: boolean;
-  data?: unknown;
-  error?: string;
-  sqlstate?: string;
+  replayed?: boolean | undefined;
+  data?: M00Json | undefined;
+  error?: string | undefined;
+  sqlstate?: string | undefined;
 }
 
 interface InvokeArgs {
@@ -37,11 +39,11 @@ async function dispatch(args: InvokeArgs): Promise<M00Result> {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin.rpc("m00_api", {
     p_op: args.op,
-    p_payload: args.payload ?? {},
-    p_user_id: args.userId ?? null,
-    p_tenant_id: args.tenantId ?? null,
+    p_payload: (args.payload ?? {}) as never,
+    ...(args.userId ? { p_user_id: args.userId } : {}),
+    ...(args.tenantId ? { p_tenant_id: args.tenantId } : {}),
     p_is_platform_admin: args.isPlatformAdmin ?? false,
-    p_idempotency_key: args.idempotencyKey ?? null,
+    ...(args.idempotencyKey ? { p_idempotency_key: args.idempotencyKey } : {}),
   });
   if (error) return { ok: false, op: args.op, error: error.message };
   return data as unknown as M00Result;
@@ -52,7 +54,7 @@ export const m00Status = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin.rpc("m00_foundation_status");
   if (error) return { ok: false, error: error.message, data: null };
-  return { ok: true, error: null, data: data as Record<string, number> };
+  return { ok: true, error: null, data: data as unknown as Record<string, number> };
 });
 
 /** Public catalogue reads (roles, permissions, matrix, geography, features, status). */
