@@ -20,6 +20,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      lucie_m06_api: {
+        Args: {
+          p_is_platform_admin?: boolean
+          p_op: string
+          p_organization_id?: string
+          p_payload?: Json
+          p_tenant_id?: string
+          p_user_id?: string
+        }
+        Returns: Json
+      }
       m00_api: {
         Args: {
           p_idempotency_key?: string
