@@ -61,6 +61,7 @@ function GovIndex() {
                   <Link
                     to="/gov/$module/registers"
                     params={{ module: m }}
+                    search={{ r: "" }}
                     className="rounded border border-border px-2 py-1 text-xs hover:bg-muted"
                   >
                     Registers
