@@ -1,5 +1,5 @@
 /**
- * SCR_PLATFORM_HOME (UI-M00-001) — governed M00 Platform Foundation surface.
+ * UI-M00-001 — governed M00 Platform Foundation surface.
  * Data is generated from the governed control store (see src/lib/m00-foundation.ts).
  */
 import { createFileRoute } from "@tanstack/react-router";
@@ -9,7 +9,6 @@ import { DataTable, type Column } from "@/components/abox/data-table";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SURFACE_CLASSIFICATION } from "@/lib/lucie-release";
-import { SCREENS } from "@/lib/screens";
 import { M00_SNAPSHOT, type M00Gate, type M00Risk, type M00OpenItem, type M00Screen } from "@/lib/m00-foundation";
 import {
   M00_CHANGE_RECORDS, M00_ENVIRONMENTS, M00_PHASES,
@@ -17,13 +16,16 @@ import {
 } from "@/lib/m00-change-control";
 import { ListChecks, ShieldCheck, Route as RouteIcon, GitBranch } from "lucide-react";
 
+const title = "Platform Foundation";
+const description = "Governed M00 delivery spine: gates, risks, change records, environments and open items.";
+
 export const Route = createFileRoute("/app/jet/platform")({
   head: () => ({
     meta: [
-      { title: `${SCREENS.SCR_PLATFORM_HOME.name} — ABox` },
-      { name: "description", content: SCREENS.SCR_PLATFORM_HOME.purpose },
-      { property: "og:title", content: `${SCREENS.SCR_PLATFORM_HOME.name} — ABox` },
-      { property: "og:description", content: SCREENS.SCR_PLATFORM_HOME.purpose },
+      { title: `${title} — ABox` },
+      { name: "description", content: description },
+      { property: "og:title", content: `${title} — ABox` },
+      { property: "og:description", content: description },
     ],
   }),
   component: Page,
