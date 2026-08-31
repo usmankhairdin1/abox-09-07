@@ -17,6 +17,8 @@ import { Route as LucieRouteImport } from './routes/lucie'
 import { Route as M00RouteImport } from './routes/m00'
 import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
+import { Route as GovIndexRouteImport } from './routes/gov.index'
+import { Route as GovModuleRouteImport } from './routes/gov.$module'
 import { Route as HfIndexRouteImport } from './routes/hf.index'
 import { Route as HfScreenRouteImport } from './routes/hf.$screen'
 import { Route as LucieIndexRouteImport } from './routes/lucie.index'
@@ -38,6 +40,14 @@ import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
 import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
+import { Route as GovModuleIndexRouteImport } from './routes/gov.$module.index'
+import { Route as GovModuleDeltasRouteImport } from './routes/gov.$module.deltas'
+import { Route as GovModuleFlowsRouteImport } from './routes/gov.$module.flows'
+import { Route as GovModuleRegistersRouteImport } from './routes/gov.$module.registers'
+import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
+import { Route as GovModuleTraceabilityRouteImport } from './routes/gov.$module.traceability'
+import { Route as GovModuleFlowsFlowRouteImport } from './routes/gov.$module.flows.$flow'
+import { Route as GovModuleScreensScreenRouteImport } from './routes/gov.$module.screens.$screen'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -77,6 +87,16 @@ const MyWorkRoute = MyWorkRouteImport.update({
 const ObjectRoute = ObjectRouteImport.update({
   id: '/object',
   path: '/object',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GovIndexRoute = GovIndexRouteImport.update({
+  id: '/gov/',
+  path: '/gov/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GovModuleRoute = GovModuleRouteImport.update({
+  id: '/gov/$module',
+  path: '/gov/$module',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HfIndexRoute = HfIndexRouteImport.update({
@@ -184,6 +204,46 @@ const P1ScreenRoute = P1ScreenRouteImport.update({
   path: '/p1/$screen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GovModuleIndexRoute = GovModuleIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GovModuleRoute,
+} as any)
+const GovModuleDeltasRoute = GovModuleDeltasRouteImport.update({
+  id: '/deltas',
+  path: '/deltas',
+  getParentRoute: () => GovModuleRoute,
+} as any)
+const GovModuleFlowsRoute = GovModuleFlowsRouteImport.update({
+  id: '/flows',
+  path: '/flows',
+  getParentRoute: () => GovModuleRoute,
+} as any)
+const GovModuleRegistersRoute = GovModuleRegistersRouteImport.update({
+  id: '/registers',
+  path: '/registers',
+  getParentRoute: () => GovModuleRoute,
+} as any)
+const GovModuleScreensRoute = GovModuleScreensRouteImport.update({
+  id: '/screens',
+  path: '/screens',
+  getParentRoute: () => GovModuleRoute,
+} as any)
+const GovModuleTraceabilityRoute = GovModuleTraceabilityRouteImport.update({
+  id: '/traceability',
+  path: '/traceability',
+  getParentRoute: () => GovModuleRoute,
+} as any)
+const GovModuleFlowsFlowRoute = GovModuleFlowsFlowRouteImport.update({
+  id: '/$flow',
+  path: '/$flow',
+  getParentRoute: () => GovModuleFlowsRoute,
+} as any)
+const GovModuleScreensScreenRoute = GovModuleScreensScreenRouteImport.update({
+  id: '/$screen',
+  path: '/$screen',
+  getParentRoute: () => GovModuleScreensRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -194,6 +254,7 @@ export interface FileRoutesByFullPath {
   '/m00': typeof M00RouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/gov/$module': typeof GovModuleRouteWithChildren
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
   '/lucie/module1': typeof LucieModule1Route
@@ -210,11 +271,20 @@ export interface FileRoutesByFullPath {
   '/m00/tests': typeof M00TestsRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
+  '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
   '/lucie/': typeof LucieIndexRoute
   '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
+  '/gov/$module/deltas': typeof GovModuleDeltasRoute
+  '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
+  '/gov/$module/registers': typeof GovModuleRegistersRoute
+  '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
+  '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/gov/$module/': typeof GovModuleIndexRoute
+  '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
+  '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -239,11 +309,20 @@ export interface FileRoutesByTo {
   '/m00/tests': typeof M00TestsRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
+  '/gov': typeof GovIndexRoute
   '/hf': typeof HfIndexRoute
   '/lucie': typeof LucieIndexRoute
   '/m00': typeof M00IndexRoute
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
+  '/gov/$module/deltas': typeof GovModuleDeltasRoute
+  '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
+  '/gov/$module/registers': typeof GovModuleRegistersRoute
+  '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
+  '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/gov/$module': typeof GovModuleIndexRoute
+  '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
+  '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -255,6 +334,7 @@ export interface FileRoutesById {
   '/m00': typeof M00RouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/gov/$module': typeof GovModuleRouteWithChildren
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
   '/lucie/module1': typeof LucieModule1Route
@@ -271,11 +351,20 @@ export interface FileRoutesById {
   '/m00/tests': typeof M00TestsRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
+  '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
   '/lucie/': typeof LucieIndexRoute
   '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
+  '/gov/$module/deltas': typeof GovModuleDeltasRoute
+  '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
+  '/gov/$module/registers': typeof GovModuleRegistersRoute
+  '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
+  '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/gov/$module/': typeof GovModuleIndexRoute
+  '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
+  '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -288,6 +377,7 @@ export interface FileRouteTypes {
     | '/m00'
     | '/my-work'
     | '/object'
+    | '/gov/$module'
     | '/hf/$screen'
     | '/lucie/governance'
     | '/lucie/module1'
@@ -304,11 +394,20 @@ export interface FileRouteTypes {
     | '/m00/tests'
     | '/m1/$screen'
     | '/p1/$screen'
+    | '/gov/'
     | '/hf/'
     | '/lucie/'
     | '/m00/'
     | '/m1/'
     | '/p1/'
+    | '/gov/$module/deltas'
+    | '/gov/$module/flows'
+    | '/gov/$module/registers'
+    | '/gov/$module/screens'
+    | '/gov/$module/traceability'
+    | '/gov/$module/'
+    | '/gov/$module/flows/$flow'
+    | '/gov/$module/screens/$screen'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -333,11 +432,20 @@ export interface FileRouteTypes {
     | '/m00/tests'
     | '/m1/$screen'
     | '/p1/$screen'
+    | '/gov'
     | '/hf'
     | '/lucie'
     | '/m00'
     | '/m1'
     | '/p1'
+    | '/gov/$module/deltas'
+    | '/gov/$module/flows'
+    | '/gov/$module/registers'
+    | '/gov/$module/screens'
+    | '/gov/$module/traceability'
+    | '/gov/$module'
+    | '/gov/$module/flows/$flow'
+    | '/gov/$module/screens/$screen'
   id:
     | '__root__'
     | '/'
@@ -348,6 +456,7 @@ export interface FileRouteTypes {
     | '/m00'
     | '/my-work'
     | '/object'
+    | '/gov/$module'
     | '/hf/$screen'
     | '/lucie/governance'
     | '/lucie/module1'
@@ -364,11 +473,20 @@ export interface FileRouteTypes {
     | '/m00/tests'
     | '/m1/$screen'
     | '/p1/$screen'
+    | '/gov/'
     | '/hf/'
     | '/lucie/'
     | '/m00/'
     | '/m1/'
     | '/p1/'
+    | '/gov/$module/deltas'
+    | '/gov/$module/flows'
+    | '/gov/$module/registers'
+    | '/gov/$module/screens'
+    | '/gov/$module/traceability'
+    | '/gov/$module/'
+    | '/gov/$module/flows/$flow'
+    | '/gov/$module/screens/$screen'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -380,9 +498,11 @@ export interface RootRouteChildren {
   M00Route: typeof M00RouteWithChildren
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
+  GovModuleRoute: typeof GovModuleRouteWithChildren
   HfScreenRoute: typeof HfScreenRoute
   M1ScreenRoute: typeof M1ScreenRoute
   P1ScreenRoute: typeof P1ScreenRoute
+  GovIndexRoute: typeof GovIndexRoute
   HfIndexRoute: typeof HfIndexRoute
   M1IndexRoute: typeof M1IndexRoute
   P1IndexRoute: typeof P1IndexRoute
@@ -444,6 +564,20 @@ declare module '@tanstack/react-router' {
       path: '/object'
       fullPath: '/object'
       preLoaderRoute: typeof ObjectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gov/': {
+      id: '/gov/'
+      path: '/gov'
+      fullPath: '/gov/'
+      preLoaderRoute: typeof GovIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gov/$module': {
+      id: '/gov/$module'
+      path: '/gov/$module'
+      fullPath: '/gov/$module'
+      preLoaderRoute: typeof GovModuleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/hf/': {
@@ -593,6 +727,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof P1ScreenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gov/$module/': {
+      id: '/gov/$module/'
+      path: '/'
+      fullPath: '/gov/$module/'
+      preLoaderRoute: typeof GovModuleIndexRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
+    '/gov/$module/deltas': {
+      id: '/gov/$module/deltas'
+      path: '/deltas'
+      fullPath: '/gov/$module/deltas'
+      preLoaderRoute: typeof GovModuleDeltasRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
+    '/gov/$module/flows': {
+      id: '/gov/$module/flows'
+      path: '/flows'
+      fullPath: '/gov/$module/flows'
+      preLoaderRoute: typeof GovModuleFlowsRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
+    '/gov/$module/registers': {
+      id: '/gov/$module/registers'
+      path: '/registers'
+      fullPath: '/gov/$module/registers'
+      preLoaderRoute: typeof GovModuleRegistersRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
+    '/gov/$module/screens': {
+      id: '/gov/$module/screens'
+      path: '/screens'
+      fullPath: '/gov/$module/screens'
+      preLoaderRoute: typeof GovModuleScreensRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
+    '/gov/$module/traceability': {
+      id: '/gov/$module/traceability'
+      path: '/traceability'
+      fullPath: '/gov/$module/traceability'
+      preLoaderRoute: typeof GovModuleTraceabilityRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
+    '/gov/$module/flows/$flow': {
+      id: '/gov/$module/flows/$flow'
+      path: '/$flow'
+      fullPath: '/gov/$module/flows/$flow'
+      preLoaderRoute: typeof GovModuleFlowsFlowRouteImport
+      parentRoute: typeof GovModuleFlowsRoute
+    }
+    '/gov/$module/screens/$screen': {
+      id: '/gov/$module/screens/$screen'
+      path: '/$screen'
+      fullPath: '/gov/$module/screens/$screen'
+      preLoaderRoute: typeof GovModuleScreensScreenRouteImport
+      parentRoute: typeof GovModuleScreensRoute
+    }
   }
 }
 
@@ -642,6 +832,51 @@ const M00RouteChildren: M00RouteChildren = {
 
 const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
 
+interface GovModuleFlowsRouteChildren {
+  GovModuleFlowsFlowRoute: typeof GovModuleFlowsFlowRoute
+}
+
+const GovModuleFlowsRouteChildren: GovModuleFlowsRouteChildren = {
+  GovModuleFlowsFlowRoute: GovModuleFlowsFlowRoute,
+}
+
+const GovModuleFlowsRouteWithChildren = GovModuleFlowsRoute._addFileChildren(
+  GovModuleFlowsRouteChildren,
+)
+
+interface GovModuleScreensRouteChildren {
+  GovModuleScreensScreenRoute: typeof GovModuleScreensScreenRoute
+}
+
+const GovModuleScreensRouteChildren: GovModuleScreensRouteChildren = {
+  GovModuleScreensScreenRoute: GovModuleScreensScreenRoute,
+}
+
+const GovModuleScreensRouteWithChildren =
+  GovModuleScreensRoute._addFileChildren(GovModuleScreensRouteChildren)
+
+interface GovModuleRouteChildren {
+  GovModuleDeltasRoute: typeof GovModuleDeltasRoute
+  GovModuleFlowsRoute: typeof GovModuleFlowsRouteWithChildren
+  GovModuleRegistersRoute: typeof GovModuleRegistersRoute
+  GovModuleScreensRoute: typeof GovModuleScreensRouteWithChildren
+  GovModuleTraceabilityRoute: typeof GovModuleTraceabilityRoute
+  GovModuleIndexRoute: typeof GovModuleIndexRoute
+}
+
+const GovModuleRouteChildren: GovModuleRouteChildren = {
+  GovModuleDeltasRoute: GovModuleDeltasRoute,
+  GovModuleFlowsRoute: GovModuleFlowsRouteWithChildren,
+  GovModuleRegistersRoute: GovModuleRegistersRoute,
+  GovModuleScreensRoute: GovModuleScreensRouteWithChildren,
+  GovModuleTraceabilityRoute: GovModuleTraceabilityRoute,
+  GovModuleIndexRoute: GovModuleIndexRoute,
+}
+
+const GovModuleRouteWithChildren = GovModuleRoute._addFileChildren(
+  GovModuleRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
@@ -651,9 +886,11 @@ const rootRouteChildren: RootRouteChildren = {
   M00Route: M00RouteWithChildren,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
+  GovModuleRoute: GovModuleRouteWithChildren,
   HfScreenRoute: HfScreenRoute,
   M1ScreenRoute: M1ScreenRoute,
   P1ScreenRoute: P1ScreenRoute,
+  GovIndexRoute: GovIndexRoute,
   HfIndexRoute: HfIndexRoute,
   M1IndexRoute: M1IndexRoute,
   P1IndexRoute: P1IndexRoute,
