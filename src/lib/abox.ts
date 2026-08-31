@@ -183,7 +183,7 @@ export const MODULES: ModuleDef[] = [
   {
     id: "MOD_MY_WORK",
     label: "My Work",
-    to: "/my-work",
+    to: "/app/my-work",
     phase: "P1-Build",
     packet: "P1-Later",
     acl: "any authenticated internal user",
@@ -192,7 +192,7 @@ export const MODULES: ModuleDef[] = [
   {
     id: "MOD_REPORTING",
     label: "Dashboards & Analytics",
-    to: "/dashboard",
+    to: "/app/dashboard",
     phase: "P1-Build",
     packet: "P1-Later",
     acl: "reporting.view + entity data scope",
@@ -201,7 +201,7 @@ export const MODULES: ModuleDef[] = [
   {
     id: "MOD_LEADS_CUSTOMERS",
     label: "Customers & Leads",
-    to: "/object",
+    to: "/app/object",
     phase: "P1-Build",
     packet: "P1-Later",
     acl: "leads.view, scoped by assignment and downline",
@@ -293,7 +293,7 @@ export const MODULES: ModuleDef[] = [
   {
     id: "MOD_ADMIN_CONFIG",
     label: "Admin & Configuration",
-    to: "/admin",
+    to: "/app/admin",
     phase: "P1-Build",
     packet: "P1-Later",
     acl: "admin.configure within global guardrails",

@@ -10,14 +10,35 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccessibilityRouteImport } from './routes/accessibility'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CartRouteImport } from './routes/cart'
+import { Route as CompareRouteImport } from './routes/compare'
+import { Route as ComplianceRouteImport } from './routes/compliance'
+import { Route as CoverageRouteImport } from './routes/coverage'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as HandoffRouteImport } from './routes/handoff'
+import { Route as IchraRouteImport } from './routes/ichra'
 import { Route as LucieRouteImport } from './routes/lucie'
 import { Route as M00RouteImport } from './routes/m00'
 import { Route as M06RouteImport } from './routes/m06'
+import { Route as MemberRouteImport } from './routes/member'
 import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
+import { Route as PlansRouteImport } from './routes/plans'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as QuoteRouteImport } from './routes/quote'
+import { Route as ReviewRouteImport } from './routes/review'
+import { Route as ScheduleRouteImport } from './routes/schedule'
+import { Route as SelectRouteImport } from './routes/select'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppMyWorkRouteImport } from './routes/app.my-work'
+import { Route as AppObjectRouteImport } from './routes/app.object'
 import { Route as GovIndexRouteImport } from './routes/gov.index'
 import { Route as GovModuleRouteImport } from './routes/gov.$module'
 import { Route as HfIndexRouteImport } from './routes/hf.index'
@@ -42,8 +63,14 @@ import { Route as M06ConsoleRouteImport } from './routes/m06.console'
 import { Route as M06RosterRouteImport } from './routes/m06.roster'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
+import { Route as MemberIndexRouteImport } from './routes/member.index'
+import { Route as MemberMessagesRouteImport } from './routes/member.messages'
+import { Route as MemberQuotesRouteImport } from './routes/member.quotes'
+import { Route as MemberSettingsRouteImport } from './routes/member.settings'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
 import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
+import { Route as PlansPlanIdRouteImport } from './routes/plans.$planId'
+import { Route as SharedTokenRouteImport } from './routes/shared.$token'
 import { Route as GovModuleIndexRouteImport } from './routes/gov.$module.index'
 import { Route as GovModuleDeltasRouteImport } from './routes/gov.$module.deltas'
 import { Route as GovModuleFlowsRouteImport } from './routes/gov.$module.flows'
@@ -58,6 +85,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccessibilityRoute = AccessibilityRouteImport.update({
+  id: '/accessibility',
+  path: '/accessibility',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -68,9 +100,44 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComplianceRoute = ComplianceRouteImport.update({
+  id: '/compliance',
+  path: '/compliance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoverageRoute = CoverageRouteImport.update({
+  id: '/coverage',
+  path: '/coverage',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HandoffRoute = HandoffRouteImport.update({
+  id: '/handoff',
+  path: '/handoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IchraRoute = IchraRouteImport.update({
+  id: '/ichra',
+  path: '/ichra',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LucieRoute = LucieRouteImport.update({
@@ -88,6 +155,11 @@ const M06Route = M06RouteImport.update({
   path: '/m06',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MemberRoute = MemberRouteImport.update({
+  id: '/member',
+  path: '/member',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MyWorkRoute = MyWorkRouteImport.update({
   id: '/my-work',
   path: '/my-work',
@@ -96,6 +168,66 @@ const MyWorkRoute = MyWorkRouteImport.update({
 const ObjectRoute = ObjectRouteImport.update({
   id: '/object',
   path: '/object',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlansRoute = PlansRouteImport.update({
+  id: '/plans',
+  path: '/plans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuoteRoute = QuoteRouteImport.update({
+  id: '/quote',
+  path: '/quote',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewRoute = ReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScheduleRoute = ScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SelectRoute = SelectRouteImport.update({
+  id: '/select',
+  path: '/select',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/app/',
+  path: '/app/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/app/admin',
+  path: '/app/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/app/dashboard',
+  path: '/app/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppMyWorkRoute = AppMyWorkRouteImport.update({
+  id: '/app/my-work',
+  path: '/app/my-work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppObjectRoute = AppObjectRouteImport.update({
+  id: '/app/object',
+  path: '/app/object',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GovIndexRoute = GovIndexRouteImport.update({
@@ -218,6 +350,26 @@ const M1ScreenRoute = M1ScreenRouteImport.update({
   path: '/m1/$screen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MemberIndexRoute = MemberIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MemberRoute,
+} as any)
+const MemberMessagesRoute = MemberMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => MemberRoute,
+} as any)
+const MemberQuotesRoute = MemberQuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
+  getParentRoute: () => MemberRoute,
+} as any)
+const MemberSettingsRoute = MemberSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => MemberRoute,
+} as any)
 const P1IndexRoute = P1IndexRouteImport.update({
   id: '/p1/',
   path: '/p1/',
@@ -226,6 +378,16 @@ const P1IndexRoute = P1IndexRouteImport.update({
 const P1ScreenRoute = P1ScreenRouteImport.update({
   id: '/p1/$screen',
   path: '/p1/$screen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlansPlanIdRoute = PlansPlanIdRouteImport.update({
+  id: '/$planId',
+  path: '/$planId',
+  getParentRoute: () => PlansRoute,
+} as any)
+const SharedTokenRoute = SharedTokenRouteImport.update({
+  id: '/shared/$token',
+  path: '/shared/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GovModuleIndexRoute = GovModuleIndexRouteImport.update({
@@ -271,14 +433,34 @@ const GovModuleScreensScreenRoute = GovModuleScreensScreenRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/accessibility': typeof AccessibilityRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/cart': typeof CartRoute
+  '/compare': typeof CompareRoute
+  '/compliance': typeof ComplianceRoute
+  '/coverage': typeof CoverageRoute
   '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
+  '/handoff': typeof HandoffRoute
+  '/ichra': typeof IchraRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
   '/m06': typeof M06RouteWithChildren
+  '/member': typeof MemberRouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/plans': typeof PlansRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/quote': typeof QuoteRoute
+  '/review': typeof ReviewRoute
+  '/schedule': typeof ScheduleRoute
+  '/select': typeof SelectRoute
+  '/terms': typeof TermsRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/my-work': typeof AppMyWorkRoute
+  '/app/object': typeof AppObjectRoute
   '/gov/$module': typeof GovModuleRouteWithChildren
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
@@ -297,13 +479,20 @@ export interface FileRoutesByFullPath {
   '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
   '/m1/$screen': typeof M1ScreenRoute
+  '/member/messages': typeof MemberMessagesRoute
+  '/member/quotes': typeof MemberQuotesRoute
+  '/member/settings': typeof MemberSettingsRoute
   '/p1/$screen': typeof P1ScreenRoute
+  '/plans/$planId': typeof PlansPlanIdRoute
+  '/shared/$token': typeof SharedTokenRoute
+  '/app/': typeof AppIndexRoute
   '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
   '/lucie/': typeof LucieIndexRoute
   '/m00/': typeof M00IndexRoute
   '/m06/': typeof M06IndexRoute
   '/m1/': typeof M1IndexRoute
+  '/member/': typeof MemberIndexRoute
   '/p1/': typeof P1IndexRoute
   '/gov/$module/deltas': typeof GovModuleDeltasRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
@@ -316,11 +505,30 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/accessibility': typeof AccessibilityRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/cart': typeof CartRoute
+  '/compare': typeof CompareRoute
+  '/compliance': typeof ComplianceRoute
+  '/coverage': typeof CoverageRoute
   '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
+  '/handoff': typeof HandoffRoute
+  '/ichra': typeof IchraRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/plans': typeof PlansRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/quote': typeof QuoteRoute
+  '/review': typeof ReviewRoute
+  '/schedule': typeof ScheduleRoute
+  '/select': typeof SelectRoute
+  '/terms': typeof TermsRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/my-work': typeof AppMyWorkRoute
+  '/app/object': typeof AppObjectRoute
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
   '/lucie/module1': typeof LucieModule1Route
@@ -338,13 +546,20 @@ export interface FileRoutesByTo {
   '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
   '/m1/$screen': typeof M1ScreenRoute
+  '/member/messages': typeof MemberMessagesRoute
+  '/member/quotes': typeof MemberQuotesRoute
+  '/member/settings': typeof MemberSettingsRoute
   '/p1/$screen': typeof P1ScreenRoute
+  '/plans/$planId': typeof PlansPlanIdRoute
+  '/shared/$token': typeof SharedTokenRoute
+  '/app': typeof AppIndexRoute
   '/gov': typeof GovIndexRoute
   '/hf': typeof HfIndexRoute
   '/lucie': typeof LucieIndexRoute
   '/m00': typeof M00IndexRoute
   '/m06': typeof M06IndexRoute
   '/m1': typeof M1IndexRoute
+  '/member': typeof MemberIndexRoute
   '/p1': typeof P1IndexRoute
   '/gov/$module/deltas': typeof GovModuleDeltasRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
@@ -358,14 +573,34 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/accessibility': typeof AccessibilityRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/cart': typeof CartRoute
+  '/compare': typeof CompareRoute
+  '/compliance': typeof ComplianceRoute
+  '/coverage': typeof CoverageRoute
   '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
+  '/handoff': typeof HandoffRoute
+  '/ichra': typeof IchraRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
   '/m06': typeof M06RouteWithChildren
+  '/member': typeof MemberRouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
+  '/plans': typeof PlansRouteWithChildren
+  '/privacy': typeof PrivacyRoute
+  '/quote': typeof QuoteRoute
+  '/review': typeof ReviewRoute
+  '/schedule': typeof ScheduleRoute
+  '/select': typeof SelectRoute
+  '/terms': typeof TermsRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/my-work': typeof AppMyWorkRoute
+  '/app/object': typeof AppObjectRoute
   '/gov/$module': typeof GovModuleRouteWithChildren
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
@@ -384,13 +619,20 @@ export interface FileRoutesById {
   '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
   '/m1/$screen': typeof M1ScreenRoute
+  '/member/messages': typeof MemberMessagesRoute
+  '/member/quotes': typeof MemberQuotesRoute
+  '/member/settings': typeof MemberSettingsRoute
   '/p1/$screen': typeof P1ScreenRoute
+  '/plans/$planId': typeof PlansPlanIdRoute
+  '/shared/$token': typeof SharedTokenRoute
+  '/app/': typeof AppIndexRoute
   '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
   '/lucie/': typeof LucieIndexRoute
   '/m00/': typeof M00IndexRoute
   '/m06/': typeof M06IndexRoute
   '/m1/': typeof M1IndexRoute
+  '/member/': typeof MemberIndexRoute
   '/p1/': typeof P1IndexRoute
   '/gov/$module/deltas': typeof GovModuleDeltasRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
@@ -405,14 +647,34 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/accessibility'
     | '/admin'
     | '/auth'
+    | '/cart'
+    | '/compare'
+    | '/compliance'
+    | '/coverage'
     | '/dashboard'
+    | '/faq'
+    | '/handoff'
+    | '/ichra'
     | '/lucie'
     | '/m00'
     | '/m06'
+    | '/member'
     | '/my-work'
     | '/object'
+    | '/plans'
+    | '/privacy'
+    | '/quote'
+    | '/review'
+    | '/schedule'
+    | '/select'
+    | '/terms'
+    | '/app/admin'
+    | '/app/dashboard'
+    | '/app/my-work'
+    | '/app/object'
     | '/gov/$module'
     | '/hf/$screen'
     | '/lucie/governance'
@@ -431,13 +693,20 @@ export interface FileRouteTypes {
     | '/m06/console'
     | '/m06/roster'
     | '/m1/$screen'
+    | '/member/messages'
+    | '/member/quotes'
+    | '/member/settings'
     | '/p1/$screen'
+    | '/plans/$planId'
+    | '/shared/$token'
+    | '/app/'
     | '/gov/'
     | '/hf/'
     | '/lucie/'
     | '/m00/'
     | '/m06/'
     | '/m1/'
+    | '/member/'
     | '/p1/'
     | '/gov/$module/deltas'
     | '/gov/$module/flows'
@@ -450,11 +719,30 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/accessibility'
     | '/admin'
     | '/auth'
+    | '/cart'
+    | '/compare'
+    | '/compliance'
+    | '/coverage'
     | '/dashboard'
+    | '/faq'
+    | '/handoff'
+    | '/ichra'
     | '/my-work'
     | '/object'
+    | '/plans'
+    | '/privacy'
+    | '/quote'
+    | '/review'
+    | '/schedule'
+    | '/select'
+    | '/terms'
+    | '/app/admin'
+    | '/app/dashboard'
+    | '/app/my-work'
+    | '/app/object'
     | '/hf/$screen'
     | '/lucie/governance'
     | '/lucie/module1'
@@ -472,13 +760,20 @@ export interface FileRouteTypes {
     | '/m06/console'
     | '/m06/roster'
     | '/m1/$screen'
+    | '/member/messages'
+    | '/member/quotes'
+    | '/member/settings'
     | '/p1/$screen'
+    | '/plans/$planId'
+    | '/shared/$token'
+    | '/app'
     | '/gov'
     | '/hf'
     | '/lucie'
     | '/m00'
     | '/m06'
     | '/m1'
+    | '/member'
     | '/p1'
     | '/gov/$module/deltas'
     | '/gov/$module/flows'
@@ -491,14 +786,34 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/accessibility'
     | '/admin'
     | '/auth'
+    | '/cart'
+    | '/compare'
+    | '/compliance'
+    | '/coverage'
     | '/dashboard'
+    | '/faq'
+    | '/handoff'
+    | '/ichra'
     | '/lucie'
     | '/m00'
     | '/m06'
+    | '/member'
     | '/my-work'
     | '/object'
+    | '/plans'
+    | '/privacy'
+    | '/quote'
+    | '/review'
+    | '/schedule'
+    | '/select'
+    | '/terms'
+    | '/app/admin'
+    | '/app/dashboard'
+    | '/app/my-work'
+    | '/app/object'
     | '/gov/$module'
     | '/hf/$screen'
     | '/lucie/governance'
@@ -517,13 +832,20 @@ export interface FileRouteTypes {
     | '/m06/console'
     | '/m06/roster'
     | '/m1/$screen'
+    | '/member/messages'
+    | '/member/quotes'
+    | '/member/settings'
     | '/p1/$screen'
+    | '/plans/$planId'
+    | '/shared/$token'
+    | '/app/'
     | '/gov/'
     | '/hf/'
     | '/lucie/'
     | '/m00/'
     | '/m06/'
     | '/m1/'
+    | '/member/'
     | '/p1/'
     | '/gov/$module/deltas'
     | '/gov/$module/flows'
@@ -537,18 +859,40 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccessibilityRoute: typeof AccessibilityRoute
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
+  CartRoute: typeof CartRoute
+  CompareRoute: typeof CompareRoute
+  ComplianceRoute: typeof ComplianceRoute
+  CoverageRoute: typeof CoverageRoute
   DashboardRoute: typeof DashboardRoute
+  FaqRoute: typeof FaqRoute
+  HandoffRoute: typeof HandoffRoute
+  IchraRoute: typeof IchraRoute
   LucieRoute: typeof LucieRouteWithChildren
   M00Route: typeof M00RouteWithChildren
   M06Route: typeof M06RouteWithChildren
+  MemberRoute: typeof MemberRouteWithChildren
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
+  PlansRoute: typeof PlansRouteWithChildren
+  PrivacyRoute: typeof PrivacyRoute
+  QuoteRoute: typeof QuoteRoute
+  ReviewRoute: typeof ReviewRoute
+  ScheduleRoute: typeof ScheduleRoute
+  SelectRoute: typeof SelectRoute
+  TermsRoute: typeof TermsRoute
+  AppAdminRoute: typeof AppAdminRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppMyWorkRoute: typeof AppMyWorkRoute
+  AppObjectRoute: typeof AppObjectRoute
   GovModuleRoute: typeof GovModuleRouteWithChildren
   HfScreenRoute: typeof HfScreenRoute
   M1ScreenRoute: typeof M1ScreenRoute
   P1ScreenRoute: typeof P1ScreenRoute
+  SharedTokenRoute: typeof SharedTokenRoute
+  AppIndexRoute: typeof AppIndexRoute
   GovIndexRoute: typeof GovIndexRoute
   HfIndexRoute: typeof HfIndexRoute
   M1IndexRoute: typeof M1IndexRoute
@@ -562,6 +906,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accessibility': {
+      id: '/accessibility'
+      path: '/accessibility'
+      fullPath: '/accessibility'
+      preLoaderRoute: typeof AccessibilityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -578,11 +929,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compliance': {
+      id: '/compliance'
+      path: '/compliance'
+      fullPath: '/compliance'
+      preLoaderRoute: typeof ComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/coverage': {
+      id: '/coverage'
+      path: '/coverage'
+      fullPath: '/coverage'
+      preLoaderRoute: typeof CoverageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/handoff': {
+      id: '/handoff'
+      path: '/handoff'
+      fullPath: '/handoff'
+      preLoaderRoute: typeof HandoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ichra': {
+      id: '/ichra'
+      path: '/ichra'
+      fullPath: '/ichra'
+      preLoaderRoute: typeof IchraRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lucie': {
@@ -606,6 +1006,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof M06RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/member': {
+      id: '/member'
+      path: '/member'
+      fullPath: '/member'
+      preLoaderRoute: typeof MemberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/my-work': {
       id: '/my-work'
       path: '/my-work'
@@ -618,6 +1025,90 @@ declare module '@tanstack/react-router' {
       path: '/object'
       fullPath: '/object'
       preLoaderRoute: typeof ObjectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plans': {
+      id: '/plans'
+      path: '/plans'
+      fullPath: '/plans'
+      preLoaderRoute: typeof PlansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quote': {
+      id: '/quote'
+      path: '/quote'
+      fullPath: '/quote'
+      preLoaderRoute: typeof QuoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/review': {
+      id: '/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof ReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/schedule': {
+      id: '/schedule'
+      path: '/schedule'
+      fullPath: '/schedule'
+      preLoaderRoute: typeof ScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/select': {
+      id: '/select'
+      path: '/select'
+      fullPath: '/select'
+      preLoaderRoute: typeof SelectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/app'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/admin': {
+      id: '/app/admin'
+      path: '/app/admin'
+      fullPath: '/app/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/app/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/my-work': {
+      id: '/app/my-work'
+      path: '/app/my-work'
+      fullPath: '/app/my-work'
+      preLoaderRoute: typeof AppMyWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/object': {
+      id: '/app/object'
+      path: '/app/object'
+      fullPath: '/app/object'
+      preLoaderRoute: typeof AppObjectRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gov/': {
@@ -788,6 +1279,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof M1ScreenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/member/': {
+      id: '/member/'
+      path: '/'
+      fullPath: '/member/'
+      preLoaderRoute: typeof MemberIndexRouteImport
+      parentRoute: typeof MemberRoute
+    }
+    '/member/messages': {
+      id: '/member/messages'
+      path: '/messages'
+      fullPath: '/member/messages'
+      preLoaderRoute: typeof MemberMessagesRouteImport
+      parentRoute: typeof MemberRoute
+    }
+    '/member/quotes': {
+      id: '/member/quotes'
+      path: '/quotes'
+      fullPath: '/member/quotes'
+      preLoaderRoute: typeof MemberQuotesRouteImport
+      parentRoute: typeof MemberRoute
+    }
+    '/member/settings': {
+      id: '/member/settings'
+      path: '/settings'
+      fullPath: '/member/settings'
+      preLoaderRoute: typeof MemberSettingsRouteImport
+      parentRoute: typeof MemberRoute
+    }
     '/p1/': {
       id: '/p1/'
       path: '/p1'
@@ -800,6 +1319,20 @@ declare module '@tanstack/react-router' {
       path: '/p1/$screen'
       fullPath: '/p1/$screen'
       preLoaderRoute: typeof P1ScreenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plans/$planId': {
+      id: '/plans/$planId'
+      path: '/$planId'
+      fullPath: '/plans/$planId'
+      preLoaderRoute: typeof PlansPlanIdRouteImport
+      parentRoute: typeof PlansRoute
+    }
+    '/shared/$token': {
+      id: '/shared/$token'
+      path: '/shared/$token'
+      fullPath: '/shared/$token'
+      preLoaderRoute: typeof SharedTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gov/$module/': {
@@ -921,6 +1454,33 @@ const M06RouteChildren: M06RouteChildren = {
 
 const M06RouteWithChildren = M06Route._addFileChildren(M06RouteChildren)
 
+interface MemberRouteChildren {
+  MemberMessagesRoute: typeof MemberMessagesRoute
+  MemberQuotesRoute: typeof MemberQuotesRoute
+  MemberSettingsRoute: typeof MemberSettingsRoute
+  MemberIndexRoute: typeof MemberIndexRoute
+}
+
+const MemberRouteChildren: MemberRouteChildren = {
+  MemberMessagesRoute: MemberMessagesRoute,
+  MemberQuotesRoute: MemberQuotesRoute,
+  MemberSettingsRoute: MemberSettingsRoute,
+  MemberIndexRoute: MemberIndexRoute,
+}
+
+const MemberRouteWithChildren =
+  MemberRoute._addFileChildren(MemberRouteChildren)
+
+interface PlansRouteChildren {
+  PlansPlanIdRoute: typeof PlansPlanIdRoute
+}
+
+const PlansRouteChildren: PlansRouteChildren = {
+  PlansPlanIdRoute: PlansPlanIdRoute,
+}
+
+const PlansRouteWithChildren = PlansRoute._addFileChildren(PlansRouteChildren)
+
 interface GovModuleFlowsRouteChildren {
   GovModuleFlowsFlowRoute: typeof GovModuleFlowsFlowRoute
 }
@@ -968,18 +1528,40 @@ const GovModuleRouteWithChildren = GovModuleRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccessibilityRoute: AccessibilityRoute,
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
+  CartRoute: CartRoute,
+  CompareRoute: CompareRoute,
+  ComplianceRoute: ComplianceRoute,
+  CoverageRoute: CoverageRoute,
   DashboardRoute: DashboardRoute,
+  FaqRoute: FaqRoute,
+  HandoffRoute: HandoffRoute,
+  IchraRoute: IchraRoute,
   LucieRoute: LucieRouteWithChildren,
   M00Route: M00RouteWithChildren,
   M06Route: M06RouteWithChildren,
+  MemberRoute: MemberRouteWithChildren,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
+  PlansRoute: PlansRouteWithChildren,
+  PrivacyRoute: PrivacyRoute,
+  QuoteRoute: QuoteRoute,
+  ReviewRoute: ReviewRoute,
+  ScheduleRoute: ScheduleRoute,
+  SelectRoute: SelectRoute,
+  TermsRoute: TermsRoute,
+  AppAdminRoute: AppAdminRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppMyWorkRoute: AppMyWorkRoute,
+  AppObjectRoute: AppObjectRoute,
   GovModuleRoute: GovModuleRouteWithChildren,
   HfScreenRoute: HfScreenRoute,
   M1ScreenRoute: M1ScreenRoute,
   P1ScreenRoute: P1ScreenRoute,
+  SharedTokenRoute: SharedTokenRoute,
+  AppIndexRoute: AppIndexRoute,
   GovIndexRoute: GovIndexRoute,
   HfIndexRoute: HfIndexRoute,
   M1IndexRoute: M1IndexRoute,

@@ -31,7 +31,7 @@ export function ShellProvider({ children }: { children: ReactNode }) {
   const [entityId, setEntityId] = useState("ENT_AGY_MASTER");
   const [roleId, setRoleId] = useState("ROLE_AGENCY_ADMIN");
   const [labels, setLabels] = useState<Record<LabelKey, string>>(DEFAULT_LABELS);
-  const [landing, setLanding] = useState("/my-work");
+  const [landing, setLanding] = useState("/app/my-work");
 
   // Read stored preferences after hydration so SSR markup stays stable.
   useEffect(() => {

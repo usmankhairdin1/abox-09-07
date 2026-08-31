@@ -1,223 +1,470 @@
+/**
+ * UX-001 — Marketplace Landing. Atelier Bone.
+ * A hero built around an orbital chart, a horizontal path selector,
+ * an asymmetric product bento, a large split employer plate, and a
+ * trust ladder — nothing reuses the old three-card layout.
+ */
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ArrowRight,
-  Building2,
-  CheckCircle2,
-  Clock3,
-  FileCheck2,
-  ShieldCheck,
-  ShoppingBag,
-  UserPlus,
-  Users,
+  ArrowRight, Sparkles, ShieldCheck, MessageSquareHeart,
+  Building2, HeartPulse, ArrowUpRight, Compass,
+  Smile, Eye, HandHeart, Activity, Ambulance, HeartHandshake, Check,
 } from "lucide-react";
 
-import { KpiCard } from "@/components/abox/kpi-card";
-import { MastheadMark } from "@/components/abox/decor";
-import { StatusBadge } from "@/components/abox/status-badge";
-import { AppShell } from "@/components/shell/AppShell";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { MarketplaceShell } from "@/components/abox/marketplace-shell";
+import { AboxMark } from "@/components/abox/logo";
+import {
+  Aurora, DotField, OrbitalRings, RadialTicks, MastheadMark,
+  HealthPulseShield, CoverageWeave, BlueprintGrid, PolicyLines, FamilySilhouette,
+} from "@/components/abox/decor";
+import { FadeRise, Stagger, StaggerItem } from "@/components/abox/motion";
+import { SAMPLE_PRODUCTS } from "@/lib/sample-data";
+import { cn } from "@/lib/utils";
+
+const PRODUCT_ICONS: Record<string, typeof HeartPulse> = {
+  ifp: HeartPulse,
+  dental: Smile,
+  vision: Eye,
+  life: HandHeart,
+  critical: Activity,
+  accident: Ambulance,
+  hospital: HeartHandshake,
+  ichra: Building2,
+};
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Operations Home — Agency in a Box" },
-      {
-        name: "description",
-        content: "Manage agency work, customer activity, submissions, products, commissions, and governed operations in ABox.",
-      },
-      { property: "og:title", content: "Operations Home — Agency in a Box" },
-      {
-        property: "og:description",
-        content: "A unified insurance distribution workspace for agencies, agents, marketplaces, and platform teams.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { title: "ABox — Shop insurance with a guide, not a spreadsheet" },
+      { name: "description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from Plan-O, and pick coverage with confidence — or talk to a licensed agent in a click." },
+      { property: "og:title", content: "ABox — Shop insurance with a guide, not a spreadsheet" },
+      { property: "og:description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from Plan-O, and pick coverage with confidence — or talk to a licensed agent in a click." },
     ],
   }),
-  component: OperationsHome,
+  component: LandingPage,
 });
 
-const PRIORITIES = [
-  {
-    title: "Rivera family application",
-    detail: "Eligibility response needs review before submission",
-    meta: "Due today",
-    tone: "warning" as const,
-    icon: FileCheck2,
-  },
-  {
-    title: "Morgan Lee renewal",
-    detail: "New plan recommendations are ready to share",
-    meta: "Due Sep 3",
-    tone: "primary" as const,
-    icon: Users,
-  },
-  {
-    title: "Harbor Point appointment",
-    detail: "Carrier documentation is awaiting approval",
-    meta: "2 documents",
-    tone: "info" as const,
-    icon: Building2,
-  },
-];
-
-const ACTIVITY = [
-  ["Quote created", "Sofia Patel", "Individual & Family", "8 min ago"],
-  ["Application submitted", "James Wilson", "Off-exchange", "24 min ago"],
-  ["Producer added", "Maya Chen", "Harbor Point", "1 hr ago"],
-  ["Commission statement", "August statement ready", "$18,420", "2 hrs ago"],
-];
-
-const ESTATES = [
-  { to: "/m1", title: "Marketplace & sales", detail: "Quote, compare, cart, and member journeys", icon: ShoppingBag },
-  { to: "/p1", title: "Phase 1 operations", detail: "Enrollment, products, agencies, and commissions", icon: Building2 },
-  { to: "/m06", title: "Agency network", detail: "Organizations, producers, hierarchy, and appointments", icon: Users },
-  { to: "/lucie", title: "Governance", detail: "Traceability, states, modules, and release controls", icon: ShieldCheck },
-] as const;
-
-function OperationsHome() {
+function LandingPage() {
   return (
-    <AppShell drawerTitle="Today at a glance" assistantContext="your operations home">
-      <header className="relative overflow-hidden border-b border-hairline pb-10 pt-8 md:pb-12 md:pt-12">
-        <MastheadMark label="Agency workspace · Northwind Master" />
-        <div className="mt-7 flex flex-wrap items-end justify-between gap-8">
-          <div className="max-w-3xl">
-            <h1 className="text-display text-4xl leading-none sm:text-5xl md:text-6xl">Good morning, Elena.</h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-              Your book is moving. Three cases need attention today and seven new opportunities are ready for follow-up.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" className="rounded-full" asChild>
-              <Link to="/object"><Users />Find customer</Link>
-            </Button>
-            <Button className="rounded-full" asChild>
-              <Link to="/m1"><UserPlus />Start a quote</Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+    <MarketplaceShell variant="landing">
+      <Hero />
+      <PathTicker />
+      <ProductBento />
+      <PlanOOrbital />
+      <EmployerPlate />
+      <TrustLadder />
+    </MarketplaceShell>
+  );
+}
 
-      <section className="py-8" aria-labelledby="portfolio-heading">
-        <div className="mb-5 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-eyebrow">Book of business</p>
-            <h2 id="portfolio-heading" className="text-display mt-2 text-2xl">Performance snapshot</h2>
-          </div>
-          <Button variant="ghost" className="rounded-full" asChild>
-            <Link to="/dashboard">View analytics <ArrowRight /></Link>
-          </Button>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
-          <KpiCard label="Active members" value="2,418" delta={{ pct: 8.4, label: "this month" }} icon={Users} />
-          <KpiCard label="Open opportunities" value={47} delta={{ pct: 12.1, label: "this week" }} icon={UserPlus} tone="primary" />
-          <KpiCard label="In-flight applications" value={18} hint="5 need attention" icon={FileCheck2} tone="warning" />
-          <KpiCard label="Placement rate" value="86%" delta={{ pct: 3.2, label: "vs. last month" }} icon={CheckCircle2} tone="sage" />
-        </div>
-      </section>
-
-      <section className="grid gap-6 border-t border-hairline py-8 xl:grid-cols-[1.15fr_.85fr]">
+/* ============================ Hero ============================ */
+function Hero() {
+  return (
+    <section className="relative isolate overflow-hidden pb-20 pt-14 md:pb-32 md:pt-24">
+      <Aurora />
+      <DotField className="opacity-30" />
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 lg:grid-cols-[1.15fr_1fr] lg:gap-14 md:px-8">
         <div>
-          <div className="mb-5 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-eyebrow">Queue</p>
-              <h2 className="text-display mt-2 text-2xl">Needs your attention</h2>
-            </div>
-            <StatusBadge tone="warning">3 priority</StatusBadge>
+          <MastheadMark label="Marketplace of marketplaces" />
+          <h1 className="text-display mt-8 text-[52px] leading-[0.96] md:text-[104px]">
+            Insurance,
+            <br />
+            <span className="italic font-normal" style={{ color: "var(--primary)" }}>
+              tuned to you.
+            </span>
+          </h1>
+          <p className="mt-8 max-w-xl text-lg text-muted-foreground md:text-xl">
+            Health, dental, vision, life — compared side by side. Plan-O helps you think it through
+            without pushing. If you'd rather talk to a person, a licensed agent is one tap away.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <Link
+              to="/select"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-all hover:scale-[1.03] min-h-11"
+              style={{ boxShadow: "var(--shadow-glow)" }}
+            >
+              Start shopping
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+            <Link
+              to="/schedule"
+              className="inline-flex items-center gap-2 rounded-full glass px-7 py-4 text-base font-medium text-foreground transition-colors hover:bg-accent min-h-11"
+            >
+              Talk to an agent
+            </Link>
           </div>
-          <div className="overflow-hidden rounded-2xl border border-hairline bg-card shadow-card">
-            {PRIORITIES.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <button key={item.title} type="button" className="group flex w-full items-center gap-4 border-b border-hairline p-5 text-left transition-colors last:border-0 hover:bg-accent/60">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-hairline bg-surface text-primary">
-                    <Icon className="size-5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold">{item.title}</span>
-                    <span className="mt-1 block truncate text-sm text-muted-foreground">{item.detail}</span>
-                  </span>
-                  <span className="hidden text-right sm:block">
-                    <StatusBadge tone={item.tone}>{item.meta}</StatusBadge>
-                    <span className="mt-2 block text-xs text-muted-foreground">Priority {index + 1}</span>
-                  </span>
-                  <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
-                </button>
-              );
-            })}
-          </div>
+          <ul className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
+            <li className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-sage" aria-hidden /> Licensed in 50 states</li>
+            <li className="inline-flex items-center gap-2"><Sparkles className="h-4 w-4 text-primary" aria-hidden /> Guidance, not a sales pitch</li>
+            <li className="inline-flex items-center gap-2"><MessageSquareHeart className="h-4 w-4 text-primary" aria-hidden /> No spam, no gotchas</li>
+          </ul>
         </div>
 
-        <div>
-          <div className="mb-5">
-            <p className="text-eyebrow">This month</p>
-            <h2 className="text-display mt-2 text-2xl">Production pace</h2>
-          </div>
-          <div className="rounded-2xl border border-hairline bg-primary p-6 text-primary-foreground shadow-elevated">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs font-medium uppercase">Placed premium</p>
-                <p className="text-display mt-3 text-4xl">$184.6k</p>
+        {/* Orbital instrument */}
+        <FadeRise className="relative aspect-square w-full max-w-[560px] justify-self-center md:justify-self-end">
+          <OrbitalRings size={560} tone="hairline" className="left-0 top-0" />
+          <RadialTicks size={420} className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
+          {/* Center console */}
+          <div className="absolute left-1/2 top-1/2 w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-3xl glass p-5 animate-drift" style={{ boxShadow: "var(--shadow-plate)" }}>
+            <div className="flex items-center gap-3 border-b border-hairline pb-4">
+              <AboxMark size={40} tone="primary" />
+              <div className="flex-1">
+                <p className="text-sm font-semibold">Plan-O</p>
+                <p className="text-serial">Guidance · not binding</p>
               </div>
-              <span className="rounded-full border border-primary-foreground/20 px-3 py-1 text-xs">82% of goal</span>
+              <span className="rounded-full glass px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-widest text-sage">Live</span>
             </div>
-            <Progress value={82} className="mt-8 bg-primary-foreground/20 [&_[data-slot=progress-indicator]]:bg-primary-foreground" />
-            <div className="mt-5 grid grid-cols-3 gap-3 border-t border-primary-foreground/15 pt-5">
-              {[["Goal", "$225k"], ["Pending", "$41k"], ["Days left", "12"]].map(([label, value]) => (
-                <div key={label}>
-                  <p className="text-xs text-primary-foreground/65">{label}</p>
-                  <p className="mt-1 font-semibold tabular-nums">{value}</p>
+            <ul className="space-y-2.5 py-4 text-sm">
+              <li className="flex items-center justify-between rounded-2xl bg-background/40 px-3 py-2.5">
+                <div className="min-w-0">
+                  <p className="truncate font-medium">Meridian Silver PPO</p>
+                  <p className="text-xs text-muted-foreground">HSA · Statewide network</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-display text-xl tabular-nums">$412</p>
+                  <p className="text-[10px] text-primary">92% match</p>
+                </div>
+              </li>
+              <li className="flex items-center justify-between rounded-2xl bg-background/40 px-3 py-2.5">
+                <div className="min-w-0">
+                  <p className="truncate font-medium">Aeris Silver POS</p>
+                  <p className="text-xs text-muted-foreground">Regional · low deductible</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-display text-xl tabular-nums">$385</p>
+                  <p className="text-[10px] text-primary">81% match</p>
+                </div>
+              </li>
+              <li className="flex items-center justify-between rounded-2xl bg-primary/15 px-3 py-2.5">
+                <div className="min-w-0">
+                  <p className="truncate font-medium">BluePeak Gold HMO</p>
+                  <p className="text-xs text-muted-foreground">Best fit · your PCP kept</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-display text-xl tabular-nums text-primary">$548</p>
+                  <p className="text-[10px]">88% match</p>
+                </div>
+              </li>
+            </ul>
+            <Link
+              to="/select"
+              className="mt-1 flex items-center justify-between rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
+              style={{ boxShadow: "var(--shadow-glow)" }}
+            >
+              Try Plan-O with your own priorities
+              <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </Link>
+          </div>
+        </FadeRise>
+      </div>
+    </section>
+  );
+}
+
+/* ============================ Path ticker ============================ */
+function PathTicker() {
+  const paths = [
+    { title: "Guide me", body: "Plan-O narrows the list to plans that fit your priorities.", to: "/select?path=guided", icon: Sparkles },
+    { title: "Browse myself", body: "See every plan in your ZIP with filters and compare.", to: "/select?path=browse", icon: Compass },
+    { title: "Talk to an agent", body: "A licensed human, one click away — Plan-O escalates.", to: "/schedule", icon: MessageSquareHeart },
+  ];
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
+      <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-eyebrow">Choose your path</p>
+          <h2 className="text-display mt-3 text-4xl md:text-5xl">Three ways in. One outcome.</h2>
+        </div>
+        <p className="max-w-md text-sm text-muted-foreground">
+          Switch modes whenever you like — Plan-O and a licensed agent are always on the side.
+        </p>
+      </div>
+      <Stagger className="grid gap-5 md:grid-cols-3">
+        {paths.map((p) => (
+          <StaggerItem key={p.title}>
+            <Link
+              to={p.to}
+              className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-hairline bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 card-brackets edge-sheen"
+              style={{ boxShadow: "var(--shadow-card)" }}
+            >
+              <div className="relative">
+                <span
+                  aria-hidden
+                  className="absolute right-0 top-0 inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-hairline bg-primary/8 text-primary transition-all duration-300 group-hover:-rotate-6 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground"
+                >
+                  <p.icon className="h-8 w-8" />
+                </span>
+                <h3 className="text-display max-w-[72%] pt-1 text-3xl">{p.title}</h3>
+                <p className="mt-3 max-w-sm text-sm text-muted-foreground">{p.body}</p>
+              </div>
+              <div className="relative mt-8 inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                Enter this path
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
+              </div>
+            </Link>
+          </StaggerItem>
+        ))}
+      </Stagger>
+
+    </section>
+  );
+}
+
+/* ============================ Product bento ============================ */
+function ProductBento() {
+  const products = SAMPLE_PRODUCTS.filter((p) => p.emphasis !== "group");
+  const [feature, ...rest] = products;
+  return (
+    <section className="relative mx-4 overflow-hidden rounded-3xl border border-hairline bg-card md:mx-8">
+      <div className="absolute inset-0 aurora" aria-hidden />
+      <div className="absolute inset-0 contour opacity-70" aria-hidden />
+      <div className="relative mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24">
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <MastheadMark label="One cart. Many products." />
+            <h2 className="text-display mt-6 text-4xl md:text-5xl">Shop by product</h2>
+          </div>
+          <p className="max-w-md text-sm text-muted-foreground">
+            One login. Add health, dental, vision and more — check out once.
+          </p>
+        </div>
+
+        {/* Feature hero — editorial split: content left, custom health illustration right */}
+        {feature && (
+          <Link
+            to={feature.href}
+            className="group relative mb-4 grid gap-8 overflow-hidden rounded-3xl border border-primary/40 bg-gradient-to-br from-primary/8 via-card to-card p-8 md:grid-cols-[1.15fr_1fr] md:gap-10 md:p-12 md:min-h-[360px] card-brackets edge-sheen"
+            style={{ boxShadow: "var(--shadow-plate)" }}
+          >
+            <BlueprintGrid className="opacity-40" />
+            <div className="relative flex flex-col justify-between">
+              <div className="max-w-xl">
+                <p className="text-eyebrow inline-flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Most people start here · Featured
+                </p>
+                <h3 className="text-display mt-6 text-5xl md:text-7xl leading-[1.02]">{feature.label}</h3>
+                <p className="mt-4 max-w-md text-base text-muted-foreground">{feature.tagline}</p>
+                <ul className="mt-6 grid max-w-md grid-cols-2 gap-x-6 gap-y-2 text-sm text-muted-foreground">
+                  {["ACA · on & off exchange", "HSA-ready plans", "Doctor & Rx search", "Subsidy estimator"].map((f) => (
+                    <li key={f} className="flex items-center gap-2">
+                      <span className="h-1 w-1 rounded-full bg-primary" aria-hidden />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform group-hover:scale-[1.03]" style={{ boxShadow: "var(--shadow-glow)" }}>
+                  Shop {feature.label.toLowerCase()}
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </span>
+                <span className="text-serial">Avg. quote · 2 min</span>
+              </div>
+            </div>
+            {/* Custom illustration column */}
+            <div className="relative min-h-[220px]">
+              <HealthPulseShield size={360} className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
+              <FamilySilhouette size={200} className="bottom-2 right-2 opacity-90" />
+            </div>
+          </Link>
+        )}
+
+        {/* Secondary grid — uniform cards with prominent icon tile */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {rest.map((p) => {
+            const Icon = PRODUCT_ICONS[p.key] ?? ShieldCheck;
+            return (
+              <Link
+                key={p.key}
+                to={p.href}
+                className="group relative flex min-h-[200px] flex-col justify-between overflow-hidden rounded-2xl border border-hairline bg-background/60 p-6 transition-all hover:-translate-y-0.5 hover:border-primary/50 card-brackets edge-sheen"
+                style={{ boxShadow: "var(--shadow-card)" }}
+              >
+                <div className="flex items-start justify-between">
+                  <span
+                    aria-hidden
+                    className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-hairline bg-primary/8 text-primary transition-all duration-300 group-hover:-rotate-6 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground"
+                  >
+                    <Icon className="h-8 w-8" />
+                  </span>
+                  <p className="text-eyebrow">Coverage</p>
+                </div>
+                <div>
+                  <h3 className="text-display mt-4 text-2xl leading-tight">{p.label}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{p.tagline}</p>
+                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                    Shop {p.label.toLowerCase()}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+/* ============================ Plan-O orbital ============================ */
+function PlanOOrbital() {
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
+      <div className="grid items-center gap-14 md:grid-cols-[1fr_1.1fr]">
+        <div>
+          <MastheadMark label="Meet Plan-O" />
+          <h2 className="text-display mt-6 text-4xl md:text-6xl">
+            A guide,
+            <br />
+            <span className="italic font-normal" style={{ color: "var(--primary)" }}>
+              not a recommendation engine.
+            </span>
+          </h2>
+          <p className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg">
+            Plan-O explains tradeoffs, translates jargon, and shortlists options. It never pretends
+            to be a licensed agent, and it will hand you to one when the question calls for it.
+          </p>
+          <ul className="mt-8 space-y-3 text-sm">
+            {[
+              "Explains benefits in plain language",
+              "Ranks by what you said mattered most",
+              "Shows subsidy estimates as education, not promises",
+              "Escalates to a human when it should",
+            ].map((line) => (
+              <li key={line} className="flex items-start gap-3">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                <span>{line}</span>
+              </li>
+            ))}
+
+          </ul>
+        </div>
+
+        <div className="relative grid grid-cols-2 gap-4">
+          {[
+            { label: "Plans compared", value: "220K+" },
+            { label: "Avg. shortlist size", value: "3" },
+            { label: "Escalations to agent", value: "1 in 6", tone: "sage" as const },
+            { label: "Time to first quote", value: "~2 min", tone: "sage" as const },
+          ].map((s) => (
+            <div
+              key={s.label}
+              className="relative overflow-hidden rounded-3xl border border-hairline bg-card p-6"
+              style={{ boxShadow: "var(--shadow-card)" }}
+            >
+              <span
+                aria-hidden
+                className="absolute right-5 top-5 h-12 w-12 rounded-2xl border"
+                style={{ borderColor: s.tone === "sage" ? "var(--sage)" : "var(--primary)", opacity: 0.36 }}
+              />
+              <p className="text-eyebrow max-w-[70%]">{s.label}</p>
+              <p className="text-display mt-6 text-4xl tabular-nums">{s.value}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <p className="mt-8 text-xs text-muted-foreground">
+        All numbers are illustrative placeholders. Real metrics wire in from JET analytics.
+      </p>
+    </section>
+  );
+}
+
+/* ============================ Employer plate ============================ */
+function EmployerPlate() {
+  return (
+    <section className="mx-4 mb-8 overflow-hidden rounded-3xl border border-hairline bg-card text-foreground md:mx-8" style={{ boxShadow: "var(--shadow-plate)" }}>
+      <div className="relative">
+        <Aurora className="opacity-80" />
+        <BlueprintGrid tone="hairline" className="opacity-45" />
+        <CoverageWeave size={340} labels={["W", "H", "L"]} className="-right-6 -top-4 opacity-70 hidden md:block" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 md:grid-cols-[1.2fr_1fr] md:px-12 md:py-28">
+          <div>
+            <MastheadMark label="For employers" />
+            <h2 className="text-display mt-6 text-4xl md:text-6xl">
+              Set an allowance.
+              <br />
+              <span className="italic font-normal" style={{ color: "var(--primary)" }}>
+                Your team picks the plan.
+              </span>
+            </h2>
+            <p className="mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
+              ICHRA on ABox lets you give every employee a monthly allowance to shop the individual
+              marketplace — with Plan-O guidance and a licensed agent for anyone who wants one.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Link
+                to="/ichra"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-transform hover:scale-[1.03] min-h-11"
+                style={{ boxShadow: "var(--shadow-glow)" }}
+              >
+                <Building2 className="h-4 w-4" aria-hidden /> Explore ICHRA
+              </Link>
+              <Link
+                to="/schedule"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-7 py-4 text-base font-medium text-foreground transition-colors hover:bg-accent min-h-11"
+              >
+                Talk to a specialist
+              </Link>
+            </div>
+          </div>
+          <div className="rounded-3xl border border-hairline bg-card/85 p-6 backdrop-blur" style={{ boxShadow: "var(--shadow-card)" }}>
+            <p className="text-eyebrow">Illustrative · 24-person team · $500 allowance</p>
+            <div className="mt-4 grid grid-cols-3 gap-3">
+              {[
+                { label: "Enrolled", value: "22 / 24" },
+                { label: "Avg. plan", value: "Silver" },
+                { label: "Est. savings", value: "$18k / yr" },
+              ].map((s) => (
+                <div key={s.label} className="rounded-2xl border border-hairline bg-background/65 p-4">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</p>
+                  <p className="text-display mt-1 text-xl">{s.value}</p>
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <section className="grid gap-6 border-t border-hairline py-8 xl:grid-cols-[1.2fr_.8fr]">
-        <div>
-          <div className="mb-5 flex items-center justify-between gap-4">
-            <div>
-              <p className="text-eyebrow">Live operations</p>
-              <h2 className="text-display mt-2 text-2xl">Recent activity</h2>
+/* ============================ Trust ladder ============================ */
+function TrustLadder() {
+  const cards = [
+    { icon: ShieldCheck, title: "Every plan follows the display rules", body: "On-exchange QHPs are shown consistent with federal display and disclosure requirements. Off-exchange is clearly labeled." },
+    { icon: HeartPulse, title: "Real doctors, real formularies", body: "Optional provider and prescription lookup uses NPPES and formulary data — with a clear skip for shoppers who don't want to bother." },
+    { icon: MessageSquareHeart, title: "A person, whenever you want one", body: "Every screen has a licensed-agent handoff. Plan-O tells you when it's the right call — and gets out of the way." },
+  ];
+  return (
+    <section className="relative mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
+      <BlueprintGrid tone="hairline" className="opacity-30" />
+      <div className="relative mb-10 max-w-xl">
+        <MastheadMark label="Trust ladder" />
+        <h2 className="text-display mt-6 text-4xl md:text-5xl">Built on rules, not vibes.</h2>
+      </div>
+      <div className="relative grid gap-6 md:grid-cols-3">
+        {cards.map((c) => (
+          <article
+            key={c.title}
+            className={cn(
+              "group relative overflow-hidden rounded-3xl border border-hairline bg-card p-7 transition-all hover:-translate-y-0.5",
+            )}
+            style={{ boxShadow: "var(--shadow-card)" }}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <span className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-hairline bg-sage-soft text-sage transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105" aria-hidden>
+                <c.icon className="h-8 w-8" />
+              </span>
             </div>
-            <Button variant="ghost" className="rounded-full">View all <ArrowRight /></Button>
-          </div>
-          <div className="overflow-hidden rounded-2xl border border-hairline bg-card shadow-card">
-            {ACTIVITY.map(([event, subject, detail, time]) => (
-              <div key={`${event}-${subject}`} className="grid gap-2 border-b border-hairline px-5 py-4 last:border-0 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
-                <div>
-                  <p className="text-sm font-medium">{event}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{subject}</p>
-                </div>
-                <p className="text-sm text-muted-foreground">{detail}</p>
-                <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><Clock3 className="size-3.5" />{time}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <div className="mb-5">
-            <p className="text-eyebrow">Explore</p>
-            <h2 className="text-display mt-2 text-2xl">ABox capabilities</h2>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
-            {ESTATES.map((estate) => {
-              const Icon = estate.icon;
-              return (
-                <Link key={estate.to} to={estate.to} className="group rounded-2xl border border-hairline bg-card p-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-primary/30">
-                  <Icon className="size-5 text-primary" />
-                  <p className="mt-5 text-sm font-semibold">{estate.title}</p>
-                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{estate.detail}</p>
-                  <ArrowRight className="mt-4 size-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" />
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-    </AppShell>
+            <h3 className="text-display mt-6 text-xl leading-snug">{c.title}</h3>
+            <p className="mt-3 text-sm text-muted-foreground">{c.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
   );
 }
