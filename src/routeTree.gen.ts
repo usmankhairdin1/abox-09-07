@@ -138,6 +138,7 @@ import { Route as LucieAppEmployerContributionRouteImport } from './routes/lucie
 import { Route as LucieAppEmployerProposalRouteImport } from './routes/lucie-app.employer.proposal'
 import { Route as LucieAppEmployerResultsRouteImport } from './routes/lucie-app.employer.results'
 import { Route as LucieAppPlatformIndexRouteImport } from './routes/lucie-app.platform.index'
+import { Route as LucieAppPlatformAuditRouteImport } from './routes/lucie-app.platform.audit'
 import { Route as LucieAppPlatformEntitlementsRouteImport } from './routes/lucie-app.platform.entitlements'
 import { Route as LucieAppPlatformExceptionsRouteImport } from './routes/lucie-app.platform.exceptions'
 import { Route as LucieAppPlatformHealthRouteImport } from './routes/lucie-app.platform.health'
@@ -859,6 +860,11 @@ const LucieAppPlatformIndexRoute = LucieAppPlatformIndexRouteImport.update({
   path: '/platform/',
   getParentRoute: () => LucieAppRoute,
 } as any)
+const LucieAppPlatformAuditRoute = LucieAppPlatformAuditRouteImport.update({
+  id: '/platform/audit',
+  path: '/platform/audit',
+  getParentRoute: () => LucieAppRoute,
+} as any)
 const LucieAppPlatformEntitlementsRoute =
   LucieAppPlatformEntitlementsRouteImport.update({
     id: '/platform/entitlements',
@@ -1346,6 +1352,7 @@ export interface FileRoutesByFullPath {
   '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
   '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
   '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
+  '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
   '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
   '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
   '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
@@ -1535,6 +1542,7 @@ export interface FileRoutesByTo {
   '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
   '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
   '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
+  '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
   '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
   '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
   '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
@@ -1732,6 +1740,7 @@ export interface FileRoutesById {
   '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
   '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
   '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
+  '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
   '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
   '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
   '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
@@ -1930,6 +1939,7 @@ export interface FileRouteTypes {
     | '/lucie-app/employer/contribution'
     | '/lucie-app/employer/proposal'
     | '/lucie-app/employer/results'
+    | '/lucie-app/platform/audit'
     | '/lucie-app/platform/entitlements'
     | '/lucie-app/platform/exceptions'
     | '/lucie-app/platform/health'
@@ -2119,6 +2129,7 @@ export interface FileRouteTypes {
     | '/lucie-app/employer/contribution'
     | '/lucie-app/employer/proposal'
     | '/lucie-app/employer/results'
+    | '/lucie-app/platform/audit'
     | '/lucie-app/platform/entitlements'
     | '/lucie-app/platform/exceptions'
     | '/lucie-app/platform/health'
@@ -2315,6 +2326,7 @@ export interface FileRouteTypes {
     | '/lucie-app/employer/contribution'
     | '/lucie-app/employer/proposal'
     | '/lucie-app/employer/results'
+    | '/lucie-app/platform/audit'
     | '/lucie-app/platform/entitlements'
     | '/lucie-app/platform/exceptions'
     | '/lucie-app/platform/health'
@@ -3401,6 +3413,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieAppPlatformIndexRouteImport
       parentRoute: typeof LucieAppRoute
     }
+    '/lucie-app/platform/audit': {
+      id: '/lucie-app/platform/audit'
+      path: '/platform/audit'
+      fullPath: '/lucie-app/platform/audit'
+      preLoaderRoute: typeof LucieAppPlatformAuditRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
     '/lucie-app/platform/entitlements': {
       id: '/lucie-app/platform/entitlements'
       path: '/platform/entitlements'
@@ -3969,6 +3988,7 @@ interface LucieAppRouteChildren {
   LucieAppEmployerContributionRoute: typeof LucieAppEmployerContributionRoute
   LucieAppEmployerProposalRoute: typeof LucieAppEmployerProposalRoute
   LucieAppEmployerResultsRoute: typeof LucieAppEmployerResultsRoute
+  LucieAppPlatformAuditRoute: typeof LucieAppPlatformAuditRoute
   LucieAppPlatformEntitlementsRoute: typeof LucieAppPlatformEntitlementsRoute
   LucieAppPlatformExceptionsRoute: typeof LucieAppPlatformExceptionsRoute
   LucieAppPlatformHealthRoute: typeof LucieAppPlatformHealthRoute
@@ -4000,6 +4020,7 @@ const LucieAppRouteChildren: LucieAppRouteChildren = {
   LucieAppEmployerContributionRoute: LucieAppEmployerContributionRoute,
   LucieAppEmployerProposalRoute: LucieAppEmployerProposalRoute,
   LucieAppEmployerResultsRoute: LucieAppEmployerResultsRoute,
+  LucieAppPlatformAuditRoute: LucieAppPlatformAuditRoute,
   LucieAppPlatformEntitlementsRoute: LucieAppPlatformEntitlementsRoute,
   LucieAppPlatformExceptionsRoute: LucieAppPlatformExceptionsRoute,
   LucieAppPlatformHealthRoute: LucieAppPlatformHealthRoute,
