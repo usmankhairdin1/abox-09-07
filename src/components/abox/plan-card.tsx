@@ -41,7 +41,7 @@ function MatchArc({ pct }: { pct: number }) {
   );
 }
 
-export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, inCompare, saved, compact }: Props) {
+export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, inCompare, saved, compact, matchScore }: Props) {
   return (
     <article
       aria-labelledby={`plan-${plan.id}-name`}
