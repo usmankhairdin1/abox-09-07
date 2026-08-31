@@ -135,7 +135,7 @@ export function HfShell({
         ) : null}
         <div className="relative flex h-13 items-center gap-2 px-3 py-2.5">
           <Link to="/hf" className="flex items-center gap-2.5 pr-1">
-            <span className="grid size-7 place-items-center rounded-md bg-primary font-display text-[11px] font-bold text-primary-foreground">
+            <span className="grid size-7 place-items-center rounded-lg bg-primary font-display text-[11px] font-bold text-primary-foreground">
               AB
             </span>
             <span className="hidden font-display text-sm font-semibold tracking-tight sm:inline">
@@ -210,7 +210,7 @@ export function HfShell({
           {/* search */}
           <button
             type="button"
-            className="ml-auto flex h-8 min-w-0 flex-1 items-center gap-2 rounded-[var(--radius)] border border-hairline bg-background px-2.5 text-xs text-muted-foreground hover:bg-muted md:ml-2 md:max-w-sm"
+            className="ml-auto flex h-8 min-w-0 flex-1 items-center gap-2 rounded-[var(--radius)] border border-hairline bg-background px-2.5 text-xs text-muted-foreground hover:bg-accent md:ml-2 md:max-w-sm"
           >
             <Search className="size-3.5 shrink-0" />
             <span className="truncate">Search leads, members, quotes, plans…</span>
@@ -429,7 +429,7 @@ export function HfShell({
                 type="button"
                 onClick={() => setDrawerOpen((v) => !v)}
                 aria-label={drawerOpen ? "Collapse drawer" : "Expand drawer"}
-                className="ml-auto rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="ml-auto rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
               >
                 {drawerOpen ? (
                   <PanelRightClose className="size-4" />
@@ -450,7 +450,7 @@ export function HfShell({
                         "rounded-full border px-2 py-0.5 text-[11px]",
                         section === s
                           ? "border-primary bg-primary/10 font-medium text-primary"
-                          : "border-transparent text-muted-foreground hover:bg-muted",
+                          : "border-transparent text-muted-foreground hover:bg-accent",
                       )}
                     >
                       {s}
@@ -500,7 +500,7 @@ export function HfShell({
                   <button
                     key={q}
                     type="button"
-                    className="flex w-full items-center gap-2 rounded-[var(--radius)] border border-hairline px-2.5 py-1.5 text-left text-xs hover:bg-muted"
+                    className="flex w-full items-center gap-2 rounded-[var(--radius)] border border-hairline px-2.5 py-1.5 text-left text-xs hover:bg-accent"
                   >
                     <Sparkles className="size-3 text-ai" /> {q}
                   </button>
@@ -541,7 +541,7 @@ function BarBtn({
       type="button"
       onClick={onClick}
       className={cn(
-        "inline-flex h-8 shrink-0 items-center gap-1.5 rounded-[var(--radius)] border border-transparent px-2 text-xs text-foreground/80 transition-colors hover:bg-muted",
+        "inline-flex h-8 shrink-0 items-center gap-1.5 rounded-[var(--radius)] border border-transparent px-2 text-xs text-foreground/80 transition-colors hover:bg-accent",
         active && "border-hairline bg-muted text-foreground",
       )}
     >
@@ -591,7 +591,7 @@ function MenuRow({
       onClick={onClick}
       style={{ paddingLeft: 8 + indent * 14 }}
       className={cn(
-        "flex w-full flex-col items-start gap-0.5 rounded-[var(--radius)] py-1.5 pr-2 text-left hover:bg-muted",
+        "flex w-full flex-col items-start gap-0.5 rounded-[var(--radius)] py-1.5 pr-2 text-left hover:bg-accent",
         active && "bg-muted",
       )}
     >

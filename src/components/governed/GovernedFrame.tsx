@@ -94,7 +94,7 @@ export function GovernedFrame({
               aria-pressed={lang === l}
               className={cn(
                 "rounded border border-hairline px-2 py-1 font-mono text-[10px] uppercase",
-                lang === l ? "bg-muted font-semibold" : "text-muted-foreground hover:bg-muted",
+                lang === l ? "bg-muted font-semibold" : "text-muted-foreground hover:bg-accent",
               )}
             >
               {l === "EN" ? "English" : "Español"}
@@ -122,7 +122,7 @@ export function GovernedFrame({
               aria-pressed={state === s}
               className={cn(
                 "rounded border border-hairline px-2 py-1 font-mono text-[10px]",
-                state === s ? "bg-muted font-semibold" : "text-muted-foreground hover:bg-muted",
+                state === s ? "bg-muted font-semibold" : "text-muted-foreground hover:bg-accent",
               )}
             >
               {s}
@@ -140,7 +140,7 @@ export function GovernedFrame({
         {screen.sections.map((section, i) => (
           <section
             key={section}
-            className="rounded-md border border-dashed border-hairline bg-muted/10 p-3"
+            className="rounded-lg border border-dashed border-hairline bg-muted/10 p-3"
           >
             <header className="mb-2 flex flex-wrap items-center gap-2">
               <span className="text-xs font-semibold tracking-tight">{section}</span>

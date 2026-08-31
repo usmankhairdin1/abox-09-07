@@ -178,7 +178,7 @@ export function HfConsumerShell({
                 <button
                   key={t}
                   type="button"
-                  className="w-full rounded-[var(--radius)] border border-hairline px-2.5 py-2 text-left text-xs hover:bg-muted"
+                  className="w-full rounded-[var(--radius)] border border-hairline px-2.5 py-2 text-left text-xs hover:bg-accent"
                 >
                   {t}
                 </button>

@@ -152,7 +152,7 @@ function BarButton({
       title={title}
       onClick={onClick}
       className={cn(
-        "inline-flex h-8 items-center gap-1.5 rounded-md border border-transparent px-2 text-xs text-foreground/80 transition-colors hover:bg-muted",
+        "inline-flex h-8 items-center gap-1.5 rounded-lg border border-transparent px-2 text-xs text-foreground/80 transition-colors hover:bg-accent",
         active && "border-hairline bg-muted",
       )}
     >
@@ -279,7 +279,7 @@ export function AppShell({
                           setOpenMenu(null);
                         }}
                         className={cn(
-                          "flex w-full items-start justify-between gap-2 rounded-md px-2 py-1.5 text-left text-xs hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60",
+                          "flex w-full items-start justify-between gap-2 rounded-lg px-2 py-1.5 text-left text-xs hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60",
                           w.id === ws.id && "bg-muted",
                         )}
                       >
@@ -331,7 +331,7 @@ export function AppShell({
                         }}
                         style={{ paddingLeft: 8 + e.depth * 14 }}
                         className={cn(
-                          "flex w-full items-center justify-between gap-2 rounded-md py-1.5 pr-2 text-left text-xs hover:bg-muted",
+                          "flex w-full items-center justify-between gap-2 rounded-lg py-1.5 pr-2 text-left text-xs hover:bg-accent",
                           e.id === entity.id && "bg-muted",
                         )}
                       >
@@ -475,7 +475,7 @@ export function AppShell({
                     "Support access",
                     "Sign out",
                   ].map((i) => (
-                    <li key={i} className="rounded-md px-2 py-1.5 hover:bg-muted">
+                    <li key={i} className="rounded-lg px-2 py-1.5 hover:bg-accent">
                       {i}
                     </li>
                   ))}
@@ -491,7 +491,7 @@ export function AppShell({
                         type="button"
                         onClick={() => shell.setRoleId(r.id)}
                         className={cn(
-                          "flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-xs hover:bg-muted",
+                          "flex w-full items-center justify-between gap-2 rounded-lg px-2 py-1.5 text-left text-xs hover:bg-accent",
                           r.id === role.id && "bg-muted",
                         )}
                       >
@@ -540,7 +540,7 @@ export function AppShell({
                 type="button"
                 onClick={() => setNavCollapsed((v) => !v)}
                 aria-label={navCollapsed ? "Expand navigation" : "Collapse navigation"}
-                className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="rounded-lg p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
               >
                 {navCollapsed ? (
                   <ChevronsRight className="size-4" />
@@ -573,7 +573,7 @@ export function AppShell({
                       <Link
                         to={m.to}
                         className={cn(
-                          "flex items-center gap-2 rounded-md px-2 py-2 text-xs hover:bg-muted",
+                          "flex items-center gap-2 rounded-lg px-2.5 py-2 text-xs transition-colors hover:bg-accent",
                           active && "bg-muted font-medium",
                         )}
                         title={`${m.id} — ${m.acl}`}
@@ -582,7 +582,7 @@ export function AppShell({
                       </Link>
                     ) : (
                       <div
-                        className="flex cursor-not-allowed items-center gap-2 rounded-md px-2 py-2 text-xs text-muted-foreground"
+                        className="flex cursor-not-allowed items-center gap-2 rounded-lg px-2 py-2 text-xs text-muted-foreground"
                         title={`${m.id} — not in this wireframe batch`}
                       >
                         {content}
@@ -649,7 +649,7 @@ export function AppShell({
                 type="button"
                 onClick={() => setDrawerOpen((v) => !v)}
                 aria-label={drawerOpen ? "Collapse drawer" : "Expand drawer"}
-                className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="rounded-lg p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
               >
                 {drawerOpen ? (
                   <PanelRightClose className="size-4" />
@@ -668,7 +668,7 @@ export function AppShell({
                       type="button"
                       onClick={() => setDrawerTab(t)}
                       className={cn(
-                        "rounded-md border border-transparent px-1.5 py-1 text-[11px] text-muted-foreground hover:bg-muted",
+                        "rounded-lg border border-transparent px-1.5 py-1 text-[11px] text-muted-foreground hover:bg-accent",
                         drawerTab === t && "border-hairline bg-muted text-foreground",
                       )}
                     >
@@ -719,7 +719,7 @@ export function AppShell({
                   type="button"
                   onClick={() => setAssistantTab(t)}
                   className={cn(
-                    "rounded-md border border-transparent px-2 py-1 text-[11px] text-muted-foreground hover:bg-muted",
+                    "rounded-lg border border-transparent px-2 py-1 text-[11px] text-muted-foreground hover:bg-accent",
                     assistantTab === t && "border-hairline bg-muted text-foreground",
                   )}
                 >
@@ -730,14 +730,14 @@ export function AppShell({
             <div className="space-y-2 p-3">
               {assistantTab === "Chat" ? (
                 <>
-                  <div className="rounded-md border border-dashed border-hairline bg-muted/40 p-2">
+                  <div className="rounded-lg border border-dashed border-hairline bg-muted/40 p-2">
                     <WLine w="80%" />
                     <WLine w="60%" className="mt-1.5 h-1.5 bg-muted/70" />
                   </div>
-                  <div className="ml-6 rounded-md border border-hairline bg-background p-2">
+                  <div className="ml-6 rounded-lg border border-hairline bg-background p-2">
                     <WLine w="70%" />
                   </div>
-                  <div className="rounded-md border border-hairline px-2 py-1.5 text-[11px] text-muted-foreground">
+                  <div className="rounded-lg border border-hairline px-2 py-1.5 text-[11px] text-muted-foreground">
                     Ask a question about {assistantContext}…
                   </div>
                 </>
@@ -750,7 +750,7 @@ export function AppShell({
                     "How do I change a label?",
                     "Where do notifications come from?",
                   ].map((q) => (
-                    <li key={q} className="rounded-md border border-hairline px-2 py-1.5">
+                    <li key={q} className="rounded-lg border border-hairline px-2 py-1.5">
                       {q}
                     </li>
                   ))}
@@ -766,7 +766,7 @@ export function AppShell({
                   ].map((q) => (
                     <li
                       key={q}
-                      className="flex items-center gap-2 rounded-md border border-dashed border-hairline px-2 py-1.5"
+                      className="flex items-center gap-2 rounded-lg border border-dashed border-hairline px-2 py-1.5"
                     >
                       <Sparkles className="size-3" /> {q}
                     </li>
@@ -784,7 +784,7 @@ export function AppShell({
         <button
           type="button"
           onClick={() => setAssistantOpen((v) => !v)}
-          className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-3 py-2 text-xs font-medium shadow-elevated hover:bg-muted"
+          className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-3 py-2 text-xs font-medium shadow-elevated hover:bg-accent"
         >
           <HelpCircle className="size-4" />
           Help &amp; assistant
@@ -819,7 +819,7 @@ function DefaultDrawerBody({ tab }: { tab: DrawerTab }) {
       {items[tab].map((i) => (
         <div
           key={i}
-          className="rounded-md border border-dashed border-hairline bg-muted/30 px-2 py-2"
+          className="rounded-lg border border-dashed border-hairline bg-muted/30 px-2 py-2"
         >
           <p className="text-[11px] text-foreground/80">{i}</p>
           <WLine w="65%" className="mt-1.5 h-1.5 bg-muted/70" />

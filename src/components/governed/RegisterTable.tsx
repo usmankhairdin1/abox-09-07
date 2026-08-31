@@ -37,7 +37,7 @@ export function RegisterTable({
         </label>
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-hairline">
+      <div className="overflow-x-auto rounded-lg border border-hairline">
         <table className="w-full min-w-[48rem] border-collapse text-left text-[11px]">
           <caption className="sr-only">{id} controlled register</caption>
           <thead className="bg-muted/40">
@@ -74,7 +74,7 @@ export function RegisterTable({
         <button
           type="button"
           onClick={() => setShowAll((v) => !v)}
-          className="rounded border border-hairline px-2 py-1 font-mono text-[10px] uppercase hover:bg-muted"
+          className="rounded border border-hairline px-2 py-1 font-mono text-[10px] uppercase hover:bg-accent"
         >
           {showAll ? "Show first " + limit : `Show all ${filtered.length}`}
         </button>

@@ -31,8 +31,8 @@ export function Btn({
         size === "md" && "h-9 px-4 text-sm",
         size === "lg" && "h-11 px-6 text-[0.95rem]",
         variant === "primary" && "bg-primary text-primary-foreground hover:opacity-90",
-        variant === "outline" && "border border-hairline bg-card hover:bg-muted",
-        variant === "ghost" && "text-foreground/80 hover:bg-muted",
+        variant === "outline" && "border border-hairline bg-card hover:bg-accent",
+        variant === "ghost" && "text-foreground/80 hover:bg-accent",
         variant === "quiet" && "text-muted-foreground hover:text-foreground",
         full && "w-full",
         className,
@@ -379,7 +379,7 @@ export function Table({
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} className="border-b border-hairline last:border-b-0 hover:bg-muted/40">
+            <tr key={i} className="border-b border-hairline last:border-b-0 hover:bg-accent/40">
               {r.map((cell, j) => (
                 <td
                   key={j}
