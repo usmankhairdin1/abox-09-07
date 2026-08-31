@@ -69,8 +69,8 @@ export const M00_SNAPSHOT = {
     { id: "OPEN-002", topic: "Feature flags", question: "Should PlanAI recommendations be gated per marketplace or per user?", owner: "M04/M00", stage: "DESIGN_REVIEW" },
   ] satisfies M00OpenItem[],
   screens: [
-    { recordId: "SCR_PLATFORM_HOME", name: "Platform Foundation Home", workspace: "WS_JET_ADMIN", purpose: "Governed control surface for M00 baseline.", status: "IMPLEMENTED" },
-    { recordId: "SCR_AUDIT_LOG", name: "Audit Log", workspace: "WS_JET_ADMIN", purpose: "Immutable record of controlled changes.", status: "IMPLEMENTED" },
-    { recordId: "SCR_ACL_MATRIX", name: "ACL Matrix", workspace: "WS_JET_ADMIN", purpose: "Role-to-permission mapping and enforcement.", status: "IMPLEMENTED" },
+    { id: "SCR_PLATFORM_HOME", recordId: "SCR_PLATFORM_HOME", name: "Platform Foundation Home", workspace: "WS_JET_ADMIN", purpose: "Governed control surface for M00 baseline.", status: "IMPLEMENTED" },
+    { id: "SCR_AUDIT_LOG", recordId: "SCR_AUDIT_LOG", name: "Audit Log", workspace: "WS_JET_ADMIN", purpose: "Immutable record of controlled changes.", status: "IMPLEMENTED" },
+    { id: "SCR_ACL_MATRIX", recordId: "SCR_ACL_MATRIX", name: "ACL Matrix", workspace: "WS_JET_ADMIN", purpose: "Role-to-permission mapping and enforcement.", status: "IMPLEMENTED" },
   ] satisfies M00Screen[],
 };
