@@ -61,7 +61,7 @@ function FlowDetail() {
         ← flow register
       </Link>
 
-      <PageHeading id={flow.id} title={flow.name} subtitle={flow.summary} />
+      <PageHeading id={flow.id} title={flow.name} description={flow.summary} />
 
       <div className="flex flex-wrap gap-2">
         <IdChip>{flow.status}</IdChip>
