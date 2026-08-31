@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { DispositionChip } from "@/components/LucieDisposition";
+import { dispositionForScreen } from "@/lib/reconciliation-status";
+
 import { AppShell } from "@/components/shell/AppShell";
 import {
   AclNote,
@@ -82,6 +85,7 @@ function M1Index() {
                     <IdChip>{s.id}</IdChip>
                     <span className="text-sm font-medium">{s.name}</span>
                     <Pill>{s.shell === "consumer" ? "External" : "Internal"}</Pill>
+                    <DispositionChip info={dispositionForScreen(s.id)} className="ml-auto" />
                   </div>
                   <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground">{s.purpose}</p>
                   <p className="mt-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">

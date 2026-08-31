@@ -282,7 +282,7 @@ export const MODULES: ModuleDef[] = [
   },
   {
     id: "MOD_AI",
-    label: "AI, Plan O & Governance",
+    label: "AI, PlanAI & Governance",
     to: "/p1",
     phase: "P1-Build",
     packet: "P1-Later",
@@ -337,7 +337,7 @@ export interface FeatureFlag {
 export const FEATURE_FLAGS: FeatureFlag[] = [
   {
     id: "FLAG_PLAN_O",
-    label: "Plan O guided shopping",
+    label: "PlanAI guided shopping (formerly Plan O)",
     scope: "Tenant / Marketplace",
     on: true,
     note: "Module 1 guardrails frozen",

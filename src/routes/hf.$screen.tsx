@@ -1,6 +1,7 @@
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 
+import { DispositionBanner, DispositionChip } from "@/components/LucieDisposition";
 import { Badge, Btn, Card } from "@/components/hf/ui";
 import {
   AgentQuickQuoteScreen,
@@ -40,6 +41,7 @@ import {
   ReferralRewardsScreen,
 } from "@/components/hf/screens-batch2";
 import { HF_BY_SLUG, HF_SLUGS, type HfScreen } from "@/lib/hf";
+import { dispositionForScreen } from "@/lib/reconciliation-status";
 
 const RENDERERS: Record<string, () => ReactNode> = {
   "internal-shell": InternalShellScreen,
@@ -107,6 +109,7 @@ function HfScreenPage() {
   const { screen } = Route.useLoaderData();
   const Renderer = RENDERERS[screen.slug]!;
   const [notesOpen, setNotesOpen] = useState(false);
+  const disposition = dispositionForScreen(screen.id);
 
   const i = HF_SLUGS.indexOf(screen.slug);
   const prev = i > 0 ? HF_SLUGS[i - 1] : undefined;
@@ -125,6 +128,7 @@ function HfScreenPage() {
           <span className="hidden max-w-[14rem] truncate text-xs font-medium sm:inline">
             {screen.name}
           </span>
+          <DispositionChip info={disposition} />
           {prev ? (
             <Link
               to="/hf/$screen"
@@ -180,6 +184,8 @@ function HfScreenPage() {
               <Badge>{screen.module}</Badge>
               <Badge>{screen.user}</Badge>
             </div>
+
+            <DispositionBanner info={disposition} legacyId={screen.id} className="mt-3" />
 
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{screen.purpose}</p>
 

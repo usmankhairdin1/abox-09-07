@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { DispositionBanner } from "@/components/LucieDisposition";
+import { dispositionForGroup } from "@/lib/reconciliation-status";
+
 import { AppShell } from "@/components/shell/AppShell";
 import {
   AclNote,
@@ -115,6 +118,11 @@ function P1Index() {
             id={`P1-G${n + 1}`}
             meta={`${screens.length} screens`}
           >
+            <DispositionBanner
+              info={dispositionForGroup(group)}
+              legacyId={`P1 group ${n + 1}`}
+              className="mb-3"
+            />
             <ul className="grid gap-2 md:grid-cols-2">
               {screens.map((s) => (
                 <li key={s.slug}>

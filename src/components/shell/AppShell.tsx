@@ -231,8 +231,16 @@ export function AppShell({
             <div className="flex size-6 items-center justify-center rounded border border-dashed border-border bg-muted text-[9px] font-mono text-muted-foreground">
               LOGO
             </div>
-            <span className="hidden text-sm font-semibold tracking-tight sm:inline">ABox</span>
+            <Link to="/" className="hidden text-sm font-semibold tracking-tight sm:inline">
+              ABox
+            </Link>
             <IdChip>SHELL_TOPBAR</IdChip>
+            <Link
+              to="/lucie"
+              className="hidden rounded border border-border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:bg-muted md:inline"
+            >
+              Lucie spine
+            </Link>
           </div>
 
           {/* workspace switcher */}

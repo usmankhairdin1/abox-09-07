@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { Link } from "@tanstack/react-router";
 
+import { DispositionBanner } from "@/components/LucieDisposition";
 import {
   Annotation,
   IdChip,
@@ -14,6 +15,7 @@ import {
   WRow,
 } from "@/components/wireframe/primitives";
 import { P1_BY_SLUG, P1_SLUGS, type P1Screen, type P1Zone } from "@/lib/p1";
+import { dispositionForGroup } from "@/lib/reconciliation-status";
 import { cn } from "@/lib/utils";
 
 function ZoneShell({ zone, children }: { zone: P1Zone; children: ReactNode }) {
@@ -270,6 +272,8 @@ export function P1Frame({ screen }: { screen: P1Screen }) {
           </>
         }
       />
+
+      <DispositionBanner info={dispositionForGroup(screen.group)} legacyId={screen.id} />
 
       <Annotation>
         Not a change to active Module 1. Module 1 remains exactly as specified in the V4 Hardening
