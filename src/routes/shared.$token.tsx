@@ -6,8 +6,10 @@ import { Phone, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { StatusBadge } from "@/components/abox/status-badge";
+import { EmptyState } from "@/components/abox/empty-state";
 import { PlanCard } from "@/components/abox/plan-card";
-import { SAMPLE_PLANS } from "@/lib/sample-data";
+import { SAMPLE_PLANS, type SamplePlan } from "@/lib/sample-data";
+import { loadSharedQuote, isSharedQuoteExpired } from "@/lib/shared-quote-store";
 import { SCREENS } from "@/lib/screens";
 
 export const Route = createFileRoute("/shared/$token")({
@@ -17,29 +19,57 @@ export const Route = createFileRoute("/shared/$token")({
 
 function Page() {
   const { token } = Route.useParams();
-  const plans = SAMPLE_PLANS.slice(0, 3);
+  const pkg = typeof window === "undefined" ? null : loadSharedQuote(token);
+  const expired = pkg ? isSharedQuoteExpired(pkg) : false;
+  const plans: SamplePlan[] = pkg && !expired
+    ? pkg.planIds.map((id) => SAMPLE_PLANS.find((p) => p.id === id)).filter((p): p is SamplePlan => !!p)
+    : [];
+  const daysLeft = pkg
+    ? Math.max(0, Math.ceil((new Date(pkg.createdAt).getTime() + pkg.expiresInDays * 86400000 - Date.now()) / 86400000))
+    : 0;
+
+  if (!pkg || expired) {
+    return (
+      <MarketplaceShell showAssistant={false}>
+        <div className="mx-auto max-w-3xl px-4 py-16 text-center md:px-8">
+          <StatusBadge tone="muted">Shared quote</StatusBadge>
+          <EmptyState
+            className="mt-6"
+            title={expired ? "This shared quote has expired" : "This link isn't available"}
+            body={
+              expired
+                ? "Ask your agent to send a fresh link — quote links expire for your security."
+                : "This link may be invalid, or it was opened in a different browser than the one it was sent from."
+            }
+            action={<Link to="/schedule" className="mt-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">Talk to an agent</Link>}
+          />
+        </div>
+      </MarketplaceShell>
+    );
+  }
+
   return (
     <MarketplaceShell showAssistant={false}>
-      <div className="mx-auto max-w-5xl px-4 py-10 md:px-8 md:py-14">
+      <div className="mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-14">
         <div className="mb-6 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <StatusBadge tone="info">Shared quote</StatusBadge>
           <span>Token · <span className="tabular-nums text-foreground">{token}</span></span>
           <span>·</span>
-          <span>Expires in 6 days</span>
+          <span>Expires in {daysLeft} day{daysLeft === 1 ? "" : "s"}</span>
         </div>
         <PageHeader
-          scrId="UX-020" eyebrow="From Elena at Cedar Grove Insurance"
-          title="Here are three plans I think fit best"
+          scrId="UX-020" eyebrow={`From ${pkg.agentName} at Cedar Grove Insurance`}
+          title={`Here ${plans.length === 1 ? "is one plan" : `are ${plans.length} plans`} I think fit best`}
           description="Take your time — nothing changes until you tell me. If any of these look good, I'll walk you through enrollment."
         />
 
         <div className="rounded-2xl border border-primary/25 bg-primary-soft/40 p-5">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
-            <p className="text-sm font-medium">Why these three</p>
+            <p className="text-sm font-medium">Why {plans.length === 1 ? "this one" : "these"}</p>
           </div>
           <p className="mt-2 text-sm">
-            You mentioned keeping your PCP, low Rx tier 1, and a predictable deductible. These three lead on all three.
+            You mentioned keeping your PCP, low Rx tier 1, and a predictable deductible. {plans.length === 1 ? "This plan leads" : "These lead"} on all three.
           </p>
         </div>
 
@@ -67,7 +97,7 @@ function Page() {
 
         <p className="mt-8 text-xs text-muted-foreground">
           Shared quotes are read-only. To add plans to a cart or start enrollment, register or sign in.
-          Plan-O is educational, not a substitute for licensed advice.
+          Plan-AI is educational, not a substitute for licensed advice.
         </p>
       </div>
     </MarketplaceShell>

@@ -20,13 +20,13 @@ function Page() {
   return (
     <MarketplaceShell>
       <section className="relative overflow-hidden bg-gradient-to-b from-primary-soft/40 to-background">
-        <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
           <PageHeader
             eyebrow="For employers"
             title="ICHRA: set an allowance. Team picks the plan."
             description="Give employees defined-contribution funding for individual health insurance — with less admin, and real choice for your team."
             actions={
-              <Link to="/ichra" className="inline-flex h-11 items-center gap-1.5 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+              <Link to="/app/employer/ichra" className="inline-flex h-11 items-center gap-1.5 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Start a group quote <ArrowRight className="h-4 w-4" />
               </Link>
             }
@@ -34,7 +34,7 @@ function Page() {
           <div className="grid gap-4 md:grid-cols-3">
             {[
               { icon: <DollarSign className="h-5 w-5" />, title: "Fixed cost", body: "Set a per-employee monthly allowance you can budget." },
-              { icon: <Users className="h-5 w-5" />, title: "Real choice", body: "Employees shop the individual marketplace — Plan-O helps." },
+              { icon: <Users className="h-5 w-5" />, title: "Real choice", body: "Employees shop the individual marketplace — Plan-AI helps." },
               { icon: <ShieldCheck className="h-5 w-5" />, title: "Compliant", body: "ACA-compliant reimbursement model, class-based rules supported." },
             ].map((c) => (
               <div key={c.title} className="rounded-2xl border border-border bg-card p-5">
@@ -72,7 +72,7 @@ function Page() {
                 Upload a simple census, tell us the allowance, and see illustrative costs by class.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
-                <Link to="/ichra" className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground">
+                <Link to="/app/employer/ichra" className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground">
                   Start a group quote
                 </Link>
                 <Link to="/schedule" className="inline-flex h-11 items-center rounded-full border border-border bg-card px-5 text-sm font-medium">
@@ -87,7 +87,7 @@ function Page() {
           {[
             "Class-based allowances (FT, PT, seasonal, salaried, hourly)",
             "Reimbursement of premiums; optional QSEHRA-style OOP",
-            "Employee shopping via the ABox marketplace with Plan-O guidance",
+            "Employee shopping via the ABox marketplace with Plan-AI guidance",
             "Admin dashboard for approvals, reimbursements, and reporting",
           ].map((f) => (
             <li key={f} className="flex items-start gap-2 text-muted-foreground">

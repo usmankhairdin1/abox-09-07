@@ -11,6 +11,9 @@ import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { useCart, PRODUCT_LABEL, type ProductType } from "@/lib/cart-store";
 import { loadQuoteState } from "@/lib/quote-store";
+import { resolvePathway } from "@/lib/lucie-release";
+import { useAuthSession } from "@/lib/auth-session";
+import { SaveContinueButton } from "@/components/abox/save-continue-button";
 import { SCREENS } from "@/lib/screens";
 
 export const Route = createFileRoute("/review")({
@@ -25,15 +28,17 @@ function Page() {
     (acc[i.productType] = acc[i.productType] ?? []).push(i); return acc;
   }, {});
   const hasQuote = !!(quote?.zip && quote.members?.length);
-  const hasAccount = false; // stub
+  const { session } = useAuthSession();
+  const hasAccount = !!session;
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-5xl px-4 py-8 md:px-8 md:py-10">
+      <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-10">
         <PageHeader
           scrId="UX-014" eyebrow="Almost there"
           title="Review before you enroll"
           description="We'll take you to the exchange for on-exchange plans and to a licensed application for off-exchange plans."
+          actions={cart.items.length > 0 && <SaveContinueButton />}
         />
 
         {cart.items.length === 0 ? (
@@ -75,11 +80,21 @@ function Page() {
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-4 rounded-xl bg-surface/70 p-3 text-xs text-muted-foreground">
-                    <span className="font-medium text-foreground">Next step: </span>
-                    {type === "ifp"
-                      ? "On-exchange plans go to healthcare.gov via a JET handoff. Off-exchange plans continue in the app."
-                      : "This coverage is submitted directly through JET's application flow."}
+                  <div className="mt-4 space-y-2 rounded-xl bg-surface/70 p-3 text-xs text-muted-foreground">
+                    <p>
+                      <span className="font-medium text-foreground">Next step: </span>
+                      {type === "ifp"
+                        ? "On-exchange plans go to healthcare.gov via a JET handoff. Off-exchange plans continue in the app."
+                        : "This coverage is submitted directly through the carrier application flow."}
+                    </p>
+                    {grouped[type].map((i) => {
+                      const p = resolvePathway({ productType: i.productType, carrier: i.carrier, onExchange: i.meta?.onExchange !== false });
+                      return (
+                        <p key={i.id}>
+                          <span className="text-foreground">{i.displayName}</span> — {p.label}. {p.notProof}
+                        </p>
+                      );
+                    })}
                   </div>
                 </section>
               ))}
@@ -100,6 +115,11 @@ function Page() {
                   {hasAccount && (
                     <Link to="/handoff" className="mt-4 flex w-full items-center justify-center gap-1 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                       Continue to JET handoff <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  )}
+                  {cart.items.some((i) => resolvePathway({ productType: i.productType, carrier: i.carrier, onExchange: i.meta?.onExchange !== false }).output !== "handoff") && (
+                    <Link to="/apply" className="mt-2 flex w-full items-center justify-center gap-1 rounded-full border border-border px-4 py-2.5 text-sm font-medium hover:bg-surface">
+                      Start off-exchange application <ArrowRight className="h-4 w-4" />
                     </Link>
                   )}
                 </div>

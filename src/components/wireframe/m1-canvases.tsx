@@ -88,7 +88,7 @@ function PlanCard({ rec = false }: { rec?: boolean }) {
           <WLine w="55%" />
           <WLine w="35%" className="h-1.5 bg-muted/70" />
         </div>
-        {rec ? <Pill>Plan-O fit</Pill> : <Pill>Compare</Pill>}
+        {rec ? <Pill>Plan-AI fit</Pill> : <Pill>Compare</Pill>}
       </div>
       <div className="mt-3 grid grid-cols-4 gap-2">
         {["Premium", "After credit*", "Deductible", "MOOP"].map((m) => (
@@ -208,7 +208,7 @@ const canvases: Record<string, () => ReactNode> = {
         </Annotation>
       </Zone>
       <div className="grid gap-3 md:grid-cols-2">
-        <Zone title="Guided path (Plan-O entry)" id="UX-002-PATH-GUIDED">
+        <Zone title="Guided path (Plan-AI entry)" id="UX-002-PATH-GUIDED">
           <WLine w="75%" />
           <WLine w="55%" className="mt-2 h-1.5 bg-muted/70" />
           <div className="mt-3">
@@ -300,7 +300,7 @@ const canvases: Record<string, () => ReactNode> = {
 
   "ux-005": () => (
     <div className="space-y-3">
-      <Zone title="Plan-O intake — priorities" id="UX-005-PRIORITIES">
+      <Zone title="Plan-AI intake — priorities" id="UX-005-PRIORITIES">
         <div className="grid gap-2 sm:grid-cols-3">
           {[
             "Lowest monthly premium",
@@ -335,7 +335,7 @@ const canvases: Record<string, () => ReactNode> = {
         <Btn label="Add my doctors and prescriptions" />
       </Zone>
       <Disclosure>
-        Plan-O is decision support, not advice. Inputs used for ranking are disclosed on the results
+        Plan-AI is decision support, not advice. Inputs used for ranking are disclosed on the results
         screen and can be changed at any time. Every run is logged with inputs, ruleset version and
         outputs.
       </Disclosure>
@@ -439,7 +439,7 @@ const canvases: Record<string, () => ReactNode> = {
     <div className="space-y-3">
       <Zone title="Result tabs" id="UX-009-TABS">
         <div className="flex flex-wrap gap-2">
-          <Btn label="Recommended for you (Plan-O)" primary />
+          <Btn label="Recommended for you (Plan-AI)" primary />
           <Btn label="All plans (manual browse)" />
           <span className="ml-auto flex gap-1.5">
             <Pill>Sort: estimated total cost</Pill>
@@ -470,7 +470,7 @@ const canvases: Record<string, () => ReactNode> = {
         </Zone>
         <div className="space-y-3">
           <Zone
-            title="Plan-O recommendation panel"
+            title="Plan-AI recommendation panel"
             id="UX-009-PLANO"
             note="Ranking basis disclosed on-screen; consumer can change inputs from here."
           >
@@ -907,7 +907,7 @@ const canvases: Record<string, () => ReactNode> = {
             <Field label="Effective date" />
             <WBox className="h-16" label="household members (inline editor)" />
             <Field label="Estimated income (subsidy)" />
-            <WBox className="h-16" label="Plan-O priorities & usage" />
+            <WBox className="h-16" label="Plan-AI priorities & usage" />
             <Btn label="Re-run results" primary />
           </div>
         </Zone>
@@ -1285,9 +1285,9 @@ const canvases: Record<string, () => ReactNode> = {
           </Annotation>
         </Zone>
       </div>
-      <Zone title="Plan-O settings" id="UX-024-PLANO">
+      <Zone title="Plan-AI settings" id="UX-024-PLANO">
         <div className="flex flex-wrap items-center gap-3">
-          <Pill>Plan-O enabled</Pill>
+          <Pill>Plan-AI enabled</Pill>
           <Field label="Priority set" w="w-60" />
         </div>
       </Zone>

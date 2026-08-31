@@ -337,7 +337,7 @@ export interface FeatureFlag {
 export const FEATURE_FLAGS: FeatureFlag[] = [
   {
     id: "FLAG_PLAN_O",
-    label: "PlanAI guided shopping (formerly Plan O)",
+    label: "PlanAI guided shopping (formerly Plan AI)",
     scope: "Tenant / Marketplace",
     on: true,
     note: "Module 1 guardrails frozen",

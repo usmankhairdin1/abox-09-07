@@ -91,13 +91,12 @@ export const cartStore = {
   },
 };
 
-/** Stable empty snapshot so SSR/hydration never loops. */
-const SERVER_SNAPSHOT = { items: [], compareIds: [], savedPlanIds: [] } as ReturnType<
-  typeof cartStore.get
->;
-
 export function useCart() {
-  return useSyncExternalStore(cartStore.subscribe, () => cartStore.get(), () => SERVER_SNAPSHOT);
+  return useSyncExternalStore(
+    cartStore.subscribe,
+    () => cartStore.get(),
+    () => ({ items: [], compareIds: [], savedPlanIds: [] }),
+  );
 }
 
 export function cartTotals(items: CartItem[]) {

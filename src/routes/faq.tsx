@@ -12,7 +12,7 @@ export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
       { title: "FAQ — ABox" },
-      { name: "description", content: "Answers to the most common questions about ABox marketplace, quotes, Plan-O, enrollment, and privacy." },
+      { name: "description", content: "Answers to the most common questions about ABox marketplace, quotes, Plan-AI, enrollment, and privacy." },
       { property: "og:title", content: "FAQ — ABox" },
       { property: "og:description", content: "Common questions about shopping insurance on ABox." },
     ],
@@ -30,10 +30,10 @@ const GROUPS = [
     ],
   },
   {
-    label: "Plan-O (AI guidance)",
+    label: "Plan-AI (AI guidance)",
     items: [
-      { q: "Is Plan-O giving me advice?", a: "Plan-O is educational only — it summarizes trade-offs and cannot recommend a specific plan. Licensed agents provide advice." },
-      { q: "Can I turn Plan-O off?", a: "Yes. Plan-O availability is controlled by the tenant. If Plan-O is disabled for your marketplace, you'll see standard help copy instead." },
+      { q: "Is Plan-AI giving me advice?", a: "Plan-AI is educational only — it summarizes trade-offs and cannot recommend a specific plan. Licensed agents provide advice." },
+      { q: "Can I turn Plan-AI off?", a: "Yes. Plan-AI availability is controlled by the tenant. If Plan-AI is disabled for your marketplace, you'll see standard help copy instead." },
     ],
   },
   {

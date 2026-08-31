@@ -9,7 +9,7 @@ import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
-import { SAMPLE_PLANS, type SamplePlan } from "@/lib/sample-data";
+import { SAMPLE_PLANS, planMatchScore, type SamplePlan, type PlanMatchInputs } from "@/lib/sample-data";
 import { cartStore, useCart } from "@/lib/cart-store";
 import { loadQuoteState } from "@/lib/quote-store";
 import { SCREENS } from "@/lib/screens";
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/compare")({
   component: Page,
 });
 
-interface Section { key: string; label: string; rows: Array<{ label: string; get: (p: SamplePlan) => React.ReactNode; }>; }
+interface Section { key: string; label: string; rows: Array<{ label: string; get: (p: SamplePlan, matchInputs: PlanMatchInputs | null) => React.ReactNode; }>; }
 const SECTIONS: Section[] = [
   { key: "cost", label: "Costs", rows: [
     { label: "Monthly premium", get: (p) => `$${p.monthlyPremium}` },
@@ -35,7 +35,7 @@ const SECTIONS: Section[] = [
     { label: "Network",     get: (p) => p.networkType },
     { label: "Exchange",    get: (p) => p.onExchange ? "On (QHP)" : "Off" },
     { label: "HSA-eligible", get: (p) => p.hsaEligible ? "Yes" : "No" },
-    { label: "Plan-O match", get: (p) => `${p.planOMatch}%` },
+    { label: "Plan-AI match", get: (p, matchInputs) => `${planMatchScore(p, matchInputs)}%` },
     { label: "Rating",       get: (p) => p.rating.toFixed(1) },
   ]},
   { key: "highlights", label: "Highlights", rows: [
@@ -50,6 +50,9 @@ const SECTIONS: Section[] = [
 function Page() {
   const cart = useCart();
   const quote = typeof window === "undefined" ? null : loadQuoteState();
+  const matchInputs: PlanMatchInputs | null = quote
+    ? { priorities: quote.priorities, usage: quote.usage, keepDoctor: quote.keepDoctor }
+    : null;
   const plans = cart.compareIds
     .map((id) => SAMPLE_PLANS.find((p) => p.id === id))
     .filter((p): p is SamplePlan => !!p);
@@ -79,7 +82,8 @@ function Page() {
             action={<Link to="/plans" className="mt-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">Go to plans</Link>}
           />
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+            <div className="min-w-[720px]">
             <div className="grid" style={{ gridTemplateColumns: `220px repeat(${plans.length}, minmax(200px, 1fr))` }}>
               <div className="border-b border-border p-4 bg-surface" />
               {plans.map((p) => (
@@ -91,8 +95,8 @@ function Page() {
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
-                  <p className="text-eyebrow">{p.carrier}</p>
-                  <Link to="/plans/$planId" params={{ planId: p.id }} className="story-link mt-1 block text-sm font-medium leading-tight">
+                  <p className="text-eyebrow pr-8">{p.carrier}</p>
+                  <Link to="/plans/$planId" params={{ planId: p.id }} className="story-link mt-1 block pr-8 text-sm font-medium leading-tight">
                     {p.name}
                   </Link>
                   <div className="mt-2 text-display text-2xl tabular-nums">${p.monthlyPremium}<span className="text-xs text-muted-foreground">/mo</span></div>
@@ -133,12 +137,13 @@ function Page() {
                   >
                     <div className="p-4 text-xs uppercase tracking-widest text-muted-foreground">{row.label}</div>
                     {plans.map((p) => (
-                      <div key={p.id} className="border-l border-border p-4 text-sm tabular-nums">{row.get(p)}</div>
+                      <div key={p.id} className="border-l border-border p-4 text-sm tabular-nums">{row.get(p, matchInputs)}</div>
                     ))}
                   </div>
                 ))}
               </div>
             ))}
+            </div>
           </div>
         )}
       </div>

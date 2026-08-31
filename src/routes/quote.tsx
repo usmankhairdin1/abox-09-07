@@ -6,7 +6,7 @@
  *
  *   1  UX-003  ZIP & effective date
  *   2  UX-004  Household members
- *   3  UX-005  Plan-O goals & usage
+ *   3  UX-005  Plan-AI goals & usage
  *   4  UX-006  Provider & drug lookup (optional)
  *   5  UX-007  Subsidy inputs (optional)
  *   6  UX-008  Subsidy estimate & education → continue to /plans
@@ -44,6 +44,7 @@ import {
 
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { AboxMark } from "@/components/abox/logo";
+import { SaveContinueButton } from "@/components/abox/save-continue-button";
 import { cn } from "@/lib/utils";
 import {
   PRIORITIES,
@@ -129,7 +130,7 @@ const STEPS: StepMeta[] = [
     scr: "UX-005",
     eyebrow: "Priorities",
     title: "What matters most to you?",
-    subtitle: "Plan-O uses this to shortlist plans. Pick up to three.",
+    subtitle: "Plan-AI uses this to shortlist plans. Pick up to three.",
   },
   {
     n: 4,
@@ -297,8 +298,11 @@ function QuoteWizardPage() {
         {announce}
       </p>
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-8 md:px-8 md:py-12">
-        <WizardStepper current={step} maxReached={maxReached} goTo={goTo} />
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-8 md:py-12">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <WizardStepper current={step} maxReached={maxReached} goTo={goTo} />
+          <SaveContinueButton className="shrink-0" />
+        </div>
 
         <form
           onSubmit={(e) => {
@@ -481,7 +485,7 @@ function WizardFooter({
 }
 
 /* ------------------------------------------------------------------ */
-/* Side panel — Plan-O nudge + summary                                  */
+/* Side panel — Plan-AI nudge + summary                                  */
 /* ------------------------------------------------------------------ */
 
 function SidePanel({ state, step }: { state: QuoteState; step: number }) {
@@ -498,7 +502,7 @@ function SidePanel({ state, step }: { state: QuoteState; step: number }) {
       <div className="flex items-center gap-2.5">
         <AboxMark size={30} tone="primary" />
         <div>
-          <p className="text-sm font-semibold">Plan-O</p>
+          <p className="text-sm font-semibold">Plan-AI</p>
           <p className="text-[11px] text-muted-foreground">Guidance · not binding</p>
         </div>
       </div>
@@ -654,7 +658,7 @@ function Step2({
           id: cryptoRandomId(),
           relationship: s.members.length === 1 ? "spouse" : "child",
           dob: "",
-          sex: "female",
+          sex: "male",
           tobacco: false,
         },
       ],
@@ -727,7 +731,7 @@ function Step2({
                   />
                 </Field>
 
-                <Field label="Sex" htmlFor={`sex-${m.id}-female`}>
+                <Field label="Sex" htmlFor={`sex-${m.id}-male`}>
                   <fieldset>
                     <legend className="sr-only">Sex for member {idx + 1}</legend>
                     <div className="flex gap-2" role="radiogroup" aria-label="Sex">
@@ -847,8 +851,8 @@ function Step3({
                     {idx + 1}
                   </span>
                 )}
-                <span className="font-medium">{p.label}</span>
-                <span className="text-xs text-muted-foreground">{p.hint}</span>
+                <span className={cn("font-medium", selected && "pr-8")}>{p.label}</span>
+                <span className={cn("text-xs text-muted-foreground", selected && "pr-8")}>{p.hint}</span>
               </button>
             );
           })}
@@ -901,7 +905,7 @@ function Step3({
         <span>
           <span className="block font-medium">I have a doctor I want to keep</span>
           <span className="text-sm text-muted-foreground">
-            We'll ask for them next (optional) so Plan-O checks the network.
+            We'll ask for them next (optional) so Plan-AI checks the network.
           </span>
         </span>
       </label>
@@ -1245,7 +1249,7 @@ function Step6({ state }: { state: QuoteState }) {
                 No subsidy estimate — that's fine.
               </h2>
               <p className="mt-3 text-muted-foreground">
-                You'll see every plan available in your area. If you decide to check later, Plan-O can
+                You'll see every plan available in your area. If you decide to check later, Plan-AI can
                 re-run this estimate from your dashboard.
               </p>
             </>
@@ -1269,7 +1273,7 @@ function Step6({ state }: { state: QuoteState }) {
               </h2>
               <p className="mt-3 text-muted-foreground">
                 At ~{pctFpl?.toFixed(0)}% FPL, you may qualify for Medicaid or CHIP depending on your
-                state. Plan-O will still show marketplace options, but a licensed agent can help you
+                state. Plan-AI will still show marketplace options, but a licensed agent can help you
                 explore public coverage.
               </p>
             </>
@@ -1317,7 +1321,7 @@ function Step6({ state }: { state: QuoteState }) {
         <div className="space-y-4">
           <div className="rounded-2xl border border-border bg-card p-5">
             <p className="text-eyebrow flex items-center gap-1.5">
-              <Sparkles className="h-3 w-3" aria-hidden /> Plan-O will focus on
+              <Sparkles className="h-3 w-3" aria-hidden /> Plan-AI will focus on
             </p>
             <ul className="mt-3 space-y-2 text-sm">
               {state.priorities.length === 0 && (

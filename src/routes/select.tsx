@@ -1,6 +1,6 @@
 /**
  * UX-002 — Product Selection & Path Choice
- * Consumers pick a product and choose Plan-O guided vs Browse Myself.
+ * Consumers pick a product and choose Plan-AI guided vs Browse Myself.
  */
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
@@ -31,12 +31,12 @@ function Page() {
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
+      <div className="mx-auto max-w-7xl px-4 py-12 md:px-8 md:py-16">
         <PageHeader
           scrId="UX-002"
           eyebrow={active.label}
           title="How would you like to shop?"
-          description="Plan-O guides you through a short quote and shortlists plans. Or browse everything yourself — you can switch anytime."
+          description="Plan-AI guides you through a short quote and shortlists plans. Or browse everything yourself — you can switch anytime."
         />
 
         <div className="mb-8 rounded-2xl border border-border bg-card p-4">
@@ -76,9 +76,9 @@ function Page() {
             </div>
             <div>
               <div className="text-eyebrow">Recommended</div>
-              <h3 className="text-display mt-1 text-2xl">Guide me with Plan-O</h3>
+              <h3 className="text-display mt-1 text-2xl">Guide me with Plan-AI</h3>
               <p className="mt-2 text-sm text-muted-foreground">
-                Answer 6 short questions. Plan-O narrows the list to plans that fit — with a subsidy check on the way.
+                Answer 6 short questions. Plan-AI narrows the list to plans that fit — with a subsidy check on the way.
               </p>
               <ul className="mt-4 space-y-1.5 text-sm">
                 <li>· ZIP, household, priorities</li>
@@ -102,7 +102,7 @@ function Page() {
               <div className="text-eyebrow">Self-serve</div>
               <h3 className="text-display mt-1 text-2xl">Let me browse myself</h3>
               <p className="mt-2 text-sm text-muted-foreground">
-                Jump straight to plans. Add filters, compare, and add to cart — Plan-O stays available on the side.
+                Jump straight to plans. Add filters, compare, and add to cart — Plan-AI stays available on the side.
               </p>
               <ul className="mt-4 space-y-1.5 text-sm">
                 <li>· All available plans</li>
@@ -117,7 +117,7 @@ function Page() {
         </div>
 
         <p className="mt-8 text-xs text-muted-foreground">
-          Plan-O guidance is educational and non-binding. You can switch between guided and self-serve at any time.
+          Plan-AI guidance is educational and non-binding. You can switch between guided and self-serve at any time.
         </p>
       </div>
     </MarketplaceShell>

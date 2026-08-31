@@ -1,29 +1,51 @@
 /**
- * Lightweight auth-session stub used by internal/admin surfaces.
- * In a production build this is replaced by the Supabase session provider.
+ * Real Supabase auth session — replaces the earlier local-only
+ * demo-session shim (src/lib/demo-session.ts, now retired) now that
+ * real registration/sign-in is wired in auth.tsx. Wraps supabase.auth
+ * as a React external store so any component can read the live session.
  */
+import { useSyncExternalStore } from "react";
+import type { Session } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
 
-export interface AuthSession {
-  user: {
-    id: string;
-    email?: string;
-    phone?: string;
-    name?: string;
-  };
+interface AuthSnapshot {
+  session: Session | null;
+  loading: boolean;
 }
 
-let _session: AuthSession | null = {
-  user: {
-    id: "user-elena",
-    email: "elena@cedargrove.example",
-    name: "Elena Alvarez",
-  },
-};
+// useSyncExternalStore requires getSnapshot to return a stable reference
+// when nothing changed — a fresh object literal on every call causes an
+// infinite re-render loop ("Maximum update depth exceeded"), so the
+// snapshot is only rebuilt inside notify(), never inside the getter.
+let snapshot: AuthSnapshot = { session: null, loading: true };
+const SERVER_SNAPSHOT: AuthSnapshot = { session: null, loading: true };
+const listeners = new Set<() => void>();
 
-export function useAuthSession(): { session: AuthSession | null } {
-  return { session: _session };
+function notify(session: Session | null, initialized: boolean) {
+  snapshot = { session, loading: !initialized };
+  for (const l of listeners) l();
 }
 
-export function setAuthSession(session: AuthSession | null): void {
-  _session = session;
+if (typeof window !== "undefined") {
+  supabase.auth.getSession().then(({ data }) => {
+    notify(data.session, true);
+  });
+  supabase.auth.onAuthStateChange((_event, newSession) => {
+    notify(newSession, true);
+  });
+}
+
+export function useAuthSession(): AuthSnapshot {
+  return useSyncExternalStore(
+    (cb) => {
+      listeners.add(cb);
+      return () => listeners.delete(cb);
+    },
+    () => snapshot,
+    () => SERVER_SNAPSHOT,
+  );
+}
+
+export function getCurrentSession(): Session | null {
+  return snapshot.session;
 }

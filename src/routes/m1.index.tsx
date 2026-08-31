@@ -21,7 +21,7 @@ export const Route = createFileRoute("/m1/")({
       {
         name: "description",
         content:
-          "Low-fidelity Module 1 wireframe set for ABox: IFP shopping, Plan-O, results, compare, cart, registration, shared quote, agent quick quote, lead timeline, minimal agency configuration and EDE handoff (UX-001 to UX-026).",
+          "Low-fidelity Module 1 wireframe set for ABox: IFP shopping, Plan-AI, results, compare, cart, registration, shared quote, agent quick quote, lead timeline, minimal agency configuration and EDE handoff (UX-001 to UX-026).",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

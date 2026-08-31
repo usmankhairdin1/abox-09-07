@@ -227,7 +227,7 @@
   h1, h2, h3, .font-display {
     font-family: var(--font-display);
     font-weight: 600;
-    letter-spacing: 0;
+    letter-spacing: -0.028em;
     font-variation-settings: "wdth" 102, "opsz" 32;
   }
 
@@ -252,7 +252,7 @@
 @utility text-display {
   font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: -0.032em;
   line-height: 1.02;
   font-variation-settings: "wdth" 102, "opsz" 48;
 }

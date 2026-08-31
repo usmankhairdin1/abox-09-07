@@ -135,7 +135,7 @@ export const SAMPLE_NOTIF_TEMPLATES: SampleNotifTemplate[] = [
   { id: "NT-01", name: "Shared quote — expiring in 48h", channel: "email", trigger: "quote.expires_soon", schedule: "T-48h", enabled: true, lastSent: "12m ago" },
   { id: "NT-02", name: "Callback confirmation", channel: "sms", trigger: "call.scheduled", schedule: "immediate", enabled: true, lastSent: "1h ago" },
   { id: "NT-03", name: "Enrollment complete", channel: "email", trigger: "policy.effective", schedule: "immediate", enabled: true, lastSent: "3h ago" },
-  { id: "NT-04", name: "Plan-O follow-up nudge", channel: "in-app", trigger: "plano.abandoned", schedule: "T+24h", enabled: false, lastSent: "—" },
+  { id: "NT-04", name: "Plan-AI follow-up nudge", channel: "in-app", trigger: "plano.abandoned", schedule: "T+24h", enabled: false, lastSent: "—" },
   { id: "NT-05", name: "Producer CE reminder", channel: "email", trigger: "producer.ce_due", schedule: "T-30d", enabled: true, lastSent: "2d ago" },
 ];
 
@@ -184,7 +184,7 @@ export interface SampleAiRule {
   disclaimer: string; escalation: "auto-hand-off" | "advisory" | "silent";
 }
 export const SAMPLE_AI_RULES: SampleAiRule[] = [
-  { id: "AR-01", scope: "tenant", name: "Plan-O guidance", enabled: true, disclaimer: "Educational, not binding.", escalation: "auto-hand-off" },
+  { id: "AR-01", scope: "tenant", name: "Plan-AI guidance", enabled: true, disclaimer: "Educational, not binding.", escalation: "auto-hand-off" },
   { id: "AR-02", scope: "module", name: "Subsidy explainer", enabled: true, disclaimer: "Illustrative FPL estimate.", escalation: "advisory" },
   { id: "AR-03", scope: "module", name: "Off-exchange dynamic form", enabled: true, disclaimer: "Field-level assistance only.", escalation: "silent" },
   { id: "AR-04", scope: "role", name: "Agent copilot — quick quote", enabled: true, disclaimer: "Human decides.", escalation: "advisory" },

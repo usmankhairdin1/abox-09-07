@@ -3359,7 +3359,7 @@ export function AuditLogScreen() {
             [
               "25 Aug 10:52",
               <span className="flex items-center gap-1.5">
-                <Badge tone="ai">AI</Badge> Plan-O ranking
+                <Badge tone="ai">AI</Badge> Plan-AI ranking
               </span>,
               "Produced recommendation with 4 grounded records",
               "Quote Q-31204",

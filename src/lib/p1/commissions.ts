@@ -393,7 +393,7 @@ export const COMMISSIONS = screens([
         id: "QPRJ-FENCE",
         kind: "checks",
         items: [
-          "Plan-O ranking inputs exclude commission",
+          "Plan-AI ranking inputs exclude commission",
           "Sort options exclude commission",
           "Shared quote payload excludes commission",
         ],

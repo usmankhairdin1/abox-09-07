@@ -1,17 +1,17 @@
 /**
  * UX-010 — Plan Detail
- * Benefits, costs, network + Rx, Plan-O explanation. Add to cart / compare.
+ * Benefits, costs, network + Rx, Plan-AI explanation. Add to cart / compare.
  */
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Check, ArrowLeft, ShoppingBag, Star, Sparkles, Stethoscope, Pill } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { PageHeader } from "@/components/abox/page-header";
-import { SAMPLE_PLANS } from "@/lib/sample-data";
+import { SAMPLE_PLANS, planMatchScore, type PlanMatchInputs } from "@/lib/sample-data";
 import { SAMPLE_PROVIDERS, SAMPLE_DRUGS } from "@/lib/sample-data-ext";
 import { cartStore, useCart } from "@/lib/cart-store";
 import { SCREENS } from "@/lib/screens";
-import { loadQuoteState } from "@/lib/quote-store";
+import { loadQuoteState, estimateMonthlyAPTC } from "@/lib/quote-store";
 
 export const Route = createFileRoute("/plans/$planId")({
   loader: ({ params }) => {
@@ -48,10 +48,16 @@ function Page() {
   const cart = useCart();
   const quote = typeof window === "undefined" ? null : loadQuoteState();
   const inCart = cart.items.some((i) => i.id === plan.id);
+  const matchInputs: PlanMatchInputs | null = quote
+    ? { priorities: quote.priorities, usage: quote.usage, keepDoctor: quote.keepDoctor }
+    : null;
+  const match = planMatchScore(plan, matchInputs);
+  const monthlyAptc = quote ? estimateMonthlyAPTC(quote.income, quote.taxHouseholdSize) : undefined;
+  const subsidizedPrice = plan.onExchange && monthlyAptc ? Math.max(0, plan.monthlyPremium - monthlyAptc) : undefined;
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-10">
+      <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-10">
         <Link to="/plans" className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to results
         </Link>
@@ -88,14 +94,14 @@ function Page() {
 
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="space-y-6">
-            {/* Plan-O explanation */}
+            {/* Plan-AI explanation */}
             <div className="rounded-2xl border border-primary/20 bg-primary-soft/30 p-5">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" aria-hidden />
-                <p className="text-sm font-medium">Plan-O match {plan.planOMatch}%</p>
+                <p className="text-sm font-medium">Plan-AI match {match}%</p>
               </div>
               <p className="mt-2 text-sm text-foreground/80">
-                Ranks {plan.planOMatch >= 85 ? "strongly" : "moderately"} for {quote?.priorities?.length ? quote.priorities.join(", ") : "your priorities"}.
+                Ranks {match >= 85 ? "strongly" : "moderately"} for {quote?.priorities?.length ? quote.priorities.join(", ") : "your priorities"}.
                 Educational match score, not a promise.
               </p>
             </div>
@@ -191,10 +197,16 @@ function Page() {
               <div className="rounded-2xl border border-border bg-card p-5">
                 <p className="text-eyebrow">Estimated cost</p>
                 <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-display text-4xl tabular-nums">${plan.monthlyPremium}</span>
+                  <span className="text-display text-4xl tabular-nums">${subsidizedPrice ?? plan.monthlyPremium}</span>
                   <span className="text-sm text-muted-foreground">/mo</span>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">Before any subsidy</p>
+                {subsidizedPrice != null ? (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    After estimated subsidy · <span className="line-through">${plan.monthlyPremium}</span> original
+                  </p>
+                ) : (
+                  <p className="mt-1 text-xs text-muted-foreground">Before any subsidy</p>
+                )}
                 <div className="mt-4 space-y-1.5 text-sm">
                   <Row label="Rating" value={<span className="inline-flex items-center gap-0.5"><Star className="h-3 w-3 fill-primary text-primary" /> {plan.rating.toFixed(1)}</span>} />
                   <Row label="Network" value={plan.networkType} />

@@ -21,7 +21,7 @@ export const RELATIONSHIP_LABEL: Record<Relationship, string> = {
   other_dependent: "Other dependent",
 };
 
-export const SEX_OPTIONS = ["female", "male"] as const;
+export const SEX_OPTIONS = ["male", "female"] as const;
 export type Sex = (typeof SEX_OPTIONS)[number];
 
 export const USAGE_LEVELS = [
@@ -110,7 +110,7 @@ export const step3Schema = z.object({
   priorities: z
     .array(z.enum(PRIORITIES.map((p) => p.key) as [PriorityKey, ...PriorityKey[]]))
     .min(1, { message: "Pick at least one priority." })
-    .max(3, { message: "Pick up to three priorities — Plan-O works best with focus." }),
+    .max(3, { message: "Pick up to three priorities — Plan-AI works best with focus." }),
   usage: z.enum(["low", "moderate", "high"] as const, {
     errorMap: () => ({ message: "Choose an expected usage level." }),
   }),
@@ -196,7 +196,7 @@ export function defaultQuoteState(): QuoteState {
     effectiveDate: defaultEffectiveDate(),
     county: undefined,
     members: [
-      { id: cryptoRandomId(), relationship: "primary", dob: "", sex: "female", tobacco: false },
+      { id: cryptoRandomId(), relationship: "primary", dob: "", sex: "male", tobacco: false },
     ],
     priorities: [],
     usage: undefined,
@@ -242,6 +242,32 @@ export function saveQuoteState(state: QuoteState): void {
 export function clearQuoteState(): void {
   if (typeof window === "undefined") return;
   window.sessionStorage.removeItem(STORAGE_KEY);
+}
+
+/** BR-012 Save & Continue — records that the shopper explicitly asked
+ *  their progress to be kept, distinct from the continuous autosave the
+ *  wizard/cart already do on every change. */
+const LAST_SAVED_KEY = "abox_last_saved_v1";
+
+export function markProgressSaved(): string {
+  const now = new Date().toISOString();
+  if (typeof window !== "undefined") {
+    try {
+      window.sessionStorage.setItem(LAST_SAVED_KEY, now);
+    } catch {
+      /* quota / privacy mode — silently skip */
+    }
+  }
+  return now;
+}
+
+export function getLastSavedAt(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.sessionStorage.getItem(LAST_SAVED_KEY);
+  } catch {
+    return null;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -291,6 +317,21 @@ export function fplBand(income: number | undefined, hh: number | undefined): {
   return { band: "over", pctFpl: pct };
 }
 
+/**
+ * Recommended exchange-view default (BR-006): on-exchange if the shopper
+ * checked subsidy and qualifies, off-exchange if checked and doesn't,
+ * otherwise "all" (no subsidy signal — e.g. pure browse mode never forces
+ * a filtered default; the toggle itself always stays available per
+ * FR-048/FR-043).
+ */
+export function recommendedExchangeView(
+  q: Pick<QuoteState, "skipSubsidy" | "income" | "taxHouseholdSize"> | null,
+): "all" | "on" | "off" {
+  if (!q || q.skipSubsidy || q.income == null || q.taxHouseholdSize == null) return "all";
+  const aptc = estimateMonthlyAPTC(q.income, q.taxHouseholdSize);
+  return aptc && aptc > 0 ? "on" : "off";
+}
+
 /** Illustrative APTC estimate — clearly labeled as education, not promise. */
 export function estimateMonthlyAPTC(income: number | undefined, hh: number | undefined): number | undefined {
   if (!income || !hh) return undefined;
@@ -301,38 +342,4 @@ export function estimateMonthlyAPTC(income: number | undefined, hh: number | und
   const expectedContribPct = Math.min(0.085, Math.max(0.02, pctFpl / 4000));
   const contribMonthly = (income * expectedContribPct) / 12;
   return Math.max(0, Math.round(benchmarkMonthly - contribMonthly));
-}
-
-/**
- * Recommended exchange-view default (BR-006): on-exchange if the shopper
- * checked subsidy and qualifies, off-exchange if checked and doesn't,
- * otherwise "all" (no subsidy signal).
- */
-export function recommendedExchangeView(
-  q: Pick<QuoteState, "skipSubsidy" | "income" | "taxHouseholdSize"> | null,
-): "all" | "on" | "off" {
-  if (!q || q.skipSubsidy || q.income == null || q.taxHouseholdSize == null) return "all";
-  const aptc = estimateMonthlyAPTC(q.income, q.taxHouseholdSize);
-  return aptc && aptc > 0 ? "on" : "off";
-}
-
-const SAVED_AT_KEY = "abox_quote_saved_at_v1";
-
-export function markProgressSaved(): void {
-  if (typeof window === "undefined") return;
-  try {
-    window.sessionStorage.setItem(SAVED_AT_KEY, new Date().toISOString());
-  } catch {
-    /* ignore */
-  }
-}
-
-export function getLastSavedAt(): Date | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = window.sessionStorage.getItem(SAVED_AT_KEY);
-    return raw ? new Date(raw) : null;
-  } catch {
-    return null;
-  }
 }
