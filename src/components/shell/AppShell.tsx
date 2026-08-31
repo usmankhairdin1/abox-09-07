@@ -1,21 +1,50 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
+  BarChart3,
   Bell,
+  Bot,
   Building2,
+  Calendar,
   CheckSquare,
   ChevronDown,
   ChevronsLeft,
   ChevronsRight,
   CircleUser,
+  ClipboardList,
+  Coins,
+  FileText,
   HelpCircle,
   LayoutGrid,
   Lock,
+  type LucideIcon,
+  Package,
   PanelRightClose,
   PanelRightOpen,
   Search,
+  Settings,
+  ShieldCheck,
+  ShoppingBag,
   Sparkles,
+  Users,
   X,
 } from "lucide-react";
+
+const MODULE_ICONS: Record<string, LucideIcon> = {
+  MOD_MY_WORK: CheckSquare,
+  MOD_REPORTING: BarChart3,
+  MOD_LEADS_CUSTOMERS: Users,
+  MOD_MARKETPLACE_SALES: ShoppingBag,
+  MOD_FORMS_ENROLLMENT: ClipboardList,
+  MOD_PRODUCTS_PLANS: Package,
+  MOD_AGENCY_ENTITY: Building2,
+  MOD_APPOINTMENTS_PAPER: Calendar,
+  MOD_COMMISSIONS: Coins,
+  MOD_COMMUNICATIONS: Bell,
+  MOD_OUTPUTS_DOCS: FileText,
+  MOD_AI: Bot,
+  MOD_ADMIN_CONFIG: Settings,
+  MOD_SECURITY: ShieldCheck,
+};
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { AboxMark } from "@/components/abox/logo";
