@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccessibilityRouteImport } from './routes/accessibility'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AgentUnavailableRouteImport } from './routes/agent-unavailable'
+import { Route as AiReviewRouteImport } from './routes/ai-review'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as CompareRouteImport } from './routes/compare'
@@ -34,11 +37,24 @@ import { Route as ReviewRouteImport } from './routes/review'
 import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as SelectRouteImport } from './routes/select'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AgencyMarketplaceParticipationRouteImport } from './routes/agency.marketplace-participation'
+import { Route as AgencyMyOrganizationRouteImport } from './routes/agency.my-organization'
+import { Route as AgencyOrganizationAdminRouteImport } from './routes/agency.organization-admin'
+import { Route as AgencyOrganizationStructureRouteImport } from './routes/agency.organization-structure'
+import { Route as AgencyOrganizationWorkRouteImport } from './routes/agency.organization-work'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppCommissionsRouteImport } from './routes/app.commissions'
+import { Route as AppCommunicationsRouteImport } from './routes/app.communications'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppMyWorkRouteImport } from './routes/app.my-work'
 import { Route as AppObjectRouteImport } from './routes/app.object'
+import { Route as AppOffExchangeRouteImport } from './routes/app.off-exchange'
+import { Route as AppPartnerRouteImport } from './routes/app.partner'
+import { Route as AppQuickQuoteRouteImport } from './routes/app.quick-quote'
+import { Route as AppScheduleRouteImport } from './routes/app.schedule'
+import { Route as AppSendQuoteRouteImport } from './routes/app.send-quote'
+import { Route as AppTasksRouteImport } from './routes/app.tasks'
 import { Route as GovIndexRouteImport } from './routes/gov.index'
 import { Route as GovModuleRouteImport } from './routes/gov.$module'
 import { Route as HfIndexRouteImport } from './routes/hf.index'
@@ -71,14 +87,84 @@ import { Route as P1IndexRouteImport } from './routes/p1.index'
 import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
 import { Route as PlansPlanIdRouteImport } from './routes/plans.$planId'
 import { Route as SharedTokenRouteImport } from './routes/shared.$token'
+import { Route as AgencyOrganizationDefaultsApplyRouteImport } from './routes/agency.organization-defaults.apply'
+import { Route as AgencyOrganizationImportsIndexRouteImport } from './routes/agency.organization-imports.index'
+import { Route as AgencyOrganizationImportsImportJobIdRouteImport } from './routes/agency.organization-imports.$importJobId'
+import { Route as AgencyOrganizationsIndexRouteImport } from './routes/agency.organizations.index'
+import { Route as AgencyReferenceOrganizationsRequestRouteImport } from './routes/agency.reference-organizations.request'
+import { Route as AppAgencyIndexRouteImport } from './routes/app.agency.index'
+import { Route as AppAgencyEntitiesRouteImport } from './routes/app.agency.entities'
+import { Route as AppAgencyProducersRouteImport } from './routes/app.agency.producers'
+import { Route as AppAgencyRevenueRouteImport } from './routes/app.agency.revenue'
+import { Route as AppAgencyStatementsRouteImport } from './routes/app.agency.statements'
+import { Route as AppCustomersIndexRouteImport } from './routes/app.customers.index'
+import { Route as AppCustomersIdRouteImport } from './routes/app.customers.$id'
+import { Route as AppEmployerIchraRouteImport } from './routes/app.employer.ichra'
+import { Route as AppJetAclRouteImport } from './routes/app.jet.acl'
+import { Route as AppJetAiGovernanceRouteImport } from './routes/app.jet.ai-governance'
+import { Route as AppJetAppointmentsRouteImport } from './routes/app.jet.appointments'
+import { Route as AppJetAuditRouteImport } from './routes/app.jet.audit'
+import { Route as AppJetBrandingRouteImport } from './routes/app.jet.branding'
+import { Route as AppJetFormConfiguratorRouteImport } from './routes/app.jet.form-configurator'
+import { Route as AppJetIntegrationsRouteImport } from './routes/app.jet.integrations'
+import { Route as AppJetModule1RouteImport } from './routes/app.jet.module1'
+import { Route as AppJetNotificationsRouteImport } from './routes/app.jet.notifications'
+import { Route as AppJetPlatformRouteImport } from './routes/app.jet.platform'
+import { Route as AppJetProductBuilderRouteImport } from './routes/app.jet.product-builder'
+import { Route as AppJetProductsRouteImport } from './routes/app.jet.products'
 import { Route as GovModuleIndexRouteImport } from './routes/gov.$module.index'
 import { Route as GovModuleDeltasRouteImport } from './routes/gov.$module.deltas'
 import { Route as GovModuleFlowsRouteImport } from './routes/gov.$module.flows'
 import { Route as GovModuleRegistersRouteImport } from './routes/gov.$module.registers'
 import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
 import { Route as GovModuleTraceabilityRouteImport } from './routes/gov.$module.traceability'
+import { Route as MarketplaceAdminIndexRouteImport } from './routes/marketplace.admin.index'
+import { Route as MarketplaceAdminActivationRouteImport } from './routes/marketplace.admin.activation'
+import { Route as MarketplaceAdminAssetsRouteImport } from './routes/marketplace.admin.assets'
+import { Route as MarketplaceAdminBrandRouteImport } from './routes/marketplace.admin.brand'
+import { Route as MarketplaceAdminContentRouteImport } from './routes/marketplace.admin.content'
+import { Route as MarketplaceAdminHealthRouteImport } from './routes/marketplace.admin.health'
+import { Route as MarketplaceAdminHistoryRouteImport } from './routes/marketplace.admin.history'
+import { Route as MarketplaceAdminLifecycleRouteImport } from './routes/marketplace.admin.lifecycle'
+import { Route as MarketplaceAdminPreviewRouteImport } from './routes/marketplace.admin.preview'
+import { Route as MarketplaceAdminReadinessRouteImport } from './routes/marketplace.admin.readiness'
+import { Route as MarketplaceAdminRoutingSupportRouteImport } from './routes/marketplace.admin.routing-support'
+import { Route as MarketplaceAdminWorkRouteImport } from './routes/marketplace.admin.work'
+import { Route as PlatformMarketplacesIndexRouteImport } from './routes/platform.marketplaces.index'
+import { Route as PlatformOrganizationsIndexRouteImport } from './routes/platform.organizations.index'
+import { Route as AgencyDownlinesNewActivateRouteImport } from './routes/agency.downlines.new.activate'
+import { Route as AgencyDownlinesNewAdministratorRouteImport } from './routes/agency.downlines.new.administrator'
+import { Route as AgencyDownlinesNewContactsRouteImport } from './routes/agency.downlines.new.contacts'
+import { Route as AgencyDownlinesNewIdentityRouteImport } from './routes/agency.downlines.new.identity'
+import { Route as AgencyDownlinesNewLegalRouteImport } from './routes/agency.downlines.new.legal'
+import { Route as AgencyDownlinesNewLocationsRouteImport } from './routes/agency.downlines.new.locations'
+import { Route as AgencyDownlinesNewReadinessRouteImport } from './routes/agency.downlines.new.readiness'
+import { Route as AgencyDownlinesNewSettingsRouteImport } from './routes/agency.downlines.new.settings'
+import { Route as AgencyOrganizationsOrganizationIdIndexRouteImport } from './routes/agency.organizations.$organizationId.index'
+import { Route as AgencyOrganizationsOrganizationIdContactsRouteImport } from './routes/agency.organizations.$organizationId.contacts'
+import { Route as AgencyOrganizationsOrganizationIdEndingRouteImport } from './routes/agency.organizations.$organizationId.ending'
+import { Route as AgencyOrganizationsOrganizationIdHistoryRouteImport } from './routes/agency.organizations.$organizationId.history'
+import { Route as AgencyOrganizationsOrganizationIdIdentifiersRouteImport } from './routes/agency.organizations.$organizationId.identifiers'
+import { Route as AgencyOrganizationsOrganizationIdLifecycleRouteImport } from './routes/agency.organizations.$organizationId.lifecycle'
+import { Route as AgencyOrganizationsOrganizationIdLocationsRouteImport } from './routes/agency.organizations.$organizationId.locations'
+import { Route as AgencyOrganizationsOrganizationIdReadinessRouteImport } from './routes/agency.organizations.$organizationId.readiness'
+import { Route as AgencyOrganizationsOrganizationIdRelationshipsRouteImport } from './routes/agency.organizations.$organizationId.relationships'
+import { Route as AgencyOrganizationsOrganizationIdSettingsRouteImport } from './routes/agency.organizations.$organizationId.settings'
 import { Route as GovModuleFlowsFlowRouteImport } from './routes/gov.$module.flows.$flow'
 import { Route as GovModuleScreensScreenRouteImport } from './routes/gov.$module.screens.$screen'
+import { Route as MarketplaceAdminAvailabilityIndexRouteImport } from './routes/marketplace.admin.availability.index'
+import { Route as MarketplaceAdminAvailabilityAvailabilityEntryIdRouteImport } from './routes/marketplace.admin.availability.$availabilityEntryId'
+import { Route as MarketplaceAdminDomainsIndexRouteImport } from './routes/marketplace.admin.domains.index'
+import { Route as MarketplaceAdminDomainsRequestRouteImport } from './routes/marketplace.admin.domains.request'
+import { Route as MarketplaceAdminParticipantsIndexRouteImport } from './routes/marketplace.admin.participants.index'
+import { Route as MarketplaceAdminParticipantsParticipantIdRouteImport } from './routes/marketplace.admin.participants.$participantId'
+import { Route as MarketplaceAdminReferralLinksIndexRouteImport } from './routes/marketplace.admin.referral-links.index'
+import { Route as MarketplaceAdminReferralLinksReferralLinkIdRouteImport } from './routes/marketplace.admin.referral-links.$referralLinkId'
+import { Route as MarketplaceAdminReleasesCompareRouteImport } from './routes/marketplace.admin.releases.compare'
+import { Route as MarketplaceAdminReleasesReviewRouteImport } from './routes/marketplace.admin.releases.review'
+import { Route as MarketplaceAdminReleasesScheduleRouteImport } from './routes/marketplace.admin.releases.schedule'
+import { Route as PlatformMarketplacesMarketplaceIdOverrideRouteImport } from './routes/platform.marketplaces.$marketplaceId.override'
+import { Route as PlatformOrganizationsOrganizationIdOverrideRouteImport } from './routes/platform.organizations.$organizationId.override'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -93,6 +179,21 @@ const AccessibilityRoute = AccessibilityRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentUnavailableRoute = AgentUnavailableRouteImport.update({
+  id: '/agent-unavailable',
+  path: '/agent-unavailable',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiReviewRoute = AiReviewRouteImport.update({
+  id: '/ai-review',
+  path: '/ai-review',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -205,30 +306,97 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/app/',
-  path: '/app/',
+const AgencyMarketplaceParticipationRoute =
+  AgencyMarketplaceParticipationRouteImport.update({
+    id: '/agency/marketplace-participation',
+    path: '/agency/marketplace-participation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyMyOrganizationRoute = AgencyMyOrganizationRouteImport.update({
+  id: '/agency/my-organization',
+  path: '/agency/my-organization',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyOrganizationAdminRoute = AgencyOrganizationAdminRouteImport.update({
+  id: '/agency/organization-admin',
+  path: '/agency/organization-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyOrganizationStructureRoute =
+  AgencyOrganizationStructureRouteImport.update({
+    id: '/agency/organization-structure',
+    path: '/agency/organization-structure',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationWorkRoute = AgencyOrganizationWorkRouteImport.update({
+  id: '/agency/organization-work',
+  path: '/agency/organization-work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppAdminRoute = AppAdminRouteImport.update({
-  id: '/app/admin',
-  path: '/app/admin',
-  getParentRoute: () => rootRouteImport,
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCommissionsRoute = AppCommissionsRouteImport.update({
+  id: '/commissions',
+  path: '/commissions',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCommunicationsRoute = AppCommunicationsRouteImport.update({
+  id: '/communications',
+  path: '/communications',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
-  id: '/app/dashboard',
-  path: '/app/dashboard',
-  getParentRoute: () => rootRouteImport,
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppMyWorkRoute = AppMyWorkRouteImport.update({
-  id: '/app/my-work',
-  path: '/app/my-work',
-  getParentRoute: () => rootRouteImport,
+  id: '/my-work',
+  path: '/my-work',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppObjectRoute = AppObjectRouteImport.update({
-  id: '/app/object',
-  path: '/app/object',
-  getParentRoute: () => rootRouteImport,
+  id: '/object',
+  path: '/object',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOffExchangeRoute = AppOffExchangeRouteImport.update({
+  id: '/off-exchange',
+  path: '/off-exchange',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPartnerRoute = AppPartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQuickQuoteRoute = AppQuickQuoteRouteImport.update({
+  id: '/quick-quote',
+  path: '/quick-quote',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppScheduleRoute = AppScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSendQuoteRoute = AppSendQuoteRouteImport.update({
+  id: '/send-quote',
+  path: '/send-quote',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTasksRoute = AppTasksRouteImport.update({
+  id: '/tasks',
+  path: '/tasks',
+  getParentRoute: () => AppRoute,
 } as any)
 const GovIndexRoute = GovIndexRouteImport.update({
   id: '/gov/',
@@ -390,6 +558,136 @@ const SharedTokenRoute = SharedTokenRouteImport.update({
   path: '/shared/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgencyOrganizationDefaultsApplyRoute =
+  AgencyOrganizationDefaultsApplyRouteImport.update({
+    id: '/agency/organization-defaults/apply',
+    path: '/agency/organization-defaults/apply',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationImportsIndexRoute =
+  AgencyOrganizationImportsIndexRouteImport.update({
+    id: '/agency/organization-imports/',
+    path: '/agency/organization-imports/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationImportsImportJobIdRoute =
+  AgencyOrganizationImportsImportJobIdRouteImport.update({
+    id: '/agency/organization-imports/$importJobId',
+    path: '/agency/organization-imports/$importJobId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsIndexRoute =
+  AgencyOrganizationsIndexRouteImport.update({
+    id: '/agency/organizations/',
+    path: '/agency/organizations/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyReferenceOrganizationsRequestRoute =
+  AgencyReferenceOrganizationsRequestRouteImport.update({
+    id: '/agency/reference-organizations/request',
+    path: '/agency/reference-organizations/request',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AppAgencyIndexRoute = AppAgencyIndexRouteImport.update({
+  id: '/agency/',
+  path: '/agency/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAgencyEntitiesRoute = AppAgencyEntitiesRouteImport.update({
+  id: '/agency/entities',
+  path: '/agency/entities',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAgencyProducersRoute = AppAgencyProducersRouteImport.update({
+  id: '/agency/producers',
+  path: '/agency/producers',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAgencyRevenueRoute = AppAgencyRevenueRouteImport.update({
+  id: '/agency/revenue',
+  path: '/agency/revenue',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAgencyStatementsRoute = AppAgencyStatementsRouteImport.update({
+  id: '/agency/statements',
+  path: '/agency/statements',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCustomersIndexRoute = AppCustomersIndexRouteImport.update({
+  id: '/customers/',
+  path: '/customers/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCustomersIdRoute = AppCustomersIdRouteImport.update({
+  id: '/customers/$id',
+  path: '/customers/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEmployerIchraRoute = AppEmployerIchraRouteImport.update({
+  id: '/employer/ichra',
+  path: '/employer/ichra',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetAclRoute = AppJetAclRouteImport.update({
+  id: '/jet/acl',
+  path: '/jet/acl',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetAiGovernanceRoute = AppJetAiGovernanceRouteImport.update({
+  id: '/jet/ai-governance',
+  path: '/jet/ai-governance',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetAppointmentsRoute = AppJetAppointmentsRouteImport.update({
+  id: '/jet/appointments',
+  path: '/jet/appointments',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetAuditRoute = AppJetAuditRouteImport.update({
+  id: '/jet/audit',
+  path: '/jet/audit',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetBrandingRoute = AppJetBrandingRouteImport.update({
+  id: '/jet/branding',
+  path: '/jet/branding',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetFormConfiguratorRoute = AppJetFormConfiguratorRouteImport.update({
+  id: '/jet/form-configurator',
+  path: '/jet/form-configurator',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetIntegrationsRoute = AppJetIntegrationsRouteImport.update({
+  id: '/jet/integrations',
+  path: '/jet/integrations',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetModule1Route = AppJetModule1RouteImport.update({
+  id: '/jet/module1',
+  path: '/jet/module1',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetNotificationsRoute = AppJetNotificationsRouteImport.update({
+  id: '/jet/notifications',
+  path: '/jet/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetPlatformRoute = AppJetPlatformRouteImport.update({
+  id: '/jet/platform',
+  path: '/jet/platform',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetProductBuilderRoute = AppJetProductBuilderRouteImport.update({
+  id: '/jet/product-builder',
+  path: '/jet/product-builder',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetProductsRoute = AppJetProductsRouteImport.update({
+  id: '/jet/products',
+  path: '/jet/products',
+  getParentRoute: () => AppRoute,
+} as any)
 const GovModuleIndexRoute = GovModuleIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -420,6 +718,189 @@ const GovModuleTraceabilityRoute = GovModuleTraceabilityRouteImport.update({
   path: '/traceability',
   getParentRoute: () => GovModuleRoute,
 } as any)
+const MarketplaceAdminIndexRoute = MarketplaceAdminIndexRouteImport.update({
+  id: '/marketplace/admin/',
+  path: '/marketplace/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceAdminActivationRoute =
+  MarketplaceAdminActivationRouteImport.update({
+    id: '/marketplace/admin/activation',
+    path: '/marketplace/admin/activation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminAssetsRoute = MarketplaceAdminAssetsRouteImport.update({
+  id: '/marketplace/admin/assets',
+  path: '/marketplace/admin/assets',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceAdminBrandRoute = MarketplaceAdminBrandRouteImport.update({
+  id: '/marketplace/admin/brand',
+  path: '/marketplace/admin/brand',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceAdminContentRoute = MarketplaceAdminContentRouteImport.update({
+  id: '/marketplace/admin/content',
+  path: '/marketplace/admin/content',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceAdminHealthRoute = MarketplaceAdminHealthRouteImport.update({
+  id: '/marketplace/admin/health',
+  path: '/marketplace/admin/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceAdminHistoryRoute = MarketplaceAdminHistoryRouteImport.update({
+  id: '/marketplace/admin/history',
+  path: '/marketplace/admin/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceAdminLifecycleRoute =
+  MarketplaceAdminLifecycleRouteImport.update({
+    id: '/marketplace/admin/lifecycle',
+    path: '/marketplace/admin/lifecycle',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminPreviewRoute = MarketplaceAdminPreviewRouteImport.update({
+  id: '/marketplace/admin/preview',
+  path: '/marketplace/admin/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceAdminReadinessRoute =
+  MarketplaceAdminReadinessRouteImport.update({
+    id: '/marketplace/admin/readiness',
+    path: '/marketplace/admin/readiness',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminRoutingSupportRoute =
+  MarketplaceAdminRoutingSupportRouteImport.update({
+    id: '/marketplace/admin/routing-support',
+    path: '/marketplace/admin/routing-support',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminWorkRoute = MarketplaceAdminWorkRouteImport.update({
+  id: '/marketplace/admin/work',
+  path: '/marketplace/admin/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformMarketplacesIndexRoute =
+  PlatformMarketplacesIndexRouteImport.update({
+    id: '/platform/marketplaces/',
+    path: '/platform/marketplaces/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlatformOrganizationsIndexRoute =
+  PlatformOrganizationsIndexRouteImport.update({
+    id: '/platform/organizations/',
+    path: '/platform/organizations/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyDownlinesNewActivateRoute =
+  AgencyDownlinesNewActivateRouteImport.update({
+    id: '/agency/downlines/new/activate',
+    path: '/agency/downlines/new/activate',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyDownlinesNewAdministratorRoute =
+  AgencyDownlinesNewAdministratorRouteImport.update({
+    id: '/agency/downlines/new/administrator',
+    path: '/agency/downlines/new/administrator',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyDownlinesNewContactsRoute =
+  AgencyDownlinesNewContactsRouteImport.update({
+    id: '/agency/downlines/new/contacts',
+    path: '/agency/downlines/new/contacts',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyDownlinesNewIdentityRoute =
+  AgencyDownlinesNewIdentityRouteImport.update({
+    id: '/agency/downlines/new/identity',
+    path: '/agency/downlines/new/identity',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyDownlinesNewLegalRoute = AgencyDownlinesNewLegalRouteImport.update({
+  id: '/agency/downlines/new/legal',
+  path: '/agency/downlines/new/legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyDownlinesNewLocationsRoute =
+  AgencyDownlinesNewLocationsRouteImport.update({
+    id: '/agency/downlines/new/locations',
+    path: '/agency/downlines/new/locations',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyDownlinesNewReadinessRoute =
+  AgencyDownlinesNewReadinessRouteImport.update({
+    id: '/agency/downlines/new/readiness',
+    path: '/agency/downlines/new/readiness',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyDownlinesNewSettingsRoute =
+  AgencyDownlinesNewSettingsRouteImport.update({
+    id: '/agency/downlines/new/settings',
+    path: '/agency/downlines/new/settings',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdIndexRoute =
+  AgencyOrganizationsOrganizationIdIndexRouteImport.update({
+    id: '/agency/organizations/$organizationId/',
+    path: '/agency/organizations/$organizationId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdContactsRoute =
+  AgencyOrganizationsOrganizationIdContactsRouteImport.update({
+    id: '/agency/organizations/$organizationId/contacts',
+    path: '/agency/organizations/$organizationId/contacts',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdEndingRoute =
+  AgencyOrganizationsOrganizationIdEndingRouteImport.update({
+    id: '/agency/organizations/$organizationId/ending',
+    path: '/agency/organizations/$organizationId/ending',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdHistoryRoute =
+  AgencyOrganizationsOrganizationIdHistoryRouteImport.update({
+    id: '/agency/organizations/$organizationId/history',
+    path: '/agency/organizations/$organizationId/history',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdIdentifiersRoute =
+  AgencyOrganizationsOrganizationIdIdentifiersRouteImport.update({
+    id: '/agency/organizations/$organizationId/identifiers',
+    path: '/agency/organizations/$organizationId/identifiers',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdLifecycleRoute =
+  AgencyOrganizationsOrganizationIdLifecycleRouteImport.update({
+    id: '/agency/organizations/$organizationId/lifecycle',
+    path: '/agency/organizations/$organizationId/lifecycle',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdLocationsRoute =
+  AgencyOrganizationsOrganizationIdLocationsRouteImport.update({
+    id: '/agency/organizations/$organizationId/locations',
+    path: '/agency/organizations/$organizationId/locations',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdReadinessRoute =
+  AgencyOrganizationsOrganizationIdReadinessRouteImport.update({
+    id: '/agency/organizations/$organizationId/readiness',
+    path: '/agency/organizations/$organizationId/readiness',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdRelationshipsRoute =
+  AgencyOrganizationsOrganizationIdRelationshipsRouteImport.update({
+    id: '/agency/organizations/$organizationId/relationships',
+    path: '/agency/organizations/$organizationId/relationships',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyOrganizationsOrganizationIdSettingsRoute =
+  AgencyOrganizationsOrganizationIdSettingsRouteImport.update({
+    id: '/agency/organizations/$organizationId/settings',
+    path: '/agency/organizations/$organizationId/settings',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const GovModuleFlowsFlowRoute = GovModuleFlowsFlowRouteImport.update({
   id: '/$flow',
   path: '/$flow',
@@ -430,11 +911,92 @@ const GovModuleScreensScreenRoute = GovModuleScreensScreenRouteImport.update({
   path: '/$screen',
   getParentRoute: () => GovModuleScreensRoute,
 } as any)
+const MarketplaceAdminAvailabilityIndexRoute =
+  MarketplaceAdminAvailabilityIndexRouteImport.update({
+    id: '/marketplace/admin/availability/',
+    path: '/marketplace/admin/availability/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminAvailabilityAvailabilityEntryIdRoute =
+  MarketplaceAdminAvailabilityAvailabilityEntryIdRouteImport.update({
+    id: '/marketplace/admin/availability/$availabilityEntryId',
+    path: '/marketplace/admin/availability/$availabilityEntryId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminDomainsIndexRoute =
+  MarketplaceAdminDomainsIndexRouteImport.update({
+    id: '/marketplace/admin/domains/',
+    path: '/marketplace/admin/domains/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminDomainsRequestRoute =
+  MarketplaceAdminDomainsRequestRouteImport.update({
+    id: '/marketplace/admin/domains/request',
+    path: '/marketplace/admin/domains/request',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminParticipantsIndexRoute =
+  MarketplaceAdminParticipantsIndexRouteImport.update({
+    id: '/marketplace/admin/participants/',
+    path: '/marketplace/admin/participants/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminParticipantsParticipantIdRoute =
+  MarketplaceAdminParticipantsParticipantIdRouteImport.update({
+    id: '/marketplace/admin/participants/$participantId',
+    path: '/marketplace/admin/participants/$participantId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminReferralLinksIndexRoute =
+  MarketplaceAdminReferralLinksIndexRouteImport.update({
+    id: '/marketplace/admin/referral-links/',
+    path: '/marketplace/admin/referral-links/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminReferralLinksReferralLinkIdRoute =
+  MarketplaceAdminReferralLinksReferralLinkIdRouteImport.update({
+    id: '/marketplace/admin/referral-links/$referralLinkId',
+    path: '/marketplace/admin/referral-links/$referralLinkId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminReleasesCompareRoute =
+  MarketplaceAdminReleasesCompareRouteImport.update({
+    id: '/marketplace/admin/releases/compare',
+    path: '/marketplace/admin/releases/compare',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminReleasesReviewRoute =
+  MarketplaceAdminReleasesReviewRouteImport.update({
+    id: '/marketplace/admin/releases/review',
+    path: '/marketplace/admin/releases/review',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MarketplaceAdminReleasesScheduleRoute =
+  MarketplaceAdminReleasesScheduleRouteImport.update({
+    id: '/marketplace/admin/releases/schedule',
+    path: '/marketplace/admin/releases/schedule',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlatformMarketplacesMarketplaceIdOverrideRoute =
+  PlatformMarketplacesMarketplaceIdOverrideRouteImport.update({
+    id: '/platform/marketplaces/$marketplaceId/override',
+    path: '/platform/marketplaces/$marketplaceId/override',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlatformOrganizationsOrganizationIdOverrideRoute =
+  PlatformOrganizationsOrganizationIdOverrideRouteImport.update({
+    id: '/platform/organizations/$organizationId/override',
+    path: '/platform/organizations/$organizationId/override',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accessibility': typeof AccessibilityRoute
   '/admin': typeof AdminRoute
+  '/agent-unavailable': typeof AgentUnavailableRoute
+  '/ai-review': typeof AiReviewRoute
+  '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/compare': typeof CompareRoute
@@ -457,10 +1019,23 @@ export interface FileRoutesByFullPath {
   '/schedule': typeof ScheduleRoute
   '/select': typeof SelectRoute
   '/terms': typeof TermsRoute
+  '/agency/marketplace-participation': typeof AgencyMarketplaceParticipationRoute
+  '/agency/my-organization': typeof AgencyMyOrganizationRoute
+  '/agency/organization-admin': typeof AgencyOrganizationAdminRoute
+  '/agency/organization-structure': typeof AgencyOrganizationStructureRoute
+  '/agency/organization-work': typeof AgencyOrganizationWorkRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/commissions': typeof AppCommissionsRoute
+  '/app/communications': typeof AppCommunicationsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/my-work': typeof AppMyWorkRoute
   '/app/object': typeof AppObjectRoute
+  '/app/off-exchange': typeof AppOffExchangeRoute
+  '/app/partner': typeof AppPartnerRoute
+  '/app/quick-quote': typeof AppQuickQuoteRoute
+  '/app/schedule': typeof AppScheduleRoute
+  '/app/send-quote': typeof AppSendQuoteRoute
+  '/app/tasks': typeof AppTasksRoute
   '/gov/$module': typeof GovModuleRouteWithChildren
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
@@ -494,19 +1069,91 @@ export interface FileRoutesByFullPath {
   '/m1/': typeof M1IndexRoute
   '/member/': typeof MemberIndexRoute
   '/p1/': typeof P1IndexRoute
+  '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
+  '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
+  '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
+  '/app/agency/entities': typeof AppAgencyEntitiesRoute
+  '/app/agency/producers': typeof AppAgencyProducersRoute
+  '/app/agency/revenue': typeof AppAgencyRevenueRoute
+  '/app/agency/statements': typeof AppAgencyStatementsRoute
+  '/app/customers/$id': typeof AppCustomersIdRoute
+  '/app/employer/ichra': typeof AppEmployerIchraRoute
+  '/app/jet/acl': typeof AppJetAclRoute
+  '/app/jet/ai-governance': typeof AppJetAiGovernanceRoute
+  '/app/jet/appointments': typeof AppJetAppointmentsRoute
+  '/app/jet/audit': typeof AppJetAuditRoute
+  '/app/jet/branding': typeof AppJetBrandingRoute
+  '/app/jet/form-configurator': typeof AppJetFormConfiguratorRoute
+  '/app/jet/integrations': typeof AppJetIntegrationsRoute
+  '/app/jet/module1': typeof AppJetModule1Route
+  '/app/jet/notifications': typeof AppJetNotificationsRoute
+  '/app/jet/platform': typeof AppJetPlatformRoute
+  '/app/jet/product-builder': typeof AppJetProductBuilderRoute
+  '/app/jet/products': typeof AppJetProductsRoute
   '/gov/$module/deltas': typeof GovModuleDeltasRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
+  '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
+  '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
+  '/marketplace/admin/content': typeof MarketplaceAdminContentRoute
+  '/marketplace/admin/health': typeof MarketplaceAdminHealthRoute
+  '/marketplace/admin/history': typeof MarketplaceAdminHistoryRoute
+  '/marketplace/admin/lifecycle': typeof MarketplaceAdminLifecycleRoute
+  '/marketplace/admin/preview': typeof MarketplaceAdminPreviewRoute
+  '/marketplace/admin/readiness': typeof MarketplaceAdminReadinessRoute
+  '/marketplace/admin/routing-support': typeof MarketplaceAdminRoutingSupportRoute
+  '/marketplace/admin/work': typeof MarketplaceAdminWorkRoute
+  '/agency/organization-imports/': typeof AgencyOrganizationImportsIndexRoute
+  '/agency/organizations/': typeof AgencyOrganizationsIndexRoute
+  '/app/agency/': typeof AppAgencyIndexRoute
+  '/app/customers/': typeof AppCustomersIndexRoute
   '/gov/$module/': typeof GovModuleIndexRoute
+  '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
+  '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
+  '/platform/organizations/': typeof PlatformOrganizationsIndexRoute
+  '/agency/downlines/new/activate': typeof AgencyDownlinesNewActivateRoute
+  '/agency/downlines/new/administrator': typeof AgencyDownlinesNewAdministratorRoute
+  '/agency/downlines/new/contacts': typeof AgencyDownlinesNewContactsRoute
+  '/agency/downlines/new/identity': typeof AgencyDownlinesNewIdentityRoute
+  '/agency/downlines/new/legal': typeof AgencyDownlinesNewLegalRoute
+  '/agency/downlines/new/locations': typeof AgencyDownlinesNewLocationsRoute
+  '/agency/downlines/new/readiness': typeof AgencyDownlinesNewReadinessRoute
+  '/agency/downlines/new/settings': typeof AgencyDownlinesNewSettingsRoute
+  '/agency/organizations/$organizationId/contacts': typeof AgencyOrganizationsOrganizationIdContactsRoute
+  '/agency/organizations/$organizationId/ending': typeof AgencyOrganizationsOrganizationIdEndingRoute
+  '/agency/organizations/$organizationId/history': typeof AgencyOrganizationsOrganizationIdHistoryRoute
+  '/agency/organizations/$organizationId/identifiers': typeof AgencyOrganizationsOrganizationIdIdentifiersRoute
+  '/agency/organizations/$organizationId/lifecycle': typeof AgencyOrganizationsOrganizationIdLifecycleRoute
+  '/agency/organizations/$organizationId/locations': typeof AgencyOrganizationsOrganizationIdLocationsRoute
+  '/agency/organizations/$organizationId/readiness': typeof AgencyOrganizationsOrganizationIdReadinessRoute
+  '/agency/organizations/$organizationId/relationships': typeof AgencyOrganizationsOrganizationIdRelationshipsRoute
+  '/agency/organizations/$organizationId/settings': typeof AgencyOrganizationsOrganizationIdSettingsRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
   '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
+  '/marketplace/admin/availability/$availabilityEntryId': typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
+  '/marketplace/admin/domains/request': typeof MarketplaceAdminDomainsRequestRoute
+  '/marketplace/admin/participants/$participantId': typeof MarketplaceAdminParticipantsParticipantIdRoute
+  '/marketplace/admin/referral-links/$referralLinkId': typeof MarketplaceAdminReferralLinksReferralLinkIdRoute
+  '/marketplace/admin/releases/compare': typeof MarketplaceAdminReleasesCompareRoute
+  '/marketplace/admin/releases/review': typeof MarketplaceAdminReleasesReviewRoute
+  '/marketplace/admin/releases/schedule': typeof MarketplaceAdminReleasesScheduleRoute
+  '/platform/marketplaces/$marketplaceId/override': typeof PlatformMarketplacesMarketplaceIdOverrideRoute
+  '/platform/organizations/$organizationId/override': typeof PlatformOrganizationsOrganizationIdOverrideRoute
+  '/agency/organizations/$organizationId/': typeof AgencyOrganizationsOrganizationIdIndexRoute
+  '/marketplace/admin/availability/': typeof MarketplaceAdminAvailabilityIndexRoute
+  '/marketplace/admin/domains/': typeof MarketplaceAdminDomainsIndexRoute
+  '/marketplace/admin/participants/': typeof MarketplaceAdminParticipantsIndexRoute
+  '/marketplace/admin/referral-links/': typeof MarketplaceAdminReferralLinksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accessibility': typeof AccessibilityRoute
   '/admin': typeof AdminRoute
+  '/agent-unavailable': typeof AgentUnavailableRoute
+  '/ai-review': typeof AiReviewRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/compare': typeof CompareRoute
@@ -525,10 +1172,23 @@ export interface FileRoutesByTo {
   '/schedule': typeof ScheduleRoute
   '/select': typeof SelectRoute
   '/terms': typeof TermsRoute
+  '/agency/marketplace-participation': typeof AgencyMarketplaceParticipationRoute
+  '/agency/my-organization': typeof AgencyMyOrganizationRoute
+  '/agency/organization-admin': typeof AgencyOrganizationAdminRoute
+  '/agency/organization-structure': typeof AgencyOrganizationStructureRoute
+  '/agency/organization-work': typeof AgencyOrganizationWorkRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/commissions': typeof AppCommissionsRoute
+  '/app/communications': typeof AppCommunicationsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/my-work': typeof AppMyWorkRoute
   '/app/object': typeof AppObjectRoute
+  '/app/off-exchange': typeof AppOffExchangeRoute
+  '/app/partner': typeof AppPartnerRoute
+  '/app/quick-quote': typeof AppQuickQuoteRoute
+  '/app/schedule': typeof AppScheduleRoute
+  '/app/send-quote': typeof AppSendQuoteRoute
+  '/app/tasks': typeof AppTasksRoute
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
   '/lucie/module1': typeof LucieModule1Route
@@ -561,20 +1221,93 @@ export interface FileRoutesByTo {
   '/m1': typeof M1IndexRoute
   '/member': typeof MemberIndexRoute
   '/p1': typeof P1IndexRoute
+  '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
+  '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
+  '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
+  '/app/agency/entities': typeof AppAgencyEntitiesRoute
+  '/app/agency/producers': typeof AppAgencyProducersRoute
+  '/app/agency/revenue': typeof AppAgencyRevenueRoute
+  '/app/agency/statements': typeof AppAgencyStatementsRoute
+  '/app/customers/$id': typeof AppCustomersIdRoute
+  '/app/employer/ichra': typeof AppEmployerIchraRoute
+  '/app/jet/acl': typeof AppJetAclRoute
+  '/app/jet/ai-governance': typeof AppJetAiGovernanceRoute
+  '/app/jet/appointments': typeof AppJetAppointmentsRoute
+  '/app/jet/audit': typeof AppJetAuditRoute
+  '/app/jet/branding': typeof AppJetBrandingRoute
+  '/app/jet/form-configurator': typeof AppJetFormConfiguratorRoute
+  '/app/jet/integrations': typeof AppJetIntegrationsRoute
+  '/app/jet/module1': typeof AppJetModule1Route
+  '/app/jet/notifications': typeof AppJetNotificationsRoute
+  '/app/jet/platform': typeof AppJetPlatformRoute
+  '/app/jet/product-builder': typeof AppJetProductBuilderRoute
+  '/app/jet/products': typeof AppJetProductsRoute
   '/gov/$module/deltas': typeof GovModuleDeltasRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
+  '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
+  '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
+  '/marketplace/admin/content': typeof MarketplaceAdminContentRoute
+  '/marketplace/admin/health': typeof MarketplaceAdminHealthRoute
+  '/marketplace/admin/history': typeof MarketplaceAdminHistoryRoute
+  '/marketplace/admin/lifecycle': typeof MarketplaceAdminLifecycleRoute
+  '/marketplace/admin/preview': typeof MarketplaceAdminPreviewRoute
+  '/marketplace/admin/readiness': typeof MarketplaceAdminReadinessRoute
+  '/marketplace/admin/routing-support': typeof MarketplaceAdminRoutingSupportRoute
+  '/marketplace/admin/work': typeof MarketplaceAdminWorkRoute
+  '/agency/organization-imports': typeof AgencyOrganizationImportsIndexRoute
+  '/agency/organizations': typeof AgencyOrganizationsIndexRoute
+  '/app/agency': typeof AppAgencyIndexRoute
+  '/app/customers': typeof AppCustomersIndexRoute
   '/gov/$module': typeof GovModuleIndexRoute
+  '/marketplace/admin': typeof MarketplaceAdminIndexRoute
+  '/platform/marketplaces': typeof PlatformMarketplacesIndexRoute
+  '/platform/organizations': typeof PlatformOrganizationsIndexRoute
+  '/agency/downlines/new/activate': typeof AgencyDownlinesNewActivateRoute
+  '/agency/downlines/new/administrator': typeof AgencyDownlinesNewAdministratorRoute
+  '/agency/downlines/new/contacts': typeof AgencyDownlinesNewContactsRoute
+  '/agency/downlines/new/identity': typeof AgencyDownlinesNewIdentityRoute
+  '/agency/downlines/new/legal': typeof AgencyDownlinesNewLegalRoute
+  '/agency/downlines/new/locations': typeof AgencyDownlinesNewLocationsRoute
+  '/agency/downlines/new/readiness': typeof AgencyDownlinesNewReadinessRoute
+  '/agency/downlines/new/settings': typeof AgencyDownlinesNewSettingsRoute
+  '/agency/organizations/$organizationId/contacts': typeof AgencyOrganizationsOrganizationIdContactsRoute
+  '/agency/organizations/$organizationId/ending': typeof AgencyOrganizationsOrganizationIdEndingRoute
+  '/agency/organizations/$organizationId/history': typeof AgencyOrganizationsOrganizationIdHistoryRoute
+  '/agency/organizations/$organizationId/identifiers': typeof AgencyOrganizationsOrganizationIdIdentifiersRoute
+  '/agency/organizations/$organizationId/lifecycle': typeof AgencyOrganizationsOrganizationIdLifecycleRoute
+  '/agency/organizations/$organizationId/locations': typeof AgencyOrganizationsOrganizationIdLocationsRoute
+  '/agency/organizations/$organizationId/readiness': typeof AgencyOrganizationsOrganizationIdReadinessRoute
+  '/agency/organizations/$organizationId/relationships': typeof AgencyOrganizationsOrganizationIdRelationshipsRoute
+  '/agency/organizations/$organizationId/settings': typeof AgencyOrganizationsOrganizationIdSettingsRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
   '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
+  '/marketplace/admin/availability/$availabilityEntryId': typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
+  '/marketplace/admin/domains/request': typeof MarketplaceAdminDomainsRequestRoute
+  '/marketplace/admin/participants/$participantId': typeof MarketplaceAdminParticipantsParticipantIdRoute
+  '/marketplace/admin/referral-links/$referralLinkId': typeof MarketplaceAdminReferralLinksReferralLinkIdRoute
+  '/marketplace/admin/releases/compare': typeof MarketplaceAdminReleasesCompareRoute
+  '/marketplace/admin/releases/review': typeof MarketplaceAdminReleasesReviewRoute
+  '/marketplace/admin/releases/schedule': typeof MarketplaceAdminReleasesScheduleRoute
+  '/platform/marketplaces/$marketplaceId/override': typeof PlatformMarketplacesMarketplaceIdOverrideRoute
+  '/platform/organizations/$organizationId/override': typeof PlatformOrganizationsOrganizationIdOverrideRoute
+  '/agency/organizations/$organizationId': typeof AgencyOrganizationsOrganizationIdIndexRoute
+  '/marketplace/admin/availability': typeof MarketplaceAdminAvailabilityIndexRoute
+  '/marketplace/admin/domains': typeof MarketplaceAdminDomainsIndexRoute
+  '/marketplace/admin/participants': typeof MarketplaceAdminParticipantsIndexRoute
+  '/marketplace/admin/referral-links': typeof MarketplaceAdminReferralLinksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accessibility': typeof AccessibilityRoute
   '/admin': typeof AdminRoute
+  '/agent-unavailable': typeof AgentUnavailableRoute
+  '/ai-review': typeof AiReviewRoute
+  '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/compare': typeof CompareRoute
@@ -597,10 +1330,23 @@ export interface FileRoutesById {
   '/schedule': typeof ScheduleRoute
   '/select': typeof SelectRoute
   '/terms': typeof TermsRoute
+  '/agency/marketplace-participation': typeof AgencyMarketplaceParticipationRoute
+  '/agency/my-organization': typeof AgencyMyOrganizationRoute
+  '/agency/organization-admin': typeof AgencyOrganizationAdminRoute
+  '/agency/organization-structure': typeof AgencyOrganizationStructureRoute
+  '/agency/organization-work': typeof AgencyOrganizationWorkRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/commissions': typeof AppCommissionsRoute
+  '/app/communications': typeof AppCommunicationsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/my-work': typeof AppMyWorkRoute
   '/app/object': typeof AppObjectRoute
+  '/app/off-exchange': typeof AppOffExchangeRoute
+  '/app/partner': typeof AppPartnerRoute
+  '/app/quick-quote': typeof AppQuickQuoteRoute
+  '/app/schedule': typeof AppScheduleRoute
+  '/app/send-quote': typeof AppSendQuoteRoute
+  '/app/tasks': typeof AppTasksRoute
   '/gov/$module': typeof GovModuleRouteWithChildren
   '/hf/$screen': typeof HfScreenRoute
   '/lucie/governance': typeof LucieGovernanceRoute
@@ -634,14 +1380,84 @@ export interface FileRoutesById {
   '/m1/': typeof M1IndexRoute
   '/member/': typeof MemberIndexRoute
   '/p1/': typeof P1IndexRoute
+  '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
+  '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
+  '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
+  '/app/agency/entities': typeof AppAgencyEntitiesRoute
+  '/app/agency/producers': typeof AppAgencyProducersRoute
+  '/app/agency/revenue': typeof AppAgencyRevenueRoute
+  '/app/agency/statements': typeof AppAgencyStatementsRoute
+  '/app/customers/$id': typeof AppCustomersIdRoute
+  '/app/employer/ichra': typeof AppEmployerIchraRoute
+  '/app/jet/acl': typeof AppJetAclRoute
+  '/app/jet/ai-governance': typeof AppJetAiGovernanceRoute
+  '/app/jet/appointments': typeof AppJetAppointmentsRoute
+  '/app/jet/audit': typeof AppJetAuditRoute
+  '/app/jet/branding': typeof AppJetBrandingRoute
+  '/app/jet/form-configurator': typeof AppJetFormConfiguratorRoute
+  '/app/jet/integrations': typeof AppJetIntegrationsRoute
+  '/app/jet/module1': typeof AppJetModule1Route
+  '/app/jet/notifications': typeof AppJetNotificationsRoute
+  '/app/jet/platform': typeof AppJetPlatformRoute
+  '/app/jet/product-builder': typeof AppJetProductBuilderRoute
+  '/app/jet/products': typeof AppJetProductsRoute
   '/gov/$module/deltas': typeof GovModuleDeltasRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
+  '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
+  '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
+  '/marketplace/admin/content': typeof MarketplaceAdminContentRoute
+  '/marketplace/admin/health': typeof MarketplaceAdminHealthRoute
+  '/marketplace/admin/history': typeof MarketplaceAdminHistoryRoute
+  '/marketplace/admin/lifecycle': typeof MarketplaceAdminLifecycleRoute
+  '/marketplace/admin/preview': typeof MarketplaceAdminPreviewRoute
+  '/marketplace/admin/readiness': typeof MarketplaceAdminReadinessRoute
+  '/marketplace/admin/routing-support': typeof MarketplaceAdminRoutingSupportRoute
+  '/marketplace/admin/work': typeof MarketplaceAdminWorkRoute
+  '/agency/organization-imports/': typeof AgencyOrganizationImportsIndexRoute
+  '/agency/organizations/': typeof AgencyOrganizationsIndexRoute
+  '/app/agency/': typeof AppAgencyIndexRoute
+  '/app/customers/': typeof AppCustomersIndexRoute
   '/gov/$module/': typeof GovModuleIndexRoute
+  '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
+  '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
+  '/platform/organizations/': typeof PlatformOrganizationsIndexRoute
+  '/agency/downlines/new/activate': typeof AgencyDownlinesNewActivateRoute
+  '/agency/downlines/new/administrator': typeof AgencyDownlinesNewAdministratorRoute
+  '/agency/downlines/new/contacts': typeof AgencyDownlinesNewContactsRoute
+  '/agency/downlines/new/identity': typeof AgencyDownlinesNewIdentityRoute
+  '/agency/downlines/new/legal': typeof AgencyDownlinesNewLegalRoute
+  '/agency/downlines/new/locations': typeof AgencyDownlinesNewLocationsRoute
+  '/agency/downlines/new/readiness': typeof AgencyDownlinesNewReadinessRoute
+  '/agency/downlines/new/settings': typeof AgencyDownlinesNewSettingsRoute
+  '/agency/organizations/$organizationId/contacts': typeof AgencyOrganizationsOrganizationIdContactsRoute
+  '/agency/organizations/$organizationId/ending': typeof AgencyOrganizationsOrganizationIdEndingRoute
+  '/agency/organizations/$organizationId/history': typeof AgencyOrganizationsOrganizationIdHistoryRoute
+  '/agency/organizations/$organizationId/identifiers': typeof AgencyOrganizationsOrganizationIdIdentifiersRoute
+  '/agency/organizations/$organizationId/lifecycle': typeof AgencyOrganizationsOrganizationIdLifecycleRoute
+  '/agency/organizations/$organizationId/locations': typeof AgencyOrganizationsOrganizationIdLocationsRoute
+  '/agency/organizations/$organizationId/readiness': typeof AgencyOrganizationsOrganizationIdReadinessRoute
+  '/agency/organizations/$organizationId/relationships': typeof AgencyOrganizationsOrganizationIdRelationshipsRoute
+  '/agency/organizations/$organizationId/settings': typeof AgencyOrganizationsOrganizationIdSettingsRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
   '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
+  '/marketplace/admin/availability/$availabilityEntryId': typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
+  '/marketplace/admin/domains/request': typeof MarketplaceAdminDomainsRequestRoute
+  '/marketplace/admin/participants/$participantId': typeof MarketplaceAdminParticipantsParticipantIdRoute
+  '/marketplace/admin/referral-links/$referralLinkId': typeof MarketplaceAdminReferralLinksReferralLinkIdRoute
+  '/marketplace/admin/releases/compare': typeof MarketplaceAdminReleasesCompareRoute
+  '/marketplace/admin/releases/review': typeof MarketplaceAdminReleasesReviewRoute
+  '/marketplace/admin/releases/schedule': typeof MarketplaceAdminReleasesScheduleRoute
+  '/platform/marketplaces/$marketplaceId/override': typeof PlatformMarketplacesMarketplaceIdOverrideRoute
+  '/platform/organizations/$organizationId/override': typeof PlatformOrganizationsOrganizationIdOverrideRoute
+  '/agency/organizations/$organizationId/': typeof AgencyOrganizationsOrganizationIdIndexRoute
+  '/marketplace/admin/availability/': typeof MarketplaceAdminAvailabilityIndexRoute
+  '/marketplace/admin/domains/': typeof MarketplaceAdminDomainsIndexRoute
+  '/marketplace/admin/participants/': typeof MarketplaceAdminParticipantsIndexRoute
+  '/marketplace/admin/referral-links/': typeof MarketplaceAdminReferralLinksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -649,6 +1465,9 @@ export interface FileRouteTypes {
     | '/'
     | '/accessibility'
     | '/admin'
+    | '/agent-unavailable'
+    | '/ai-review'
+    | '/app'
     | '/auth'
     | '/cart'
     | '/compare'
@@ -671,10 +1490,23 @@ export interface FileRouteTypes {
     | '/schedule'
     | '/select'
     | '/terms'
+    | '/agency/marketplace-participation'
+    | '/agency/my-organization'
+    | '/agency/organization-admin'
+    | '/agency/organization-structure'
+    | '/agency/organization-work'
     | '/app/admin'
+    | '/app/commissions'
+    | '/app/communications'
     | '/app/dashboard'
     | '/app/my-work'
     | '/app/object'
+    | '/app/off-exchange'
+    | '/app/partner'
+    | '/app/quick-quote'
+    | '/app/schedule'
+    | '/app/send-quote'
+    | '/app/tasks'
     | '/gov/$module'
     | '/hf/$screen'
     | '/lucie/governance'
@@ -708,19 +1540,91 @@ export interface FileRouteTypes {
     | '/m1/'
     | '/member/'
     | '/p1/'
+    | '/agency/organization-defaults/apply'
+    | '/agency/organization-imports/$importJobId'
+    | '/agency/reference-organizations/request'
+    | '/app/agency/entities'
+    | '/app/agency/producers'
+    | '/app/agency/revenue'
+    | '/app/agency/statements'
+    | '/app/customers/$id'
+    | '/app/employer/ichra'
+    | '/app/jet/acl'
+    | '/app/jet/ai-governance'
+    | '/app/jet/appointments'
+    | '/app/jet/audit'
+    | '/app/jet/branding'
+    | '/app/jet/form-configurator'
+    | '/app/jet/integrations'
+    | '/app/jet/module1'
+    | '/app/jet/notifications'
+    | '/app/jet/platform'
+    | '/app/jet/product-builder'
+    | '/app/jet/products'
     | '/gov/$module/deltas'
     | '/gov/$module/flows'
     | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/traceability'
+    | '/marketplace/admin/activation'
+    | '/marketplace/admin/assets'
+    | '/marketplace/admin/brand'
+    | '/marketplace/admin/content'
+    | '/marketplace/admin/health'
+    | '/marketplace/admin/history'
+    | '/marketplace/admin/lifecycle'
+    | '/marketplace/admin/preview'
+    | '/marketplace/admin/readiness'
+    | '/marketplace/admin/routing-support'
+    | '/marketplace/admin/work'
+    | '/agency/organization-imports/'
+    | '/agency/organizations/'
+    | '/app/agency/'
+    | '/app/customers/'
     | '/gov/$module/'
+    | '/marketplace/admin/'
+    | '/platform/marketplaces/'
+    | '/platform/organizations/'
+    | '/agency/downlines/new/activate'
+    | '/agency/downlines/new/administrator'
+    | '/agency/downlines/new/contacts'
+    | '/agency/downlines/new/identity'
+    | '/agency/downlines/new/legal'
+    | '/agency/downlines/new/locations'
+    | '/agency/downlines/new/readiness'
+    | '/agency/downlines/new/settings'
+    | '/agency/organizations/$organizationId/contacts'
+    | '/agency/organizations/$organizationId/ending'
+    | '/agency/organizations/$organizationId/history'
+    | '/agency/organizations/$organizationId/identifiers'
+    | '/agency/organizations/$organizationId/lifecycle'
+    | '/agency/organizations/$organizationId/locations'
+    | '/agency/organizations/$organizationId/readiness'
+    | '/agency/organizations/$organizationId/relationships'
+    | '/agency/organizations/$organizationId/settings'
     | '/gov/$module/flows/$flow'
     | '/gov/$module/screens/$screen'
+    | '/marketplace/admin/availability/$availabilityEntryId'
+    | '/marketplace/admin/domains/request'
+    | '/marketplace/admin/participants/$participantId'
+    | '/marketplace/admin/referral-links/$referralLinkId'
+    | '/marketplace/admin/releases/compare'
+    | '/marketplace/admin/releases/review'
+    | '/marketplace/admin/releases/schedule'
+    | '/platform/marketplaces/$marketplaceId/override'
+    | '/platform/organizations/$organizationId/override'
+    | '/agency/organizations/$organizationId/'
+    | '/marketplace/admin/availability/'
+    | '/marketplace/admin/domains/'
+    | '/marketplace/admin/participants/'
+    | '/marketplace/admin/referral-links/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/accessibility'
     | '/admin'
+    | '/agent-unavailable'
+    | '/ai-review'
     | '/auth'
     | '/cart'
     | '/compare'
@@ -739,10 +1643,23 @@ export interface FileRouteTypes {
     | '/schedule'
     | '/select'
     | '/terms'
+    | '/agency/marketplace-participation'
+    | '/agency/my-organization'
+    | '/agency/organization-admin'
+    | '/agency/organization-structure'
+    | '/agency/organization-work'
     | '/app/admin'
+    | '/app/commissions'
+    | '/app/communications'
     | '/app/dashboard'
     | '/app/my-work'
     | '/app/object'
+    | '/app/off-exchange'
+    | '/app/partner'
+    | '/app/quick-quote'
+    | '/app/schedule'
+    | '/app/send-quote'
+    | '/app/tasks'
     | '/hf/$screen'
     | '/lucie/governance'
     | '/lucie/module1'
@@ -775,19 +1692,92 @@ export interface FileRouteTypes {
     | '/m1'
     | '/member'
     | '/p1'
+    | '/agency/organization-defaults/apply'
+    | '/agency/organization-imports/$importJobId'
+    | '/agency/reference-organizations/request'
+    | '/app/agency/entities'
+    | '/app/agency/producers'
+    | '/app/agency/revenue'
+    | '/app/agency/statements'
+    | '/app/customers/$id'
+    | '/app/employer/ichra'
+    | '/app/jet/acl'
+    | '/app/jet/ai-governance'
+    | '/app/jet/appointments'
+    | '/app/jet/audit'
+    | '/app/jet/branding'
+    | '/app/jet/form-configurator'
+    | '/app/jet/integrations'
+    | '/app/jet/module1'
+    | '/app/jet/notifications'
+    | '/app/jet/platform'
+    | '/app/jet/product-builder'
+    | '/app/jet/products'
     | '/gov/$module/deltas'
     | '/gov/$module/flows'
     | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/traceability'
+    | '/marketplace/admin/activation'
+    | '/marketplace/admin/assets'
+    | '/marketplace/admin/brand'
+    | '/marketplace/admin/content'
+    | '/marketplace/admin/health'
+    | '/marketplace/admin/history'
+    | '/marketplace/admin/lifecycle'
+    | '/marketplace/admin/preview'
+    | '/marketplace/admin/readiness'
+    | '/marketplace/admin/routing-support'
+    | '/marketplace/admin/work'
+    | '/agency/organization-imports'
+    | '/agency/organizations'
+    | '/app/agency'
+    | '/app/customers'
     | '/gov/$module'
+    | '/marketplace/admin'
+    | '/platform/marketplaces'
+    | '/platform/organizations'
+    | '/agency/downlines/new/activate'
+    | '/agency/downlines/new/administrator'
+    | '/agency/downlines/new/contacts'
+    | '/agency/downlines/new/identity'
+    | '/agency/downlines/new/legal'
+    | '/agency/downlines/new/locations'
+    | '/agency/downlines/new/readiness'
+    | '/agency/downlines/new/settings'
+    | '/agency/organizations/$organizationId/contacts'
+    | '/agency/organizations/$organizationId/ending'
+    | '/agency/organizations/$organizationId/history'
+    | '/agency/organizations/$organizationId/identifiers'
+    | '/agency/organizations/$organizationId/lifecycle'
+    | '/agency/organizations/$organizationId/locations'
+    | '/agency/organizations/$organizationId/readiness'
+    | '/agency/organizations/$organizationId/relationships'
+    | '/agency/organizations/$organizationId/settings'
     | '/gov/$module/flows/$flow'
     | '/gov/$module/screens/$screen'
+    | '/marketplace/admin/availability/$availabilityEntryId'
+    | '/marketplace/admin/domains/request'
+    | '/marketplace/admin/participants/$participantId'
+    | '/marketplace/admin/referral-links/$referralLinkId'
+    | '/marketplace/admin/releases/compare'
+    | '/marketplace/admin/releases/review'
+    | '/marketplace/admin/releases/schedule'
+    | '/platform/marketplaces/$marketplaceId/override'
+    | '/platform/organizations/$organizationId/override'
+    | '/agency/organizations/$organizationId'
+    | '/marketplace/admin/availability'
+    | '/marketplace/admin/domains'
+    | '/marketplace/admin/participants'
+    | '/marketplace/admin/referral-links'
   id:
     | '__root__'
     | '/'
     | '/accessibility'
     | '/admin'
+    | '/agent-unavailable'
+    | '/ai-review'
+    | '/app'
     | '/auth'
     | '/cart'
     | '/compare'
@@ -810,10 +1800,23 @@ export interface FileRouteTypes {
     | '/schedule'
     | '/select'
     | '/terms'
+    | '/agency/marketplace-participation'
+    | '/agency/my-organization'
+    | '/agency/organization-admin'
+    | '/agency/organization-structure'
+    | '/agency/organization-work'
     | '/app/admin'
+    | '/app/commissions'
+    | '/app/communications'
     | '/app/dashboard'
     | '/app/my-work'
     | '/app/object'
+    | '/app/off-exchange'
+    | '/app/partner'
+    | '/app/quick-quote'
+    | '/app/schedule'
+    | '/app/send-quote'
+    | '/app/tasks'
     | '/gov/$module'
     | '/hf/$screen'
     | '/lucie/governance'
@@ -847,20 +1850,93 @@ export interface FileRouteTypes {
     | '/m1/'
     | '/member/'
     | '/p1/'
+    | '/agency/organization-defaults/apply'
+    | '/agency/organization-imports/$importJobId'
+    | '/agency/reference-organizations/request'
+    | '/app/agency/entities'
+    | '/app/agency/producers'
+    | '/app/agency/revenue'
+    | '/app/agency/statements'
+    | '/app/customers/$id'
+    | '/app/employer/ichra'
+    | '/app/jet/acl'
+    | '/app/jet/ai-governance'
+    | '/app/jet/appointments'
+    | '/app/jet/audit'
+    | '/app/jet/branding'
+    | '/app/jet/form-configurator'
+    | '/app/jet/integrations'
+    | '/app/jet/module1'
+    | '/app/jet/notifications'
+    | '/app/jet/platform'
+    | '/app/jet/product-builder'
+    | '/app/jet/products'
     | '/gov/$module/deltas'
     | '/gov/$module/flows'
     | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/traceability'
+    | '/marketplace/admin/activation'
+    | '/marketplace/admin/assets'
+    | '/marketplace/admin/brand'
+    | '/marketplace/admin/content'
+    | '/marketplace/admin/health'
+    | '/marketplace/admin/history'
+    | '/marketplace/admin/lifecycle'
+    | '/marketplace/admin/preview'
+    | '/marketplace/admin/readiness'
+    | '/marketplace/admin/routing-support'
+    | '/marketplace/admin/work'
+    | '/agency/organization-imports/'
+    | '/agency/organizations/'
+    | '/app/agency/'
+    | '/app/customers/'
     | '/gov/$module/'
+    | '/marketplace/admin/'
+    | '/platform/marketplaces/'
+    | '/platform/organizations/'
+    | '/agency/downlines/new/activate'
+    | '/agency/downlines/new/administrator'
+    | '/agency/downlines/new/contacts'
+    | '/agency/downlines/new/identity'
+    | '/agency/downlines/new/legal'
+    | '/agency/downlines/new/locations'
+    | '/agency/downlines/new/readiness'
+    | '/agency/downlines/new/settings'
+    | '/agency/organizations/$organizationId/contacts'
+    | '/agency/organizations/$organizationId/ending'
+    | '/agency/organizations/$organizationId/history'
+    | '/agency/organizations/$organizationId/identifiers'
+    | '/agency/organizations/$organizationId/lifecycle'
+    | '/agency/organizations/$organizationId/locations'
+    | '/agency/organizations/$organizationId/readiness'
+    | '/agency/organizations/$organizationId/relationships'
+    | '/agency/organizations/$organizationId/settings'
     | '/gov/$module/flows/$flow'
     | '/gov/$module/screens/$screen'
+    | '/marketplace/admin/availability/$availabilityEntryId'
+    | '/marketplace/admin/domains/request'
+    | '/marketplace/admin/participants/$participantId'
+    | '/marketplace/admin/referral-links/$referralLinkId'
+    | '/marketplace/admin/releases/compare'
+    | '/marketplace/admin/releases/review'
+    | '/marketplace/admin/releases/schedule'
+    | '/platform/marketplaces/$marketplaceId/override'
+    | '/platform/organizations/$organizationId/override'
+    | '/agency/organizations/$organizationId/'
+    | '/marketplace/admin/availability/'
+    | '/marketplace/admin/domains/'
+    | '/marketplace/admin/participants/'
+    | '/marketplace/admin/referral-links/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccessibilityRoute: typeof AccessibilityRoute
   AdminRoute: typeof AdminRoute
+  AgentUnavailableRoute: typeof AgentUnavailableRoute
+  AiReviewRoute: typeof AiReviewRoute
+  AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
   CompareRoute: typeof CompareRoute
@@ -883,20 +1959,70 @@ export interface RootRouteChildren {
   ScheduleRoute: typeof ScheduleRoute
   SelectRoute: typeof SelectRoute
   TermsRoute: typeof TermsRoute
-  AppAdminRoute: typeof AppAdminRoute
-  AppDashboardRoute: typeof AppDashboardRoute
-  AppMyWorkRoute: typeof AppMyWorkRoute
-  AppObjectRoute: typeof AppObjectRoute
+  AgencyMarketplaceParticipationRoute: typeof AgencyMarketplaceParticipationRoute
+  AgencyMyOrganizationRoute: typeof AgencyMyOrganizationRoute
+  AgencyOrganizationAdminRoute: typeof AgencyOrganizationAdminRoute
+  AgencyOrganizationStructureRoute: typeof AgencyOrganizationStructureRoute
+  AgencyOrganizationWorkRoute: typeof AgencyOrganizationWorkRoute
   GovModuleRoute: typeof GovModuleRouteWithChildren
   HfScreenRoute: typeof HfScreenRoute
   M1ScreenRoute: typeof M1ScreenRoute
   P1ScreenRoute: typeof P1ScreenRoute
   SharedTokenRoute: typeof SharedTokenRoute
-  AppIndexRoute: typeof AppIndexRoute
   GovIndexRoute: typeof GovIndexRoute
   HfIndexRoute: typeof HfIndexRoute
   M1IndexRoute: typeof M1IndexRoute
   P1IndexRoute: typeof P1IndexRoute
+  AgencyOrganizationDefaultsApplyRoute: typeof AgencyOrganizationDefaultsApplyRoute
+  AgencyOrganizationImportsImportJobIdRoute: typeof AgencyOrganizationImportsImportJobIdRoute
+  AgencyReferenceOrganizationsRequestRoute: typeof AgencyReferenceOrganizationsRequestRoute
+  MarketplaceAdminActivationRoute: typeof MarketplaceAdminActivationRoute
+  MarketplaceAdminAssetsRoute: typeof MarketplaceAdminAssetsRoute
+  MarketplaceAdminBrandRoute: typeof MarketplaceAdminBrandRoute
+  MarketplaceAdminContentRoute: typeof MarketplaceAdminContentRoute
+  MarketplaceAdminHealthRoute: typeof MarketplaceAdminHealthRoute
+  MarketplaceAdminHistoryRoute: typeof MarketplaceAdminHistoryRoute
+  MarketplaceAdminLifecycleRoute: typeof MarketplaceAdminLifecycleRoute
+  MarketplaceAdminPreviewRoute: typeof MarketplaceAdminPreviewRoute
+  MarketplaceAdminReadinessRoute: typeof MarketplaceAdminReadinessRoute
+  MarketplaceAdminRoutingSupportRoute: typeof MarketplaceAdminRoutingSupportRoute
+  MarketplaceAdminWorkRoute: typeof MarketplaceAdminWorkRoute
+  AgencyOrganizationImportsIndexRoute: typeof AgencyOrganizationImportsIndexRoute
+  AgencyOrganizationsIndexRoute: typeof AgencyOrganizationsIndexRoute
+  MarketplaceAdminIndexRoute: typeof MarketplaceAdminIndexRoute
+  PlatformMarketplacesIndexRoute: typeof PlatformMarketplacesIndexRoute
+  PlatformOrganizationsIndexRoute: typeof PlatformOrganizationsIndexRoute
+  AgencyDownlinesNewActivateRoute: typeof AgencyDownlinesNewActivateRoute
+  AgencyDownlinesNewAdministratorRoute: typeof AgencyDownlinesNewAdministratorRoute
+  AgencyDownlinesNewContactsRoute: typeof AgencyDownlinesNewContactsRoute
+  AgencyDownlinesNewIdentityRoute: typeof AgencyDownlinesNewIdentityRoute
+  AgencyDownlinesNewLegalRoute: typeof AgencyDownlinesNewLegalRoute
+  AgencyDownlinesNewLocationsRoute: typeof AgencyDownlinesNewLocationsRoute
+  AgencyDownlinesNewReadinessRoute: typeof AgencyDownlinesNewReadinessRoute
+  AgencyDownlinesNewSettingsRoute: typeof AgencyDownlinesNewSettingsRoute
+  AgencyOrganizationsOrganizationIdContactsRoute: typeof AgencyOrganizationsOrganizationIdContactsRoute
+  AgencyOrganizationsOrganizationIdEndingRoute: typeof AgencyOrganizationsOrganizationIdEndingRoute
+  AgencyOrganizationsOrganizationIdHistoryRoute: typeof AgencyOrganizationsOrganizationIdHistoryRoute
+  AgencyOrganizationsOrganizationIdIdentifiersRoute: typeof AgencyOrganizationsOrganizationIdIdentifiersRoute
+  AgencyOrganizationsOrganizationIdLifecycleRoute: typeof AgencyOrganizationsOrganizationIdLifecycleRoute
+  AgencyOrganizationsOrganizationIdLocationsRoute: typeof AgencyOrganizationsOrganizationIdLocationsRoute
+  AgencyOrganizationsOrganizationIdReadinessRoute: typeof AgencyOrganizationsOrganizationIdReadinessRoute
+  AgencyOrganizationsOrganizationIdRelationshipsRoute: typeof AgencyOrganizationsOrganizationIdRelationshipsRoute
+  AgencyOrganizationsOrganizationIdSettingsRoute: typeof AgencyOrganizationsOrganizationIdSettingsRoute
+  MarketplaceAdminAvailabilityAvailabilityEntryIdRoute: typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
+  MarketplaceAdminDomainsRequestRoute: typeof MarketplaceAdminDomainsRequestRoute
+  MarketplaceAdminParticipantsParticipantIdRoute: typeof MarketplaceAdminParticipantsParticipantIdRoute
+  MarketplaceAdminReferralLinksReferralLinkIdRoute: typeof MarketplaceAdminReferralLinksReferralLinkIdRoute
+  MarketplaceAdminReleasesCompareRoute: typeof MarketplaceAdminReleasesCompareRoute
+  MarketplaceAdminReleasesReviewRoute: typeof MarketplaceAdminReleasesReviewRoute
+  MarketplaceAdminReleasesScheduleRoute: typeof MarketplaceAdminReleasesScheduleRoute
+  PlatformMarketplacesMarketplaceIdOverrideRoute: typeof PlatformMarketplacesMarketplaceIdOverrideRoute
+  PlatformOrganizationsOrganizationIdOverrideRoute: typeof PlatformOrganizationsOrganizationIdOverrideRoute
+  AgencyOrganizationsOrganizationIdIndexRoute: typeof AgencyOrganizationsOrganizationIdIndexRoute
+  MarketplaceAdminAvailabilityIndexRoute: typeof MarketplaceAdminAvailabilityIndexRoute
+  MarketplaceAdminDomainsIndexRoute: typeof MarketplaceAdminDomainsIndexRoute
+  MarketplaceAdminParticipantsIndexRoute: typeof MarketplaceAdminParticipantsIndexRoute
+  MarketplaceAdminReferralLinksIndexRoute: typeof MarketplaceAdminReferralLinksIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -920,6 +2046,27 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agent-unavailable': {
+      id: '/agent-unavailable'
+      path: '/agent-unavailable'
+      fullPath: '/agent-unavailable'
+      preLoaderRoute: typeof AgentUnavailableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-review': {
+      id: '/ai-review'
+      path: '/ai-review'
+      fullPath: '/ai-review'
+      preLoaderRoute: typeof AiReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -1076,40 +2223,131 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agency/marketplace-participation': {
+      id: '/agency/marketplace-participation'
+      path: '/agency/marketplace-participation'
+      fullPath: '/agency/marketplace-participation'
+      preLoaderRoute: typeof AgencyMarketplaceParticipationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/my-organization': {
+      id: '/agency/my-organization'
+      path: '/agency/my-organization'
+      fullPath: '/agency/my-organization'
+      preLoaderRoute: typeof AgencyMyOrganizationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organization-admin': {
+      id: '/agency/organization-admin'
+      path: '/agency/organization-admin'
+      fullPath: '/agency/organization-admin'
+      preLoaderRoute: typeof AgencyOrganizationAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organization-structure': {
+      id: '/agency/organization-structure'
+      path: '/agency/organization-structure'
+      fullPath: '/agency/organization-structure'
+      preLoaderRoute: typeof AgencyOrganizationStructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organization-work': {
+      id: '/agency/organization-work'
+      path: '/agency/organization-work'
+      fullPath: '/agency/organization-work'
+      preLoaderRoute: typeof AgencyOrganizationWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/': {
       id: '/app/'
-      path: '/app'
+      path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/admin': {
       id: '/app/admin'
-      path: '/app/admin'
+      path: '/admin'
       fullPath: '/app/admin'
       preLoaderRoute: typeof AppAdminRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/commissions': {
+      id: '/app/commissions'
+      path: '/commissions'
+      fullPath: '/app/commissions'
+      preLoaderRoute: typeof AppCommissionsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/communications': {
+      id: '/app/communications'
+      path: '/communications'
+      fullPath: '/app/communications'
+      preLoaderRoute: typeof AppCommunicationsRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/dashboard': {
       id: '/app/dashboard'
-      path: '/app/dashboard'
+      path: '/dashboard'
       fullPath: '/app/dashboard'
       preLoaderRoute: typeof AppDashboardRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/my-work': {
       id: '/app/my-work'
-      path: '/app/my-work'
+      path: '/my-work'
       fullPath: '/app/my-work'
       preLoaderRoute: typeof AppMyWorkRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/object': {
       id: '/app/object'
-      path: '/app/object'
+      path: '/object'
       fullPath: '/app/object'
       preLoaderRoute: typeof AppObjectRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/off-exchange': {
+      id: '/app/off-exchange'
+      path: '/off-exchange'
+      fullPath: '/app/off-exchange'
+      preLoaderRoute: typeof AppOffExchangeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/partner': {
+      id: '/app/partner'
+      path: '/partner'
+      fullPath: '/app/partner'
+      preLoaderRoute: typeof AppPartnerRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/quick-quote': {
+      id: '/app/quick-quote'
+      path: '/quick-quote'
+      fullPath: '/app/quick-quote'
+      preLoaderRoute: typeof AppQuickQuoteRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/schedule': {
+      id: '/app/schedule'
+      path: '/schedule'
+      fullPath: '/app/schedule'
+      preLoaderRoute: typeof AppScheduleRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/send-quote': {
+      id: '/app/send-quote'
+      path: '/send-quote'
+      fullPath: '/app/send-quote'
+      preLoaderRoute: typeof AppSendQuoteRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/tasks': {
+      id: '/app/tasks'
+      path: '/tasks'
+      fullPath: '/app/tasks'
+      preLoaderRoute: typeof AppTasksRouteImport
+      parentRoute: typeof AppRoute
     }
     '/gov/': {
       id: '/gov/'
@@ -1335,6 +2573,181 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SharedTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agency/organization-defaults/apply': {
+      id: '/agency/organization-defaults/apply'
+      path: '/agency/organization-defaults/apply'
+      fullPath: '/agency/organization-defaults/apply'
+      preLoaderRoute: typeof AgencyOrganizationDefaultsApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organization-imports/': {
+      id: '/agency/organization-imports/'
+      path: '/agency/organization-imports'
+      fullPath: '/agency/organization-imports/'
+      preLoaderRoute: typeof AgencyOrganizationImportsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organization-imports/$importJobId': {
+      id: '/agency/organization-imports/$importJobId'
+      path: '/agency/organization-imports/$importJobId'
+      fullPath: '/agency/organization-imports/$importJobId'
+      preLoaderRoute: typeof AgencyOrganizationImportsImportJobIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/': {
+      id: '/agency/organizations/'
+      path: '/agency/organizations'
+      fullPath: '/agency/organizations/'
+      preLoaderRoute: typeof AgencyOrganizationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/reference-organizations/request': {
+      id: '/agency/reference-organizations/request'
+      path: '/agency/reference-organizations/request'
+      fullPath: '/agency/reference-organizations/request'
+      preLoaderRoute: typeof AgencyReferenceOrganizationsRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/agency/': {
+      id: '/app/agency/'
+      path: '/agency'
+      fullPath: '/app/agency/'
+      preLoaderRoute: typeof AppAgencyIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/agency/entities': {
+      id: '/app/agency/entities'
+      path: '/agency/entities'
+      fullPath: '/app/agency/entities'
+      preLoaderRoute: typeof AppAgencyEntitiesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/agency/producers': {
+      id: '/app/agency/producers'
+      path: '/agency/producers'
+      fullPath: '/app/agency/producers'
+      preLoaderRoute: typeof AppAgencyProducersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/agency/revenue': {
+      id: '/app/agency/revenue'
+      path: '/agency/revenue'
+      fullPath: '/app/agency/revenue'
+      preLoaderRoute: typeof AppAgencyRevenueRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/agency/statements': {
+      id: '/app/agency/statements'
+      path: '/agency/statements'
+      fullPath: '/app/agency/statements'
+      preLoaderRoute: typeof AppAgencyStatementsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/customers/': {
+      id: '/app/customers/'
+      path: '/customers'
+      fullPath: '/app/customers/'
+      preLoaderRoute: typeof AppCustomersIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/customers/$id': {
+      id: '/app/customers/$id'
+      path: '/customers/$id'
+      fullPath: '/app/customers/$id'
+      preLoaderRoute: typeof AppCustomersIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/employer/ichra': {
+      id: '/app/employer/ichra'
+      path: '/employer/ichra'
+      fullPath: '/app/employer/ichra'
+      preLoaderRoute: typeof AppEmployerIchraRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/acl': {
+      id: '/app/jet/acl'
+      path: '/jet/acl'
+      fullPath: '/app/jet/acl'
+      preLoaderRoute: typeof AppJetAclRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/ai-governance': {
+      id: '/app/jet/ai-governance'
+      path: '/jet/ai-governance'
+      fullPath: '/app/jet/ai-governance'
+      preLoaderRoute: typeof AppJetAiGovernanceRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/appointments': {
+      id: '/app/jet/appointments'
+      path: '/jet/appointments'
+      fullPath: '/app/jet/appointments'
+      preLoaderRoute: typeof AppJetAppointmentsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/audit': {
+      id: '/app/jet/audit'
+      path: '/jet/audit'
+      fullPath: '/app/jet/audit'
+      preLoaderRoute: typeof AppJetAuditRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/branding': {
+      id: '/app/jet/branding'
+      path: '/jet/branding'
+      fullPath: '/app/jet/branding'
+      preLoaderRoute: typeof AppJetBrandingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/form-configurator': {
+      id: '/app/jet/form-configurator'
+      path: '/jet/form-configurator'
+      fullPath: '/app/jet/form-configurator'
+      preLoaderRoute: typeof AppJetFormConfiguratorRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/integrations': {
+      id: '/app/jet/integrations'
+      path: '/jet/integrations'
+      fullPath: '/app/jet/integrations'
+      preLoaderRoute: typeof AppJetIntegrationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/module1': {
+      id: '/app/jet/module1'
+      path: '/jet/module1'
+      fullPath: '/app/jet/module1'
+      preLoaderRoute: typeof AppJetModule1RouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/notifications': {
+      id: '/app/jet/notifications'
+      path: '/jet/notifications'
+      fullPath: '/app/jet/notifications'
+      preLoaderRoute: typeof AppJetNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/platform': {
+      id: '/app/jet/platform'
+      path: '/jet/platform'
+      fullPath: '/app/jet/platform'
+      preLoaderRoute: typeof AppJetPlatformRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/product-builder': {
+      id: '/app/jet/product-builder'
+      path: '/jet/product-builder'
+      fullPath: '/app/jet/product-builder'
+      preLoaderRoute: typeof AppJetProductBuilderRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/products': {
+      id: '/app/jet/products'
+      path: '/jet/products'
+      fullPath: '/app/jet/products'
+      preLoaderRoute: typeof AppJetProductsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/gov/$module/': {
       id: '/gov/$module/'
       path: '/'
@@ -1377,6 +2790,230 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GovModuleTraceabilityRouteImport
       parentRoute: typeof GovModuleRoute
     }
+    '/marketplace/admin/': {
+      id: '/marketplace/admin/'
+      path: '/marketplace/admin'
+      fullPath: '/marketplace/admin/'
+      preLoaderRoute: typeof MarketplaceAdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/activation': {
+      id: '/marketplace/admin/activation'
+      path: '/marketplace/admin/activation'
+      fullPath: '/marketplace/admin/activation'
+      preLoaderRoute: typeof MarketplaceAdminActivationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/assets': {
+      id: '/marketplace/admin/assets'
+      path: '/marketplace/admin/assets'
+      fullPath: '/marketplace/admin/assets'
+      preLoaderRoute: typeof MarketplaceAdminAssetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/brand': {
+      id: '/marketplace/admin/brand'
+      path: '/marketplace/admin/brand'
+      fullPath: '/marketplace/admin/brand'
+      preLoaderRoute: typeof MarketplaceAdminBrandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/content': {
+      id: '/marketplace/admin/content'
+      path: '/marketplace/admin/content'
+      fullPath: '/marketplace/admin/content'
+      preLoaderRoute: typeof MarketplaceAdminContentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/health': {
+      id: '/marketplace/admin/health'
+      path: '/marketplace/admin/health'
+      fullPath: '/marketplace/admin/health'
+      preLoaderRoute: typeof MarketplaceAdminHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/history': {
+      id: '/marketplace/admin/history'
+      path: '/marketplace/admin/history'
+      fullPath: '/marketplace/admin/history'
+      preLoaderRoute: typeof MarketplaceAdminHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/lifecycle': {
+      id: '/marketplace/admin/lifecycle'
+      path: '/marketplace/admin/lifecycle'
+      fullPath: '/marketplace/admin/lifecycle'
+      preLoaderRoute: typeof MarketplaceAdminLifecycleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/preview': {
+      id: '/marketplace/admin/preview'
+      path: '/marketplace/admin/preview'
+      fullPath: '/marketplace/admin/preview'
+      preLoaderRoute: typeof MarketplaceAdminPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/readiness': {
+      id: '/marketplace/admin/readiness'
+      path: '/marketplace/admin/readiness'
+      fullPath: '/marketplace/admin/readiness'
+      preLoaderRoute: typeof MarketplaceAdminReadinessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/routing-support': {
+      id: '/marketplace/admin/routing-support'
+      path: '/marketplace/admin/routing-support'
+      fullPath: '/marketplace/admin/routing-support'
+      preLoaderRoute: typeof MarketplaceAdminRoutingSupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/work': {
+      id: '/marketplace/admin/work'
+      path: '/marketplace/admin/work'
+      fullPath: '/marketplace/admin/work'
+      preLoaderRoute: typeof MarketplaceAdminWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform/marketplaces/': {
+      id: '/platform/marketplaces/'
+      path: '/platform/marketplaces'
+      fullPath: '/platform/marketplaces/'
+      preLoaderRoute: typeof PlatformMarketplacesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform/organizations/': {
+      id: '/platform/organizations/'
+      path: '/platform/organizations'
+      fullPath: '/platform/organizations/'
+      preLoaderRoute: typeof PlatformOrganizationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/downlines/new/activate': {
+      id: '/agency/downlines/new/activate'
+      path: '/agency/downlines/new/activate'
+      fullPath: '/agency/downlines/new/activate'
+      preLoaderRoute: typeof AgencyDownlinesNewActivateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/downlines/new/administrator': {
+      id: '/agency/downlines/new/administrator'
+      path: '/agency/downlines/new/administrator'
+      fullPath: '/agency/downlines/new/administrator'
+      preLoaderRoute: typeof AgencyDownlinesNewAdministratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/downlines/new/contacts': {
+      id: '/agency/downlines/new/contacts'
+      path: '/agency/downlines/new/contacts'
+      fullPath: '/agency/downlines/new/contacts'
+      preLoaderRoute: typeof AgencyDownlinesNewContactsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/downlines/new/identity': {
+      id: '/agency/downlines/new/identity'
+      path: '/agency/downlines/new/identity'
+      fullPath: '/agency/downlines/new/identity'
+      preLoaderRoute: typeof AgencyDownlinesNewIdentityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/downlines/new/legal': {
+      id: '/agency/downlines/new/legal'
+      path: '/agency/downlines/new/legal'
+      fullPath: '/agency/downlines/new/legal'
+      preLoaderRoute: typeof AgencyDownlinesNewLegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/downlines/new/locations': {
+      id: '/agency/downlines/new/locations'
+      path: '/agency/downlines/new/locations'
+      fullPath: '/agency/downlines/new/locations'
+      preLoaderRoute: typeof AgencyDownlinesNewLocationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/downlines/new/readiness': {
+      id: '/agency/downlines/new/readiness'
+      path: '/agency/downlines/new/readiness'
+      fullPath: '/agency/downlines/new/readiness'
+      preLoaderRoute: typeof AgencyDownlinesNewReadinessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/downlines/new/settings': {
+      id: '/agency/downlines/new/settings'
+      path: '/agency/downlines/new/settings'
+      fullPath: '/agency/downlines/new/settings'
+      preLoaderRoute: typeof AgencyDownlinesNewSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/': {
+      id: '/agency/organizations/$organizationId/'
+      path: '/agency/organizations/$organizationId'
+      fullPath: '/agency/organizations/$organizationId/'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/contacts': {
+      id: '/agency/organizations/$organizationId/contacts'
+      path: '/agency/organizations/$organizationId/contacts'
+      fullPath: '/agency/organizations/$organizationId/contacts'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdContactsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/ending': {
+      id: '/agency/organizations/$organizationId/ending'
+      path: '/agency/organizations/$organizationId/ending'
+      fullPath: '/agency/organizations/$organizationId/ending'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdEndingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/history': {
+      id: '/agency/organizations/$organizationId/history'
+      path: '/agency/organizations/$organizationId/history'
+      fullPath: '/agency/organizations/$organizationId/history'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/identifiers': {
+      id: '/agency/organizations/$organizationId/identifiers'
+      path: '/agency/organizations/$organizationId/identifiers'
+      fullPath: '/agency/organizations/$organizationId/identifiers'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdIdentifiersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/lifecycle': {
+      id: '/agency/organizations/$organizationId/lifecycle'
+      path: '/agency/organizations/$organizationId/lifecycle'
+      fullPath: '/agency/organizations/$organizationId/lifecycle'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdLifecycleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/locations': {
+      id: '/agency/organizations/$organizationId/locations'
+      path: '/agency/organizations/$organizationId/locations'
+      fullPath: '/agency/organizations/$organizationId/locations'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdLocationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/readiness': {
+      id: '/agency/organizations/$organizationId/readiness'
+      path: '/agency/organizations/$organizationId/readiness'
+      fullPath: '/agency/organizations/$organizationId/readiness'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdReadinessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/relationships': {
+      id: '/agency/organizations/$organizationId/relationships'
+      path: '/agency/organizations/$organizationId/relationships'
+      fullPath: '/agency/organizations/$organizationId/relationships'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdRelationshipsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/organizations/$organizationId/settings': {
+      id: '/agency/organizations/$organizationId/settings'
+      path: '/agency/organizations/$organizationId/settings'
+      fullPath: '/agency/organizations/$organizationId/settings'
+      preLoaderRoute: typeof AgencyOrganizationsOrganizationIdSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gov/$module/flows/$flow': {
       id: '/gov/$module/flows/$flow'
       path: '/$flow'
@@ -1391,8 +3028,173 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GovModuleScreensScreenRouteImport
       parentRoute: typeof GovModuleScreensRoute
     }
+    '/marketplace/admin/availability/': {
+      id: '/marketplace/admin/availability/'
+      path: '/marketplace/admin/availability'
+      fullPath: '/marketplace/admin/availability/'
+      preLoaderRoute: typeof MarketplaceAdminAvailabilityIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/availability/$availabilityEntryId': {
+      id: '/marketplace/admin/availability/$availabilityEntryId'
+      path: '/marketplace/admin/availability/$availabilityEntryId'
+      fullPath: '/marketplace/admin/availability/$availabilityEntryId'
+      preLoaderRoute: typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/domains/': {
+      id: '/marketplace/admin/domains/'
+      path: '/marketplace/admin/domains'
+      fullPath: '/marketplace/admin/domains/'
+      preLoaderRoute: typeof MarketplaceAdminDomainsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/domains/request': {
+      id: '/marketplace/admin/domains/request'
+      path: '/marketplace/admin/domains/request'
+      fullPath: '/marketplace/admin/domains/request'
+      preLoaderRoute: typeof MarketplaceAdminDomainsRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/participants/': {
+      id: '/marketplace/admin/participants/'
+      path: '/marketplace/admin/participants'
+      fullPath: '/marketplace/admin/participants/'
+      preLoaderRoute: typeof MarketplaceAdminParticipantsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/participants/$participantId': {
+      id: '/marketplace/admin/participants/$participantId'
+      path: '/marketplace/admin/participants/$participantId'
+      fullPath: '/marketplace/admin/participants/$participantId'
+      preLoaderRoute: typeof MarketplaceAdminParticipantsParticipantIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/referral-links/': {
+      id: '/marketplace/admin/referral-links/'
+      path: '/marketplace/admin/referral-links'
+      fullPath: '/marketplace/admin/referral-links/'
+      preLoaderRoute: typeof MarketplaceAdminReferralLinksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/referral-links/$referralLinkId': {
+      id: '/marketplace/admin/referral-links/$referralLinkId'
+      path: '/marketplace/admin/referral-links/$referralLinkId'
+      fullPath: '/marketplace/admin/referral-links/$referralLinkId'
+      preLoaderRoute: typeof MarketplaceAdminReferralLinksReferralLinkIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/releases/compare': {
+      id: '/marketplace/admin/releases/compare'
+      path: '/marketplace/admin/releases/compare'
+      fullPath: '/marketplace/admin/releases/compare'
+      preLoaderRoute: typeof MarketplaceAdminReleasesCompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/releases/review': {
+      id: '/marketplace/admin/releases/review'
+      path: '/marketplace/admin/releases/review'
+      fullPath: '/marketplace/admin/releases/review'
+      preLoaderRoute: typeof MarketplaceAdminReleasesReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace/admin/releases/schedule': {
+      id: '/marketplace/admin/releases/schedule'
+      path: '/marketplace/admin/releases/schedule'
+      fullPath: '/marketplace/admin/releases/schedule'
+      preLoaderRoute: typeof MarketplaceAdminReleasesScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform/marketplaces/$marketplaceId/override': {
+      id: '/platform/marketplaces/$marketplaceId/override'
+      path: '/platform/marketplaces/$marketplaceId/override'
+      fullPath: '/platform/marketplaces/$marketplaceId/override'
+      preLoaderRoute: typeof PlatformMarketplacesMarketplaceIdOverrideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform/organizations/$organizationId/override': {
+      id: '/platform/organizations/$organizationId/override'
+      path: '/platform/organizations/$organizationId/override'
+      fullPath: '/platform/organizations/$organizationId/override'
+      preLoaderRoute: typeof PlatformOrganizationsOrganizationIdOverrideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
+  AppCommissionsRoute: typeof AppCommissionsRoute
+  AppCommunicationsRoute: typeof AppCommunicationsRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppMyWorkRoute: typeof AppMyWorkRoute
+  AppObjectRoute: typeof AppObjectRoute
+  AppOffExchangeRoute: typeof AppOffExchangeRoute
+  AppPartnerRoute: typeof AppPartnerRoute
+  AppQuickQuoteRoute: typeof AppQuickQuoteRoute
+  AppScheduleRoute: typeof AppScheduleRoute
+  AppSendQuoteRoute: typeof AppSendQuoteRoute
+  AppTasksRoute: typeof AppTasksRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppAgencyEntitiesRoute: typeof AppAgencyEntitiesRoute
+  AppAgencyProducersRoute: typeof AppAgencyProducersRoute
+  AppAgencyRevenueRoute: typeof AppAgencyRevenueRoute
+  AppAgencyStatementsRoute: typeof AppAgencyStatementsRoute
+  AppCustomersIdRoute: typeof AppCustomersIdRoute
+  AppEmployerIchraRoute: typeof AppEmployerIchraRoute
+  AppJetAclRoute: typeof AppJetAclRoute
+  AppJetAiGovernanceRoute: typeof AppJetAiGovernanceRoute
+  AppJetAppointmentsRoute: typeof AppJetAppointmentsRoute
+  AppJetAuditRoute: typeof AppJetAuditRoute
+  AppJetBrandingRoute: typeof AppJetBrandingRoute
+  AppJetFormConfiguratorRoute: typeof AppJetFormConfiguratorRoute
+  AppJetIntegrationsRoute: typeof AppJetIntegrationsRoute
+  AppJetModule1Route: typeof AppJetModule1Route
+  AppJetNotificationsRoute: typeof AppJetNotificationsRoute
+  AppJetPlatformRoute: typeof AppJetPlatformRoute
+  AppJetProductBuilderRoute: typeof AppJetProductBuilderRoute
+  AppJetProductsRoute: typeof AppJetProductsRoute
+  AppAgencyIndexRoute: typeof AppAgencyIndexRoute
+  AppCustomersIndexRoute: typeof AppCustomersIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
+  AppCommissionsRoute: AppCommissionsRoute,
+  AppCommunicationsRoute: AppCommunicationsRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppMyWorkRoute: AppMyWorkRoute,
+  AppObjectRoute: AppObjectRoute,
+  AppOffExchangeRoute: AppOffExchangeRoute,
+  AppPartnerRoute: AppPartnerRoute,
+  AppQuickQuoteRoute: AppQuickQuoteRoute,
+  AppScheduleRoute: AppScheduleRoute,
+  AppSendQuoteRoute: AppSendQuoteRoute,
+  AppTasksRoute: AppTasksRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppAgencyEntitiesRoute: AppAgencyEntitiesRoute,
+  AppAgencyProducersRoute: AppAgencyProducersRoute,
+  AppAgencyRevenueRoute: AppAgencyRevenueRoute,
+  AppAgencyStatementsRoute: AppAgencyStatementsRoute,
+  AppCustomersIdRoute: AppCustomersIdRoute,
+  AppEmployerIchraRoute: AppEmployerIchraRoute,
+  AppJetAclRoute: AppJetAclRoute,
+  AppJetAiGovernanceRoute: AppJetAiGovernanceRoute,
+  AppJetAppointmentsRoute: AppJetAppointmentsRoute,
+  AppJetAuditRoute: AppJetAuditRoute,
+  AppJetBrandingRoute: AppJetBrandingRoute,
+  AppJetFormConfiguratorRoute: AppJetFormConfiguratorRoute,
+  AppJetIntegrationsRoute: AppJetIntegrationsRoute,
+  AppJetModule1Route: AppJetModule1Route,
+  AppJetNotificationsRoute: AppJetNotificationsRoute,
+  AppJetPlatformRoute: AppJetPlatformRoute,
+  AppJetProductBuilderRoute: AppJetProductBuilderRoute,
+  AppJetProductsRoute: AppJetProductsRoute,
+  AppAgencyIndexRoute: AppAgencyIndexRoute,
+  AppCustomersIndexRoute: AppCustomersIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 interface LucieRouteChildren {
   LucieGovernanceRoute: typeof LucieGovernanceRoute
@@ -1530,6 +3332,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccessibilityRoute: AccessibilityRoute,
   AdminRoute: AdminRoute,
+  AgentUnavailableRoute: AgentUnavailableRoute,
+  AiReviewRoute: AiReviewRoute,
+  AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
   CompareRoute: CompareRoute,
@@ -1552,20 +3357,90 @@ const rootRouteChildren: RootRouteChildren = {
   ScheduleRoute: ScheduleRoute,
   SelectRoute: SelectRoute,
   TermsRoute: TermsRoute,
-  AppAdminRoute: AppAdminRoute,
-  AppDashboardRoute: AppDashboardRoute,
-  AppMyWorkRoute: AppMyWorkRoute,
-  AppObjectRoute: AppObjectRoute,
+  AgencyMarketplaceParticipationRoute: AgencyMarketplaceParticipationRoute,
+  AgencyMyOrganizationRoute: AgencyMyOrganizationRoute,
+  AgencyOrganizationAdminRoute: AgencyOrganizationAdminRoute,
+  AgencyOrganizationStructureRoute: AgencyOrganizationStructureRoute,
+  AgencyOrganizationWorkRoute: AgencyOrganizationWorkRoute,
   GovModuleRoute: GovModuleRouteWithChildren,
   HfScreenRoute: HfScreenRoute,
   M1ScreenRoute: M1ScreenRoute,
   P1ScreenRoute: P1ScreenRoute,
   SharedTokenRoute: SharedTokenRoute,
-  AppIndexRoute: AppIndexRoute,
   GovIndexRoute: GovIndexRoute,
   HfIndexRoute: HfIndexRoute,
   M1IndexRoute: M1IndexRoute,
   P1IndexRoute: P1IndexRoute,
+  AgencyOrganizationDefaultsApplyRoute: AgencyOrganizationDefaultsApplyRoute,
+  AgencyOrganizationImportsImportJobIdRoute:
+    AgencyOrganizationImportsImportJobIdRoute,
+  AgencyReferenceOrganizationsRequestRoute:
+    AgencyReferenceOrganizationsRequestRoute,
+  MarketplaceAdminActivationRoute: MarketplaceAdminActivationRoute,
+  MarketplaceAdminAssetsRoute: MarketplaceAdminAssetsRoute,
+  MarketplaceAdminBrandRoute: MarketplaceAdminBrandRoute,
+  MarketplaceAdminContentRoute: MarketplaceAdminContentRoute,
+  MarketplaceAdminHealthRoute: MarketplaceAdminHealthRoute,
+  MarketplaceAdminHistoryRoute: MarketplaceAdminHistoryRoute,
+  MarketplaceAdminLifecycleRoute: MarketplaceAdminLifecycleRoute,
+  MarketplaceAdminPreviewRoute: MarketplaceAdminPreviewRoute,
+  MarketplaceAdminReadinessRoute: MarketplaceAdminReadinessRoute,
+  MarketplaceAdminRoutingSupportRoute: MarketplaceAdminRoutingSupportRoute,
+  MarketplaceAdminWorkRoute: MarketplaceAdminWorkRoute,
+  AgencyOrganizationImportsIndexRoute: AgencyOrganizationImportsIndexRoute,
+  AgencyOrganizationsIndexRoute: AgencyOrganizationsIndexRoute,
+  MarketplaceAdminIndexRoute: MarketplaceAdminIndexRoute,
+  PlatformMarketplacesIndexRoute: PlatformMarketplacesIndexRoute,
+  PlatformOrganizationsIndexRoute: PlatformOrganizationsIndexRoute,
+  AgencyDownlinesNewActivateRoute: AgencyDownlinesNewActivateRoute,
+  AgencyDownlinesNewAdministratorRoute: AgencyDownlinesNewAdministratorRoute,
+  AgencyDownlinesNewContactsRoute: AgencyDownlinesNewContactsRoute,
+  AgencyDownlinesNewIdentityRoute: AgencyDownlinesNewIdentityRoute,
+  AgencyDownlinesNewLegalRoute: AgencyDownlinesNewLegalRoute,
+  AgencyDownlinesNewLocationsRoute: AgencyDownlinesNewLocationsRoute,
+  AgencyDownlinesNewReadinessRoute: AgencyDownlinesNewReadinessRoute,
+  AgencyDownlinesNewSettingsRoute: AgencyDownlinesNewSettingsRoute,
+  AgencyOrganizationsOrganizationIdContactsRoute:
+    AgencyOrganizationsOrganizationIdContactsRoute,
+  AgencyOrganizationsOrganizationIdEndingRoute:
+    AgencyOrganizationsOrganizationIdEndingRoute,
+  AgencyOrganizationsOrganizationIdHistoryRoute:
+    AgencyOrganizationsOrganizationIdHistoryRoute,
+  AgencyOrganizationsOrganizationIdIdentifiersRoute:
+    AgencyOrganizationsOrganizationIdIdentifiersRoute,
+  AgencyOrganizationsOrganizationIdLifecycleRoute:
+    AgencyOrganizationsOrganizationIdLifecycleRoute,
+  AgencyOrganizationsOrganizationIdLocationsRoute:
+    AgencyOrganizationsOrganizationIdLocationsRoute,
+  AgencyOrganizationsOrganizationIdReadinessRoute:
+    AgencyOrganizationsOrganizationIdReadinessRoute,
+  AgencyOrganizationsOrganizationIdRelationshipsRoute:
+    AgencyOrganizationsOrganizationIdRelationshipsRoute,
+  AgencyOrganizationsOrganizationIdSettingsRoute:
+    AgencyOrganizationsOrganizationIdSettingsRoute,
+  MarketplaceAdminAvailabilityAvailabilityEntryIdRoute:
+    MarketplaceAdminAvailabilityAvailabilityEntryIdRoute,
+  MarketplaceAdminDomainsRequestRoute: MarketplaceAdminDomainsRequestRoute,
+  MarketplaceAdminParticipantsParticipantIdRoute:
+    MarketplaceAdminParticipantsParticipantIdRoute,
+  MarketplaceAdminReferralLinksReferralLinkIdRoute:
+    MarketplaceAdminReferralLinksReferralLinkIdRoute,
+  MarketplaceAdminReleasesCompareRoute: MarketplaceAdminReleasesCompareRoute,
+  MarketplaceAdminReleasesReviewRoute: MarketplaceAdminReleasesReviewRoute,
+  MarketplaceAdminReleasesScheduleRoute: MarketplaceAdminReleasesScheduleRoute,
+  PlatformMarketplacesMarketplaceIdOverrideRoute:
+    PlatformMarketplacesMarketplaceIdOverrideRoute,
+  PlatformOrganizationsOrganizationIdOverrideRoute:
+    PlatformOrganizationsOrganizationIdOverrideRoute,
+  AgencyOrganizationsOrganizationIdIndexRoute:
+    AgencyOrganizationsOrganizationIdIndexRoute,
+  MarketplaceAdminAvailabilityIndexRoute:
+    MarketplaceAdminAvailabilityIndexRoute,
+  MarketplaceAdminDomainsIndexRoute: MarketplaceAdminDomainsIndexRoute,
+  MarketplaceAdminParticipantsIndexRoute:
+    MarketplaceAdminParticipantsIndexRoute,
+  MarketplaceAdminReferralLinksIndexRoute:
+    MarketplaceAdminReferralLinksIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
