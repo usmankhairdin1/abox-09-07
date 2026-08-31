@@ -52,7 +52,7 @@ export interface GovernedModuleIndex {
   version: string;
   meta: {
     document_control?: Record<string, unknown>;
-    summary_metrics?: Record<string, number>;
+    summary_metrics?: Record<string, number | string>;
   };
   workspaces: GovernedWorkspace[];
   screens: GovernedScreen[];
@@ -65,7 +65,7 @@ export type RegisterRow = Record<string, string>;
 export interface RegisterPayload {
   meta: {
     document_control?: Record<string, unknown>;
-    summary_metrics?: Record<string, number>;
+    summary_metrics?: Record<string, number | string>;
     workspaces?: GovernedWorkspace[];
   };
   registers: Record<string, RegisterRow[]>;
