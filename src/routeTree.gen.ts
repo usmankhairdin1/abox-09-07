@@ -38,6 +38,7 @@ import { Route as M00ConsoleRouteImport } from './routes/m00.console'
 import { Route as M00EventsRouteImport } from './routes/m00.events'
 import { Route as M00TestsRouteImport } from './routes/m00.tests'
 import { Route as M06IndexRouteImport } from './routes/m06.index'
+import { Route as M06ConsoleRouteImport } from './routes/m06.console'
 import { Route as M06RosterRouteImport } from './routes/m06.roster'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
@@ -197,6 +198,11 @@ const M06IndexRoute = M06IndexRouteImport.update({
   path: '/',
   getParentRoute: () => M06Route,
 } as any)
+const M06ConsoleRoute = M06ConsoleRouteImport.update({
+  id: '/console',
+  path: '/console',
+  getParentRoute: () => M06Route,
+} as any)
 const M06RosterRoute = M06RosterRouteImport.update({
   id: '/roster',
   path: '/roster',
@@ -288,6 +294,7 @@ export interface FileRoutesByFullPath {
   '/m00/console': typeof M00ConsoleRoute
   '/m00/events': typeof M00EventsRoute
   '/m00/tests': typeof M00TestsRoute
+  '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
@@ -328,6 +335,7 @@ export interface FileRoutesByTo {
   '/m00/console': typeof M00ConsoleRoute
   '/m00/events': typeof M00EventsRoute
   '/m00/tests': typeof M00TestsRoute
+  '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
@@ -373,6 +381,7 @@ export interface FileRoutesById {
   '/m00/console': typeof M00ConsoleRoute
   '/m00/events': typeof M00EventsRoute
   '/m00/tests': typeof M00TestsRoute
+  '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/p1/$screen': typeof P1ScreenRoute
@@ -419,6 +428,7 @@ export interface FileRouteTypes {
     | '/m00/console'
     | '/m00/events'
     | '/m00/tests'
+    | '/m06/console'
     | '/m06/roster'
     | '/m1/$screen'
     | '/p1/$screen'
@@ -459,6 +469,7 @@ export interface FileRouteTypes {
     | '/m00/console'
     | '/m00/events'
     | '/m00/tests'
+    | '/m06/console'
     | '/m06/roster'
     | '/m1/$screen'
     | '/p1/$screen'
@@ -503,6 +514,7 @@ export interface FileRouteTypes {
     | '/m00/console'
     | '/m00/events'
     | '/m00/tests'
+    | '/m06/console'
     | '/m06/roster'
     | '/m1/$screen'
     | '/p1/$screen'
@@ -748,6 +760,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof M06IndexRouteImport
       parentRoute: typeof M06Route
     }
+    '/m06/console': {
+      id: '/m06/console'
+      path: '/console'
+      fullPath: '/m06/console'
+      preLoaderRoute: typeof M06ConsoleRouteImport
+      parentRoute: typeof M06Route
+    }
     '/m06/roster': {
       id: '/m06/roster'
       path: '/roster'
@@ -889,11 +908,13 @@ const M00RouteChildren: M00RouteChildren = {
 const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
 
 interface M06RouteChildren {
+  M06ConsoleRoute: typeof M06ConsoleRoute
   M06RosterRoute: typeof M06RosterRoute
   M06IndexRoute: typeof M06IndexRoute
 }
 
 const M06RouteChildren: M06RouteChildren = {
+  M06ConsoleRoute: M06ConsoleRoute,
   M06RosterRoute: M06RosterRoute,
   M06IndexRoute: M06IndexRoute,
 }
