@@ -271,6 +271,8 @@ export function P1Frame({ screen }: { screen: P1Screen }) {
         }
       />
 
+      <DispositionBanner info={dispositionForGroup(screen.group)} legacyId={screen.id} />
+
       <Annotation>
         Not a change to active Module 1. Module 1 remains exactly as specified in the V4 Hardening
         Package; this screen belongs to a later packet per the Reconciliation Package.
