@@ -418,7 +418,7 @@ export function PlanOScreen() {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <Badge tone="ai">Guided by Plan O</Badge>
+            <Badge tone="ai">Guided by PlanAI</Badge>
             <h1 className="mt-2.5 font-display text-2xl font-semibold tracking-tight">
               Three plans worth your attention
             </h1>

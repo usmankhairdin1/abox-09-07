@@ -387,7 +387,7 @@ function AdminPage() {
                 ))}
               </div>
               <Annotation className="mt-2">
-                Module 1 flags (Plan O, shared quote, EDE handoff) are read-only here in this batch
+                Module 1 flags (PlanAI, shared quote, EDE handoff) are read-only here in this batch
                 to avoid reopening active Module 1 behaviour.
               </Annotation>
             </WPanel>

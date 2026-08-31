@@ -626,7 +626,7 @@ export function PlanCard({
       {plan.planO ? (
         <div className="rounded-[var(--radius)] border border-ai/30 bg-ai/[0.07] px-3 py-2">
           <p className="flex items-center gap-1.5 text-[11px] font-semibold text-ai">
-            <span className="size-1.5 rounded-full bg-ai" aria-hidden="true" /> Plan O reason
+            <span className="size-1.5 rounded-full bg-ai" aria-hidden="true" /> PlanAI reason
           </p>
           <p className="mt-1 text-xs leading-relaxed text-foreground/80">{plan.planO}</p>
         </div>
