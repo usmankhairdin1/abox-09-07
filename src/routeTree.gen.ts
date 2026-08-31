@@ -28,6 +28,7 @@ import { Route as LucieStatesRouteImport } from './routes/lucie.states'
 import { Route as LucieSurfacesRouteImport } from './routes/lucie.surfaces'
 import { Route as LucieTraceRouteImport } from './routes/lucie.trace'
 import { Route as LucieWorkstreamsRouteImport } from './routes/lucie.workstreams'
+import { Route as M00IndexRouteImport } from './routes/m00.index'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
@@ -128,6 +129,11 @@ const LucieWorkstreamsRoute = LucieWorkstreamsRouteImport.update({
   path: '/workstreams',
   getParentRoute: () => LucieRoute,
 } as any)
+const M00IndexRoute = M00IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => M00Route,
+} as any)
 const M1IndexRoute = M1IndexRouteImport.update({
   id: '/m1/',
   path: '/m1/',
@@ -154,7 +160,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
-  '/m00': typeof M00Route
+  '/m00': typeof M00RouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
@@ -171,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/p1/$screen': typeof P1ScreenRoute
   '/hf/': typeof HfIndexRoute
   '/lucie/': typeof LucieIndexRoute
+  '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
 }
@@ -178,7 +185,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
-  '/m00': typeof M00Route
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
@@ -195,6 +201,7 @@ export interface FileRoutesByTo {
   '/p1/$screen': typeof P1ScreenRoute
   '/hf': typeof HfIndexRoute
   '/lucie': typeof LucieIndexRoute
+  '/m00': typeof M00IndexRoute
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
 }
@@ -204,7 +211,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
-  '/m00': typeof M00Route
+  '/m00': typeof M00RouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
@@ -221,6 +228,7 @@ export interface FileRoutesById {
   '/p1/$screen': typeof P1ScreenRoute
   '/hf/': typeof HfIndexRoute
   '/lucie/': typeof LucieIndexRoute
+  '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
 }
@@ -248,6 +256,7 @@ export interface FileRouteTypes {
     | '/p1/$screen'
     | '/hf/'
     | '/lucie/'
+    | '/m00/'
     | '/m1/'
     | '/p1/'
   fileRoutesByTo: FileRoutesByTo
@@ -255,7 +264,6 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/dashboard'
-    | '/m00'
     | '/my-work'
     | '/object'
     | '/hf/$screen'
@@ -272,6 +280,7 @@ export interface FileRouteTypes {
     | '/p1/$screen'
     | '/hf'
     | '/lucie'
+    | '/m00'
     | '/m1'
     | '/p1'
   id:
@@ -297,6 +306,7 @@ export interface FileRouteTypes {
     | '/p1/$screen'
     | '/hf/'
     | '/lucie/'
+    | '/m00/'
     | '/m1/'
     | '/p1/'
   fileRoutesById: FileRoutesById
@@ -306,7 +316,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   DashboardRoute: typeof DashboardRoute
   LucieRoute: typeof LucieRouteWithChildren
-  M00Route: typeof M00Route
+  M00Route: typeof M00RouteWithChildren
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
   HfScreenRoute: typeof HfScreenRoute
@@ -452,6 +462,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieWorkstreamsRouteImport
       parentRoute: typeof LucieRoute
     }
+    '/m00/': {
+      id: '/m00/'
+      path: '/'
+      fullPath: '/m00/'
+      preLoaderRoute: typeof M00IndexRouteImport
+      parentRoute: typeof M00Route
+    }
     '/m1/': {
       id: '/m1/'
       path: '/m1'
@@ -511,12 +528,22 @@ const LucieRouteChildren: LucieRouteChildren = {
 
 const LucieRouteWithChildren = LucieRoute._addFileChildren(LucieRouteChildren)
 
+interface M00RouteChildren {
+  M00IndexRoute: typeof M00IndexRoute
+}
+
+const M00RouteChildren: M00RouteChildren = {
+  M00IndexRoute: M00IndexRoute,
+}
+
+const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   DashboardRoute: DashboardRoute,
   LucieRoute: LucieRouteWithChildren,
-  M00Route: M00Route,
+  M00Route: M00RouteWithChildren,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
   HfScreenRoute: HfScreenRoute,
