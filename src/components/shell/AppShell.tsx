@@ -225,25 +225,25 @@ export function AppShell({
   return (
     <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
       {/* ---------------------------------------------------- SHELL_TOPBAR */}
-      <header className="sticky top-0 z-30 border-b border-hairline bg-card">
+      <header className="glass sticky top-0 z-30 border-x-0 border-t-0 border-b border-hairline">
         <div className="relative flex h-12 items-center gap-2 px-3">
           <div className="flex items-center gap-2 pr-2">
             <div className="flex size-6 items-center justify-center rounded border border-dashed border-hairline bg-muted text-[9px] font-mono text-muted-foreground">
               LOGO
             </div>
-            <Link to="/" className="hidden text-sm font-semibold tracking-tight sm:inline">
+            <Link to="/" className="text-display hidden text-base sm:inline">
               ABox
             </Link>
             <IdChip>SHELL_TOPBAR</IdChip>
             <Link
               to="/lucie"
-              className="hidden rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:bg-muted md:inline"
+              className="hidden rounded-full border border-hairline px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:inline"
             >
               Lucie spine
             </Link>
             <Link
               to="/gov"
-              className="hidden rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:bg-muted md:inline"
+              className="hidden rounded-full border border-hairline px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:inline"
             >
               Build packets
             </Link>
@@ -358,7 +358,7 @@ export function AppShell({
             <button
               type="button"
               onClick={() => setOpenMenu(openMenu === "search" ? null : "search")}
-              className="flex h-8 w-full max-w-md items-center gap-2 rounded-md border border-hairline bg-background px-2 text-xs text-muted-foreground hover:bg-muted"
+              className="flex h-8 w-full max-w-md items-center gap-2 rounded-full border border-hairline bg-surface px-3 text-xs text-muted-foreground transition-colors hover:bg-accent"
             >
               <Search className="size-3.5" />
               <span className="truncate">
@@ -513,7 +513,7 @@ export function AppShell({
         </div>
 
         {/* context strip */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-hairline bg-muted/30 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-hairline bg-surface/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
           <span>{ws.id}</span>
           <span aria-hidden="true">·</span>
           <span>{entity.id}</span>
@@ -528,7 +528,7 @@ export function AppShell({
         {/* ------------------------------------------------ SHELL_LEFTNAV */}
         <nav
           className={cn(
-            "shrink-0 border-r border-hairline bg-sidebar transition-all",
+            "shrink-0 border-r border-hairline bg-surface transition-all",
             navCollapsed ? "w-14" : "w-64",
           )}
           aria-label="Modules"
@@ -625,8 +625,8 @@ export function AppShell({
         </nav>
 
         {/* -------------------------------------------------- main canvas */}
-        <main className="min-w-0 flex-1 px-4 py-5 lg:px-6">
-          <div className="mx-auto max-w-6xl space-y-5">{children}</div>
+        <main className="min-w-0 flex-1 px-4 py-6 lg:px-8">
+          <div className="mx-auto max-w-6xl space-y-6">{children}</div>
         </main>
 
         {/* ------------------------------------------------- SHELL_DRAWER */}
