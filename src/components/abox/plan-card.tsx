@@ -20,6 +20,8 @@ interface Props {
   compact?: boolean;
   /** Optional override for the Plan-AI match percentage. */
   matchScore?: number;
+  /** Optional after-APTC price shown for on-exchange QHP plans. */
+  subsidizedPrice?: number;
 }
 
 function MatchArc({ pct }: { pct: number }) {
