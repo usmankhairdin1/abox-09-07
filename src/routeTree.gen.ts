@@ -41,6 +41,7 @@ import { Route as P1IndexRouteImport } from './routes/p1.index'
 import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
 import { Route as GovModuleIndexRouteImport } from './routes/gov.$module.index'
 import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
+import { Route as GovModuleScreensScreenRouteImport } from './routes/gov.$module.screens.$screen'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -202,6 +203,11 @@ const GovModuleScreensRoute = GovModuleScreensRouteImport.update({
   path: '/screens',
   getParentRoute: () => GovModuleRoute,
 } as any)
+const GovModuleScreensScreenRoute = GovModuleScreensScreenRouteImport.update({
+  id: '/$screen',
+  path: '/$screen',
+  getParentRoute: () => GovModuleScreensRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -234,8 +240,9 @@ export interface FileRoutesByFullPath {
   '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
-  '/gov/$module/screens': typeof GovModuleScreensRoute
+  '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/': typeof GovModuleIndexRoute
+  '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -265,8 +272,9 @@ export interface FileRoutesByTo {
   '/m00': typeof M00IndexRoute
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
-  '/gov/$module/screens': typeof GovModuleScreensRoute
+  '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module': typeof GovModuleIndexRoute
+  '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -300,8 +308,9 @@ export interface FileRoutesById {
   '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
-  '/gov/$module/screens': typeof GovModuleScreensRoute
+  '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/': typeof GovModuleIndexRoute
+  '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -338,6 +347,7 @@ export interface FileRouteTypes {
     | '/p1/'
     | '/gov/$module/screens'
     | '/gov/$module/'
+    | '/gov/$module/screens/$screen'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -369,6 +379,7 @@ export interface FileRouteTypes {
     | '/p1'
     | '/gov/$module/screens'
     | '/gov/$module'
+    | '/gov/$module/screens/$screen'
   id:
     | '__root__'
     | '/'
@@ -403,6 +414,7 @@ export interface FileRouteTypes {
     | '/p1/'
     | '/gov/$module/screens'
     | '/gov/$module/'
+    | '/gov/$module/screens/$screen'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -649,6 +661,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GovModuleScreensRouteImport
       parentRoute: typeof GovModuleRoute
     }
+    '/gov/$module/screens/$screen': {
+      id: '/gov/$module/screens/$screen'
+      path: '/$screen'
+      fullPath: '/gov/$module/screens/$screen'
+      preLoaderRoute: typeof GovModuleScreensScreenRouteImport
+      parentRoute: typeof GovModuleScreensRoute
+    }
   }
 }
 
@@ -698,13 +717,24 @@ const M00RouteChildren: M00RouteChildren = {
 
 const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
 
+interface GovModuleScreensRouteChildren {
+  GovModuleScreensScreenRoute: typeof GovModuleScreensScreenRoute
+}
+
+const GovModuleScreensRouteChildren: GovModuleScreensRouteChildren = {
+  GovModuleScreensScreenRoute: GovModuleScreensScreenRoute,
+}
+
+const GovModuleScreensRouteWithChildren =
+  GovModuleScreensRoute._addFileChildren(GovModuleScreensRouteChildren)
+
 interface GovModuleRouteChildren {
-  GovModuleScreensRoute: typeof GovModuleScreensRoute
+  GovModuleScreensRoute: typeof GovModuleScreensRouteWithChildren
   GovModuleIndexRoute: typeof GovModuleIndexRoute
 }
 
 const GovModuleRouteChildren: GovModuleRouteChildren = {
-  GovModuleScreensRoute: GovModuleScreensRoute,
+  GovModuleScreensRoute: GovModuleScreensRouteWithChildren,
   GovModuleIndexRoute: GovModuleIndexRoute,
 }
 
