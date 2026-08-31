@@ -161,7 +161,7 @@ export function PageHeading({
   description,
   actions,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   id: string;
   description: string;
@@ -170,9 +170,11 @@ export function PageHeading({
   return (
     <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-4">
       <div className="min-w-0">
-        <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-          {eyebrow}
-        </p>
+        {eyebrow ? (
+          <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+            {eyebrow}
+          </p>
+        ) : null}
         <div className="mt-1 flex flex-wrap items-center gap-2">
           <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
           <IdChip>{id}</IdChip>
