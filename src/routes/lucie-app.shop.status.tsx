@@ -53,7 +53,7 @@ function StatusPage() {
         eyebrow="Step 9 of 9"
         title="Submission status"
         lede="This page updates on its own. You can close it — we email every change to your account too."
-        right={
+        actions={
           state.application.submissionId ? (
             <StatusChip tone="info">Reference {state.application.submissionId}</StatusChip>
           ) : null
