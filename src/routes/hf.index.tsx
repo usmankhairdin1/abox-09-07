@@ -1,5 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
+import { DispositionChip } from "@/components/LucieDisposition";
+import { dispositionForScreen } from "@/lib/reconciliation-status";
+
 import { Badge, Btn, Card, Disclosure } from "@/components/hf/ui";
 import { HF_BATCH1_GROUPS, HF_BATCH2_GROUPS, HF_SCREENS } from "@/lib/hf";
 
