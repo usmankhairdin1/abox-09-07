@@ -17,7 +17,7 @@ export function RegisterTable({
   const [showAll, setShowAll] = useState(false);
   const filtered = useMemo(() => rowsMatching(rows, query), [rows, query]);
   const visible = showAll ? filtered : filtered.slice(0, limit);
-  const columns = rows.length ? Object.keys(rows[0]) : [];
+  const columns = rows[0] ? Object.keys(rows[0]) : [];
 
   return (
     <div className="space-y-2">

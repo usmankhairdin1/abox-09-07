@@ -27,7 +27,7 @@ function DeltasPage() {
 
       {present.map((n) => (
         <WPanel key={n} title={n.replace(/_/g, " ")} id={`${module.toUpperCase()}-${n}`}>
-          <RegisterTable id={n} rows={data.registers[n]} />
+          <RegisterTable id={n} rows={data.registers[n] ?? []} />
         </WPanel>
       ))}
 

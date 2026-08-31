@@ -30,7 +30,7 @@ const TABS = [
   { to: "/gov/$module/registers", label: "Registers" },
   { to: "/gov/$module/deltas", label: "Impacts & deltas" },
   { to: "/gov/$module/traceability", label: "Traceability" },
-] as const;
+] as const satisfies ReadonlyArray<{ to: string; label: string; exact?: boolean }>;
 
 function GovLayout() {
   const { module } = useParams({ from: "/gov/$module" }) as { module: GovernedModuleKey };
@@ -78,7 +78,7 @@ function GovLayout() {
               key={t.label}
               to={t.to}
               params={{ module }}
-              activeOptions={{ exact: t.exact ?? false }}
+              activeOptions={{ exact: "exact" in t ? t.exact : false }}
               className="rounded border border-border px-2 py-1 text-xs hover:bg-muted"
               activeProps={{ className: cn("bg-muted font-semibold") }}
             >

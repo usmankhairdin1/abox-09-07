@@ -60,7 +60,7 @@ export const M00_INDEX: GovernedModuleIndex = {
    "production_hardening_records": 7,
    "openapi_operations": 82,
    "asyncapi_events": 66,
-   "production_build_status": "PRODUCTION_BUILD_READY"
+   "production_build_status_note": "PRODUCTION_BUILD_READY"
   }
  },
  "workspaces": [
