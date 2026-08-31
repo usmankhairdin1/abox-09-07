@@ -80,3 +80,26 @@ Local Development, QA, UAT and Production separation is asserted as a Phase 0
 exit condition. Currently only a Local Development environment exists in this
 workspace; QA, UAT and Production provisioning remains an open Phase 1 item and
 is recorded in the change-control log rather than assumed complete.
+
+## PF-09 Phase 2 migration execution (Local Development)
+
+Target: workspace-managed Cloud PostgreSQL, schema `m00`.
+Applied in order: V001, V002, V003 (two defective statements held, CCL-004/CCL-005),
+V004, V005, V006 (seed catalogues), V007.
+
+`VERIFY__post_migration_assertions.sql` results:
+
+| Assertion | Expected | Actual | Result |
+| --- | --- | --- | --- |
+| Tables without primary key | 0 | 0 | PASS |
+| Tables without forced RLS | 0 | 0 | PASS |
+| Canonical objects | 45 | 45 | PASS |
+| Role templates | 6 | 6 | PASS |
+| Permission definitions | 93 | 93 | PASS |
+| Role/permission grant rows | 558 | 558 | PASS |
+| Reference geographies | 57 | 57 | PASS |
+| Duplicate ACTIVE provider routes | 0 | 0 | PASS |
+
+Total tables in `m00`: 48 (45 canonical + `role_permission_grant`,
+`idempotency_record`, `outbox_event`). Post-migration hardening under CCL-006
+pins `search_path` on the five V001 context functions.
