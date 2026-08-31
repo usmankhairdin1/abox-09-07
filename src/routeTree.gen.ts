@@ -40,6 +40,7 @@ import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as P1IndexRouteImport } from './routes/p1.index'
 import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
 import { Route as GovModuleIndexRouteImport } from './routes/gov.$module.index'
+import { Route as GovModuleDeltasRouteImport } from './routes/gov.$module.deltas'
 import { Route as GovModuleFlowsRouteImport } from './routes/gov.$module.flows'
 import { Route as GovModuleRegistersRouteImport } from './routes/gov.$module.registers'
 import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
@@ -201,6 +202,11 @@ const GovModuleIndexRoute = GovModuleIndexRouteImport.update({
   path: '/',
   getParentRoute: () => GovModuleRoute,
 } as any)
+const GovModuleDeltasRoute = GovModuleDeltasRouteImport.update({
+  id: '/deltas',
+  path: '/deltas',
+  getParentRoute: () => GovModuleRoute,
+} as any)
 const GovModuleFlowsRoute = GovModuleFlowsRouteImport.update({
   id: '/flows',
   path: '/flows',
@@ -258,6 +264,7 @@ export interface FileRoutesByFullPath {
   '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
+  '/gov/$module/deltas': typeof GovModuleDeltasRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
@@ -293,6 +300,7 @@ export interface FileRoutesByTo {
   '/m00': typeof M00IndexRoute
   '/m1': typeof M1IndexRoute
   '/p1': typeof P1IndexRoute
+  '/gov/$module/deltas': typeof GovModuleDeltasRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
@@ -332,6 +340,7 @@ export interface FileRoutesById {
   '/m00/': typeof M00IndexRoute
   '/m1/': typeof M1IndexRoute
   '/p1/': typeof P1IndexRoute
+  '/gov/$module/deltas': typeof GovModuleDeltasRoute
   '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
@@ -372,6 +381,7 @@ export interface FileRouteTypes {
     | '/m00/'
     | '/m1/'
     | '/p1/'
+    | '/gov/$module/deltas'
     | '/gov/$module/flows'
     | '/gov/$module/registers'
     | '/gov/$module/screens'
@@ -407,6 +417,7 @@ export interface FileRouteTypes {
     | '/m00'
     | '/m1'
     | '/p1'
+    | '/gov/$module/deltas'
     | '/gov/$module/flows'
     | '/gov/$module/registers'
     | '/gov/$module/screens'
@@ -445,6 +456,7 @@ export interface FileRouteTypes {
     | '/m00/'
     | '/m1/'
     | '/p1/'
+    | '/gov/$module/deltas'
     | '/gov/$module/flows'
     | '/gov/$module/registers'
     | '/gov/$module/screens'
@@ -690,6 +702,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GovModuleIndexRouteImport
       parentRoute: typeof GovModuleRoute
     }
+    '/gov/$module/deltas': {
+      id: '/gov/$module/deltas'
+      path: '/deltas'
+      fullPath: '/gov/$module/deltas'
+      preLoaderRoute: typeof GovModuleDeltasRouteImport
+      parentRoute: typeof GovModuleRoute
+    }
     '/gov/$module/flows': {
       id: '/gov/$module/flows'
       path: '/flows'
@@ -798,6 +817,7 @@ const GovModuleScreensRouteWithChildren =
   GovModuleScreensRoute._addFileChildren(GovModuleScreensRouteChildren)
 
 interface GovModuleRouteChildren {
+  GovModuleDeltasRoute: typeof GovModuleDeltasRoute
   GovModuleFlowsRoute: typeof GovModuleFlowsRouteWithChildren
   GovModuleRegistersRoute: typeof GovModuleRegistersRoute
   GovModuleScreensRoute: typeof GovModuleScreensRouteWithChildren
@@ -805,6 +825,7 @@ interface GovModuleRouteChildren {
 }
 
 const GovModuleRouteChildren: GovModuleRouteChildren = {
+  GovModuleDeltasRoute: GovModuleDeltasRoute,
   GovModuleFlowsRoute: GovModuleFlowsRouteWithChildren,
   GovModuleRegistersRoute: GovModuleRegistersRoute,
   GovModuleScreensRoute: GovModuleScreensRouteWithChildren,
