@@ -479,10 +479,14 @@ export function AppShell({
               {modules.map((m) => {
                 const active =
                   m.to === pathname || (m.to === "/my-work" && pathname === "/my-work");
+                const Icon = MODULE_ICONS[m.id] ?? LayoutGrid;
                 const content = (
-                  <span className="flex min-w-0 flex-1 items-center gap-2">
-                    <span
-                      className="size-4 shrink-0 rounded border border-dashed border-hairline bg-muted"
+                  <span className="flex min-w-0 flex-1 items-center gap-2.5">
+                    <Icon
+                      className={cn(
+                        "size-4 shrink-0",
+                        active ? "text-primary" : "text-muted-foreground",
+                      )}
                       aria-hidden="true"
                     />
                     {navCollapsed ? null : (
