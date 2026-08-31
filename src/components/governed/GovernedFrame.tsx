@@ -77,7 +77,7 @@ export function GovernedFrame({
       <PageHeading
         id={screen.id}
         title={screen.name}
-        subtitle={screen.purpose}
+        description={screen.purpose}
       />
 
       <div className="flex flex-wrap items-center gap-2">
