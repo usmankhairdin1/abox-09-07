@@ -40,6 +40,7 @@ import {
   ListTree,
   Link as LinkIcon,
   ShieldCheck,
+  BookOpen,
 } from "lucide-react";
 
 export type WorkspaceKey =
