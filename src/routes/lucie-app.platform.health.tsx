@@ -39,10 +39,8 @@ function HealthPage() {
 
       <div className="grid gap-3 sm:grid-cols-3">
         <StatCard label="Healthy" value={`${healthy} of ${INTEGRATIONS.length}`} tone={healthy === INTEGRATIONS.length ? "good" : "warn"} />
-        <StatCard
-          label="Average latency"
-          value={`${Math.round(INTEGRATIONS.reduce((s, i) => s + parseInt(i.latency, 10), 0) / INTEGRATIONS.length)} ms`}
-        />
+        <StatCard label="Reporting latency" value={INTEGRATIONS.filter((i) => i.latency !== "—").length} hint="integrations returning timings" />
+
         <StatCard
           label="Lowest success rate"
           value={`${Math.min(...INTEGRATIONS.map((i) => i.successRate))}%`}
