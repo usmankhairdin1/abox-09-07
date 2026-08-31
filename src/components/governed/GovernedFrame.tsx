@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Link } from "@tanstack/react-router";
+import { CheckCircle2, CircleAlert, LoaderCircle, LockKeyhole } from "lucide-react";
 
 import {
   Annotation,
@@ -18,6 +19,8 @@ import {
   type GovernedScreen,
 } from "@/lib/governed";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { StatusBadge } from "@/components/abox/status-badge";
 
 const STATE_HINT: Record<string, string> = {
   loading: "Skeleton regions, aria-busy, no layout shift.",
@@ -87,18 +90,16 @@ export function GovernedFrame({
         {screen.capability ? <IdChip>{screen.capability}</IdChip> : null}
         <div className="ml-auto flex items-center gap-1" role="group" aria-label="Language">
           {(["EN", "ES"] as const).map((l) => (
-            <button
+            <Button
               key={l}
-              type="button"
+              variant={lang === l ? "secondary" : "ghost"}
+              size="sm"
               onClick={() => setLang(l)}
               aria-pressed={lang === l}
-              className={cn(
-                "rounded border border-hairline px-2 py-1 font-mono text-[10px] uppercase",
-                lang === l ? "bg-muted font-semibold" : "text-muted-foreground hover:bg-accent",
-              )}
+              className="rounded-full font-mono text-[10px] uppercase"
             >
               {l === "EN" ? "English" : "Español"}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -115,18 +116,16 @@ export function GovernedFrame({
       <WPanel title="Required states" id={`${screen.id}-STATES`}>
         <div className="flex flex-wrap gap-1.5">
           {screen.states.map((s) => (
-            <button
+            <Button
               key={s}
-              type="button"
+              variant={state === s ? "default" : "outline"}
+              size="sm"
               onClick={() => setState(s)}
               aria-pressed={state === s}
-              className={cn(
-                "rounded border border-hairline px-2 py-1 font-mono text-[10px]",
-                state === s ? "bg-muted font-semibold" : "text-muted-foreground hover:bg-accent",
-              )}
+              className="rounded-full font-mono text-[10px]"
             >
               {s}
-            </button>
+            </Button>
           ))}
         </div>
         <Annotation className="mt-2">
@@ -140,27 +139,37 @@ export function GovernedFrame({
         {screen.sections.map((section, i) => (
           <section
             key={section}
-            className="rounded-lg border border-dashed border-hairline bg-muted/10 p-3"
+            className="rounded-2xl border border-hairline bg-card p-5 shadow-card"
           >
             <header className="mb-2 flex flex-wrap items-center gap-2">
-              <span className="text-xs font-semibold tracking-tight">{section}</span>
+              <span className="text-sm font-semibold">{section}</span>
               <IdChip>{`${screen.id}-Z${String(i + 1).padStart(2, "0")}`}</IdChip>
             </header>
             {state === "loading" ? (
-              <div className="space-y-2" aria-busy="true">
-                <WLine w="80%" />
-                <WLine w="60%" />
-                <WLine w="70%" />
+              <div className="flex min-h-28 items-center justify-center gap-3 text-sm text-muted-foreground" aria-busy="true">
+                <LoaderCircle className="size-5 animate-spin" /> Loading governed records…
               </div>
             ) : state === "empty" ? (
-              <WBox className="h-20" label="empty state — reason and next permitted action" />
+              <div className="flex min-h-28 flex-col items-center justify-center text-center">
+                <CheckCircle2 className="size-6 text-sage" />
+                <p className="mt-3 text-sm font-medium">No records need attention</p>
+                <p className="mt-1 text-xs text-muted-foreground">New eligible records will appear here.</p>
+              </div>
             ) : state === "permission_denied" ? (
-              <WBox className="h-20" label="permission denied — no record content shown" />
+              <div className="flex min-h-28 flex-col items-center justify-center text-center">
+                <LockKeyhole className="size-6 text-warning" />
+                <p className="mt-3 text-sm font-medium">Access is restricted</p>
+                <p className="mt-1 text-xs text-muted-foreground">Request the required permission from your workspace administrator.</p>
+              </div>
             ) : (
-              <div className="space-y-2">
-                <WRow primary="72%" secondary="46%" />
-                <WRow primary="58%" secondary="38%" />
-                <WRow primary="64%" secondary="30%" />
+              <div className="space-y-1">
+                {["Primary governed record", "Related workspace record", "Recent activity"].map((label, row) => (
+                  <div key={label} className="flex items-center gap-3 border-b border-hairline py-3 last:border-0">
+                    <span className="flex size-8 items-center justify-center rounded-lg bg-primary-soft text-primary"><CheckCircle2 className="size-4" /></span>
+                    <span className="min-w-0 flex-1"><span className="block text-sm font-medium">{label}</span><span className="block text-xs text-muted-foreground">Updated {row + 1} hour{row ? "s" : ""} ago</span></span>
+                    <StatusBadge tone={row === 2 ? "info" : "sage"}>{row === 2 ? "review" : "ready"}</StatusBadge>
+                  </div>
+                ))}
               </div>
             )}
             <Annotation className="mt-2">
@@ -175,15 +184,16 @@ export function GovernedFrame({
       <WPanel title="Primary actions" id={`${screen.id}-ACTIONS`}>
         <div className="flex flex-wrap gap-2">
           {screen.actions.map((a) => (
-            <WBox
+            <Button
               key={a}
+              variant={screen.actions.indexOf(a) === 0 ? "default" : "outline"}
+              disabled={state === "blocked" || state === "permission_denied" || state === "suspended"}
               className={cn(
-                "h-9 min-w-[9rem] px-3",
+                "rounded-full",
                 (state === "blocked" || state === "permission_denied" || state === "suspended") &&
                   "opacity-60",
               )}
-              label={a}
-            />
+            >{a}</Button>
           ))}
         </div>
         {state === "blocked" ? (
@@ -205,9 +215,7 @@ export function GovernedFrame({
         <WPanel title="Responsive treatment" id={`${screen.id}-RESP`}>
           <Annotation>{screen.responsive || "Desktop, tablet and mobile."}</Annotation>
           <div className="mt-2 grid grid-cols-3 gap-2">
-            <WBox className="h-16" label="desktop" />
-            <WBox className="h-16" label="tablet" />
-            <WBox className="h-16" label="mobile" />
+            {["desktop", "tablet", "mobile"].map((mode) => <div key={mode} className="rounded-xl border border-hairline bg-surface p-3 text-center text-xs font-medium capitalize">{mode}</div>)}
           </div>
         </WPanel>
         <WPanel title="Localization" id={`${screen.id}-I18N`}>
