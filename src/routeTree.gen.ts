@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LucieRouteImport } from './routes/lucie'
 import { Route as M00RouteImport } from './routes/m00'
+import { Route as M06RouteImport } from './routes/m06'
 import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as ObjectRouteImport } from './routes/object'
 import { Route as GovIndexRouteImport } from './routes/gov.index'
@@ -77,6 +78,11 @@ const LucieRoute = LucieRouteImport.update({
 const M00Route = M00RouteImport.update({
   id: '/m00',
   path: '/m00',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const M06Route = M06RouteImport.update({
+  id: '/m06',
+  path: '/m06',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyWorkRoute = MyWorkRouteImport.update({
@@ -252,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
+  '/m06': typeof M06Route
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/gov/$module': typeof GovModuleRouteWithChildren
@@ -291,6 +298,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/m06': typeof M06Route
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/hf/$screen': typeof HfScreenRoute
@@ -332,6 +340,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
+  '/m06': typeof M06Route
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
   '/gov/$module': typeof GovModuleRouteWithChildren
@@ -375,6 +384,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/lucie'
     | '/m00'
+    | '/m06'
     | '/my-work'
     | '/object'
     | '/gov/$module'
@@ -414,6 +424,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/dashboard'
+    | '/m06'
     | '/my-work'
     | '/object'
     | '/hf/$screen'
@@ -454,6 +465,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/lucie'
     | '/m00'
+    | '/m06'
     | '/my-work'
     | '/object'
     | '/gov/$module'
@@ -496,6 +508,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LucieRoute: typeof LucieRouteWithChildren
   M00Route: typeof M00RouteWithChildren
+  M06Route: typeof M06Route
   MyWorkRoute: typeof MyWorkRoute
   ObjectRoute: typeof ObjectRoute
   GovModuleRoute: typeof GovModuleRouteWithChildren
@@ -550,6 +563,13 @@ declare module '@tanstack/react-router' {
       path: '/m00'
       fullPath: '/m00'
       preLoaderRoute: typeof M00RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/m06': {
+      id: '/m06'
+      path: '/m06'
+      fullPath: '/m06'
+      preLoaderRoute: typeof M06RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-work': {
@@ -884,6 +904,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LucieRoute: LucieRouteWithChildren,
   M00Route: M00RouteWithChildren,
+  M06Route: M06Route,
   MyWorkRoute: MyWorkRoute,
   ObjectRoute: ObjectRoute,
   GovModuleRoute: GovModuleRouteWithChildren,
