@@ -181,44 +181,6 @@ export interface QuoteState {
   taxHouseholdSize?: number;
 }
 
-/** Household APTC-eligible income band, for the subsidy education card. */
-export function fplBand(income: number | undefined, hh: number | undefined): {
-  band: "below" | "cost-share" | "aptc" | "over" | "unknown";
-  pctFpl?: number;
-} {
-  if (!income || !hh) return { band: "unknown" };
-  const base = 15060 + (hh - 1) * 5380;
-  const pct = (income / base) * 100;
-  if (pct < 100) return { band: "below", pctFpl: pct };
-  if (pct <= 250) return { band: "cost-share", pctFpl: pct };
-  if (pct <= 400) return { band: "aptc", pctFpl: pct };
-  return { band: "over", pctFpl: pct };
-}
-
-/** Illustrative APTC estimate — clearly labeled as education, not promise. */
-export function estimateMonthlyAPTC(income: number | undefined, hh: number | undefined): number | undefined {
-  if (!income || !hh) return undefined;
-  const { band, pctFpl } = fplBand(income, hh);
-  if (band === "over" || band === "below" || pctFpl === undefined) return 0;
-  const benchmarkMonthly = 520;
-  const expectedContribPct = Math.min(0.085, Math.max(0.02, pctFpl / 4000));
-  const contribMonthly = (income * expectedContribPct) / 12;
-  return Math.max(0, Math.round(benchmarkMonthly - contribMonthly));
-}
-
-/**
- * Recommended exchange-view default (BR-006): on-exchange if the shopper
- * checked subsidy and qualifies, off-exchange if checked and doesn't,
- * otherwise "all" (no subsidy signal).
- */
-export function recommendedExchangeView(
-  q: Pick<QuoteState, "skipSubsidy" | "income" | "taxHouseholdSize"> | null,
-): "all" | "on" | "off" {
-  if (!q || q.skipSubsidy || q.income == null || q.taxHouseholdSize == null) return "all";
-  const aptc = estimateMonthlyAPTC(q.income, q.taxHouseholdSize);
-  return aptc && aptc > 0 ? "on" : "off";
-}
-
 export function defaultEffectiveDate(): string {
   const now = new Date();
   const y = now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
