@@ -35,7 +35,7 @@ export const P1_GROUP_ORDER: P1Group[] = [
   "Commissions & revenue",
   "Notifications, comms & scheduling",
   "Outputs, documents & reporting",
-  "AI, Plan-O & governance",
+  "AI, Plan-AI & governance",
   "Admin, configuration, integrations & audit",
 ];
 

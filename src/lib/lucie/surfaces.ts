@@ -168,7 +168,7 @@ export const SURFACES: LucieSurface[] = [
     "routePattern": "/consumer-marketplace/plano-guided-intake",
     "lucieAdaptation": "Text-only PlanAI; no provider or medication collection, voice, or autonomous transaction action.",
     "wireframeRequired": "Yes",
-    "upstreamStableIdStatus": "Retained v1 ID; display label renamed from Plan O to PlanAI"
+    "upstreamStableIdStatus": "Retained v1 ID; display label renamed from Plan AI to PlanAI"
   },
   {
     "lucieSurfaceId": "LUC-SCR_PLAN_COMPARE",

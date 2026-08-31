@@ -90,7 +90,7 @@ export const ADMIN = screens([
         id: "TEN-PATHS",
         kind: "checks",
         items: [
-          "Guided (Plan-O)",
+          "Guided (Plan-AI)",
           "Manual browse",
           "Agent-assisted",
           "Shared quote link",
@@ -285,7 +285,7 @@ export const ADMIN = screens([
           "Group: Sales",
           "Group: Administration",
           "Nested: Appointments, Paper & Referrals",
-          "Nested: AI, Plan-O & Governance",
+          "Nested: AI, Plan-AI & Governance",
         ],
       },
       {

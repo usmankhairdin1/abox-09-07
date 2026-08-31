@@ -36,7 +36,7 @@ export const IA_DELTA: IaDelta[] = [
   {
     "deltaId": "DLT-IA2-004",
     "area": "PlanAI",
-    "change": "Rename Plan O/Plan-O display language to PlanAI while preserving stable IDs and traceability.",
+    "change": "Rename Plan AI/Plan-AI display language to PlanAI while preserving stable IDs and traceability.",
     "v2Disposition": "Known screen ID SCR_PLANO_GUIDED_INTAKE is retained with new display label.",
     "status": "Applied",
     "affectedArtifacts": "Master IA, screen catalog, workbook, JSON and downstream wireframes"

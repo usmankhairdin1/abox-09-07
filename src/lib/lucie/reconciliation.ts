@@ -71,12 +71,12 @@ export const RECONCILIATION: ReconciliationEntry[] = [
   {
     legacyId: "UX-005",
     legacySet: "M1 low-fi",
-    legacyName: "Plan-O Goals & Usage",
+    legacyName: "Plan-AI Goals & Usage",
     legacyRoute: "/m1/ux-005",
     disposition: "reconciled",
     surfaces: ["LUC-SCR_PLANO_GUIDED_INTAKE"],
     seams: [],
-    note: "Stable ID retained; display label renamed Plan O to PlanAI. Text-only in Lucie.",
+    note: "Stable ID retained; display label renamed Plan AI to PlanAI. Text-only in Lucie.",
   },
   {
     legacyId: "UX-006",
@@ -353,7 +353,7 @@ export const RECONCILIATION: ReconciliationEntry[] = [
   {
     legacyId: "HF-07",
     legacySet: "Higher fidelity",
-    legacyName: "Plan O guided shopping",
+    legacyName: "Plan AI guided shopping",
     legacyRoute: "/hf/plan-o",
     disposition: "reconciled",
     surfaces: ["LUC-SCR_PLANO_GUIDED_INTAKE"],
@@ -701,11 +701,11 @@ export const P1_GROUP_DISPOSITIONS: P1GroupDisposition[] = [
     note: "Controlled outputs and operational reporting; no output studio or BI authoring.",
   },
   {
-    group: "AI, Plan-O & governance",
+    group: "AI, Plan-AI & governance",
     disposition: "reconciled",
     surfaces: ["LUC-SCR_PLANAI_CONFIG", "LUC-SCR_PLANO_GUIDED_INTAKE"],
     seams: [],
-    note: "Relabel Plan-O to PlanAI. Single text-only profile; no autonomous business agents.",
+    note: "Relabel Plan-AI to PlanAI. Single text-only profile; no autonomous business agents.",
   },
   {
     group: "Admin, configuration, integrations & audit",

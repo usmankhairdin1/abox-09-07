@@ -2,21 +2,21 @@ import { SRC_BLUEPRINT, SRC_IA, SRC_NORTH, screens } from "./types";
 
 const WS = "WS_PLATFORM (governance) — WS_AGENCY for tenant-level enablement within guardrails";
 const MOD = "MOD_AI (nested — an overlay, not a default top-level menu)";
-const SRC = `${SRC_BLUEPRINT} (AI overlay, Plan-O controls, governance); ${SRC_NORTH} (AI posture, guardrails, escalation); ${SRC_IA} (SCR_AI_*)`;
+const SRC = `${SRC_BLUEPRINT} (AI overlay, Plan-AI controls, governance); ${SRC_NORTH} (AI posture, guardrails, escalation); ${SRC_IA} (SCR_AI_*)`;
 
 export const AI = screens([
   {
     id: "SCR_AI_PLANO",
     slug: "ai-plano-controls",
-    name: "Plan-O Controls",
-    group: "AI, Plan-O & governance",
+    name: "Plan-AI Controls",
+    group: "AI, Plan-AI & governance",
     workspace: WS,
     module: MOD,
     packet: "P1-Later",
     shell: "internal",
     user: "Platform AI governance administrator; agency admin with limited, bounded controls",
     purpose:
-      "Governs the recommendation engine behind Plan-O: which inputs it may use, how they are weighted, what it must disclose, and what it is forbidden from doing — with versioning so any past recommendation can be explained.",
+      "Governs the recommendation engine behind Plan-AI: which inputs it may use, how they are weighted, what it must disclose, and what it is forbidden from doing — with versioning so any past recommendation can be explained.",
     actions: [
       "View the active ruleset version",
       "Adjust permitted weightings within bounds",
@@ -27,7 +27,7 @@ export const AI = screens([
       "Roll back",
     ],
     objects: [
-      "Plan-O ruleset version",
+      "Plan-AI ruleset version",
       "Permitted input set (household, usage expectations, provider and drug preferences, total-cost assumptions)",
       "Forbidden input set (commission, agency preference, carrier incentive)",
       "Weighting configuration and bounds",
@@ -38,7 +38,7 @@ export const AI = screens([
       "Which inputs an agency may weight and the permitted range",
       "Whether an agency may adjust anything at all or only view",
       "Ranking-basis disclosure copy",
-      "Whether Plan-O is enabled per marketplace",
+      "Whether Plan-AI is enabled per marketplace",
     ],
     acl: [
       "ai.govern is platform-level; agency adjustment is a bounded, separately granted permission",
@@ -57,10 +57,10 @@ export const AI = screens([
       "Explains how a simulated ranking was produced. It cannot change weightings or publish.",
     source: SRC,
     assumptions: [
-      "Every Plan-O result is explainable from its ruleset version; recommendations are never produced by an unversioned or opaque process.",
+      "Every Plan-AI result is explainable from its ruleset version; recommendations are never produced by an unversioned or opaque process.",
     ],
     m1Seam:
-      "Governs the ranking behind Module 1's Plan-O panel (UX-005, UX-009). Those screens and their inline 'why this plan' disclosure are unchanged.",
+      "Governs the ranking behind Module 1's Plan-AI panel (UX-005, UX-009). Those screens and their inline 'why this plan' disclosure are unchanged.",
     canvas: [
       {
         title: "Ruleset version",
@@ -107,7 +107,7 @@ export const AI = screens([
     id: "SCR_AI_GOVERNANCE",
     slug: "ai-governance-record",
     name: "AI Governance Record",
-    group: "AI, Plan-O & governance",
+    group: "AI, Plan-AI & governance",
     workspace: WS,
     module: MOD,
     packet: "P1-Later",
@@ -213,7 +213,7 @@ export const AI = screens([
     id: "SCR_AI_LOG",
     slug: "ai-interaction-log",
     name: "AI Interaction Log",
-    group: "AI, Plan-O & governance",
+    group: "AI, Plan-AI & governance",
     workspace: WS,
     module: MOD,
     packet: "P1-Later",
@@ -319,7 +319,7 @@ export const AI = screens([
     id: "SCR_AI_ENABLE",
     slug: "ai-enablement",
     name: "AI Enable / Disable by Tenant & Module, with Role Limits",
-    group: "AI, Plan-O & governance",
+    group: "AI, Plan-AI & governance",
     workspace: WS,
     module: MOD,
     packet: "P1-Later",
@@ -401,7 +401,7 @@ export const AI = screens([
     id: "SCR_AI_KNOWLEDGE",
     slug: "ai-knowledge-disclaimers",
     name: "Knowledge Source Control, Disclaimers & Escalation",
-    group: "AI, Plan-O & governance",
+    group: "AI, Plan-AI & governance",
     workspace: WS,
     module: MOD,
     packet: "P1-Later",

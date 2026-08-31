@@ -91,7 +91,7 @@ export const IA_SCREENS: IaScreen[] = [
     "routePattern": "/consumer-marketplace/plano-guided-intake",
     "keyActions": "Choose mode; answer; confirm AI-filled values; escalate",
     "permissionNotes": "Visible only when workspace, role, relationship, record and action permissions allow.",
-    "stableIdStatus": "Retained v1 ID; display label renamed from Plan O to PlanAI",
+    "stableIdStatus": "Retained v1 ID; display label renamed from Plan AI to PlanAI",
     "responsiveExpectation": "Responsive; desktop optimized for operational density and mobile adapted for permitted tasks.",
     "designNotes": "",
     "wireframeRequired": "Yes"

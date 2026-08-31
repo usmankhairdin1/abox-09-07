@@ -96,7 +96,7 @@ export const STALE_STATEMENTS: StaleStatement[] = [
   },
   {
     id: "STALE-04",
-    statement: "\u201cPlan O\u201d as the shopping-assistant name.",
+    statement: "\u201cPlan AI\u201d as the shopping-assistant name.",
     foundIn: "Phase 1 IA v1.0 and earlier project wireframes",
     disposition:
       "PlanAI is canonical. IA v2.0 retains the stable ID and renames the display label only.",

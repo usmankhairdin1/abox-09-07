@@ -98,7 +98,7 @@ function P1Index() {
             Active Module 1 is untouched. These wireframes describe capability that the
             Reconciliation Package places in Module 2 or a later Phase 1 packet. Where a screen
             configures something Module 1 renders — marketplace setup, routing, help content, the
-            EDE integration record, Plan-O ranking — the Module 1 screen itself is unchanged and the
+            EDE integration record, Plan-AI ranking — the Module 1 screen itself is unchanged and the
             seam is annotated.
           </AclNote>
         </WPanel>

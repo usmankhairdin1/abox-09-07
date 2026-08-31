@@ -17,7 +17,7 @@ export type P1Group =
   | "Commissions & revenue"
   | "Notifications, comms & scheduling"
   | "Outputs, documents & reporting"
-  | "AI, Plan-O & governance"
+  | "AI, Plan-AI & governance"
   | "Admin, configuration, integrations & audit";
 
 /** Which future packet the screen belongs to, per the reconciliation package. */
