@@ -280,7 +280,7 @@ export function Note({ children, tone = "info" }: { children: ReactNode; tone?: 
   return (
     <p
       className={cn(
-        "rounded-lg border px-3 py-2.5 text-xs leading-relaxed",
+        "rounded-xl border px-4 py-3 text-xs leading-relaxed",
         TONE_CLASS[tone],
         "text-foreground/85",
       )}
