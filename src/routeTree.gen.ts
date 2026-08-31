@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LucieRouteImport } from './routes/lucie'
 import { Route as M00RouteImport } from './routes/m00'
@@ -46,6 +47,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -182,6 +188,7 @@ const P1ScreenRoute = P1ScreenRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
@@ -212,6 +219,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/my-work': typeof MyWorkRoute
   '/object': typeof ObjectRoute
@@ -241,6 +249,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/lucie': typeof LucieRouteWithChildren
   '/m00': typeof M00RouteWithChildren
@@ -273,6 +282,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/auth'
     | '/dashboard'
     | '/lucie'
     | '/m00'
@@ -303,6 +313,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
+    | '/auth'
     | '/dashboard'
     | '/my-work'
     | '/object'
@@ -331,6 +342,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/auth'
     | '/dashboard'
     | '/lucie'
     | '/m00'
@@ -362,6 +374,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRoute
   LucieRoute: typeof LucieRouteWithChildren
   M00Route: typeof M00RouteWithChildren
@@ -389,6 +402,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -625,6 +645,7 @@ const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  AuthRoute: AuthRoute,
   DashboardRoute: DashboardRoute,
   LucieRoute: LucieRouteWithChildren,
   M00Route: M00RouteWithChildren,
