@@ -135,6 +135,7 @@ import { Route as LucieAppAgencyProducersRouteImport } from './routes/lucie-app.
 import { Route as LucieAppEmployerIndexRouteImport } from './routes/lucie-app.employer.index'
 import { Route as LucieAppEmployerCensusRouteImport } from './routes/lucie-app.employer.census'
 import { Route as LucieAppEmployerContributionRouteImport } from './routes/lucie-app.employer.contribution'
+import { Route as LucieAppEmployerProposalRouteImport } from './routes/lucie-app.employer.proposal'
 import { Route as LucieAppEmployerResultsRouteImport } from './routes/lucie-app.employer.results'
 import { Route as LucieAppShopIndexRouteImport } from './routes/lucie-app.shop.index'
 import { Route as LucieAppShopApplicationRouteImport } from './routes/lucie-app.shop.application'
@@ -836,6 +837,12 @@ const LucieAppEmployerContributionRoute =
     path: '/employer/contribution',
     getParentRoute: () => LucieAppRoute,
   } as any)
+const LucieAppEmployerProposalRoute =
+  LucieAppEmployerProposalRouteImport.update({
+    id: '/employer/proposal',
+    path: '/employer/proposal',
+    getParentRoute: () => LucieAppRoute,
+  } as any)
 const LucieAppEmployerResultsRoute = LucieAppEmployerResultsRouteImport.update({
   id: '/employer/results',
   path: '/employer/results',
@@ -1299,6 +1306,7 @@ export interface FileRoutesByFullPath {
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
   '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
   '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
+  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
   '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
   '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
   '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
@@ -1481,6 +1489,7 @@ export interface FileRoutesByTo {
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
   '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
   '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
+  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
   '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
   '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
   '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
@@ -1671,6 +1680,7 @@ export interface FileRoutesById {
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
   '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
   '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
+  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
   '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
   '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
   '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
@@ -1862,6 +1872,7 @@ export interface FileRouteTypes {
     | '/lucie-app/agency/producers'
     | '/lucie-app/employer/census'
     | '/lucie-app/employer/contribution'
+    | '/lucie-app/employer/proposal'
     | '/lucie-app/employer/results'
     | '/lucie-app/shop/application'
     | '/lucie-app/shop/cart'
@@ -2044,6 +2055,7 @@ export interface FileRouteTypes {
     | '/lucie-app/agency/producers'
     | '/lucie-app/employer/census'
     | '/lucie-app/employer/contribution'
+    | '/lucie-app/employer/proposal'
     | '/lucie-app/employer/results'
     | '/lucie-app/shop/application'
     | '/lucie-app/shop/cart'
@@ -2233,6 +2245,7 @@ export interface FileRouteTypes {
     | '/lucie-app/agency/producers'
     | '/lucie-app/employer/census'
     | '/lucie-app/employer/contribution'
+    | '/lucie-app/employer/proposal'
     | '/lucie-app/employer/results'
     | '/lucie-app/shop/application'
     | '/lucie-app/shop/cart'
@@ -3293,6 +3306,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieAppEmployerContributionRouteImport
       parentRoute: typeof LucieAppRoute
     }
+    '/lucie-app/employer/proposal': {
+      id: '/lucie-app/employer/proposal'
+      path: '/employer/proposal'
+      fullPath: '/lucie-app/employer/proposal'
+      preLoaderRoute: typeof LucieAppEmployerProposalRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
     '/lucie-app/employer/results': {
       id: '/lucie-app/employer/results'
       path: '/employer/results'
@@ -3831,6 +3851,7 @@ interface LucieAppRouteChildren {
   LucieAppAgencyProducersRoute: typeof LucieAppAgencyProducersRoute
   LucieAppEmployerCensusRoute: typeof LucieAppEmployerCensusRoute
   LucieAppEmployerContributionRoute: typeof LucieAppEmployerContributionRoute
+  LucieAppEmployerProposalRoute: typeof LucieAppEmployerProposalRoute
   LucieAppEmployerResultsRoute: typeof LucieAppEmployerResultsRoute
   LucieAppShopApplicationRoute: typeof LucieAppShopApplicationRoute
   LucieAppShopCartRoute: typeof LucieAppShopCartRoute
@@ -3855,6 +3876,7 @@ const LucieAppRouteChildren: LucieAppRouteChildren = {
   LucieAppAgencyProducersRoute: LucieAppAgencyProducersRoute,
   LucieAppEmployerCensusRoute: LucieAppEmployerCensusRoute,
   LucieAppEmployerContributionRoute: LucieAppEmployerContributionRoute,
+  LucieAppEmployerProposalRoute: LucieAppEmployerProposalRoute,
   LucieAppEmployerResultsRoute: LucieAppEmployerResultsRoute,
   LucieAppShopApplicationRoute: LucieAppShopApplicationRoute,
   LucieAppShopCartRoute: LucieAppShopCartRoute,
