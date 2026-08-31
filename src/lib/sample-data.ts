@@ -263,15 +263,16 @@ export interface SampleTimelineEvent {
   actor: string;
   eventType: string;
   summary: string;
+  leadName: string;
   planO?: boolean;
 }
 
 export const SAMPLE_TIMELINE: SampleTimelineEvent[] = [
-  { id: "T-1", when: "Today · 10:12", actor: "Renata Alvarez", eventType: "quote.viewed", summary: "Opened shared quote (3 plans compared)" },
-  { id: "T-2", when: "Today · 09:44", actor: "You", eventType: "quote.sent", summary: "Shared quote sent via email · expires Aug 3" },
-  { id: "T-3", when: "Today · 09:31", actor: "Plan-O", eventType: "planO.recommendation", summary: "Recommended 3 plans matching PCP + Rx tier 1 focus", planO: true },
-  { id: "T-4", when: "Yesterday · 16:20", actor: "You", eventType: "quote.built", summary: "Built quote (Silver PPO, household of 2)" },
-  { id: "T-5", when: "Yesterday · 15:58", actor: "Renata Alvarez", eventType: "lead.created", summary: "Lead created from marketplace landing" },
+  { id: "T-1", when: "Today · 10:12", actor: "Renata Alvarez", eventType: "quote.viewed", summary: "Opened shared quote (3 plans compared)", leadName: "Renata Alvarez" },
+  { id: "T-2", when: "Today · 09:44", actor: "You", eventType: "quote.sent", summary: "Shared quote sent via email · expires Aug 3", leadName: "Renata Alvarez" },
+  { id: "T-3", when: "Today · 09:31", actor: "Plan-O", eventType: "planO.recommendation", summary: "Recommended 3 plans matching PCP + Rx tier 1 focus", leadName: "Renata Alvarez", planO: true },
+  { id: "T-4", when: "Yesterday · 16:20", actor: "You", eventType: "quote.built", summary: "Built quote (Silver PPO, household of 2)", leadName: "Renata Alvarez" },
+  { id: "T-5", when: "Yesterday · 15:58", actor: "Renata Alvarez", eventType: "lead.created", summary: "Lead created from marketplace landing", leadName: "Renata Alvarez" },
 ];
 
 export interface SampleProduct {
