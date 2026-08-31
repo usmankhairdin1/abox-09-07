@@ -137,6 +137,7 @@ import { Route as LucieAppEmployerCensusRouteImport } from './routes/lucie-app.e
 import { Route as LucieAppEmployerContributionRouteImport } from './routes/lucie-app.employer.contribution'
 import { Route as LucieAppEmployerProposalRouteImport } from './routes/lucie-app.employer.proposal'
 import { Route as LucieAppEmployerResultsRouteImport } from './routes/lucie-app.employer.results'
+import { Route as LucieAppPlatformIndexRouteImport } from './routes/lucie-app.platform.index'
 import { Route as LucieAppShopIndexRouteImport } from './routes/lucie-app.shop.index'
 import { Route as LucieAppShopApplicationRouteImport } from './routes/lucie-app.shop.application'
 import { Route as LucieAppShopCartRouteImport } from './routes/lucie-app.shop.cart'
@@ -848,6 +849,11 @@ const LucieAppEmployerResultsRoute = LucieAppEmployerResultsRouteImport.update({
   path: '/employer/results',
   getParentRoute: () => LucieAppRoute,
 } as any)
+const LucieAppPlatformIndexRoute = LucieAppPlatformIndexRouteImport.update({
+  id: '/platform/',
+  path: '/platform/',
+  getParentRoute: () => LucieAppRoute,
+} as any)
 const LucieAppShopIndexRoute = LucieAppShopIndexRouteImport.update({
   id: '/shop/',
   path: '/shop/',
@@ -1336,6 +1342,7 @@ export interface FileRoutesByFullPath {
   '/gov/$module/': typeof GovModuleIndexRoute
   '/lucie-app/agency/': typeof LucieAppAgencyIndexRoute
   '/lucie-app/employer/': typeof LucieAppEmployerIndexRoute
+  '/lucie-app/platform/': typeof LucieAppPlatformIndexRoute
   '/lucie-app/shop/': typeof LucieAppShopIndexRoute
   '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
@@ -1519,6 +1526,7 @@ export interface FileRoutesByTo {
   '/gov/$module': typeof GovModuleIndexRoute
   '/lucie-app/agency': typeof LucieAppAgencyIndexRoute
   '/lucie-app/employer': typeof LucieAppEmployerIndexRoute
+  '/lucie-app/platform': typeof LucieAppPlatformIndexRoute
   '/lucie-app/shop': typeof LucieAppShopIndexRoute
   '/marketplace/admin': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces': typeof PlatformMarketplacesIndexRoute
@@ -1710,6 +1718,7 @@ export interface FileRoutesById {
   '/gov/$module/': typeof GovModuleIndexRoute
   '/lucie-app/agency/': typeof LucieAppAgencyIndexRoute
   '/lucie-app/employer/': typeof LucieAppEmployerIndexRoute
+  '/lucie-app/platform/': typeof LucieAppPlatformIndexRoute
   '/lucie-app/shop/': typeof LucieAppShopIndexRoute
   '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
@@ -1902,6 +1911,7 @@ export interface FileRouteTypes {
     | '/gov/$module/'
     | '/lucie-app/agency/'
     | '/lucie-app/employer/'
+    | '/lucie-app/platform/'
     | '/lucie-app/shop/'
     | '/marketplace/admin/'
     | '/platform/marketplaces/'
@@ -2085,6 +2095,7 @@ export interface FileRouteTypes {
     | '/gov/$module'
     | '/lucie-app/agency'
     | '/lucie-app/employer'
+    | '/lucie-app/platform'
     | '/lucie-app/shop'
     | '/marketplace/admin'
     | '/platform/marketplaces'
@@ -2275,6 +2286,7 @@ export interface FileRouteTypes {
     | '/gov/$module/'
     | '/lucie-app/agency/'
     | '/lucie-app/employer/'
+    | '/lucie-app/platform/'
     | '/lucie-app/shop/'
     | '/marketplace/admin/'
     | '/platform/marketplaces/'
@@ -3320,6 +3332,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieAppEmployerResultsRouteImport
       parentRoute: typeof LucieAppRoute
     }
+    '/lucie-app/platform/': {
+      id: '/lucie-app/platform/'
+      path: '/platform'
+      fullPath: '/lucie-app/platform/'
+      preLoaderRoute: typeof LucieAppPlatformIndexRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
     '/lucie-app/shop/': {
       id: '/lucie-app/shop/'
       path: '/shop'
@@ -3865,6 +3884,7 @@ interface LucieAppRouteChildren {
   LucieAppShopStatusRoute: typeof LucieAppShopStatusRoute
   LucieAppAgencyIndexRoute: typeof LucieAppAgencyIndexRoute
   LucieAppEmployerIndexRoute: typeof LucieAppEmployerIndexRoute
+  LucieAppPlatformIndexRoute: typeof LucieAppPlatformIndexRoute
   LucieAppShopIndexRoute: typeof LucieAppShopIndexRoute
   LucieAppShopPlansPlanIdRoute: typeof LucieAppShopPlansPlanIdRoute
   LucieAppShopPlansIndexRoute: typeof LucieAppShopPlansIndexRoute
@@ -3890,6 +3910,7 @@ const LucieAppRouteChildren: LucieAppRouteChildren = {
   LucieAppShopStatusRoute: LucieAppShopStatusRoute,
   LucieAppAgencyIndexRoute: LucieAppAgencyIndexRoute,
   LucieAppEmployerIndexRoute: LucieAppEmployerIndexRoute,
+  LucieAppPlatformIndexRoute: LucieAppPlatformIndexRoute,
   LucieAppShopIndexRoute: LucieAppShopIndexRoute,
   LucieAppShopPlansPlanIdRoute: LucieAppShopPlansPlanIdRoute,
   LucieAppShopPlansIndexRoute: LucieAppShopPlansIndexRoute,
