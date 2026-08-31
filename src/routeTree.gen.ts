@@ -36,6 +36,7 @@ import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as ReviewRouteImport } from './routes/review'
 import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as SelectRouteImport } from './routes/select'
+import { Route as SupportRouteImport } from './routes/support'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AgencyMarketplaceParticipationRouteImport } from './routes/agency.marketplace-participation'
 import { Route as AgencyMyOrganizationRouteImport } from './routes/agency.my-organization'
@@ -299,6 +300,11 @@ const ScheduleRoute = ScheduleRouteImport.update({
 const SelectRoute = SelectRouteImport.update({
   id: '/select',
   path: '/select',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -1018,6 +1024,7 @@ export interface FileRoutesByFullPath {
   '/review': typeof ReviewRoute
   '/schedule': typeof ScheduleRoute
   '/select': typeof SelectRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/agency/marketplace-participation': typeof AgencyMarketplaceParticipationRoute
   '/agency/my-organization': typeof AgencyMyOrganizationRoute
@@ -1171,6 +1178,7 @@ export interface FileRoutesByTo {
   '/review': typeof ReviewRoute
   '/schedule': typeof ScheduleRoute
   '/select': typeof SelectRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/agency/marketplace-participation': typeof AgencyMarketplaceParticipationRoute
   '/agency/my-organization': typeof AgencyMyOrganizationRoute
@@ -1329,6 +1337,7 @@ export interface FileRoutesById {
   '/review': typeof ReviewRoute
   '/schedule': typeof ScheduleRoute
   '/select': typeof SelectRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/agency/marketplace-participation': typeof AgencyMarketplaceParticipationRoute
   '/agency/my-organization': typeof AgencyMyOrganizationRoute
@@ -1489,6 +1498,7 @@ export interface FileRouteTypes {
     | '/review'
     | '/schedule'
     | '/select'
+    | '/support'
     | '/terms'
     | '/agency/marketplace-participation'
     | '/agency/my-organization'
@@ -1642,6 +1652,7 @@ export interface FileRouteTypes {
     | '/review'
     | '/schedule'
     | '/select'
+    | '/support'
     | '/terms'
     | '/agency/marketplace-participation'
     | '/agency/my-organization'
@@ -1799,6 +1810,7 @@ export interface FileRouteTypes {
     | '/review'
     | '/schedule'
     | '/select'
+    | '/support'
     | '/terms'
     | '/agency/marketplace-participation'
     | '/agency/my-organization'
@@ -1958,6 +1970,7 @@ export interface RootRouteChildren {
   ReviewRoute: typeof ReviewRoute
   ScheduleRoute: typeof ScheduleRoute
   SelectRoute: typeof SelectRoute
+  SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
   AgencyMarketplaceParticipationRoute: typeof AgencyMarketplaceParticipationRoute
   AgencyMyOrganizationRoute: typeof AgencyMyOrganizationRoute
@@ -2214,6 +2227,13 @@ declare module '@tanstack/react-router' {
       path: '/select'
       fullPath: '/select'
       preLoaderRoute: typeof SelectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -3356,6 +3376,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReviewRoute: ReviewRoute,
   ScheduleRoute: ScheduleRoute,
   SelectRoute: SelectRoute,
+  SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
   AgencyMarketplaceParticipationRoute: AgencyMarketplaceParticipationRoute,
   AgencyMyOrganizationRoute: AgencyMyOrganizationRoute,

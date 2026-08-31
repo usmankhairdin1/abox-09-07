@@ -27,6 +27,7 @@ export interface M00OpenItem {
 }
 
 export interface M00Screen {
+  id: string;
   recordId: string;
   name: string;
   workspace: string;
