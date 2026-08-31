@@ -27,6 +27,7 @@ import { Route as HandoffRouteImport } from './routes/handoff'
 import { Route as IchraRouteImport } from './routes/ichra'
 import { Route as JourneyChoiceRouteImport } from './routes/journey-choice'
 import { Route as LucieRouteImport } from './routes/lucie'
+import { Route as LucieAppRouteImport } from './routes/lucie-app'
 import { Route as M00RouteImport } from './routes/m00'
 import { Route as M06RouteImport } from './routes/m06'
 import { Route as MemberRouteImport } from './routes/member'
@@ -62,6 +63,7 @@ import { Route as GovIndexRouteImport } from './routes/gov.index'
 import { Route as GovModuleRouteImport } from './routes/gov.$module'
 import { Route as HfIndexRouteImport } from './routes/hf.index'
 import { Route as HfScreenRouteImport } from './routes/hf.$screen'
+import { Route as LucieAppIndexRouteImport } from './routes/lucie-app.index'
 import { Route as LucieIndexRouteImport } from './routes/lucie.index'
 import { Route as LucieGovernanceRouteImport } from './routes/lucie.governance'
 import { Route as LucieModule1RouteImport } from './routes/lucie.module1'
@@ -127,6 +129,33 @@ import { Route as GovModuleFlowsRouteImport } from './routes/gov.$module.flows'
 import { Route as GovModuleRegistersRouteImport } from './routes/gov.$module.registers'
 import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
 import { Route as GovModuleTraceabilityRouteImport } from './routes/gov.$module.traceability'
+import { Route as LucieAppAgencyIndexRouteImport } from './routes/lucie-app.agency.index'
+import { Route as LucieAppAgencyMarketplacesRouteImport } from './routes/lucie-app.agency.marketplaces'
+import { Route as LucieAppAgencyProducersRouteImport } from './routes/lucie-app.agency.producers'
+import { Route as LucieAppEmployerIndexRouteImport } from './routes/lucie-app.employer.index'
+import { Route as LucieAppEmployerCensusRouteImport } from './routes/lucie-app.employer.census'
+import { Route as LucieAppEmployerContributionRouteImport } from './routes/lucie-app.employer.contribution'
+import { Route as LucieAppEmployerProposalRouteImport } from './routes/lucie-app.employer.proposal'
+import { Route as LucieAppEmployerResultsRouteImport } from './routes/lucie-app.employer.results'
+import { Route as LucieAppPlatformIndexRouteImport } from './routes/lucie-app.platform.index'
+import { Route as LucieAppPlatformAuditRouteImport } from './routes/lucie-app.platform.audit'
+import { Route as LucieAppPlatformEntitlementsRouteImport } from './routes/lucie-app.platform.entitlements'
+import { Route as LucieAppPlatformExceptionsRouteImport } from './routes/lucie-app.platform.exceptions'
+import { Route as LucieAppPlatformGatesRouteImport } from './routes/lucie-app.platform.gates'
+import { Route as LucieAppPlatformHealthRouteImport } from './routes/lucie-app.platform.health'
+import { Route as LucieAppPlatformRolesRouteImport } from './routes/lucie-app.platform.roles'
+import { Route as LucieAppPlatformTenantsRouteImport } from './routes/lucie-app.platform.tenants'
+import { Route as LucieAppShopIndexRouteImport } from './routes/lucie-app.shop.index'
+import { Route as LucieAppShopApplicationRouteImport } from './routes/lucie-app.shop.application'
+import { Route as LucieAppShopCartRouteImport } from './routes/lucie-app.shop.cart'
+import { Route as LucieAppShopCompareRouteImport } from './routes/lucie-app.shop.compare'
+import { Route as LucieAppShopConfirmationRouteImport } from './routes/lucie-app.shop.confirmation'
+import { Route as LucieAppShopDocumentsRouteImport } from './routes/lucie-app.shop.documents'
+import { Route as LucieAppShopEligibilityRouteImport } from './routes/lucie-app.shop.eligibility'
+import { Route as LucieAppShopEsignRouteImport } from './routes/lucie-app.shop.esign'
+import { Route as LucieAppShopRegisterRouteImport } from './routes/lucie-app.shop.register'
+import { Route as LucieAppShopReviewRouteImport } from './routes/lucie-app.shop.review'
+import { Route as LucieAppShopStatusRouteImport } from './routes/lucie-app.shop.status'
 import { Route as MarketplaceAdminIndexRouteImport } from './routes/marketplace.admin.index'
 import { Route as MarketplaceAdminActivationRouteImport } from './routes/marketplace.admin.activation'
 import { Route as MarketplaceAdminAssetsRouteImport } from './routes/marketplace.admin.assets'
@@ -161,6 +190,8 @@ import { Route as AgencyOrganizationsOrganizationIdRelationshipsRouteImport } fr
 import { Route as AgencyOrganizationsOrganizationIdSettingsRouteImport } from './routes/agency.organizations.$organizationId.settings'
 import { Route as GovModuleFlowsFlowRouteImport } from './routes/gov.$module.flows.$flow'
 import { Route as GovModuleScreensScreenRouteImport } from './routes/gov.$module.screens.$screen'
+import { Route as LucieAppShopPlansIndexRouteImport } from './routes/lucie-app.shop.plans.index'
+import { Route as LucieAppShopPlansPlanIdRouteImport } from './routes/lucie-app.shop.plans.$planId'
 import { Route as MarketplaceAdminAvailabilityIndexRouteImport } from './routes/marketplace.admin.availability.index'
 import { Route as MarketplaceAdminAvailabilityAvailabilityEntryIdRouteImport } from './routes/marketplace.admin.availability.$availabilityEntryId'
 import { Route as MarketplaceAdminDomainsIndexRouteImport } from './routes/marketplace.admin.domains.index'
@@ -263,6 +294,11 @@ const JourneyChoiceRoute = JourneyChoiceRouteImport.update({
 const LucieRoute = LucieRouteImport.update({
   id: '/lucie',
   path: '/lucie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LucieAppRoute = LucieAppRouteImport.update({
+  id: '/lucie-app',
+  path: '/lucie-app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const M00Route = M00RouteImport.update({
@@ -441,6 +477,11 @@ const HfScreenRoute = HfScreenRouteImport.update({
   id: '/hf/$screen',
   path: '/hf/$screen',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LucieAppIndexRoute = LucieAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LucieAppRoute,
 } as any)
 const LucieIndexRoute = LucieIndexRouteImport.update({
   id: '/',
@@ -772,6 +813,147 @@ const GovModuleTraceabilityRoute = GovModuleTraceabilityRouteImport.update({
   path: '/traceability',
   getParentRoute: () => GovModuleRoute,
 } as any)
+const LucieAppAgencyIndexRoute = LucieAppAgencyIndexRouteImport.update({
+  id: '/agency/',
+  path: '/agency/',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppAgencyMarketplacesRoute =
+  LucieAppAgencyMarketplacesRouteImport.update({
+    id: '/agency/marketplaces',
+    path: '/agency/marketplaces',
+    getParentRoute: () => LucieAppRoute,
+  } as any)
+const LucieAppAgencyProducersRoute = LucieAppAgencyProducersRouteImport.update({
+  id: '/agency/producers',
+  path: '/agency/producers',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppEmployerIndexRoute = LucieAppEmployerIndexRouteImport.update({
+  id: '/employer/',
+  path: '/employer/',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppEmployerCensusRoute = LucieAppEmployerCensusRouteImport.update({
+  id: '/employer/census',
+  path: '/employer/census',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppEmployerContributionRoute =
+  LucieAppEmployerContributionRouteImport.update({
+    id: '/employer/contribution',
+    path: '/employer/contribution',
+    getParentRoute: () => LucieAppRoute,
+  } as any)
+const LucieAppEmployerProposalRoute =
+  LucieAppEmployerProposalRouteImport.update({
+    id: '/employer/proposal',
+    path: '/employer/proposal',
+    getParentRoute: () => LucieAppRoute,
+  } as any)
+const LucieAppEmployerResultsRoute = LucieAppEmployerResultsRouteImport.update({
+  id: '/employer/results',
+  path: '/employer/results',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppPlatformIndexRoute = LucieAppPlatformIndexRouteImport.update({
+  id: '/platform/',
+  path: '/platform/',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppPlatformAuditRoute = LucieAppPlatformAuditRouteImport.update({
+  id: '/platform/audit',
+  path: '/platform/audit',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppPlatformEntitlementsRoute =
+  LucieAppPlatformEntitlementsRouteImport.update({
+    id: '/platform/entitlements',
+    path: '/platform/entitlements',
+    getParentRoute: () => LucieAppRoute,
+  } as any)
+const LucieAppPlatformExceptionsRoute =
+  LucieAppPlatformExceptionsRouteImport.update({
+    id: '/platform/exceptions',
+    path: '/platform/exceptions',
+    getParentRoute: () => LucieAppRoute,
+  } as any)
+const LucieAppPlatformGatesRoute = LucieAppPlatformGatesRouteImport.update({
+  id: '/platform/gates',
+  path: '/platform/gates',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppPlatformHealthRoute = LucieAppPlatformHealthRouteImport.update({
+  id: '/platform/health',
+  path: '/platform/health',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppPlatformRolesRoute = LucieAppPlatformRolesRouteImport.update({
+  id: '/platform/roles',
+  path: '/platform/roles',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppPlatformTenantsRoute = LucieAppPlatformTenantsRouteImport.update({
+  id: '/platform/tenants',
+  path: '/platform/tenants',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopIndexRoute = LucieAppShopIndexRouteImport.update({
+  id: '/shop/',
+  path: '/shop/',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopApplicationRoute = LucieAppShopApplicationRouteImport.update({
+  id: '/shop/application',
+  path: '/shop/application',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopCartRoute = LucieAppShopCartRouteImport.update({
+  id: '/shop/cart',
+  path: '/shop/cart',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopCompareRoute = LucieAppShopCompareRouteImport.update({
+  id: '/shop/compare',
+  path: '/shop/compare',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopConfirmationRoute =
+  LucieAppShopConfirmationRouteImport.update({
+    id: '/shop/confirmation',
+    path: '/shop/confirmation',
+    getParentRoute: () => LucieAppRoute,
+  } as any)
+const LucieAppShopDocumentsRoute = LucieAppShopDocumentsRouteImport.update({
+  id: '/shop/documents',
+  path: '/shop/documents',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopEligibilityRoute = LucieAppShopEligibilityRouteImport.update({
+  id: '/shop/eligibility',
+  path: '/shop/eligibility',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopEsignRoute = LucieAppShopEsignRouteImport.update({
+  id: '/shop/esign',
+  path: '/shop/esign',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopRegisterRoute = LucieAppShopRegisterRouteImport.update({
+  id: '/shop/register',
+  path: '/shop/register',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopReviewRoute = LucieAppShopReviewRouteImport.update({
+  id: '/shop/review',
+  path: '/shop/review',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopStatusRoute = LucieAppShopStatusRouteImport.update({
+  id: '/shop/status',
+  path: '/shop/status',
+  getParentRoute: () => LucieAppRoute,
+} as any)
 const MarketplaceAdminIndexRoute = MarketplaceAdminIndexRouteImport.update({
   id: '/marketplace/admin/',
   path: '/marketplace/admin/',
@@ -965,6 +1147,16 @@ const GovModuleScreensScreenRoute = GovModuleScreensScreenRouteImport.update({
   path: '/$screen',
   getParentRoute: () => GovModuleScreensRoute,
 } as any)
+const LucieAppShopPlansIndexRoute = LucieAppShopPlansIndexRouteImport.update({
+  id: '/shop/plans/',
+  path: '/shop/plans/',
+  getParentRoute: () => LucieAppRoute,
+} as any)
+const LucieAppShopPlansPlanIdRoute = LucieAppShopPlansPlanIdRouteImport.update({
+  id: '/shop/plans/$planId',
+  path: '/shop/plans/$planId',
+  getParentRoute: () => LucieAppRoute,
+} as any)
 const MarketplaceAdminAvailabilityIndexRoute =
   MarketplaceAdminAvailabilityIndexRouteImport.update({
     id: '/marketplace/admin/availability/',
@@ -1063,6 +1255,7 @@ export interface FileRoutesByFullPath {
   '/ichra': typeof IchraRoute
   '/journey-choice': typeof JourneyChoiceRoute
   '/lucie': typeof LucieRouteWithChildren
+  '/lucie-app': typeof LucieAppRouteWithChildren
   '/m00': typeof M00RouteWithChildren
   '/m06': typeof M06RouteWithChildren
   '/member': typeof MemberRouteWithChildren
@@ -1125,6 +1318,7 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AppIndexRoute
   '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
+  '/lucie-app/': typeof LucieAppIndexRoute
   '/lucie/': typeof LucieIndexRoute
   '/m00/': typeof M00IndexRoute
   '/m06/': typeof M06IndexRoute
@@ -1158,6 +1352,29 @@ export interface FileRoutesByFullPath {
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
+  '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
+  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
+  '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
+  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
+  '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
+  '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
+  '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
+  '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
+  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
+  '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
+  '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
+  '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
+  '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
+  '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
+  '/lucie-app/shop/compare': typeof LucieAppShopCompareRoute
+  '/lucie-app/shop/confirmation': typeof LucieAppShopConfirmationRoute
+  '/lucie-app/shop/documents': typeof LucieAppShopDocumentsRoute
+  '/lucie-app/shop/eligibility': typeof LucieAppShopEligibilityRoute
+  '/lucie-app/shop/esign': typeof LucieAppShopEsignRoute
+  '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
+  '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
+  '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1174,6 +1391,10 @@ export interface FileRoutesByFullPath {
   '/app/agency/': typeof AppAgencyIndexRoute
   '/app/customers/': typeof AppCustomersIndexRoute
   '/gov/$module/': typeof GovModuleIndexRoute
+  '/lucie-app/agency/': typeof LucieAppAgencyIndexRoute
+  '/lucie-app/employer/': typeof LucieAppEmployerIndexRoute
+  '/lucie-app/platform/': typeof LucieAppPlatformIndexRoute
+  '/lucie-app/shop/': typeof LucieAppShopIndexRoute
   '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
   '/platform/organizations/': typeof PlatformOrganizationsIndexRoute
@@ -1196,6 +1417,7 @@ export interface FileRoutesByFullPath {
   '/agency/organizations/$organizationId/settings': typeof AgencyOrganizationsOrganizationIdSettingsRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
   '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
+  '/lucie-app/shop/plans/$planId': typeof LucieAppShopPlansPlanIdRoute
   '/marketplace/admin/availability/$availabilityEntryId': typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
   '/marketplace/admin/domains/request': typeof MarketplaceAdminDomainsRequestRoute
   '/marketplace/admin/participants/$participantId': typeof MarketplaceAdminParticipantsParticipantIdRoute
@@ -1206,6 +1428,7 @@ export interface FileRoutesByFullPath {
   '/platform/marketplaces/$marketplaceId/override': typeof PlatformMarketplacesMarketplaceIdOverrideRoute
   '/platform/organizations/$organizationId/override': typeof PlatformOrganizationsOrganizationIdOverrideRoute
   '/agency/organizations/$organizationId/': typeof AgencyOrganizationsOrganizationIdIndexRoute
+  '/lucie-app/shop/plans/': typeof LucieAppShopPlansIndexRoute
   '/marketplace/admin/availability/': typeof MarketplaceAdminAvailabilityIndexRoute
   '/marketplace/admin/domains/': typeof MarketplaceAdminDomainsIndexRoute
   '/marketplace/admin/participants/': typeof MarketplaceAdminParticipantsIndexRoute
@@ -1286,6 +1509,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppIndexRoute
   '/gov': typeof GovIndexRoute
   '/hf': typeof HfIndexRoute
+  '/lucie-app': typeof LucieAppIndexRoute
   '/lucie': typeof LucieIndexRoute
   '/m00': typeof M00IndexRoute
   '/m06': typeof M06IndexRoute
@@ -1319,6 +1543,29 @@ export interface FileRoutesByTo {
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
+  '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
+  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
+  '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
+  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
+  '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
+  '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
+  '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
+  '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
+  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
+  '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
+  '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
+  '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
+  '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
+  '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
+  '/lucie-app/shop/compare': typeof LucieAppShopCompareRoute
+  '/lucie-app/shop/confirmation': typeof LucieAppShopConfirmationRoute
+  '/lucie-app/shop/documents': typeof LucieAppShopDocumentsRoute
+  '/lucie-app/shop/eligibility': typeof LucieAppShopEligibilityRoute
+  '/lucie-app/shop/esign': typeof LucieAppShopEsignRoute
+  '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
+  '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
+  '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1335,6 +1582,10 @@ export interface FileRoutesByTo {
   '/app/agency': typeof AppAgencyIndexRoute
   '/app/customers': typeof AppCustomersIndexRoute
   '/gov/$module': typeof GovModuleIndexRoute
+  '/lucie-app/agency': typeof LucieAppAgencyIndexRoute
+  '/lucie-app/employer': typeof LucieAppEmployerIndexRoute
+  '/lucie-app/platform': typeof LucieAppPlatformIndexRoute
+  '/lucie-app/shop': typeof LucieAppShopIndexRoute
   '/marketplace/admin': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces': typeof PlatformMarketplacesIndexRoute
   '/platform/organizations': typeof PlatformOrganizationsIndexRoute
@@ -1357,6 +1608,7 @@ export interface FileRoutesByTo {
   '/agency/organizations/$organizationId/settings': typeof AgencyOrganizationsOrganizationIdSettingsRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
   '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
+  '/lucie-app/shop/plans/$planId': typeof LucieAppShopPlansPlanIdRoute
   '/marketplace/admin/availability/$availabilityEntryId': typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
   '/marketplace/admin/domains/request': typeof MarketplaceAdminDomainsRequestRoute
   '/marketplace/admin/participants/$participantId': typeof MarketplaceAdminParticipantsParticipantIdRoute
@@ -1367,6 +1619,7 @@ export interface FileRoutesByTo {
   '/platform/marketplaces/$marketplaceId/override': typeof PlatformMarketplacesMarketplaceIdOverrideRoute
   '/platform/organizations/$organizationId/override': typeof PlatformOrganizationsOrganizationIdOverrideRoute
   '/agency/organizations/$organizationId': typeof AgencyOrganizationsOrganizationIdIndexRoute
+  '/lucie-app/shop/plans': typeof LucieAppShopPlansIndexRoute
   '/marketplace/admin/availability': typeof MarketplaceAdminAvailabilityIndexRoute
   '/marketplace/admin/domains': typeof MarketplaceAdminDomainsIndexRoute
   '/marketplace/admin/participants': typeof MarketplaceAdminParticipantsIndexRoute
@@ -1392,6 +1645,7 @@ export interface FileRoutesById {
   '/ichra': typeof IchraRoute
   '/journey-choice': typeof JourneyChoiceRoute
   '/lucie': typeof LucieRouteWithChildren
+  '/lucie-app': typeof LucieAppRouteWithChildren
   '/m00': typeof M00RouteWithChildren
   '/m06': typeof M06RouteWithChildren
   '/member': typeof MemberRouteWithChildren
@@ -1454,6 +1708,7 @@ export interface FileRoutesById {
   '/app/': typeof AppIndexRoute
   '/gov/': typeof GovIndexRoute
   '/hf/': typeof HfIndexRoute
+  '/lucie-app/': typeof LucieAppIndexRoute
   '/lucie/': typeof LucieIndexRoute
   '/m00/': typeof M00IndexRoute
   '/m06/': typeof M06IndexRoute
@@ -1487,6 +1742,29 @@ export interface FileRoutesById {
   '/gov/$module/registers': typeof GovModuleRegistersRoute
   '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
+  '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
+  '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
+  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
+  '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
+  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
+  '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
+  '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
+  '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
+  '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
+  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
+  '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
+  '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
+  '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
+  '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
+  '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
+  '/lucie-app/shop/compare': typeof LucieAppShopCompareRoute
+  '/lucie-app/shop/confirmation': typeof LucieAppShopConfirmationRoute
+  '/lucie-app/shop/documents': typeof LucieAppShopDocumentsRoute
+  '/lucie-app/shop/eligibility': typeof LucieAppShopEligibilityRoute
+  '/lucie-app/shop/esign': typeof LucieAppShopEsignRoute
+  '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
+  '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
+  '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1503,6 +1781,10 @@ export interface FileRoutesById {
   '/app/agency/': typeof AppAgencyIndexRoute
   '/app/customers/': typeof AppCustomersIndexRoute
   '/gov/$module/': typeof GovModuleIndexRoute
+  '/lucie-app/agency/': typeof LucieAppAgencyIndexRoute
+  '/lucie-app/employer/': typeof LucieAppEmployerIndexRoute
+  '/lucie-app/platform/': typeof LucieAppPlatformIndexRoute
+  '/lucie-app/shop/': typeof LucieAppShopIndexRoute
   '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
   '/platform/organizations/': typeof PlatformOrganizationsIndexRoute
@@ -1525,6 +1807,7 @@ export interface FileRoutesById {
   '/agency/organizations/$organizationId/settings': typeof AgencyOrganizationsOrganizationIdSettingsRoute
   '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
   '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
+  '/lucie-app/shop/plans/$planId': typeof LucieAppShopPlansPlanIdRoute
   '/marketplace/admin/availability/$availabilityEntryId': typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
   '/marketplace/admin/domains/request': typeof MarketplaceAdminDomainsRequestRoute
   '/marketplace/admin/participants/$participantId': typeof MarketplaceAdminParticipantsParticipantIdRoute
@@ -1535,6 +1818,7 @@ export interface FileRoutesById {
   '/platform/marketplaces/$marketplaceId/override': typeof PlatformMarketplacesMarketplaceIdOverrideRoute
   '/platform/organizations/$organizationId/override': typeof PlatformOrganizationsOrganizationIdOverrideRoute
   '/agency/organizations/$organizationId/': typeof AgencyOrganizationsOrganizationIdIndexRoute
+  '/lucie-app/shop/plans/': typeof LucieAppShopPlansIndexRoute
   '/marketplace/admin/availability/': typeof MarketplaceAdminAvailabilityIndexRoute
   '/marketplace/admin/domains/': typeof MarketplaceAdminDomainsIndexRoute
   '/marketplace/admin/participants/': typeof MarketplaceAdminParticipantsIndexRoute
@@ -1561,6 +1845,7 @@ export interface FileRouteTypes {
     | '/ichra'
     | '/journey-choice'
     | '/lucie'
+    | '/lucie-app'
     | '/m00'
     | '/m06'
     | '/member'
@@ -1623,6 +1908,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/gov/'
     | '/hf/'
+    | '/lucie-app/'
     | '/lucie/'
     | '/m00/'
     | '/m06/'
@@ -1656,6 +1942,29 @@ export interface FileRouteTypes {
     | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/traceability'
+    | '/lucie-app/agency/marketplaces'
+    | '/lucie-app/agency/producers'
+    | '/lucie-app/employer/census'
+    | '/lucie-app/employer/contribution'
+    | '/lucie-app/employer/proposal'
+    | '/lucie-app/employer/results'
+    | '/lucie-app/platform/audit'
+    | '/lucie-app/platform/entitlements'
+    | '/lucie-app/platform/exceptions'
+    | '/lucie-app/platform/gates'
+    | '/lucie-app/platform/health'
+    | '/lucie-app/platform/roles'
+    | '/lucie-app/platform/tenants'
+    | '/lucie-app/shop/application'
+    | '/lucie-app/shop/cart'
+    | '/lucie-app/shop/compare'
+    | '/lucie-app/shop/confirmation'
+    | '/lucie-app/shop/documents'
+    | '/lucie-app/shop/eligibility'
+    | '/lucie-app/shop/esign'
+    | '/lucie-app/shop/register'
+    | '/lucie-app/shop/review'
+    | '/lucie-app/shop/status'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -1672,6 +1981,10 @@ export interface FileRouteTypes {
     | '/app/agency/'
     | '/app/customers/'
     | '/gov/$module/'
+    | '/lucie-app/agency/'
+    | '/lucie-app/employer/'
+    | '/lucie-app/platform/'
+    | '/lucie-app/shop/'
     | '/marketplace/admin/'
     | '/platform/marketplaces/'
     | '/platform/organizations/'
@@ -1694,6 +2007,7 @@ export interface FileRouteTypes {
     | '/agency/organizations/$organizationId/settings'
     | '/gov/$module/flows/$flow'
     | '/gov/$module/screens/$screen'
+    | '/lucie-app/shop/plans/$planId'
     | '/marketplace/admin/availability/$availabilityEntryId'
     | '/marketplace/admin/domains/request'
     | '/marketplace/admin/participants/$participantId'
@@ -1704,6 +2018,7 @@ export interface FileRouteTypes {
     | '/platform/marketplaces/$marketplaceId/override'
     | '/platform/organizations/$organizationId/override'
     | '/agency/organizations/$organizationId/'
+    | '/lucie-app/shop/plans/'
     | '/marketplace/admin/availability/'
     | '/marketplace/admin/domains/'
     | '/marketplace/admin/participants/'
@@ -1784,6 +2099,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/gov'
     | '/hf'
+    | '/lucie-app'
     | '/lucie'
     | '/m00'
     | '/m06'
@@ -1817,6 +2133,29 @@ export interface FileRouteTypes {
     | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/traceability'
+    | '/lucie-app/agency/marketplaces'
+    | '/lucie-app/agency/producers'
+    | '/lucie-app/employer/census'
+    | '/lucie-app/employer/contribution'
+    | '/lucie-app/employer/proposal'
+    | '/lucie-app/employer/results'
+    | '/lucie-app/platform/audit'
+    | '/lucie-app/platform/entitlements'
+    | '/lucie-app/platform/exceptions'
+    | '/lucie-app/platform/gates'
+    | '/lucie-app/platform/health'
+    | '/lucie-app/platform/roles'
+    | '/lucie-app/platform/tenants'
+    | '/lucie-app/shop/application'
+    | '/lucie-app/shop/cart'
+    | '/lucie-app/shop/compare'
+    | '/lucie-app/shop/confirmation'
+    | '/lucie-app/shop/documents'
+    | '/lucie-app/shop/eligibility'
+    | '/lucie-app/shop/esign'
+    | '/lucie-app/shop/register'
+    | '/lucie-app/shop/review'
+    | '/lucie-app/shop/status'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -1833,6 +2172,10 @@ export interface FileRouteTypes {
     | '/app/agency'
     | '/app/customers'
     | '/gov/$module'
+    | '/lucie-app/agency'
+    | '/lucie-app/employer'
+    | '/lucie-app/platform'
+    | '/lucie-app/shop'
     | '/marketplace/admin'
     | '/platform/marketplaces'
     | '/platform/organizations'
@@ -1855,6 +2198,7 @@ export interface FileRouteTypes {
     | '/agency/organizations/$organizationId/settings'
     | '/gov/$module/flows/$flow'
     | '/gov/$module/screens/$screen'
+    | '/lucie-app/shop/plans/$planId'
     | '/marketplace/admin/availability/$availabilityEntryId'
     | '/marketplace/admin/domains/request'
     | '/marketplace/admin/participants/$participantId'
@@ -1865,6 +2209,7 @@ export interface FileRouteTypes {
     | '/platform/marketplaces/$marketplaceId/override'
     | '/platform/organizations/$organizationId/override'
     | '/agency/organizations/$organizationId'
+    | '/lucie-app/shop/plans'
     | '/marketplace/admin/availability'
     | '/marketplace/admin/domains'
     | '/marketplace/admin/participants'
@@ -1889,6 +2234,7 @@ export interface FileRouteTypes {
     | '/ichra'
     | '/journey-choice'
     | '/lucie'
+    | '/lucie-app'
     | '/m00'
     | '/m06'
     | '/member'
@@ -1951,6 +2297,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/gov/'
     | '/hf/'
+    | '/lucie-app/'
     | '/lucie/'
     | '/m00/'
     | '/m06/'
@@ -1984,6 +2331,29 @@ export interface FileRouteTypes {
     | '/gov/$module/registers'
     | '/gov/$module/screens'
     | '/gov/$module/traceability'
+    | '/lucie-app/agency/marketplaces'
+    | '/lucie-app/agency/producers'
+    | '/lucie-app/employer/census'
+    | '/lucie-app/employer/contribution'
+    | '/lucie-app/employer/proposal'
+    | '/lucie-app/employer/results'
+    | '/lucie-app/platform/audit'
+    | '/lucie-app/platform/entitlements'
+    | '/lucie-app/platform/exceptions'
+    | '/lucie-app/platform/gates'
+    | '/lucie-app/platform/health'
+    | '/lucie-app/platform/roles'
+    | '/lucie-app/platform/tenants'
+    | '/lucie-app/shop/application'
+    | '/lucie-app/shop/cart'
+    | '/lucie-app/shop/compare'
+    | '/lucie-app/shop/confirmation'
+    | '/lucie-app/shop/documents'
+    | '/lucie-app/shop/eligibility'
+    | '/lucie-app/shop/esign'
+    | '/lucie-app/shop/register'
+    | '/lucie-app/shop/review'
+    | '/lucie-app/shop/status'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -2000,6 +2370,10 @@ export interface FileRouteTypes {
     | '/app/agency/'
     | '/app/customers/'
     | '/gov/$module/'
+    | '/lucie-app/agency/'
+    | '/lucie-app/employer/'
+    | '/lucie-app/platform/'
+    | '/lucie-app/shop/'
     | '/marketplace/admin/'
     | '/platform/marketplaces/'
     | '/platform/organizations/'
@@ -2022,6 +2396,7 @@ export interface FileRouteTypes {
     | '/agency/organizations/$organizationId/settings'
     | '/gov/$module/flows/$flow'
     | '/gov/$module/screens/$screen'
+    | '/lucie-app/shop/plans/$planId'
     | '/marketplace/admin/availability/$availabilityEntryId'
     | '/marketplace/admin/domains/request'
     | '/marketplace/admin/participants/$participantId'
@@ -2032,6 +2407,7 @@ export interface FileRouteTypes {
     | '/platform/marketplaces/$marketplaceId/override'
     | '/platform/organizations/$organizationId/override'
     | '/agency/organizations/$organizationId/'
+    | '/lucie-app/shop/plans/'
     | '/marketplace/admin/availability/'
     | '/marketplace/admin/domains/'
     | '/marketplace/admin/participants/'
@@ -2057,6 +2433,7 @@ export interface RootRouteChildren {
   IchraRoute: typeof IchraRoute
   JourneyChoiceRoute: typeof JourneyChoiceRoute
   LucieRoute: typeof LucieRouteWithChildren
+  LucieAppRoute: typeof LucieAppRouteWithChildren
   M00Route: typeof M00RouteWithChildren
   M06Route: typeof M06RouteWithChildren
   MemberRoute: typeof MemberRouteWithChildren
@@ -2269,6 +2646,13 @@ declare module '@tanstack/react-router' {
       path: '/lucie'
       fullPath: '/lucie'
       preLoaderRoute: typeof LucieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lucie-app': {
+      id: '/lucie-app'
+      path: '/lucie-app'
+      fullPath: '/lucie-app'
+      preLoaderRoute: typeof LucieAppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/m00': {
@@ -2515,6 +2899,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/hf/$screen'
       preLoaderRoute: typeof HfScreenRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/lucie-app/': {
+      id: '/lucie-app/'
+      path: '/'
+      fullPath: '/lucie-app/'
+      preLoaderRoute: typeof LucieAppIndexRouteImport
+      parentRoute: typeof LucieAppRoute
     }
     '/lucie/': {
       id: '/lucie/'
@@ -2971,6 +3362,195 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GovModuleTraceabilityRouteImport
       parentRoute: typeof GovModuleRoute
     }
+    '/lucie-app/agency/': {
+      id: '/lucie-app/agency/'
+      path: '/agency'
+      fullPath: '/lucie-app/agency/'
+      preLoaderRoute: typeof LucieAppAgencyIndexRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/agency/marketplaces': {
+      id: '/lucie-app/agency/marketplaces'
+      path: '/agency/marketplaces'
+      fullPath: '/lucie-app/agency/marketplaces'
+      preLoaderRoute: typeof LucieAppAgencyMarketplacesRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/agency/producers': {
+      id: '/lucie-app/agency/producers'
+      path: '/agency/producers'
+      fullPath: '/lucie-app/agency/producers'
+      preLoaderRoute: typeof LucieAppAgencyProducersRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/employer/': {
+      id: '/lucie-app/employer/'
+      path: '/employer'
+      fullPath: '/lucie-app/employer/'
+      preLoaderRoute: typeof LucieAppEmployerIndexRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/employer/census': {
+      id: '/lucie-app/employer/census'
+      path: '/employer/census'
+      fullPath: '/lucie-app/employer/census'
+      preLoaderRoute: typeof LucieAppEmployerCensusRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/employer/contribution': {
+      id: '/lucie-app/employer/contribution'
+      path: '/employer/contribution'
+      fullPath: '/lucie-app/employer/contribution'
+      preLoaderRoute: typeof LucieAppEmployerContributionRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/employer/proposal': {
+      id: '/lucie-app/employer/proposal'
+      path: '/employer/proposal'
+      fullPath: '/lucie-app/employer/proposal'
+      preLoaderRoute: typeof LucieAppEmployerProposalRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/employer/results': {
+      id: '/lucie-app/employer/results'
+      path: '/employer/results'
+      fullPath: '/lucie-app/employer/results'
+      preLoaderRoute: typeof LucieAppEmployerResultsRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/platform/': {
+      id: '/lucie-app/platform/'
+      path: '/platform'
+      fullPath: '/lucie-app/platform/'
+      preLoaderRoute: typeof LucieAppPlatformIndexRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/platform/audit': {
+      id: '/lucie-app/platform/audit'
+      path: '/platform/audit'
+      fullPath: '/lucie-app/platform/audit'
+      preLoaderRoute: typeof LucieAppPlatformAuditRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/platform/entitlements': {
+      id: '/lucie-app/platform/entitlements'
+      path: '/platform/entitlements'
+      fullPath: '/lucie-app/platform/entitlements'
+      preLoaderRoute: typeof LucieAppPlatformEntitlementsRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/platform/exceptions': {
+      id: '/lucie-app/platform/exceptions'
+      path: '/platform/exceptions'
+      fullPath: '/lucie-app/platform/exceptions'
+      preLoaderRoute: typeof LucieAppPlatformExceptionsRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/platform/gates': {
+      id: '/lucie-app/platform/gates'
+      path: '/platform/gates'
+      fullPath: '/lucie-app/platform/gates'
+      preLoaderRoute: typeof LucieAppPlatformGatesRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/platform/health': {
+      id: '/lucie-app/platform/health'
+      path: '/platform/health'
+      fullPath: '/lucie-app/platform/health'
+      preLoaderRoute: typeof LucieAppPlatformHealthRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/platform/roles': {
+      id: '/lucie-app/platform/roles'
+      path: '/platform/roles'
+      fullPath: '/lucie-app/platform/roles'
+      preLoaderRoute: typeof LucieAppPlatformRolesRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/platform/tenants': {
+      id: '/lucie-app/platform/tenants'
+      path: '/platform/tenants'
+      fullPath: '/lucie-app/platform/tenants'
+      preLoaderRoute: typeof LucieAppPlatformTenantsRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/': {
+      id: '/lucie-app/shop/'
+      path: '/shop'
+      fullPath: '/lucie-app/shop/'
+      preLoaderRoute: typeof LucieAppShopIndexRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/application': {
+      id: '/lucie-app/shop/application'
+      path: '/shop/application'
+      fullPath: '/lucie-app/shop/application'
+      preLoaderRoute: typeof LucieAppShopApplicationRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/cart': {
+      id: '/lucie-app/shop/cart'
+      path: '/shop/cart'
+      fullPath: '/lucie-app/shop/cart'
+      preLoaderRoute: typeof LucieAppShopCartRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/compare': {
+      id: '/lucie-app/shop/compare'
+      path: '/shop/compare'
+      fullPath: '/lucie-app/shop/compare'
+      preLoaderRoute: typeof LucieAppShopCompareRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/confirmation': {
+      id: '/lucie-app/shop/confirmation'
+      path: '/shop/confirmation'
+      fullPath: '/lucie-app/shop/confirmation'
+      preLoaderRoute: typeof LucieAppShopConfirmationRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/documents': {
+      id: '/lucie-app/shop/documents'
+      path: '/shop/documents'
+      fullPath: '/lucie-app/shop/documents'
+      preLoaderRoute: typeof LucieAppShopDocumentsRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/eligibility': {
+      id: '/lucie-app/shop/eligibility'
+      path: '/shop/eligibility'
+      fullPath: '/lucie-app/shop/eligibility'
+      preLoaderRoute: typeof LucieAppShopEligibilityRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/esign': {
+      id: '/lucie-app/shop/esign'
+      path: '/shop/esign'
+      fullPath: '/lucie-app/shop/esign'
+      preLoaderRoute: typeof LucieAppShopEsignRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/register': {
+      id: '/lucie-app/shop/register'
+      path: '/shop/register'
+      fullPath: '/lucie-app/shop/register'
+      preLoaderRoute: typeof LucieAppShopRegisterRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/review': {
+      id: '/lucie-app/shop/review'
+      path: '/shop/review'
+      fullPath: '/lucie-app/shop/review'
+      preLoaderRoute: typeof LucieAppShopReviewRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/status': {
+      id: '/lucie-app/shop/status'
+      path: '/shop/status'
+      fullPath: '/lucie-app/shop/status'
+      preLoaderRoute: typeof LucieAppShopStatusRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
     '/marketplace/admin/': {
       id: '/marketplace/admin/'
       path: '/marketplace/admin'
@@ -3209,6 +3789,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GovModuleScreensScreenRouteImport
       parentRoute: typeof GovModuleScreensRoute
     }
+    '/lucie-app/shop/plans/': {
+      id: '/lucie-app/shop/plans/'
+      path: '/shop/plans'
+      fullPath: '/lucie-app/shop/plans/'
+      preLoaderRoute: typeof LucieAppShopPlansIndexRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
+    '/lucie-app/shop/plans/$planId': {
+      id: '/lucie-app/shop/plans/$planId'
+      path: '/shop/plans/$planId'
+      fullPath: '/lucie-app/shop/plans/$planId'
+      preLoaderRoute: typeof LucieAppShopPlansPlanIdRouteImport
+      parentRoute: typeof LucieAppRoute
+    }
     '/marketplace/admin/availability/': {
       id: '/marketplace/admin/availability/'
       path: '/marketplace/admin/availability'
@@ -3405,6 +3999,76 @@ const LucieRouteChildren: LucieRouteChildren = {
 
 const LucieRouteWithChildren = LucieRoute._addFileChildren(LucieRouteChildren)
 
+interface LucieAppRouteChildren {
+  LucieAppIndexRoute: typeof LucieAppIndexRoute
+  LucieAppAgencyMarketplacesRoute: typeof LucieAppAgencyMarketplacesRoute
+  LucieAppAgencyProducersRoute: typeof LucieAppAgencyProducersRoute
+  LucieAppEmployerCensusRoute: typeof LucieAppEmployerCensusRoute
+  LucieAppEmployerContributionRoute: typeof LucieAppEmployerContributionRoute
+  LucieAppEmployerProposalRoute: typeof LucieAppEmployerProposalRoute
+  LucieAppEmployerResultsRoute: typeof LucieAppEmployerResultsRoute
+  LucieAppPlatformAuditRoute: typeof LucieAppPlatformAuditRoute
+  LucieAppPlatformEntitlementsRoute: typeof LucieAppPlatformEntitlementsRoute
+  LucieAppPlatformExceptionsRoute: typeof LucieAppPlatformExceptionsRoute
+  LucieAppPlatformGatesRoute: typeof LucieAppPlatformGatesRoute
+  LucieAppPlatformHealthRoute: typeof LucieAppPlatformHealthRoute
+  LucieAppPlatformRolesRoute: typeof LucieAppPlatformRolesRoute
+  LucieAppPlatformTenantsRoute: typeof LucieAppPlatformTenantsRoute
+  LucieAppShopApplicationRoute: typeof LucieAppShopApplicationRoute
+  LucieAppShopCartRoute: typeof LucieAppShopCartRoute
+  LucieAppShopCompareRoute: typeof LucieAppShopCompareRoute
+  LucieAppShopConfirmationRoute: typeof LucieAppShopConfirmationRoute
+  LucieAppShopDocumentsRoute: typeof LucieAppShopDocumentsRoute
+  LucieAppShopEligibilityRoute: typeof LucieAppShopEligibilityRoute
+  LucieAppShopEsignRoute: typeof LucieAppShopEsignRoute
+  LucieAppShopRegisterRoute: typeof LucieAppShopRegisterRoute
+  LucieAppShopReviewRoute: typeof LucieAppShopReviewRoute
+  LucieAppShopStatusRoute: typeof LucieAppShopStatusRoute
+  LucieAppAgencyIndexRoute: typeof LucieAppAgencyIndexRoute
+  LucieAppEmployerIndexRoute: typeof LucieAppEmployerIndexRoute
+  LucieAppPlatformIndexRoute: typeof LucieAppPlatformIndexRoute
+  LucieAppShopIndexRoute: typeof LucieAppShopIndexRoute
+  LucieAppShopPlansPlanIdRoute: typeof LucieAppShopPlansPlanIdRoute
+  LucieAppShopPlansIndexRoute: typeof LucieAppShopPlansIndexRoute
+}
+
+const LucieAppRouteChildren: LucieAppRouteChildren = {
+  LucieAppIndexRoute: LucieAppIndexRoute,
+  LucieAppAgencyMarketplacesRoute: LucieAppAgencyMarketplacesRoute,
+  LucieAppAgencyProducersRoute: LucieAppAgencyProducersRoute,
+  LucieAppEmployerCensusRoute: LucieAppEmployerCensusRoute,
+  LucieAppEmployerContributionRoute: LucieAppEmployerContributionRoute,
+  LucieAppEmployerProposalRoute: LucieAppEmployerProposalRoute,
+  LucieAppEmployerResultsRoute: LucieAppEmployerResultsRoute,
+  LucieAppPlatformAuditRoute: LucieAppPlatformAuditRoute,
+  LucieAppPlatformEntitlementsRoute: LucieAppPlatformEntitlementsRoute,
+  LucieAppPlatformExceptionsRoute: LucieAppPlatformExceptionsRoute,
+  LucieAppPlatformGatesRoute: LucieAppPlatformGatesRoute,
+  LucieAppPlatformHealthRoute: LucieAppPlatformHealthRoute,
+  LucieAppPlatformRolesRoute: LucieAppPlatformRolesRoute,
+  LucieAppPlatformTenantsRoute: LucieAppPlatformTenantsRoute,
+  LucieAppShopApplicationRoute: LucieAppShopApplicationRoute,
+  LucieAppShopCartRoute: LucieAppShopCartRoute,
+  LucieAppShopCompareRoute: LucieAppShopCompareRoute,
+  LucieAppShopConfirmationRoute: LucieAppShopConfirmationRoute,
+  LucieAppShopDocumentsRoute: LucieAppShopDocumentsRoute,
+  LucieAppShopEligibilityRoute: LucieAppShopEligibilityRoute,
+  LucieAppShopEsignRoute: LucieAppShopEsignRoute,
+  LucieAppShopRegisterRoute: LucieAppShopRegisterRoute,
+  LucieAppShopReviewRoute: LucieAppShopReviewRoute,
+  LucieAppShopStatusRoute: LucieAppShopStatusRoute,
+  LucieAppAgencyIndexRoute: LucieAppAgencyIndexRoute,
+  LucieAppEmployerIndexRoute: LucieAppEmployerIndexRoute,
+  LucieAppPlatformIndexRoute: LucieAppPlatformIndexRoute,
+  LucieAppShopIndexRoute: LucieAppShopIndexRoute,
+  LucieAppShopPlansPlanIdRoute: LucieAppShopPlansPlanIdRoute,
+  LucieAppShopPlansIndexRoute: LucieAppShopPlansIndexRoute,
+}
+
+const LucieAppRouteWithChildren = LucieAppRoute._addFileChildren(
+  LucieAppRouteChildren,
+)
+
 interface M00RouteChildren {
   M00ApiRoute: typeof M00ApiRoute
   M00ConsoleRoute: typeof M00ConsoleRoute
@@ -3518,6 +4182,7 @@ const rootRouteChildren: RootRouteChildren = {
   IchraRoute: IchraRoute,
   JourneyChoiceRoute: JourneyChoiceRoute,
   LucieRoute: LucieRouteWithChildren,
+  LucieAppRoute: LucieAppRouteWithChildren,
   M00Route: M00RouteWithChildren,
   M06Route: M06RouteWithChildren,
   MemberRoute: MemberRouteWithChildren,
