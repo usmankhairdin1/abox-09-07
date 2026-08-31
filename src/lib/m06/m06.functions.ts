@@ -61,21 +61,24 @@ export const m06Invoke = createServerFn({ method: "POST" })
       organizationId?: string | null;
     }) => input,
   )
-  .handler(async ({ data, context }): Promise<M06Result> => {
+  .handler(async ({ data, context }) => {
     if (!(M06_OPERATIONS as readonly string[]).includes(data.op)) {
-      return { ok: false, code: "UNSUPPORTED_OPERATION", reason: data.op };
+      return { ok: false, code: "UNSUPPORTED_OPERATION", reason: data.op } as M06Result as never;
     }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: result, error } = await supabaseAdmin.rpc("lucie_m06_api", {
       p_op: data.op,
       p_payload: (data.payload ?? {}) as never,
       p_user_id: context.userId,
-      p_tenant_id: data.tenantId ?? null,
-      p_organization_id: data.organizationId ?? null,
+      ...(data.tenantId ? { p_tenant_id: data.tenantId } : {}),
+      ...(data.organizationId ? { p_organization_id: data.organizationId } : {}),
       // Local Development posture (CCL-M06-002): the authenticated workspace
       // operator acts as JET platform administrator until M00 custom roles land.
       p_is_platform_admin: true,
     });
-    if (error) return { ok: false, code: "RPC_ERROR", reason: error.message };
-    return result as unknown as M06Result;
+    if (error) {
+      return { ok: false, code: "RPC_ERROR", reason: error.message } as M06Result as never;
+    }
+    return (result ?? { ok: false, code: "EMPTY_RESPONSE" }) as never;
   });
+
