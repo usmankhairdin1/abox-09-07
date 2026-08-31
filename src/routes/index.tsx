@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Boxes, LayoutGrid, PanelsTopLeft, ShieldCheck } from "lucide-react";
 
+import { KpiCard } from "@/components/abox/kpi-card";
 import { AppShell } from "@/components/shell/AppShell";
 import {
   AclNote,
@@ -133,6 +135,13 @@ function ShellMapPage() {
         }
 
       />
+
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <KpiCard label="Workspaces" value={WORKSPACES.length} icon={LayoutGrid} hint="switcher scoped" />
+        <KpiCard label="Module containers" value={MODULES.length} icon={Boxes} tone="primary" hint="permission filtered" />
+        <KpiCard label="Shell regions" value={REGIONS.length} icon={PanelsTopLeft} tone="sage" hint="stable IDs" />
+        <KpiCard label="Governed estates" value={5} icon={ShieldCheck} tone="warning" hint="M00 · M04 · M05 · M06 · Lucie" />
+      </div>
 
 
       <div className="grid gap-3 lg:grid-cols-3">

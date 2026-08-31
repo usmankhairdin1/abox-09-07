@@ -1,23 +1,54 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
+  BarChart3,
   Bell,
+  Bot,
   Building2,
+  Calendar,
   CheckSquare,
   ChevronDown,
   ChevronsLeft,
   ChevronsRight,
   CircleUser,
+  ClipboardList,
+  Coins,
+  FileText,
   HelpCircle,
   LayoutGrid,
   Lock,
+  type LucideIcon,
+  Package,
   PanelRightClose,
   PanelRightOpen,
   Search,
+  Settings,
+  ShieldCheck,
+  ShoppingBag,
   Sparkles,
+  Users,
   X,
 } from "lucide-react";
+
+const MODULE_ICONS: Record<string, LucideIcon> = {
+  MOD_MY_WORK: CheckSquare,
+  MOD_REPORTING: BarChart3,
+  MOD_LEADS_CUSTOMERS: Users,
+  MOD_MARKETPLACE_SALES: ShoppingBag,
+  MOD_FORMS_ENROLLMENT: ClipboardList,
+  MOD_PRODUCTS_PLANS: Package,
+  MOD_AGENCY_ENTITY: Building2,
+  MOD_APPOINTMENTS_PAPER: Calendar,
+  MOD_COMMISSIONS: Coins,
+  MOD_COMMUNICATIONS: Bell,
+  MOD_OUTPUTS_DOCS: FileText,
+  MOD_AI: Bot,
+  MOD_ADMIN_CONFIG: Settings,
+  MOD_SECURITY: ShieldCheck,
+};
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
+import { AboxMark } from "@/components/abox/logo";
+import { ThemeToggle } from "@/components/abox/theme-toggle";
 import { Annotation, IdChip, WLine, WRow } from "@/components/wireframe/primitives";
 import {
   DEFAULT_LABELS,
@@ -151,11 +182,9 @@ export function AppShell({
       <header className="glass sticky top-0 z-30 border-x-0 border-t-0 border-b border-hairline">
         <div className="relative flex h-12 items-center gap-2 px-3">
           <div className="flex items-center gap-2 pr-2">
-            <div className="flex size-6 items-center justify-center rounded border border-dashed border-hairline bg-muted text-[9px] font-mono text-muted-foreground">
-              LOGO
-            </div>
-            <Link to="/" className="text-display hidden text-base sm:inline">
-              ABox
+            <Link to="/" className="flex items-center gap-2">
+              <AboxMark size={26} />
+              <span className="text-display hidden text-base sm:inline">ABox</span>
             </Link>
             <IdChip>SHELL_TOPBAR</IdChip>
             <Link
@@ -329,6 +358,8 @@ export function AppShell({
           </div>
 
           {/* notifications */}
+          <ThemeToggle className="size-8 h-8 w-8" />
+
           <div className="relative">
             <BarButton
               title="Notifications"
@@ -443,7 +474,7 @@ export function AppShell({
           <span aria-hidden="true">·</span>
           <span>{role.id}</span>
           <span aria-hidden="true">·</span>
-          <span>low-fidelity wireframe — structure only</span>
+          <span>governed estate — meridian design system</span>
         </div>
       </header>
 
@@ -477,10 +508,14 @@ export function AppShell({
               {modules.map((m) => {
                 const active =
                   m.to === pathname || (m.to === "/my-work" && pathname === "/my-work");
+                const Icon = MODULE_ICONS[m.id] ?? LayoutGrid;
                 const content = (
-                  <span className="flex min-w-0 flex-1 items-center gap-2">
-                    <span
-                      className="size-4 shrink-0 rounded border border-dashed border-hairline bg-muted"
+                  <span className="flex min-w-0 flex-1 items-center gap-2.5">
+                    <Icon
+                      className={cn(
+                        "size-4 shrink-0",
+                        active ? "text-primary" : "text-muted-foreground",
+                      )}
                       aria-hidden="true"
                     />
                     {navCollapsed ? null : (

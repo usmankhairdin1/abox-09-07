@@ -263,7 +263,7 @@ export const HF_SCREENS: HfScreen[] = [
       "The assistant cannot make eligibility determinations or guarantee costs; it escalates to a licensed agent instead.",
     ],
     config: [
-      "Ranking weights, number of recommendations, allowed inputs and disclaimer text (Plan-O controls, SCR_PLANO_CONFIG).",
+      "Ranking weights, number of recommendations, allowed inputs and disclaimer text (PlanAI controls, SCR_PLANO_CONFIG).",
       "Enable/disable per tenant, marketplace and module; knowledge sources are controlled centrally.",
       "Escalation target (request a call, schedule, assign agent).",
     ],

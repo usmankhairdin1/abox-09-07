@@ -75,11 +75,17 @@ function GovOverview() {
         {metrics.length ? (
           <dl className="grid gap-2 sm:grid-cols-3 lg:grid-cols-4">
             {metrics.map(([k, v]) => (
-              <div key={k} className="rounded border border-dashed border-hairline p-2">
-                <dt className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                  {k.replace(/_/g, " ")}
+              <div
+                key={k}
+                className="rounded-xl border border-hairline bg-card p-3 transition-colors hover:border-primary/30"
+              >
+                <dt className="text-[10px] uppercase leading-tight tracking-[0.14em] text-muted-foreground">
+                  {k
+                    .replace(/_/g, " ")
+                    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+                    .trim()}
                 </dt>
-                <dd className="font-mono text-sm">{String(v)}</dd>
+                <dd className="mt-1 font-display text-xl tabular-nums">{String(v)}</dd>
               </div>
             ))}
           </dl>
