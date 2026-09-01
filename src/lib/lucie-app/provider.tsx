@@ -24,7 +24,7 @@ export function GroupBenefitsProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = hydrate();
-    dispatch({ type: "hydrate", state: stored } as never);
+    dispatch({ type: "restore", state: stored });
   }, []);
 
   useEffect(() => {
