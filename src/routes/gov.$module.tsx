@@ -1,7 +1,7 @@
 import { Link, Outlet, createFileRoute, notFound, useParams } from "@tanstack/react-router";
 
 import { InternalShell } from "@/components/abox/internal-shell";
-import { Annotation, IdChip, WBox } from "@/components/wireframe/primitives";
+import { IdChip, WBox } from "@/components/wireframe/primitives";
 import {
   MODULE_PACKET,
   MODULE_TITLE,
