@@ -114,7 +114,8 @@ function Page() {
             className="h-10 rounded-lg border border-border bg-background px-3 text-sm"
           >
             <option value="high">high</option>
-            <option value="normal">normal</option>
+            <option value="med">med</option>
+            <option value="low">low</option>
           </select>
           <button type="submit" className="h-10 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground">
             Add
