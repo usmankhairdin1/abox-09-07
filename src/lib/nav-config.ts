@@ -144,6 +144,23 @@ export const WORKSPACES: WorkspaceConfig[] = [
         ],
       },
       {
+        label: "Workforce & Network",
+        items: [
+          { label: "Workforce Home", to: "/agency/workforce", icon: Home, scrId: "SCR-M06-001" },
+          { label: "Roster", to: "/agency/workforce/roster", icon: Users, scrId: "SCR-M06-002" },
+          { label: "Person Record", to: "/agency/workforce/person", icon: UserCircle, scrId: "SCR-M06-003" },
+          { label: "Onboarding", to: "/agency/workforce/onboarding", icon: UserCheck, scrId: "SCR-M06-005" },
+          { label: "Business Units & Teams", to: "/agency/workforce/structure", icon: GitBranch, scrId: "SCR-M06-015" },
+          { label: "Lifecycle Cases", to: "/agency/workforce/lifecycle", icon: ListTree, scrId: "SCR-M06-019" },
+          { label: "Readiness & Eligibility", to: "/agency/workforce/readiness", icon: ShieldCheck, scrId: "SCR-M06-023" },
+          { label: "Roles & Access", to: "/agency/workforce/access", icon: Shield, scrId: "SCR-M06-008" },
+          { label: "Tasks & Exceptions", to: "/agency/workforce/work", icon: ListTodo, scrId: "SCR-M06-027" },
+          { label: "Imports & Reports", to: "/agency/workforce/data", icon: Upload, scrId: "SCR-M06-029" },
+          { label: "Workforce Settings", to: "/agency/workforce/settings", icon: Settings, scrId: "SCR-M06-004" },
+        ],
+      },
+      {
+
         label: "Structure",
         items: [
           { label: "Entities & Hierarchy", to: "/app/agency/entities", icon: Building2, scrId: "SCR_AGENCY_SETUP" },
