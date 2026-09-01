@@ -14,7 +14,7 @@ import {
 import { KpiCard } from "@/components/abox/kpi-card";
 import { MastheadMark } from "@/components/abox/decor";
 import { StatusBadge } from "@/components/abox/status-badge";
-import { AppShell } from "@/components/shell/AppShell";
+import { InternalShell } from "@/components/abox/internal-shell";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { PRIORITY_WORK, RECENT_ACTIVITY, BOOK_OF_BUSINESS } from "@/lib/workspace-data";
@@ -52,7 +52,7 @@ const ESTATES = [
 
 function OperationsHome() {
   return (
-    <AppShell drawerTitle="Today at a glance" assistantContext="your operations home">
+    <InternalShell workspace="agent" eyebrow="Workspace" pageTitle="Today at a glance">
       <header className="relative overflow-hidden border-b border-hairline pb-10 pt-8 md:pb-12 md:pt-12">
         <MastheadMark label="Agency workspace · Northwind Master" />
         <div className="mt-7 flex flex-wrap items-end justify-between gap-8">
@@ -200,6 +200,6 @@ function OperationsHome() {
           </div>
         </div>
       </section>
-    </AppShell>
+    </InternalShell>
   );
 }
