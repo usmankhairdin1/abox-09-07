@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
-import { RightDrawer } from "@/components/abox/right-drawer";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SAMPLE_FORMS, type SampleFormTemplate } from "@/lib/sample-data-ext";
 import { SCREENS } from "@/lib/screens";
 
@@ -134,8 +134,12 @@ function Page() {
         ))}
       </div>
 
-      <RightDrawer open={preview !== null} onClose={() => setPreview(null)} title={preview ? `Preview · ${preview.name}` : "Preview"}>
-        {preview && (
+      <Dialog open={preview !== null} onOpenChange={(o) => !o && setPreview(null)}>
+        <DialogContent className="max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{preview ? `Preview · ${preview.name}` : "Preview"}</DialogTitle>
+          </DialogHeader>
+          {preview && (
           <div className="space-y-3 text-sm">
             <p className="text-xs text-muted-foreground">
               {preview.id} · {preview.version} · {preview.published ? "Published" : "Draft"}
@@ -157,8 +161,9 @@ function Page() {
               {preview.signatureRequired ? "signature required" : "no signature"}
             </p>
           </div>
-        )}
-      </RightDrawer>
+          )}
+        </DialogContent>
+      </Dialog>
     </InternalShell>
   );
 }
