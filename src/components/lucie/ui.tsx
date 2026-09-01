@@ -180,7 +180,7 @@ export function Table<T>({
   }
   return (
     <div className="overflow-x-auto rounded-xl border border-hairline bg-card">
-      <table className="w-full min-w-[720px] border-collapse text-left align-top text-sm">
+      <table className="w-full min-w-[520px] border-collapse text-left align-top text-sm">
         <thead>
           <tr className="border-b border-hairline">
             {columns.map((c) => (
