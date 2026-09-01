@@ -51,7 +51,7 @@ const BADGE_TONE = {
 } as const;
 
 export function StatusTag({ value }: { value: string | null | undefined }) {
-  if (!value) return <span className="text-sm text-muted-foreground">\u2014</span>;
+  if (!value) return <span className="text-sm text-muted-foreground">—</span>;
   return (
     <StatusBadge tone={BADGE_TONE[statusTone(value)]}>
       {value.replaceAll("_", " ").toLowerCase()}
@@ -181,7 +181,7 @@ export function Picker({
       disabled={disabled}
     >
       <SelectTrigger className="w-full">
-        <SelectValue placeholder={placeholder ?? "Select\u2026"} />
+        <SelectValue placeholder={placeholder ?? "Select…"} />
       </SelectTrigger>
       <SelectContent>
         {options.map((o) => (
