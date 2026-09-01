@@ -1,3 +1,4 @@
+import { EmployerFrame } from "@/components/lucie-app/frames";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
@@ -9,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { contributionTotals, useLucie } from "@/lib/lucie-app/store";
 
-export const Route = createFileRoute("/lucie-app/employer/contribution")({
+export const Route = createFileRoute("/app/employer/contribution")({
   head: () => ({
     meta: [
       { title: "Contribution model — Cedarline Logistics" },
@@ -20,7 +21,11 @@ export const Route = createFileRoute("/lucie-app/employer/contribution")({
       { property: "og:description", content: "Design the allowance your employees receive each month." },
     ],
   }),
-  component: ContributionPage,
+  component: () => (
+    <EmployerFrame title="Contribution model">
+      <ContributionPage />
+    </EmployerFrame>
+  ),
 });
 
 const MODELS = [

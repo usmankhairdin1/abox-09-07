@@ -1,3 +1,4 @@
+import { EmployerFrame } from "@/components/lucie-app/frames";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
@@ -6,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { contributionTotals, useLucie } from "@/lib/lucie-app/store";
 
-export const Route = createFileRoute("/lucie-app/employer/results")({
+export const Route = createFileRoute("/app/employer/results")({
   head: () => ({
     meta: [
       { title: "Cost results — Cedarline Logistics" },
@@ -17,7 +18,11 @@ export const Route = createFileRoute("/lucie-app/employer/results")({
       { property: "og:description", content: "What your allowance design costs, per employee and in total." },
     ],
   }),
-  component: ResultsPage,
+  component: () => (
+    <EmployerFrame title="Cost results">
+      <ResultsPage />
+    </EmployerFrame>
+  ),
 });
 
 const benchmark = (age: number) => Math.round(320 + (age - 25) * 9);

@@ -1,3 +1,4 @@
+import { EmployerFrame } from "@/components/lucie-app/frames";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Plus, Trash2, Upload } from "lucide-react";
 import { useState } from "react";
@@ -17,7 +18,7 @@ import {
 import type { CensusRow } from "@/lib/lucie-app/data";
 import { useLucie } from "@/lib/lucie-app/store";
 
-export const Route = createFileRoute("/lucie-app/employer/census")({
+export const Route = createFileRoute("/app/employer/census")({
   head: () => ({
     meta: [
       { title: "Employee census — Cedarline Logistics" },
@@ -28,7 +29,11 @@ export const Route = createFileRoute("/lucie-app/employer/census")({
       { property: "og:description", content: "The eligible employee list behind your allowance model." },
     ],
   }),
-  component: CensusPage,
+  component: () => (
+    <EmployerFrame title="Employee census">
+      <CensusPage />
+    </EmployerFrame>
+  ),
 });
 
 const EMPTY = { name: "", age: "30", zip: "78701", tier: "Employee", class: "Full-time", salary: "60000" };

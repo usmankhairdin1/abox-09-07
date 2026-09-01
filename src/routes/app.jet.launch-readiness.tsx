@@ -1,3 +1,4 @@
+import { JetFrame } from "@/components/lucie-app/frames";
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 
@@ -6,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useLucie } from "@/lib/lucie-app/store";
 
-export const Route = createFileRoute("/lucie-app/platform/gates")({
+export const Route = createFileRoute("/app/jet/launch-readiness")({
   head: () => ({
     meta: [
       { title: "Launch gates — JET platform" },
@@ -24,7 +25,11 @@ export const Route = createFileRoute("/lucie-app/platform/gates")({
       },
     ],
   }),
-  component: GatesPage,
+  component: () => (
+    <JetFrame title="Launch readiness">
+      <GatesPage />
+    </JetFrame>
+  ),
 });
 
 const LABEL: Record<string, string> = {

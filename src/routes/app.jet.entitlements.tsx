@@ -1,3 +1,4 @@
+import { JetFrame } from "@/components/lucie-app/frames";
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 
@@ -5,7 +6,7 @@ import { DataTable, PageHeader, Section, StatCard, StatusChip } from "@/componen
 import { Button } from "@/components/ui/button";
 import { ENTITLEMENTS } from "@/lib/lucie-app/data";
 
-export const Route = createFileRoute("/lucie-app/platform/entitlements")({
+export const Route = createFileRoute("/app/jet/entitlements")({
   head: () => ({
     meta: [
       { title: "Entitlements — JET platform" },
@@ -16,7 +17,11 @@ export const Route = createFileRoute("/lucie-app/platform/entitlements")({
       { property: "og:description", content: "Seat usage and module entitlements per tenant." },
     ],
   }),
-  component: EntitlementsPage,
+  component: () => (
+    <JetFrame title="Entitlements">
+      <EntitlementsPage />
+    </JetFrame>
+  ),
 });
 
 function EntitlementsPage() {

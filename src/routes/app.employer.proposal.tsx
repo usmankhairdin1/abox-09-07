@@ -1,3 +1,4 @@
+import { EmployerFrame } from "@/components/lucie-app/frames";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Download, Send } from "lucide-react";
 import { toast } from "sonner";
@@ -7,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { contributionTotals, useLucie } from "@/lib/lucie-app/store";
 
-export const Route = createFileRoute("/lucie-app/employer/proposal")({
+export const Route = createFileRoute("/app/employer/proposal")({
   head: () => ({
     meta: [
       { title: "Proposal — Cedarline Logistics" },
@@ -18,7 +19,11 @@ export const Route = createFileRoute("/lucie-app/employer/proposal")({
       { property: "og:description", content: "A shareable summary of your allowance design and its cost." },
     ],
   }),
-  component: ProposalPage,
+  component: () => (
+    <EmployerFrame title="Proposal">
+      <ProposalPage />
+    </EmployerFrame>
+  ),
 });
 
 function Row({ label, value }: { label: string; value: React.ReactNode }) {

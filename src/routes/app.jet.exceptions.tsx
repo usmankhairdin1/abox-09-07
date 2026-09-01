@@ -1,3 +1,4 @@
+import { JetFrame } from "@/components/lucie-app/frames";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -15,7 +16,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import type { ExceptionItem } from "@/lib/lucie-app/data";
 import { useLucie } from "@/lib/lucie-app/store";
 
-export const Route = createFileRoute("/lucie-app/platform/exceptions")({
+export const Route = createFileRoute("/app/jet/exceptions")({
   head: () => ({
     meta: [
       { title: "Exception queue — JET platform" },
@@ -26,7 +27,11 @@ export const Route = createFileRoute("/lucie-app/platform/exceptions")({
       { property: "og:description", content: "Every operational failure, owned and resolvable." },
     ],
   }),
-  component: ExceptionsPage,
+  component: () => (
+    <JetFrame title="Exception queue">
+      <ExceptionsPage />
+    </JetFrame>
+  ),
 });
 
 const ALL = "__all";
