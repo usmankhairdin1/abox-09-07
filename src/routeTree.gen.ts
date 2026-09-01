@@ -82,6 +82,7 @@ import { Route as M00TestsRouteImport } from './routes/m00.tests'
 import { Route as M06IndexRouteImport } from './routes/m06.index'
 import { Route as M06ConsoleRouteImport } from './routes/m06.console'
 import { Route as M06RosterRouteImport } from './routes/m06.roster'
+import { Route as M06ScreensRouteImport } from './routes/m06.screens'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as MemberIndexRouteImport } from './routes/member.index'
@@ -571,6 +572,11 @@ const M06ConsoleRoute = M06ConsoleRouteImport.update({
 const M06RosterRoute = M06RosterRouteImport.update({
   id: '/roster',
   path: '/roster',
+  getParentRoute: () => M06Route,
+} as any)
+const M06ScreensRoute = M06ScreensRouteImport.update({
+  id: '/screens',
+  path: '/screens',
   getParentRoute: () => M06Route,
 } as any)
 const M1IndexRoute = M1IndexRouteImport.update({
@@ -1303,6 +1309,7 @@ export interface FileRoutesByFullPath {
   '/m00/tests': typeof M00TestsRoute
   '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
+  '/m06/screens': typeof M06ScreensRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/member/messages': typeof MemberMessagesRoute
   '/member/quotes': typeof MemberQuotesRoute
@@ -1494,6 +1501,7 @@ export interface FileRoutesByTo {
   '/m00/tests': typeof M00TestsRoute
   '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
+  '/m06/screens': typeof M06ScreensRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/member/messages': typeof MemberMessagesRoute
   '/member/quotes': typeof MemberQuotesRoute
@@ -1693,6 +1701,7 @@ export interface FileRoutesById {
   '/m00/tests': typeof M00TestsRoute
   '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
+  '/m06/screens': typeof M06ScreensRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/member/messages': typeof MemberMessagesRoute
   '/member/quotes': typeof MemberQuotesRoute
@@ -1893,6 +1902,7 @@ export interface FileRouteTypes {
     | '/m00/tests'
     | '/m06/console'
     | '/m06/roster'
+    | '/m06/screens'
     | '/m1/$screen'
     | '/member/messages'
     | '/member/quotes'
@@ -2084,6 +2094,7 @@ export interface FileRouteTypes {
     | '/m00/tests'
     | '/m06/console'
     | '/m06/roster'
+    | '/m06/screens'
     | '/m1/$screen'
     | '/member/messages'
     | '/member/quotes'
@@ -2282,6 +2293,7 @@ export interface FileRouteTypes {
     | '/m00/tests'
     | '/m06/console'
     | '/m06/roster'
+    | '/m06/screens'
     | '/m1/$screen'
     | '/member/messages'
     | '/member/quotes'
@@ -3031,6 +3043,13 @@ declare module '@tanstack/react-router' {
       path: '/roster'
       fullPath: '/m06/roster'
       preLoaderRoute: typeof M06RosterRouteImport
+      parentRoute: typeof M06Route
+    }
+    '/m06/screens': {
+      id: '/m06/screens'
+      path: '/screens'
+      fullPath: '/m06/screens'
+      preLoaderRoute: typeof M06ScreensRouteImport
       parentRoute: typeof M06Route
     }
     '/m1/': {
@@ -4090,12 +4109,14 @@ const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
 interface M06RouteChildren {
   M06ConsoleRoute: typeof M06ConsoleRoute
   M06RosterRoute: typeof M06RosterRoute
+  M06ScreensRoute: typeof M06ScreensRoute
   M06IndexRoute: typeof M06IndexRoute
 }
 
 const M06RouteChildren: M06RouteChildren = {
   M06ConsoleRoute: M06ConsoleRoute,
   M06RosterRoute: M06RosterRoute,
+  M06ScreensRoute: M06ScreensRoute,
   M06IndexRoute: M06IndexRoute,
 }
 
