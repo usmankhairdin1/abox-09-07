@@ -19,6 +19,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { InternalShell } from "@/components/abox/internal-shell";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
