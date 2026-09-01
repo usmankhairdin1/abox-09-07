@@ -45,8 +45,8 @@ const ICONS = { FileCheck2, Users, Building2 } as const;
 
 const ESTATES = [
   { to: "/select", title: "Marketplace & sales", detail: "Quote, compare, cart, and member journeys", icon: ShoppingBag },
-  { to: "/app/object", title: "Customers & records", detail: "Customer, quote, application, and policy records", icon: Users },
-  { to: "/app/admin", title: "Administration", detail: "Branding, access control, products, and audit", icon: Building2 },
+  { to: "/app/customers", title: "Customers & records", detail: "Customer, quote, application, and policy records", icon: Users },
+  { to: "/app/jet/platform", title: "Administration", detail: "Branding, access control, products, and audit", icon: Building2 },
   { to: "/app/jet/launch-readiness", title: "Governance", detail: "Launch readiness, entitlements and the exception queue", icon: ShieldCheck },
 ] as const;
 
@@ -64,7 +64,7 @@ function OperationsHome() {
           </div>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" className="rounded-full" asChild>
-              <Link to="/app/object"><Users />Find customer</Link>
+              <Link to="/app/customers"><Users />Find customer</Link>
             </Button>
             <Button className="rounded-full" asChild>
               <Link to="/quote" search={{ step: 1 }}><UserPlus />Start a quote</Link>
@@ -163,7 +163,7 @@ function OperationsHome() {
               <h2 className="text-display mt-2 text-2xl">Recent activity</h2>
             </div>
             <Button variant="ghost" className="rounded-full" asChild>
-              <Link to="/app/object">View all <ArrowRight /></Link>
+              <Link to="/app/customers">View all <ArrowRight /></Link>
             </Button>
           </div>
           <div className="overflow-hidden rounded-2xl border border-hairline bg-card shadow-card">
