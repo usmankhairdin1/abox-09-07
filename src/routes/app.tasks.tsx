@@ -30,15 +30,12 @@ function Page() {
     e.preventDefault();
     if (!title.trim()) return;
     const task: SampleTask = {
-      ...tasks[0]!,
-      id: `T-${Math.random().toString(36).slice(2, 7).toUpperCase()}`,
+      id: `TSK-${Math.random().toString(36).slice(2, 7).toUpperCase()}`,
       title: title.trim(),
       due,
       priority,
       status: "open",
       source: "manual",
-      sla: undefined,
-      leadName: undefined,
     };
     setTasks([task, ...tasks]);
     setTitle("");
