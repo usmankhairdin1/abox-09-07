@@ -2,6 +2,7 @@
  * SCR_APP_COMMISSIONS
  */
 import { createFileRoute } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { DollarSign, Download, AlertCircle } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { DataTable, type Column } from "@/components/abox/data-table";
@@ -14,6 +15,19 @@ export const Route = createFileRoute("/app/commissions")({
   head: () => ({ meta: [{ title: `${SCREENS.SCR_APP_COMMISSIONS.name} — ABox` }, { name: "description", content: SCREENS.SCR_APP_COMMISSIONS.purpose }] }),
   component: Page,
 });
+
+function exportStatement(row: SampleStatement) {
+  const header = "id,period,booked,projected,carriers,policies,status";
+  const line = [row.id, row.period, row.booked, row.projected, row.carriers, row.policies, row.status].join(",");
+  const blob = new Blob([`${header}\n${line}\n`], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${row.id}-commissions.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast.success("Statement exported", { description: `${row.period} · CSV downloaded` });
+}
 
 function Page() {
   const total = SAMPLE_STATEMENTS.reduce((s, x) => s + x.booked, 0);
@@ -29,11 +43,23 @@ function Page() {
     )},
     { key: "actions",  header: "", cell: (r) => (
       <div className="flex justify-end gap-1">
-        <button className="inline-flex h-8 items-center gap-1 rounded-full border border-border px-3 text-xs hover:bg-accent">
+        <button
+          type="button"
+          onClick={() => exportStatement(r)}
+          className="inline-flex h-8 items-center gap-1 rounded-full border border-border px-3 text-xs hover:bg-accent"
+        >
           <Download className="h-3 w-3" /> Export
         </button>
         {r.status === "disputed" && (
-          <button className="inline-flex h-8 items-center gap-1 rounded-full border border-warning/40 bg-warning/10 px-3 text-xs">
+          <button
+            type="button"
+            onClick={() =>
+              toast.warning("Dispute opened for review", {
+                description: `${r.period} · routed to agency finance for reconciliation`,
+              })
+            }
+            className="inline-flex h-8 items-center gap-1 rounded-full border border-warning/40 bg-warning/10 px-3 text-xs"
+          >
             <AlertCircle className="h-3 w-3" /> Review dispute
           </button>
         )}

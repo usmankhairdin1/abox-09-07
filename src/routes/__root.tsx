@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { Toaster } from "@/components/ui/sonner";
 import { GroupBenefitsProvider } from "@/lib/lucie-app/provider";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -131,6 +132,7 @@ function RootComponent() {
       <GroupBenefitsProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
+        <Toaster />
       </GroupBenefitsProvider>
     </QueryClientProvider>
   );
