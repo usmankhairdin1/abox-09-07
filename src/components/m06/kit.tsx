@@ -9,7 +9,18 @@
 
 import { useEffect, type ReactNode } from "react";
 
-import { Id, Note, Tag } from "@/components/lucie/ui";
+import { Id, Note } from "@/components/lucie/ui";
+import { StatusBadge } from "@/components/abox/status-badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import type { LoadState, M06Query } from "@/lib/m06/use-m06";
 
