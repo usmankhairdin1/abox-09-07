@@ -41,12 +41,6 @@ export function KpiCard({ label, value, delta, icon: Icon, hint, tone = "default
       )}
       style={{ boxShadow: "var(--shadow-card)" }}
     >
-      {/* Refined tone accent: a hairline wash along the top edge — no colored side bars. */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-70"
-        style={{ background: `linear-gradient(90deg, ${t.wash}, transparent 65%)` }}
-      />
       <div className="relative flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-eyebrow">{label}</p>
