@@ -47,7 +47,7 @@ const ESTATES = [
   { to: "/select", title: "Marketplace & sales", detail: "Quote, compare, cart, and member journeys", icon: ShoppingBag },
   { to: "/app/object", title: "Customers & records", detail: "Customer, quote, application, and policy records", icon: Users },
   { to: "/app/admin", title: "Administration", detail: "Branding, access control, products, and audit", icon: Building2 },
-  { to: "/lucie", title: "Governance", detail: "Traceability, states, modules, and release controls", icon: ShieldCheck },
+  { to: "/app/jet/launch-readiness", title: "Governance", detail: "Launch readiness, entitlements and the exception queue", icon: ShieldCheck },
 ] as const;
 
 function OperationsHome() {

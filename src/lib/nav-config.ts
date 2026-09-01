@@ -225,6 +225,10 @@ export const WORKSPACES: WorkspaceConfig[] = [
         label: "Group",
         items: [
           { label: "ICHRA Quote", to: "/app/employer/ichra", icon: Building2, scrId: "SCR_EMPLOYER_ICHRA" },
+          { label: "Employee Census", to: "/app/employer/census", icon: Users, scrId: "SCR_EMPLOYER_CENSUS" },
+          { label: "Contribution Model", to: "/app/employer/contribution", icon: Percent, scrId: "SCR_EMPLOYER_CONTRIB" },
+          { label: "Cost Results", to: "/app/employer/results", icon: DollarSign, scrId: "SCR_EMPLOYER_RESULTS" },
+          { label: "Proposal", to: "/app/employer/proposal", icon: FileText, scrId: "SCR_EMPLOYER_PROPOSAL" },
         ],
       },
     ],

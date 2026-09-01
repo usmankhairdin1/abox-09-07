@@ -32,7 +32,7 @@ function AuthPage() {
 
   useEffect(() => {
     void supabase.auth.getUser().then(({ data }) => {
-      if (data.user) void navigate({ to: "/m00/console" });
+      if (data.user) void navigate({ to: "/app/dashboard" });
     });
   }, [navigate]);
 
@@ -45,14 +45,14 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/m00/console` },
+          options: { emailRedirectTo: `${window.location.origin}/app/dashboard` },
         });
         if (error) throw error;
         setMessage({ tone: "info", text: "Account created. Confirm the email, then sign in." });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        void navigate({ to: "/m00/console" });
+        void navigate({ to: "/app/dashboard" });
       }
     } catch (err) {
       setMessage({ tone: "stop", text: err instanceof Error ? err.message : String(err) });
@@ -109,7 +109,7 @@ function AuthPage() {
           <button type="button" className="underline" onClick={() => setMode(mode === "signin" ? "signup" : "signin")}>
             {mode === "signin" ? "Create an operator account" : "I already have an account"}
           </button>
-          <Link to="/m00" className="underline">
+          <Link to="/app/dashboard" className="underline">
             Back to foundation
           </Link>
         </div>
