@@ -93,17 +93,17 @@ export function Section({
       className={cn("min-w-0 overflow-hidden rounded-2xl border border-hairline bg-card shadow-card", className)}
       aria-label={title}
     >
-      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-hairline bg-surface/50 px-5 py-3.5">
-        <h2 className="font-display text-[15px] font-semibold tracking-tight">{title}</h2>
+      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-hairline bg-surface/40 px-6 py-4">
+        <h2 className="text-display text-xl">{title}</h2>
         {id ? <Id>{id}</Id> : null}
-        {meta ? <span className="ml-auto text-[11px] text-muted-foreground">{meta}</span> : null}
+        {meta ? <span className="ml-auto text-sm text-muted-foreground">{meta}</span> : null}
       </header>
       {description ? (
-        <p className="border-b border-hairline px-5 py-3 text-xs leading-relaxed text-muted-foreground">
+        <p className="border-b border-hairline px-6 py-3.5 text-sm leading-relaxed text-muted-foreground">
           {description}
         </p>
       ) : null}
-      <div className="p-5">{children}</div>
+      <div className="p-6">{children}</div>
     </section>
   );
 }
@@ -137,12 +137,10 @@ export function PageHead({
 
 export function Stat({ label, value, hint }: { label: string; value: ReactNode; hint?: string }) {
   return (
-    <div className="rounded-2xl border border-hairline bg-card px-4 py-3.5 shadow-card">
-      <div className="font-display text-2xl font-semibold leading-none tabular-nums">{value}</div>
-      <div className="mt-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-        {label}
-      </div>
-      {hint ? <div className="mt-1 text-[11px] text-muted-foreground/80">{hint}</div> : null}
+    <div className="rounded-2xl border border-hairline bg-card px-5 py-4 shadow-card">
+      <div className="text-eyebrow">{label}</div>
+      <div className="text-display mt-3 text-3xl leading-none tabular-nums">{value}</div>
+      {hint ? <div className="mt-2 text-sm text-muted-foreground">{hint}</div> : null}
     </div>
   );
 }
@@ -150,10 +148,8 @@ export function Stat({ label, value, hint }: { label: string; value: ReactNode; 
 export function KV({ k, v }: { k: string; v: ReactNode }) {
   return (
     <div className="grid gap-0.5 border-b border-hairline py-2 last:border-0 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-3">
-      <dt className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-        {k}
-      </dt>
-      <dd className="min-w-0 text-xs leading-relaxed text-foreground/90">{v}</dd>
+      <dt className="text-eyebrow">{k}</dt>
+      <dd className="min-w-0 text-sm leading-relaxed text-foreground">{v}</dd>
     </div>
   );
 }
@@ -177,20 +173,20 @@ export function Table<T>({
 }) {
   if (!rows.length) {
     return (
-      <p className="rounded-2xl border border-dashed border-hairline-strong/60 bg-surface/40 px-3 py-10 text-center text-xs text-muted-foreground">
+      <p className="rounded-xl border border-dashed border-hairline-strong/60 bg-surface/40 px-4 py-10 text-center text-sm text-muted-foreground">
         {empty}
       </p>
     );
   }
   return (
-    <div className="-mx-4 overflow-x-auto px-4">
-      <table className="w-full min-w-[720px] border-collapse text-left align-top">
+    <div className="overflow-x-auto rounded-xl border border-hairline bg-card">
+      <table className="w-full min-w-[520px] border-collapse text-left align-top text-sm">
         <thead>
           <tr className="border-b border-hairline">
             {columns.map((c) => (
               <th
                 key={c.head}
-                className="px-2 py-2.5 text-[10.5px] font-semibold uppercase tracking-[0.08em] text-muted-foreground first:pl-0 last:pr-0"
+                className="px-5 py-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
               >
                 {c.head}
               </th>
@@ -204,7 +200,7 @@ export function Table<T>({
                 <td
                   key={c.head}
                   className={cn(
-                    "px-2 py-2.5 text-xs leading-relaxed first:pl-0 last:pr-0",
+                    "px-5 py-4 text-sm leading-relaxed",
                     c.className,
                   )}
                 >
@@ -239,12 +235,12 @@ export function Select({
   options: { value: string; label: string }[];
 }) {
   return (
-    <label className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+    <label className="flex items-center gap-2 text-eyebrow">
       {label}
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-full border border-input bg-background px-3 py-1.5 text-xs font-normal normal-case tracking-normal text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+        className="h-9 rounded-full border border-input bg-background px-3.5 text-sm font-normal normal-case tracking-normal text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>
@@ -271,7 +267,7 @@ export function Search({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="min-w-[200px] flex-1 rounded-full border border-input bg-background px-3.5 py-1.5 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
+      className="h-9 w-full min-w-[200px] flex-1 rounded-full border border-input bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
     />
   );
 }
@@ -280,7 +276,7 @@ export function Note({ children, tone = "info" }: { children: ReactNode; tone?: 
   return (
     <p
       className={cn(
-        "rounded-xl border px-4 py-3 text-xs leading-relaxed",
+        "rounded-xl border px-4 py-3 text-sm leading-relaxed",
         TONE_CLASS[tone],
         "text-foreground/85",
       )}

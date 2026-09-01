@@ -9,7 +9,18 @@
 
 import { useEffect, type ReactNode } from "react";
 
-import { Id, Note, Tag } from "@/components/lucie/ui";
+import { Id, Note } from "@/components/lucie/ui";
+import { StatusBadge } from "@/components/abox/status-badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import type { LoadState, M06Query } from "@/lib/m06/use-m06";
 
@@ -31,9 +42,21 @@ export function statusTone(v: string | null | undefined): Tone {
   return "info";
 }
 
+const BADGE_TONE = {
+  neutral: "muted",
+  good: "sage",
+  warn: "warning",
+  stop: "destructive",
+  info: "info",
+} as const;
+
 export function StatusTag({ value }: { value: string | null | undefined }) {
-  if (!value) return <span className="text-muted-foreground">—</span>;
-  return <Tag tone={statusTone(value)}>{value.replaceAll("_", " ").toLowerCase()}</Tag>;
+  if (!value) return <span className="text-sm text-muted-foreground">—</span>;
+  return (
+    <StatusBadge tone={BADGE_TONE[statusTone(value)]}>
+      {value.replaceAll("_", " ").toLowerCase()}
+    </StatusBadge>
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -47,6 +70,7 @@ export function Btn({
   disabled,
   type = "button",
   title,
+  className,
 }: {
   children: ReactNode;
   onClick?: () => void;
@@ -54,22 +78,20 @@ export function Btn({
   disabled?: boolean;
   type?: "button" | "submit";
   title?: string;
+  className?: string;
 }) {
   return (
-    <button
+    <Button
       type={type}
       title={title}
       onClick={onClick}
       disabled={disabled}
-      className={cn(
-        "rounded-lg border px-2.5 py-1.5 text-[11px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",
-        variant === "primary" && "border-primary/40 bg-primary/10 text-foreground hover:bg-primary/20",
-        variant === "ghost" && "border-hairline bg-background text-muted-foreground hover:bg-accent hover:text-foreground",
-        variant === "danger" && "border-destructive/40 bg-destructive/10 text-foreground hover:bg-destructive/20",
-      )}
+      size="sm"
+      variant={variant === "primary" ? "default" : variant === "danger" ? "destructive" : "outline"}
+      className={cn("rounded-full", className)}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 
@@ -77,24 +99,21 @@ export function Field({
   label,
   children,
   hint,
+  className,
 }: {
   label: string;
   children: ReactNode;
   hint?: string;
+  className?: string;
 }) {
   return (
-    <label className="grid gap-1">
-      <span className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-        {label}
-      </span>
+    <label className={cn("grid gap-1.5", className)}>
+      <span className="text-eyebrow">{label}</span>
       {children}
-      {hint ? <span className="text-[11px] text-muted-foreground/80">{hint}</span> : null}
+      {hint ? <span className="text-xs text-muted-foreground">{hint}</span> : null}
     </label>
   );
 }
-
-const inputCls =
-  "w-full rounded-lg border border-input bg-background px-3 py-1.5 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/40";
 
 export function TextInput({
   value,
@@ -108,12 +127,11 @@ export function TextInput({
   type?: string;
 }) {
   return (
-    <input
+    <Input
       type={type}
       value={value}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className={inputCls}
     />
   );
 }
@@ -130,33 +148,49 @@ export function TextArea({
   rows?: number;
 }) {
   return (
-    <textarea
+    <Textarea
       value={value}
       rows={rows}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className={cn(inputCls, "resize-y leading-relaxed")}
+      className="resize-y leading-relaxed"
     />
   );
 }
+
+/** Radix Select rejects an empty item value, so blank options use a sentinel. */
+const EMPTY_OPTION = "__empty__";
 
 export function Picker({
   value,
   onChange,
   options,
+  placeholder,
+  disabled,
 }: {
   value: string;
   onChange: (v: string) => void;
   options: { value: string; label: string }[];
+  placeholder?: string;
+  disabled?: boolean;
 }) {
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value)} className={inputCls}>
-      {options.map((o) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </select>
+    <Select
+      value={value === "" ? EMPTY_OPTION : value}
+      onValueChange={(v) => onChange(v === EMPTY_OPTION ? "" : v)}
+      disabled={disabled}
+    >
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder={placeholder ?? "Select…"} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((o) => (
+          <SelectItem key={o.value || EMPTY_OPTION} value={o.value === "" ? EMPTY_OPTION : o.value}>
+            {o.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
 
@@ -179,7 +213,7 @@ export function StateBlock({
     return (
       <div className="space-y-2" aria-busy>
         {[0, 1, 2].map((i) => (
-          <div key={i} className="h-8 animate-pulse rounded-lg bg-surface" />
+          <div key={i} className="h-10 animate-pulse rounded-xl bg-surface" />
         ))}
       </div>
     );
@@ -203,7 +237,7 @@ export function StateBlock({
   }
   if (state === "empty") {
     return (
-      <p className="rounded-2xl border border-dashed border-hairline-strong/60 bg-surface/40 px-3 py-10 text-center text-xs text-muted-foreground">
+      <p className="rounded-xl border border-dashed border-hairline-strong/60 bg-surface/40 px-4 py-10 text-center text-sm text-muted-foreground">
         {empty}
       </p>
     );
@@ -291,24 +325,26 @@ export function Sheet({
         aria-label={title}
         className="relative flex h-full w-full max-w-xl flex-col border-l border-hairline bg-card shadow-2xl"
       >
-        <header className="flex items-start gap-3 border-b border-hairline px-5 py-4">
+        <header className="flex items-start gap-3 border-b border-hairline px-6 py-5">
           <div className="min-w-0">
-            <h2 className="font-display text-[15px] font-semibold tracking-tight">{title}</h2>
+            <h2 className="text-display text-xl">{title}</h2>
             {subtitle ? (
-              <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+              <div className="mt-1.5 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                 {subtitle}
               </div>
             ) : null}
           </div>
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             onClick={onClose}
-            className="ml-auto rounded-lg border border-hairline px-2 py-1 text-[11px] text-muted-foreground hover:bg-accent"
+            className="ml-auto rounded-full"
           >
             Close
-          </button>
+          </Button>
         </header>
-        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4">{children}</div>
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-6 py-5">{children}</div>
       </aside>
     </div>
   );
@@ -330,7 +366,7 @@ export interface ScreenMeta {
 
 export function MetaRail({ meta, extra }: { meta: ScreenMeta; extra?: ReactNode }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl border border-hairline bg-surface/50 px-4 py-2.5 text-[11px] text-muted-foreground">
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-hairline bg-surface/50 px-4 py-3 text-xs text-muted-foreground">
       <Id>{meta.id}</Id>
       <span>
         <span className="opacity-70">Actor</span> {meta.actor}
