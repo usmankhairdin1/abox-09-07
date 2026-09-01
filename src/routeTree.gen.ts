@@ -157,6 +157,7 @@ import { Route as LucieAppShopEsignRouteImport } from './routes/lucie-app.shop.e
 import { Route as LucieAppShopRegisterRouteImport } from './routes/lucie-app.shop.register'
 import { Route as LucieAppShopReviewRouteImport } from './routes/lucie-app.shop.review'
 import { Route as LucieAppShopStatusRouteImport } from './routes/lucie-app.shop.status'
+import { Route as M06SScreenRouteImport } from './routes/m06.s.$screen'
 import { Route as MarketplaceAdminIndexRouteImport } from './routes/marketplace.admin.index'
 import { Route as MarketplaceAdminActivationRouteImport } from './routes/marketplace.admin.activation'
 import { Route as MarketplaceAdminAssetsRouteImport } from './routes/marketplace.admin.assets'
@@ -960,6 +961,11 @@ const LucieAppShopStatusRoute = LucieAppShopStatusRouteImport.update({
   path: '/shop/status',
   getParentRoute: () => LucieAppRoute,
 } as any)
+const M06SScreenRoute = M06SScreenRouteImport.update({
+  id: '/s/$screen',
+  path: '/s/$screen',
+  getParentRoute: () => M06Route,
+} as any)
 const MarketplaceAdminIndexRoute = MarketplaceAdminIndexRouteImport.update({
   id: '/marketplace/admin/',
   path: '/marketplace/admin/',
@@ -1382,6 +1388,7 @@ export interface FileRoutesByFullPath {
   '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
   '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
   '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
+  '/m06/s/$screen': typeof M06SScreenRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1574,6 +1581,7 @@ export interface FileRoutesByTo {
   '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
   '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
   '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
+  '/m06/s/$screen': typeof M06SScreenRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1774,6 +1782,7 @@ export interface FileRoutesById {
   '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
   '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
   '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
+  '/m06/s/$screen': typeof M06SScreenRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1975,6 +1984,7 @@ export interface FileRouteTypes {
     | '/lucie-app/shop/register'
     | '/lucie-app/shop/review'
     | '/lucie-app/shop/status'
+    | '/m06/s/$screen'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -2167,6 +2177,7 @@ export interface FileRouteTypes {
     | '/lucie-app/shop/register'
     | '/lucie-app/shop/review'
     | '/lucie-app/shop/status'
+    | '/m06/s/$screen'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -2366,6 +2377,7 @@ export interface FileRouteTypes {
     | '/lucie-app/shop/register'
     | '/lucie-app/shop/review'
     | '/lucie-app/shop/status'
+    | '/m06/s/$screen'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -3570,6 +3582,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieAppShopStatusRouteImport
       parentRoute: typeof LucieAppRoute
     }
+    '/m06/s/$screen': {
+      id: '/m06/s/$screen'
+      path: '/s/$screen'
+      fullPath: '/m06/s/$screen'
+      preLoaderRoute: typeof M06SScreenRouteImport
+      parentRoute: typeof M06Route
+    }
     '/marketplace/admin/': {
       id: '/marketplace/admin/'
       path: '/marketplace/admin'
@@ -4111,6 +4130,7 @@ interface M06RouteChildren {
   M06RosterRoute: typeof M06RosterRoute
   M06ScreensRoute: typeof M06ScreensRoute
   M06IndexRoute: typeof M06IndexRoute
+  M06SScreenRoute: typeof M06SScreenRoute
 }
 
 const M06RouteChildren: M06RouteChildren = {
@@ -4118,6 +4138,7 @@ const M06RouteChildren: M06RouteChildren = {
   M06RosterRoute: M06RosterRoute,
   M06ScreensRoute: M06ScreensRoute,
   M06IndexRoute: M06IndexRoute,
+  M06SScreenRoute: M06SScreenRoute,
 }
 
 const M06RouteWithChildren = M06Route._addFileChildren(M06RouteChildren)
