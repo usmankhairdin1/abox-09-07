@@ -104,6 +104,17 @@ import { Route as AgencyOrganizationImportsIndexRouteImport } from './routes/age
 import { Route as AgencyOrganizationImportsImportJobIdRouteImport } from './routes/agency.organization-imports.$importJobId'
 import { Route as AgencyOrganizationsIndexRouteImport } from './routes/agency.organizations.index'
 import { Route as AgencyReferenceOrganizationsRequestRouteImport } from './routes/agency.reference-organizations.request'
+import { Route as AgencyWorkforceIndexRouteImport } from './routes/agency.workforce.index'
+import { Route as AgencyWorkforceAccessRouteImport } from './routes/agency.workforce.access'
+import { Route as AgencyWorkforceDataRouteImport } from './routes/agency.workforce.data'
+import { Route as AgencyWorkforceLifecycleRouteImport } from './routes/agency.workforce.lifecycle'
+import { Route as AgencyWorkforceOnboardingRouteImport } from './routes/agency.workforce.onboarding'
+import { Route as AgencyWorkforcePersonRouteImport } from './routes/agency.workforce.person'
+import { Route as AgencyWorkforceReadinessRouteImport } from './routes/agency.workforce.readiness'
+import { Route as AgencyWorkforceRosterRouteImport } from './routes/agency.workforce.roster'
+import { Route as AgencyWorkforceSettingsRouteImport } from './routes/agency.workforce.settings'
+import { Route as AgencyWorkforceStructureRouteImport } from './routes/agency.workforce.structure'
+import { Route as AgencyWorkforceWorkRouteImport } from './routes/agency.workforce.work'
 import { Route as AppAgencyIndexRouteImport } from './routes/app.agency.index'
 import { Route as AppAgencyEntitiesRouteImport } from './routes/app.agency.entities'
 import { Route as AppAgencyProducersRouteImport } from './routes/app.agency.producers'
@@ -690,6 +701,65 @@ const AgencyReferenceOrganizationsRequestRoute =
     path: '/agency/reference-organizations/request',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AgencyWorkforceIndexRoute = AgencyWorkforceIndexRouteImport.update({
+  id: '/agency/workforce/',
+  path: '/agency/workforce/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceAccessRoute = AgencyWorkforceAccessRouteImport.update({
+  id: '/agency/workforce/access',
+  path: '/agency/workforce/access',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceDataRoute = AgencyWorkforceDataRouteImport.update({
+  id: '/agency/workforce/data',
+  path: '/agency/workforce/data',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceLifecycleRoute =
+  AgencyWorkforceLifecycleRouteImport.update({
+    id: '/agency/workforce/lifecycle',
+    path: '/agency/workforce/lifecycle',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyWorkforceOnboardingRoute =
+  AgencyWorkforceOnboardingRouteImport.update({
+    id: '/agency/workforce/onboarding',
+    path: '/agency/workforce/onboarding',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyWorkforcePersonRoute = AgencyWorkforcePersonRouteImport.update({
+  id: '/agency/workforce/person',
+  path: '/agency/workforce/person',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceReadinessRoute =
+  AgencyWorkforceReadinessRouteImport.update({
+    id: '/agency/workforce/readiness',
+    path: '/agency/workforce/readiness',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyWorkforceRosterRoute = AgencyWorkforceRosterRouteImport.update({
+  id: '/agency/workforce/roster',
+  path: '/agency/workforce/roster',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceSettingsRoute = AgencyWorkforceSettingsRouteImport.update({
+  id: '/agency/workforce/settings',
+  path: '/agency/workforce/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceStructureRoute =
+  AgencyWorkforceStructureRouteImport.update({
+    id: '/agency/workforce/structure',
+    path: '/agency/workforce/structure',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyWorkforceWorkRoute = AgencyWorkforceWorkRouteImport.update({
+  id: '/agency/workforce/work',
+  path: '/agency/workforce/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppAgencyIndexRoute = AppAgencyIndexRouteImport.update({
   id: '/agency/',
   path: '/agency/',
@@ -1342,6 +1412,16 @@ export interface FileRoutesByFullPath {
   '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
   '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
   '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
+  '/agency/workforce/access': typeof AgencyWorkforceAccessRoute
+  '/agency/workforce/data': typeof AgencyWorkforceDataRoute
+  '/agency/workforce/lifecycle': typeof AgencyWorkforceLifecycleRoute
+  '/agency/workforce/onboarding': typeof AgencyWorkforceOnboardingRoute
+  '/agency/workforce/person': typeof AgencyWorkforcePersonRoute
+  '/agency/workforce/readiness': typeof AgencyWorkforceReadinessRoute
+  '/agency/workforce/roster': typeof AgencyWorkforceRosterRoute
+  '/agency/workforce/settings': typeof AgencyWorkforceSettingsRoute
+  '/agency/workforce/structure': typeof AgencyWorkforceStructureRoute
+  '/agency/workforce/work': typeof AgencyWorkforceWorkRoute
   '/app/agency/entities': typeof AppAgencyEntitiesRoute
   '/app/agency/producers': typeof AppAgencyProducersRoute
   '/app/agency/revenue': typeof AppAgencyRevenueRoute
@@ -1402,6 +1482,7 @@ export interface FileRoutesByFullPath {
   '/marketplace/admin/work': typeof MarketplaceAdminWorkRoute
   '/agency/organization-imports/': typeof AgencyOrganizationImportsIndexRoute
   '/agency/organizations/': typeof AgencyOrganizationsIndexRoute
+  '/agency/workforce/': typeof AgencyWorkforceIndexRoute
   '/app/agency/': typeof AppAgencyIndexRoute
   '/app/customers/': typeof AppCustomersIndexRoute
   '/gov/$module/': typeof GovModuleIndexRoute
@@ -1535,6 +1616,16 @@ export interface FileRoutesByTo {
   '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
   '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
   '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
+  '/agency/workforce/access': typeof AgencyWorkforceAccessRoute
+  '/agency/workforce/data': typeof AgencyWorkforceDataRoute
+  '/agency/workforce/lifecycle': typeof AgencyWorkforceLifecycleRoute
+  '/agency/workforce/onboarding': typeof AgencyWorkforceOnboardingRoute
+  '/agency/workforce/person': typeof AgencyWorkforcePersonRoute
+  '/agency/workforce/readiness': typeof AgencyWorkforceReadinessRoute
+  '/agency/workforce/roster': typeof AgencyWorkforceRosterRoute
+  '/agency/workforce/settings': typeof AgencyWorkforceSettingsRoute
+  '/agency/workforce/structure': typeof AgencyWorkforceStructureRoute
+  '/agency/workforce/work': typeof AgencyWorkforceWorkRoute
   '/app/agency/entities': typeof AppAgencyEntitiesRoute
   '/app/agency/producers': typeof AppAgencyProducersRoute
   '/app/agency/revenue': typeof AppAgencyRevenueRoute
@@ -1595,6 +1686,7 @@ export interface FileRoutesByTo {
   '/marketplace/admin/work': typeof MarketplaceAdminWorkRoute
   '/agency/organization-imports': typeof AgencyOrganizationImportsIndexRoute
   '/agency/organizations': typeof AgencyOrganizationsIndexRoute
+  '/agency/workforce': typeof AgencyWorkforceIndexRoute
   '/app/agency': typeof AppAgencyIndexRoute
   '/app/customers': typeof AppCustomersIndexRoute
   '/gov/$module': typeof GovModuleIndexRoute
@@ -1736,6 +1828,16 @@ export interface FileRoutesById {
   '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
   '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
   '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
+  '/agency/workforce/access': typeof AgencyWorkforceAccessRoute
+  '/agency/workforce/data': typeof AgencyWorkforceDataRoute
+  '/agency/workforce/lifecycle': typeof AgencyWorkforceLifecycleRoute
+  '/agency/workforce/onboarding': typeof AgencyWorkforceOnboardingRoute
+  '/agency/workforce/person': typeof AgencyWorkforcePersonRoute
+  '/agency/workforce/readiness': typeof AgencyWorkforceReadinessRoute
+  '/agency/workforce/roster': typeof AgencyWorkforceRosterRoute
+  '/agency/workforce/settings': typeof AgencyWorkforceSettingsRoute
+  '/agency/workforce/structure': typeof AgencyWorkforceStructureRoute
+  '/agency/workforce/work': typeof AgencyWorkforceWorkRoute
   '/app/agency/entities': typeof AppAgencyEntitiesRoute
   '/app/agency/producers': typeof AppAgencyProducersRoute
   '/app/agency/revenue': typeof AppAgencyRevenueRoute
@@ -1796,6 +1898,7 @@ export interface FileRoutesById {
   '/marketplace/admin/work': typeof MarketplaceAdminWorkRoute
   '/agency/organization-imports/': typeof AgencyOrganizationImportsIndexRoute
   '/agency/organizations/': typeof AgencyOrganizationsIndexRoute
+  '/agency/workforce/': typeof AgencyWorkforceIndexRoute
   '/app/agency/': typeof AppAgencyIndexRoute
   '/app/customers/': typeof AppCustomersIndexRoute
   '/gov/$module/': typeof GovModuleIndexRoute
@@ -1938,6 +2041,16 @@ export interface FileRouteTypes {
     | '/agency/organization-defaults/apply'
     | '/agency/organization-imports/$importJobId'
     | '/agency/reference-organizations/request'
+    | '/agency/workforce/access'
+    | '/agency/workforce/data'
+    | '/agency/workforce/lifecycle'
+    | '/agency/workforce/onboarding'
+    | '/agency/workforce/person'
+    | '/agency/workforce/readiness'
+    | '/agency/workforce/roster'
+    | '/agency/workforce/settings'
+    | '/agency/workforce/structure'
+    | '/agency/workforce/work'
     | '/app/agency/entities'
     | '/app/agency/producers'
     | '/app/agency/revenue'
@@ -1998,6 +2111,7 @@ export interface FileRouteTypes {
     | '/marketplace/admin/work'
     | '/agency/organization-imports/'
     | '/agency/organizations/'
+    | '/agency/workforce/'
     | '/app/agency/'
     | '/app/customers/'
     | '/gov/$module/'
@@ -2131,6 +2245,16 @@ export interface FileRouteTypes {
     | '/agency/organization-defaults/apply'
     | '/agency/organization-imports/$importJobId'
     | '/agency/reference-organizations/request'
+    | '/agency/workforce/access'
+    | '/agency/workforce/data'
+    | '/agency/workforce/lifecycle'
+    | '/agency/workforce/onboarding'
+    | '/agency/workforce/person'
+    | '/agency/workforce/readiness'
+    | '/agency/workforce/roster'
+    | '/agency/workforce/settings'
+    | '/agency/workforce/structure'
+    | '/agency/workforce/work'
     | '/app/agency/entities'
     | '/app/agency/producers'
     | '/app/agency/revenue'
@@ -2191,6 +2315,7 @@ export interface FileRouteTypes {
     | '/marketplace/admin/work'
     | '/agency/organization-imports'
     | '/agency/organizations'
+    | '/agency/workforce'
     | '/app/agency'
     | '/app/customers'
     | '/gov/$module'
@@ -2331,6 +2456,16 @@ export interface FileRouteTypes {
     | '/agency/organization-defaults/apply'
     | '/agency/organization-imports/$importJobId'
     | '/agency/reference-organizations/request'
+    | '/agency/workforce/access'
+    | '/agency/workforce/data'
+    | '/agency/workforce/lifecycle'
+    | '/agency/workforce/onboarding'
+    | '/agency/workforce/person'
+    | '/agency/workforce/readiness'
+    | '/agency/workforce/roster'
+    | '/agency/workforce/settings'
+    | '/agency/workforce/structure'
+    | '/agency/workforce/work'
     | '/app/agency/entities'
     | '/app/agency/producers'
     | '/app/agency/revenue'
@@ -2391,6 +2526,7 @@ export interface FileRouteTypes {
     | '/marketplace/admin/work'
     | '/agency/organization-imports/'
     | '/agency/organizations/'
+    | '/agency/workforce/'
     | '/app/agency/'
     | '/app/customers/'
     | '/gov/$module/'
@@ -2495,6 +2631,16 @@ export interface RootRouteChildren {
   AgencyOrganizationDefaultsApplyRoute: typeof AgencyOrganizationDefaultsApplyRoute
   AgencyOrganizationImportsImportJobIdRoute: typeof AgencyOrganizationImportsImportJobIdRoute
   AgencyReferenceOrganizationsRequestRoute: typeof AgencyReferenceOrganizationsRequestRoute
+  AgencyWorkforceAccessRoute: typeof AgencyWorkforceAccessRoute
+  AgencyWorkforceDataRoute: typeof AgencyWorkforceDataRoute
+  AgencyWorkforceLifecycleRoute: typeof AgencyWorkforceLifecycleRoute
+  AgencyWorkforceOnboardingRoute: typeof AgencyWorkforceOnboardingRoute
+  AgencyWorkforcePersonRoute: typeof AgencyWorkforcePersonRoute
+  AgencyWorkforceReadinessRoute: typeof AgencyWorkforceReadinessRoute
+  AgencyWorkforceRosterRoute: typeof AgencyWorkforceRosterRoute
+  AgencyWorkforceSettingsRoute: typeof AgencyWorkforceSettingsRoute
+  AgencyWorkforceStructureRoute: typeof AgencyWorkforceStructureRoute
+  AgencyWorkforceWorkRoute: typeof AgencyWorkforceWorkRoute
   MarketplaceAdminActivationRoute: typeof MarketplaceAdminActivationRoute
   MarketplaceAdminAssetsRoute: typeof MarketplaceAdminAssetsRoute
   MarketplaceAdminBrandRoute: typeof MarketplaceAdminBrandRoute
@@ -2508,6 +2654,7 @@ export interface RootRouteChildren {
   MarketplaceAdminWorkRoute: typeof MarketplaceAdminWorkRoute
   AgencyOrganizationImportsIndexRoute: typeof AgencyOrganizationImportsIndexRoute
   AgencyOrganizationsIndexRoute: typeof AgencyOrganizationsIndexRoute
+  AgencyWorkforceIndexRoute: typeof AgencyWorkforceIndexRoute
   MarketplaceAdminIndexRoute: typeof MarketplaceAdminIndexRoute
   PlatformMarketplacesIndexRoute: typeof PlatformMarketplacesIndexRoute
   PlatformOrganizationsIndexRoute: typeof PlatformOrganizationsIndexRoute
@@ -3209,6 +3356,83 @@ declare module '@tanstack/react-router' {
       path: '/agency/reference-organizations/request'
       fullPath: '/agency/reference-organizations/request'
       preLoaderRoute: typeof AgencyReferenceOrganizationsRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/': {
+      id: '/agency/workforce/'
+      path: '/agency/workforce'
+      fullPath: '/agency/workforce/'
+      preLoaderRoute: typeof AgencyWorkforceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/access': {
+      id: '/agency/workforce/access'
+      path: '/agency/workforce/access'
+      fullPath: '/agency/workforce/access'
+      preLoaderRoute: typeof AgencyWorkforceAccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/data': {
+      id: '/agency/workforce/data'
+      path: '/agency/workforce/data'
+      fullPath: '/agency/workforce/data'
+      preLoaderRoute: typeof AgencyWorkforceDataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/lifecycle': {
+      id: '/agency/workforce/lifecycle'
+      path: '/agency/workforce/lifecycle'
+      fullPath: '/agency/workforce/lifecycle'
+      preLoaderRoute: typeof AgencyWorkforceLifecycleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/onboarding': {
+      id: '/agency/workforce/onboarding'
+      path: '/agency/workforce/onboarding'
+      fullPath: '/agency/workforce/onboarding'
+      preLoaderRoute: typeof AgencyWorkforceOnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/person': {
+      id: '/agency/workforce/person'
+      path: '/agency/workforce/person'
+      fullPath: '/agency/workforce/person'
+      preLoaderRoute: typeof AgencyWorkforcePersonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/readiness': {
+      id: '/agency/workforce/readiness'
+      path: '/agency/workforce/readiness'
+      fullPath: '/agency/workforce/readiness'
+      preLoaderRoute: typeof AgencyWorkforceReadinessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/roster': {
+      id: '/agency/workforce/roster'
+      path: '/agency/workforce/roster'
+      fullPath: '/agency/workforce/roster'
+      preLoaderRoute: typeof AgencyWorkforceRosterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/settings': {
+      id: '/agency/workforce/settings'
+      path: '/agency/workforce/settings'
+      fullPath: '/agency/workforce/settings'
+      preLoaderRoute: typeof AgencyWorkforceSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/structure': {
+      id: '/agency/workforce/structure'
+      path: '/agency/workforce/structure'
+      fullPath: '/agency/workforce/structure'
+      preLoaderRoute: typeof AgencyWorkforceStructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/work': {
+      id: '/agency/workforce/work'
+      path: '/agency/workforce/work'
+      fullPath: '/agency/workforce/work'
+      preLoaderRoute: typeof AgencyWorkforceWorkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/agency/': {
@@ -4264,6 +4488,16 @@ const rootRouteChildren: RootRouteChildren = {
     AgencyOrganizationImportsImportJobIdRoute,
   AgencyReferenceOrganizationsRequestRoute:
     AgencyReferenceOrganizationsRequestRoute,
+  AgencyWorkforceAccessRoute: AgencyWorkforceAccessRoute,
+  AgencyWorkforceDataRoute: AgencyWorkforceDataRoute,
+  AgencyWorkforceLifecycleRoute: AgencyWorkforceLifecycleRoute,
+  AgencyWorkforceOnboardingRoute: AgencyWorkforceOnboardingRoute,
+  AgencyWorkforcePersonRoute: AgencyWorkforcePersonRoute,
+  AgencyWorkforceReadinessRoute: AgencyWorkforceReadinessRoute,
+  AgencyWorkforceRosterRoute: AgencyWorkforceRosterRoute,
+  AgencyWorkforceSettingsRoute: AgencyWorkforceSettingsRoute,
+  AgencyWorkforceStructureRoute: AgencyWorkforceStructureRoute,
+  AgencyWorkforceWorkRoute: AgencyWorkforceWorkRoute,
   MarketplaceAdminActivationRoute: MarketplaceAdminActivationRoute,
   MarketplaceAdminAssetsRoute: MarketplaceAdminAssetsRoute,
   MarketplaceAdminBrandRoute: MarketplaceAdminBrandRoute,
@@ -4277,6 +4511,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarketplaceAdminWorkRoute: MarketplaceAdminWorkRoute,
   AgencyOrganizationImportsIndexRoute: AgencyOrganizationImportsIndexRoute,
   AgencyOrganizationsIndexRoute: AgencyOrganizationsIndexRoute,
+  AgencyWorkforceIndexRoute: AgencyWorkforceIndexRoute,
   MarketplaceAdminIndexRoute: MarketplaceAdminIndexRoute,
   PlatformMarketplacesIndexRoute: PlatformMarketplacesIndexRoute,
   PlatformOrganizationsIndexRoute: PlatformOrganizationsIndexRoute,

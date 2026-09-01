@@ -1,11 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { WorkforcePage } from "@/components/m06/workforce-page";
-import { RosterOnlyConversion } from "@/components/m06/screens/roster";
+import type { M06ScreenProps } from "@/components/m06/screens/common";
+import { AddPersonWizard, RosterOnlyConversion } from "@/components/m06/screens/roster";
 import { DuplicateReview } from "@/components/m06/screens/dataops";
 
-const TITLE = "Add people — ABox";
-const DESC = "Guided add for agents and staff, roster-only conversion and duplicate resolution.";
+const TITLE = "Onboarding — ABox";
+const DESC =
+  "Guided add for agents and staff, roster-only conversion and duplicate resolution.";
+
+function AddAgent(props: M06ScreenProps) {
+  return <AddPersonWizard {...props} />;
+}
+
+function AddStaff(props: M06ScreenProps) {
+  return <AddPersonWizard {...props} staff />;
+}
 
 export const Route = createFileRoute("/agency/workforce/onboarding")({
   head: () => ({
@@ -18,5 +28,11 @@ export const Route = createFileRoute("/agency/workforce/onboarding")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: () => <WorkforcePage title="Add people" lede={DESC} screens={[RosterOnlyConversion, DuplicateReview]} />,
+  component: () => (
+    <WorkforcePage
+      title="Onboarding"
+      lede={DESC}
+      screens={[AddAgent, AddStaff, RosterOnlyConversion, DuplicateReview]}
+    />
+  ),
 });
