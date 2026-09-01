@@ -12,7 +12,8 @@
  */
 
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { getRequestHeader } from "@tanstack/react-start/server";
+
 
 export interface M06Result {
   ok: boolean;
@@ -88,7 +89,6 @@ export const M06_OPERATIONS = [
 export type M06Operation = (typeof M06_OPERATIONS)[number];
 
 export const m06Invoke = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator(
     (input: {
       op: string;
@@ -97,11 +97,34 @@ export const m06Invoke = createServerFn({ method: "POST" })
       organizationId?: string | null;
     }) => input,
   )
-  .handler(async ({ data, context }) => {
+  .handler(async ({ data }) => {
     if (!(M06_OPERATIONS as readonly string[]).includes(data.op)) {
       return { ok: false, code: "UNSUPPORTED_OPERATION", reason: data.op } as M06Result as never;
     }
+
+    // Fail closed without throwing: an unauthenticated caller gets a governed
+    // denial the screens can render, not a blank error boundary.
+    const header = getRequestHeader("authorization") ?? getRequestHeader("Authorization");
+    const token = header?.replace(/^Bearer\s+/i, "").trim();
+    if (!token) {
+      return {
+        ok: false,
+        code: "UNAUTHENTICATED",
+        reason: "Sign in to use governed workforce operations.",
+      } as M06Result as never;
+    }
+
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: actor, error: actorError } = await supabaseAdmin.auth.getUser(token);
+    if (actorError || !actor.user) {
+      return {
+        ok: false,
+        code: "UNAUTHENTICATED",
+        reason: "Your session has expired. Sign in again.",
+      } as M06Result as never;
+    }
+    const context = { userId: actor.user.id };
+
     const { data: result, error } = await supabaseAdmin.rpc("lucie_m06_api", {
       p_op: data.op,
       p_payload: (data.payload ?? {}) as never,
