@@ -132,6 +132,7 @@ function RootComponent() {
       <GroupBenefitsProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
+        <Toaster />
       </GroupBenefitsProvider>
     </QueryClientProvider>
   );
