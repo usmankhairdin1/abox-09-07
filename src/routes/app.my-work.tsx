@@ -32,20 +32,6 @@ function Page() {
   const hotLeads = getLeads(leadState).filter((l) => ["Quoted","Shared"].includes(l.stage));
   return (
     <InternalShell workspace="agent" pageTitle="My work" eyebrow="Today"
-      drawer={
-        <div className="space-y-3 text-sm">
-          <p className="text-eyebrow">Alerts</p>
-          <ul className="space-y-2">
-            {SAMPLE_NOTIFICATIONS.slice(0, 4).map((n) => (
-              <li key={n.id} className="rounded-lg border border-border p-2">
-                <p className="font-medium">{n.title}</p>
-                <p className="text-xs text-muted-foreground">{n.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      }
-      drawerTitle="Alerts & context"
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard label="Open tasks" value={openTasks.length} icon={CheckSquare} tone="primary" hint={`${openTasks.filter((t) => t.priority === "high").length} high priority`} />

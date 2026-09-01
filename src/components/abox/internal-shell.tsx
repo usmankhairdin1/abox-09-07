@@ -6,14 +6,13 @@
  * center, action orbs on the right. The content area is a rounded
  * canvas plate with an aurora backdrop and a numeric route badge.
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   Search, Bell, CheckSquare, Menu, ChevronsUpDown, Check,
-  Building2, PanelRightOpen, PanelRightClose,
+  Building2, PanelLeftClose, PanelLeftOpen,
 } from "lucide-react";
 import { AboxMark } from "./logo";
-import { RightDrawer } from "./right-drawer";
 import { PlanOAssistant } from "./plan-o-assistant";
 import { ThemeToggle } from "./theme-toggle";
 import { MastheadMark, DotField, Aurora } from "./decor";
@@ -34,16 +33,13 @@ interface Props {
   entity?: string;
   pageTitle?: string;
   eyebrow?: string;
-  drawer?: React.ReactNode;
-  drawerTitle?: string;
   actions?: React.ReactNode;
 }
 
 export function InternalShell({
   children, workspace = "agent", entity = "Cedar Grove Insurance",
-  pageTitle, eyebrow, drawer, drawerTitle, actions,
+  pageTitle, eyebrow, actions,
 }: Props) {
-  const [drawerOpen, setDrawerOpen] = useState(true);
   const [railCollapsed, setRailCollapsed] = useState(false);
   const [activeEntity, setActiveEntity] = useState(entity);
   const current = WORKSPACES.find((w) => w.key === workspace) ?? WORKSPACES[0];
@@ -104,14 +100,6 @@ export function InternalShell({
               <OrbButton label="Tasks" href="/app/tasks"><CheckSquare className="h-5 w-5" /><Dot /></OrbButton>
               <NotificationsButton />
               <ThemeToggle />
-              <button
-                onClick={() => setDrawerOpen((v) => !v)}
-                className="hidden h-10 w-10 items-center justify-center rounded-full hover:bg-accent lg:inline-flex"
-                aria-label={drawerOpen ? "Close context drawer" : "Open context drawer"}
-                aria-expanded={drawerOpen}
-              >
-                {drawerOpen ? <PanelRightClose className="h-5 w-5" /> : <PanelRightOpen className="h-5 w-5" />}
-              </button>
               <UserPill />
             </div>
           </div>
@@ -143,9 +131,6 @@ export function InternalShell({
               <main id="main" className="min-w-0 flex-1">
                 <FadeRise delay={0.06}>{children}</FadeRise>
               </main>
-              {drawer && drawerOpen && (
-                <RightDrawer title={drawerTitle}>{drawer}</RightDrawer>
-              )}
             </div>
           </div>
         </div>
@@ -196,7 +181,7 @@ function FloatingRail({
           aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
           aria-expanded={!collapsed}
         >
-          {collapsed ? <PanelRightClose className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
+          {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
         </button>
       </div>
 
@@ -453,6 +438,32 @@ function NotificationsButton() {
 
 function UserPill() {
   const navigate = useNavigate();
+  const [label, setLabel] = useState("Account");
+  const [initials, setInitials] = useState("··");
+
+  useEffect(() => {
+    let active = true;
+    void import("@/integrations/supabase/client").then(async ({ supabase }) => {
+      const { data } = await supabase.auth.getUser();
+      if (!active || !data.user) return;
+      const meta = data.user.user_metadata as { full_name?: string } | null;
+      const name = meta?.full_name?.trim() || data.user.email || "Account";
+      setLabel(name);
+      setInitials(
+        name
+          .replace(/@.*$/, "")
+          .split(/[\s._-]+/)
+          .filter(Boolean)
+          .slice(0, 2)
+          .map((part) => part[0]!.toUpperCase())
+          .join("") || "AB",
+      );
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -464,19 +475,26 @@ function UserPill() {
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold"
             style={{ background: "var(--primary)", color: "var(--primary-foreground)", boxShadow: "var(--shadow-glow)" }}
           >
-            EA
+            {initials}
           </span>
-          <span className="hidden lg:inline">Elena A.</span>
+          <span className="hidden max-w-[140px] truncate lg:inline">{label}</span>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>Signed in as Elena Alvarez</DropdownMenuLabel>
+        <DropdownMenuLabel className="truncate">Signed in as {label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem disabled>Profile (coming soon)</DropdownMenuItem>
-        <DropdownMenuItem disabled>Preferences (coming soon)</DropdownMenuItem>
-        <DropdownMenuItem disabled>Notification settings (coming soon)</DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => navigate({ to: "/app/agent-profile" })}>Profile</DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => navigate({ to: "/app/jet/notifications" })}>
+          Notification settings
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => navigate({ to: "/" })}>Sign out</DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={() => {
+            void import("@/lib/auth-gate").then(({ signOutAndLeave }) => signOutAndLeave());
+          }}
+        >
+          Sign out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

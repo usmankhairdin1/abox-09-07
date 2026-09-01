@@ -27,10 +27,14 @@ export const Route = createFileRoute("/auth")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
+    typeof search["redirect"] === "string" ? { redirect: search["redirect"] as string } : {},
   component: Page,
 });
 
 function Page() {
+  const { redirect } = Route.useSearch();
+  const destination = redirect && redirect.startsWith("/") ? redirect : "/member";
   const [mode, setMode] = useState<"signin" | "register">("signin");
   const [method, setMethod] = useState<"email" | "phone">("email");
   const [fullName, setFullName] = useState("");
@@ -47,9 +51,10 @@ function Page() {
 
   useEffect(() => {
     void supabase.auth.getUser().then(({ data }) => {
-      if (data.user) void navigate({ to: "/member" });
+      if (data.user) void navigate({ to: destination as never });
     });
-  }, [navigate]);
+  }, [navigate, destination]);
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,7 +90,7 @@ function Page() {
         setBusy(false);
         if (authError) return setError(authError.message);
       }
-      void navigate({ to: "/member" });
+      void navigate({ to: destination as never });
     } else {
       if (mode === "register" && !fullName.trim()) return setError("Enter your full name.");
       if (!phone.match(/^\+?\d{7,15}$/)) return setError("Enter a valid phone number.");
@@ -106,7 +111,7 @@ function Page() {
       }
       setBusy(false);
       if (verifyError) return setError(verifyError.message);
-      void navigate({ to: "/member" });
+      void navigate({ to: destination as never });
     }
   };
 
