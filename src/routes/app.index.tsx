@@ -14,7 +14,7 @@ import {
 import { KpiCard } from "@/components/abox/kpi-card";
 import { MastheadMark } from "@/components/abox/decor";
 import { StatusBadge } from "@/components/abox/status-badge";
-import { AppShell } from "@/components/shell/AppShell";
+import { InternalShell } from "@/components/abox/internal-shell";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { PRIORITY_WORK, RECENT_ACTIVITY, BOOK_OF_BUSINESS } from "@/lib/workspace-data";
@@ -47,12 +47,12 @@ const ESTATES = [
   { to: "/select", title: "Marketplace & sales", detail: "Quote, compare, cart, and member journeys", icon: ShoppingBag },
   { to: "/app/object", title: "Customers & records", detail: "Customer, quote, application, and policy records", icon: Users },
   { to: "/app/admin", title: "Administration", detail: "Branding, access control, products, and audit", icon: Building2 },
-  { to: "/lucie", title: "Governance", detail: "Traceability, states, modules, and release controls", icon: ShieldCheck },
+  { to: "/app/jet/launch-readiness", title: "Governance", detail: "Launch readiness, entitlements and the exception queue", icon: ShieldCheck },
 ] as const;
 
 function OperationsHome() {
   return (
-    <AppShell drawerTitle="Today at a glance" assistantContext="your operations home">
+    <InternalShell workspace="agent" eyebrow="Workspace" pageTitle="Today at a glance">
       <header className="relative overflow-hidden border-b border-hairline pb-10 pt-8 md:pb-12 md:pt-12">
         <MastheadMark label="Agency workspace · Northwind Master" />
         <div className="mt-7 flex flex-wrap items-end justify-between gap-8">
@@ -200,6 +200,6 @@ function OperationsHome() {
           </div>
         </div>
       </section>
-    </AppShell>
+    </InternalShell>
   );
 }

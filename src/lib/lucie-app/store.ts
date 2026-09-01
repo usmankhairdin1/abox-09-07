@@ -149,6 +149,7 @@ export type Action =
   | { type: "ichra:route" }
   | { type: "exception:resolve"; id: string }
   | { type: "gate:set"; id: string; state: LaunchGate["state"] }
+  | { type: "restore"; state: LucieState }
   | { type: "reset" };
 
 const stamp = () => {
@@ -180,6 +181,9 @@ const logged = (
 
 export function reducer(state: LucieState, action: Action): LucieState {
   switch (action.type) {
+    case "restore":
+      return action.state;
+
     case "persona":
       return { ...state, persona: action.persona };
 

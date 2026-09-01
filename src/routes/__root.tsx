@@ -10,7 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { ShellProvider } from "@/components/shell/shell-context";
+import { GroupBenefitsProvider } from "@/lib/lucie-app/provider";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -128,10 +128,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ShellProvider>
+      <GroupBenefitsProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
-      </ShellProvider>
+      </GroupBenefitsProvider>
     </QueryClientProvider>
   );
 }

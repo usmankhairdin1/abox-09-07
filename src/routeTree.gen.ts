@@ -26,10 +26,6 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as HandoffRouteImport } from './routes/handoff'
 import { Route as IchraRouteImport } from './routes/ichra'
 import { Route as JourneyChoiceRouteImport } from './routes/journey-choice'
-import { Route as LucieRouteImport } from './routes/lucie'
-import { Route as LucieAppRouteImport } from './routes/lucie-app'
-import { Route as M00RouteImport } from './routes/m00'
-import { Route as M06RouteImport } from './routes/m06'
 import { Route as MemberRouteImport } from './routes/member'
 import { Route as MyWorkRouteImport } from './routes/my-work'
 import { Route as NoOptionsRouteImport } from './routes/no-options'
@@ -48,6 +44,7 @@ import { Route as AgencyOrganizationStructureRouteImport } from './routes/agency
 import { Route as AgencyOrganizationWorkRouteImport } from './routes/agency.organization-work'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppAgentProfileRouteImport } from './routes/app.agent-profile'
 import { Route as AppCommissionsRouteImport } from './routes/app.commissions'
 import { Route as AppCommunicationsRouteImport } from './routes/app.communications'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
@@ -59,38 +56,10 @@ import { Route as AppQuickQuoteRouteImport } from './routes/app.quick-quote'
 import { Route as AppScheduleRouteImport } from './routes/app.schedule'
 import { Route as AppSendQuoteRouteImport } from './routes/app.send-quote'
 import { Route as AppTasksRouteImport } from './routes/app.tasks'
-import { Route as GovIndexRouteImport } from './routes/gov.index'
-import { Route as GovModuleRouteImport } from './routes/gov.$module'
-import { Route as HfIndexRouteImport } from './routes/hf.index'
-import { Route as HfScreenRouteImport } from './routes/hf.$screen'
-import { Route as LucieAppIndexRouteImport } from './routes/lucie-app.index'
-import { Route as LucieIndexRouteImport } from './routes/lucie.index'
-import { Route as LucieGovernanceRouteImport } from './routes/lucie.governance'
-import { Route as LucieModule1RouteImport } from './routes/lucie.module1'
-import { Route as LucieModulesRouteImport } from './routes/lucie.modules'
-import { Route as LucieReconciliationRouteImport } from './routes/lucie.reconciliation'
-import { Route as LucieSlicesRouteImport } from './routes/lucie.slices'
-import { Route as LucieStatesRouteImport } from './routes/lucie.states'
-import { Route as LucieSurfacesRouteImport } from './routes/lucie.surfaces'
-import { Route as LucieTraceRouteImport } from './routes/lucie.trace'
-import { Route as LucieWorkstreamsRouteImport } from './routes/lucie.workstreams'
-import { Route as M00IndexRouteImport } from './routes/m00.index'
-import { Route as M00ApiRouteImport } from './routes/m00.api'
-import { Route as M00ConsoleRouteImport } from './routes/m00.console'
-import { Route as M00EventsRouteImport } from './routes/m00.events'
-import { Route as M00TestsRouteImport } from './routes/m00.tests'
-import { Route as M06IndexRouteImport } from './routes/m06.index'
-import { Route as M06ConsoleRouteImport } from './routes/m06.console'
-import { Route as M06RosterRouteImport } from './routes/m06.roster'
-import { Route as M06ScreensRouteImport } from './routes/m06.screens'
-import { Route as M1IndexRouteImport } from './routes/m1.index'
-import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as MemberIndexRouteImport } from './routes/member.index'
 import { Route as MemberMessagesRouteImport } from './routes/member.messages'
 import { Route as MemberQuotesRouteImport } from './routes/member.quotes'
 import { Route as MemberSettingsRouteImport } from './routes/member.settings'
-import { Route as P1IndexRouteImport } from './routes/p1.index'
-import { Route as P1ScreenRouteImport } from './routes/p1.$screen'
 import { Route as PlansIndexRouteImport } from './routes/plans.index'
 import { Route as PlansPlanIdRouteImport } from './routes/plans.$planId'
 import { Route as RReferralTokenRouteImport } from './routes/r.$referralToken'
@@ -104,6 +73,17 @@ import { Route as AgencyOrganizationImportsIndexRouteImport } from './routes/age
 import { Route as AgencyOrganizationImportsImportJobIdRouteImport } from './routes/agency.organization-imports.$importJobId'
 import { Route as AgencyOrganizationsIndexRouteImport } from './routes/agency.organizations.index'
 import { Route as AgencyReferenceOrganizationsRequestRouteImport } from './routes/agency.reference-organizations.request'
+import { Route as AgencyWorkforceIndexRouteImport } from './routes/agency.workforce.index'
+import { Route as AgencyWorkforceAccessRouteImport } from './routes/agency.workforce.access'
+import { Route as AgencyWorkforceDataRouteImport } from './routes/agency.workforce.data'
+import { Route as AgencyWorkforceLifecycleRouteImport } from './routes/agency.workforce.lifecycle'
+import { Route as AgencyWorkforceOnboardingRouteImport } from './routes/agency.workforce.onboarding'
+import { Route as AgencyWorkforcePersonRouteImport } from './routes/agency.workforce.person'
+import { Route as AgencyWorkforceReadinessRouteImport } from './routes/agency.workforce.readiness'
+import { Route as AgencyWorkforceRosterRouteImport } from './routes/agency.workforce.roster'
+import { Route as AgencyWorkforceSettingsRouteImport } from './routes/agency.workforce.settings'
+import { Route as AgencyWorkforceStructureRouteImport } from './routes/agency.workforce.structure'
+import { Route as AgencyWorkforceWorkRouteImport } from './routes/agency.workforce.work'
 import { Route as AppAgencyIndexRouteImport } from './routes/app.agency.index'
 import { Route as AppAgencyEntitiesRouteImport } from './routes/app.agency.entities'
 import { Route as AppAgencyProducersRouteImport } from './routes/app.agency.producers'
@@ -111,53 +91,26 @@ import { Route as AppAgencyRevenueRouteImport } from './routes/app.agency.revenu
 import { Route as AppAgencyStatementsRouteImport } from './routes/app.agency.statements'
 import { Route as AppCustomersIndexRouteImport } from './routes/app.customers.index'
 import { Route as AppCustomersIdRouteImport } from './routes/app.customers.$id'
+import { Route as AppEmployerCensusRouteImport } from './routes/app.employer.census'
+import { Route as AppEmployerContributionRouteImport } from './routes/app.employer.contribution'
 import { Route as AppEmployerIchraRouteImport } from './routes/app.employer.ichra'
+import { Route as AppEmployerProposalRouteImport } from './routes/app.employer.proposal'
+import { Route as AppEmployerResultsRouteImport } from './routes/app.employer.results'
 import { Route as AppJetAclRouteImport } from './routes/app.jet.acl'
 import { Route as AppJetAiGovernanceRouteImport } from './routes/app.jet.ai-governance'
 import { Route as AppJetAppointmentsRouteImport } from './routes/app.jet.appointments'
 import { Route as AppJetAuditRouteImport } from './routes/app.jet.audit'
 import { Route as AppJetBrandingRouteImport } from './routes/app.jet.branding'
+import { Route as AppJetEntitlementsRouteImport } from './routes/app.jet.entitlements'
+import { Route as AppJetExceptionsRouteImport } from './routes/app.jet.exceptions'
 import { Route as AppJetFormConfiguratorRouteImport } from './routes/app.jet.form-configurator'
 import { Route as AppJetIntegrationsRouteImport } from './routes/app.jet.integrations'
+import { Route as AppJetLaunchReadinessRouteImport } from './routes/app.jet.launch-readiness'
 import { Route as AppJetModule1RouteImport } from './routes/app.jet.module1'
 import { Route as AppJetNotificationsRouteImport } from './routes/app.jet.notifications'
 import { Route as AppJetPlatformRouteImport } from './routes/app.jet.platform'
 import { Route as AppJetProductBuilderRouteImport } from './routes/app.jet.product-builder'
 import { Route as AppJetProductsRouteImport } from './routes/app.jet.products'
-import { Route as GovModuleIndexRouteImport } from './routes/gov.$module.index'
-import { Route as GovModuleDeltasRouteImport } from './routes/gov.$module.deltas'
-import { Route as GovModuleFlowsRouteImport } from './routes/gov.$module.flows'
-import { Route as GovModuleRegistersRouteImport } from './routes/gov.$module.registers'
-import { Route as GovModuleScreensRouteImport } from './routes/gov.$module.screens'
-import { Route as GovModuleTraceabilityRouteImport } from './routes/gov.$module.traceability'
-import { Route as LucieAppAgencyIndexRouteImport } from './routes/lucie-app.agency.index'
-import { Route as LucieAppAgencyMarketplacesRouteImport } from './routes/lucie-app.agency.marketplaces'
-import { Route as LucieAppAgencyProducersRouteImport } from './routes/lucie-app.agency.producers'
-import { Route as LucieAppEmployerIndexRouteImport } from './routes/lucie-app.employer.index'
-import { Route as LucieAppEmployerCensusRouteImport } from './routes/lucie-app.employer.census'
-import { Route as LucieAppEmployerContributionRouteImport } from './routes/lucie-app.employer.contribution'
-import { Route as LucieAppEmployerProposalRouteImport } from './routes/lucie-app.employer.proposal'
-import { Route as LucieAppEmployerResultsRouteImport } from './routes/lucie-app.employer.results'
-import { Route as LucieAppPlatformIndexRouteImport } from './routes/lucie-app.platform.index'
-import { Route as LucieAppPlatformAuditRouteImport } from './routes/lucie-app.platform.audit'
-import { Route as LucieAppPlatformEntitlementsRouteImport } from './routes/lucie-app.platform.entitlements'
-import { Route as LucieAppPlatformExceptionsRouteImport } from './routes/lucie-app.platform.exceptions'
-import { Route as LucieAppPlatformGatesRouteImport } from './routes/lucie-app.platform.gates'
-import { Route as LucieAppPlatformHealthRouteImport } from './routes/lucie-app.platform.health'
-import { Route as LucieAppPlatformRolesRouteImport } from './routes/lucie-app.platform.roles'
-import { Route as LucieAppPlatformTenantsRouteImport } from './routes/lucie-app.platform.tenants'
-import { Route as LucieAppShopIndexRouteImport } from './routes/lucie-app.shop.index'
-import { Route as LucieAppShopApplicationRouteImport } from './routes/lucie-app.shop.application'
-import { Route as LucieAppShopCartRouteImport } from './routes/lucie-app.shop.cart'
-import { Route as LucieAppShopCompareRouteImport } from './routes/lucie-app.shop.compare'
-import { Route as LucieAppShopConfirmationRouteImport } from './routes/lucie-app.shop.confirmation'
-import { Route as LucieAppShopDocumentsRouteImport } from './routes/lucie-app.shop.documents'
-import { Route as LucieAppShopEligibilityRouteImport } from './routes/lucie-app.shop.eligibility'
-import { Route as LucieAppShopEsignRouteImport } from './routes/lucie-app.shop.esign'
-import { Route as LucieAppShopRegisterRouteImport } from './routes/lucie-app.shop.register'
-import { Route as LucieAppShopReviewRouteImport } from './routes/lucie-app.shop.review'
-import { Route as LucieAppShopStatusRouteImport } from './routes/lucie-app.shop.status'
-import { Route as M06SScreenRouteImport } from './routes/m06.s.$screen'
 import { Route as MarketplaceAdminIndexRouteImport } from './routes/marketplace.admin.index'
 import { Route as MarketplaceAdminActivationRouteImport } from './routes/marketplace.admin.activation'
 import { Route as MarketplaceAdminAssetsRouteImport } from './routes/marketplace.admin.assets'
@@ -190,10 +143,6 @@ import { Route as AgencyOrganizationsOrganizationIdLocationsRouteImport } from '
 import { Route as AgencyOrganizationsOrganizationIdReadinessRouteImport } from './routes/agency.organizations.$organizationId.readiness'
 import { Route as AgencyOrganizationsOrganizationIdRelationshipsRouteImport } from './routes/agency.organizations.$organizationId.relationships'
 import { Route as AgencyOrganizationsOrganizationIdSettingsRouteImport } from './routes/agency.organizations.$organizationId.settings'
-import { Route as GovModuleFlowsFlowRouteImport } from './routes/gov.$module.flows.$flow'
-import { Route as GovModuleScreensScreenRouteImport } from './routes/gov.$module.screens.$screen'
-import { Route as LucieAppShopPlansIndexRouteImport } from './routes/lucie-app.shop.plans.index'
-import { Route as LucieAppShopPlansPlanIdRouteImport } from './routes/lucie-app.shop.plans.$planId'
 import { Route as MarketplaceAdminAvailabilityIndexRouteImport } from './routes/marketplace.admin.availability.index'
 import { Route as MarketplaceAdminAvailabilityAvailabilityEntryIdRouteImport } from './routes/marketplace.admin.availability.$availabilityEntryId'
 import { Route as MarketplaceAdminDomainsIndexRouteImport } from './routes/marketplace.admin.domains.index'
@@ -293,26 +242,6 @@ const JourneyChoiceRoute = JourneyChoiceRouteImport.update({
   path: '/journey-choice',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LucieRoute = LucieRouteImport.update({
-  id: '/lucie',
-  path: '/lucie',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LucieAppRoute = LucieAppRouteImport.update({
-  id: '/lucie-app',
-  path: '/lucie-app',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const M00Route = M00RouteImport.update({
-  id: '/m00',
-  path: '/m00',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const M06Route = M06RouteImport.update({
-  id: '/m06',
-  path: '/m06',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MemberRoute = MemberRouteImport.update({
   id: '/member',
   path: '/member',
@@ -405,6 +334,11 @@ const AppAdminRoute = AppAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAgentProfileRoute = AppAgentProfileRouteImport.update({
+  id: '/agent-profile',
+  path: '/agent-profile',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCommissionsRoute = AppCommissionsRouteImport.update({
   id: '/commissions',
   path: '/commissions',
@@ -460,136 +394,6 @@ const AppTasksRoute = AppTasksRouteImport.update({
   path: '/tasks',
   getParentRoute: () => AppRoute,
 } as any)
-const GovIndexRoute = GovIndexRouteImport.update({
-  id: '/gov/',
-  path: '/gov/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GovModuleRoute = GovModuleRouteImport.update({
-  id: '/gov/$module',
-  path: '/gov/$module',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HfIndexRoute = HfIndexRouteImport.update({
-  id: '/hf/',
-  path: '/hf/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HfScreenRoute = HfScreenRouteImport.update({
-  id: '/hf/$screen',
-  path: '/hf/$screen',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LucieAppIndexRoute = LucieAppIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieIndexRoute = LucieIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => LucieRoute,
-} as any)
-const LucieGovernanceRoute = LucieGovernanceRouteImport.update({
-  id: '/governance',
-  path: '/governance',
-  getParentRoute: () => LucieRoute,
-} as any)
-const LucieModule1Route = LucieModule1RouteImport.update({
-  id: '/module1',
-  path: '/module1',
-  getParentRoute: () => LucieRoute,
-} as any)
-const LucieModulesRoute = LucieModulesRouteImport.update({
-  id: '/modules',
-  path: '/modules',
-  getParentRoute: () => LucieRoute,
-} as any)
-const LucieReconciliationRoute = LucieReconciliationRouteImport.update({
-  id: '/reconciliation',
-  path: '/reconciliation',
-  getParentRoute: () => LucieRoute,
-} as any)
-const LucieSlicesRoute = LucieSlicesRouteImport.update({
-  id: '/slices',
-  path: '/slices',
-  getParentRoute: () => LucieRoute,
-} as any)
-const LucieStatesRoute = LucieStatesRouteImport.update({
-  id: '/states',
-  path: '/states',
-  getParentRoute: () => LucieRoute,
-} as any)
-const LucieSurfacesRoute = LucieSurfacesRouteImport.update({
-  id: '/surfaces',
-  path: '/surfaces',
-  getParentRoute: () => LucieRoute,
-} as any)
-const LucieTraceRoute = LucieTraceRouteImport.update({
-  id: '/trace',
-  path: '/trace',
-  getParentRoute: () => LucieRoute,
-} as any)
-const LucieWorkstreamsRoute = LucieWorkstreamsRouteImport.update({
-  id: '/workstreams',
-  path: '/workstreams',
-  getParentRoute: () => LucieRoute,
-} as any)
-const M00IndexRoute = M00IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => M00Route,
-} as any)
-const M00ApiRoute = M00ApiRouteImport.update({
-  id: '/api',
-  path: '/api',
-  getParentRoute: () => M00Route,
-} as any)
-const M00ConsoleRoute = M00ConsoleRouteImport.update({
-  id: '/console',
-  path: '/console',
-  getParentRoute: () => M00Route,
-} as any)
-const M00EventsRoute = M00EventsRouteImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => M00Route,
-} as any)
-const M00TestsRoute = M00TestsRouteImport.update({
-  id: '/tests',
-  path: '/tests',
-  getParentRoute: () => M00Route,
-} as any)
-const M06IndexRoute = M06IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => M06Route,
-} as any)
-const M06ConsoleRoute = M06ConsoleRouteImport.update({
-  id: '/console',
-  path: '/console',
-  getParentRoute: () => M06Route,
-} as any)
-const M06RosterRoute = M06RosterRouteImport.update({
-  id: '/roster',
-  path: '/roster',
-  getParentRoute: () => M06Route,
-} as any)
-const M06ScreensRoute = M06ScreensRouteImport.update({
-  id: '/screens',
-  path: '/screens',
-  getParentRoute: () => M06Route,
-} as any)
-const M1IndexRoute = M1IndexRouteImport.update({
-  id: '/m1/',
-  path: '/m1/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const M1ScreenRoute = M1ScreenRouteImport.update({
-  id: '/m1/$screen',
-  path: '/m1/$screen',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MemberIndexRoute = MemberIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -609,16 +413,6 @@ const MemberSettingsRoute = MemberSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => MemberRoute,
-} as any)
-const P1IndexRoute = P1IndexRouteImport.update({
-  id: '/p1/',
-  path: '/p1/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const P1ScreenRoute = P1ScreenRouteImport.update({
-  id: '/p1/$screen',
-  path: '/p1/$screen',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const PlansIndexRoute = PlansIndexRouteImport.update({
   id: '/plans/',
@@ -690,6 +484,65 @@ const AgencyReferenceOrganizationsRequestRoute =
     path: '/agency/reference-organizations/request',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AgencyWorkforceIndexRoute = AgencyWorkforceIndexRouteImport.update({
+  id: '/agency/workforce/',
+  path: '/agency/workforce/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceAccessRoute = AgencyWorkforceAccessRouteImport.update({
+  id: '/agency/workforce/access',
+  path: '/agency/workforce/access',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceDataRoute = AgencyWorkforceDataRouteImport.update({
+  id: '/agency/workforce/data',
+  path: '/agency/workforce/data',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceLifecycleRoute =
+  AgencyWorkforceLifecycleRouteImport.update({
+    id: '/agency/workforce/lifecycle',
+    path: '/agency/workforce/lifecycle',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyWorkforceOnboardingRoute =
+  AgencyWorkforceOnboardingRouteImport.update({
+    id: '/agency/workforce/onboarding',
+    path: '/agency/workforce/onboarding',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyWorkforcePersonRoute = AgencyWorkforcePersonRouteImport.update({
+  id: '/agency/workforce/person',
+  path: '/agency/workforce/person',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceReadinessRoute =
+  AgencyWorkforceReadinessRouteImport.update({
+    id: '/agency/workforce/readiness',
+    path: '/agency/workforce/readiness',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyWorkforceRosterRoute = AgencyWorkforceRosterRouteImport.update({
+  id: '/agency/workforce/roster',
+  path: '/agency/workforce/roster',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceSettingsRoute = AgencyWorkforceSettingsRouteImport.update({
+  id: '/agency/workforce/settings',
+  path: '/agency/workforce/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgencyWorkforceStructureRoute =
+  AgencyWorkforceStructureRouteImport.update({
+    id: '/agency/workforce/structure',
+    path: '/agency/workforce/structure',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AgencyWorkforceWorkRoute = AgencyWorkforceWorkRouteImport.update({
+  id: '/agency/workforce/work',
+  path: '/agency/workforce/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppAgencyIndexRoute = AppAgencyIndexRouteImport.update({
   id: '/agency/',
   path: '/agency/',
@@ -725,9 +578,29 @@ const AppCustomersIdRoute = AppCustomersIdRouteImport.update({
   path: '/customers/$id',
   getParentRoute: () => AppRoute,
 } as any)
+const AppEmployerCensusRoute = AppEmployerCensusRouteImport.update({
+  id: '/employer/census',
+  path: '/employer/census',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEmployerContributionRoute = AppEmployerContributionRouteImport.update({
+  id: '/employer/contribution',
+  path: '/employer/contribution',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppEmployerIchraRoute = AppEmployerIchraRouteImport.update({
   id: '/employer/ichra',
   path: '/employer/ichra',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEmployerProposalRoute = AppEmployerProposalRouteImport.update({
+  id: '/employer/proposal',
+  path: '/employer/proposal',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEmployerResultsRoute = AppEmployerResultsRouteImport.update({
+  id: '/employer/results',
+  path: '/employer/results',
   getParentRoute: () => AppRoute,
 } as any)
 const AppJetAclRoute = AppJetAclRouteImport.update({
@@ -755,6 +628,16 @@ const AppJetBrandingRoute = AppJetBrandingRouteImport.update({
   path: '/jet/branding',
   getParentRoute: () => AppRoute,
 } as any)
+const AppJetEntitlementsRoute = AppJetEntitlementsRouteImport.update({
+  id: '/jet/entitlements',
+  path: '/jet/entitlements',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetExceptionsRoute = AppJetExceptionsRouteImport.update({
+  id: '/jet/exceptions',
+  path: '/jet/exceptions',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppJetFormConfiguratorRoute = AppJetFormConfiguratorRouteImport.update({
   id: '/jet/form-configurator',
   path: '/jet/form-configurator',
@@ -763,6 +646,11 @@ const AppJetFormConfiguratorRoute = AppJetFormConfiguratorRouteImport.update({
 const AppJetIntegrationsRoute = AppJetIntegrationsRouteImport.update({
   id: '/jet/integrations',
   path: '/jet/integrations',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetLaunchReadinessRoute = AppJetLaunchReadinessRouteImport.update({
+  id: '/jet/launch-readiness',
+  path: '/jet/launch-readiness',
   getParentRoute: () => AppRoute,
 } as any)
 const AppJetModule1Route = AppJetModule1RouteImport.update({
@@ -789,182 +677,6 @@ const AppJetProductsRoute = AppJetProductsRouteImport.update({
   id: '/jet/products',
   path: '/jet/products',
   getParentRoute: () => AppRoute,
-} as any)
-const GovModuleIndexRoute = GovModuleIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => GovModuleRoute,
-} as any)
-const GovModuleDeltasRoute = GovModuleDeltasRouteImport.update({
-  id: '/deltas',
-  path: '/deltas',
-  getParentRoute: () => GovModuleRoute,
-} as any)
-const GovModuleFlowsRoute = GovModuleFlowsRouteImport.update({
-  id: '/flows',
-  path: '/flows',
-  getParentRoute: () => GovModuleRoute,
-} as any)
-const GovModuleRegistersRoute = GovModuleRegistersRouteImport.update({
-  id: '/registers',
-  path: '/registers',
-  getParentRoute: () => GovModuleRoute,
-} as any)
-const GovModuleScreensRoute = GovModuleScreensRouteImport.update({
-  id: '/screens',
-  path: '/screens',
-  getParentRoute: () => GovModuleRoute,
-} as any)
-const GovModuleTraceabilityRoute = GovModuleTraceabilityRouteImport.update({
-  id: '/traceability',
-  path: '/traceability',
-  getParentRoute: () => GovModuleRoute,
-} as any)
-const LucieAppAgencyIndexRoute = LucieAppAgencyIndexRouteImport.update({
-  id: '/agency/',
-  path: '/agency/',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppAgencyMarketplacesRoute =
-  LucieAppAgencyMarketplacesRouteImport.update({
-    id: '/agency/marketplaces',
-    path: '/agency/marketplaces',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppAgencyProducersRoute = LucieAppAgencyProducersRouteImport.update({
-  id: '/agency/producers',
-  path: '/agency/producers',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppEmployerIndexRoute = LucieAppEmployerIndexRouteImport.update({
-  id: '/employer/',
-  path: '/employer/',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppEmployerCensusRoute = LucieAppEmployerCensusRouteImport.update({
-  id: '/employer/census',
-  path: '/employer/census',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppEmployerContributionRoute =
-  LucieAppEmployerContributionRouteImport.update({
-    id: '/employer/contribution',
-    path: '/employer/contribution',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppEmployerProposalRoute =
-  LucieAppEmployerProposalRouteImport.update({
-    id: '/employer/proposal',
-    path: '/employer/proposal',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppEmployerResultsRoute = LucieAppEmployerResultsRouteImport.update({
-  id: '/employer/results',
-  path: '/employer/results',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppPlatformIndexRoute = LucieAppPlatformIndexRouteImport.update({
-  id: '/platform/',
-  path: '/platform/',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppPlatformAuditRoute = LucieAppPlatformAuditRouteImport.update({
-  id: '/platform/audit',
-  path: '/platform/audit',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppPlatformEntitlementsRoute =
-  LucieAppPlatformEntitlementsRouteImport.update({
-    id: '/platform/entitlements',
-    path: '/platform/entitlements',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppPlatformExceptionsRoute =
-  LucieAppPlatformExceptionsRouteImport.update({
-    id: '/platform/exceptions',
-    path: '/platform/exceptions',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppPlatformGatesRoute = LucieAppPlatformGatesRouteImport.update({
-  id: '/platform/gates',
-  path: '/platform/gates',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppPlatformHealthRoute = LucieAppPlatformHealthRouteImport.update({
-  id: '/platform/health',
-  path: '/platform/health',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppPlatformRolesRoute = LucieAppPlatformRolesRouteImport.update({
-  id: '/platform/roles',
-  path: '/platform/roles',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppPlatformTenantsRoute = LucieAppPlatformTenantsRouteImport.update({
-  id: '/platform/tenants',
-  path: '/platform/tenants',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopIndexRoute = LucieAppShopIndexRouteImport.update({
-  id: '/shop/',
-  path: '/shop/',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopApplicationRoute = LucieAppShopApplicationRouteImport.update({
-  id: '/shop/application',
-  path: '/shop/application',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopCartRoute = LucieAppShopCartRouteImport.update({
-  id: '/shop/cart',
-  path: '/shop/cart',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopCompareRoute = LucieAppShopCompareRouteImport.update({
-  id: '/shop/compare',
-  path: '/shop/compare',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopConfirmationRoute =
-  LucieAppShopConfirmationRouteImport.update({
-    id: '/shop/confirmation',
-    path: '/shop/confirmation',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppShopDocumentsRoute = LucieAppShopDocumentsRouteImport.update({
-  id: '/shop/documents',
-  path: '/shop/documents',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopEligibilityRoute = LucieAppShopEligibilityRouteImport.update({
-  id: '/shop/eligibility',
-  path: '/shop/eligibility',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopEsignRoute = LucieAppShopEsignRouteImport.update({
-  id: '/shop/esign',
-  path: '/shop/esign',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopRegisterRoute = LucieAppShopRegisterRouteImport.update({
-  id: '/shop/register',
-  path: '/shop/register',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopReviewRoute = LucieAppShopReviewRouteImport.update({
-  id: '/shop/review',
-  path: '/shop/review',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopStatusRoute = LucieAppShopStatusRouteImport.update({
-  id: '/shop/status',
-  path: '/shop/status',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const M06SScreenRoute = M06SScreenRouteImport.update({
-  id: '/s/$screen',
-  path: '/s/$screen',
-  getParentRoute: () => M06Route,
 } as any)
 const MarketplaceAdminIndexRoute = MarketplaceAdminIndexRouteImport.update({
   id: '/marketplace/admin/',
@@ -1149,26 +861,6 @@ const AgencyOrganizationsOrganizationIdSettingsRoute =
     path: '/agency/organizations/$organizationId/settings',
     getParentRoute: () => rootRouteImport,
   } as any)
-const GovModuleFlowsFlowRoute = GovModuleFlowsFlowRouteImport.update({
-  id: '/$flow',
-  path: '/$flow',
-  getParentRoute: () => GovModuleFlowsRoute,
-} as any)
-const GovModuleScreensScreenRoute = GovModuleScreensScreenRouteImport.update({
-  id: '/$screen',
-  path: '/$screen',
-  getParentRoute: () => GovModuleScreensRoute,
-} as any)
-const LucieAppShopPlansIndexRoute = LucieAppShopPlansIndexRouteImport.update({
-  id: '/shop/plans/',
-  path: '/shop/plans/',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppShopPlansPlanIdRoute = LucieAppShopPlansPlanIdRouteImport.update({
-  id: '/shop/plans/$planId',
-  path: '/shop/plans/$planId',
-  getParentRoute: () => LucieAppRoute,
-} as any)
 const MarketplaceAdminAvailabilityIndexRoute =
   MarketplaceAdminAvailabilityIndexRouteImport.update({
     id: '/marketplace/admin/availability/',
@@ -1266,10 +958,6 @@ export interface FileRoutesByFullPath {
   '/handoff': typeof HandoffRoute
   '/ichra': typeof IchraRoute
   '/journey-choice': typeof JourneyChoiceRoute
-  '/lucie': typeof LucieRouteWithChildren
-  '/lucie-app': typeof LucieAppRouteWithChildren
-  '/m00': typeof M00RouteWithChildren
-  '/m06': typeof M06RouteWithChildren
   '/member': typeof MemberRouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/no-options': typeof NoOptionsRoute
@@ -1287,6 +975,7 @@ export interface FileRoutesByFullPath {
   '/agency/organization-structure': typeof AgencyOrganizationStructureRoute
   '/agency/organization-work': typeof AgencyOrganizationWorkRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/agent-profile': typeof AppAgentProfileRoute
   '/app/commissions': typeof AppCommissionsRoute
   '/app/communications': typeof AppCommunicationsRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -1298,29 +987,9 @@ export interface FileRoutesByFullPath {
   '/app/schedule': typeof AppScheduleRoute
   '/app/send-quote': typeof AppSendQuoteRoute
   '/app/tasks': typeof AppTasksRoute
-  '/gov/$module': typeof GovModuleRouteWithChildren
-  '/hf/$screen': typeof HfScreenRoute
-  '/lucie/governance': typeof LucieGovernanceRoute
-  '/lucie/module1': typeof LucieModule1Route
-  '/lucie/modules': typeof LucieModulesRoute
-  '/lucie/reconciliation': typeof LucieReconciliationRoute
-  '/lucie/slices': typeof LucieSlicesRoute
-  '/lucie/states': typeof LucieStatesRoute
-  '/lucie/surfaces': typeof LucieSurfacesRoute
-  '/lucie/trace': typeof LucieTraceRoute
-  '/lucie/workstreams': typeof LucieWorkstreamsRoute
-  '/m00/api': typeof M00ApiRoute
-  '/m00/console': typeof M00ConsoleRoute
-  '/m00/events': typeof M00EventsRoute
-  '/m00/tests': typeof M00TestsRoute
-  '/m06/console': typeof M06ConsoleRoute
-  '/m06/roster': typeof M06RosterRoute
-  '/m06/screens': typeof M06ScreensRoute
-  '/m1/$screen': typeof M1ScreenRoute
   '/member/messages': typeof MemberMessagesRoute
   '/member/quotes': typeof MemberQuotesRoute
   '/member/settings': typeof MemberSettingsRoute
-  '/p1/$screen': typeof P1ScreenRoute
   '/plans/$planId': typeof PlansPlanIdRoute
   '/r/$referralToken': typeof RReferralTokenRoute
   '/shared/$token': typeof SharedTokenRoute
@@ -1329,66 +998,46 @@ export interface FileRoutesByFullPath {
   '/unavailable/suspended': typeof UnavailableSuspendedRoute
   '/unavailable/unresolved': typeof UnavailableUnresolvedRoute
   '/app/': typeof AppIndexRoute
-  '/gov/': typeof GovIndexRoute
-  '/hf/': typeof HfIndexRoute
-  '/lucie-app/': typeof LucieAppIndexRoute
-  '/lucie/': typeof LucieIndexRoute
-  '/m00/': typeof M00IndexRoute
-  '/m06/': typeof M06IndexRoute
-  '/m1/': typeof M1IndexRoute
   '/member/': typeof MemberIndexRoute
-  '/p1/': typeof P1IndexRoute
   '/plans/': typeof PlansIndexRoute
   '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
   '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
   '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
+  '/agency/workforce/access': typeof AgencyWorkforceAccessRoute
+  '/agency/workforce/data': typeof AgencyWorkforceDataRoute
+  '/agency/workforce/lifecycle': typeof AgencyWorkforceLifecycleRoute
+  '/agency/workforce/onboarding': typeof AgencyWorkforceOnboardingRoute
+  '/agency/workforce/person': typeof AgencyWorkforcePersonRoute
+  '/agency/workforce/readiness': typeof AgencyWorkforceReadinessRoute
+  '/agency/workforce/roster': typeof AgencyWorkforceRosterRoute
+  '/agency/workforce/settings': typeof AgencyWorkforceSettingsRoute
+  '/agency/workforce/structure': typeof AgencyWorkforceStructureRoute
+  '/agency/workforce/work': typeof AgencyWorkforceWorkRoute
   '/app/agency/entities': typeof AppAgencyEntitiesRoute
   '/app/agency/producers': typeof AppAgencyProducersRoute
   '/app/agency/revenue': typeof AppAgencyRevenueRoute
   '/app/agency/statements': typeof AppAgencyStatementsRoute
   '/app/customers/$id': typeof AppCustomersIdRoute
+  '/app/employer/census': typeof AppEmployerCensusRoute
+  '/app/employer/contribution': typeof AppEmployerContributionRoute
   '/app/employer/ichra': typeof AppEmployerIchraRoute
+  '/app/employer/proposal': typeof AppEmployerProposalRoute
+  '/app/employer/results': typeof AppEmployerResultsRoute
   '/app/jet/acl': typeof AppJetAclRoute
   '/app/jet/ai-governance': typeof AppJetAiGovernanceRoute
   '/app/jet/appointments': typeof AppJetAppointmentsRoute
   '/app/jet/audit': typeof AppJetAuditRoute
   '/app/jet/branding': typeof AppJetBrandingRoute
+  '/app/jet/entitlements': typeof AppJetEntitlementsRoute
+  '/app/jet/exceptions': typeof AppJetExceptionsRoute
   '/app/jet/form-configurator': typeof AppJetFormConfiguratorRoute
   '/app/jet/integrations': typeof AppJetIntegrationsRoute
+  '/app/jet/launch-readiness': typeof AppJetLaunchReadinessRoute
   '/app/jet/module1': typeof AppJetModule1Route
   '/app/jet/notifications': typeof AppJetNotificationsRoute
   '/app/jet/platform': typeof AppJetPlatformRoute
   '/app/jet/product-builder': typeof AppJetProductBuilderRoute
   '/app/jet/products': typeof AppJetProductsRoute
-  '/gov/$module/deltas': typeof GovModuleDeltasRoute
-  '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
-  '/gov/$module/registers': typeof GovModuleRegistersRoute
-  '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
-  '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
-  '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
-  '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
-  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
-  '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
-  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
-  '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
-  '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
-  '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
-  '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
-  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
-  '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
-  '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
-  '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
-  '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
-  '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
-  '/lucie-app/shop/compare': typeof LucieAppShopCompareRoute
-  '/lucie-app/shop/confirmation': typeof LucieAppShopConfirmationRoute
-  '/lucie-app/shop/documents': typeof LucieAppShopDocumentsRoute
-  '/lucie-app/shop/eligibility': typeof LucieAppShopEligibilityRoute
-  '/lucie-app/shop/esign': typeof LucieAppShopEsignRoute
-  '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
-  '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
-  '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
-  '/m06/s/$screen': typeof M06SScreenRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1402,13 +1051,9 @@ export interface FileRoutesByFullPath {
   '/marketplace/admin/work': typeof MarketplaceAdminWorkRoute
   '/agency/organization-imports/': typeof AgencyOrganizationImportsIndexRoute
   '/agency/organizations/': typeof AgencyOrganizationsIndexRoute
+  '/agency/workforce/': typeof AgencyWorkforceIndexRoute
   '/app/agency/': typeof AppAgencyIndexRoute
   '/app/customers/': typeof AppCustomersIndexRoute
-  '/gov/$module/': typeof GovModuleIndexRoute
-  '/lucie-app/agency/': typeof LucieAppAgencyIndexRoute
-  '/lucie-app/employer/': typeof LucieAppEmployerIndexRoute
-  '/lucie-app/platform/': typeof LucieAppPlatformIndexRoute
-  '/lucie-app/shop/': typeof LucieAppShopIndexRoute
   '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
   '/platform/organizations/': typeof PlatformOrganizationsIndexRoute
@@ -1429,9 +1074,6 @@ export interface FileRoutesByFullPath {
   '/agency/organizations/$organizationId/readiness': typeof AgencyOrganizationsOrganizationIdReadinessRoute
   '/agency/organizations/$organizationId/relationships': typeof AgencyOrganizationsOrganizationIdRelationshipsRoute
   '/agency/organizations/$organizationId/settings': typeof AgencyOrganizationsOrganizationIdSettingsRoute
-  '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
-  '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
-  '/lucie-app/shop/plans/$planId': typeof LucieAppShopPlansPlanIdRoute
   '/marketplace/admin/availability/$availabilityEntryId': typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
   '/marketplace/admin/domains/request': typeof MarketplaceAdminDomainsRequestRoute
   '/marketplace/admin/participants/$participantId': typeof MarketplaceAdminParticipantsParticipantIdRoute
@@ -1442,7 +1084,6 @@ export interface FileRoutesByFullPath {
   '/platform/marketplaces/$marketplaceId/override': typeof PlatformMarketplacesMarketplaceIdOverrideRoute
   '/platform/organizations/$organizationId/override': typeof PlatformOrganizationsOrganizationIdOverrideRoute
   '/agency/organizations/$organizationId/': typeof AgencyOrganizationsOrganizationIdIndexRoute
-  '/lucie-app/shop/plans/': typeof LucieAppShopPlansIndexRoute
   '/marketplace/admin/availability/': typeof MarketplaceAdminAvailabilityIndexRoute
   '/marketplace/admin/domains/': typeof MarketplaceAdminDomainsIndexRoute
   '/marketplace/admin/participants/': typeof MarketplaceAdminParticipantsIndexRoute
@@ -1481,6 +1122,7 @@ export interface FileRoutesByTo {
   '/agency/organization-structure': typeof AgencyOrganizationStructureRoute
   '/agency/organization-work': typeof AgencyOrganizationWorkRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/agent-profile': typeof AppAgentProfileRoute
   '/app/commissions': typeof AppCommissionsRoute
   '/app/communications': typeof AppCommunicationsRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -1492,28 +1134,9 @@ export interface FileRoutesByTo {
   '/app/schedule': typeof AppScheduleRoute
   '/app/send-quote': typeof AppSendQuoteRoute
   '/app/tasks': typeof AppTasksRoute
-  '/hf/$screen': typeof HfScreenRoute
-  '/lucie/governance': typeof LucieGovernanceRoute
-  '/lucie/module1': typeof LucieModule1Route
-  '/lucie/modules': typeof LucieModulesRoute
-  '/lucie/reconciliation': typeof LucieReconciliationRoute
-  '/lucie/slices': typeof LucieSlicesRoute
-  '/lucie/states': typeof LucieStatesRoute
-  '/lucie/surfaces': typeof LucieSurfacesRoute
-  '/lucie/trace': typeof LucieTraceRoute
-  '/lucie/workstreams': typeof LucieWorkstreamsRoute
-  '/m00/api': typeof M00ApiRoute
-  '/m00/console': typeof M00ConsoleRoute
-  '/m00/events': typeof M00EventsRoute
-  '/m00/tests': typeof M00TestsRoute
-  '/m06/console': typeof M06ConsoleRoute
-  '/m06/roster': typeof M06RosterRoute
-  '/m06/screens': typeof M06ScreensRoute
-  '/m1/$screen': typeof M1ScreenRoute
   '/member/messages': typeof MemberMessagesRoute
   '/member/quotes': typeof MemberQuotesRoute
   '/member/settings': typeof MemberSettingsRoute
-  '/p1/$screen': typeof P1ScreenRoute
   '/plans/$planId': typeof PlansPlanIdRoute
   '/r/$referralToken': typeof RReferralTokenRoute
   '/shared/$token': typeof SharedTokenRoute
@@ -1522,66 +1145,46 @@ export interface FileRoutesByTo {
   '/unavailable/suspended': typeof UnavailableSuspendedRoute
   '/unavailable/unresolved': typeof UnavailableUnresolvedRoute
   '/app': typeof AppIndexRoute
-  '/gov': typeof GovIndexRoute
-  '/hf': typeof HfIndexRoute
-  '/lucie-app': typeof LucieAppIndexRoute
-  '/lucie': typeof LucieIndexRoute
-  '/m00': typeof M00IndexRoute
-  '/m06': typeof M06IndexRoute
-  '/m1': typeof M1IndexRoute
   '/member': typeof MemberIndexRoute
-  '/p1': typeof P1IndexRoute
   '/plans': typeof PlansIndexRoute
   '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
   '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
   '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
+  '/agency/workforce/access': typeof AgencyWorkforceAccessRoute
+  '/agency/workforce/data': typeof AgencyWorkforceDataRoute
+  '/agency/workforce/lifecycle': typeof AgencyWorkforceLifecycleRoute
+  '/agency/workforce/onboarding': typeof AgencyWorkforceOnboardingRoute
+  '/agency/workforce/person': typeof AgencyWorkforcePersonRoute
+  '/agency/workforce/readiness': typeof AgencyWorkforceReadinessRoute
+  '/agency/workforce/roster': typeof AgencyWorkforceRosterRoute
+  '/agency/workforce/settings': typeof AgencyWorkforceSettingsRoute
+  '/agency/workforce/structure': typeof AgencyWorkforceStructureRoute
+  '/agency/workforce/work': typeof AgencyWorkforceWorkRoute
   '/app/agency/entities': typeof AppAgencyEntitiesRoute
   '/app/agency/producers': typeof AppAgencyProducersRoute
   '/app/agency/revenue': typeof AppAgencyRevenueRoute
   '/app/agency/statements': typeof AppAgencyStatementsRoute
   '/app/customers/$id': typeof AppCustomersIdRoute
+  '/app/employer/census': typeof AppEmployerCensusRoute
+  '/app/employer/contribution': typeof AppEmployerContributionRoute
   '/app/employer/ichra': typeof AppEmployerIchraRoute
+  '/app/employer/proposal': typeof AppEmployerProposalRoute
+  '/app/employer/results': typeof AppEmployerResultsRoute
   '/app/jet/acl': typeof AppJetAclRoute
   '/app/jet/ai-governance': typeof AppJetAiGovernanceRoute
   '/app/jet/appointments': typeof AppJetAppointmentsRoute
   '/app/jet/audit': typeof AppJetAuditRoute
   '/app/jet/branding': typeof AppJetBrandingRoute
+  '/app/jet/entitlements': typeof AppJetEntitlementsRoute
+  '/app/jet/exceptions': typeof AppJetExceptionsRoute
   '/app/jet/form-configurator': typeof AppJetFormConfiguratorRoute
   '/app/jet/integrations': typeof AppJetIntegrationsRoute
+  '/app/jet/launch-readiness': typeof AppJetLaunchReadinessRoute
   '/app/jet/module1': typeof AppJetModule1Route
   '/app/jet/notifications': typeof AppJetNotificationsRoute
   '/app/jet/platform': typeof AppJetPlatformRoute
   '/app/jet/product-builder': typeof AppJetProductBuilderRoute
   '/app/jet/products': typeof AppJetProductsRoute
-  '/gov/$module/deltas': typeof GovModuleDeltasRoute
-  '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
-  '/gov/$module/registers': typeof GovModuleRegistersRoute
-  '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
-  '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
-  '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
-  '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
-  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
-  '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
-  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
-  '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
-  '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
-  '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
-  '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
-  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
-  '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
-  '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
-  '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
-  '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
-  '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
-  '/lucie-app/shop/compare': typeof LucieAppShopCompareRoute
-  '/lucie-app/shop/confirmation': typeof LucieAppShopConfirmationRoute
-  '/lucie-app/shop/documents': typeof LucieAppShopDocumentsRoute
-  '/lucie-app/shop/eligibility': typeof LucieAppShopEligibilityRoute
-  '/lucie-app/shop/esign': typeof LucieAppShopEsignRoute
-  '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
-  '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
-  '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
-  '/m06/s/$screen': typeof M06SScreenRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1595,13 +1198,9 @@ export interface FileRoutesByTo {
   '/marketplace/admin/work': typeof MarketplaceAdminWorkRoute
   '/agency/organization-imports': typeof AgencyOrganizationImportsIndexRoute
   '/agency/organizations': typeof AgencyOrganizationsIndexRoute
+  '/agency/workforce': typeof AgencyWorkforceIndexRoute
   '/app/agency': typeof AppAgencyIndexRoute
   '/app/customers': typeof AppCustomersIndexRoute
-  '/gov/$module': typeof GovModuleIndexRoute
-  '/lucie-app/agency': typeof LucieAppAgencyIndexRoute
-  '/lucie-app/employer': typeof LucieAppEmployerIndexRoute
-  '/lucie-app/platform': typeof LucieAppPlatformIndexRoute
-  '/lucie-app/shop': typeof LucieAppShopIndexRoute
   '/marketplace/admin': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces': typeof PlatformMarketplacesIndexRoute
   '/platform/organizations': typeof PlatformOrganizationsIndexRoute
@@ -1622,9 +1221,6 @@ export interface FileRoutesByTo {
   '/agency/organizations/$organizationId/readiness': typeof AgencyOrganizationsOrganizationIdReadinessRoute
   '/agency/organizations/$organizationId/relationships': typeof AgencyOrganizationsOrganizationIdRelationshipsRoute
   '/agency/organizations/$organizationId/settings': typeof AgencyOrganizationsOrganizationIdSettingsRoute
-  '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
-  '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
-  '/lucie-app/shop/plans/$planId': typeof LucieAppShopPlansPlanIdRoute
   '/marketplace/admin/availability/$availabilityEntryId': typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
   '/marketplace/admin/domains/request': typeof MarketplaceAdminDomainsRequestRoute
   '/marketplace/admin/participants/$participantId': typeof MarketplaceAdminParticipantsParticipantIdRoute
@@ -1635,7 +1231,6 @@ export interface FileRoutesByTo {
   '/platform/marketplaces/$marketplaceId/override': typeof PlatformMarketplacesMarketplaceIdOverrideRoute
   '/platform/organizations/$organizationId/override': typeof PlatformOrganizationsOrganizationIdOverrideRoute
   '/agency/organizations/$organizationId': typeof AgencyOrganizationsOrganizationIdIndexRoute
-  '/lucie-app/shop/plans': typeof LucieAppShopPlansIndexRoute
   '/marketplace/admin/availability': typeof MarketplaceAdminAvailabilityIndexRoute
   '/marketplace/admin/domains': typeof MarketplaceAdminDomainsIndexRoute
   '/marketplace/admin/participants': typeof MarketplaceAdminParticipantsIndexRoute
@@ -1660,10 +1255,6 @@ export interface FileRoutesById {
   '/handoff': typeof HandoffRoute
   '/ichra': typeof IchraRoute
   '/journey-choice': typeof JourneyChoiceRoute
-  '/lucie': typeof LucieRouteWithChildren
-  '/lucie-app': typeof LucieAppRouteWithChildren
-  '/m00': typeof M00RouteWithChildren
-  '/m06': typeof M06RouteWithChildren
   '/member': typeof MemberRouteWithChildren
   '/my-work': typeof MyWorkRoute
   '/no-options': typeof NoOptionsRoute
@@ -1681,6 +1272,7 @@ export interface FileRoutesById {
   '/agency/organization-structure': typeof AgencyOrganizationStructureRoute
   '/agency/organization-work': typeof AgencyOrganizationWorkRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/agent-profile': typeof AppAgentProfileRoute
   '/app/commissions': typeof AppCommissionsRoute
   '/app/communications': typeof AppCommunicationsRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -1692,29 +1284,9 @@ export interface FileRoutesById {
   '/app/schedule': typeof AppScheduleRoute
   '/app/send-quote': typeof AppSendQuoteRoute
   '/app/tasks': typeof AppTasksRoute
-  '/gov/$module': typeof GovModuleRouteWithChildren
-  '/hf/$screen': typeof HfScreenRoute
-  '/lucie/governance': typeof LucieGovernanceRoute
-  '/lucie/module1': typeof LucieModule1Route
-  '/lucie/modules': typeof LucieModulesRoute
-  '/lucie/reconciliation': typeof LucieReconciliationRoute
-  '/lucie/slices': typeof LucieSlicesRoute
-  '/lucie/states': typeof LucieStatesRoute
-  '/lucie/surfaces': typeof LucieSurfacesRoute
-  '/lucie/trace': typeof LucieTraceRoute
-  '/lucie/workstreams': typeof LucieWorkstreamsRoute
-  '/m00/api': typeof M00ApiRoute
-  '/m00/console': typeof M00ConsoleRoute
-  '/m00/events': typeof M00EventsRoute
-  '/m00/tests': typeof M00TestsRoute
-  '/m06/console': typeof M06ConsoleRoute
-  '/m06/roster': typeof M06RosterRoute
-  '/m06/screens': typeof M06ScreensRoute
-  '/m1/$screen': typeof M1ScreenRoute
   '/member/messages': typeof MemberMessagesRoute
   '/member/quotes': typeof MemberQuotesRoute
   '/member/settings': typeof MemberSettingsRoute
-  '/p1/$screen': typeof P1ScreenRoute
   '/plans/$planId': typeof PlansPlanIdRoute
   '/r/$referralToken': typeof RReferralTokenRoute
   '/shared/$token': typeof SharedTokenRoute
@@ -1723,66 +1295,46 @@ export interface FileRoutesById {
   '/unavailable/suspended': typeof UnavailableSuspendedRoute
   '/unavailable/unresolved': typeof UnavailableUnresolvedRoute
   '/app/': typeof AppIndexRoute
-  '/gov/': typeof GovIndexRoute
-  '/hf/': typeof HfIndexRoute
-  '/lucie-app/': typeof LucieAppIndexRoute
-  '/lucie/': typeof LucieIndexRoute
-  '/m00/': typeof M00IndexRoute
-  '/m06/': typeof M06IndexRoute
-  '/m1/': typeof M1IndexRoute
   '/member/': typeof MemberIndexRoute
-  '/p1/': typeof P1IndexRoute
   '/plans/': typeof PlansIndexRoute
   '/agency/organization-defaults/apply': typeof AgencyOrganizationDefaultsApplyRoute
   '/agency/organization-imports/$importJobId': typeof AgencyOrganizationImportsImportJobIdRoute
   '/agency/reference-organizations/request': typeof AgencyReferenceOrganizationsRequestRoute
+  '/agency/workforce/access': typeof AgencyWorkforceAccessRoute
+  '/agency/workforce/data': typeof AgencyWorkforceDataRoute
+  '/agency/workforce/lifecycle': typeof AgencyWorkforceLifecycleRoute
+  '/agency/workforce/onboarding': typeof AgencyWorkforceOnboardingRoute
+  '/agency/workforce/person': typeof AgencyWorkforcePersonRoute
+  '/agency/workforce/readiness': typeof AgencyWorkforceReadinessRoute
+  '/agency/workforce/roster': typeof AgencyWorkforceRosterRoute
+  '/agency/workforce/settings': typeof AgencyWorkforceSettingsRoute
+  '/agency/workforce/structure': typeof AgencyWorkforceStructureRoute
+  '/agency/workforce/work': typeof AgencyWorkforceWorkRoute
   '/app/agency/entities': typeof AppAgencyEntitiesRoute
   '/app/agency/producers': typeof AppAgencyProducersRoute
   '/app/agency/revenue': typeof AppAgencyRevenueRoute
   '/app/agency/statements': typeof AppAgencyStatementsRoute
   '/app/customers/$id': typeof AppCustomersIdRoute
+  '/app/employer/census': typeof AppEmployerCensusRoute
+  '/app/employer/contribution': typeof AppEmployerContributionRoute
   '/app/employer/ichra': typeof AppEmployerIchraRoute
+  '/app/employer/proposal': typeof AppEmployerProposalRoute
+  '/app/employer/results': typeof AppEmployerResultsRoute
   '/app/jet/acl': typeof AppJetAclRoute
   '/app/jet/ai-governance': typeof AppJetAiGovernanceRoute
   '/app/jet/appointments': typeof AppJetAppointmentsRoute
   '/app/jet/audit': typeof AppJetAuditRoute
   '/app/jet/branding': typeof AppJetBrandingRoute
+  '/app/jet/entitlements': typeof AppJetEntitlementsRoute
+  '/app/jet/exceptions': typeof AppJetExceptionsRoute
   '/app/jet/form-configurator': typeof AppJetFormConfiguratorRoute
   '/app/jet/integrations': typeof AppJetIntegrationsRoute
+  '/app/jet/launch-readiness': typeof AppJetLaunchReadinessRoute
   '/app/jet/module1': typeof AppJetModule1Route
   '/app/jet/notifications': typeof AppJetNotificationsRoute
   '/app/jet/platform': typeof AppJetPlatformRoute
   '/app/jet/product-builder': typeof AppJetProductBuilderRoute
   '/app/jet/products': typeof AppJetProductsRoute
-  '/gov/$module/deltas': typeof GovModuleDeltasRoute
-  '/gov/$module/flows': typeof GovModuleFlowsRouteWithChildren
-  '/gov/$module/registers': typeof GovModuleRegistersRoute
-  '/gov/$module/screens': typeof GovModuleScreensRouteWithChildren
-  '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
-  '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
-  '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
-  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
-  '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
-  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
-  '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
-  '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
-  '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
-  '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
-  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
-  '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
-  '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
-  '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
-  '/lucie-app/shop/application': typeof LucieAppShopApplicationRoute
-  '/lucie-app/shop/cart': typeof LucieAppShopCartRoute
-  '/lucie-app/shop/compare': typeof LucieAppShopCompareRoute
-  '/lucie-app/shop/confirmation': typeof LucieAppShopConfirmationRoute
-  '/lucie-app/shop/documents': typeof LucieAppShopDocumentsRoute
-  '/lucie-app/shop/eligibility': typeof LucieAppShopEligibilityRoute
-  '/lucie-app/shop/esign': typeof LucieAppShopEsignRoute
-  '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
-  '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
-  '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
-  '/m06/s/$screen': typeof M06SScreenRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1796,13 +1348,9 @@ export interface FileRoutesById {
   '/marketplace/admin/work': typeof MarketplaceAdminWorkRoute
   '/agency/organization-imports/': typeof AgencyOrganizationImportsIndexRoute
   '/agency/organizations/': typeof AgencyOrganizationsIndexRoute
+  '/agency/workforce/': typeof AgencyWorkforceIndexRoute
   '/app/agency/': typeof AppAgencyIndexRoute
   '/app/customers/': typeof AppCustomersIndexRoute
-  '/gov/$module/': typeof GovModuleIndexRoute
-  '/lucie-app/agency/': typeof LucieAppAgencyIndexRoute
-  '/lucie-app/employer/': typeof LucieAppEmployerIndexRoute
-  '/lucie-app/platform/': typeof LucieAppPlatformIndexRoute
-  '/lucie-app/shop/': typeof LucieAppShopIndexRoute
   '/marketplace/admin/': typeof MarketplaceAdminIndexRoute
   '/platform/marketplaces/': typeof PlatformMarketplacesIndexRoute
   '/platform/organizations/': typeof PlatformOrganizationsIndexRoute
@@ -1823,9 +1371,6 @@ export interface FileRoutesById {
   '/agency/organizations/$organizationId/readiness': typeof AgencyOrganizationsOrganizationIdReadinessRoute
   '/agency/organizations/$organizationId/relationships': typeof AgencyOrganizationsOrganizationIdRelationshipsRoute
   '/agency/organizations/$organizationId/settings': typeof AgencyOrganizationsOrganizationIdSettingsRoute
-  '/gov/$module/flows/$flow': typeof GovModuleFlowsFlowRoute
-  '/gov/$module/screens/$screen': typeof GovModuleScreensScreenRoute
-  '/lucie-app/shop/plans/$planId': typeof LucieAppShopPlansPlanIdRoute
   '/marketplace/admin/availability/$availabilityEntryId': typeof MarketplaceAdminAvailabilityAvailabilityEntryIdRoute
   '/marketplace/admin/domains/request': typeof MarketplaceAdminDomainsRequestRoute
   '/marketplace/admin/participants/$participantId': typeof MarketplaceAdminParticipantsParticipantIdRoute
@@ -1836,7 +1381,6 @@ export interface FileRoutesById {
   '/platform/marketplaces/$marketplaceId/override': typeof PlatformMarketplacesMarketplaceIdOverrideRoute
   '/platform/organizations/$organizationId/override': typeof PlatformOrganizationsOrganizationIdOverrideRoute
   '/agency/organizations/$organizationId/': typeof AgencyOrganizationsOrganizationIdIndexRoute
-  '/lucie-app/shop/plans/': typeof LucieAppShopPlansIndexRoute
   '/marketplace/admin/availability/': typeof MarketplaceAdminAvailabilityIndexRoute
   '/marketplace/admin/domains/': typeof MarketplaceAdminDomainsIndexRoute
   '/marketplace/admin/participants/': typeof MarketplaceAdminParticipantsIndexRoute
@@ -1862,10 +1406,6 @@ export interface FileRouteTypes {
     | '/handoff'
     | '/ichra'
     | '/journey-choice'
-    | '/lucie'
-    | '/lucie-app'
-    | '/m00'
-    | '/m06'
     | '/member'
     | '/my-work'
     | '/no-options'
@@ -1883,6 +1423,7 @@ export interface FileRouteTypes {
     | '/agency/organization-structure'
     | '/agency/organization-work'
     | '/app/admin'
+    | '/app/agent-profile'
     | '/app/commissions'
     | '/app/communications'
     | '/app/dashboard'
@@ -1894,29 +1435,9 @@ export interface FileRouteTypes {
     | '/app/schedule'
     | '/app/send-quote'
     | '/app/tasks'
-    | '/gov/$module'
-    | '/hf/$screen'
-    | '/lucie/governance'
-    | '/lucie/module1'
-    | '/lucie/modules'
-    | '/lucie/reconciliation'
-    | '/lucie/slices'
-    | '/lucie/states'
-    | '/lucie/surfaces'
-    | '/lucie/trace'
-    | '/lucie/workstreams'
-    | '/m00/api'
-    | '/m00/console'
-    | '/m00/events'
-    | '/m00/tests'
-    | '/m06/console'
-    | '/m06/roster'
-    | '/m06/screens'
-    | '/m1/$screen'
     | '/member/messages'
     | '/member/quotes'
     | '/member/settings'
-    | '/p1/$screen'
     | '/plans/$planId'
     | '/r/$referralToken'
     | '/shared/$token'
@@ -1925,66 +1446,46 @@ export interface FileRouteTypes {
     | '/unavailable/suspended'
     | '/unavailable/unresolved'
     | '/app/'
-    | '/gov/'
-    | '/hf/'
-    | '/lucie-app/'
-    | '/lucie/'
-    | '/m00/'
-    | '/m06/'
-    | '/m1/'
     | '/member/'
-    | '/p1/'
     | '/plans/'
     | '/agency/organization-defaults/apply'
     | '/agency/organization-imports/$importJobId'
     | '/agency/reference-organizations/request'
+    | '/agency/workforce/access'
+    | '/agency/workforce/data'
+    | '/agency/workforce/lifecycle'
+    | '/agency/workforce/onboarding'
+    | '/agency/workforce/person'
+    | '/agency/workforce/readiness'
+    | '/agency/workforce/roster'
+    | '/agency/workforce/settings'
+    | '/agency/workforce/structure'
+    | '/agency/workforce/work'
     | '/app/agency/entities'
     | '/app/agency/producers'
     | '/app/agency/revenue'
     | '/app/agency/statements'
     | '/app/customers/$id'
+    | '/app/employer/census'
+    | '/app/employer/contribution'
     | '/app/employer/ichra'
+    | '/app/employer/proposal'
+    | '/app/employer/results'
     | '/app/jet/acl'
     | '/app/jet/ai-governance'
     | '/app/jet/appointments'
     | '/app/jet/audit'
     | '/app/jet/branding'
+    | '/app/jet/entitlements'
+    | '/app/jet/exceptions'
     | '/app/jet/form-configurator'
     | '/app/jet/integrations'
+    | '/app/jet/launch-readiness'
     | '/app/jet/module1'
     | '/app/jet/notifications'
     | '/app/jet/platform'
     | '/app/jet/product-builder'
     | '/app/jet/products'
-    | '/gov/$module/deltas'
-    | '/gov/$module/flows'
-    | '/gov/$module/registers'
-    | '/gov/$module/screens'
-    | '/gov/$module/traceability'
-    | '/lucie-app/agency/marketplaces'
-    | '/lucie-app/agency/producers'
-    | '/lucie-app/employer/census'
-    | '/lucie-app/employer/contribution'
-    | '/lucie-app/employer/proposal'
-    | '/lucie-app/employer/results'
-    | '/lucie-app/platform/audit'
-    | '/lucie-app/platform/entitlements'
-    | '/lucie-app/platform/exceptions'
-    | '/lucie-app/platform/gates'
-    | '/lucie-app/platform/health'
-    | '/lucie-app/platform/roles'
-    | '/lucie-app/platform/tenants'
-    | '/lucie-app/shop/application'
-    | '/lucie-app/shop/cart'
-    | '/lucie-app/shop/compare'
-    | '/lucie-app/shop/confirmation'
-    | '/lucie-app/shop/documents'
-    | '/lucie-app/shop/eligibility'
-    | '/lucie-app/shop/esign'
-    | '/lucie-app/shop/register'
-    | '/lucie-app/shop/review'
-    | '/lucie-app/shop/status'
-    | '/m06/s/$screen'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -1998,13 +1499,9 @@ export interface FileRouteTypes {
     | '/marketplace/admin/work'
     | '/agency/organization-imports/'
     | '/agency/organizations/'
+    | '/agency/workforce/'
     | '/app/agency/'
     | '/app/customers/'
-    | '/gov/$module/'
-    | '/lucie-app/agency/'
-    | '/lucie-app/employer/'
-    | '/lucie-app/platform/'
-    | '/lucie-app/shop/'
     | '/marketplace/admin/'
     | '/platform/marketplaces/'
     | '/platform/organizations/'
@@ -2025,9 +1522,6 @@ export interface FileRouteTypes {
     | '/agency/organizations/$organizationId/readiness'
     | '/agency/organizations/$organizationId/relationships'
     | '/agency/organizations/$organizationId/settings'
-    | '/gov/$module/flows/$flow'
-    | '/gov/$module/screens/$screen'
-    | '/lucie-app/shop/plans/$planId'
     | '/marketplace/admin/availability/$availabilityEntryId'
     | '/marketplace/admin/domains/request'
     | '/marketplace/admin/participants/$participantId'
@@ -2038,7 +1532,6 @@ export interface FileRouteTypes {
     | '/platform/marketplaces/$marketplaceId/override'
     | '/platform/organizations/$organizationId/override'
     | '/agency/organizations/$organizationId/'
-    | '/lucie-app/shop/plans/'
     | '/marketplace/admin/availability/'
     | '/marketplace/admin/domains/'
     | '/marketplace/admin/participants/'
@@ -2077,6 +1570,7 @@ export interface FileRouteTypes {
     | '/agency/organization-structure'
     | '/agency/organization-work'
     | '/app/admin'
+    | '/app/agent-profile'
     | '/app/commissions'
     | '/app/communications'
     | '/app/dashboard'
@@ -2088,28 +1582,9 @@ export interface FileRouteTypes {
     | '/app/schedule'
     | '/app/send-quote'
     | '/app/tasks'
-    | '/hf/$screen'
-    | '/lucie/governance'
-    | '/lucie/module1'
-    | '/lucie/modules'
-    | '/lucie/reconciliation'
-    | '/lucie/slices'
-    | '/lucie/states'
-    | '/lucie/surfaces'
-    | '/lucie/trace'
-    | '/lucie/workstreams'
-    | '/m00/api'
-    | '/m00/console'
-    | '/m00/events'
-    | '/m00/tests'
-    | '/m06/console'
-    | '/m06/roster'
-    | '/m06/screens'
-    | '/m1/$screen'
     | '/member/messages'
     | '/member/quotes'
     | '/member/settings'
-    | '/p1/$screen'
     | '/plans/$planId'
     | '/r/$referralToken'
     | '/shared/$token'
@@ -2118,66 +1593,46 @@ export interface FileRouteTypes {
     | '/unavailable/suspended'
     | '/unavailable/unresolved'
     | '/app'
-    | '/gov'
-    | '/hf'
-    | '/lucie-app'
-    | '/lucie'
-    | '/m00'
-    | '/m06'
-    | '/m1'
     | '/member'
-    | '/p1'
     | '/plans'
     | '/agency/organization-defaults/apply'
     | '/agency/organization-imports/$importJobId'
     | '/agency/reference-organizations/request'
+    | '/agency/workforce/access'
+    | '/agency/workforce/data'
+    | '/agency/workforce/lifecycle'
+    | '/agency/workforce/onboarding'
+    | '/agency/workforce/person'
+    | '/agency/workforce/readiness'
+    | '/agency/workforce/roster'
+    | '/agency/workforce/settings'
+    | '/agency/workforce/structure'
+    | '/agency/workforce/work'
     | '/app/agency/entities'
     | '/app/agency/producers'
     | '/app/agency/revenue'
     | '/app/agency/statements'
     | '/app/customers/$id'
+    | '/app/employer/census'
+    | '/app/employer/contribution'
     | '/app/employer/ichra'
+    | '/app/employer/proposal'
+    | '/app/employer/results'
     | '/app/jet/acl'
     | '/app/jet/ai-governance'
     | '/app/jet/appointments'
     | '/app/jet/audit'
     | '/app/jet/branding'
+    | '/app/jet/entitlements'
+    | '/app/jet/exceptions'
     | '/app/jet/form-configurator'
     | '/app/jet/integrations'
+    | '/app/jet/launch-readiness'
     | '/app/jet/module1'
     | '/app/jet/notifications'
     | '/app/jet/platform'
     | '/app/jet/product-builder'
     | '/app/jet/products'
-    | '/gov/$module/deltas'
-    | '/gov/$module/flows'
-    | '/gov/$module/registers'
-    | '/gov/$module/screens'
-    | '/gov/$module/traceability'
-    | '/lucie-app/agency/marketplaces'
-    | '/lucie-app/agency/producers'
-    | '/lucie-app/employer/census'
-    | '/lucie-app/employer/contribution'
-    | '/lucie-app/employer/proposal'
-    | '/lucie-app/employer/results'
-    | '/lucie-app/platform/audit'
-    | '/lucie-app/platform/entitlements'
-    | '/lucie-app/platform/exceptions'
-    | '/lucie-app/platform/gates'
-    | '/lucie-app/platform/health'
-    | '/lucie-app/platform/roles'
-    | '/lucie-app/platform/tenants'
-    | '/lucie-app/shop/application'
-    | '/lucie-app/shop/cart'
-    | '/lucie-app/shop/compare'
-    | '/lucie-app/shop/confirmation'
-    | '/lucie-app/shop/documents'
-    | '/lucie-app/shop/eligibility'
-    | '/lucie-app/shop/esign'
-    | '/lucie-app/shop/register'
-    | '/lucie-app/shop/review'
-    | '/lucie-app/shop/status'
-    | '/m06/s/$screen'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -2191,13 +1646,9 @@ export interface FileRouteTypes {
     | '/marketplace/admin/work'
     | '/agency/organization-imports'
     | '/agency/organizations'
+    | '/agency/workforce'
     | '/app/agency'
     | '/app/customers'
-    | '/gov/$module'
-    | '/lucie-app/agency'
-    | '/lucie-app/employer'
-    | '/lucie-app/platform'
-    | '/lucie-app/shop'
     | '/marketplace/admin'
     | '/platform/marketplaces'
     | '/platform/organizations'
@@ -2218,9 +1669,6 @@ export interface FileRouteTypes {
     | '/agency/organizations/$organizationId/readiness'
     | '/agency/organizations/$organizationId/relationships'
     | '/agency/organizations/$organizationId/settings'
-    | '/gov/$module/flows/$flow'
-    | '/gov/$module/screens/$screen'
-    | '/lucie-app/shop/plans/$planId'
     | '/marketplace/admin/availability/$availabilityEntryId'
     | '/marketplace/admin/domains/request'
     | '/marketplace/admin/participants/$participantId'
@@ -2231,7 +1679,6 @@ export interface FileRouteTypes {
     | '/platform/marketplaces/$marketplaceId/override'
     | '/platform/organizations/$organizationId/override'
     | '/agency/organizations/$organizationId'
-    | '/lucie-app/shop/plans'
     | '/marketplace/admin/availability'
     | '/marketplace/admin/domains'
     | '/marketplace/admin/participants'
@@ -2255,10 +1702,6 @@ export interface FileRouteTypes {
     | '/handoff'
     | '/ichra'
     | '/journey-choice'
-    | '/lucie'
-    | '/lucie-app'
-    | '/m00'
-    | '/m06'
     | '/member'
     | '/my-work'
     | '/no-options'
@@ -2276,6 +1719,7 @@ export interface FileRouteTypes {
     | '/agency/organization-structure'
     | '/agency/organization-work'
     | '/app/admin'
+    | '/app/agent-profile'
     | '/app/commissions'
     | '/app/communications'
     | '/app/dashboard'
@@ -2287,29 +1731,9 @@ export interface FileRouteTypes {
     | '/app/schedule'
     | '/app/send-quote'
     | '/app/tasks'
-    | '/gov/$module'
-    | '/hf/$screen'
-    | '/lucie/governance'
-    | '/lucie/module1'
-    | '/lucie/modules'
-    | '/lucie/reconciliation'
-    | '/lucie/slices'
-    | '/lucie/states'
-    | '/lucie/surfaces'
-    | '/lucie/trace'
-    | '/lucie/workstreams'
-    | '/m00/api'
-    | '/m00/console'
-    | '/m00/events'
-    | '/m00/tests'
-    | '/m06/console'
-    | '/m06/roster'
-    | '/m06/screens'
-    | '/m1/$screen'
     | '/member/messages'
     | '/member/quotes'
     | '/member/settings'
-    | '/p1/$screen'
     | '/plans/$planId'
     | '/r/$referralToken'
     | '/shared/$token'
@@ -2318,66 +1742,46 @@ export interface FileRouteTypes {
     | '/unavailable/suspended'
     | '/unavailable/unresolved'
     | '/app/'
-    | '/gov/'
-    | '/hf/'
-    | '/lucie-app/'
-    | '/lucie/'
-    | '/m00/'
-    | '/m06/'
-    | '/m1/'
     | '/member/'
-    | '/p1/'
     | '/plans/'
     | '/agency/organization-defaults/apply'
     | '/agency/organization-imports/$importJobId'
     | '/agency/reference-organizations/request'
+    | '/agency/workforce/access'
+    | '/agency/workforce/data'
+    | '/agency/workforce/lifecycle'
+    | '/agency/workforce/onboarding'
+    | '/agency/workforce/person'
+    | '/agency/workforce/readiness'
+    | '/agency/workforce/roster'
+    | '/agency/workforce/settings'
+    | '/agency/workforce/structure'
+    | '/agency/workforce/work'
     | '/app/agency/entities'
     | '/app/agency/producers'
     | '/app/agency/revenue'
     | '/app/agency/statements'
     | '/app/customers/$id'
+    | '/app/employer/census'
+    | '/app/employer/contribution'
     | '/app/employer/ichra'
+    | '/app/employer/proposal'
+    | '/app/employer/results'
     | '/app/jet/acl'
     | '/app/jet/ai-governance'
     | '/app/jet/appointments'
     | '/app/jet/audit'
     | '/app/jet/branding'
+    | '/app/jet/entitlements'
+    | '/app/jet/exceptions'
     | '/app/jet/form-configurator'
     | '/app/jet/integrations'
+    | '/app/jet/launch-readiness'
     | '/app/jet/module1'
     | '/app/jet/notifications'
     | '/app/jet/platform'
     | '/app/jet/product-builder'
     | '/app/jet/products'
-    | '/gov/$module/deltas'
-    | '/gov/$module/flows'
-    | '/gov/$module/registers'
-    | '/gov/$module/screens'
-    | '/gov/$module/traceability'
-    | '/lucie-app/agency/marketplaces'
-    | '/lucie-app/agency/producers'
-    | '/lucie-app/employer/census'
-    | '/lucie-app/employer/contribution'
-    | '/lucie-app/employer/proposal'
-    | '/lucie-app/employer/results'
-    | '/lucie-app/platform/audit'
-    | '/lucie-app/platform/entitlements'
-    | '/lucie-app/platform/exceptions'
-    | '/lucie-app/platform/gates'
-    | '/lucie-app/platform/health'
-    | '/lucie-app/platform/roles'
-    | '/lucie-app/platform/tenants'
-    | '/lucie-app/shop/application'
-    | '/lucie-app/shop/cart'
-    | '/lucie-app/shop/compare'
-    | '/lucie-app/shop/confirmation'
-    | '/lucie-app/shop/documents'
-    | '/lucie-app/shop/eligibility'
-    | '/lucie-app/shop/esign'
-    | '/lucie-app/shop/register'
-    | '/lucie-app/shop/review'
-    | '/lucie-app/shop/status'
-    | '/m06/s/$screen'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -2391,13 +1795,9 @@ export interface FileRouteTypes {
     | '/marketplace/admin/work'
     | '/agency/organization-imports/'
     | '/agency/organizations/'
+    | '/agency/workforce/'
     | '/app/agency/'
     | '/app/customers/'
-    | '/gov/$module/'
-    | '/lucie-app/agency/'
-    | '/lucie-app/employer/'
-    | '/lucie-app/platform/'
-    | '/lucie-app/shop/'
     | '/marketplace/admin/'
     | '/platform/marketplaces/'
     | '/platform/organizations/'
@@ -2418,9 +1818,6 @@ export interface FileRouteTypes {
     | '/agency/organizations/$organizationId/readiness'
     | '/agency/organizations/$organizationId/relationships'
     | '/agency/organizations/$organizationId/settings'
-    | '/gov/$module/flows/$flow'
-    | '/gov/$module/screens/$screen'
-    | '/lucie-app/shop/plans/$planId'
     | '/marketplace/admin/availability/$availabilityEntryId'
     | '/marketplace/admin/domains/request'
     | '/marketplace/admin/participants/$participantId'
@@ -2431,7 +1828,6 @@ export interface FileRouteTypes {
     | '/platform/marketplaces/$marketplaceId/override'
     | '/platform/organizations/$organizationId/override'
     | '/agency/organizations/$organizationId/'
-    | '/lucie-app/shop/plans/'
     | '/marketplace/admin/availability/'
     | '/marketplace/admin/domains/'
     | '/marketplace/admin/participants/'
@@ -2456,10 +1852,6 @@ export interface RootRouteChildren {
   HandoffRoute: typeof HandoffRoute
   IchraRoute: typeof IchraRoute
   JourneyChoiceRoute: typeof JourneyChoiceRoute
-  LucieRoute: typeof LucieRouteWithChildren
-  LucieAppRoute: typeof LucieAppRouteWithChildren
-  M00Route: typeof M00RouteWithChildren
-  M06Route: typeof M06RouteWithChildren
   MemberRoute: typeof MemberRouteWithChildren
   MyWorkRoute: typeof MyWorkRoute
   NoOptionsRoute: typeof NoOptionsRoute
@@ -2476,10 +1868,6 @@ export interface RootRouteChildren {
   AgencyOrganizationAdminRoute: typeof AgencyOrganizationAdminRoute
   AgencyOrganizationStructureRoute: typeof AgencyOrganizationStructureRoute
   AgencyOrganizationWorkRoute: typeof AgencyOrganizationWorkRoute
-  GovModuleRoute: typeof GovModuleRouteWithChildren
-  HfScreenRoute: typeof HfScreenRoute
-  M1ScreenRoute: typeof M1ScreenRoute
-  P1ScreenRoute: typeof P1ScreenRoute
   PlansPlanIdRoute: typeof PlansPlanIdRoute
   RReferralTokenRoute: typeof RReferralTokenRoute
   SharedTokenRoute: typeof SharedTokenRoute
@@ -2487,14 +1875,20 @@ export interface RootRouteChildren {
   UnavailablePathwayRoute: typeof UnavailablePathwayRoute
   UnavailableSuspendedRoute: typeof UnavailableSuspendedRoute
   UnavailableUnresolvedRoute: typeof UnavailableUnresolvedRoute
-  GovIndexRoute: typeof GovIndexRoute
-  HfIndexRoute: typeof HfIndexRoute
-  M1IndexRoute: typeof M1IndexRoute
-  P1IndexRoute: typeof P1IndexRoute
   PlansIndexRoute: typeof PlansIndexRoute
   AgencyOrganizationDefaultsApplyRoute: typeof AgencyOrganizationDefaultsApplyRoute
   AgencyOrganizationImportsImportJobIdRoute: typeof AgencyOrganizationImportsImportJobIdRoute
   AgencyReferenceOrganizationsRequestRoute: typeof AgencyReferenceOrganizationsRequestRoute
+  AgencyWorkforceAccessRoute: typeof AgencyWorkforceAccessRoute
+  AgencyWorkforceDataRoute: typeof AgencyWorkforceDataRoute
+  AgencyWorkforceLifecycleRoute: typeof AgencyWorkforceLifecycleRoute
+  AgencyWorkforceOnboardingRoute: typeof AgencyWorkforceOnboardingRoute
+  AgencyWorkforcePersonRoute: typeof AgencyWorkforcePersonRoute
+  AgencyWorkforceReadinessRoute: typeof AgencyWorkforceReadinessRoute
+  AgencyWorkforceRosterRoute: typeof AgencyWorkforceRosterRoute
+  AgencyWorkforceSettingsRoute: typeof AgencyWorkforceSettingsRoute
+  AgencyWorkforceStructureRoute: typeof AgencyWorkforceStructureRoute
+  AgencyWorkforceWorkRoute: typeof AgencyWorkforceWorkRoute
   MarketplaceAdminActivationRoute: typeof MarketplaceAdminActivationRoute
   MarketplaceAdminAssetsRoute: typeof MarketplaceAdminAssetsRoute
   MarketplaceAdminBrandRoute: typeof MarketplaceAdminBrandRoute
@@ -2508,6 +1902,7 @@ export interface RootRouteChildren {
   MarketplaceAdminWorkRoute: typeof MarketplaceAdminWorkRoute
   AgencyOrganizationImportsIndexRoute: typeof AgencyOrganizationImportsIndexRoute
   AgencyOrganizationsIndexRoute: typeof AgencyOrganizationsIndexRoute
+  AgencyWorkforceIndexRoute: typeof AgencyWorkforceIndexRoute
   MarketplaceAdminIndexRoute: typeof MarketplaceAdminIndexRoute
   PlatformMarketplacesIndexRoute: typeof PlatformMarketplacesIndexRoute
   PlatformOrganizationsIndexRoute: typeof PlatformOrganizationsIndexRoute
@@ -2665,34 +2060,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JourneyChoiceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lucie': {
-      id: '/lucie'
-      path: '/lucie'
-      fullPath: '/lucie'
-      preLoaderRoute: typeof LucieRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lucie-app': {
-      id: '/lucie-app'
-      path: '/lucie-app'
-      fullPath: '/lucie-app'
-      preLoaderRoute: typeof LucieAppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/m00': {
-      id: '/m00'
-      path: '/m00'
-      fullPath: '/m00'
-      preLoaderRoute: typeof M00RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/m06': {
-      id: '/m06'
-      path: '/m06'
-      fullPath: '/m06'
-      preLoaderRoute: typeof M06RouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/member': {
       id: '/member'
       path: '/member'
@@ -2819,6 +2186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/agent-profile': {
+      id: '/app/agent-profile'
+      path: '/agent-profile'
+      fullPath: '/app/agent-profile'
+      preLoaderRoute: typeof AppAgentProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/commissions': {
       id: '/app/commissions'
       path: '/commissions'
@@ -2896,188 +2270,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTasksRouteImport
       parentRoute: typeof AppRoute
     }
-    '/gov/': {
-      id: '/gov/'
-      path: '/gov'
-      fullPath: '/gov/'
-      preLoaderRoute: typeof GovIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gov/$module': {
-      id: '/gov/$module'
-      path: '/gov/$module'
-      fullPath: '/gov/$module'
-      preLoaderRoute: typeof GovModuleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hf/': {
-      id: '/hf/'
-      path: '/hf'
-      fullPath: '/hf/'
-      preLoaderRoute: typeof HfIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hf/$screen': {
-      id: '/hf/$screen'
-      path: '/hf/$screen'
-      fullPath: '/hf/$screen'
-      preLoaderRoute: typeof HfScreenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lucie-app/': {
-      id: '/lucie-app/'
-      path: '/'
-      fullPath: '/lucie-app/'
-      preLoaderRoute: typeof LucieAppIndexRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie/': {
-      id: '/lucie/'
-      path: '/'
-      fullPath: '/lucie/'
-      preLoaderRoute: typeof LucieIndexRouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/lucie/governance': {
-      id: '/lucie/governance'
-      path: '/governance'
-      fullPath: '/lucie/governance'
-      preLoaderRoute: typeof LucieGovernanceRouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/lucie/module1': {
-      id: '/lucie/module1'
-      path: '/module1'
-      fullPath: '/lucie/module1'
-      preLoaderRoute: typeof LucieModule1RouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/lucie/modules': {
-      id: '/lucie/modules'
-      path: '/modules'
-      fullPath: '/lucie/modules'
-      preLoaderRoute: typeof LucieModulesRouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/lucie/reconciliation': {
-      id: '/lucie/reconciliation'
-      path: '/reconciliation'
-      fullPath: '/lucie/reconciliation'
-      preLoaderRoute: typeof LucieReconciliationRouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/lucie/slices': {
-      id: '/lucie/slices'
-      path: '/slices'
-      fullPath: '/lucie/slices'
-      preLoaderRoute: typeof LucieSlicesRouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/lucie/states': {
-      id: '/lucie/states'
-      path: '/states'
-      fullPath: '/lucie/states'
-      preLoaderRoute: typeof LucieStatesRouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/lucie/surfaces': {
-      id: '/lucie/surfaces'
-      path: '/surfaces'
-      fullPath: '/lucie/surfaces'
-      preLoaderRoute: typeof LucieSurfacesRouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/lucie/trace': {
-      id: '/lucie/trace'
-      path: '/trace'
-      fullPath: '/lucie/trace'
-      preLoaderRoute: typeof LucieTraceRouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/lucie/workstreams': {
-      id: '/lucie/workstreams'
-      path: '/workstreams'
-      fullPath: '/lucie/workstreams'
-      preLoaderRoute: typeof LucieWorkstreamsRouteImport
-      parentRoute: typeof LucieRoute
-    }
-    '/m00/': {
-      id: '/m00/'
-      path: '/'
-      fullPath: '/m00/'
-      preLoaderRoute: typeof M00IndexRouteImport
-      parentRoute: typeof M00Route
-    }
-    '/m00/api': {
-      id: '/m00/api'
-      path: '/api'
-      fullPath: '/m00/api'
-      preLoaderRoute: typeof M00ApiRouteImport
-      parentRoute: typeof M00Route
-    }
-    '/m00/console': {
-      id: '/m00/console'
-      path: '/console'
-      fullPath: '/m00/console'
-      preLoaderRoute: typeof M00ConsoleRouteImport
-      parentRoute: typeof M00Route
-    }
-    '/m00/events': {
-      id: '/m00/events'
-      path: '/events'
-      fullPath: '/m00/events'
-      preLoaderRoute: typeof M00EventsRouteImport
-      parentRoute: typeof M00Route
-    }
-    '/m00/tests': {
-      id: '/m00/tests'
-      path: '/tests'
-      fullPath: '/m00/tests'
-      preLoaderRoute: typeof M00TestsRouteImport
-      parentRoute: typeof M00Route
-    }
-    '/m06/': {
-      id: '/m06/'
-      path: '/'
-      fullPath: '/m06/'
-      preLoaderRoute: typeof M06IndexRouteImport
-      parentRoute: typeof M06Route
-    }
-    '/m06/console': {
-      id: '/m06/console'
-      path: '/console'
-      fullPath: '/m06/console'
-      preLoaderRoute: typeof M06ConsoleRouteImport
-      parentRoute: typeof M06Route
-    }
-    '/m06/roster': {
-      id: '/m06/roster'
-      path: '/roster'
-      fullPath: '/m06/roster'
-      preLoaderRoute: typeof M06RosterRouteImport
-      parentRoute: typeof M06Route
-    }
-    '/m06/screens': {
-      id: '/m06/screens'
-      path: '/screens'
-      fullPath: '/m06/screens'
-      preLoaderRoute: typeof M06ScreensRouteImport
-      parentRoute: typeof M06Route
-    }
-    '/m1/': {
-      id: '/m1/'
-      path: '/m1'
-      fullPath: '/m1/'
-      preLoaderRoute: typeof M1IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/m1/$screen': {
-      id: '/m1/$screen'
-      path: '/m1/$screen'
-      fullPath: '/m1/$screen'
-      preLoaderRoute: typeof M1ScreenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/member/': {
       id: '/member/'
       path: '/'
@@ -3105,20 +2297,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/member/settings'
       preLoaderRoute: typeof MemberSettingsRouteImport
       parentRoute: typeof MemberRoute
-    }
-    '/p1/': {
-      id: '/p1/'
-      path: '/p1'
-      fullPath: '/p1/'
-      preLoaderRoute: typeof P1IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/p1/$screen': {
-      id: '/p1/$screen'
-      path: '/p1/$screen'
-      fullPath: '/p1/$screen'
-      preLoaderRoute: typeof P1ScreenRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/plans/': {
       id: '/plans/'
@@ -3211,6 +2389,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AgencyReferenceOrganizationsRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agency/workforce/': {
+      id: '/agency/workforce/'
+      path: '/agency/workforce'
+      fullPath: '/agency/workforce/'
+      preLoaderRoute: typeof AgencyWorkforceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/access': {
+      id: '/agency/workforce/access'
+      path: '/agency/workforce/access'
+      fullPath: '/agency/workforce/access'
+      preLoaderRoute: typeof AgencyWorkforceAccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/data': {
+      id: '/agency/workforce/data'
+      path: '/agency/workforce/data'
+      fullPath: '/agency/workforce/data'
+      preLoaderRoute: typeof AgencyWorkforceDataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/lifecycle': {
+      id: '/agency/workforce/lifecycle'
+      path: '/agency/workforce/lifecycle'
+      fullPath: '/agency/workforce/lifecycle'
+      preLoaderRoute: typeof AgencyWorkforceLifecycleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/onboarding': {
+      id: '/agency/workforce/onboarding'
+      path: '/agency/workforce/onboarding'
+      fullPath: '/agency/workforce/onboarding'
+      preLoaderRoute: typeof AgencyWorkforceOnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/person': {
+      id: '/agency/workforce/person'
+      path: '/agency/workforce/person'
+      fullPath: '/agency/workforce/person'
+      preLoaderRoute: typeof AgencyWorkforcePersonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/readiness': {
+      id: '/agency/workforce/readiness'
+      path: '/agency/workforce/readiness'
+      fullPath: '/agency/workforce/readiness'
+      preLoaderRoute: typeof AgencyWorkforceReadinessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/roster': {
+      id: '/agency/workforce/roster'
+      path: '/agency/workforce/roster'
+      fullPath: '/agency/workforce/roster'
+      preLoaderRoute: typeof AgencyWorkforceRosterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/settings': {
+      id: '/agency/workforce/settings'
+      path: '/agency/workforce/settings'
+      fullPath: '/agency/workforce/settings'
+      preLoaderRoute: typeof AgencyWorkforceSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/structure': {
+      id: '/agency/workforce/structure'
+      path: '/agency/workforce/structure'
+      fullPath: '/agency/workforce/structure'
+      preLoaderRoute: typeof AgencyWorkforceStructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agency/workforce/work': {
+      id: '/agency/workforce/work'
+      path: '/agency/workforce/work'
+      fullPath: '/agency/workforce/work'
+      preLoaderRoute: typeof AgencyWorkforceWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/agency/': {
       id: '/app/agency/'
       path: '/agency'
@@ -3260,11 +2515,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCustomersIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/employer/census': {
+      id: '/app/employer/census'
+      path: '/employer/census'
+      fullPath: '/app/employer/census'
+      preLoaderRoute: typeof AppEmployerCensusRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/employer/contribution': {
+      id: '/app/employer/contribution'
+      path: '/employer/contribution'
+      fullPath: '/app/employer/contribution'
+      preLoaderRoute: typeof AppEmployerContributionRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/employer/ichra': {
       id: '/app/employer/ichra'
       path: '/employer/ichra'
       fullPath: '/app/employer/ichra'
       preLoaderRoute: typeof AppEmployerIchraRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/employer/proposal': {
+      id: '/app/employer/proposal'
+      path: '/employer/proposal'
+      fullPath: '/app/employer/proposal'
+      preLoaderRoute: typeof AppEmployerProposalRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/employer/results': {
+      id: '/app/employer/results'
+      path: '/employer/results'
+      fullPath: '/app/employer/results'
+      preLoaderRoute: typeof AppEmployerResultsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/jet/acl': {
@@ -3302,6 +2585,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppJetBrandingRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/jet/entitlements': {
+      id: '/app/jet/entitlements'
+      path: '/jet/entitlements'
+      fullPath: '/app/jet/entitlements'
+      preLoaderRoute: typeof AppJetEntitlementsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/exceptions': {
+      id: '/app/jet/exceptions'
+      path: '/jet/exceptions'
+      fullPath: '/app/jet/exceptions'
+      preLoaderRoute: typeof AppJetExceptionsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/jet/form-configurator': {
       id: '/app/jet/form-configurator'
       path: '/jet/form-configurator'
@@ -3314,6 +2611,13 @@ declare module '@tanstack/react-router' {
       path: '/jet/integrations'
       fullPath: '/app/jet/integrations'
       preLoaderRoute: typeof AppJetIntegrationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/launch-readiness': {
+      id: '/app/jet/launch-readiness'
+      path: '/jet/launch-readiness'
+      fullPath: '/app/jet/launch-readiness'
+      preLoaderRoute: typeof AppJetLaunchReadinessRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/jet/module1': {
@@ -3350,244 +2654,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/jet/products'
       preLoaderRoute: typeof AppJetProductsRouteImport
       parentRoute: typeof AppRoute
-    }
-    '/gov/$module/': {
-      id: '/gov/$module/'
-      path: '/'
-      fullPath: '/gov/$module/'
-      preLoaderRoute: typeof GovModuleIndexRouteImport
-      parentRoute: typeof GovModuleRoute
-    }
-    '/gov/$module/deltas': {
-      id: '/gov/$module/deltas'
-      path: '/deltas'
-      fullPath: '/gov/$module/deltas'
-      preLoaderRoute: typeof GovModuleDeltasRouteImport
-      parentRoute: typeof GovModuleRoute
-    }
-    '/gov/$module/flows': {
-      id: '/gov/$module/flows'
-      path: '/flows'
-      fullPath: '/gov/$module/flows'
-      preLoaderRoute: typeof GovModuleFlowsRouteImport
-      parentRoute: typeof GovModuleRoute
-    }
-    '/gov/$module/registers': {
-      id: '/gov/$module/registers'
-      path: '/registers'
-      fullPath: '/gov/$module/registers'
-      preLoaderRoute: typeof GovModuleRegistersRouteImport
-      parentRoute: typeof GovModuleRoute
-    }
-    '/gov/$module/screens': {
-      id: '/gov/$module/screens'
-      path: '/screens'
-      fullPath: '/gov/$module/screens'
-      preLoaderRoute: typeof GovModuleScreensRouteImport
-      parentRoute: typeof GovModuleRoute
-    }
-    '/gov/$module/traceability': {
-      id: '/gov/$module/traceability'
-      path: '/traceability'
-      fullPath: '/gov/$module/traceability'
-      preLoaderRoute: typeof GovModuleTraceabilityRouteImport
-      parentRoute: typeof GovModuleRoute
-    }
-    '/lucie-app/agency/': {
-      id: '/lucie-app/agency/'
-      path: '/agency'
-      fullPath: '/lucie-app/agency/'
-      preLoaderRoute: typeof LucieAppAgencyIndexRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/agency/marketplaces': {
-      id: '/lucie-app/agency/marketplaces'
-      path: '/agency/marketplaces'
-      fullPath: '/lucie-app/agency/marketplaces'
-      preLoaderRoute: typeof LucieAppAgencyMarketplacesRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/agency/producers': {
-      id: '/lucie-app/agency/producers'
-      path: '/agency/producers'
-      fullPath: '/lucie-app/agency/producers'
-      preLoaderRoute: typeof LucieAppAgencyProducersRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/employer/': {
-      id: '/lucie-app/employer/'
-      path: '/employer'
-      fullPath: '/lucie-app/employer/'
-      preLoaderRoute: typeof LucieAppEmployerIndexRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/employer/census': {
-      id: '/lucie-app/employer/census'
-      path: '/employer/census'
-      fullPath: '/lucie-app/employer/census'
-      preLoaderRoute: typeof LucieAppEmployerCensusRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/employer/contribution': {
-      id: '/lucie-app/employer/contribution'
-      path: '/employer/contribution'
-      fullPath: '/lucie-app/employer/contribution'
-      preLoaderRoute: typeof LucieAppEmployerContributionRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/employer/proposal': {
-      id: '/lucie-app/employer/proposal'
-      path: '/employer/proposal'
-      fullPath: '/lucie-app/employer/proposal'
-      preLoaderRoute: typeof LucieAppEmployerProposalRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/employer/results': {
-      id: '/lucie-app/employer/results'
-      path: '/employer/results'
-      fullPath: '/lucie-app/employer/results'
-      preLoaderRoute: typeof LucieAppEmployerResultsRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/': {
-      id: '/lucie-app/platform/'
-      path: '/platform'
-      fullPath: '/lucie-app/platform/'
-      preLoaderRoute: typeof LucieAppPlatformIndexRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/audit': {
-      id: '/lucie-app/platform/audit'
-      path: '/platform/audit'
-      fullPath: '/lucie-app/platform/audit'
-      preLoaderRoute: typeof LucieAppPlatformAuditRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/entitlements': {
-      id: '/lucie-app/platform/entitlements'
-      path: '/platform/entitlements'
-      fullPath: '/lucie-app/platform/entitlements'
-      preLoaderRoute: typeof LucieAppPlatformEntitlementsRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/exceptions': {
-      id: '/lucie-app/platform/exceptions'
-      path: '/platform/exceptions'
-      fullPath: '/lucie-app/platform/exceptions'
-      preLoaderRoute: typeof LucieAppPlatformExceptionsRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/gates': {
-      id: '/lucie-app/platform/gates'
-      path: '/platform/gates'
-      fullPath: '/lucie-app/platform/gates'
-      preLoaderRoute: typeof LucieAppPlatformGatesRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/health': {
-      id: '/lucie-app/platform/health'
-      path: '/platform/health'
-      fullPath: '/lucie-app/platform/health'
-      preLoaderRoute: typeof LucieAppPlatformHealthRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/roles': {
-      id: '/lucie-app/platform/roles'
-      path: '/platform/roles'
-      fullPath: '/lucie-app/platform/roles'
-      preLoaderRoute: typeof LucieAppPlatformRolesRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/tenants': {
-      id: '/lucie-app/platform/tenants'
-      path: '/platform/tenants'
-      fullPath: '/lucie-app/platform/tenants'
-      preLoaderRoute: typeof LucieAppPlatformTenantsRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/': {
-      id: '/lucie-app/shop/'
-      path: '/shop'
-      fullPath: '/lucie-app/shop/'
-      preLoaderRoute: typeof LucieAppShopIndexRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/application': {
-      id: '/lucie-app/shop/application'
-      path: '/shop/application'
-      fullPath: '/lucie-app/shop/application'
-      preLoaderRoute: typeof LucieAppShopApplicationRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/cart': {
-      id: '/lucie-app/shop/cart'
-      path: '/shop/cart'
-      fullPath: '/lucie-app/shop/cart'
-      preLoaderRoute: typeof LucieAppShopCartRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/compare': {
-      id: '/lucie-app/shop/compare'
-      path: '/shop/compare'
-      fullPath: '/lucie-app/shop/compare'
-      preLoaderRoute: typeof LucieAppShopCompareRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/confirmation': {
-      id: '/lucie-app/shop/confirmation'
-      path: '/shop/confirmation'
-      fullPath: '/lucie-app/shop/confirmation'
-      preLoaderRoute: typeof LucieAppShopConfirmationRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/documents': {
-      id: '/lucie-app/shop/documents'
-      path: '/shop/documents'
-      fullPath: '/lucie-app/shop/documents'
-      preLoaderRoute: typeof LucieAppShopDocumentsRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/eligibility': {
-      id: '/lucie-app/shop/eligibility'
-      path: '/shop/eligibility'
-      fullPath: '/lucie-app/shop/eligibility'
-      preLoaderRoute: typeof LucieAppShopEligibilityRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/esign': {
-      id: '/lucie-app/shop/esign'
-      path: '/shop/esign'
-      fullPath: '/lucie-app/shop/esign'
-      preLoaderRoute: typeof LucieAppShopEsignRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/register': {
-      id: '/lucie-app/shop/register'
-      path: '/shop/register'
-      fullPath: '/lucie-app/shop/register'
-      preLoaderRoute: typeof LucieAppShopRegisterRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/review': {
-      id: '/lucie-app/shop/review'
-      path: '/shop/review'
-      fullPath: '/lucie-app/shop/review'
-      preLoaderRoute: typeof LucieAppShopReviewRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/status': {
-      id: '/lucie-app/shop/status'
-      path: '/shop/status'
-      fullPath: '/lucie-app/shop/status'
-      preLoaderRoute: typeof LucieAppShopStatusRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/m06/s/$screen': {
-      id: '/m06/s/$screen'
-      path: '/s/$screen'
-      fullPath: '/m06/s/$screen'
-      preLoaderRoute: typeof M06SScreenRouteImport
-      parentRoute: typeof M06Route
     }
     '/marketplace/admin/': {
       id: '/marketplace/admin/'
@@ -3813,34 +2879,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AgencyOrganizationsOrganizationIdSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/gov/$module/flows/$flow': {
-      id: '/gov/$module/flows/$flow'
-      path: '/$flow'
-      fullPath: '/gov/$module/flows/$flow'
-      preLoaderRoute: typeof GovModuleFlowsFlowRouteImport
-      parentRoute: typeof GovModuleFlowsRoute
-    }
-    '/gov/$module/screens/$screen': {
-      id: '/gov/$module/screens/$screen'
-      path: '/$screen'
-      fullPath: '/gov/$module/screens/$screen'
-      preLoaderRoute: typeof GovModuleScreensScreenRouteImport
-      parentRoute: typeof GovModuleScreensRoute
-    }
-    '/lucie-app/shop/plans/': {
-      id: '/lucie-app/shop/plans/'
-      path: '/shop/plans'
-      fullPath: '/lucie-app/shop/plans/'
-      preLoaderRoute: typeof LucieAppShopPlansIndexRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/shop/plans/$planId': {
-      id: '/lucie-app/shop/plans/$planId'
-      path: '/shop/plans/$planId'
-      fullPath: '/lucie-app/shop/plans/$planId'
-      preLoaderRoute: typeof LucieAppShopPlansPlanIdRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
     '/marketplace/admin/availability/': {
       id: '/marketplace/admin/availability/'
       path: '/marketplace/admin/availability'
@@ -3937,6 +2975,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRoute
+  AppAgentProfileRoute: typeof AppAgentProfileRoute
   AppCommissionsRoute: typeof AppCommissionsRoute
   AppCommunicationsRoute: typeof AppCommunicationsRoute
   AppDashboardRoute: typeof AppDashboardRoute
@@ -3954,14 +2993,21 @@ interface AppRouteChildren {
   AppAgencyRevenueRoute: typeof AppAgencyRevenueRoute
   AppAgencyStatementsRoute: typeof AppAgencyStatementsRoute
   AppCustomersIdRoute: typeof AppCustomersIdRoute
+  AppEmployerCensusRoute: typeof AppEmployerCensusRoute
+  AppEmployerContributionRoute: typeof AppEmployerContributionRoute
   AppEmployerIchraRoute: typeof AppEmployerIchraRoute
+  AppEmployerProposalRoute: typeof AppEmployerProposalRoute
+  AppEmployerResultsRoute: typeof AppEmployerResultsRoute
   AppJetAclRoute: typeof AppJetAclRoute
   AppJetAiGovernanceRoute: typeof AppJetAiGovernanceRoute
   AppJetAppointmentsRoute: typeof AppJetAppointmentsRoute
   AppJetAuditRoute: typeof AppJetAuditRoute
   AppJetBrandingRoute: typeof AppJetBrandingRoute
+  AppJetEntitlementsRoute: typeof AppJetEntitlementsRoute
+  AppJetExceptionsRoute: typeof AppJetExceptionsRoute
   AppJetFormConfiguratorRoute: typeof AppJetFormConfiguratorRoute
   AppJetIntegrationsRoute: typeof AppJetIntegrationsRoute
+  AppJetLaunchReadinessRoute: typeof AppJetLaunchReadinessRoute
   AppJetModule1Route: typeof AppJetModule1Route
   AppJetNotificationsRoute: typeof AppJetNotificationsRoute
   AppJetPlatformRoute: typeof AppJetPlatformRoute
@@ -3973,6 +3019,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRoute,
+  AppAgentProfileRoute: AppAgentProfileRoute,
   AppCommissionsRoute: AppCommissionsRoute,
   AppCommunicationsRoute: AppCommunicationsRoute,
   AppDashboardRoute: AppDashboardRoute,
@@ -3990,14 +3037,21 @@ const AppRouteChildren: AppRouteChildren = {
   AppAgencyRevenueRoute: AppAgencyRevenueRoute,
   AppAgencyStatementsRoute: AppAgencyStatementsRoute,
   AppCustomersIdRoute: AppCustomersIdRoute,
+  AppEmployerCensusRoute: AppEmployerCensusRoute,
+  AppEmployerContributionRoute: AppEmployerContributionRoute,
   AppEmployerIchraRoute: AppEmployerIchraRoute,
+  AppEmployerProposalRoute: AppEmployerProposalRoute,
+  AppEmployerResultsRoute: AppEmployerResultsRoute,
   AppJetAclRoute: AppJetAclRoute,
   AppJetAiGovernanceRoute: AppJetAiGovernanceRoute,
   AppJetAppointmentsRoute: AppJetAppointmentsRoute,
   AppJetAuditRoute: AppJetAuditRoute,
   AppJetBrandingRoute: AppJetBrandingRoute,
+  AppJetEntitlementsRoute: AppJetEntitlementsRoute,
+  AppJetExceptionsRoute: AppJetExceptionsRoute,
   AppJetFormConfiguratorRoute: AppJetFormConfiguratorRoute,
   AppJetIntegrationsRoute: AppJetIntegrationsRoute,
+  AppJetLaunchReadinessRoute: AppJetLaunchReadinessRoute,
   AppJetModule1Route: AppJetModule1Route,
   AppJetNotificationsRoute: AppJetNotificationsRoute,
   AppJetPlatformRoute: AppJetPlatformRoute,
@@ -4008,140 +3062,6 @@ const AppRouteChildren: AppRouteChildren = {
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
-
-interface LucieRouteChildren {
-  LucieGovernanceRoute: typeof LucieGovernanceRoute
-  LucieModule1Route: typeof LucieModule1Route
-  LucieModulesRoute: typeof LucieModulesRoute
-  LucieReconciliationRoute: typeof LucieReconciliationRoute
-  LucieSlicesRoute: typeof LucieSlicesRoute
-  LucieStatesRoute: typeof LucieStatesRoute
-  LucieSurfacesRoute: typeof LucieSurfacesRoute
-  LucieTraceRoute: typeof LucieTraceRoute
-  LucieWorkstreamsRoute: typeof LucieWorkstreamsRoute
-  LucieIndexRoute: typeof LucieIndexRoute
-}
-
-const LucieRouteChildren: LucieRouteChildren = {
-  LucieGovernanceRoute: LucieGovernanceRoute,
-  LucieModule1Route: LucieModule1Route,
-  LucieModulesRoute: LucieModulesRoute,
-  LucieReconciliationRoute: LucieReconciliationRoute,
-  LucieSlicesRoute: LucieSlicesRoute,
-  LucieStatesRoute: LucieStatesRoute,
-  LucieSurfacesRoute: LucieSurfacesRoute,
-  LucieTraceRoute: LucieTraceRoute,
-  LucieWorkstreamsRoute: LucieWorkstreamsRoute,
-  LucieIndexRoute: LucieIndexRoute,
-}
-
-const LucieRouteWithChildren = LucieRoute._addFileChildren(LucieRouteChildren)
-
-interface LucieAppRouteChildren {
-  LucieAppIndexRoute: typeof LucieAppIndexRoute
-  LucieAppAgencyMarketplacesRoute: typeof LucieAppAgencyMarketplacesRoute
-  LucieAppAgencyProducersRoute: typeof LucieAppAgencyProducersRoute
-  LucieAppEmployerCensusRoute: typeof LucieAppEmployerCensusRoute
-  LucieAppEmployerContributionRoute: typeof LucieAppEmployerContributionRoute
-  LucieAppEmployerProposalRoute: typeof LucieAppEmployerProposalRoute
-  LucieAppEmployerResultsRoute: typeof LucieAppEmployerResultsRoute
-  LucieAppPlatformAuditRoute: typeof LucieAppPlatformAuditRoute
-  LucieAppPlatformEntitlementsRoute: typeof LucieAppPlatformEntitlementsRoute
-  LucieAppPlatformExceptionsRoute: typeof LucieAppPlatformExceptionsRoute
-  LucieAppPlatformGatesRoute: typeof LucieAppPlatformGatesRoute
-  LucieAppPlatformHealthRoute: typeof LucieAppPlatformHealthRoute
-  LucieAppPlatformRolesRoute: typeof LucieAppPlatformRolesRoute
-  LucieAppPlatformTenantsRoute: typeof LucieAppPlatformTenantsRoute
-  LucieAppShopApplicationRoute: typeof LucieAppShopApplicationRoute
-  LucieAppShopCartRoute: typeof LucieAppShopCartRoute
-  LucieAppShopCompareRoute: typeof LucieAppShopCompareRoute
-  LucieAppShopConfirmationRoute: typeof LucieAppShopConfirmationRoute
-  LucieAppShopDocumentsRoute: typeof LucieAppShopDocumentsRoute
-  LucieAppShopEligibilityRoute: typeof LucieAppShopEligibilityRoute
-  LucieAppShopEsignRoute: typeof LucieAppShopEsignRoute
-  LucieAppShopRegisterRoute: typeof LucieAppShopRegisterRoute
-  LucieAppShopReviewRoute: typeof LucieAppShopReviewRoute
-  LucieAppShopStatusRoute: typeof LucieAppShopStatusRoute
-  LucieAppAgencyIndexRoute: typeof LucieAppAgencyIndexRoute
-  LucieAppEmployerIndexRoute: typeof LucieAppEmployerIndexRoute
-  LucieAppPlatformIndexRoute: typeof LucieAppPlatformIndexRoute
-  LucieAppShopIndexRoute: typeof LucieAppShopIndexRoute
-  LucieAppShopPlansPlanIdRoute: typeof LucieAppShopPlansPlanIdRoute
-  LucieAppShopPlansIndexRoute: typeof LucieAppShopPlansIndexRoute
-}
-
-const LucieAppRouteChildren: LucieAppRouteChildren = {
-  LucieAppIndexRoute: LucieAppIndexRoute,
-  LucieAppAgencyMarketplacesRoute: LucieAppAgencyMarketplacesRoute,
-  LucieAppAgencyProducersRoute: LucieAppAgencyProducersRoute,
-  LucieAppEmployerCensusRoute: LucieAppEmployerCensusRoute,
-  LucieAppEmployerContributionRoute: LucieAppEmployerContributionRoute,
-  LucieAppEmployerProposalRoute: LucieAppEmployerProposalRoute,
-  LucieAppEmployerResultsRoute: LucieAppEmployerResultsRoute,
-  LucieAppPlatformAuditRoute: LucieAppPlatformAuditRoute,
-  LucieAppPlatformEntitlementsRoute: LucieAppPlatformEntitlementsRoute,
-  LucieAppPlatformExceptionsRoute: LucieAppPlatformExceptionsRoute,
-  LucieAppPlatformGatesRoute: LucieAppPlatformGatesRoute,
-  LucieAppPlatformHealthRoute: LucieAppPlatformHealthRoute,
-  LucieAppPlatformRolesRoute: LucieAppPlatformRolesRoute,
-  LucieAppPlatformTenantsRoute: LucieAppPlatformTenantsRoute,
-  LucieAppShopApplicationRoute: LucieAppShopApplicationRoute,
-  LucieAppShopCartRoute: LucieAppShopCartRoute,
-  LucieAppShopCompareRoute: LucieAppShopCompareRoute,
-  LucieAppShopConfirmationRoute: LucieAppShopConfirmationRoute,
-  LucieAppShopDocumentsRoute: LucieAppShopDocumentsRoute,
-  LucieAppShopEligibilityRoute: LucieAppShopEligibilityRoute,
-  LucieAppShopEsignRoute: LucieAppShopEsignRoute,
-  LucieAppShopRegisterRoute: LucieAppShopRegisterRoute,
-  LucieAppShopReviewRoute: LucieAppShopReviewRoute,
-  LucieAppShopStatusRoute: LucieAppShopStatusRoute,
-  LucieAppAgencyIndexRoute: LucieAppAgencyIndexRoute,
-  LucieAppEmployerIndexRoute: LucieAppEmployerIndexRoute,
-  LucieAppPlatformIndexRoute: LucieAppPlatformIndexRoute,
-  LucieAppShopIndexRoute: LucieAppShopIndexRoute,
-  LucieAppShopPlansPlanIdRoute: LucieAppShopPlansPlanIdRoute,
-  LucieAppShopPlansIndexRoute: LucieAppShopPlansIndexRoute,
-}
-
-const LucieAppRouteWithChildren = LucieAppRoute._addFileChildren(
-  LucieAppRouteChildren,
-)
-
-interface M00RouteChildren {
-  M00ApiRoute: typeof M00ApiRoute
-  M00ConsoleRoute: typeof M00ConsoleRoute
-  M00EventsRoute: typeof M00EventsRoute
-  M00TestsRoute: typeof M00TestsRoute
-  M00IndexRoute: typeof M00IndexRoute
-}
-
-const M00RouteChildren: M00RouteChildren = {
-  M00ApiRoute: M00ApiRoute,
-  M00ConsoleRoute: M00ConsoleRoute,
-  M00EventsRoute: M00EventsRoute,
-  M00TestsRoute: M00TestsRoute,
-  M00IndexRoute: M00IndexRoute,
-}
-
-const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
-
-interface M06RouteChildren {
-  M06ConsoleRoute: typeof M06ConsoleRoute
-  M06RosterRoute: typeof M06RosterRoute
-  M06ScreensRoute: typeof M06ScreensRoute
-  M06IndexRoute: typeof M06IndexRoute
-  M06SScreenRoute: typeof M06SScreenRoute
-}
-
-const M06RouteChildren: M06RouteChildren = {
-  M06ConsoleRoute: M06ConsoleRoute,
-  M06RosterRoute: M06RosterRoute,
-  M06ScreensRoute: M06ScreensRoute,
-  M06IndexRoute: M06IndexRoute,
-  M06SScreenRoute: M06SScreenRoute,
-}
-
-const M06RouteWithChildren = M06Route._addFileChildren(M06RouteChildren)
 
 interface MemberRouteChildren {
   MemberMessagesRoute: typeof MemberMessagesRoute
@@ -4159,51 +3079,6 @@ const MemberRouteChildren: MemberRouteChildren = {
 
 const MemberRouteWithChildren =
   MemberRoute._addFileChildren(MemberRouteChildren)
-
-interface GovModuleFlowsRouteChildren {
-  GovModuleFlowsFlowRoute: typeof GovModuleFlowsFlowRoute
-}
-
-const GovModuleFlowsRouteChildren: GovModuleFlowsRouteChildren = {
-  GovModuleFlowsFlowRoute: GovModuleFlowsFlowRoute,
-}
-
-const GovModuleFlowsRouteWithChildren = GovModuleFlowsRoute._addFileChildren(
-  GovModuleFlowsRouteChildren,
-)
-
-interface GovModuleScreensRouteChildren {
-  GovModuleScreensScreenRoute: typeof GovModuleScreensScreenRoute
-}
-
-const GovModuleScreensRouteChildren: GovModuleScreensRouteChildren = {
-  GovModuleScreensScreenRoute: GovModuleScreensScreenRoute,
-}
-
-const GovModuleScreensRouteWithChildren =
-  GovModuleScreensRoute._addFileChildren(GovModuleScreensRouteChildren)
-
-interface GovModuleRouteChildren {
-  GovModuleDeltasRoute: typeof GovModuleDeltasRoute
-  GovModuleFlowsRoute: typeof GovModuleFlowsRouteWithChildren
-  GovModuleRegistersRoute: typeof GovModuleRegistersRoute
-  GovModuleScreensRoute: typeof GovModuleScreensRouteWithChildren
-  GovModuleTraceabilityRoute: typeof GovModuleTraceabilityRoute
-  GovModuleIndexRoute: typeof GovModuleIndexRoute
-}
-
-const GovModuleRouteChildren: GovModuleRouteChildren = {
-  GovModuleDeltasRoute: GovModuleDeltasRoute,
-  GovModuleFlowsRoute: GovModuleFlowsRouteWithChildren,
-  GovModuleRegistersRoute: GovModuleRegistersRoute,
-  GovModuleScreensRoute: GovModuleScreensRouteWithChildren,
-  GovModuleTraceabilityRoute: GovModuleTraceabilityRoute,
-  GovModuleIndexRoute: GovModuleIndexRoute,
-}
-
-const GovModuleRouteWithChildren = GovModuleRoute._addFileChildren(
-  GovModuleRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -4223,10 +3098,6 @@ const rootRouteChildren: RootRouteChildren = {
   HandoffRoute: HandoffRoute,
   IchraRoute: IchraRoute,
   JourneyChoiceRoute: JourneyChoiceRoute,
-  LucieRoute: LucieRouteWithChildren,
-  LucieAppRoute: LucieAppRouteWithChildren,
-  M00Route: M00RouteWithChildren,
-  M06Route: M06RouteWithChildren,
   MemberRoute: MemberRouteWithChildren,
   MyWorkRoute: MyWorkRoute,
   NoOptionsRoute: NoOptionsRoute,
@@ -4243,10 +3114,6 @@ const rootRouteChildren: RootRouteChildren = {
   AgencyOrganizationAdminRoute: AgencyOrganizationAdminRoute,
   AgencyOrganizationStructureRoute: AgencyOrganizationStructureRoute,
   AgencyOrganizationWorkRoute: AgencyOrganizationWorkRoute,
-  GovModuleRoute: GovModuleRouteWithChildren,
-  HfScreenRoute: HfScreenRoute,
-  M1ScreenRoute: M1ScreenRoute,
-  P1ScreenRoute: P1ScreenRoute,
   PlansPlanIdRoute: PlansPlanIdRoute,
   RReferralTokenRoute: RReferralTokenRoute,
   SharedTokenRoute: SharedTokenRoute,
@@ -4254,16 +3121,22 @@ const rootRouteChildren: RootRouteChildren = {
   UnavailablePathwayRoute: UnavailablePathwayRoute,
   UnavailableSuspendedRoute: UnavailableSuspendedRoute,
   UnavailableUnresolvedRoute: UnavailableUnresolvedRoute,
-  GovIndexRoute: GovIndexRoute,
-  HfIndexRoute: HfIndexRoute,
-  M1IndexRoute: M1IndexRoute,
-  P1IndexRoute: P1IndexRoute,
   PlansIndexRoute: PlansIndexRoute,
   AgencyOrganizationDefaultsApplyRoute: AgencyOrganizationDefaultsApplyRoute,
   AgencyOrganizationImportsImportJobIdRoute:
     AgencyOrganizationImportsImportJobIdRoute,
   AgencyReferenceOrganizationsRequestRoute:
     AgencyReferenceOrganizationsRequestRoute,
+  AgencyWorkforceAccessRoute: AgencyWorkforceAccessRoute,
+  AgencyWorkforceDataRoute: AgencyWorkforceDataRoute,
+  AgencyWorkforceLifecycleRoute: AgencyWorkforceLifecycleRoute,
+  AgencyWorkforceOnboardingRoute: AgencyWorkforceOnboardingRoute,
+  AgencyWorkforcePersonRoute: AgencyWorkforcePersonRoute,
+  AgencyWorkforceReadinessRoute: AgencyWorkforceReadinessRoute,
+  AgencyWorkforceRosterRoute: AgencyWorkforceRosterRoute,
+  AgencyWorkforceSettingsRoute: AgencyWorkforceSettingsRoute,
+  AgencyWorkforceStructureRoute: AgencyWorkforceStructureRoute,
+  AgencyWorkforceWorkRoute: AgencyWorkforceWorkRoute,
   MarketplaceAdminActivationRoute: MarketplaceAdminActivationRoute,
   MarketplaceAdminAssetsRoute: MarketplaceAdminAssetsRoute,
   MarketplaceAdminBrandRoute: MarketplaceAdminBrandRoute,
@@ -4277,6 +3150,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarketplaceAdminWorkRoute: MarketplaceAdminWorkRoute,
   AgencyOrganizationImportsIndexRoute: AgencyOrganizationImportsIndexRoute,
   AgencyOrganizationsIndexRoute: AgencyOrganizationsIndexRoute,
+  AgencyWorkforceIndexRoute: AgencyWorkforceIndexRoute,
   MarketplaceAdminIndexRoute: MarketplaceAdminIndexRoute,
   PlatformMarketplacesIndexRoute: PlatformMarketplacesIndexRoute,
   PlatformOrganizationsIndexRoute: PlatformOrganizationsIndexRoute,
