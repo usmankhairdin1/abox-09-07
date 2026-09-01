@@ -20,6 +20,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      abox_is_tenant_member: { Args: { p_tenant_id: string }; Returns: boolean }
+      abox_m06_permissions_for_role: {
+        Args: { p_role_code: string }
+        Returns: string[]
+      }
+      abox_resolve_context: { Args: { p_user_id: string }; Returns: Json }
+      abox_sync_m06_grants: {
+        Args: {
+          p_organization_id: string
+          p_role_code: string
+          p_tenant_id: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       lucie_m06_api: {
         Args: {
           p_is_platform_admin?: boolean
