@@ -1073,7 +1073,7 @@ export function AgentWorkspace({ call }: M06ScreenProps) {
           </Section>
         ) : null}
 
-        <div className="grid gap-6 xl:grid-cols-2">
+        <div className="grid gap-6">
           <DefinitionCard
             title="Profile details"
             items={[
