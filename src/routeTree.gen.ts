@@ -122,14 +122,21 @@ import { Route as AppAgencyRevenueRouteImport } from './routes/app.agency.revenu
 import { Route as AppAgencyStatementsRouteImport } from './routes/app.agency.statements'
 import { Route as AppCustomersIndexRouteImport } from './routes/app.customers.index'
 import { Route as AppCustomersIdRouteImport } from './routes/app.customers.$id'
+import { Route as AppEmployerCensusRouteImport } from './routes/app.employer.census'
+import { Route as AppEmployerContributionRouteImport } from './routes/app.employer.contribution'
 import { Route as AppEmployerIchraRouteImport } from './routes/app.employer.ichra'
+import { Route as AppEmployerProposalRouteImport } from './routes/app.employer.proposal'
+import { Route as AppEmployerResultsRouteImport } from './routes/app.employer.results'
 import { Route as AppJetAclRouteImport } from './routes/app.jet.acl'
 import { Route as AppJetAiGovernanceRouteImport } from './routes/app.jet.ai-governance'
 import { Route as AppJetAppointmentsRouteImport } from './routes/app.jet.appointments'
 import { Route as AppJetAuditRouteImport } from './routes/app.jet.audit'
 import { Route as AppJetBrandingRouteImport } from './routes/app.jet.branding'
+import { Route as AppJetEntitlementsRouteImport } from './routes/app.jet.entitlements'
+import { Route as AppJetExceptionsRouteImport } from './routes/app.jet.exceptions'
 import { Route as AppJetFormConfiguratorRouteImport } from './routes/app.jet.form-configurator'
 import { Route as AppJetIntegrationsRouteImport } from './routes/app.jet.integrations'
+import { Route as AppJetLaunchReadinessRouteImport } from './routes/app.jet.launch-readiness'
 import { Route as AppJetModule1RouteImport } from './routes/app.jet.module1'
 import { Route as AppJetNotificationsRouteImport } from './routes/app.jet.notifications'
 import { Route as AppJetPlatformRouteImport } from './routes/app.jet.platform'
@@ -145,15 +152,8 @@ import { Route as LucieAppAgencyIndexRouteImport } from './routes/lucie-app.agen
 import { Route as LucieAppAgencyMarketplacesRouteImport } from './routes/lucie-app.agency.marketplaces'
 import { Route as LucieAppAgencyProducersRouteImport } from './routes/lucie-app.agency.producers'
 import { Route as LucieAppEmployerIndexRouteImport } from './routes/lucie-app.employer.index'
-import { Route as LucieAppEmployerCensusRouteImport } from './routes/lucie-app.employer.census'
-import { Route as LucieAppEmployerContributionRouteImport } from './routes/lucie-app.employer.contribution'
-import { Route as LucieAppEmployerProposalRouteImport } from './routes/lucie-app.employer.proposal'
-import { Route as LucieAppEmployerResultsRouteImport } from './routes/lucie-app.employer.results'
 import { Route as LucieAppPlatformIndexRouteImport } from './routes/lucie-app.platform.index'
 import { Route as LucieAppPlatformAuditRouteImport } from './routes/lucie-app.platform.audit'
-import { Route as LucieAppPlatformEntitlementsRouteImport } from './routes/lucie-app.platform.entitlements'
-import { Route as LucieAppPlatformExceptionsRouteImport } from './routes/lucie-app.platform.exceptions'
-import { Route as LucieAppPlatformGatesRouteImport } from './routes/lucie-app.platform.gates'
 import { Route as LucieAppPlatformHealthRouteImport } from './routes/lucie-app.platform.health'
 import { Route as LucieAppPlatformRolesRouteImport } from './routes/lucie-app.platform.roles'
 import { Route as LucieAppPlatformTenantsRouteImport } from './routes/lucie-app.platform.tenants'
@@ -795,9 +795,29 @@ const AppCustomersIdRoute = AppCustomersIdRouteImport.update({
   path: '/customers/$id',
   getParentRoute: () => AppRoute,
 } as any)
+const AppEmployerCensusRoute = AppEmployerCensusRouteImport.update({
+  id: '/employer/census',
+  path: '/employer/census',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEmployerContributionRoute = AppEmployerContributionRouteImport.update({
+  id: '/employer/contribution',
+  path: '/employer/contribution',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppEmployerIchraRoute = AppEmployerIchraRouteImport.update({
   id: '/employer/ichra',
   path: '/employer/ichra',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEmployerProposalRoute = AppEmployerProposalRouteImport.update({
+  id: '/employer/proposal',
+  path: '/employer/proposal',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEmployerResultsRoute = AppEmployerResultsRouteImport.update({
+  id: '/employer/results',
+  path: '/employer/results',
   getParentRoute: () => AppRoute,
 } as any)
 const AppJetAclRoute = AppJetAclRouteImport.update({
@@ -825,6 +845,16 @@ const AppJetBrandingRoute = AppJetBrandingRouteImport.update({
   path: '/jet/branding',
   getParentRoute: () => AppRoute,
 } as any)
+const AppJetEntitlementsRoute = AppJetEntitlementsRouteImport.update({
+  id: '/jet/entitlements',
+  path: '/jet/entitlements',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetExceptionsRoute = AppJetExceptionsRouteImport.update({
+  id: '/jet/exceptions',
+  path: '/jet/exceptions',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppJetFormConfiguratorRoute = AppJetFormConfiguratorRouteImport.update({
   id: '/jet/form-configurator',
   path: '/jet/form-configurator',
@@ -833,6 +863,11 @@ const AppJetFormConfiguratorRoute = AppJetFormConfiguratorRouteImport.update({
 const AppJetIntegrationsRoute = AppJetIntegrationsRouteImport.update({
   id: '/jet/integrations',
   path: '/jet/integrations',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJetLaunchReadinessRoute = AppJetLaunchReadinessRouteImport.update({
+  id: '/jet/launch-readiness',
+  path: '/jet/launch-readiness',
   getParentRoute: () => AppRoute,
 } as any)
 const AppJetModule1Route = AppJetModule1RouteImport.update({
@@ -911,28 +946,6 @@ const LucieAppEmployerIndexRoute = LucieAppEmployerIndexRouteImport.update({
   path: '/employer/',
   getParentRoute: () => LucieAppRoute,
 } as any)
-const LucieAppEmployerCensusRoute = LucieAppEmployerCensusRouteImport.update({
-  id: '/employer/census',
-  path: '/employer/census',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppEmployerContributionRoute =
-  LucieAppEmployerContributionRouteImport.update({
-    id: '/employer/contribution',
-    path: '/employer/contribution',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppEmployerProposalRoute =
-  LucieAppEmployerProposalRouteImport.update({
-    id: '/employer/proposal',
-    path: '/employer/proposal',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppEmployerResultsRoute = LucieAppEmployerResultsRouteImport.update({
-  id: '/employer/results',
-  path: '/employer/results',
-  getParentRoute: () => LucieAppRoute,
-} as any)
 const LucieAppPlatformIndexRoute = LucieAppPlatformIndexRouteImport.update({
   id: '/platform/',
   path: '/platform/',
@@ -941,23 +954,6 @@ const LucieAppPlatformIndexRoute = LucieAppPlatformIndexRouteImport.update({
 const LucieAppPlatformAuditRoute = LucieAppPlatformAuditRouteImport.update({
   id: '/platform/audit',
   path: '/platform/audit',
-  getParentRoute: () => LucieAppRoute,
-} as any)
-const LucieAppPlatformEntitlementsRoute =
-  LucieAppPlatformEntitlementsRouteImport.update({
-    id: '/platform/entitlements',
-    path: '/platform/entitlements',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppPlatformExceptionsRoute =
-  LucieAppPlatformExceptionsRouteImport.update({
-    id: '/platform/exceptions',
-    path: '/platform/exceptions',
-    getParentRoute: () => LucieAppRoute,
-  } as any)
-const LucieAppPlatformGatesRoute = LucieAppPlatformGatesRouteImport.update({
-  id: '/platform/gates',
-  path: '/platform/gates',
   getParentRoute: () => LucieAppRoute,
 } as any)
 const LucieAppPlatformHealthRoute = LucieAppPlatformHealthRouteImport.update({
@@ -1427,14 +1423,21 @@ export interface FileRoutesByFullPath {
   '/app/agency/revenue': typeof AppAgencyRevenueRoute
   '/app/agency/statements': typeof AppAgencyStatementsRoute
   '/app/customers/$id': typeof AppCustomersIdRoute
+  '/app/employer/census': typeof AppEmployerCensusRoute
+  '/app/employer/contribution': typeof AppEmployerContributionRoute
   '/app/employer/ichra': typeof AppEmployerIchraRoute
+  '/app/employer/proposal': typeof AppEmployerProposalRoute
+  '/app/employer/results': typeof AppEmployerResultsRoute
   '/app/jet/acl': typeof AppJetAclRoute
   '/app/jet/ai-governance': typeof AppJetAiGovernanceRoute
   '/app/jet/appointments': typeof AppJetAppointmentsRoute
   '/app/jet/audit': typeof AppJetAuditRoute
   '/app/jet/branding': typeof AppJetBrandingRoute
+  '/app/jet/entitlements': typeof AppJetEntitlementsRoute
+  '/app/jet/exceptions': typeof AppJetExceptionsRoute
   '/app/jet/form-configurator': typeof AppJetFormConfiguratorRoute
   '/app/jet/integrations': typeof AppJetIntegrationsRoute
+  '/app/jet/launch-readiness': typeof AppJetLaunchReadinessRoute
   '/app/jet/module1': typeof AppJetModule1Route
   '/app/jet/notifications': typeof AppJetNotificationsRoute
   '/app/jet/platform': typeof AppJetPlatformRoute
@@ -1447,14 +1450,7 @@ export interface FileRoutesByFullPath {
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
   '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
-  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
-  '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
-  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
-  '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
   '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
-  '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
-  '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
-  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
   '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
   '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
   '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
@@ -1631,14 +1627,21 @@ export interface FileRoutesByTo {
   '/app/agency/revenue': typeof AppAgencyRevenueRoute
   '/app/agency/statements': typeof AppAgencyStatementsRoute
   '/app/customers/$id': typeof AppCustomersIdRoute
+  '/app/employer/census': typeof AppEmployerCensusRoute
+  '/app/employer/contribution': typeof AppEmployerContributionRoute
   '/app/employer/ichra': typeof AppEmployerIchraRoute
+  '/app/employer/proposal': typeof AppEmployerProposalRoute
+  '/app/employer/results': typeof AppEmployerResultsRoute
   '/app/jet/acl': typeof AppJetAclRoute
   '/app/jet/ai-governance': typeof AppJetAiGovernanceRoute
   '/app/jet/appointments': typeof AppJetAppointmentsRoute
   '/app/jet/audit': typeof AppJetAuditRoute
   '/app/jet/branding': typeof AppJetBrandingRoute
+  '/app/jet/entitlements': typeof AppJetEntitlementsRoute
+  '/app/jet/exceptions': typeof AppJetExceptionsRoute
   '/app/jet/form-configurator': typeof AppJetFormConfiguratorRoute
   '/app/jet/integrations': typeof AppJetIntegrationsRoute
+  '/app/jet/launch-readiness': typeof AppJetLaunchReadinessRoute
   '/app/jet/module1': typeof AppJetModule1Route
   '/app/jet/notifications': typeof AppJetNotificationsRoute
   '/app/jet/platform': typeof AppJetPlatformRoute
@@ -1651,14 +1654,7 @@ export interface FileRoutesByTo {
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
   '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
-  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
-  '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
-  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
-  '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
   '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
-  '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
-  '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
-  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
   '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
   '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
   '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
@@ -1843,14 +1839,21 @@ export interface FileRoutesById {
   '/app/agency/revenue': typeof AppAgencyRevenueRoute
   '/app/agency/statements': typeof AppAgencyStatementsRoute
   '/app/customers/$id': typeof AppCustomersIdRoute
+  '/app/employer/census': typeof AppEmployerCensusRoute
+  '/app/employer/contribution': typeof AppEmployerContributionRoute
   '/app/employer/ichra': typeof AppEmployerIchraRoute
+  '/app/employer/proposal': typeof AppEmployerProposalRoute
+  '/app/employer/results': typeof AppEmployerResultsRoute
   '/app/jet/acl': typeof AppJetAclRoute
   '/app/jet/ai-governance': typeof AppJetAiGovernanceRoute
   '/app/jet/appointments': typeof AppJetAppointmentsRoute
   '/app/jet/audit': typeof AppJetAuditRoute
   '/app/jet/branding': typeof AppJetBrandingRoute
+  '/app/jet/entitlements': typeof AppJetEntitlementsRoute
+  '/app/jet/exceptions': typeof AppJetExceptionsRoute
   '/app/jet/form-configurator': typeof AppJetFormConfiguratorRoute
   '/app/jet/integrations': typeof AppJetIntegrationsRoute
+  '/app/jet/launch-readiness': typeof AppJetLaunchReadinessRoute
   '/app/jet/module1': typeof AppJetModule1Route
   '/app/jet/notifications': typeof AppJetNotificationsRoute
   '/app/jet/platform': typeof AppJetPlatformRoute
@@ -1863,14 +1866,7 @@ export interface FileRoutesById {
   '/gov/$module/traceability': typeof GovModuleTraceabilityRoute
   '/lucie-app/agency/marketplaces': typeof LucieAppAgencyMarketplacesRoute
   '/lucie-app/agency/producers': typeof LucieAppAgencyProducersRoute
-  '/lucie-app/employer/census': typeof LucieAppEmployerCensusRoute
-  '/lucie-app/employer/contribution': typeof LucieAppEmployerContributionRoute
-  '/lucie-app/employer/proposal': typeof LucieAppEmployerProposalRoute
-  '/lucie-app/employer/results': typeof LucieAppEmployerResultsRoute
   '/lucie-app/platform/audit': typeof LucieAppPlatformAuditRoute
-  '/lucie-app/platform/entitlements': typeof LucieAppPlatformEntitlementsRoute
-  '/lucie-app/platform/exceptions': typeof LucieAppPlatformExceptionsRoute
-  '/lucie-app/platform/gates': typeof LucieAppPlatformGatesRoute
   '/lucie-app/platform/health': typeof LucieAppPlatformHealthRoute
   '/lucie-app/platform/roles': typeof LucieAppPlatformRolesRoute
   '/lucie-app/platform/tenants': typeof LucieAppPlatformTenantsRoute
@@ -2056,14 +2052,21 @@ export interface FileRouteTypes {
     | '/app/agency/revenue'
     | '/app/agency/statements'
     | '/app/customers/$id'
+    | '/app/employer/census'
+    | '/app/employer/contribution'
     | '/app/employer/ichra'
+    | '/app/employer/proposal'
+    | '/app/employer/results'
     | '/app/jet/acl'
     | '/app/jet/ai-governance'
     | '/app/jet/appointments'
     | '/app/jet/audit'
     | '/app/jet/branding'
+    | '/app/jet/entitlements'
+    | '/app/jet/exceptions'
     | '/app/jet/form-configurator'
     | '/app/jet/integrations'
+    | '/app/jet/launch-readiness'
     | '/app/jet/module1'
     | '/app/jet/notifications'
     | '/app/jet/platform'
@@ -2076,14 +2079,7 @@ export interface FileRouteTypes {
     | '/gov/$module/traceability'
     | '/lucie-app/agency/marketplaces'
     | '/lucie-app/agency/producers'
-    | '/lucie-app/employer/census'
-    | '/lucie-app/employer/contribution'
-    | '/lucie-app/employer/proposal'
-    | '/lucie-app/employer/results'
     | '/lucie-app/platform/audit'
-    | '/lucie-app/platform/entitlements'
-    | '/lucie-app/platform/exceptions'
-    | '/lucie-app/platform/gates'
     | '/lucie-app/platform/health'
     | '/lucie-app/platform/roles'
     | '/lucie-app/platform/tenants'
@@ -2260,14 +2256,21 @@ export interface FileRouteTypes {
     | '/app/agency/revenue'
     | '/app/agency/statements'
     | '/app/customers/$id'
+    | '/app/employer/census'
+    | '/app/employer/contribution'
     | '/app/employer/ichra'
+    | '/app/employer/proposal'
+    | '/app/employer/results'
     | '/app/jet/acl'
     | '/app/jet/ai-governance'
     | '/app/jet/appointments'
     | '/app/jet/audit'
     | '/app/jet/branding'
+    | '/app/jet/entitlements'
+    | '/app/jet/exceptions'
     | '/app/jet/form-configurator'
     | '/app/jet/integrations'
+    | '/app/jet/launch-readiness'
     | '/app/jet/module1'
     | '/app/jet/notifications'
     | '/app/jet/platform'
@@ -2280,14 +2283,7 @@ export interface FileRouteTypes {
     | '/gov/$module/traceability'
     | '/lucie-app/agency/marketplaces'
     | '/lucie-app/agency/producers'
-    | '/lucie-app/employer/census'
-    | '/lucie-app/employer/contribution'
-    | '/lucie-app/employer/proposal'
-    | '/lucie-app/employer/results'
     | '/lucie-app/platform/audit'
-    | '/lucie-app/platform/entitlements'
-    | '/lucie-app/platform/exceptions'
-    | '/lucie-app/platform/gates'
     | '/lucie-app/platform/health'
     | '/lucie-app/platform/roles'
     | '/lucie-app/platform/tenants'
@@ -2471,14 +2467,21 @@ export interface FileRouteTypes {
     | '/app/agency/revenue'
     | '/app/agency/statements'
     | '/app/customers/$id'
+    | '/app/employer/census'
+    | '/app/employer/contribution'
     | '/app/employer/ichra'
+    | '/app/employer/proposal'
+    | '/app/employer/results'
     | '/app/jet/acl'
     | '/app/jet/ai-governance'
     | '/app/jet/appointments'
     | '/app/jet/audit'
     | '/app/jet/branding'
+    | '/app/jet/entitlements'
+    | '/app/jet/exceptions'
     | '/app/jet/form-configurator'
     | '/app/jet/integrations'
+    | '/app/jet/launch-readiness'
     | '/app/jet/module1'
     | '/app/jet/notifications'
     | '/app/jet/platform'
@@ -2491,14 +2494,7 @@ export interface FileRouteTypes {
     | '/gov/$module/traceability'
     | '/lucie-app/agency/marketplaces'
     | '/lucie-app/agency/producers'
-    | '/lucie-app/employer/census'
-    | '/lucie-app/employer/contribution'
-    | '/lucie-app/employer/proposal'
-    | '/lucie-app/employer/results'
     | '/lucie-app/platform/audit'
-    | '/lucie-app/platform/entitlements'
-    | '/lucie-app/platform/exceptions'
-    | '/lucie-app/platform/gates'
     | '/lucie-app/platform/health'
     | '/lucie-app/platform/roles'
     | '/lucie-app/platform/tenants'
@@ -3484,11 +3480,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCustomersIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/employer/census': {
+      id: '/app/employer/census'
+      path: '/employer/census'
+      fullPath: '/app/employer/census'
+      preLoaderRoute: typeof AppEmployerCensusRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/employer/contribution': {
+      id: '/app/employer/contribution'
+      path: '/employer/contribution'
+      fullPath: '/app/employer/contribution'
+      preLoaderRoute: typeof AppEmployerContributionRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/employer/ichra': {
       id: '/app/employer/ichra'
       path: '/employer/ichra'
       fullPath: '/app/employer/ichra'
       preLoaderRoute: typeof AppEmployerIchraRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/employer/proposal': {
+      id: '/app/employer/proposal'
+      path: '/employer/proposal'
+      fullPath: '/app/employer/proposal'
+      preLoaderRoute: typeof AppEmployerProposalRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/employer/results': {
+      id: '/app/employer/results'
+      path: '/employer/results'
+      fullPath: '/app/employer/results'
+      preLoaderRoute: typeof AppEmployerResultsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/jet/acl': {
@@ -3526,6 +3550,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppJetBrandingRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/jet/entitlements': {
+      id: '/app/jet/entitlements'
+      path: '/jet/entitlements'
+      fullPath: '/app/jet/entitlements'
+      preLoaderRoute: typeof AppJetEntitlementsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/exceptions': {
+      id: '/app/jet/exceptions'
+      path: '/jet/exceptions'
+      fullPath: '/app/jet/exceptions'
+      preLoaderRoute: typeof AppJetExceptionsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/jet/form-configurator': {
       id: '/app/jet/form-configurator'
       path: '/jet/form-configurator'
@@ -3538,6 +3576,13 @@ declare module '@tanstack/react-router' {
       path: '/jet/integrations'
       fullPath: '/app/jet/integrations'
       preLoaderRoute: typeof AppJetIntegrationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jet/launch-readiness': {
+      id: '/app/jet/launch-readiness'
+      path: '/jet/launch-readiness'
+      fullPath: '/app/jet/launch-readiness'
+      preLoaderRoute: typeof AppJetLaunchReadinessRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/jet/module1': {
@@ -3645,34 +3690,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LucieAppEmployerIndexRouteImport
       parentRoute: typeof LucieAppRoute
     }
-    '/lucie-app/employer/census': {
-      id: '/lucie-app/employer/census'
-      path: '/employer/census'
-      fullPath: '/lucie-app/employer/census'
-      preLoaderRoute: typeof LucieAppEmployerCensusRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/employer/contribution': {
-      id: '/lucie-app/employer/contribution'
-      path: '/employer/contribution'
-      fullPath: '/lucie-app/employer/contribution'
-      preLoaderRoute: typeof LucieAppEmployerContributionRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/employer/proposal': {
-      id: '/lucie-app/employer/proposal'
-      path: '/employer/proposal'
-      fullPath: '/lucie-app/employer/proposal'
-      preLoaderRoute: typeof LucieAppEmployerProposalRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/employer/results': {
-      id: '/lucie-app/employer/results'
-      path: '/employer/results'
-      fullPath: '/lucie-app/employer/results'
-      preLoaderRoute: typeof LucieAppEmployerResultsRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
     '/lucie-app/platform/': {
       id: '/lucie-app/platform/'
       path: '/platform'
@@ -3685,27 +3702,6 @@ declare module '@tanstack/react-router' {
       path: '/platform/audit'
       fullPath: '/lucie-app/platform/audit'
       preLoaderRoute: typeof LucieAppPlatformAuditRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/entitlements': {
-      id: '/lucie-app/platform/entitlements'
-      path: '/platform/entitlements'
-      fullPath: '/lucie-app/platform/entitlements'
-      preLoaderRoute: typeof LucieAppPlatformEntitlementsRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/exceptions': {
-      id: '/lucie-app/platform/exceptions'
-      path: '/platform/exceptions'
-      fullPath: '/lucie-app/platform/exceptions'
-      preLoaderRoute: typeof LucieAppPlatformExceptionsRouteImport
-      parentRoute: typeof LucieAppRoute
-    }
-    '/lucie-app/platform/gates': {
-      id: '/lucie-app/platform/gates'
-      path: '/platform/gates'
-      fullPath: '/lucie-app/platform/gates'
-      preLoaderRoute: typeof LucieAppPlatformGatesRouteImport
       parentRoute: typeof LucieAppRoute
     }
     '/lucie-app/platform/health': {
@@ -4178,14 +4174,21 @@ interface AppRouteChildren {
   AppAgencyRevenueRoute: typeof AppAgencyRevenueRoute
   AppAgencyStatementsRoute: typeof AppAgencyStatementsRoute
   AppCustomersIdRoute: typeof AppCustomersIdRoute
+  AppEmployerCensusRoute: typeof AppEmployerCensusRoute
+  AppEmployerContributionRoute: typeof AppEmployerContributionRoute
   AppEmployerIchraRoute: typeof AppEmployerIchraRoute
+  AppEmployerProposalRoute: typeof AppEmployerProposalRoute
+  AppEmployerResultsRoute: typeof AppEmployerResultsRoute
   AppJetAclRoute: typeof AppJetAclRoute
   AppJetAiGovernanceRoute: typeof AppJetAiGovernanceRoute
   AppJetAppointmentsRoute: typeof AppJetAppointmentsRoute
   AppJetAuditRoute: typeof AppJetAuditRoute
   AppJetBrandingRoute: typeof AppJetBrandingRoute
+  AppJetEntitlementsRoute: typeof AppJetEntitlementsRoute
+  AppJetExceptionsRoute: typeof AppJetExceptionsRoute
   AppJetFormConfiguratorRoute: typeof AppJetFormConfiguratorRoute
   AppJetIntegrationsRoute: typeof AppJetIntegrationsRoute
+  AppJetLaunchReadinessRoute: typeof AppJetLaunchReadinessRoute
   AppJetModule1Route: typeof AppJetModule1Route
   AppJetNotificationsRoute: typeof AppJetNotificationsRoute
   AppJetPlatformRoute: typeof AppJetPlatformRoute
@@ -4214,14 +4217,21 @@ const AppRouteChildren: AppRouteChildren = {
   AppAgencyRevenueRoute: AppAgencyRevenueRoute,
   AppAgencyStatementsRoute: AppAgencyStatementsRoute,
   AppCustomersIdRoute: AppCustomersIdRoute,
+  AppEmployerCensusRoute: AppEmployerCensusRoute,
+  AppEmployerContributionRoute: AppEmployerContributionRoute,
   AppEmployerIchraRoute: AppEmployerIchraRoute,
+  AppEmployerProposalRoute: AppEmployerProposalRoute,
+  AppEmployerResultsRoute: AppEmployerResultsRoute,
   AppJetAclRoute: AppJetAclRoute,
   AppJetAiGovernanceRoute: AppJetAiGovernanceRoute,
   AppJetAppointmentsRoute: AppJetAppointmentsRoute,
   AppJetAuditRoute: AppJetAuditRoute,
   AppJetBrandingRoute: AppJetBrandingRoute,
+  AppJetEntitlementsRoute: AppJetEntitlementsRoute,
+  AppJetExceptionsRoute: AppJetExceptionsRoute,
   AppJetFormConfiguratorRoute: AppJetFormConfiguratorRoute,
   AppJetIntegrationsRoute: AppJetIntegrationsRoute,
+  AppJetLaunchReadinessRoute: AppJetLaunchReadinessRoute,
   AppJetModule1Route: AppJetModule1Route,
   AppJetNotificationsRoute: AppJetNotificationsRoute,
   AppJetPlatformRoute: AppJetPlatformRoute,
@@ -4265,14 +4275,7 @@ interface LucieAppRouteChildren {
   LucieAppIndexRoute: typeof LucieAppIndexRoute
   LucieAppAgencyMarketplacesRoute: typeof LucieAppAgencyMarketplacesRoute
   LucieAppAgencyProducersRoute: typeof LucieAppAgencyProducersRoute
-  LucieAppEmployerCensusRoute: typeof LucieAppEmployerCensusRoute
-  LucieAppEmployerContributionRoute: typeof LucieAppEmployerContributionRoute
-  LucieAppEmployerProposalRoute: typeof LucieAppEmployerProposalRoute
-  LucieAppEmployerResultsRoute: typeof LucieAppEmployerResultsRoute
   LucieAppPlatformAuditRoute: typeof LucieAppPlatformAuditRoute
-  LucieAppPlatformEntitlementsRoute: typeof LucieAppPlatformEntitlementsRoute
-  LucieAppPlatformExceptionsRoute: typeof LucieAppPlatformExceptionsRoute
-  LucieAppPlatformGatesRoute: typeof LucieAppPlatformGatesRoute
   LucieAppPlatformHealthRoute: typeof LucieAppPlatformHealthRoute
   LucieAppPlatformRolesRoute: typeof LucieAppPlatformRolesRoute
   LucieAppPlatformTenantsRoute: typeof LucieAppPlatformTenantsRoute
@@ -4298,14 +4301,7 @@ const LucieAppRouteChildren: LucieAppRouteChildren = {
   LucieAppIndexRoute: LucieAppIndexRoute,
   LucieAppAgencyMarketplacesRoute: LucieAppAgencyMarketplacesRoute,
   LucieAppAgencyProducersRoute: LucieAppAgencyProducersRoute,
-  LucieAppEmployerCensusRoute: LucieAppEmployerCensusRoute,
-  LucieAppEmployerContributionRoute: LucieAppEmployerContributionRoute,
-  LucieAppEmployerProposalRoute: LucieAppEmployerProposalRoute,
-  LucieAppEmployerResultsRoute: LucieAppEmployerResultsRoute,
   LucieAppPlatformAuditRoute: LucieAppPlatformAuditRoute,
-  LucieAppPlatformEntitlementsRoute: LucieAppPlatformEntitlementsRoute,
-  LucieAppPlatformExceptionsRoute: LucieAppPlatformExceptionsRoute,
-  LucieAppPlatformGatesRoute: LucieAppPlatformGatesRoute,
   LucieAppPlatformHealthRoute: LucieAppPlatformHealthRoute,
   LucieAppPlatformRolesRoute: LucieAppPlatformRolesRoute,
   LucieAppPlatformTenantsRoute: LucieAppPlatformTenantsRoute,
