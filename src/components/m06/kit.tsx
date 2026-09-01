@@ -213,7 +213,7 @@ export function StateBlock({
     return (
       <div className="space-y-2" aria-busy>
         {[0, 1, 2].map((i) => (
-          <div key={i} className="h-8 animate-pulse rounded-lg bg-surface" />
+          <div key={i} className="h-10 animate-pulse rounded-xl bg-surface" />
         ))}
       </div>
     );
@@ -237,7 +237,7 @@ export function StateBlock({
   }
   if (state === "empty") {
     return (
-      <p className="rounded-2xl border border-dashed border-hairline-strong/60 bg-surface/40 px-3 py-10 text-center text-xs text-muted-foreground">
+      <p className="rounded-xl border border-dashed border-hairline-strong/60 bg-surface/40 px-4 py-10 text-center text-sm text-muted-foreground">
         {empty}
       </p>
     );
@@ -325,24 +325,26 @@ export function Sheet({
         aria-label={title}
         className="relative flex h-full w-full max-w-xl flex-col border-l border-hairline bg-card shadow-2xl"
       >
-        <header className="flex items-start gap-3 border-b border-hairline px-5 py-4">
+        <header className="flex items-start gap-3 border-b border-hairline px-6 py-5">
           <div className="min-w-0">
-            <h2 className="font-display text-[15px] font-semibold tracking-tight">{title}</h2>
+            <h2 className="text-display text-xl">{title}</h2>
             {subtitle ? (
-              <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+              <div className="mt-1.5 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                 {subtitle}
               </div>
             ) : null}
           </div>
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             onClick={onClose}
-            className="ml-auto rounded-lg border border-hairline px-2 py-1 text-[11px] text-muted-foreground hover:bg-accent"
+            className="ml-auto rounded-full"
           >
             Close
-          </button>
+          </Button>
         </header>
-        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4">{children}</div>
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-6 py-5">{children}</div>
       </aside>
     </div>
   );
@@ -364,7 +366,7 @@ export interface ScreenMeta {
 
 export function MetaRail({ meta, extra }: { meta: ScreenMeta; extra?: ReactNode }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl border border-hairline bg-surface/50 px-4 py-2.5 text-[11px] text-muted-foreground">
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-hairline bg-surface/50 px-4 py-3 text-xs text-muted-foreground">
       <Id>{meta.id}</Id>
       <span>
         <span className="opacity-70">Actor</span> {meta.actor}
