@@ -48,6 +48,7 @@ import { Route as AgencyOrganizationStructureRouteImport } from './routes/agency
 import { Route as AgencyOrganizationWorkRouteImport } from './routes/agency.organization-work'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppAgentProfileRouteImport } from './routes/app.agent-profile'
 import { Route as AppCommissionsRouteImport } from './routes/app.commissions'
 import { Route as AppCommunicationsRouteImport } from './routes/app.communications'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
@@ -414,6 +415,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
 const AppAdminRoute = AppAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAgentProfileRoute = AppAgentProfileRouteImport.update({
+  id: '/agent-profile',
+  path: '/agent-profile',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCommissionsRoute = AppCommissionsRouteImport.update({
@@ -1353,6 +1359,7 @@ export interface FileRoutesByFullPath {
   '/agency/organization-structure': typeof AgencyOrganizationStructureRoute
   '/agency/organization-work': typeof AgencyOrganizationWorkRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/agent-profile': typeof AppAgentProfileRoute
   '/app/commissions': typeof AppCommissionsRoute
   '/app/communications': typeof AppCommunicationsRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -1558,6 +1565,7 @@ export interface FileRoutesByTo {
   '/agency/organization-structure': typeof AgencyOrganizationStructureRoute
   '/agency/organization-work': typeof AgencyOrganizationWorkRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/agent-profile': typeof AppAgentProfileRoute
   '/app/commissions': typeof AppCommissionsRoute
   '/app/communications': typeof AppCommunicationsRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -1769,6 +1777,7 @@ export interface FileRoutesById {
   '/agency/organization-structure': typeof AgencyOrganizationStructureRoute
   '/agency/organization-work': typeof AgencyOrganizationWorkRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/agent-profile': typeof AppAgentProfileRoute
   '/app/commissions': typeof AppCommissionsRoute
   '/app/communications': typeof AppCommunicationsRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -1982,6 +1991,7 @@ export interface FileRouteTypes {
     | '/agency/organization-structure'
     | '/agency/organization-work'
     | '/app/admin'
+    | '/app/agent-profile'
     | '/app/commissions'
     | '/app/communications'
     | '/app/dashboard'
@@ -2187,6 +2197,7 @@ export interface FileRouteTypes {
     | '/agency/organization-structure'
     | '/agency/organization-work'
     | '/app/admin'
+    | '/app/agent-profile'
     | '/app/commissions'
     | '/app/communications'
     | '/app/dashboard'
@@ -2397,6 +2408,7 @@ export interface FileRouteTypes {
     | '/agency/organization-structure'
     | '/agency/organization-work'
     | '/app/admin'
+    | '/app/agent-profile'
     | '/app/commissions'
     | '/app/communications'
     | '/app/dashboard'
@@ -2960,6 +2972,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/app/admin'
       preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/agent-profile': {
+      id: '/app/agent-profile'
+      path: '/agent-profile'
+      fullPath: '/app/agent-profile'
+      preLoaderRoute: typeof AppAgentProfileRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/commissions': {
@@ -4157,6 +4176,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRoute
+  AppAgentProfileRoute: typeof AppAgentProfileRoute
   AppCommissionsRoute: typeof AppCommissionsRoute
   AppCommunicationsRoute: typeof AppCommunicationsRoute
   AppDashboardRoute: typeof AppDashboardRoute
@@ -4200,6 +4220,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRoute,
+  AppAgentProfileRoute: AppAgentProfileRoute,
   AppCommissionsRoute: AppCommissionsRoute,
   AppCommunicationsRoute: AppCommunicationsRoute,
   AppDashboardRoute: AppDashboardRoute,
