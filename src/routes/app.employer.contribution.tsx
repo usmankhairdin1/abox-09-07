@@ -136,7 +136,7 @@ function ContributionPage() {
             value={<Money value={state.census.length ? Math.round(totals.monthly / state.census.length) : 0} per="mo" />}
           />
           <Button asChild>
-            <Link to="/lucie-app/employer/results">
+            <Link to="/app/employer/results">
               See cost results <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

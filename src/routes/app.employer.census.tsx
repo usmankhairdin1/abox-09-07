@@ -161,7 +161,7 @@ function CensusPage() {
 
       <div className="flex justify-end">
         <Button asChild>
-          <Link to="/lucie-app/employer/contribution">
+          <Link to="/app/employer/contribution">
             Continue to contribution model <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>

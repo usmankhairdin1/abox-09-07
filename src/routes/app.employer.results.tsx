@@ -40,7 +40,7 @@ function ResultsPage() {
         lede="Compared against a benchmark silver premium in each employee's area, so you can see who is fully covered and who pays a balance."
         actions={
           <Button variant="outline" asChild>
-            <Link to="/lucie-app/employer/contribution">Adjust the model</Link>
+            <Link to="/app/employer/contribution">Adjust the model</Link>
           </Button>
         }
       />
@@ -89,7 +89,7 @@ function ResultsPage() {
 
       <div className="flex justify-end">
         <Button asChild>
-          <Link to="/lucie-app/employer/proposal">
+          <Link to="/app/employer/proposal">
             Build the proposal <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>

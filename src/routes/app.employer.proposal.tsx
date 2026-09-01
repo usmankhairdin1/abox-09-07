@@ -104,7 +104,7 @@ function ProposalPage() {
           </Card>
 
           <Button variant="ghost" asChild>
-            <Link to="/lucie-app/employer">Back to overview</Link>
+            <Link to="/app/employer/ichra">Back to overview</Link>
           </Button>
         </aside>
       </div>
