@@ -1,4 +1,7 @@
 import { useMemo, useState } from "react";
+import { BadgeCheck, CalendarClock, CheckSquare, ShieldCheck } from "lucide-react";
+
+import { KpiCard } from "@/components/abox/kpi-card";
 
 import { Section, Stat, Table, Tag } from "@/components/lucie/ui";
 import {
@@ -28,7 +31,7 @@ import {
   type M06ScreenProps,
   type Profile,
 } from "@/components/m06/screens/common";
-import { describeResult, useM06Query, useM06Record } from "@/lib/m06/use-m06";
+import { describeResult, useM06Context, useM06Query, useM06Record } from "@/lib/m06/use-m06";
 
 const CATEGORIES = ["AGENT", "AGENCY_STAFF", "UNLICENSED_STAFF", "PRINCIPAL"];
 const CAPTIVITY = ["UNSPECIFIED", "INDEPENDENT", "CAPTIVE", "SEMI_CAPTIVE"];
@@ -963,9 +966,17 @@ export function RosterOnlyConversion({ call }: M06ScreenProps) {
 
 export function AgentWorkspace({ call }: M06ScreenProps) {
   const toast = useToast();
+  const { email } = useM06Context();
   const profiles = useProfiles(call);
-  const [id, setId] = useState("");
-  const me = id || profiles.data.find((p) => p.person_category === "AGENT")?.workforce_profile_id || "";
+  const [override, setOverride] = useState("");
+
+  const agents = profiles.data.filter((p) => p.person_category === "AGENT");
+  const mineByEmail = email
+    ? agents.find((p) => (p.work_email ?? "").toLowerCase() === email.toLowerCase())
+    : undefined;
+  const me = override || mineByEmail?.workforce_profile_id || agents[0]?.workforce_profile_id || "";
+  const profile = profiles.data.find((p) => p.workforce_profile_id === me);
+
   const readiness = useM06Query<{ workforce_profile_id: string; readiness_state: string; operational_eligibility: string; reasons: string[]; evaluated_at: string }>(
     call,
     "readiness.list",
@@ -992,6 +1003,8 @@ export function AgentWorkspace({ call }: M06ScreenProps) {
   const [note, setNote] = useState("");
 
   const mine = readiness.data.find((r) => r.workforce_profile_id === me);
+  const openTasks = tasks.data.filter((t) => t.status !== "COMPLETED");
+  const latest = availability.data[0];
 
   async function declare() {
     const res = await call("availability.declare", { workforce_profile_id: me, availability: next, note });
@@ -1009,109 +1022,149 @@ export function AgentWorkspace({ call }: M06ScreenProps) {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <Toast message={toast.msg} tone={toast.tone} />
-      <Section title="Acting as">
-        <FilterBar>
-          <PersonPicker
-            profiles={profiles.data}
-            value={me}
-            onChange={setId}
-            label="Agent"
-            filter={(p) => p.person_category === "AGENT"}
-          />
-        </FilterBar>
-        <p className="text-xs text-muted-foreground">
-          An agent sees only their own record. Everything below is scoped to the selected person.
-        </p>
-      </Section>
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Stat label="Readiness" value={<StatusTag value={mine?.readiness_state} />} />
-        <Stat label="Operational eligibility" value={<StatusTag value={mine?.operational_eligibility} />} />
-        <Stat label="Open tasks" value={tasks.data.filter((t) => t.status !== "COMPLETED").length} />
-      </div>
+      <StateBlock state={profiles.state} error={profiles.error} empty="No workforce record is in scope for your organization yet.">
+        <section className="grid gap-4 rounded-2xl border border-hairline bg-card p-6 shadow-card lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+          <div className="flex min-w-0 items-center gap-4">
+            <span className="grid size-12 shrink-0 place-items-center rounded-2xl border border-hairline bg-surface text-base font-semibold">
+              {(profile?.display_name ?? "?")
+                .split(" ")
+                .map((w) => w[0])
+                .slice(0, 2)
+                .join("")
+                .toUpperCase()}
+            </span>
+            <div className="min-w-0">
+              <h2 className="text-display truncate text-2xl">{profile?.display_name ?? "No record selected"}</h2>
+              <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                <span className="truncate">{profile?.work_email ?? email ?? "\u2014"}</span>
+                {profile?.npn ? <span className="truncate">NPN {profile.npn}</span> : null}
+                <StatusTag value={profile?.status} />
+              </p>
+            </div>
+          </div>
+          {agents.length > 1 ? (
+            <Field label="Viewing record" className="min-w-[260px]">
+              <Picker
+                value={me}
+                onChange={setOverride}
+                options={agents.map((p) => ({ value: p.workforce_profile_id, label: p.display_name }))}
+              />
+            </Field>
+          ) : null}
+        </section>
 
-      {mine?.reasons?.length ? (
-        <Section title="What is holding you back">
-          <ul className="list-disc space-y-1 pl-5 text-xs text-muted-foreground">
-            {mine.reasons.map((r) => (
-              <li key={r}>{r}</li>
-            ))}
-          </ul>
-        </Section>
-      ) : null}
-
-      <Section title="My tasks">
-        <QueryBlock query={tasks} empty="Nothing assigned right now.">
-          {(rows) => (
-            <Table
-              rows={rows}
-              keyOf={(t) => t.task_reference_id}
-              columns={[
-                { head: "Task", cell: (t) => t.title },
-                { head: "Due", cell: (t) => fmtDate(t.due_at) },
-                { head: "Status", cell: (t) => <StatusTag value={t.status} /> },
-                {
-                  head: "",
-                  cell: (t) =>
-                    t.status === "COMPLETED" ? "—" : <Btn onClick={() => complete(t.task_reference_id)}>Complete</Btn>,
-                },
-              ]}
-            />
-          )}
-        </QueryBlock>
-      </Section>
-
-      <Section title="My availability">
-        <div className="mb-4 grid gap-3 sm:grid-cols-[200px_minmax(0,1fr)_auto] sm:items-end">
-          <Field label="Set availability">
-            <Picker
-              value={next}
-              onChange={setNext}
-              options={["AVAILABLE", "NOT_ACCEPTING_NEW_WORK", "TEMPORARILY_UNAVAILABLE"].map((v) => ({
-                value: v,
-                label: v.replaceAll("_", " ").toLowerCase(),
-              }))}
-            />
-          </Field>
-          <Field label="Note">
-            <TextInput value={note} onChange={setNote} placeholder="Optional context for the agency" />
-          </Field>
-          <Btn variant="primary" onClick={declare} disabled={!me}>
-            Declare
-          </Btn>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <KpiCard label="Readiness" value={(mine?.readiness_state ?? "\u2014").replaceAll("_", " ").toLowerCase()} icon={ShieldCheck} tone={mine?.readiness_state === "READY" ? "sage" : "warning"} />
+          <KpiCard label="Operational eligibility" value={(mine?.operational_eligibility ?? "\u2014").replaceAll("_", " ").toLowerCase()} icon={BadgeCheck} tone={mine?.operational_eligibility === "OPERATIONALLY_ELIGIBLE" ? "sage" : "warning"} />
+          <KpiCard label="Open tasks" value={openTasks.length} icon={CheckSquare} tone={openTasks.length ? "primary" : "default"} hint={openTasks.length ? "Needs your attention" : "All clear"} />
+          <KpiCard label="Availability" value={(latest?.availability ?? "NOT SET").replaceAll("_", " ").toLowerCase()} icon={CalendarClock} hint={latest ? fmtDateTime(latest.created_at) : "Declare below"} />
         </div>
-        <QueryBlock query={availability} empty="No availability declared.">
-          {(rows) => (
-            <Table
-              rows={rows}
-              keyOf={(a) => a.availability_id}
-              columns={[
-                { head: "When", cell: (a) => fmtDateTime(a.created_at) },
-                { head: "Availability", cell: (a) => <StatusTag value={a.availability} /> },
-                { head: "Note", cell: (a) => a.note ?? "—" },
-              ]}
-            />
-          )}
-        </QueryBlock>
-      </Section>
 
-      <Section title="Where I can serve">
-        <QueryBlock query={scopes} empty="No service scope recorded.">
-          {(rows) => (
-            <Table
-              rows={rows}
-              keyOf={(s) => s.service_scope_id}
-              columns={[
-                { head: "State", cell: (s) => s.state_code },
-                { head: "Product lines", cell: (s) => s.product_lines?.join(", ") || "—" },
-                { head: "Status", cell: (s) => <StatusTag value={s.status} /> },
-              ]}
-            />
-          )}
-        </QueryBlock>
-      </Section>
+        {mine?.reasons?.length ? (
+          <Section title="What is holding you back">
+            <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
+              {mine.reasons.map((r) => (
+                <li key={r}>{r}</li>
+              ))}
+            </ul>
+          </Section>
+        ) : null}
+
+        <div className="grid gap-6 xl:grid-cols-2">
+          <DefinitionCard
+            title="Profile details"
+            items={[
+              { k: "Legal name", v: [profile?.legal_first_name, profile?.legal_last_name].filter(Boolean).join(" ") || "\u2014" },
+              { k: "Category", v: <StatusTag value={profile?.person_category} /> },
+              { k: "Affiliation", v: <StatusTag value={profile?.captivity} /> },
+              { k: "Invitation", v: <StatusTag value={profile?.invitation_disposition} /> },
+              { k: "Work phone", v: profile?.work_phone ?? "\u2014" },
+              { k: "Effective from", v: fmtDate(profile?.effective_from) },
+            ]}
+          />
+
+          <Section title="My tasks" meta={`${openTasks.length} open`}>
+            <QueryBlock query={tasks} empty="Nothing assigned right now.">
+              {(rows) => (
+                <Table
+                  rows={rows}
+                  keyOf={(t) => t.task_reference_id}
+                  columns={[
+                    { head: "Task", cell: (t) => <span className="font-medium">{t.title}</span> },
+                    { head: "Due", cell: (t) => fmtDate(t.due_at) },
+                    { head: "Status", cell: (t) => <StatusTag value={t.status} /> },
+                    {
+                      head: "",
+                      className: "text-right",
+                      cell: (t) =>
+                        t.status === "COMPLETED" ? (
+                          <span className="text-muted-foreground">\u2014</span>
+                        ) : (
+                          <Btn variant="primary" onClick={() => complete(t.task_reference_id)}>
+                            Complete
+                          </Btn>
+                        ),
+                    },
+                  ]}
+                />
+              )}
+            </QueryBlock>
+          </Section>
+        </div>
+
+        <Section title="My availability" description="Tell your agency when you can take new work. Every declaration is recorded with a timestamp.">
+          <div className="mb-6 grid gap-4 lg:grid-cols-[240px_minmax(0,1fr)_auto] lg:items-end">
+            <Field label="Set availability">
+              <Picker
+                value={next}
+                onChange={setNext}
+                options={["AVAILABLE", "NOT_ACCEPTING_NEW_WORK", "TEMPORARILY_UNAVAILABLE"].map((v) => ({
+                  value: v,
+                  label: v.replaceAll("_", " ").toLowerCase(),
+                }))}
+              />
+            </Field>
+            <Field label="Note">
+              <TextInput value={note} onChange={setNote} placeholder="Optional context for the agency" />
+            </Field>
+            <Btn variant="primary" onClick={declare} disabled={!me}>
+              Declare
+            </Btn>
+          </div>
+          <QueryBlock query={availability} empty="No availability declared.">
+            {(rows) => (
+              <Table
+                rows={rows}
+                keyOf={(a) => a.availability_id}
+                columns={[
+                  { head: "When", cell: (a) => fmtDateTime(a.created_at) },
+                  { head: "Availability", cell: (a) => <StatusTag value={a.availability} /> },
+                  { head: "Note", cell: (a) => a.note ?? "\u2014" },
+                ]}
+              />
+            )}
+          </QueryBlock>
+        </Section>
+
+        <Section title="Where I can serve" description="Service scope is granted by your agency and limits the states and product lines you can sell.">
+          <QueryBlock query={scopes} empty="No service scope recorded.">
+            {(rows) => (
+              <Table
+                rows={rows}
+                keyOf={(s) => s.service_scope_id}
+                columns={[
+                  { head: "State", cell: (s) => <span className="font-medium">{s.state_code}</span> },
+                  { head: "Product lines", cell: (s) => s.product_lines?.join(", ") || "\u2014" },
+                  { head: "Status", cell: (s) => <StatusTag value={s.status} /> },
+                ]}
+              />
+            )}
+          </QueryBlock>
+        </Section>
+      </StateBlock>
     </div>
   );
 }
