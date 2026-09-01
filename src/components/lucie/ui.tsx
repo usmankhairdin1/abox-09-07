@@ -179,7 +179,7 @@ export function Table<T>({
     );
   }
   return (
-    <div className="-mx-2 overflow-x-auto rounded-xl border border-hairline bg-card">
+    <div className="overflow-x-auto rounded-xl border border-hairline bg-card">
       <table className="w-full min-w-[720px] border-collapse text-left align-top text-sm">
         <thead>
           <tr className="border-b border-hairline">
@@ -200,7 +200,7 @@ export function Table<T>({
                 <td
                   key={c.head}
                   className={cn(
-                    "px-2 py-2.5 text-xs leading-relaxed first:pl-0 last:pr-0",
+                    "px-5 py-4 text-sm leading-relaxed",
                     c.className,
                   )}
                 >
