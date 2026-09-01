@@ -22,7 +22,8 @@ export function PageHeader({
     <header className="grid gap-4 border-b border-hairline pb-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
       <div className="min-w-0">
         {eyebrow ? <p className="text-eyebrow">{eyebrow}</p> : null}
-        <h1 className="text-display mt-1.5 text-2xl sm:text-3xl">{title}</h1>
+        {/* The shell masthead already renders the page title; keep this as a section heading. */}
+        <h2 className="text-display mt-1.5 text-xl">{title}</h2>
         {lede ? <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{lede}</p> : null}
       </div>
       {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
