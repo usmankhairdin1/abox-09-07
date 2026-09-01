@@ -19,6 +19,7 @@ import {
   Users,
 } from "lucide-react";
 
+import { InternalShell } from "@/components/abox/internal-shell";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -183,71 +184,55 @@ export function LucieAppShell({ children }: { children: React.ReactNode }) {
   const cartCount = state.cart.length;
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1440px] items-center gap-3 px-4 py-2.5">
-          <Link to="/lucie-app" className="flex min-w-0 items-center gap-2">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-primary text-xs font-bold text-primary-foreground">
-              L
-            </span>
-            <span className="min-w-0 leading-tight">
-              <span className="block truncate text-sm font-semibold tracking-tight">Lucie</span>
-              <span className="block truncate text-[10px] text-muted-foreground">{persona.org}</span>
-            </span>
-          </Link>
-          <Badge variant="outline" className="hidden shrink-0 text-[10px] md:inline-flex">
+    <InternalShell
+      workspace="jet"
+      eyebrow="Lucie prototype"
+      pageTitle={persona.org}
+      actions={
+        <>
+          <Badge variant="outline" className="text-[10px]">
             Prototype · sample data
           </Badge>
-          <div className="ml-auto flex shrink-0 items-center gap-2">
-            {state.persona === "consumer" ? (
-              <Button asChild variant="ghost" size="sm" className="gap-1.5">
-                <Link to="/lucie-app/shop/cart">
-                  <ShoppingCart className="h-4 w-4" />
-                  <span className="tabular-nums">{cartCount}</span>
-                </Link>
-              </Button>
-            ) : null}
-            <PersonaSwitcher />
-          </div>
-        </div>
-      </header>
+          {state.persona === "consumer" ? (
+            <Button asChild variant="ghost" size="sm" className="gap-1.5">
+              <Link to="/lucie-app/shop/cart">
+                <ShoppingCart className="h-4 w-4" />
+                <span className="tabular-nums">{cartCount}</span>
+              </Link>
+            </Button>
+          ) : null}
+          <PersonaSwitcher />
+        </>
+      }
+    >
+      <nav aria-label="Lucie sections" className="mb-6 flex flex-wrap gap-1.5 border-b border-hairline pb-3">
+        {groups.flatMap((g) =>
+          g.items.map((item) => {
+            const active = item.exact
+              ? pathname === item.to
+              : pathname === item.to || pathname.startsWith(`${item.to}/`);
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                  active
+                    ? "border-primary/30 bg-primary/10 text-foreground"
+                    : "border-hairline text-muted-foreground hover:bg-accent",
+                )}
+              >
+                <Icon className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          }),
+        )}
+      </nav>
 
-      <div className="mx-auto flex max-w-[1440px] flex-col gap-6 px-4 py-6 lg:flex-row">
-        <nav aria-label="Workspace" className="lg:sticky lg:top-[61px] lg:h-fit lg:w-60 lg:shrink-0">
-          <div className="grid gap-4">
-            {groups.map((g) => (
-              <div key={g.label} className="grid gap-1">
-                <p className="px-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  {g.label}
-                </p>
-                {g.items.map((item) => {
-                  const active = item.exact
-                    ? pathname === item.to
-                    : pathname === item.to || pathname.startsWith(`${item.to}/`);
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.to}
-                      to={item.to}
-                      className={cn(
-                        "flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors",
-                        active
-                          ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:bg-accent hover:text-foreground",
-                      )}
-                    >
-                      <Icon className="h-4 w-4 shrink-0" />
-                      <span className="truncate">{item.label}</span>
-                    </Link>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        </nav>
-
-        <main className="grid min-w-0 flex-1 content-start gap-6">{children}</main>
-      </div>
-    </div>
+      <div className="grid min-w-0 content-start gap-6">{children}</div>
+    </InternalShell>
   );
 }
+

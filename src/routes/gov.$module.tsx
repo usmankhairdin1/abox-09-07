@@ -1,7 +1,7 @@
 import { Link, Outlet, createFileRoute, notFound, useParams } from "@tanstack/react-router";
 
-import { AppShell } from "@/components/shell/AppShell";
-import { Annotation, IdChip, WBox } from "@/components/wireframe/primitives";
+import { InternalShell } from "@/components/abox/internal-shell";
+import { IdChip, WBox } from "@/components/wireframe/primitives";
 import {
   MODULE_PACKET,
   MODULE_TITLE,
@@ -17,9 +17,9 @@ export const Route = createFileRoute("/gov/$module")({
   },
   component: GovLayout,
   notFoundComponent: () => (
-    <AppShell>
+    <InternalShell workspace="jet" eyebrow="Governance" pageTitle="Unknown module">
       <WBox className="h-32" label="unknown governed module — try /gov/m04" />
-    </AppShell>
+    </InternalShell>
   ),
 });
 
@@ -37,30 +37,10 @@ function GovLayout() {
   const idx = moduleIndex(module);
 
   return (
-    <AppShell
-      drawerTitle={`${module.toUpperCase()} context`}
-      assistantContext={`the ${module.toUpperCase()} governed estate`}
-      drawerBody={{
-        Context: (
-          <Annotation>
-            {MODULE_TITLE[module]} · packet {MODULE_PACKET[module]} · version {idx.version}.
-          </Annotation>
-        ),
-        Summary: (
-          <Annotation>
-            {idx.workspaces.length} workspaces · {idx.screens.length} controlled screens ·{" "}
-            {idx.flows.length} governed flows.
-          </Annotation>
-        ),
-        Guidance: (
-          <Annotation>
-            Source precedence: approved change records and deltas → registry and contracts →
-            requirements, rules and acceptance → workbook and CSV registers → narrative → visuals.
-          </Annotation>
-        ),
-        Audit: <Annotation>Every frame carries its SCR, FLOW, REQ and AC identifiers.</Annotation>,
-        "Next actions": <Annotation>Open a screen, walk a flow, or browse a register.</Annotation>,
-      }}
+    <InternalShell
+      workspace="jet"
+      eyebrow="Governance"
+      pageTitle={`${module.toUpperCase()} · ${MODULE_TITLE[module]}`}
     >
       <div className="space-y-4">
         <header className="space-y-1">
@@ -89,6 +69,6 @@ function GovLayout() {
 
         <Outlet />
       </div>
-    </AppShell>
+    </InternalShell>
   );
 }
