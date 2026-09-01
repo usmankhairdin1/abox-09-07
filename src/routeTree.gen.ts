@@ -82,6 +82,7 @@ import { Route as M00TestsRouteImport } from './routes/m00.tests'
 import { Route as M06IndexRouteImport } from './routes/m06.index'
 import { Route as M06ConsoleRouteImport } from './routes/m06.console'
 import { Route as M06RosterRouteImport } from './routes/m06.roster'
+import { Route as M06ScreensRouteImport } from './routes/m06.screens'
 import { Route as M1IndexRouteImport } from './routes/m1.index'
 import { Route as M1ScreenRouteImport } from './routes/m1.$screen'
 import { Route as MemberIndexRouteImport } from './routes/member.index'
@@ -156,6 +157,7 @@ import { Route as LucieAppShopEsignRouteImport } from './routes/lucie-app.shop.e
 import { Route as LucieAppShopRegisterRouteImport } from './routes/lucie-app.shop.register'
 import { Route as LucieAppShopReviewRouteImport } from './routes/lucie-app.shop.review'
 import { Route as LucieAppShopStatusRouteImport } from './routes/lucie-app.shop.status'
+import { Route as M06SScreenRouteImport } from './routes/m06.s.$screen'
 import { Route as MarketplaceAdminIndexRouteImport } from './routes/marketplace.admin.index'
 import { Route as MarketplaceAdminActivationRouteImport } from './routes/marketplace.admin.activation'
 import { Route as MarketplaceAdminAssetsRouteImport } from './routes/marketplace.admin.assets'
@@ -573,6 +575,11 @@ const M06RosterRoute = M06RosterRouteImport.update({
   path: '/roster',
   getParentRoute: () => M06Route,
 } as any)
+const M06ScreensRoute = M06ScreensRouteImport.update({
+  id: '/screens',
+  path: '/screens',
+  getParentRoute: () => M06Route,
+} as any)
 const M1IndexRoute = M1IndexRouteImport.update({
   id: '/m1/',
   path: '/m1/',
@@ -954,6 +961,11 @@ const LucieAppShopStatusRoute = LucieAppShopStatusRouteImport.update({
   path: '/shop/status',
   getParentRoute: () => LucieAppRoute,
 } as any)
+const M06SScreenRoute = M06SScreenRouteImport.update({
+  id: '/s/$screen',
+  path: '/s/$screen',
+  getParentRoute: () => M06Route,
+} as any)
 const MarketplaceAdminIndexRoute = MarketplaceAdminIndexRouteImport.update({
   id: '/marketplace/admin/',
   path: '/marketplace/admin/',
@@ -1303,6 +1315,7 @@ export interface FileRoutesByFullPath {
   '/m00/tests': typeof M00TestsRoute
   '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
+  '/m06/screens': typeof M06ScreensRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/member/messages': typeof MemberMessagesRoute
   '/member/quotes': typeof MemberQuotesRoute
@@ -1375,6 +1388,7 @@ export interface FileRoutesByFullPath {
   '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
   '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
   '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
+  '/m06/s/$screen': typeof M06SScreenRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1494,6 +1508,7 @@ export interface FileRoutesByTo {
   '/m00/tests': typeof M00TestsRoute
   '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
+  '/m06/screens': typeof M06ScreensRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/member/messages': typeof MemberMessagesRoute
   '/member/quotes': typeof MemberQuotesRoute
@@ -1566,6 +1581,7 @@ export interface FileRoutesByTo {
   '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
   '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
   '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
+  '/m06/s/$screen': typeof M06SScreenRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1693,6 +1709,7 @@ export interface FileRoutesById {
   '/m00/tests': typeof M00TestsRoute
   '/m06/console': typeof M06ConsoleRoute
   '/m06/roster': typeof M06RosterRoute
+  '/m06/screens': typeof M06ScreensRoute
   '/m1/$screen': typeof M1ScreenRoute
   '/member/messages': typeof MemberMessagesRoute
   '/member/quotes': typeof MemberQuotesRoute
@@ -1765,6 +1782,7 @@ export interface FileRoutesById {
   '/lucie-app/shop/register': typeof LucieAppShopRegisterRoute
   '/lucie-app/shop/review': typeof LucieAppShopReviewRoute
   '/lucie-app/shop/status': typeof LucieAppShopStatusRoute
+  '/m06/s/$screen': typeof M06SScreenRoute
   '/marketplace/admin/activation': typeof MarketplaceAdminActivationRoute
   '/marketplace/admin/assets': typeof MarketplaceAdminAssetsRoute
   '/marketplace/admin/brand': typeof MarketplaceAdminBrandRoute
@@ -1893,6 +1911,7 @@ export interface FileRouteTypes {
     | '/m00/tests'
     | '/m06/console'
     | '/m06/roster'
+    | '/m06/screens'
     | '/m1/$screen'
     | '/member/messages'
     | '/member/quotes'
@@ -1965,6 +1984,7 @@ export interface FileRouteTypes {
     | '/lucie-app/shop/register'
     | '/lucie-app/shop/review'
     | '/lucie-app/shop/status'
+    | '/m06/s/$screen'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -2084,6 +2104,7 @@ export interface FileRouteTypes {
     | '/m00/tests'
     | '/m06/console'
     | '/m06/roster'
+    | '/m06/screens'
     | '/m1/$screen'
     | '/member/messages'
     | '/member/quotes'
@@ -2156,6 +2177,7 @@ export interface FileRouteTypes {
     | '/lucie-app/shop/register'
     | '/lucie-app/shop/review'
     | '/lucie-app/shop/status'
+    | '/m06/s/$screen'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -2282,6 +2304,7 @@ export interface FileRouteTypes {
     | '/m00/tests'
     | '/m06/console'
     | '/m06/roster'
+    | '/m06/screens'
     | '/m1/$screen'
     | '/member/messages'
     | '/member/quotes'
@@ -2354,6 +2377,7 @@ export interface FileRouteTypes {
     | '/lucie-app/shop/register'
     | '/lucie-app/shop/review'
     | '/lucie-app/shop/status'
+    | '/m06/s/$screen'
     | '/marketplace/admin/activation'
     | '/marketplace/admin/assets'
     | '/marketplace/admin/brand'
@@ -3033,6 +3057,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof M06RosterRouteImport
       parentRoute: typeof M06Route
     }
+    '/m06/screens': {
+      id: '/m06/screens'
+      path: '/screens'
+      fullPath: '/m06/screens'
+      preLoaderRoute: typeof M06ScreensRouteImport
+      parentRoute: typeof M06Route
+    }
     '/m1/': {
       id: '/m1/'
       path: '/m1'
@@ -3550,6 +3581,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/lucie-app/shop/status'
       preLoaderRoute: typeof LucieAppShopStatusRouteImport
       parentRoute: typeof LucieAppRoute
+    }
+    '/m06/s/$screen': {
+      id: '/m06/s/$screen'
+      path: '/s/$screen'
+      fullPath: '/m06/s/$screen'
+      preLoaderRoute: typeof M06SScreenRouteImport
+      parentRoute: typeof M06Route
     }
     '/marketplace/admin/': {
       id: '/marketplace/admin/'
@@ -4090,13 +4128,17 @@ const M00RouteWithChildren = M00Route._addFileChildren(M00RouteChildren)
 interface M06RouteChildren {
   M06ConsoleRoute: typeof M06ConsoleRoute
   M06RosterRoute: typeof M06RosterRoute
+  M06ScreensRoute: typeof M06ScreensRoute
   M06IndexRoute: typeof M06IndexRoute
+  M06SScreenRoute: typeof M06SScreenRoute
 }
 
 const M06RouteChildren: M06RouteChildren = {
   M06ConsoleRoute: M06ConsoleRoute,
   M06RosterRoute: M06RosterRoute,
+  M06ScreensRoute: M06ScreensRoute,
   M06IndexRoute: M06IndexRoute,
+  M06SScreenRoute: M06SScreenRoute,
 }
 
 const M06RouteWithChildren = M06Route._addFileChildren(M06RouteChildren)
