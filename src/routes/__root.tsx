@@ -128,10 +128,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ShellProvider>
+      <GroupBenefitsProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
-      </ShellProvider>
+      </GroupBenefitsProvider>
     </QueryClientProvider>
   );
 }
