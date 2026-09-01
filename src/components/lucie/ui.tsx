@@ -235,12 +235,12 @@ export function Select({
   options: { value: string; label: string }[];
 }) {
   return (
-    <label className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+    <label className="flex items-center gap-2 text-eyebrow">
       {label}
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-full border border-input bg-background px-3 py-1.5 text-xs font-normal normal-case tracking-normal text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+        className="h-9 rounded-full border border-input bg-background px-3.5 text-sm font-normal normal-case tracking-normal text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>
@@ -267,7 +267,7 @@ export function Search({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="min-w-[200px] flex-1 rounded-full border border-input bg-background px-3.5 py-1.5 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
+      className="h-9 w-full min-w-[200px] flex-1 rounded-full border border-input bg-background px-4 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
     />
   );
 }
@@ -276,7 +276,7 @@ export function Note({ children, tone = "info" }: { children: ReactNode; tone?: 
   return (
     <p
       className={cn(
-        "rounded-xl border px-4 py-3 text-xs leading-relaxed",
+        "rounded-xl border px-4 py-3 text-sm leading-relaxed",
         TONE_CLASS[tone],
         "text-foreground/85",
       )}

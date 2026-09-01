@@ -59,17 +59,15 @@ export function PersonPicker({
     [rows],
   );
   return (
-    <label className="flex min-w-[280px] flex-1 items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-      {label}
-      <div className="min-w-0 flex-1 normal-case tracking-normal">
-        <Picker value={value} onChange={onChange} options={options} />
-      </div>
-    </label>
+    <div className="grid min-w-[260px] flex-1 gap-1.5">
+      <span className="text-eyebrow">{label}</span>
+      <Picker value={value} onChange={onChange} options={options} />
+    </div>
   );
 }
 
 export function FilterBar({ children }: { children: ReactNode }) {
-  return <div className="mb-4 flex flex-wrap items-end gap-3">{children}</div>;
+  return <div className="mb-5 flex flex-wrap items-end gap-3">{children}</div>;
 }
 
 export function TextFilter({
@@ -116,10 +114,8 @@ export function DefinitionCard({
             key={i.k}
             className="grid gap-0.5 border-b border-hairline py-2 last:border-0 sm:grid-cols-[190px_minmax(0,1fr)] sm:gap-3"
           >
-            <dt className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-              {i.k}
-            </dt>
-            <dd className="min-w-0 text-xs leading-relaxed text-foreground/90">{i.v}</dd>
+            <dt className="text-eyebrow">{i.k}</dt>
+            <dd className="min-w-0 text-sm leading-relaxed text-foreground">{i.v}</dd>
           </div>
         ))}
       </dl>
