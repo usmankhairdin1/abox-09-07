@@ -42,9 +42,21 @@ export function statusTone(v: string | null | undefined): Tone {
   return "info";
 }
 
+const BADGE_TONE = {
+  neutral: "muted",
+  good: "sage",
+  warn: "warning",
+  stop: "destructive",
+  info: "info",
+} as const;
+
 export function StatusTag({ value }: { value: string | null | undefined }) {
-  if (!value) return <span className="text-muted-foreground">—</span>;
-  return <Tag tone={statusTone(value)}>{value.replaceAll("_", " ").toLowerCase()}</Tag>;
+  if (!value) return <span className="text-sm text-muted-foreground">\u2014</span>;
+  return (
+    <StatusBadge tone={BADGE_TONE[statusTone(value)]}>
+      {value.replaceAll("_", " ").toLowerCase()}
+    </StatusBadge>
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -58,6 +70,7 @@ export function Btn({
   disabled,
   type = "button",
   title,
+  className,
 }: {
   children: ReactNode;
   onClick?: () => void;
@@ -65,22 +78,20 @@ export function Btn({
   disabled?: boolean;
   type?: "button" | "submit";
   title?: string;
+  className?: string;
 }) {
   return (
-    <button
+    <Button
       type={type}
       title={title}
       onClick={onClick}
       disabled={disabled}
-      className={cn(
-        "rounded-lg border px-2.5 py-1.5 text-[11px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",
-        variant === "primary" && "border-primary/40 bg-primary/10 text-foreground hover:bg-primary/20",
-        variant === "ghost" && "border-hairline bg-background text-muted-foreground hover:bg-accent hover:text-foreground",
-        variant === "danger" && "border-destructive/40 bg-destructive/10 text-foreground hover:bg-destructive/20",
-      )}
+      size="sm"
+      variant={variant === "primary" ? "default" : variant === "danger" ? "destructive" : "outline"}
+      className={cn("rounded-full", className)}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 
@@ -88,24 +99,21 @@ export function Field({
   label,
   children,
   hint,
+  className,
 }: {
   label: string;
   children: ReactNode;
   hint?: string;
+  className?: string;
 }) {
   return (
-    <label className="grid gap-1">
-      <span className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-        {label}
-      </span>
+    <label className={cn("grid gap-1.5", className)}>
+      <span className="text-eyebrow">{label}</span>
       {children}
-      {hint ? <span className="text-[11px] text-muted-foreground/80">{hint}</span> : null}
+      {hint ? <span className="text-xs text-muted-foreground">{hint}</span> : null}
     </label>
   );
 }
-
-const inputCls =
-  "w-full rounded-lg border border-input bg-background px-3 py-1.5 text-xs text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/40";
 
 export function TextInput({
   value,
@@ -119,12 +127,11 @@ export function TextInput({
   type?: string;
 }) {
   return (
-    <input
+    <Input
       type={type}
       value={value}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className={inputCls}
     />
   );
 }
@@ -141,33 +148,49 @@ export function TextArea({
   rows?: number;
 }) {
   return (
-    <textarea
+    <Textarea
       value={value}
       rows={rows}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className={cn(inputCls, "resize-y leading-relaxed")}
+      className="resize-y leading-relaxed"
     />
   );
 }
+
+/** Radix Select rejects an empty item value, so blank options use a sentinel. */
+const EMPTY_OPTION = "__empty__";
 
 export function Picker({
   value,
   onChange,
   options,
+  placeholder,
+  disabled,
 }: {
   value: string;
   onChange: (v: string) => void;
   options: { value: string; label: string }[];
+  placeholder?: string;
+  disabled?: boolean;
 }) {
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value)} className={inputCls}>
-      {options.map((o) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </select>
+    <Select
+      value={value === "" ? EMPTY_OPTION : value}
+      onValueChange={(v) => onChange(v === EMPTY_OPTION ? "" : v)}
+      disabled={disabled}
+    >
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder={placeholder ?? "Select\u2026"} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((o) => (
+          <SelectItem key={o.value || EMPTY_OPTION} value={o.value === "" ? EMPTY_OPTION : o.value}>
+            {o.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
 
