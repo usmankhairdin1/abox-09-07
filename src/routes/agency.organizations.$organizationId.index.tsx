@@ -66,8 +66,10 @@ function Page() {
           </button>
         )
       }
-      drawer={
-        <div className="space-y-4 text-sm">
+    >
+      <aside className="mb-6 rounded-2xl border border-border bg-card p-5">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="contents text-sm">
           <div>
             <p className="text-eyebrow">Lifecycle</p>
             <StatusBadge tone={record.lifecycle_status === "ACTIVE" ? "sage" : record.lifecycle_status === "DRAFT" ? "muted" : "destructive"}>{record.lifecycle_status}</StatusBadge>
@@ -100,9 +102,9 @@ function Page() {
             <p>{record.default_language === "EN" ? "English" : "Español"}</p>
           </div>
         </div>
-      }
-      drawerTitle="Organization context"
-    >
+        </div>
+      </aside>
+
       <DownlineContextBanner />
 
       <Link to="/agency/organizations" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">

@@ -53,8 +53,10 @@ function Page() {
           </Link>
         </div>
       }
-      drawer={
-        <div className="space-y-4 text-sm">
+    >
+      <aside className="mb-6 rounded-2xl border border-border bg-card p-5">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="contents text-sm">
           <div>
             <p className="text-eyebrow">Stage</p>
             <StatusBadge tone={lead.stage === "Enrolled" ? "sage" : lead.stage === "Shared" ? "info" : "primary"}>{lead.stage}</StatusBadge>
@@ -87,9 +89,9 @@ function Page() {
             )}
           </div>
         </div>
-      }
-      drawerTitle="Lead context"
-    >
+        </div>
+      </aside>
+
       <Link to="/app/customers" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to leads
       </Link>

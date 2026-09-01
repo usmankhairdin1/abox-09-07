@@ -46,8 +46,6 @@ function Page() {
 
   return (
     <InternalShell workspace="agent" pageTitle="Quick Quote" eyebrow="Selling"
-      drawer={<RightSummary zip={zip} hh={hh} priority={priority} selected={selected.size} />}
-      drawerTitle="Quote summary"
       actions={
         <div className="flex items-center gap-2">
           <button className="inline-flex h-10 items-center rounded-full border border-border bg-card px-4 text-sm">
@@ -65,6 +63,8 @@ function Page() {
         </div>
       }
     >
+      <RightSummary zip={zip} hh={hh} priority={priority} selected={selected.size} />
+
       <div className="mb-5 grid grid-cols-2 gap-1 rounded-full bg-surface p-1 sm:max-w-md">
         <button onClick={() => setTab("new")} aria-pressed={tab === "new"}
           className={cn("inline-flex items-center justify-center gap-1.5 rounded-full py-2 text-sm",
