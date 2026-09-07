@@ -56,7 +56,7 @@ function Page() {
   const subsidizedPrice = plan.onExchange && monthlyAptc ? Math.max(0, plan.monthlyPremium - monthlyAptc) : undefined;
 
   return (
-    <MarketplaceShell>
+    <MarketplaceShell product="ifp">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-10">
         <Link to="/plans" className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to results
