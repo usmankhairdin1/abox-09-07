@@ -97,6 +97,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
             )}
           </nav>
         </div>
+        {withProducts && <ProductSwitcher {...(product ? { active: product } : {})} />}
       </header>
 
       <main id="main" className="flex-1">
