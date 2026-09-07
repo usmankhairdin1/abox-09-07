@@ -106,7 +106,11 @@ function Hero() {
           <p className="mt-8 max-w-xl text-lg text-muted-foreground md:text-xl">
             {intro}
           </p>
-          <div className="mt-10 flex flex-wrap items-center gap-3">
+          <div className="mt-8">
+            <p className="text-eyebrow mb-3">Products available today</p>
+            <ProductSwitcher variant="chips" />
+          </div>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               to="/select"
               className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-all hover:scale-[1.03] min-h-11"
