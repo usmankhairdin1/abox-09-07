@@ -35,6 +35,9 @@ function Page() {
           description="Grouped by product type. Each item lists its effective term, plan, and status."
           actions={cart.items.length > 0 && (
             <div className="flex items-center gap-2">
+              <Link to="/plans" className="inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm hover:bg-accent">
+                <ShoppingBag className="h-4 w-4" aria-hidden /> Shop plans
+              </Link>
               <SaveContinueButton />
               <Link to="/review" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Review & enroll <ArrowRight className="h-4 w-4" />
