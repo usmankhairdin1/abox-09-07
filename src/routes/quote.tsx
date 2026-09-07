@@ -292,7 +292,7 @@ function QuoteWizardPage() {
   const currentMeta = STEPS[step - 1];
 
   return (
-    <MarketplaceShell showAssistant={false}>
+    <MarketplaceShell showAssistant={false} product="ifp">
       {/* Live region for step / error announcements */}
       <p role="status" aria-live="polite" className="sr-only">
         {announce}

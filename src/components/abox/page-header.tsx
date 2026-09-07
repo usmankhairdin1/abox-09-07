@@ -19,9 +19,9 @@ export function PageHeader({ eyebrow, scrId, title, description, actions, classN
   return (
     <FadeRise as="header" className={cn("relative mb-12", className)}>
       <MastheadMark {...(eyebrow ?? scrId ? { label: (eyebrow ?? scrId)! } : {})} />
-      <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
+      <div className="mt-5 flex flex-wrap items-end justify-between gap-6">
         <div className="min-w-0 max-w-3xl">
-          <h1 className="text-display text-4xl leading-[1.02] md:text-6xl">{title}</h1>
+          <h1 className="text-display text-[42px] font-semibold leading-[0.98] tracking-tight md:text-7xl">{title}</h1>
           {description && (
             <p className="mt-5 max-w-2xl text-lg text-muted-foreground">{description}</p>
           )}

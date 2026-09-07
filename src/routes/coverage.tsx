@@ -25,7 +25,7 @@ function Page() {
   const cart = useCart();
   const quote = typeof window === "undefined" ? null : loadQuoteState();
   return (
-    <MarketplaceShell>
+    <MarketplaceShell product="dental">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-10">
         <Link to="/plans" className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to health plans
@@ -34,6 +34,11 @@ function Page() {
           scrId="UX-012" eyebrow="Round out your coverage"
           title="Add-on coverage"
           description="Ancillary and supplemental products you can bundle with your health plan or purchase alone."
+          actions={
+            <Link to="/plans" className="inline-flex h-10 items-center rounded-full border border-border px-4 text-sm hover:bg-accent">
+              Shop plans
+            </Link>
+          }
         />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {SAMPLE_ANCILLARY.map((a) => {

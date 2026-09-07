@@ -3,7 +3,7 @@
  * Filter, sort, save, compare, add to cart. Recommendations first,
  * with clear on/off-exchange labels and Plan-AI explanation.
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Filter, ShoppingBag, Sparkles, X } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -15,6 +15,7 @@ import { SAMPLE_PLANS, planMatchScore, type SamplePlan, type PlanMatchInputs } f
 import { cartStore, useCart, PRODUCT_LABEL } from "@/lib/cart-store";
 import { loadQuoteState, estimateMonthlyAPTC, recommendedExchangeView } from "@/lib/quote-store";
 import { SCREENS } from "@/lib/screens";
+import { browseStore, useBrowseState } from "@/lib/browse-store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/plans/")({
@@ -47,16 +48,36 @@ function Page() {
   const subsidizedPriceOf = (p: SamplePlan) =>
     p.onExchange && monthlyAptc ? Math.max(0, p.monthlyPremium - monthlyAptc) : undefined;
 
-  const [showExchange, setShowExchange] = useState<"all" | "on" | "off">(() => recommendedExchangeView(quote));
-  const [metals, setMetals] = useState<Set<SamplePlan["metalTier"]>>(new Set());
-  const [networks, setNetworks] = useState<Set<SamplePlan["networkType"]>>(new Set());
-  const [carriers, setCarriers] = useState<Set<string>>(new Set());
-  const [hsaOnly, setHsaOnly] = useState(false);
-  const [maxPremium, setMaxPremium] = useState<number>(1000);
+  // Filters/sort persist for the browsing session (browse-store) so returning
+  // to this screen restores it exactly as the shopper left it.
+  const browse = useBrowseState();
+  const showExchange = browse.exchange;
+  const setShowExchange = (v: "all" | "on" | "off") => browseStore.patch({ exchange: v });
+  const metals = useMemo(() => new Set(browse.metals as SamplePlan["metalTier"][]), [browse.metals]);
+  const setMetals = (v: Set<SamplePlan["metalTier"]>) => browseStore.patch({ metals: [...v] });
+  const networks = useMemo(() => new Set(browse.networks as SamplePlan["networkType"][]), [browse.networks]);
+  const setNetworks = (v: Set<SamplePlan["networkType"]>) => browseStore.patch({ networks: [...v] });
+  const carriers = useMemo(() => new Set(browse.carriers), [browse.carriers]);
+  const setCarriers = (v: Set<string>) => browseStore.patch({ carriers: [...v] });
+  const hsaOnly = browse.hsaOnly;
+  const setHsaOnly = (v: boolean) => browseStore.patch({ hsaOnly: v });
+  const maxPremium = browse.maxPremium;
+  const setMaxPremium = (v: number) => browseStore.patch({ maxPremium: v });
+
+  useEffect(() => {
+    if (browse.sort === null) {
+      browseStore.patch({
+        exchange: recommendedExchangeView(quote),
+        sort: quote?.priorities?.length ? "plano" : "premium-asc",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- one-time seed of persisted browse defaults
+  }, []);
   // Guided shoppers (with priorities from the wizard) default to Plan-AI
   // match; pure browse — no goals collected — defaults to lowest premium
   // per FR-044.
-  const [sort, setSort] = useState<SortKey>(() => (quote?.priorities?.length ? "plano" : "premium-asc"));
+  const sort = (browse.sort ?? (quote?.priorities?.length ? "plano" : "premium-asc")) as SortKey;
+  const setSort = (v: SortKey) => browseStore.patch({ sort: v });
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const allCarriers = useMemo(() => Array.from(new Set(SAMPLE_PLANS.map((p) => p.carrier))), []);
@@ -85,16 +106,13 @@ function Page() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- matchOf/subsidizedPriceOf are derived from quote, stable per render
   }, [showExchange, metals, networks, carriers, hsaOnly, maxPremium, sort]);
 
-  const clearFilters = () => {
-    setShowExchange("all"); setMetals(new Set()); setNetworks(new Set());
-    setCarriers(new Set()); setHsaOnly(false); setMaxPremium(1000);
-  };
+  const clearFilters = () => browseStore.resetFilters();
   const activeFilterCount =
     (showExchange !== "all" ? 1 : 0) + metals.size + networks.size + carriers.size +
     (hsaOnly ? 1 : 0) + (maxPremium !== 1000 ? 1 : 0);
 
   return (
-    <MarketplaceShell>
+    <MarketplaceShell product="ifp">
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-10">
         <PageHeader
           scrId="UX-009"
