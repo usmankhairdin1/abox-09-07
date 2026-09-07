@@ -14,14 +14,23 @@ import { cn } from "@/lib/utils";
 import { useAuthSession } from "@/lib/auth-session";
 import { supabase } from "@/integrations/supabase/client";
 import { useMarketplaceState, getActiveBrand } from "@/lib/marketplace-store";
+import { useCart, cartTotals } from "@/lib/cart-store";
+import { ProductSwitcher } from "./product-switcher";
+import { ShoppingBag } from "lucide-react";
 
 interface Props {
   children: React.ReactNode;
   variant?: "landing" | "flow";
   showAssistant?: boolean;
+  /** Render the product switcher rail under the nav; value marks the active product. */
+  product?: string;
+  showProducts?: boolean;
 }
 
-export function MarketplaceShell({ children, variant = "flow", showAssistant = true }: Props) {
+export function MarketplaceShell({ children, variant = "flow", showAssistant = true, product, showProducts }: Props) {
+  const cart = useCart();
+  const cartTotal = cartTotals(cart.items);
+  const withProducts = showProducts ?? variant === "flow";
   const { session } = useAuthSession();
   const navigate = useNavigate();
   const mkt = useMarketplaceState();
