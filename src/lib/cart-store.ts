@@ -91,12 +91,10 @@ export const cartStore = {
   },
 };
 
+const SERVER_CART: CartState = { items: [], compareIds: [], savedPlanIds: [] };
+
 export function useCart() {
-  return useSyncExternalStore(
-    cartStore.subscribe,
-    () => cartStore.get(),
-    () => ({ items: [], compareIds: [], savedPlanIds: [] }),
-  );
+  return useSyncExternalStore(cartStore.subscribe, () => cartStore.get(), () => SERVER_CART);
 }
 
 export function cartTotals(items: CartItem[]) {
