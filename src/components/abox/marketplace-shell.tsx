@@ -48,7 +48,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
       </a>
 
       {/* Floating pill nav */}
-      <header className={cn("sticky top-4 z-30 flex justify-center px-4 md:px-8", variant === "landing" && "top-6")}>
+      <header className={cn("sticky top-4 z-30 flex flex-col items-center px-4 md:px-8", variant === "landing" && "top-6")}>
         <div className="glass flex w-full max-w-7xl items-center justify-between gap-2 rounded-full pl-3 pr-2 py-2 md:pl-4">
           <Link to="/" className="group flex items-center gap-2.5" aria-label={`${brandName} home`}>
             <AboxMark size={34} tone="primary" />
@@ -59,9 +59,20 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
           </Link>
 
           <nav aria-label="Marketplace navigation" className="flex items-center gap-1">
-            <PillLink to="/select">Shop plans</PillLink>
+            {variant === "landing" && <PillLink to="/select">Shop plans</PillLink>}
             <PillLink to="/ichra">For employers</PillLink>
             <PillLink to="/schedule" icon={<LifeBuoy className="h-4 w-4" />}>Agent help</PillLink>
+            {cartTotal.count > 0 && (
+              <Link
+                to="/cart"
+                className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-primary/40 bg-primary-soft px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary-soft/70"
+                aria-label={`Cart: ${cartTotal.count} item${cartTotal.count === 1 ? "" : "s"}, $${cartTotal.monthly} per month`}
+              >
+                <ShoppingBag className="h-4 w-4" aria-hidden />
+                <span className="tabular-nums">{cartTotal.count}</span>
+                <span className="hidden tabular-nums sm:inline">· ${cartTotal.monthly}/mo</span>
+              </Link>
+            )}
             <ThemeToggle />
             {session ? (
               <button
