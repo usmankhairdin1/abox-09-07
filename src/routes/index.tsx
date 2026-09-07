@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
+import { ProductSwitcher } from "@/components/abox/product-switcher";
 import { AboxMark } from "@/components/abox/logo";
 import {
   Aurora, DotField, OrbitalRings, RadialTicks, MastheadMark,

@@ -7,6 +7,7 @@ import { Link } from "@tanstack/react-router";
 import { Star, ShieldCheck, Sparkles, Check } from "lucide-react";
 import type { SamplePlan } from "@/lib/sample-data";
 import { StatusBadge } from "./status-badge";
+import { CarrierMark } from "./carrier-mark";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -41,7 +42,8 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
       <header className="relative flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-serial">{plan.carrier}</span>
+            <CarrierMark carrier={plan.carrier} size={compact ? 30 : 34} />
+            <span className="text-serial truncate">{plan.carrier}</span>
           </div>
           <h3 id={`plan-${plan.id}-name`} className="text-display mt-2 text-2xl leading-tight">
             <Link to="/plans/$planId" params={{ planId: plan.id }} className="relative inline-block ember-underline">
