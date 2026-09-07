@@ -31,7 +31,7 @@ export const Route = createFileRoute("/plans/$planId")({
 
 function NotFound() {
   return (
-    <MarketplaceShell>
+    <MarketplaceShell product="ifp">
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
         <p className="text-eyebrow">Plan not found</p>
         <h1 className="text-display mt-2 text-4xl">We couldn't find that plan.</h1>

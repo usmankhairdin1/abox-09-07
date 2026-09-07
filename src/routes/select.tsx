@@ -30,7 +30,7 @@ function Page() {
   const active = SAMPLE_PRODUCTS.find((p) => p.key === product) ?? SAMPLE_PRODUCTS[0];
 
   return (
-    <MarketplaceShell>
+    <MarketplaceShell product={active.key}>
       <div className="mx-auto max-w-7xl px-4 py-12 md:px-8 md:py-16">
         <PageHeader
           scrId="UX-002"
