@@ -22,6 +22,7 @@ export const WORKFORCE_TABS: ModuleTab[] = [
   { to: "/agency/workforce/structure", label: "Structure", hint: "Business units and teams" },
   { to: "/agency/workforce/lifecycle", label: "Lifecycle", hint: "Transfers, offboarding, suspension" },
   { to: "/agency/workforce/readiness", label: "Readiness", hint: "Operational eligibility and referral" },
+  { to: "/agency/workforce/selling-setup", label: "Selling setup", hint: "Licences, appointments, authority and attribution" },
   { to: "/agency/workforce/access", label: "Access", hint: "Roles, assignment and effective access" },
   { to: "/agency/workforce/work", label: "Tasks & exceptions", hint: "Queue, notes and support context" },
   { to: "/agency/workforce/data", label: "Import & reports", hint: "Imports, exports and fixed reports" },

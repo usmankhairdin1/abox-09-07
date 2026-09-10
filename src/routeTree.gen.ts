@@ -84,6 +84,7 @@ import { Route as AgencyWorkforceOnboardingRouteImport } from './routes/agency.w
 import { Route as AgencyWorkforcePersonRouteImport } from './routes/agency.workforce.person'
 import { Route as AgencyWorkforceReadinessRouteImport } from './routes/agency.workforce.readiness'
 import { Route as AgencyWorkforceRosterRouteImport } from './routes/agency.workforce.roster'
+import { Route as AgencyWorkforceSellingSetupRouteImport } from './routes/agency.workforce.selling-setup'
 import { Route as AgencyWorkforceSettingsRouteImport } from './routes/agency.workforce.settings'
 import { Route as AgencyWorkforceStructureRouteImport } from './routes/agency.workforce.structure'
 import { Route as AgencyWorkforceWorkRouteImport } from './routes/agency.workforce.work'
@@ -545,6 +546,12 @@ const AgencyWorkforceRosterRoute = AgencyWorkforceRosterRouteImport.update({
   path: '/workforce/roster',
   getParentRoute: () => AgencyRoute,
 } as any)
+const AgencyWorkforceSellingSetupRoute =
+  AgencyWorkforceSellingSetupRouteImport.update({
+    id: '/workforce/selling-setup',
+    path: '/workforce/selling-setup',
+    getParentRoute: () => AgencyRoute,
+  } as any)
 const AgencyWorkforceSettingsRoute = AgencyWorkforceSettingsRouteImport.update({
   id: '/workforce/settings',
   path: '/workforce/settings',
@@ -1031,6 +1038,7 @@ export interface FileRoutesByFullPath {
   '/agency/workforce/person': typeof AgencyWorkforcePersonRoute
   '/agency/workforce/readiness': typeof AgencyWorkforceReadinessRoute
   '/agency/workforce/roster': typeof AgencyWorkforceRosterRoute
+  '/agency/workforce/selling-setup': typeof AgencyWorkforceSellingSetupRoute
   '/agency/workforce/settings': typeof AgencyWorkforceSettingsRoute
   '/agency/workforce/structure': typeof AgencyWorkforceStructureRoute
   '/agency/workforce/work': typeof AgencyWorkforceWorkRoute
@@ -1181,6 +1189,7 @@ export interface FileRoutesByTo {
   '/agency/workforce/person': typeof AgencyWorkforcePersonRoute
   '/agency/workforce/readiness': typeof AgencyWorkforceReadinessRoute
   '/agency/workforce/roster': typeof AgencyWorkforceRosterRoute
+  '/agency/workforce/selling-setup': typeof AgencyWorkforceSellingSetupRoute
   '/agency/workforce/settings': typeof AgencyWorkforceSettingsRoute
   '/agency/workforce/structure': typeof AgencyWorkforceStructureRoute
   '/agency/workforce/work': typeof AgencyWorkforceWorkRoute
@@ -1334,6 +1343,7 @@ export interface FileRoutesById {
   '/agency/workforce/person': typeof AgencyWorkforcePersonRoute
   '/agency/workforce/readiness': typeof AgencyWorkforceReadinessRoute
   '/agency/workforce/roster': typeof AgencyWorkforceRosterRoute
+  '/agency/workforce/selling-setup': typeof AgencyWorkforceSellingSetupRoute
   '/agency/workforce/settings': typeof AgencyWorkforceSettingsRoute
   '/agency/workforce/structure': typeof AgencyWorkforceStructureRoute
   '/agency/workforce/work': typeof AgencyWorkforceWorkRoute
@@ -1488,6 +1498,7 @@ export interface FileRouteTypes {
     | '/agency/workforce/person'
     | '/agency/workforce/readiness'
     | '/agency/workforce/roster'
+    | '/agency/workforce/selling-setup'
     | '/agency/workforce/settings'
     | '/agency/workforce/structure'
     | '/agency/workforce/work'
@@ -1638,6 +1649,7 @@ export interface FileRouteTypes {
     | '/agency/workforce/person'
     | '/agency/workforce/readiness'
     | '/agency/workforce/roster'
+    | '/agency/workforce/selling-setup'
     | '/agency/workforce/settings'
     | '/agency/workforce/structure'
     | '/agency/workforce/work'
@@ -1790,6 +1802,7 @@ export interface FileRouteTypes {
     | '/agency/workforce/person'
     | '/agency/workforce/readiness'
     | '/agency/workforce/roster'
+    | '/agency/workforce/selling-setup'
     | '/agency/workforce/settings'
     | '/agency/workforce/structure'
     | '/agency/workforce/work'
@@ -2439,6 +2452,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AgencyWorkforceRosterRouteImport
       parentRoute: typeof AgencyRoute
     }
+    '/agency/workforce/selling-setup': {
+      id: '/agency/workforce/selling-setup'
+      path: '/workforce/selling-setup'
+      fullPath: '/agency/workforce/selling-setup'
+      preLoaderRoute: typeof AgencyWorkforceSellingSetupRouteImport
+      parentRoute: typeof AgencyRoute
+    }
     '/agency/workforce/settings': {
       id: '/agency/workforce/settings'
       path: '/workforce/settings'
@@ -2983,6 +3003,7 @@ interface AgencyRouteChildren {
   AgencyWorkforcePersonRoute: typeof AgencyWorkforcePersonRoute
   AgencyWorkforceReadinessRoute: typeof AgencyWorkforceReadinessRoute
   AgencyWorkforceRosterRoute: typeof AgencyWorkforceRosterRoute
+  AgencyWorkforceSellingSetupRoute: typeof AgencyWorkforceSellingSetupRoute
   AgencyWorkforceSettingsRoute: typeof AgencyWorkforceSettingsRoute
   AgencyWorkforceStructureRoute: typeof AgencyWorkforceStructureRoute
   AgencyWorkforceWorkRoute: typeof AgencyWorkforceWorkRoute
@@ -3027,6 +3048,7 @@ const AgencyRouteChildren: AgencyRouteChildren = {
   AgencyWorkforcePersonRoute: AgencyWorkforcePersonRoute,
   AgencyWorkforceReadinessRoute: AgencyWorkforceReadinessRoute,
   AgencyWorkforceRosterRoute: AgencyWorkforceRosterRoute,
+  AgencyWorkforceSellingSetupRoute: AgencyWorkforceSellingSetupRoute,
   AgencyWorkforceSettingsRoute: AgencyWorkforceSettingsRoute,
   AgencyWorkforceStructureRoute: AgencyWorkforceStructureRoute,
   AgencyWorkforceWorkRoute: AgencyWorkforceWorkRoute,
