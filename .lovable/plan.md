@@ -44,9 +44,21 @@ separate credential application, no disconnected workflow.
 | SCR-M08-009 | Credential Documents (M13 references) |
 | SCR-M08-010 | NPN Attribution Summary |
 
-Flows: FLOW-M08-001, 006, 008, 009, 010, 013, 014.
-Read-only supporting context surfaced in-place: renewals (036) and On Exchange
-route explanation (048) links, designed in later increments.
+Flows defined by the package for this set: FLOW-M08-001, 006, 008, 009, 010,
+013, 014. SCR-M08-002 has no governed flow; it carries its SCR, REQ and AC
+records and is explicitly marked "flow not defined by the source package". No
+flow identifier is invented for any screen.
+
+Increment 1 exposes no NPN policy, authority-rule, simulator or enforcement
+functionality. Shared M08 models and evaluators are limited to what these ten
+screens require. SCR-M08-010 shows the resolved attribution roles as read-only
+explanation only.
+
+Included in increment 1: English and Spanish content, the packet accessibility
+requirements (keyboard navigation, focus management, screen reader behaviour,
+understandable errors, non-colour status cues), loading, error, pending,
+dependency-unavailable and unauthorized states, permission gating, and visible
+approval-dependent markers.
 
 ## Coverage check — all 56 screens and 36 flows
 
