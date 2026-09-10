@@ -138,9 +138,9 @@ export function WhereICanSellScreen(props: M08ScreenProps) {
     { head: pick("State", "Estado"), cell: (r) => r.context.state_code },
     { head: pick("Carrier", "Aseguradora"), cell: (r) => r.context.carrier_name },
     { head: pick("Product scope", "Alcance de producto"), cell: (r) => r.context.product_scope_key },
-    { head: pick("Market", "Mercado"), cell: (r) => <Tag tone="neutral">{r.context.market === "ON_EXCHANGE" ? pick("On exchange", "En el mercado") : pick("Off exchange", "Fuera del mercado")}</Tag> },
-    { head: pick("Pathway", "Vía"), cell: (r) => r.context.pathway.replaceAll("_", " ").toLowerCase() },
-    { head: pick("Action", "Acción"), cell: (r) => r.context.transaction.replaceAll("_", " ").toLowerCase() },
+    { head: pick("Market", "Mercado"), cell: (r) => <Tag tone="neutral">{e(r.context.market)}</Tag> },
+    { head: pick("Pathway", "Vía"), cell: (r) => e(r.context.pathway) },
+    { head: pick("Action", "Acción"), cell: (r) => e(r.context.transaction) },
     { head: pick("Effective", "Vigencia"), cell: (r) => d(r.context.effective_date) },
     { head: pick("Outcome", "Resultado"), cell: (r) => <OutcomeTag outcome={r.outcome} /> },
   ];
