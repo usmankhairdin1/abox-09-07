@@ -123,7 +123,7 @@ function Counter({ label, value }: { label: string; value: number }) {
 
 export function WhereICanSellScreen(props: M08ScreenProps) {
   const m = meta("where-i-can-sell");
-  const { pick, d } = useT();
+  const { pick, d, e } = useT();
   const rows = useMemo(() => evaluateAll(props.subject, props.contexts), [props.subject, props.contexts]);
 
   if (!allowed(props, "where-i-can-sell")) {
