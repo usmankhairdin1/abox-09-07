@@ -5,7 +5,7 @@
  * atmosphere.
  */
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight } from "lucide-react";
+import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight, ChevronDown, Settings } from "lucide-react";
 import { AboxMark } from "./logo";
 import { PlanOAssistant } from "./plan-o-assistant";
 import { ThemeToggle } from "./theme-toggle";
@@ -17,6 +17,13 @@ import { useMarketplaceState, getActiveBrand } from "@/lib/marketplace-store";
 import { useCart, cartTotals } from "@/lib/cart-store";
 import { ProductSwitcher } from "./product-switcher";
 import { ShoppingBag } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Props {
   children: React.ReactNode;
@@ -37,6 +44,11 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
   const brand = getActiveBrand(mkt);
   const brandName = brand?.display_name ?? "ABox";
   const brandTagline = brand?.tagline_en ?? "Agency in a Box";
+  const userDisplayName =
+    ((session?.user.user_metadata?.full_name as string | undefined)?.trim()) ||
+    session?.user.email ||
+    session?.user.phone ||
+    "Account";
   return (
     <div className="relative flex min-h-dvh flex-col bg-background text-foreground">
       <DotField className="fixed inset-0 -z-10" />
@@ -87,16 +99,37 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
             </Link>
             <ThemeToggle />
             {session ? (
-              <button
-                onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/" }); }}
-                className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:scale-[1.03] min-h-10"
-                style={{ boxShadow: "var(--shadow-glow)" }}
-                title={session.user.email ?? session.user.phone ?? "Signed in"}
-              >
-                <User className="h-4 w-4" aria-hidden />
-                <span className="hidden sm:inline max-w-[10ch] truncate">{session.user.email ?? session.user.phone ?? "Account"}</span>
-                <LogOut className="h-3.5 w-3.5" aria-hidden />
-              </button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground transition-all hover:scale-[1.03] min-h-10"
+                    style={{ boxShadow: "var(--shadow-glow)" }}
+                    aria-label={`Account menu for ${userDisplayName}`}
+                    aria-haspopup="menu"
+                  >
+                    <User className="h-4 w-4" aria-hidden />
+                    <span className="max-w-[10ch] truncate sm:max-w-[16ch]">{userDisplayName}</span>
+                    <ChevronDown className="h-3.5 w-3.5 transition-transform group-data-[state=open]:rotate-180" aria-hidden />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" sideOffset={8} className="w-56">
+                  <div className="px-3 py-2">
+                    <p className="text-sm font-semibold">{userDisplayName}</p>
+                    <p className="text-xs text-muted-foreground truncate">{session.user.email ?? session.user.phone ?? "Signed in"}</p>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/member/settings" className="cursor-pointer">
+                      <Settings className="h-4 w-4" aria-hidden />
+                      Settings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/" }); }}>
+                    <LogOut className="h-4 w-4" aria-hidden />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Link
                 to="/auth"
