@@ -9,6 +9,7 @@ import { Filter, ShoppingBag, Sparkles, X } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { PlanCard } from "@/components/abox/plan-card";
+import { ShoppingPathBar } from "@/components/abox/shopping-path-bar";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { SAMPLE_PLANS, planMatchScore, type SamplePlan, type PlanMatchInputs } from "@/lib/sample-data";
@@ -135,6 +136,8 @@ function Page() {
             </div>
           }
         />
+
+        <ShoppingPathBar current="browse" />
 
         <div className="flex gap-6">
           {/* Filters — desktop rail */}

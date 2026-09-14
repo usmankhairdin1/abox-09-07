@@ -2,23 +2,24 @@
  * Plan-AI / Help assistant — floating pill launcher with orbital dot,
  * expanding into a glass conversation panel.
  */
-import { useState } from "react";
 import { X, Sparkles } from "lucide-react";
 import { AboxMark } from "./logo";
 import { cn } from "@/lib/utils";
+import { planAiStore, usePlanAiOpen } from "@/lib/shopping-mode";
 
 interface Props {
   surface: "marketplace" | "internal";
 }
 
 export function PlanOAssistant({ surface }: Props) {
-  const [open, setOpen] = useState(false);
+  const open = usePlanAiOpen();
+  const setOpen = (next: boolean) => planAiStore.set(next);
   const isPlanO = surface === "marketplace";
 
   return (
     <>
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => planAiStore.toggle()}
         className={cn(
           "group fixed bottom-5 right-5 z-40 inline-flex items-center gap-2.5 rounded-full px-5 py-3.5 text-sm font-semibold transition-all duration-300 hover:scale-[1.03]",
           "bg-primary text-primary-foreground",
