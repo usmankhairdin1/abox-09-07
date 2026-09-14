@@ -15,7 +15,7 @@ import {
 import { AboxMark } from "./logo";
 import { PlanOAssistant } from "./plan-o-assistant";
 import { ThemeToggle } from "./theme-toggle";
-import { MastheadMark, DotField, Aurora } from "./decor";
+import { DotField, Aurora } from "./decor";
 import { FadeRise } from "./motion";
 import { WORKSPACES, type WorkspaceKey } from "@/lib/nav-config";
 import { cn } from "@/lib/utils";
@@ -105,16 +105,16 @@ export function InternalShell({
           </div>
         </header>
 
-        {/* Canvas + masthead */}
+        {/* Canvas + page header */}
         <div className="px-4 pb-10 md:px-8 md:pb-16">
           <div className="relative mx-auto max-w-[1500px]">
             {(pageTitle || eyebrow) && (
               <section className="relative overflow-hidden rounded-3xl border border-hairline bg-card">
                 <Aurora className="opacity-70" />
                 <FadeRise className="relative px-6 pb-10 pt-10 md:px-12 md:pt-14 md:pb-12">
-                  <MastheadMark label={eyebrow ?? current.name} />
-                  <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
+                  <div className="flex flex-wrap items-end justify-between gap-6">
                     <div className="min-w-0 max-w-3xl">
+                      {eyebrow && <p className="mb-3 text-eyebrow">{eyebrow}</p>}
                       {pageTitle && (
                         <h1 className="text-display text-4xl md:text-6xl leading-[0.98]">
                           {pageTitle}

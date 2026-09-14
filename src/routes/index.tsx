@@ -15,7 +15,7 @@ import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { ProductSwitcher } from "@/components/abox/product-switcher";
 import { AboxMark } from "@/components/abox/logo";
 import {
-  Aurora, DotField, OrbitalRings, RadialTicks, MastheadMark,
+  Aurora, DotField, OrbitalRings, RadialTicks,
   HealthPulseShield, CoverageWeave, BlueprintGrid, PolicyLines, FamilySilhouette,
 } from "@/components/abox/decor";
 import { FadeRise, Stagger, StaggerItem } from "@/components/abox/motion";
@@ -94,8 +94,7 @@ function Hero() {
       <DotField className="opacity-30" />
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 lg:grid-cols-[1.15fr_1fr] lg:gap-14 md:px-8">
         <div>
-          <MastheadMark label="Marketplace of marketplaces" />
-          <h1 className="text-display mt-8 text-[52px] leading-[0.96] md:text-[104px]">
+          <h1 className="text-display text-[52px] leading-[0.96] md:text-[104px]">
             {headlineLead}{headlineRest.length > 0 && ","}
             <br />
             {headlineRest.length > 0 && (
@@ -263,8 +262,7 @@ function ProductBento() {
       <div className="relative mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <MastheadMark label="One cart. Many products." />
-            <h2 className="text-display mt-6 text-4xl md:text-5xl">Shop by product</h2>
+            <h2 className="text-display text-4xl md:text-5xl">Shop by product</h2>
           </div>
           <p className="max-w-md text-sm text-muted-foreground">
             One login. Add health, dental, vision and more — check out once.
@@ -356,8 +354,7 @@ function PlanOOrbital() {
     <section className="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
       <div className="grid items-center gap-14 md:grid-cols-[1fr_1.1fr]">
         <div>
-          <MastheadMark label="Meet Plan-AI" />
-          <h2 className="text-display mt-6 text-4xl md:text-6xl">
+          <h2 className="text-display text-4xl md:text-6xl">
             A guide,
             <br />
             <span className="italic font-normal" style={{ color: "var(--primary)" }}>
@@ -424,8 +421,7 @@ function EmployerPlate() {
         <CoverageWeave size={340} labels={["W", "H", "L"]} className="-right-6 -top-4 opacity-70 hidden md:block" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 md:grid-cols-[1.2fr_1fr] md:px-12 md:py-28">
           <div>
-            <MastheadMark label="For employers" />
-            <h2 className="text-display mt-6 text-4xl md:text-6xl">
+            <h2 className="text-display text-4xl md:text-6xl">
               Set an allowance.
               <br />
               <span className="italic font-normal" style={{ color: "var(--primary)" }}>
@@ -484,8 +480,7 @@ function TrustLadder() {
     <section className="relative mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
       <BlueprintGrid tone="hairline" className="opacity-30" />
       <div className="relative mb-10 max-w-xl">
-        <MastheadMark label="Trust ladder" />
-        <h2 className="text-display mt-6 text-4xl md:text-5xl">Built on rules, not vibes.</h2>
+        <h2 className="text-display text-4xl md:text-5xl">Built on rules, not vibes.</h2>
       </div>
       <div className="relative grid gap-6 md:grid-cols-3">
         {cards.map((c) => (

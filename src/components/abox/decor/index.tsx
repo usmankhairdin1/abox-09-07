@@ -193,23 +193,6 @@ export function GlassPanel({
   );
 }
 
-/* Masthead Mark — label + rule + trailing pulse */
-export function MastheadMark({
-  serial, label, className,
-}: { serial?: string; label?: string; className?: string }) {
-  return (
-    <div className={cn("flex items-center gap-3", className)} aria-hidden>
-      {serial && <span className="text-serial">{serial}</span>}
-      <div className="h-px w-16 origin-left animate-hairline" style={{ background: "var(--foreground)" }} />
-      {label && <span className="text-eyebrow">{label}</span>}
-      <span className="relative flex h-2 w-2">
-        <span className="absolute inset-0 rounded-full bg-primary animate-pulse-ring" />
-        <span className="relative h-2 w-2 rounded-full bg-primary" />
-      </span>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ */
 /* Health / insurance themed decor — purposeful, editorial, hand-tuned. */
 /* ------------------------------------------------------------------ */

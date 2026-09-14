@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 
 import { KpiCard } from "@/components/abox/kpi-card";
-import { MastheadMark } from "@/components/abox/decor";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { Button } from "@/components/ui/button";
@@ -54,8 +53,7 @@ function OperationsHome() {
   return (
     <InternalShell workspace="agent" eyebrow="Workspace" pageTitle="Today at a glance">
       <header className="relative overflow-hidden border-b border-hairline pb-10 pt-8 md:pb-12 md:pt-12">
-        <MastheadMark label="Agency workspace · Northwind Master" />
-        <div className="mt-7 flex flex-wrap items-end justify-between gap-8">
+        <div className="flex flex-wrap items-end justify-between gap-8">
           <div className="max-w-3xl">
             <h1 className="text-display text-4xl leading-none sm:text-5xl md:text-6xl">Good morning, Elena.</h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
