@@ -7,6 +7,8 @@ import { Link } from "@tanstack/react-router";
 import { Star, ShieldCheck, Sparkles, Check } from "lucide-react";
 import type { SamplePlan } from "@/lib/sample-data";
 import { StatusBadge } from "./status-badge";
+import { MetalBadge } from "./metal-badge";
+import { formatUSD, formatUSDAmount } from "@/lib/format";
 import { CarrierMark } from "./carrier-mark";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +53,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
             </Link>
           </h3>
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
-            <StatusBadge tone="sage">{plan.metalTier}</StatusBadge>
+            <MetalBadge tier={plan.metalTier} />
             <StatusBadge tone="muted">{plan.networkType}</StatusBadge>
             <StatusBadge tone={plan.onExchange ? "info" : "primary"}>
               {plan.onExchange ? "QHP" : "Off-exchange"}
@@ -61,10 +63,10 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
         </div>
         <div className="shrink-0 text-right">
           <div className="text-display text-5xl tabular-nums leading-none">
-            <span className="text-lg align-top text-muted-foreground">$</span>{showSubsidized ? subsidizedPrice : plan.monthlyPremium}
+            <span className="text-lg align-top text-muted-foreground">$</span>{formatUSDAmount(showSubsidized ? subsidizedPrice! : plan.monthlyPremium)}
           </div>
           {showSubsidized && (
-            <div className="text-xs text-muted-foreground tabular-nums line-through">${plan.monthlyPremium}/mo</div>
+            <div className="text-xs text-muted-foreground tabular-nums line-through">{formatUSD(plan.monthlyPremium)}/mo</div>
           )}
           <div className="text-serial mt-1">/ mo{showSubsidized ? " after subsidy" : ""}</div>
           <div className="mt-2 inline-flex items-center gap-0.5 text-xs text-muted-foreground">

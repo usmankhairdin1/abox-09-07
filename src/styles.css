@@ -136,6 +136,13 @@
   --success: oklch(0.55 0.100 160);
   --success-foreground: oklch(0.99 0.004 160);
 
+  /* Metal tiers — distinct, accessible badge tints */
+  --metal-bronze: oklch(0.56 0.105 58);
+  --metal-silver: oklch(0.58 0.018 255);
+  --metal-gold: oklch(0.66 0.130 92);
+  --metal-platinum: oklch(0.56 0.075 205);
+  --metal-catastrophic: oklch(0.56 0.150 25);
+
   --border: oklch(0.30 0.04 265 / 0.10);
   --border-strong: oklch(0.30 0.04 265 / 0.24);
   --hairline: oklch(0.30 0.04 265 / 0.11);
@@ -186,6 +193,13 @@
   --accent-foreground: oklch(0.95 0.006 265);
   --info: oklch(0.70 0.115 250);
   --success: oklch(0.70 0.095 160);
+
+  /* Metal tiers — dark theme */
+  --metal-bronze: oklch(0.72 0.105 58);
+  --metal-silver: oklch(0.78 0.020 255);
+  --metal-gold: oklch(0.82 0.130 92);
+  --metal-platinum: oklch(0.76 0.075 205);
+  --metal-catastrophic: oklch(0.70 0.120 25);
   --warning: oklch(0.78 0.115 75);
   --border: oklch(1 0 0 / 0.09);
   --border-strong: oklch(1 0 0 / 0.20);

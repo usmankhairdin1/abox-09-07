@@ -17,6 +17,7 @@ import { cartStore, useCart, PRODUCT_LABEL } from "@/lib/cart-store";
 import { loadQuoteState, estimateMonthlyAPTC, recommendedExchangeView } from "@/lib/quote-store";
 import { SCREENS } from "@/lib/screens";
 import { browseStore, useBrowseState } from "@/lib/browse-store";
+import { formatUSD } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/plans/")({
@@ -81,7 +82,25 @@ function Page() {
   const setSort = (v: SortKey) => browseStore.patch({ sort: v });
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const allCarriers = useMemo(() => Array.from(new Set(SAMPLE_PLANS.map((p) => p.carrier))), []);
+  // Carrier options come from the plan data itself (no hard-coded list), with
+  // live counts computed against every *other* active filter so the numbers
+  // stay accurate as the shopper narrows results.
+  const carrierOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const p of SAMPLE_PLANS) {
+      if (!counts.has(p.carrier)) counts.set(p.carrier, 0);
+      if (showExchange === "on" && !p.onExchange) continue;
+      if (showExchange === "off" && p.onExchange) continue;
+      if (metals.size > 0 && !metals.has(p.metalTier)) continue;
+      if (networks.size > 0 && !networks.has(p.networkType)) continue;
+      if (hsaOnly && !p.hsaEligible) continue;
+      if (p.monthlyPremium > maxPremium) continue;
+      counts.set(p.carrier, (counts.get(p.carrier) ?? 0) + 1);
+    }
+    return Array.from(counts, ([name, count]) => ({ name, count })).sort((a, b) =>
+      b.count - a.count || a.name.localeCompare(b.name),
+    );
+  }, [showExchange, metals, networks, hsaOnly, maxPremium]);
 
   const filtered = useMemo(() => {
     const list = SAMPLE_PLANS.filter((p) => {
@@ -147,7 +166,7 @@ function Page() {
               metals={metals} setMetals={setMetals}
               networks={networks} setNetworks={setNetworks}
               carriers={carriers} setCarriers={setCarriers}
-              allCarriers={allCarriers}
+              carrierOptions={carrierOptions}
               hsaOnly={hsaOnly} setHsaOnly={setHsaOnly}
               maxPremium={maxPremium} setMaxPremium={setMaxPremium}
               activeFilterCount={activeFilterCount} onClear={clearFilters}
@@ -277,7 +296,7 @@ function Page() {
                 metals={metals} setMetals={setMetals}
                 networks={networks} setNetworks={setNetworks}
                 carriers={carriers} setCarriers={setCarriers}
-                allCarriers={allCarriers}
+                carrierOptions={carrierOptions}
                 hsaOnly={hsaOnly} setHsaOnly={setHsaOnly}
                 maxPremium={maxPremium} setMaxPremium={setMaxPremium}
                 activeFilterCount={activeFilterCount} onClear={clearFilters}
@@ -300,7 +319,7 @@ interface FilterProps {
   setNetworks: (v: Set<SamplePlan["networkType"]>) => void;
   carriers: Set<string>;
   setCarriers: (v: Set<string>) => void;
-  allCarriers: string[];
+  carrierOptions: { name: string; count: number }[];
   hsaOnly: boolean;
   setHsaOnly: (v: boolean) => void;
   maxPremium: number;
@@ -383,17 +402,26 @@ function FilterRail(p: FilterProps) {
       <fieldset>
         <legend className="text-eyebrow mb-2">Carrier</legend>
         <div className="space-y-1.5">
-          {p.allCarriers.map((c) => (
-            <label key={c} className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={p.carriers.has(c)}
-                onChange={() => toggleIn(p.carriers, c, p.setCarriers)}
-                className="rounded"
-              />
-              {c}
-            </label>
-          ))}
+          {p.carrierOptions.map((c) => {
+            const checked = p.carriers.has(c.name);
+            const unavailable = c.count === 0 && !checked;
+            return (
+              <label
+                key={c.name}
+                className={cn("flex items-center gap-2 text-sm", unavailable && "text-muted-foreground")}
+              >
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  disabled={unavailable}
+                  onChange={() => toggleIn(p.carriers, c.name, p.setCarriers)}
+                  className="rounded"
+                />
+                <span className="min-w-0 flex-1 truncate">{c.name}</span>
+                <span className="tabular-nums text-xs text-muted-foreground">({c.count})</span>
+              </label>
+            );
+          })}
         </div>
       </fieldset>
 
@@ -412,7 +440,7 @@ function FilterRail(p: FilterProps) {
         />
         <div className="mt-1 flex justify-between text-xs text-muted-foreground tabular-nums">
           <span>$100</span>
-          <span className="font-medium text-foreground">${p.maxPremium}/mo</span>
+          <span className="font-medium text-foreground">{formatUSD(p.maxPremium)}/mo</span>
           <span>$1,000</span>
         </div>
       </fieldset>
