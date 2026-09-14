@@ -8,7 +8,10 @@ import { PageHeader } from "@/components/abox/page-header";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { CarrierMark } from "@/components/abox/carrier-mark";
+import { MetalBadge } from "@/components/abox/metal-badge";
 import { cartStore, cartTotals, useCart, PRODUCT_LABEL, type ProductType } from "@/lib/cart-store";
+import { SAMPLE_PLANS } from "@/lib/sample-data";
+import { formatUSD } from "@/lib/format";
 import { SaveContinueButton } from "@/components/abox/save-continue-button";
 import { SCREENS } from "@/lib/screens";
 
