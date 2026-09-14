@@ -2,12 +2,16 @@
  * UX-013 — Cart Drawer (rendered as a full page + grouped by product type)
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Trash2, ArrowRight, ShoppingBag } from "lucide-react";
+import { Trash2, ArrowRight, ShoppingBag, FileText } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
+import { CarrierMark } from "@/components/abox/carrier-mark";
+import { MetalBadge } from "@/components/abox/metal-badge";
 import { cartStore, cartTotals, useCart, PRODUCT_LABEL, type ProductType } from "@/lib/cart-store";
+import { SAMPLE_PLANS } from "@/lib/sample-data";
+import { formatUSD } from "@/lib/format";
 import { SaveContinueButton } from "@/components/abox/save-continue-button";
 import { SCREENS } from "@/lib/screens";
 
@@ -28,11 +32,11 @@ function Page() {
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-7xl px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
+      <div className="mx-auto max-w-6xl px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
         <PageHeader
           scrId="UX-013" eyebrow="Your selections"
           title="Cart"
-          description="Grouped by product type. Each item lists its effective term, plan, and status."
+          description="Review your selected plan, then continue to enrollment."
           actions={cart.items.length > 0 && (
             <div className="flex items-center gap-2">
               <Link to="/plans" className="inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm hover:bg-accent">
@@ -54,43 +58,83 @@ function Page() {
             action={<Link to="/plans" className="mt-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">Browse plans</Link>}
           />
         ) : (
-          <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-            <div className="space-y-6">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+            <div className="space-y-4">
               {(Object.keys(grouped) as ProductType[]).map((type) => (
                 <section key={type} className="rounded-2xl border border-border bg-card">
-                  <div className="flex items-center justify-between border-b border-border px-5 py-3">
+                  <div className="flex items-center justify-between border-b border-border px-5 py-2.5">
                     <h2 className="text-display text-lg">{PRODUCT_LABEL[type]}</h2>
                     <span className="text-xs text-muted-foreground">{grouped[type].length} item{grouped[type].length > 1 ? "s" : ""}</span>
                   </div>
                   <ul className="divide-y divide-border">
-                    {grouped[type].map((i) => (
-                      <li key={i.id} className="flex flex-wrap items-start justify-between gap-3 px-5 py-4">
-                        <div className="min-w-0">
-                          <p className="text-eyebrow">{i.carrier}</p>
-                          <p className="font-medium">{i.displayName}</p>
-                          <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-                            <span>Effective {i.effectiveDate || "TBD"}</span>
-                            <span>·</span>
-                            <StatusBadge tone={i.status === "ready" ? "sage" : i.status === "needs-info" ? "warning" : "muted"}>
-                              {i.status.replaceAll("-", " ")}
-                            </StatusBadge>
+                    {grouped[type].map((i) => {
+                      const plan = SAMPLE_PLANS.find((p) => p.id === i.id);
+                      return (
+                      <li key={i.id} className="px-5 py-4">
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                          <div className="flex min-w-0 items-start gap-3">
+                            <CarrierMark carrier={i.carrier} size={44} />
+                            <div className="min-w-0">
+                              <p className="text-eyebrow">{i.carrier}</p>
+                              <p className="text-display text-lg leading-snug">{i.displayName}</p>
+                              <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+                                {plan && (
+                                  <>
+                                    <MetalBadge tier={plan.metalTier} />
+                                    <span className="font-medium">{plan.networkType}</span>
+                                    <span>·</span>
+                                  </>
+                                )}
+                                <span>Effective {i.effectiveDate || "TBD"}</span>
+                                <span>·</span>
+                                <StatusBadge tone={i.status === "ready" ? "sage" : i.status === "needs-info" ? "warning" : "muted"}>
+                                  {i.status.replaceAll("-", " ")}
+                                </StatusBadge>
+                              </div>
+                              {plan && (
+                                <div className="mt-2.5 grid max-w-md grid-cols-3 gap-2 text-xs">
+                                  <div className="rounded-lg bg-surface px-2.5 py-1.5">
+                                    <p className="text-muted-foreground">Deductible</p>
+                                    <p className="font-medium tabular-nums">{formatUSD(plan.deductible)}</p>
+                                  </div>
+                                  <div className="rounded-lg bg-surface px-2.5 py-1.5">
+                                    <p className="text-muted-foreground">Out-of-pocket max</p>
+                                    <p className="font-medium tabular-nums">{formatUSD(plan.oopMax)}</p>
+                                  </div>
+                                  <div className="rounded-lg bg-surface px-2.5 py-1.5">
+                                    <p className="text-muted-foreground">Primary care visit</p>
+                                    <p className="font-medium tabular-nums">{formatUSD(plan.pcpCopay)}</p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className="tabular-nums">
+                              <span className="text-display text-2xl">${i.monthly}</span>
+                              <span className="text-sm text-muted-foreground">/mo</span>
+                            </span>
+                            <button
+                              onClick={() => cartStore.remove(i.id)}
+                              aria-label={`Remove ${i.displayName}`}
+                              className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <span className="tabular-nums text-sm">
-                            <span className="text-display text-lg">${i.monthly}</span>
-                            <span className="text-muted-foreground">/mo</span>
-                          </span>
-                          <button
-                            onClick={() => cartStore.remove(i.id)}
-                            aria-label={`Remove ${i.displayName}`}
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-destructive"
+                        <div className="mt-3 flex flex-wrap items-center gap-2 pl-[56px]">
+                          <Link
+                            to="/plans/$planId"
+                            params={{ planId: i.id }}
+                            className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-4 text-sm font-medium hover:bg-accent"
                           >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
+                            <FileText className="h-4 w-4" aria-hidden /> Plan details
+                          </Link>
                         </div>
-                      </li>
-                    ))}
+                       </li>
+                      );
+                    })}
                   </ul>
                 </section>
               ))}
