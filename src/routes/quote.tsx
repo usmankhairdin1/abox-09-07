@@ -1183,6 +1183,7 @@ function Step5({
               max={2000000}
               value={state.income ?? ""}
               disabled={state.skipSubsidy}
+              onKeyDown={blockNonIntegerKey}
               onChange={(e) =>
                 setState((s) => ({ ...s, income: e.target.value === "" ? undefined : Number(e.target.value) }))
               }
@@ -1209,6 +1210,7 @@ function Step5({
             max={20}
             value={state.taxHouseholdSize ?? ""}
             disabled={state.skipSubsidy}
+            onKeyDown={blockNonIntegerKey}
             onChange={(e) =>
               setState((s) => ({
                 ...s,
