@@ -54,7 +54,6 @@ import {
   RELATIONSHIP_LABEL,
   SEX_OPTIONS,
   USAGE_LEVELS,
-  clearQuoteState,
   cryptoRandomId,
   defaultQuoteState,
   estimateMonthlyAPTC,
