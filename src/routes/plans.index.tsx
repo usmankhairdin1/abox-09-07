@@ -65,6 +65,14 @@ function Page() {
   const setHsaOnly = (v: boolean) => browseStore.patch({ hsaOnly: v });
   const maxPremium = browse.maxPremium;
   const setMaxPremium = (v: number) => browseStore.patch({ maxPremium: v });
+  const maxDeductible = browse.maxDeductible;
+  const setMaxDeductible = (v: number) => browseStore.patch({ maxDeductible: v });
+  const maxOop = browse.maxOop;
+  const setMaxOop = (v: number) => browseStore.patch({ maxOop: v });
+  const maxPcpCopay = browse.maxPcpCopay;
+  const setMaxPcpCopay = (v: number) => browseStore.patch({ maxPcpCopay: v });
+  const maxSpecialistCopay = browse.maxSpecialistCopay;
+  const setMaxSpecialistCopay = (v: number) => browseStore.patch({ maxSpecialistCopay: v });
 
   useEffect(() => {
     if (browse.sort === null) {
@@ -95,12 +103,16 @@ function Page() {
       if (networks.size > 0 && !networks.has(p.networkType)) continue;
       if (hsaOnly && !p.hsaEligible) continue;
       if (p.monthlyPremium > maxPremium) continue;
+      if (p.deductible > maxDeductible) continue;
+      if (p.oopMax > maxOop) continue;
+      if (p.pcpCopay > maxPcpCopay) continue;
+      if (p.specialistCopay > maxSpecialistCopay) continue;
       counts.set(p.carrier, (counts.get(p.carrier) ?? 0) + 1);
     }
     return Array.from(counts, ([name, count]) => ({ name, count })).sort((a, b) =>
       b.count - a.count || a.name.localeCompare(b.name),
     );
-  }, [showExchange, metals, networks, hsaOnly, maxPremium]);
+  }, [showExchange, metals, networks, hsaOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay]);
 
   const filtered = useMemo(() => {
     const list = SAMPLE_PLANS.filter((p) => {
@@ -111,6 +123,10 @@ function Page() {
       if (carriers.size > 0 && !carriers.has(p.carrier)) return false;
       if (hsaOnly && !p.hsaEligible) return false;
       if (p.monthlyPremium > maxPremium) return false;
+      if (p.deductible > maxDeductible) return false;
+      if (p.oopMax > maxOop) return false;
+      if (p.pcpCopay > maxPcpCopay) return false;
+      if (p.specialistCopay > maxSpecialistCopay) return false;
       return true;
     });
     const sorted = [...list].sort((a, b) => {
@@ -124,12 +140,14 @@ function Page() {
     });
     return sorted;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- matchOf/subsidizedPriceOf are derived from quote, stable per render
-  }, [showExchange, metals, networks, carriers, hsaOnly, maxPremium, sort]);
+  }, [showExchange, metals, networks, carriers, hsaOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay, sort]);
 
   const clearFilters = () => browseStore.resetFilters();
   const activeFilterCount =
     (showExchange !== "all" ? 1 : 0) + metals.size + networks.size + carriers.size +
-    (hsaOnly ? 1 : 0) + (maxPremium !== 1000 ? 1 : 0);
+    (hsaOnly ? 1 : 0) + (maxPremium !== 1000 ? 1 : 0) +
+    (maxDeductible !== 7500 ? 1 : 0) + (maxOop !== 9500 ? 1 : 0) +
+    (maxPcpCopay !== 50 ? 1 : 0) + (maxSpecialistCopay !== 100 ? 1 : 0);
 
   return (
     <MarketplaceShell product="ifp">
@@ -169,6 +187,10 @@ function Page() {
               carrierOptions={carrierOptions}
               hsaOnly={hsaOnly} setHsaOnly={setHsaOnly}
               maxPremium={maxPremium} setMaxPremium={setMaxPremium}
+              maxDeductible={maxDeductible} setMaxDeductible={setMaxDeductible}
+              maxOop={maxOop} setMaxOop={setMaxOop}
+              maxPcpCopay={maxPcpCopay} setMaxPcpCopay={setMaxPcpCopay}
+              maxSpecialistCopay={maxSpecialistCopay} setMaxSpecialistCopay={setMaxSpecialistCopay}
               activeFilterCount={activeFilterCount} onClear={clearFilters}
               hasSubsidyCheck={!!quote && !quote.skipSubsidy && quote.income != null}
             />
@@ -255,13 +277,14 @@ function Page() {
                 action={<button onClick={clearFilters} className="mt-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">Clear filters</button>}
               />
             ) : (
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4">
                 {filtered.map((plan) => (
                   <PlanCard
                     key={plan.id}
                     plan={plan}
                     matchScore={matchOf(plan)}
                     subsidizedPrice={subsidizedPriceOf(plan)}
+                    horizontal
                     inCart={cart.items.some((i) => i.id === plan.id)}
                     inCompare={cart.compareIds.includes(plan.id)}
                     saved={cart.savedPlanIds.includes(plan.id)}
@@ -299,6 +322,10 @@ function Page() {
                 carrierOptions={carrierOptions}
                 hsaOnly={hsaOnly} setHsaOnly={setHsaOnly}
                 maxPremium={maxPremium} setMaxPremium={setMaxPremium}
+                maxDeductible={maxDeductible} setMaxDeductible={setMaxDeductible}
+                maxOop={maxOop} setMaxOop={setMaxOop}
+                maxPcpCopay={maxPcpCopay} setMaxPcpCopay={setMaxPcpCopay}
+                maxSpecialistCopay={maxSpecialistCopay} setMaxSpecialistCopay={setMaxSpecialistCopay}
                 activeFilterCount={activeFilterCount} onClear={clearFilters}
                 hasSubsidyCheck={!!quote && !quote.skipSubsidy && quote.income != null}
               />
@@ -324,6 +351,14 @@ interface FilterProps {
   setHsaOnly: (v: boolean) => void;
   maxPremium: number;
   setMaxPremium: (v: number) => void;
+  maxDeductible: number;
+  setMaxDeductible: (v: number) => void;
+  maxOop: number;
+  setMaxOop: (v: number) => void;
+  maxPcpCopay: number;
+  setMaxPcpCopay: (v: number) => void;
+  maxSpecialistCopay: number;
+  setMaxSpecialistCopay: (v: number) => void;
   activeFilterCount: number;
   onClear: () => void;
   hasSubsidyCheck: boolean;
@@ -334,6 +369,28 @@ function FilterRail(p: FilterProps) {
   const toggleIn = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set); next.has(v) ? next.delete(v) : next.add(v); setter(next);
   };
+  const FilterLegend = ({ number, children }: { number: number; children: React.ReactNode }) => (
+    <legend className="mb-2 flex items-center gap-2 text-eyebrow">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-surface text-[10px] tabular-nums text-muted-foreground">{number}</span>
+      {children}
+    </legend>
+  );
+  const RangeFilter = ({ number, label, min, max, step, value, onChange, suffix }: {
+    number: number; label: string; min: number; max: number; step: number; value: number;
+    onChange: (value: number) => void; suffix?: string;
+  }) => (
+    <fieldset>
+      <FilterLegend number={number}>{label}</FilterLegend>
+      <input type="range" min={min} max={max} step={step} value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full accent-[var(--primary)]" aria-label={`Maximum ${label.toLowerCase()}`} />
+      <div className="mt-1 flex justify-between text-xs text-muted-foreground tabular-nums">
+        <span>{formatUSD(min)}</span>
+        <span className="font-medium text-foreground">{formatUSD(value)}{suffix ?? ""}</span>
+        <span>{formatUSD(max)}</span>
+      </div>
+    </fieldset>
+  );
   return (
     <div className="space-y-6 rounded-2xl border border-border bg-card p-4">
       <div className="flex items-center justify-between">
@@ -344,7 +401,7 @@ function FilterRail(p: FilterProps) {
       </div>
 
       <fieldset>
-        <legend className="text-eyebrow mb-2">Exchange</legend>
+        <FilterLegend number={1}>Exchange</FilterLegend>
         <div className="grid grid-cols-3 gap-1 rounded-full bg-surface p-1">
           {(["all","on","off"] as const).map((v) => (
             <button key={v} onClick={() => p.setShowExchange(v)}
@@ -364,7 +421,7 @@ function FilterRail(p: FilterProps) {
       </fieldset>
 
       <fieldset>
-        <legend className="text-eyebrow mb-2">Metal tier</legend>
+        <FilterLegend number={2}>Metal tier</FilterLegend>
         <div className="flex flex-wrap gap-1.5">
           {METALS.map((m) => {
             const on = p.metals.has(m);
@@ -382,7 +439,7 @@ function FilterRail(p: FilterProps) {
       </fieldset>
 
       <fieldset>
-        <legend className="text-eyebrow mb-2">Network</legend>
+        <FilterLegend number={3}>Network</FilterLegend>
         <div className="flex flex-wrap gap-1.5">
           {NETS.map((n) => {
             const on = p.networks.has(n);
@@ -400,7 +457,7 @@ function FilterRail(p: FilterProps) {
       </fieldset>
 
       <fieldset>
-        <legend className="text-eyebrow mb-2">Carrier</legend>
+        <FilterLegend number={4}>Carrier</FilterLegend>
         <div className="space-y-1.5">
           {p.carrierOptions.map((c) => {
             const checked = p.carriers.has(c.name);
@@ -425,13 +482,8 @@ function FilterRail(p: FilterProps) {
         </div>
       </fieldset>
 
-      <label className="flex items-center justify-between text-sm">
-        <span>HSA-eligible only</span>
-        <input type="checkbox" checked={p.hsaOnly} onChange={(e) => p.setHsaOnly(e.target.checked)} />
-      </label>
-
       <fieldset>
-        <legend className="text-eyebrow mb-2">Max premium</legend>
+        <FilterLegend number={5}>Premium</FilterLegend>
         <input
           type="range" min={100} max={1000} step={25} value={p.maxPremium}
           onChange={(e) => p.setMaxPremium(Number(e.target.value))}
@@ -444,6 +496,20 @@ function FilterRail(p: FilterProps) {
           <span>$1,000</span>
         </div>
       </fieldset>
+
+      <RangeFilter number={6} label="Deductible" min={0} max={7500} step={250} value={p.maxDeductible} onChange={p.setMaxDeductible} />
+      <RangeFilter number={7} label="Out-of-pocket maximum" min={3000} max={9500} step={250} value={p.maxOop} onChange={p.setMaxOop} />
+
+      <fieldset>
+        <FilterLegend number={8}>HSA eligibility</FilterLegend>
+        <label className="flex items-center justify-between text-sm">
+          <span>HSA-eligible only</span>
+          <input type="checkbox" checked={p.hsaOnly} onChange={(e) => p.setHsaOnly(e.target.checked)} />
+        </label>
+      </fieldset>
+
+      <RangeFilter number={9} label="Primary care visit" min={0} max={50} step={5} value={p.maxPcpCopay} onChange={p.setMaxPcpCopay} />
+      <RangeFilter number={10} label="Specialist visit" min={0} max={100} step={5} value={p.maxSpecialistCopay} onChange={p.setMaxSpecialistCopay} />
     </div>
   );
 }

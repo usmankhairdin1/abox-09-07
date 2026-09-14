@@ -12,6 +12,10 @@ export interface BrowseState {
   carriers: string[];
   hsaOnly: boolean;
   maxPremium: number;
+  maxDeductible: number;
+  maxOop: number;
+  maxPcpCopay: number;
+  maxSpecialistCopay: number;
   sort: string | null;
   product: string;
 }
@@ -25,6 +29,10 @@ const EMPTY: BrowseState = {
   carriers: [],
   hsaOnly: false,
   maxPremium: 1000,
+  maxDeductible: 7500,
+  maxOop: 9500,
+  maxPcpCopay: 50,
+  maxSpecialistCopay: 100,
   sort: null,
   product: "ifp",
 };
@@ -71,6 +79,10 @@ export const browseStore = {
       carriers: [],
       hsaOnly: false,
       maxPremium: 1000,
+      maxDeductible: 7500,
+      maxOop: 9500,
+      maxPcpCopay: 50,
+      maxSpecialistCopay: 100,
     });
   },
 };
