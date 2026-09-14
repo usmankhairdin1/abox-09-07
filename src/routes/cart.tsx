@@ -132,8 +132,9 @@ function Page() {
                             <FileText className="h-4 w-4" aria-hidden /> Plan details
                           </Link>
                         </div>
-                      </li>
-                    ))}
+                       </li>
+                      );
+                    })}
                   </ul>
                 </section>
               ))}
