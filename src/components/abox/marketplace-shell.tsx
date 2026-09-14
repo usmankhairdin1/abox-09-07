@@ -108,7 +108,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
                     aria-haspopup="menu"
                   >
                     <User className="h-4 w-4" aria-hidden />
-                    <span className="hidden sm:inline max-w-[16ch] truncate">{userDisplayName}</span>
+                    <span className="max-w-[10ch] truncate sm:max-w-[16ch]">{userDisplayName}</span>
                     <ChevronDown className="h-3.5 w-3.5 transition-transform group-data-[state=open]:rotate-180" aria-hidden />
                   </button>
                 </DropdownMenuTrigger>
