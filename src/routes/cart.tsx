@@ -67,7 +67,9 @@ function Page() {
                     <span className="text-xs text-muted-foreground">{grouped[type].length} item{grouped[type].length > 1 ? "s" : ""}</span>
                   </div>
                   <ul className="divide-y divide-border">
-                    {grouped[type].map((i) => (
+                    {grouped[type].map((i) => {
+                      const plan = SAMPLE_PLANS.find((p) => p.id === i.id);
+                      return (
                       <li key={i.id} className="px-5 py-4">
                         <div className="flex flex-wrap items-center justify-between gap-4">
                           <div className="flex min-w-0 items-start gap-3">
@@ -75,13 +77,36 @@ function Page() {
                             <div className="min-w-0">
                               <p className="text-eyebrow">{i.carrier}</p>
                               <p className="text-display text-lg leading-snug">{i.displayName}</p>
-                              <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+                              <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+                                {plan && (
+                                  <>
+                                    <MetalBadge tier={plan.metalTier} />
+                                    <span className="font-medium">{plan.networkType}</span>
+                                    <span>·</span>
+                                  </>
+                                )}
                                 <span>Effective {i.effectiveDate || "TBD"}</span>
                                 <span>·</span>
                                 <StatusBadge tone={i.status === "ready" ? "sage" : i.status === "needs-info" ? "warning" : "muted"}>
                                   {i.status.replaceAll("-", " ")}
                                 </StatusBadge>
                               </div>
+                              {plan && (
+                                <div className="mt-2.5 grid max-w-md grid-cols-3 gap-2 text-xs">
+                                  <div className="rounded-lg bg-surface px-2.5 py-1.5">
+                                    <p className="text-muted-foreground">Deductible</p>
+                                    <p className="font-medium tabular-nums">{formatUSD(plan.deductible)}</p>
+                                  </div>
+                                  <div className="rounded-lg bg-surface px-2.5 py-1.5">
+                                    <p className="text-muted-foreground">Out-of-pocket max</p>
+                                    <p className="font-medium tabular-nums">{formatUSD(plan.oopMax)}</p>
+                                  </div>
+                                  <div className="rounded-lg bg-surface px-2.5 py-1.5">
+                                    <p className="text-muted-foreground">Primary care visit</p>
+                                    <p className="font-medium tabular-nums">{formatUSD(plan.pcpCopay)}</p>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
                           <div className="flex items-center gap-3">
