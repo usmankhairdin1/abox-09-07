@@ -319,9 +319,7 @@ function QuoteWizardPage() {
         >
           <section className="min-w-0">
             <p className="text-eyebrow flex items-center gap-2">
-              <span>
-                {currentMeta.scr} · Step {step} of {STEP_COUNT}
-              </span>
+              <span>Step {step} of {STEP_COUNT}</span>
               <span className="hidden text-muted-foreground/70 md:inline">
                 · {currentMeta.eyebrow}
               </span>
