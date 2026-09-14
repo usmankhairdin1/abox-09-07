@@ -61,7 +61,16 @@ export const cartStore = {
   subscribe(l: () => void) { listeners.add(l); return () => listeners.delete(l); },
   add(item: CartItem) {
     if (state.items.some((i) => i.id === item.id)) return;
-    state = { ...state, items: [...state.items, item] }; save(state); notify();
+    // Single-plan cart: a new selection replaces the current one (max 1 item).
+    const replaced = state.items.length > 0 ? state.items[0] : null;
+    state = { ...state, items: [item] }; save(state); notify();
+    if (replaced && typeof window !== "undefined") {
+      void import("sonner").then(({ toast }) =>
+        toast("Cart updated", {
+          description: `One plan at a time — ${replaced.displayName} was replaced with ${item.displayName}.`,
+        }),
+      );
+    }
   },
   remove(id: string) {
     state = { ...state, items: state.items.filter((i) => i.id !== id) }; save(state); notify();
