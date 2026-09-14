@@ -107,8 +107,8 @@ function Hero() {
           <p className="mt-8 max-w-xl text-lg text-muted-foreground md:text-xl">
             {intro}
           </p>
-          <div className="mt-8">
-            <p className="text-eyebrow mb-3">Products available today</p>
+          <div className="mt-10">
+            <p className="text-eyebrow mb-4">Products available today</p>
             <ProductSwitcher variant="chips" />
           </div>
           <div className="mt-8 flex flex-wrap items-center gap-3">

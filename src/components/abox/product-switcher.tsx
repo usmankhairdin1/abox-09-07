@@ -16,8 +16,12 @@ interface Props {
 }
 
 export function ProductSwitcher({ active, variant = "strip", className }: Props) {
+  const isChips = variant === "chips";
   const items = (
-    <ul className="flex snap-x items-center gap-1.5 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible md:pb-0">
+    <ul className={cn(
+      "flex snap-x items-center overflow-x-auto pb-1 md:flex-wrap md:overflow-visible md:pb-0",
+      isChips ? "gap-2 md:gap-3" : "gap-1.5",
+    )}>
       {SHOP_PRODUCTS.map((p) => {
         const Icon = p.icon;
         const isActive = active === p.key;
@@ -29,20 +33,26 @@ export function ProductSwitcher({ active, variant = "strip", className }: Props)
               {...(p.key === "ichra" ? {} : { search: { product: p.key } })}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "inline-flex min-h-9 items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                "inline-flex items-center whitespace-nowrap rounded-full border transition-all",
+                isChips
+                  ? "min-h-12 md:min-h-14 gap-2 md:gap-2.5 px-5 md:px-6 py-2.5 md:py-3 text-base md:text-lg font-semibold hover:-translate-y-0.5"
+                  : "min-h-9 gap-1.5 px-3 py-1.5 text-sm font-medium transition-colors",
                 isActive
-                  ? "border-primary bg-primary-soft text-primary"
-                  : "border-border bg-card text-foreground/80 hover:bg-accent hover:text-foreground",
+                  ? "border-primary bg-primary-soft text-primary shadow-card"
+                  : isChips
+                    ? "border-border-strong bg-card text-foreground/90 shadow-card hover:border-primary/50 hover:bg-primary/[0.04] hover:text-foreground"
+                    : "border-border bg-card text-foreground/80 hover:bg-accent hover:text-foreground",
               )}
             >
-              <Icon className="h-4 w-4" aria-hidden />
-              <span>{variant === "chips" ? p.short : p.label}</span>
+              <Icon className={cn(isChips ? "h-5 w-5 md:h-6 md:w-6" : "h-4 w-4")} aria-hidden />
+              <span>{isChips ? p.short : p.label}</span>
             </Link>
           </li>
         );
       })}
     </ul>
   );
+
 
   if (variant === "chips") {
     return (
