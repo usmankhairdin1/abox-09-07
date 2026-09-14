@@ -5,7 +5,7 @@
  * atmosphere.
  */
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight } from "lucide-react";
+import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight, ChevronDown, Settings } from "lucide-react";
 import { AboxMark } from "./logo";
 import { PlanOAssistant } from "./plan-o-assistant";
 import { ThemeToggle } from "./theme-toggle";
@@ -17,6 +17,13 @@ import { useMarketplaceState, getActiveBrand } from "@/lib/marketplace-store";
 import { useCart, cartTotals } from "@/lib/cart-store";
 import { ProductSwitcher } from "./product-switcher";
 import { ShoppingBag } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Props {
   children: React.ReactNode;
