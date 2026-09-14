@@ -298,7 +298,7 @@ function QuoteWizardPage() {
         {announce}
       </p>
 
-      <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-8 md:py-12">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 md:px-8 md:pb-12 md:pt-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <WizardStepper current={step} maxReached={maxReached} goTo={goTo} />
           <SaveContinueButton className="shrink-0" />

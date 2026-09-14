@@ -30,7 +30,7 @@ const SECTIONS = [
 function Page() {
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-3xl px-4 py-14 md:px-8">
+      <div className="mx-auto max-w-3xl px-4 pb-14 pt-6 md:px-8 md:pt-8">
         <PageHeader eyebrow="Legal" title="Privacy notice"
           description="Plain-language summary of our privacy practices. Effective July 20, 2026." />
 

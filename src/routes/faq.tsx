@@ -55,7 +55,7 @@ const GROUPS = [
 function FaqPage() {
   return (
     <MarketplaceShell showAssistant>
-      <div className="mx-auto max-w-4xl px-4 py-14 md:px-8">
+      <div className="mx-auto max-w-4xl px-4 pb-14 pt-6 md:px-8 md:pt-8">
         <PageHeader eyebrow="Support" title="Frequently asked questions"
           description="Short answers to the questions we hear most. If yours isn't here, an agent is one click away." />
         <div className="mt-8 space-y-8">

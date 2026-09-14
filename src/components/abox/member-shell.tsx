@@ -92,7 +92,7 @@ export function MemberShell({ children }: Props) {
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-8 md:flex-row md:px-8 md:py-12">
+      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 pb-8 pt-4 md:flex-row md:px-8 md:pb-12 md:pt-6">
         {/* Arc dot rail */}
         <aside className="md:w-60 md:shrink-0" aria-label="Member navigation">
           <nav className="relative">

@@ -89,7 +89,7 @@ function Hero() {
   const intro = brand?.intro_en || "Health, dental, vision, life — compared side by side. Plan-AI helps you think it through without pushing. If you'd rather talk to a person, a licensed agent is one tap away.";
   const [headlineLead, ...headlineRest] = headline.split(",");
   return (
-    <section className="relative isolate overflow-hidden pb-20 pt-14 md:pb-32 md:pt-24">
+    <section className="relative isolate overflow-hidden pb-20 pt-8 md:pb-32 md:pt-12">
       <Aurora />
       <DotField className="opacity-30" />
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 lg:grid-cols-[1.15fr_1fr] lg:gap-14 md:px-8">

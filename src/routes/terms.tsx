@@ -31,7 +31,7 @@ const SECTIONS = [
 function Page() {
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-3xl px-4 py-14 md:px-8">
+      <div className="mx-auto max-w-3xl px-4 pb-14 pt-6 md:px-8 md:pt-8">
         <PageHeader eyebrow="Legal" title="Terms of use" description="Effective July 20, 2026." />
         <div className="mt-8 space-y-6">
           {SECTIONS.map((s) => (

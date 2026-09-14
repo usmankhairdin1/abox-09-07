@@ -87,7 +87,7 @@ function Page() {
   if (items.length === 0) {
     return (
       <MarketplaceShell showAssistant={false}>
-        <div className="mx-auto max-w-4xl px-4 py-10 md:px-8 md:py-14">
+        <div className="mx-auto max-w-4xl px-4 pb-10 pt-4 md:px-8 md:pb-14 md:pt-6">
           <PageHeader scrId="SCR_OFFEX_APPLICATION" eyebrow="Off-exchange" title="No off-exchange coverage to apply for"
             description="Off-exchange health, dental and vision plans in your cart continue through a licensed application here." />
           <EmptyState title="Nothing to apply for" body="On-exchange plans finish through the exchange handoff instead."
@@ -99,7 +99,7 @@ function Page() {
 
   return (
     <MarketplaceShell showAssistant={false}>
-      <div className="mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-14">
+      <div className="mx-auto max-w-7xl px-4 pb-10 pt-4 md:px-8 md:pb-14 md:pt-6">
         <PageHeader
           scrId="SCR_OFFEX_APPLICATION" eyebrow="Off-exchange application"
           title="Complete your carrier application"
