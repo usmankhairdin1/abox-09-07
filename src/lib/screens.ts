@@ -134,7 +134,7 @@ export const SCREENS: Record<string, ScreenMeta> = {
     purpose: "Enable/disable per tenant/module/role; knowledge sources; disclaimers; escalation." },
   "SCR_JET_INTEGRATIONS": { id: "SCR_JET_INTEGRATIONS", name: "Integrations", workspace: "jet", phase: "phase1",
     purpose: "Carrier feeds, EDE, drug/provider directories, pay processors, webhook subscriptions." },
-  "SCR_EMPLOYER_ICHRA": { id: "SCR_EMPLOYER_ICHRA", name: "Employer ICHRA Quote", workspace: "employer", phase: "phase1",
+  "SCR_EMPLOYER_ICHRA": { id: "SCR_EMPLOYER_ICHRA", name: "ICHRA Quote", workspace: "employer", phase: "phase1",
     purpose: "Group census, deep-quote foundation. Enrollment excluded from Phase 1." },
   "SCR_PARTNER_HOME": { id: "SCR_PARTNER_HOME", name: "Partner / Referral Home", workspace: "partner", phase: "phase1",
     purpose: "Referral submission, status, reward settings visibility." },

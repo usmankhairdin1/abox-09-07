@@ -218,7 +218,7 @@ export const WORKSPACES: WorkspaceConfig[] = [
   },
   {
     key: "employer",
-    name: "Employer / Group",
+    name: "ICHRA / Group",
     tagline: "ICHRA quoting for groups",
     sections: [
       {

@@ -11,7 +11,7 @@ export const Route = createFileRoute("/app/employer/results")({
   head: () => ({
     meta: [
       { title: "Cost results — Cedarline Logistics" },
-      { name: "description", content: "Per-employee allowance, employer cost and the likely out-of-pocket gap for each person on your census." },
+      { name: "description", content: "Per-employee allowance, ICHRA cost and the likely out-of-pocket gap for each person on your census." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { property: "og:title", content: "Cost results" },
@@ -46,8 +46,8 @@ function ResultsPage() {
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Monthly employer cost" value={<Money value={totals.monthly} />} />
-        <StatCard label="Annual employer cost" value={<Money value={totals.annual} />} />
+        <StatCard label="Monthly ICHRA cost" value={<Money value={totals.monthly} />} />
+        <StatCard label="Annual ICHRA cost" value={<Money value={totals.annual} />} />
         <StatCard label="Fully covered" value={`${covered} of ${totals.rows.length}`} tone={covered === totals.rows.length ? "good" : "warn"} />
         <StatCard
           label="Average allowance"

@@ -57,12 +57,12 @@ function ProposalPage() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <Section title="Proposal summary">
           <Card className="grid gap-0 p-6">
-            <Row label="Employer" value="Cedarline Logistics · Austin, TX" />
+            <Row label="ICHRA" value="Cedarline Logistics · Austin, TX" />
             <Row label="Eligible employees" value={`${state.census.length} on the current census`} />
             <Row label="Contribution model" value={modelLabel} />
             <Row label="Base allowance" value={<Money value={state.contribution.base} per="mo" />} />
-            <Row label="Monthly employer cost" value={<Money value={totals.monthly} />} />
-            <Row label="Annual employer cost" value={<Money value={totals.annual} />} />
+            <Row label="Monthly ICHRA cost" value={<Money value={totals.monthly} />} />
+            <Row label="Annual ICHRA cost" value={<Money value={totals.annual} />} />
             <Row label="Proposed effective date" value="1 January 2027" />
             <Row
               label="Enrolment support"
