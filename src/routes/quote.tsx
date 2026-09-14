@@ -45,6 +45,8 @@ import {
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { AboxMark } from "@/components/abox/logo";
 import { SaveContinueButton } from "@/components/abox/save-continue-button";
+import { ShoppingPathBar } from "@/components/abox/shopping-path-bar";
+import { shoppingModeStore } from "@/lib/shopping-mode";
 import { cn } from "@/lib/utils";
 import {
   PRIORITIES,
@@ -181,6 +183,7 @@ function QuoteWizardPage() {
   // Track farthest reached step so users can jump back and forward
   useEffect(() => {
     setMaxReached((prev) => Math.max(prev, step));
+    shoppingModeStore.recordGuidedStep(step);
     // Focus the step heading + announce
     if (headingRef.current) headingRef.current.focus();
     const meta = STEPS[step - 1];
@@ -292,13 +295,15 @@ function QuoteWizardPage() {
   const currentMeta = STEPS[step - 1];
 
   return (
-    <MarketplaceShell showAssistant={false} product="ifp">
+    <MarketplaceShell product="ifp">
       {/* Live region for step / error announcements */}
       <p role="status" aria-live="polite" className="sr-only">
         {announce}
       </p>
 
       <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 md:px-8 md:pb-12 md:pt-6">
+        <ShoppingPathBar current="guided" />
+
         <div className="flex flex-wrap items-center justify-between gap-3">
           <WizardStepper current={step} maxReached={maxReached} goTo={goTo} />
           <SaveContinueButton className="shrink-0" />
@@ -348,7 +353,8 @@ function QuoteWizardPage() {
               goBack={goBack}
               onNext={validateAndAdvance}
               onFinish={() => {
-                clearQuoteState();
+                // Quote answers stay in session so a shopper can return to
+                // the guided path (or switch to browse) without restarting.
                 // Persist a summary key the plans route can pick up
                 if (typeof window !== "undefined") {
                   window.sessionStorage.setItem(
