@@ -9,7 +9,6 @@ import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { SAMPLE_PRODUCTS } from "@/lib/sample-data";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 
 const search = z.object({ product: z.string().optional() });
 
