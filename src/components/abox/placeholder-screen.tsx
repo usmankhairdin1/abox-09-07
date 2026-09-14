@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { AboxMark } from "./logo";
 import type { ScreenMeta } from "@/lib/screens";
 import { cn } from "@/lib/utils";
-import { MastheadMark, DiagonalWeave } from "./decor";
+import { DiagonalWeave } from "./decor";
 import { FadeRise } from "./motion";
 
 const PHASE_LABEL: Record<ScreenMeta["phase"], { label: string; tone: string }> = {
@@ -38,8 +38,8 @@ export function PlaceholderScreen({ screen, className, backTo, backLabel, childr
         </Link>
       )}
       <div>
-        <MastheadMark label={phase.label} />
-        <div className="mt-6 flex items-start gap-6">
+        <p className={cn("mb-3 text-eyebrow", phase.tone)}>{phase.label}</p>
+        <div className="flex items-start gap-6">
           <AboxMark size={52} tone="primary" />
           <div className="flex-1">
             <h1 className="text-display text-4xl md:text-6xl">{screen.name}</h1>

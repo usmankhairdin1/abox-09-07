@@ -3,7 +3,6 @@
  * masthead label and hairline underline.
  */
 import { cn } from "@/lib/utils";
-import { MastheadMark } from "./decor";
 import { FadeRise } from "./motion";
 
 interface Props {
@@ -16,11 +15,13 @@ interface Props {
 }
 
 export function PageHeader({ eyebrow, scrId, title, description, actions, className }: Props) {
+  const contextLabel = eyebrow ?? scrId;
+
   return (
     <FadeRise as="header" className={cn("relative mb-12", className)}>
-      <MastheadMark {...(eyebrow ?? scrId ? { label: (eyebrow ?? scrId)! } : {})} />
-      <div className="mt-5 flex flex-wrap items-end justify-between gap-6">
+      <div className="flex flex-wrap items-end justify-between gap-6">
         <div className="min-w-0 max-w-3xl">
+          {contextLabel && <p className="mb-3 text-eyebrow">{contextLabel}</p>}
           <h1 className="text-display text-[42px] font-semibold leading-[0.98] tracking-tight md:text-7xl">{title}</h1>
           {description && (
             <p className="mt-5 max-w-2xl text-lg text-muted-foreground">{description}</p>
