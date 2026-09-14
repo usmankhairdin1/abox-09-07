@@ -11,7 +11,7 @@ const EMPLOYER_TABS: ModuleTab[] = [
   { to: "/app/employer/ichra", label: "ICHRA quote", hint: "Group quote entry" },
   { to: "/app/employer/census", label: "Census", hint: "Eligible employees" },
   { to: "/app/employer/contribution", label: "Contribution model", hint: "Allowance by class" },
-  { to: "/app/employer/results", label: "Cost results", hint: "Employer and employee cost" },
+  { to: "/app/employer/results", label: "Cost results", hint: "ICHRA and employee cost" },
   { to: "/app/employer/proposal", label: "Proposal", hint: "Generate and route" },
 ];
 
