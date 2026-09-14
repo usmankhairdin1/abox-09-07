@@ -458,12 +458,6 @@ function WizardFooter({
         <ArrowLeft className="h-4 w-4" aria-hidden />
         Back
       </button>
-      <p className="hidden text-xs text-muted-foreground md:block" aria-hidden>
-        Tip: <kbd className="rounded border border-border px-1 py-0.5">Enter</kbd> to continue ·{" "}
-        <kbd className="rounded border border-border px-1 py-0.5">Alt</kbd> +{" "}
-        <kbd className="rounded border border-border px-1 py-0.5">←</kbd>/
-        <kbd className="rounded border border-border px-1 py-0.5">→</kbd> to move between steps
-      </p>
       {isLast ? (
         <a
           href="/plans"
