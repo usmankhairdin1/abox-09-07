@@ -1,7 +1,7 @@
 /**
  * UX-017 / UX-018 — Agent Quick Quote
  * Start anonymous prospect quote or find existing lead. Compact input
- * with results panel, Plan-AI assist, and send/add/request-follow-up.
+ * with results panel, PlanAI assist, and send/add/request-follow-up.
  */
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -130,10 +130,10 @@ function Page() {
                 </select>
               </label>
               <button className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-primary text-sm font-medium text-primary-foreground">
-                Run Plan-AI <Sparkles className="h-4 w-4" />
+                Run PlanAI <Sparkles className="h-4 w-4" />
               </button>
               <div className="mt-3 rounded-xl bg-primary-soft/40 p-3 text-xs text-primary">
-                <p className="font-medium">Plan-AI assist</p>
+                <p className="font-medium">PlanAI assist</p>
                 <p className="mt-1 text-foreground/80">Prioritizing PPO + Tier 1 Rx. 6 plans match strongly.</p>
               </div>
               <div className="mt-4 flex flex-wrap gap-1.5 text-xs">
@@ -147,7 +147,7 @@ function Page() {
           <section className="min-w-0">
             <div className="mb-3 flex items-baseline justify-between">
               <h2 className="text-display text-2xl">Results</h2>
-              <p className="text-sm text-muted-foreground">{plans.length} plans · sort: Plan-AI match</p>
+              <p className="text-sm text-muted-foreground">{plans.length} plans · sort: PlanAI match</p>
             </div>
             <div className="grid gap-3 md:grid-cols-2">
               {plans.map((p) => {

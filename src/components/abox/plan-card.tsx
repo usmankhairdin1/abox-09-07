@@ -1,7 +1,7 @@
 /**
  * PlanCard — glass plan surface. Left column: metadata + highlights.
  * Right column: massive stacked premium price with a "$/mo" serial. A
- * citron progress arc for the Plan-AI match. Ink-fill CTA with sweep.
+ * citron progress arc for the PlanAI match. Ink-fill CTA with sweep.
  */
 import { Link } from "@tanstack/react-router";
 import { Star, ShieldCheck, Sparkles, Check, FileText } from "lucide-react";
@@ -23,7 +23,7 @@ interface Props {
   saved?: boolean;
   compact?: boolean;
   horizontal?: boolean;
-  /** Reactive Plan-AI match (see `planMatchScore`). Falls back to the plan's baseline prior if omitted. */
+  /** Reactive PlanAI match (see `planMatchScore`). Falls back to the plan's baseline prior if omitted. */
   matchScore?: number;
   /** Estimated after-subsidy monthly price. Only ever set for on-exchange plans — never off-exchange. */
   subsidizedPrice?: number;
@@ -181,7 +181,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
       <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-4">
         <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-primary-soft/50 px-3 py-1.5 text-xs font-medium text-primary">
           <Sparkles className="h-3.5 w-3.5" aria-hidden />
-          Plan-AI match {match}%
+          PlanAI match {match}%
         </span>
         <div className="flex items-center gap-1.5">
           {onSaveToggle && (

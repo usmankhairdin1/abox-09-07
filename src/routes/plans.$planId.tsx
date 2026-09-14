@@ -1,6 +1,6 @@
 /**
  * UX-010 — Plan Detail
- * Benefits, costs, network + Rx, Plan-AI explanation. Add to cart / compare.
+ * Benefits, costs, network + Rx, PlanAI explanation. Add to cart / compare.
  */
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Check, ArrowLeft, ShoppingBag, Star, Sparkles, Stethoscope, Pill } from "lucide-react";
@@ -94,11 +94,11 @@ function Page() {
 
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="space-y-6">
-            {/* Plan-AI explanation */}
+            {/* PlanAI explanation */}
             <div className="rounded-2xl border border-primary/20 bg-primary-soft/30 p-5">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" aria-hidden />
-                <p className="text-sm font-medium">Plan-AI match {match}%</p>
+                <p className="text-sm font-medium">PlanAI match {match}%</p>
               </div>
               <p className="mt-2 text-sm text-foreground/80">
                 Ranks {match >= 85 ? "strongly" : "moderately"} for {quote?.priorities?.length ? quote.priorities.join(", ") : "your priorities"}.

@@ -181,7 +181,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
           <div className="border-t border-sidebar-border">
             <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-5 text-xs text-sidebar-foreground/60 md:flex-row md:items-center md:justify-between md:px-12">
               <p>
-                © {new Date().getFullYear()} JET / ABox. Plan-AI guidance is educational and non-binding.
+                © {new Date().getFullYear()} JET / ABox. PlanAI guidance is educational and non-binding.
                 Not a substitute for licensed advice. QHP displays follow federal display rules.
               </p>
               <p className="text-serial">v Phase 1 · IA baseline · Module 1 V4</p>

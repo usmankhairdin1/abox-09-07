@@ -97,7 +97,7 @@ function Page() {
 
         <p className="mt-8 text-xs text-muted-foreground">
           Shared quotes are read-only. To add plans to a cart or start enrollment, register or sign in.
-          Plan-AI is educational, not a substitute for licensed advice.
+          PlanAI is educational, not a substitute for licensed advice.
         </p>
       </div>
     </MarketplaceShell>

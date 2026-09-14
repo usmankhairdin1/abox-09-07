@@ -264,8 +264,8 @@ function seed(): MktState {
     brand_id: "brand-active-001", marketplace_id: MARKETPLACE_ID, status: "ACTIVE",
     display_name: "ABox", tagline_en: "Agency in a Box", tagline_es: "Agencia en una Caja",
     headline_en: "Insurance, tuned to you.", headline_es: "Seguro, hecho a tu medida.",
-    intro_en: "Health, dental, vision, life — compared side by side. Plan-AI helps you think it through without pushing. If you'd rather talk to a person, a licensed agent is one tap away.",
-    intro_es: "Salud, dental, visión, vida — comparados uno al lado del otro. Plan-AI te ayuda a pensarlo sin presionar. Si prefieres hablar con una persona, un agente con licencia está a un toque de distancia.",
+    intro_en: "Health, dental, vision, life — compared side by side. PlanAI helps you think it through without pushing. If you'd rather talk to a person, a licensed agent is one tap away.",
+    intro_es: "Salud, dental, visión, vida — comparados uno al lado del otro. PlanAI te ayuda a pensarlo sin presionar. Si prefieres hablar con una persona, un agente con licencia está a un toque de distancia.",
     primary_color: "#c05a2e", accent_color: "#2e6b5e", version: 3,
   }];
 
@@ -273,8 +273,8 @@ function seed(): MktState {
     content_id: "content-active-001", marketplace_id: MARKETPLACE_ID, status: "ACTIVE",
     support_intro_en: "Our team is here to help you find the right plan.",
     support_intro_es: "Nuestro equipo está aquí para ayudarte a encontrar el plan adecuado.",
-    channel_intro_en: { CONSUMER_DIRECT: "Shop on your own, with Plan-AI alongside.", AGENT: "Get matched with a licensed agent.", EMPLOYER: "Set an allowance; your team picks the plan." },
-    channel_intro_es: { CONSUMER_DIRECT: "Compra por tu cuenta, con Plan-AI a tu lado.", AGENT: "Conéctate con un agente con licencia.", EMPLOYER: "Establece una asignación; tu equipo elige el plan." },
+    channel_intro_en: { CONSUMER_DIRECT: "Shop on your own, with PlanAI alongside.", AGENT: "Get matched with a licensed agent.", EMPLOYER: "Set an allowance; your team picks the plan." },
+    channel_intro_es: { CONSUMER_DIRECT: "Compra por tu cuenta, con PlanAI a tu lado.", AGENT: "Conéctate con un agente con licencia.", EMPLOYER: "Establece una asignación; tu equipo elige el plan." },
     support_display_name: "Cedar Grove Insurance Support", support_phone: "+1 212-555-0142",
     support_email: "support@cedargrove.example", support_hours: "Mon–Fri 8am–7pm ET", version: 2,
   }];

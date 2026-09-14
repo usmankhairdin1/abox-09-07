@@ -37,7 +37,7 @@ function Page() {
         <KpiCard label="Open tasks" value={openTasks.length} icon={CheckSquare} tone="primary" hint={`${openTasks.filter((t) => t.priority === "high").length} high priority`} />
         <KpiCard label="Unread messages" value={unreadMessages.length} icon={MessageSquare} />
         <KpiCard label="Hot leads" value={hotLeads.length} icon={Flame} tone="warning" hint="Quoted or shared" />
-        <KpiCard label="Plan-AI nudges" value={3} icon={Sparkles} tone="sage" hint="AI-suggested" />
+        <KpiCard label="PlanAI nudges" value={3} icon={Sparkles} tone="sage" hint="AI-suggested" />
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">

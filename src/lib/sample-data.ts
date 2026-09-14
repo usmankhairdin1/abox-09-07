@@ -194,7 +194,7 @@ export interface PlanMatchInputs {
 }
 
 /**
- * Plan-AI match score for a shopper. Combines the plan's baseline quality
+ * PlanAI match score for a shopper. Combines the plan's baseline quality
  * prior (`planOMatch`) with how well it actually fits the priorities,
  * expected usage, and keep-my-doctor preference collected in the quote
  * wizard — recomputed whenever those inputs change (UX-005 goals /
@@ -284,7 +284,7 @@ export const SAMPLE_NOTIFICATIONS: SampleNotification[] = [
   { id: "N-01", kind: "quote_viewed", title: "Priya opened your shared quote", body: "Viewed for 4 minutes · compared 3 plans", ago: "12m", unread: true },
   { id: "N-02", kind: "call_requested", title: "Marcus requested a callback", body: "Prefers today after 4pm ET", ago: "1h", unread: true },
   { id: "N-03", kind: "task_due", title: "Follow-up due — Renata Alvarez", body: "Send subsidy education recap", ago: "3h", unread: false },
-  { id: "N-04", kind: "plan_o_note", title: "Plan-AI flagged an escalation", body: "Household mentioned specialty Rx — human review suggested", ago: "6h", unread: true },
+  { id: "N-04", kind: "plan_o_note", title: "PlanAI flagged an escalation", body: "Household mentioned specialty Rx — human review suggested", ago: "6h", unread: true },
   { id: "N-05", kind: "system", title: "Effective date auto-updated", body: "Default effective date rolled to Aug 1", ago: "1d", unread: false },
 ];
 
@@ -302,7 +302,7 @@ export interface SampleTimelineEvent {
 export const SAMPLE_TIMELINE: SampleTimelineEvent[] = [
   { id: "T-1", leadName: "Renata Alvarez", when: "Today · 10:12", actor: "Renata Alvarez", eventType: "quote.viewed", summary: "Opened shared quote (3 plans compared)" },
   { id: "T-2", leadName: "Renata Alvarez", when: "Today · 09:44", actor: "You", eventType: "quote.sent", summary: "Shared quote sent via email · expires Aug 3" },
-  { id: "T-3", leadName: "Renata Alvarez", when: "Today · 09:31", actor: "Plan-AI", eventType: "planO.recommendation", summary: "Recommended 3 plans matching PCP + Rx tier 1 focus", planO: true },
+  { id: "T-3", leadName: "Renata Alvarez", when: "Today · 09:31", actor: "PlanAI", eventType: "planO.recommendation", summary: "Recommended 3 plans matching PCP + Rx tier 1 focus", planO: true },
   { id: "T-4", leadName: "Renata Alvarez", when: "Yesterday · 16:20", actor: "You", eventType: "quote.built", summary: "Built quote (Silver PPO, household of 2)" },
   { id: "T-5", leadName: "Renata Alvarez", when: "Yesterday · 15:58", actor: "Renata Alvarez", eventType: "lead.created", summary: "Lead created from marketplace landing" },
 ];

@@ -1,7 +1,7 @@
 /**
  * UX-009 — Plan Results
  * Filter, sort, save, compare, add to cart. Recommendations first,
- * with clear on/off-exchange labels and Plan-AI explanation.
+ * with clear on/off-exchange labels and PlanAI explanation.
  */
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/plans/")({
 
 type SortKey = "plano" | "premium-asc" | "premium-desc" | "deductible-asc" | "rating";
 const SORT_LABELS: Record<SortKey, string> = {
-  plano: "Plan-AI match (recommended)",
+  plano: "PlanAI match (recommended)",
   "premium-asc": "Lowest premium",
   "premium-desc": "Highest premium",
   "deductible-asc": "Lowest deductible",
@@ -83,7 +83,7 @@ function Page() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- one-time seed of persisted browse defaults
   }, []);
-  // Guided shoppers (with priorities from the wizard) default to Plan-AI
+  // Guided shoppers (with priorities from the wizard) default to PlanAI
   // match; pure browse — no goals collected — defaults to lowest premium
   // per FR-044.
   const sort = (browse.sort ?? (quote?.priorities?.length ? "plano" : "premium-asc")) as SortKey;
@@ -233,12 +233,12 @@ function Page() {
               </div>
             </div>
 
-            {/* Plan-AI explanation */}
+            {/* PlanAI explanation */}
             {sort === "plano" && quote?.priorities?.length ? (
               <div className="mb-5 flex items-start gap-3 rounded-2xl border border-primary/25 bg-primary-soft/40 p-4">
                 <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
                 <div className="text-sm">
-                  <p className="font-medium">Plan-AI is ranking for your priorities</p>
+                  <p className="font-medium">PlanAI is ranking for your priorities</p>
                   <p className="text-muted-foreground">
                     {quote.priorities.join(", ")} · {quote.usage ?? "moderate"} care usage
                   </p>

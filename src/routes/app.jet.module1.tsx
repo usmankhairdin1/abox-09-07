@@ -66,7 +66,7 @@ function Page() {
               <Toggle label="Send shared quote — 48h expiry nudge" defaultChecked />
               <Toggle label="Callback confirmation via SMS" defaultChecked />
               <Toggle label="Enrollment complete email" defaultChecked />
-              <Toggle label="Plan-AI abandoned nudge" />
+              <Toggle label="PlanAI abandoned nudge" />
             </div>
           </section>
           <section className="rounded-2xl border border-border bg-card p-5">
@@ -81,10 +81,10 @@ function Page() {
             </div>
           </section>
           <section className="rounded-2xl border border-border bg-card p-5">
-            <p className="text-eyebrow">Plan-AI</p>
-            <Toggle label="Plan-AI on marketplace" defaultChecked />
-            <Toggle label="Plan-AI on agent quick quote" defaultChecked />
-            <Toggle label="Plan-AI on shared quote (recipient)" />
+            <p className="text-eyebrow">PlanAI</p>
+            <Toggle label="PlanAI on marketplace" defaultChecked />
+            <Toggle label="PlanAI on agent quick quote" defaultChecked />
+            <Toggle label="PlanAI on shared quote (recipient)" />
           </section>
         </div>
       )}

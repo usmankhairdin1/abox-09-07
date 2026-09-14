@@ -34,7 +34,7 @@ function Page() {
           <div className="grid gap-4 md:grid-cols-3">
             {[
               { icon: <DollarSign className="h-5 w-5" />, title: "Fixed cost", body: "Set a per-employee monthly allowance you can budget." },
-              { icon: <Users className="h-5 w-5" />, title: "Real choice", body: "Employees shop the individual marketplace — Plan-AI helps." },
+              { icon: <Users className="h-5 w-5" />, title: "Real choice", body: "Employees shop the individual marketplace — PlanAI helps." },
               { icon: <ShieldCheck className="h-5 w-5" />, title: "Compliant", body: "ACA-compliant reimbursement model, class-based rules supported." },
             ].map((c) => (
               <div key={c.title} className="rounded-2xl border border-border bg-card p-5">
@@ -87,7 +87,7 @@ function Page() {
           {[
             "Class-based allowances (FT, PT, seasonal, salaried, hourly)",
             "Reimbursement of premiums; optional QSEHRA-style OOP",
-            "Employee shopping via the ABox marketplace with Plan-AI guidance",
+            "Employee shopping via the ABox marketplace with PlanAI guidance",
             "Admin dashboard for approvals, reimbursements, and reporting",
           ].map((f) => (
             <li key={f} className="flex items-start gap-2 text-muted-foreground">

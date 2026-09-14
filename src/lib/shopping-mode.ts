@@ -1,12 +1,12 @@
 /**
- * Shopping mode + Plan-AI availability.
+ * Shopping mode + PlanAI availability.
  *
  * Keeps a shopper's path (guided wizard vs. self-browse) and the furthest
  * guided step they reached, so switching between the two paths resumes
  * instead of restarting. Quote answers live in `quote-store`, filters in
  * `browse-store`; this module only records where the shopper was.
  *
- * It also exposes a tiny open/close store for the existing Plan-AI
+ * It also exposes a tiny open/close store for the existing PlanAI
  * assistant so any shopping screen can surface the same assistant instead
  * of shipping a second implementation.
  */
@@ -73,7 +73,7 @@ export function useShoppingMode(): ShoppingModeState {
 }
 
 /* ------------------------------------------------------------------ */
-/* Plan-AI assistant open state (shared with PlanOAssistant)           */
+/* PlanAI assistant open state (shared with PlanOAssistant)           */
 /* ------------------------------------------------------------------ */
 
 let assistantOpen = false;

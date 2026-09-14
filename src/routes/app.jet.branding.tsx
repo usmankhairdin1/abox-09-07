@@ -50,7 +50,7 @@ function Page() {
 
           <div className="rounded-2xl border border-border bg-card p-5">
             <p className="font-medium">Disclosures</p>
-            <textarea rows={4} defaultValue={"Plan-AI guidance is educational, not binding. Not a substitute for licensed advice."}
+            <textarea rows={4} defaultValue={"PlanAI guidance is educational, not binding. Not a substitute for licensed advice."}
               className="mt-3 w-full rounded-lg border border-border bg-background p-3 text-sm outline-none focus:ring-2 focus:ring-ring"
               aria-label="Disclosures" />
           </div>

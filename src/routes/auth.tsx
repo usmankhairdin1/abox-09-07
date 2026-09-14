@@ -271,7 +271,7 @@ function Page() {
                     onChange={(e) => setConsent(e.target.checked)}
                     className="mt-0.5"
                   />
-                  I agree to the ABox terms and privacy notice. Plan-AI guidance is educational, not legal or medical
+                  I agree to the ABox terms and privacy notice. PlanAI guidance is educational, not legal or medical
                   advice.
                 </label>
               )}

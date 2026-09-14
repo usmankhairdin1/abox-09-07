@@ -205,7 +205,7 @@ export const WORKSPACES: WorkspaceConfig[] = [
           { label: "Tenant & Organization Ops", to: "/platform/organizations", icon: Network, scrId: "SCR-M05-001" },
           { label: "Marketplace Operations", to: "/platform/marketplaces", icon: Store, scrId: "SCR-M04-001" },
           { label: "ACL & Roles", to: "/app/jet/acl", icon: Shield, scrId: "SCR_JET_ACL" },
-          { label: "AI / Plan-AI Governance", to: "/app/jet/ai-governance", icon: Sparkles, scrId: "SCR_JET_AI_GOV" },
+          { label: "AI / PlanAI Governance", to: "/app/jet/ai-governance", icon: Sparkles, scrId: "SCR_JET_AI_GOV" },
           { label: "Audit Log", to: "/app/jet/audit", icon: History, scrId: "SCR_JET_AUDIT" },
           { label: "Integrations", to: "/app/jet/integrations", icon: Plug, scrId: "SCR_JET_INTEGRATIONS" },
           { label: "Entitlements", to: "/app/jet/entitlements", icon: BookOpen, scrId: "SCR_JET_ENTITLEMENTS" },
