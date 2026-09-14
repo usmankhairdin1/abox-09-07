@@ -9,7 +9,6 @@ import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { SAMPLE_PRODUCTS } from "@/lib/sample-data";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 
 const search = z.object({ product: z.string().optional() });
 
@@ -34,37 +33,10 @@ function Page() {
       <div className="mx-auto max-w-7xl px-4 pb-12 pt-6 md:px-8 md:pb-16 md:pt-8">
         <PageHeader
           scrId="UX-002"
-          eyebrow={active.label}
+          eyebrow={`${active.label} · ${active.tagline}`}
           title="How would you like to shop?"
           description="Plan-AI guides you through a short quote and shortlists plans. Or browse everything yourself — you can switch anytime."
         />
-
-        <div className="mb-8 rounded-2xl border border-border bg-card p-4">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground">Selected product</p>
-          <div className="mt-1 flex flex-wrap items-baseline justify-between gap-2">
-            <div>
-              <h2 className="text-display text-2xl">{active.label}</h2>
-              <p className="text-sm text-muted-foreground">{active.tagline}</p>
-            </div>
-            <div className="flex flex-wrap items-center gap-1.5">
-              {SAMPLE_PRODUCTS.filter((p) => p.status === "live").slice(0, 6).map((p) => (
-                <Link
-                  key={p.key}
-                  to="/select"
-                  search={{ product: p.key }}
-                  className={cn(
-                    "rounded-full border px-3 py-1 text-xs",
-                    p.key === active.key
-                      ? "border-primary bg-primary-soft text-primary"
-                      : "border-border text-muted-foreground hover:bg-accent",
-                  )}
-                >
-                  {p.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
 
         <div className="grid gap-4 md:grid-cols-2">
           <button
