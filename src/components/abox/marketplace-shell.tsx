@@ -62,17 +62,29 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
             {variant === "landing" && <PillLink to="/select">Shop plans</PillLink>}
             <PillLink to="/ichra">For employers</PillLink>
             <PillLink to="/schedule" icon={<LifeBuoy className="h-4 w-4" />}>Agent help</PillLink>
-            {cartTotal.count > 0 && (
-              <Link
-                to="/cart"
-                className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-primary/40 bg-primary-soft px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary-soft/70"
-                aria-label={`Cart: ${cartTotal.count} item${cartTotal.count === 1 ? "" : "s"}, $${cartTotal.monthly} per month`}
-              >
-                <ShoppingBag className="h-4 w-4" aria-hidden />
-                <span className="tabular-nums">{cartTotal.count}</span>
-                <span className="hidden tabular-nums sm:inline">· ${cartTotal.monthly}/mo</span>
-              </Link>
-            )}
+            <Link
+              to="/cart"
+              className={cn(
+                "inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold transition-colors",
+                cartTotal.count > 0
+                  ? "border border-primary/40 bg-primary-soft text-primary hover:bg-primary-soft/70"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
+              )}
+              aria-label={
+                cartTotal.count > 0
+                  ? `Cart: ${cartTotal.count} item${cartTotal.count === 1 ? "" : "s"}, $${cartTotal.monthly} per month`
+                  : "Cart: empty"
+              }
+            >
+              <ShoppingBag className="h-4 w-4" aria-hidden />
+              <span>Cart</span>
+              {cartTotal.count > 0 && (
+                <>
+                  <span className="tabular-nums">· {cartTotal.count}</span>
+                  <span className="hidden tabular-nums sm:inline">· ${cartTotal.monthly}/mo</span>
+                </>
+              )}
+            </Link>
             <ThemeToggle />
             {session ? (
               <button
