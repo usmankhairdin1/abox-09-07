@@ -210,7 +210,7 @@ export function BlockersScreen(props: M08ScreenProps) {
       )}
       <Note tone="neutral">
         {pick(
-          "Consumer-facing plan presentation is unaffected by these items. On Exchange visibility, ordering and comparison never change because of appointment or compensation.",
+          "Consumer-facing plan presentation is unaffected by the above items. On Exchange visibility, ordering and comparison never change because of appointment or compensation.",
           "La presentación de planes al consumidor no se ve afectada por estos elementos. La visibilidad, el orden y la comparación en el mercado nunca cambian por nombramiento o compensación.",
         )}
       </Note>

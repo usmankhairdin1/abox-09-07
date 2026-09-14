@@ -91,7 +91,7 @@ function ExceptionsPage() {
           rows={rows}
           keyOf={(e) => e.id}
           onRowClick={(e) => setSelected(e)}
-          empty="Nothing matches these filters."
+          empty="Nothing matches the selected filters."
           columns={[
             {
               head: "Exception",
