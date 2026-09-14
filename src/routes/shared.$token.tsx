@@ -66,7 +66,7 @@ function Page() {
         <div className="rounded-2xl border border-primary/25 bg-primary-soft/40 p-5">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
-            <p className="text-sm font-medium">Why {plans.length === 1 ? "this plan" : "these plans"}</p>
+            <p className="text-sm font-medium">Why {plans.length === 1 ? "this plan" : "the selected plans"}</p>
           </div>
           <p className="mt-2 text-sm">
             You mentioned keeping your PCP, low Rx tier 1, and a predictable deductible. {plans.length === 1 ? "This plan leads" : "They lead"} on all three.
