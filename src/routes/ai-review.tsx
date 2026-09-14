@@ -44,7 +44,7 @@ function Page() {
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-4xl px-4 py-10 md:px-8 md:py-14">
+      <div className="mx-auto max-w-4xl px-4 pb-10 pt-4 md:px-8 md:pb-14 md:pt-6">
         <PageHeader
           scrId="UX-026" eyebrow="AI review"
           title="Review what we prefilled"

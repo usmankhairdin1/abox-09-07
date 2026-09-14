@@ -50,7 +50,7 @@ function Page() {
 
   return (
     <MarketplaceShell showAssistant={false}>
-      <div className="mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-14">
+      <div className="mx-auto max-w-7xl px-4 pb-10 pt-4 md:px-8 md:pb-14 md:pt-6">
         <div className="mb-6 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <StatusBadge tone="info">Shared quote</StatusBadge>
           <span>Token · <span className="tabular-nums text-foreground">{token}</span></span>

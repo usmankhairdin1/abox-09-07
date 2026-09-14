@@ -23,7 +23,7 @@ function Page() {
 
   return (
     <MarketplaceShell showAssistant={false}>
-      <div className="mx-auto max-w-4xl px-4 py-10 md:px-8 md:py-14">
+      <div className="mx-auto max-w-4xl px-4 pb-10 pt-4 md:px-8 md:pb-14 md:pt-6">
         <PageHeader
           scrId="UX-022" eyebrow="Talk to an agent"
           title={step === "done" ? "You're on the calendar" : "Schedule a call"}

@@ -36,7 +36,7 @@ const KEYS = [
 function Page() {
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-4xl px-4 py-14 md:px-8">
+      <div className="mx-auto max-w-4xl px-4 pb-14 pt-6 md:px-8 md:pt-8">
         <PageHeader eyebrow="Statement" title="Accessibility at ABox"
           description="We design and build ABox to conform with WCAG 2.2 AA. Everyone should be able to shop for coverage — with or without assistive technology." />
 

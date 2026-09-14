@@ -49,7 +49,7 @@ const PROGRAMS = [
 function Page() {
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-4xl px-4 py-14 md:px-8">
+      <div className="mx-auto max-w-4xl px-4 pb-14 pt-6 md:px-8 md:pt-8">
         <PageHeader eyebrow="Trust" title="Compliance"
           description="What ABox is built to do, and how far the current build actually gets there." />
 
