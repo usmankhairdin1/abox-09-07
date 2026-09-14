@@ -86,7 +86,8 @@ function Hero() {
   const mkt = useMarketplaceState();
   const brand = getActiveBrand(mkt);
   const headline = brand?.headline_en || "Insurance, tuned to you.";
-  const intro = brand?.intro_en || "Health, dental, vision, life — compared side by side. Plan-AI helps you think it through without pushing.";
+  const intro = (brand?.intro_en || "Health, dental, vision, life — compared side by side. Plan-AI helps you think it through without pushing.")
+    .replace(" If you'd rather talk to a person, a licensed agent is one tap away.", "");
   const [headlineLead, ...headlineRest] = headline.split(",");
   return (
     <section className="relative isolate overflow-hidden pb-20 pt-8 md:pb-32 md:pt-12">
