@@ -31,7 +31,7 @@ function Page() {
 
   return (
     <MarketplaceShell product={active.key}>
-      <div className="mx-auto max-w-7xl px-4 py-12 md:px-8 md:py-16">
+      <div className="mx-auto max-w-7xl px-4 pb-12 pt-6 md:px-8 md:pb-16 md:pt-8">
         <PageHeader
           scrId="UX-002"
           eyebrow={active.label}

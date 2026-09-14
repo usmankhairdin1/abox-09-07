@@ -111,7 +111,7 @@ export function InternalShell({
             {(pageTitle || eyebrow) && (
               <section className="relative overflow-hidden rounded-3xl border border-hairline bg-card">
                 <Aurora className="opacity-70" />
-                <FadeRise className="relative px-6 pb-10 pt-10 md:px-12 md:pt-14 md:pb-12">
+                <FadeRise className="relative px-6 pb-10 pt-6 md:px-12 md:pb-12 md:pt-8">
                   <div className="flex flex-wrap items-end justify-between gap-6">
                     <div className="min-w-0 max-w-3xl">
                       {eyebrow && <p className="mb-3 text-eyebrow">{eyebrow}</p>}
@@ -127,7 +127,7 @@ export function InternalShell({
               </section>
             )}
 
-            <div className="mt-6 flex min-h-0 gap-6">
+            <div className="mt-4 flex min-h-0 gap-6">
               <main id="main" className="min-w-0 flex-1">
                 <FadeRise delay={0.06}>{children}</FadeRise>
               </main>
