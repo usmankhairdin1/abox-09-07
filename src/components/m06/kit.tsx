@@ -270,7 +270,7 @@ export function PendingM00({ deltas, children }: { deltas: string[]; children: R
     <Note tone="warn">
       <strong>Pending M00 approval.</strong> {children}{" "}
       <span className="opacity-80">Blocked by {deltas.join(", ")}.</span> M06 does not
-      substitute its own role or effective-access evaluation while these deltas are in draft.
+      substitute its own role or effective-access evaluation while the deltas are in draft.
     </Note>
   );
 }

@@ -159,7 +159,7 @@ function Page() {
           description={
             quote?.zip
               ? `Shown for ZIP ${quote.zip}${quote.county ? ` · ${quote.county}` : ""} · effective ${quote.effectiveDate || "—"}.`
-              : "Add your ZIP and household in the wizard to personalize these results."
+              : "Add your ZIP and household in the wizard to personalize your results."
           }
           actions={
             <div className="flex items-center gap-2">

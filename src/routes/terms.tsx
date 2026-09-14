@@ -18,14 +18,14 @@ export const Route = createFileRoute("/terms")({
 });
 
 const SECTIONS = [
-  { h: "1. Acceptance", body: "By using ABox you agree to these terms. If you do not agree, do not use the service." },
+  { h: "1. Acceptance", body: "By using ABox you agree to the terms. If you do not agree, do not use the service." },
   { h: "2. Nature of the service", body: "ABox is a marketplace that displays coverage options from licensed carriers. Quotes are estimates; actual coverage is issued by the carrier upon enrollment approval." },
   { h: "3. Plan-AI is educational", body: "Plan-AI provides trade-off explanations and general information. It is not legal, tax, medical, or licensed insurance advice. Consult a licensed agent for advice." },
   { h: "4. Eligibility", body: "You must be at least 18 years old and a US resident to create an account. You are responsible for information you provide about your household." },
   { h: "5. Acceptable use", body: "Do not scrape the marketplace, impersonate another person, or attempt to submit false enrollment information. We may suspend accounts for violations." },
   { h: "6. Commissions & disclosures", body: "ABox and its agent partners are compensated by carriers when policies are issued. This does not affect your premium. Full disclosures are available on request." },
   { h: "7. Limitation of liability", body: "ABox is not liable for coverage decisions made by carriers, for network changes made by providers, or for any indirect damages arising from use of the service." },
-  { h: "8. Changes", body: "We may update these terms. Material changes will be highlighted at sign-in for 30 days before taking effect." },
+  { h: "8. Changes", body: "We may update the terms. Material changes will be highlighted at sign-in for 30 days before taking effect." },
 ];
 
 function Page() {

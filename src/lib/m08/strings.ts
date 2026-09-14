@@ -40,8 +40,8 @@ export const M08_STRINGS = {
   "dim.route": { en: "Marketplace and route readiness", es: "Preparación de mercado y ruta" },
   "dim.contextual": { en: "Contextual authority", es: "Autoridad contextual" },
   "dim.separate": {
-    en: "These dimensions are reported separately and are never combined into a single status.",
-    es: "Estas dimensiones se informan por separado y nunca se combinan en un solo estado.",
+    en: "Dimensions are reported separately and are never combined into a single status.",
+    es: "Las dimensiones se informan por separado y nunca se combinan en un solo estado.",
   },
 
   "label.asOf": { en: "As of", es: "Vigente al" },

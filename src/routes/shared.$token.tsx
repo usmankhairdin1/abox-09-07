@@ -60,16 +60,16 @@ function Page() {
         <PageHeader
           scrId="UX-020" eyebrow={`From ${pkg.agentName} at Cedar Grove Insurance`}
           title={`Here ${plans.length === 1 ? "is one plan" : `are ${plans.length} plans`} I think fit best`}
-          description="Take your time — nothing changes until you tell me. If any of these look good, I'll walk you through enrollment."
+          description="Take your time — nothing changes until you tell me. If any look good, I'll walk you through enrollment."
         />
 
         <div className="rounded-2xl border border-primary/25 bg-primary-soft/40 p-5">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
-            <p className="text-sm font-medium">Why {plans.length === 1 ? "this one" : "these"}</p>
+            <p className="text-sm font-medium">Why {plans.length === 1 ? "this plan" : "the selected plans"}</p>
           </div>
           <p className="mt-2 text-sm">
-            You mentioned keeping your PCP, low Rx tier 1, and a predictable deductible. {plans.length === 1 ? "This plan leads" : "These lead"} on all three.
+            You mentioned keeping your PCP, low Rx tier 1, and a predictable deductible. {plans.length === 1 ? "This plan leads" : "They lead"} on all three.
           </p>
         </div>
 
@@ -89,7 +89,7 @@ function Page() {
             href="/schedule" cta="Schedule"
           />
           <ActionCard
-            title="Register to enroll" body="You'll be able to add these to your cart."
+            title="Register to enroll" body="You'll be able to add them to your cart."
             icon={<ArrowRight className="h-5 w-5" />}
             href="/auth" cta="Create account"
           />
