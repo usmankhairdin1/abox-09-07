@@ -48,7 +48,7 @@ function Page() {
         <PageHeader
           scrId="UX-026" eyebrow="AI review"
           title="Review what we prefilled"
-          description="Plan-AI suggested some fields. Confirm or edit any of them before we continue."
+          description="PlanAI suggested some fields. Confirm or edit any of them before we continue."
         />
 
         <div className="mb-5 flex flex-wrap items-center gap-2 rounded-2xl border border-primary/20 bg-primary-soft/40 p-4 text-sm">

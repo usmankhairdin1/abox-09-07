@@ -14,7 +14,7 @@ export const Route = createFileRoute("/app/jet/ai-governance")({
 
 function Page() {
   return (
-    <InternalShell workspace="jet" pageTitle="AI / Plan-AI governance" eyebrow="Governance">
+    <InternalShell workspace="jet" pageTitle="AI / PlanAI governance" eyebrow="Governance">
       <p className="mb-4 text-sm text-muted-foreground">
         Enable or disable AI-powered features per tenant, module, or role. Configure disclaimers and escalation paths.
       </p>

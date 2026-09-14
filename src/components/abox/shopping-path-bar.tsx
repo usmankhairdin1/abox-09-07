@@ -1,5 +1,5 @@
 /**
- * Shopping path bar — keeps Plan-AI reachable throughout the consumer
+ * Shopping path bar — keeps PlanAI reachable throughout the consumer
  * shopping journey and lets shoppers move between the guided wizard and
  * self-browse without restarting. Progress itself already persists
  * (quote-store, browse-store, cart-store); this bar only exposes the
@@ -41,7 +41,7 @@ export function ShoppingPathBar({ current }: { current: "guided" | "browse" }) {
 
   return (
     <section
-      aria-label="Plan-AI and shopping path"
+      aria-label="PlanAI and shopping path"
       className="mb-6 rounded-2xl border border-border bg-card p-4"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -53,7 +53,7 @@ export function ShoppingPathBar({ current }: { current: "guided" | "browse" }) {
             <Sparkles className="h-5 w-5" />
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-semibold">Plan-AI is here the whole way</p>
+            <p className="text-sm font-semibold">PlanAI is here the whole way</p>
             <p className="text-sm text-muted-foreground">
               Ask for help or recommendations at any point — and switch between guided and
               self-browse without starting over.
@@ -68,7 +68,7 @@ export function ShoppingPathBar({ current }: { current: "guided" | "browse" }) {
             className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
           >
             <Sparkles className="h-4 w-4" aria-hidden />
-            Ask Plan-AI
+            Ask PlanAI
           </button>
 
           <div

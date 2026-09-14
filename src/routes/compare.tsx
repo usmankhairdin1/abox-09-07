@@ -35,7 +35,7 @@ const SECTIONS: Section[] = [
     { label: "Network",     get: (p) => p.networkType },
     { label: "Exchange",    get: (p) => p.onExchange ? "On (QHP)" : "Off" },
     { label: "HSA-eligible", get: (p) => p.hsaEligible ? "Yes" : "No" },
-    { label: "Plan-AI match", get: (p, matchInputs) => `${planMatchScore(p, matchInputs)}%` },
+    { label: "PlanAI match", get: (p, matchInputs) => `${planMatchScore(p, matchInputs)}%` },
     { label: "Rating",       get: (p) => p.rating.toFixed(1) },
   ]},
   { key: "highlights", label: "Highlights", rows: [

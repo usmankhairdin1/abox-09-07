@@ -49,9 +49,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "ABox — Shop insurance with a guide, not a spreadsheet" },
-      { name: "description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from Plan-AI, and pick coverage with confidence — or talk to a licensed agent in a click." },
+      { name: "description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from PlanAI, and pick coverage with confidence — or talk to a licensed agent in a click." },
       { property: "og:title", content: "ABox — Shop insurance with a guide, not a spreadsheet" },
-      { property: "og:description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from Plan-AI, and pick coverage with confidence — or talk to a licensed agent in a click." },
+      { property: "og:description", content: "ABox is an AI-enabled insurance marketplace. Compare individual and family plans, get guidance from PlanAI, and pick coverage with confidence — or talk to a licensed agent in a click." },
     ],
   }),
   component: LandingPage,
@@ -86,7 +86,7 @@ function Hero() {
   const mkt = useMarketplaceState();
   const brand = getActiveBrand(mkt);
   const headline = brand?.headline_en || "Insurance, tuned to you.";
-  const intro = (brand?.intro_en || "Health, dental, vision, life — compared side by side. Plan-AI helps you think it through without pushing.")
+  const intro = (brand?.intro_en || "Health, dental, vision, life — compared side by side. PlanAI helps you think it through without pushing.")
     .replace(" If you'd rather talk to a person, a licensed agent is one tap away.", "");
   const [headlineLead, ...headlineRest] = headline.split(",");
   return (
@@ -143,7 +143,7 @@ function Hero() {
             <div className="flex items-center gap-3 border-b border-hairline pb-4">
               <AboxMark size={40} tone="primary" />
               <div className="flex-1">
-                <p className="text-sm font-semibold">Plan-AI</p>
+                <p className="text-sm font-semibold">PlanAI</p>
                 <p className="text-serial">Guidance · not binding</p>
               </div>
               <span className="rounded-full glass px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-widest text-sage">Live</span>
@@ -190,9 +190,9 @@ function Hero() {
 /* ============================ Path ticker ============================ */
 function PathTicker() {
   const paths = [
-    { title: "Guide me", body: "Plan-AI narrows the list to plans that fit your priorities.", to: "/select?path=guided", icon: Sparkles },
+    { title: "Guide me", body: "PlanAI narrows the list to plans that fit your priorities.", to: "/select?path=guided", icon: Sparkles },
     { title: "Browse myself", body: "See every plan in your ZIP with filters and compare.", to: "/select?path=browse", icon: Compass },
-    { title: "Talk to an agent", body: "A licensed human, one click away — Plan-AI escalates.", to: "/schedule", icon: MessageSquareHeart },
+    { title: "Talk to an agent", body: "A licensed human, one click away — PlanAI escalates.", to: "/schedule", icon: MessageSquareHeart },
   ];
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
@@ -337,7 +337,7 @@ function ProductBento() {
   );
 }
 
-/* ============================ Plan-AI orbital ============================ */
+/* ============================ PlanAI orbital ============================ */
 function PlanOOrbital() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
@@ -351,7 +351,7 @@ function PlanOOrbital() {
             </span>
           </h2>
           <p className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg">
-            Plan-AI explains tradeoffs, translates jargon, and shortlists options. It never pretends
+            PlanAI explains tradeoffs, translates jargon, and shortlists options. It never pretends
             to be a licensed agent, and it will hand you to one when the question calls for it.
           </p>
           <ul className="mt-8 space-y-3 text-sm">
@@ -419,7 +419,7 @@ function EmployerPlate() {
             </h2>
             <p className="mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
               ICHRA on ABox lets you give every employee a monthly allowance to shop the individual
-              marketplace — with Plan-AI guidance and a licensed agent for anyone who wants one.
+              marketplace — with PlanAI guidance and a licensed agent for anyone who wants one.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
@@ -463,7 +463,7 @@ function TrustLadder() {
   const cards = [
     { icon: ShieldCheck, title: "Every plan follows the display rules", body: "On-exchange QHPs are shown consistent with federal display and disclosure requirements. Off-exchange is clearly labeled." },
     { icon: HeartPulse, title: "Real doctors, real formularies", body: "Optional provider and prescription lookup uses NPPES and formulary data — with a clear skip for shoppers who don't want to bother." },
-    { icon: MessageSquareHeart, title: "A person, whenever you want one", body: "Every screen has a licensed-agent handoff. Plan-AI tells you when it's the right call — and gets out of the way." },
+    { icon: MessageSquareHeart, title: "A person, whenever you want one", body: "Every screen has a licensed-agent handoff. PlanAI tells you when it's the right call — and gets out of the way." },
   ];
   return (
     <section className="relative mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">

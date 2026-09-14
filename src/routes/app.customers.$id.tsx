@@ -119,7 +119,7 @@ function Page() {
                   <p className="font-medium">{e.summary}</p>
                   <div className="mt-0.5 text-xs text-muted-foreground">
                     {e.actor} · {e.eventType}
-                    {e.planO && <span className="ml-2 inline-flex items-center gap-0.5 text-primary"><Sparkles className="h-3 w-3" /> Plan-AI</span>}
+                    {e.planO && <span className="ml-2 inline-flex items-center gap-0.5 text-primary"><Sparkles className="h-3 w-3" /> PlanAI</span>}
                   </div>
                 </div>
               </li>

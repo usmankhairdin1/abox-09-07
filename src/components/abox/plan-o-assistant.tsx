@@ -1,5 +1,5 @@
 /**
- * Plan-AI / Help assistant — floating pill launcher with orbital dot,
+ * PlanAI / Help assistant — floating pill launcher with orbital dot,
  * expanding into a glass conversation panel.
  */
 import { X, Sparkles } from "lucide-react";
@@ -25,7 +25,7 @@ export function PlanOAssistant({ surface }: Props) {
           "bg-primary text-primary-foreground",
         )}
         style={{ boxShadow: "var(--shadow-glow), 0 20px 40px -20px rgb(0 0 0 / 0.6)" }}
-        aria-label={isPlanO ? "Open Plan-AI assistant" : "Open help assistant"}
+        aria-label={isPlanO ? "Open PlanAI assistant" : "Open help assistant"}
         aria-expanded={open}
       >
         <span aria-hidden className="relative flex h-2.5 w-2.5">
@@ -33,20 +33,20 @@ export function PlanOAssistant({ surface }: Props) {
           <span className="relative h-2.5 w-2.5 rounded-full bg-primary-foreground" />
         </span>
         <Sparkles className="h-4 w-4" aria-hidden />
-        <span>{isPlanO ? "Ask Plan-AI" : "Help & copilot"}</span>
+        <span>{isPlanO ? "Ask PlanAI" : "Help & copilot"}</span>
       </button>
 
       {open && (
         <div
           role="dialog"
-          aria-label={isPlanO ? "Plan-AI assistant" : "Help assistant"}
+          aria-label={isPlanO ? "PlanAI assistant" : "Help assistant"}
           className="fixed bottom-24 right-5 z-40 flex h-[min(560px,calc(100dvh-10rem))] w-[min(400px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-3xl glass animate-fade-rise"
           style={{ boxShadow: "var(--shadow-elevated)" }}
         >
           <div className="flex items-center gap-3 border-b border-hairline px-5 py-4">
             <AboxMark size={34} tone={isPlanO ? "primary" : "sage"} />
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold">{isPlanO ? "Plan-AI" : "Help & copilot"}</p>
+              <p className="text-sm font-semibold">{isPlanO ? "PlanAI" : "Help & copilot"}</p>
               <p className="text-serial mt-0.5">
                 {isPlanO ? "Guidance only · not binding" : "Search help · quick actions"}
               </p>
@@ -59,13 +59,13 @@ export function PlanOAssistant({ surface }: Props) {
             {isPlanO ? (
               <>
                 <div className="rounded-2xl border border-hairline bg-background/30 px-4 py-3 text-foreground">
-                  Hi — I'm Plan-AI. I help you think through health plan options. I don't decide for you, and I'll always show you the tradeoffs.
+                  Hi — I'm PlanAI. I help you think through health plan options. I don't decide for you, and I'll always show you the tradeoffs.
                 </div>
                 <div className="rounded-2xl bg-primary/15 px-4 py-3 text-foreground/85">
                   Try: "I want to keep my doctor and pay less monthly," or "explain the difference between Bronze and Silver."
                 </div>
                 <p className="pt-2 text-xs text-muted-foreground">
-                  Full conversational Plan-AI ships in Wave 2 (Lovable AI Gateway + AI Elements).
+                  Full conversational PlanAI ships in Wave 2 (Lovable AI Gateway + AI Elements).
                 </p>
               </>
             ) : (
@@ -81,7 +81,7 @@ export function PlanOAssistant({ surface }: Props) {
             <div className="flex items-center gap-2 rounded-full glass px-4 py-2">
               <input
                 className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                placeholder={isPlanO ? "Ask Plan-AI anything…" : "Search help or run an action…"}
+                placeholder={isPlanO ? "Ask PlanAI anything…" : "Search help or run an action…"}
                 aria-label="Assistant input"
               />
               <button

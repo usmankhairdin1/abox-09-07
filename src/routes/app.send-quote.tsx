@@ -147,7 +147,7 @@ function Page() {
                   </select>
                 </label>
                 <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
-                  <StatusBadge tone="primary">Plan-AI attached</StatusBadge>
+                  <StatusBadge tone="primary">PlanAI attached</StatusBadge>
                   <StatusBadge tone="muted">Track opens</StatusBadge>
                   <StatusBadge tone="muted">Auto-nudge at T-48h</StatusBadge>
                 </div>

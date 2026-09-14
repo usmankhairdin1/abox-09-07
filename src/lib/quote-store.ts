@@ -110,7 +110,7 @@ export const step3Schema = z.object({
   priorities: z
     .array(z.enum(PRIORITIES.map((p) => p.key) as [PriorityKey, ...PriorityKey[]]))
     .min(1, { message: "Pick at least one priority." })
-    .max(3, { message: "Pick up to three priorities — Plan-AI works best with focus." }),
+    .max(3, { message: "Pick up to three priorities — PlanAI works best with focus." }),
   usage: z.enum(["low", "moderate", "high"] as const, {
     errorMap: () => ({ message: "Choose an expected usage level." }),
   }),
