@@ -49,7 +49,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
 
       {/* Floating pill nav */}
       <header className={cn("sticky top-4 z-30 flex flex-col items-center px-4 md:px-8", variant === "landing" && "top-6")}>
-        <div className="glass flex w-full max-w-7xl items-center justify-between gap-2 rounded-full pl-3 pr-2 py-2 md:pl-4">
+        <div className="glass flex w-full items-center justify-between gap-2 rounded-full pl-3 pr-2 py-2 md:pl-4">
           <Link to="/" className="group flex items-center gap-2.5" aria-label={`${brandName} home`}>
             <AboxMark size={34} tone="primary" />
             <div className="hidden flex-col leading-none md:flex">
