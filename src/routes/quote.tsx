@@ -1422,6 +1422,10 @@ function InfoNote({
   );
 }
 
+function blockNonIntegerKey(e: React.KeyboardEvent<HTMLInputElement>) {
+  if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+}
+
 function inputCls(invalid: boolean, extra = "") {
   return cn(
     "w-full rounded-lg border bg-surface px-3 py-2.5 text-sm text-foreground shadow-sm outline-none transition-colors placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-11",
