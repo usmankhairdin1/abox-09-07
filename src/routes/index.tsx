@@ -7,7 +7,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight, Sparkles, ShieldCheck, MessageSquareHeart,
-  Building2, HeartPulse, ArrowUpRight, Compass,
+  Building2, HeartPulse, Compass,
   Smile, Eye, HandHeart, Activity, Ambulance, HeartHandshake, Check,
 } from "lucide-react";
 
@@ -86,7 +86,8 @@ function Hero() {
   const mkt = useMarketplaceState();
   const brand = getActiveBrand(mkt);
   const headline = brand?.headline_en || "Insurance, tuned to you.";
-  const intro = brand?.intro_en || "Health, dental, vision, life — compared side by side. Plan-AI helps you think it through without pushing. If you'd rather talk to a person, a licensed agent is one tap away.";
+  const intro = (brand?.intro_en || "Health, dental, vision, life — compared side by side. Plan-AI helps you think it through without pushing.")
+    .replace(" If you'd rather talk to a person, a licensed agent is one tap away.", "");
   const [headlineLead, ...headlineRest] = headline.split(",");
   return (
     <section className="relative isolate overflow-hidden pb-20 pt-8 md:pb-32 md:pt-12">
@@ -179,14 +180,6 @@ function Hero() {
                 </div>
               </li>
             </ul>
-            <Link
-              to="/select"
-              className="mt-1 flex items-center justify-between rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
-              style={{ boxShadow: "var(--shadow-glow)" }}
-            >
-              Try Plan-AI with your own priorities
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </Link>
           </div>
         </FadeRise>
       </div>
@@ -203,14 +196,11 @@ function PathTicker() {
   ];
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
-      <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+      <div className="mb-10">
         <div>
           <p className="text-eyebrow">Choose your path</p>
           <h2 className="text-display mt-3 text-4xl md:text-5xl">Three ways in. One outcome.</h2>
         </div>
-        <p className="max-w-md text-sm text-muted-foreground">
-          Switch modes whenever you like — Plan-AI and a licensed agent are always on the side.
-        </p>
       </div>
       <Stagger className="grid gap-5 md:grid-cols-3">
         {paths.map((p) => (
@@ -321,14 +311,13 @@ function ProductBento() {
                 className="group relative flex min-h-[200px] flex-col justify-between overflow-hidden rounded-2xl border border-hairline bg-background/60 p-6 transition-all hover:-translate-y-0.5 hover:border-primary/50 card-brackets edge-sheen"
                 style={{ boxShadow: "var(--shadow-card)" }}
               >
-                <div className="flex items-start justify-between">
+                <div className="flex items-start">
                   <span
                     aria-hidden
                     className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-hairline bg-primary/8 text-primary transition-all duration-300 group-hover:-rotate-6 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground"
                   >
                     <Icon className="h-8 w-8" />
                   </span>
-                  <p className="text-eyebrow">Coverage</p>
                 </div>
                 <div>
                   <h3 className="text-display mt-4 text-2xl leading-tight">{p.label}</h3>
