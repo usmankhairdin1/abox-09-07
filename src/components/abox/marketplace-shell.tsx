@@ -44,6 +44,11 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
   const brand = getActiveBrand(mkt);
   const brandName = brand?.display_name ?? "ABox";
   const brandTagline = brand?.tagline_en ?? "Agency in a Box";
+  const userDisplayName =
+    ((session?.user.user_metadata?.full_name as string | undefined)?.trim()) ||
+    session?.user.email ||
+    session?.user.phone ||
+    "Account";
   return (
     <div className="relative flex min-h-dvh flex-col bg-background text-foreground">
       <DotField className="fixed inset-0 -z-10" />
