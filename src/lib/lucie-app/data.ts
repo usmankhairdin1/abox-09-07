@@ -421,7 +421,7 @@ export const TENANTS: Tenant[] = [
     name: "Cedarline Logistics",
     type: "Employer",
     users: 6,
-    workspaces: ["Employer"],
+    workspaces: ["ICHRA"],
     status: "active",
     created: "2026-05-21",
   },
@@ -462,7 +462,7 @@ export const ROLE_TEMPLATES: RoleTemplate[] = [
   {
     id: "ROLE-03",
     name: "Benefits lead",
-    workspace: "Employer",
+    workspace: "ICHRA",
     members: 6,
     permissions: ["Manage census", "Model contributions", "Share proposals"],
   },

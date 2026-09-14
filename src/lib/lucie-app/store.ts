@@ -325,7 +325,7 @@ export function reducer(state: LucieState, action: Action): LucieState {
         {
           action: "Proposal routed to agency",
           object: "Cedarline Logistics",
-          workspace: "Employer",
+          workspace: "ICHRA",
           detail: "Contribution proposal shared with Northgate Insurance Group for follow-up.",
         },
       );
