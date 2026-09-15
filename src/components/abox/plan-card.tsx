@@ -56,7 +56,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
               <MetalBadge tier={plan.metalTier} />
               <StatusBadge tone="muted">{plan.networkType}</StatusBadge>
               <StatusBadge tone={plan.onExchange ? "info" : "primary"}>
-                {plan.onExchange ? "QHP" : "Off-exchange"}
+                {plan.onExchange ? "On-exchange" : "Off-exchange"}
               </StatusBadge>
               {plan.hsaEligible && <StatusBadge tone="sage">HSA</StatusBadge>}
             </div>
@@ -141,7 +141,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
             <MetalBadge tier={plan.metalTier} />
             <StatusBadge tone="muted">{plan.networkType}</StatusBadge>
             <StatusBadge tone={plan.onExchange ? "info" : "primary"}>
-              {plan.onExchange ? "QHP" : "Off-exchange"}
+              {plan.onExchange ? "On-exchange" : "Off-exchange"}
             </StatusBadge>
             {plan.hsaEligible && <StatusBadge tone="sage">HSA</StatusBadge>}
           </div>
