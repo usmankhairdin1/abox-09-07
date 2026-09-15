@@ -12,6 +12,7 @@ import { formatUSD, formatUSDAmount } from "@/lib/format";
 import { CarrierMark } from "./carrier-mark";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { OverflowText } from "./overflow-text";
 
 interface Props {
   plan: SamplePlan;
@@ -45,13 +46,13 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
           <header className="min-w-0">
             <div className="flex items-center gap-2">
               <CarrierMark carrier={plan.carrier} size={36} />
-              <span className="text-serial truncate">{plan.carrier}</span>
-              <span className="text-muted-foreground/60" aria-hidden>·</span>
-              <span className="text-[11px] tabular-nums text-muted-foreground">ID {plan.id}</span>
+              <OverflowText text={plan.carrier} className="text-serial" />
+              <span className="shrink-0 text-muted-foreground/60" aria-hidden>·</span>
+              <OverflowText text={`ID ${plan.id}`} className="shrink-0 text-[11px] tabular-nums text-muted-foreground" />
             </div>
             <h3 id={`plan-${plan.id}-name`} className="text-display mt-2 text-2xl leading-tight">
               <Link to="/plans/$planId" params={{ planId: plan.id }} className="relative inline-block ember-underline">
-                {plan.name}
+                <OverflowText text={plan.name} />
               </Link>
             </h3>
             <div className="mt-3 flex flex-wrap items-center gap-1.5">
@@ -132,13 +133,13 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <CarrierMark carrier={plan.carrier} size={compact ? 30 : 34} />
-            <span className="text-serial truncate">{plan.carrier}</span>
-            <span className="text-muted-foreground/60" aria-hidden>·</span>
-            <span className="text-[11px] tabular-nums text-muted-foreground">ID {plan.id}</span>
+            <OverflowText text={plan.carrier} className="text-serial" />
+            <span className="shrink-0 text-muted-foreground/60" aria-hidden>·</span>
+            <OverflowText text={`ID ${plan.id}`} className="shrink-0 text-[11px] tabular-nums text-muted-foreground" />
           </div>
           <h3 id={`plan-${plan.id}-name`} className="text-display mt-2 text-2xl leading-tight">
             <Link to="/plans/$planId" params={{ planId: plan.id }} className="relative inline-block ember-underline">
-              {plan.name}
+              <OverflowText text={plan.name} />
             </Link>
           </h3>
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
