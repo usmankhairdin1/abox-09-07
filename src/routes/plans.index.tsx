@@ -267,22 +267,6 @@ function Page() {
                 )}
               </button>
               <div className="ml-auto inline-flex flex-wrap items-center gap-2">
-                {/* Quick shopper-facing sorting shortcuts */}
-                {(["premium-asc", "affordable"] as SortKey[]).map((k) => (
-                  <button
-                    key={k}
-                    type="button"
-                    onClick={() => setSort(k)}
-                    aria-pressed={sort === k}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                      sort === k
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-card text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {SORT_LABELS[k]}
-                  </button>
-                ))}
                 <label htmlFor="sort" className="text-xs uppercase tracking-widest text-muted-foreground">Sort by</label>
                 <select
                   id="sort" value={sort}
