@@ -3,7 +3,7 @@
  * revealing the full value in a tooltip on hover and keyboard focus. When the
  * text fits cleanly, no tooltip is attached and it behaves like plain text.
  */
-import { useCallback, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
@@ -19,20 +19,21 @@ export function OverflowText({
   const ref = useRef<HTMLElement | null>(null);
   const [overflowing, setOverflowing] = useState(false);
 
-  const check = useCallback(() => {
+  // Measure eagerly (mount + resize + text change) so the tooltip trigger is
+  // already in place before the pointer arrives — attaching it on hover would
+  // swallow the very pointer-enter that should open it.
+  useEffect(() => {
     const el = ref.current;
-    if (el) setOverflowing(el.scrollWidth > el.clientWidth + 1);
-  }, []);
+    if (!el) return;
+    const measure = () => setOverflowing(el.scrollWidth > el.clientWidth + 1);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [text]);
 
-  const inner: ReactNode = (
-    <Comp
-      ref={(node: HTMLElement | null) => {
-        ref.current = node;
-        check();
-      }}
-      onMouseEnter={check}
-      className={cn("block truncate", className)}
-    >
+  const inner = (
+    <Comp ref={ref as never} className={cn("block truncate", className)}>
       {text}
     </Comp>
   );
