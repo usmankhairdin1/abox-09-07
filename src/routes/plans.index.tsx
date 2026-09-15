@@ -32,10 +32,11 @@ export const Route = createFileRoute("/plans/")({
   component: Page,
 });
 
-type SortKey = "plano" | "premium-asc" | "premium-desc" | "deductible-asc" | "rating";
+type SortKey = "plano" | "premium-asc" | "premium-desc" | "deductible-asc" | "rating" | "affordable";
 const SORT_LABELS: Record<SortKey, string> = {
   plano: "PlanAI match (recommended)",
   "premium-asc": "Lowest premium",
+  affordable: "Most affordable",
   "premium-desc": "Highest premium",
   "deductible-asc": "Lowest deductible",
   rating: "Highest rated",
@@ -143,6 +144,12 @@ function Page() {
     const sorted = [...list].sort((a, b) => {
       switch (sort) {
         case "premium-asc": return a.monthlyPremium - b.monthlyPremium || matchOf(b) - matchOf(a);
+        case "affordable": {
+          // Overall affordability from existing data: estimated net monthly
+          // premium after any subsidy, then total out-of-pocket exposure.
+          const cost = (p: SamplePlan) => subsidizedPriceOf(p) ?? p.monthlyPremium;
+          return (cost(a) - cost(b)) || ((a.deductible + a.oopMax) - (b.deductible + b.oopMax)) || matchOf(b) - matchOf(a);
+        }
         case "premium-desc": return b.monthlyPremium - a.monthlyPremium || matchOf(b) - matchOf(a);
         case "deductible-asc": return a.deductible - b.deductible || matchOf(b) - matchOf(a);
         case "rating": return b.rating - a.rating || matchOf(b) - matchOf(a);
@@ -248,7 +255,23 @@ function Page() {
                   <span className="rounded-full bg-primary px-1.5 text-[10px] text-primary-foreground">{activeFilterCount}</span>
                 )}
               </button>
-              <div className="ml-auto inline-flex items-center gap-2">
+              <div className="ml-auto inline-flex flex-wrap items-center gap-2">
+                {/* Quick shopper-facing sorting shortcuts */}
+                {(["premium-asc", "affordable"] as SortKey[]).map((k) => (
+                  <button
+                    key={k}
+                    type="button"
+                    onClick={() => setSort(k)}
+                    aria-pressed={sort === k}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                      sort === k
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border bg-card text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {SORT_LABELS[k]}
+                  </button>
+                ))}
                 <label htmlFor="sort" className="text-xs uppercase tracking-widest text-muted-foreground">Sort by</label>
                 <select
                   id="sort" value={sort}
