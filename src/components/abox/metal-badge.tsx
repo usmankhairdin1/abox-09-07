@@ -8,6 +8,7 @@ import type { SamplePlan } from "@/lib/sample-data";
 
 const TIER_VAR: Record<SamplePlan["metalTier"], string> = {
   Bronze: "[--tone:var(--metal-bronze)]",
+  "Expanded Bronze": "[--tone:var(--metal-expanded-bronze)]",
   Silver: "[--tone:var(--metal-silver)]",
   Gold: "[--tone:var(--metal-gold)]",
   Platinum: "[--tone:var(--metal-platinum)]",

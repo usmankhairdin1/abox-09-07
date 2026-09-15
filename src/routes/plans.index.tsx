@@ -364,7 +364,7 @@ interface FilterProps {
   hasSubsidyCheck: boolean;
 }
 function FilterRail(p: FilterProps) {
-  const METALS: SamplePlan["metalTier"][] = ["Bronze","Silver","Gold","Platinum","Catastrophic"];
+  const METALS: SamplePlan["metalTier"][] = ["Bronze","Expanded Bronze","Silver","Gold","Platinum","Catastrophic"];
   const NETS: SamplePlan["networkType"][] = ["HMO","PPO","EPO","POS"];
   const toggleIn = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set); next.has(v) ? next.delete(v) : next.add(v); setter(next);

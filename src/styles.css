@@ -138,6 +138,7 @@
 
   /* Metal tiers — distinct, accessible badge tints */
   --metal-bronze: oklch(0.56 0.105 58);
+  --metal-expanded-bronze: oklch(0.52 0.090 58);
   --metal-silver: oklch(0.58 0.018 255);
   --metal-gold: oklch(0.66 0.130 92);
   --metal-platinum: oklch(0.56 0.075 205);
@@ -196,6 +197,7 @@
 
   /* Metal tiers — dark theme */
   --metal-bronze: oklch(0.72 0.105 58);
+  --metal-expanded-bronze: oklch(0.68 0.095 58);
   --metal-silver: oklch(0.78 0.020 255);
   --metal-gold: oklch(0.82 0.130 92);
   --metal-platinum: oklch(0.76 0.075 205);
