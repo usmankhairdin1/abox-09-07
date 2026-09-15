@@ -58,6 +58,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
               </Link>
             </h3>
             <div className="mt-3 flex flex-wrap items-center gap-1.5">
+              {isBestMatch && <BestMatchIndicator />}
               <MetalBadge tier={plan.metalTier} />
               <StatusBadge tone="muted">{plan.networkType}</StatusBadge>
               <StatusBadge tone={plan.onExchange ? "info" : "primary"}>
@@ -145,6 +146,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
             </Link>
           </h3>
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
+            {isBestMatch && <BestMatchIndicator />}
             <MetalBadge tier={plan.metalTier} />
             <StatusBadge tone="muted">{plan.networkType}</StatusBadge>
             <StatusBadge tone={plan.onExchange ? "info" : "primary"}>
