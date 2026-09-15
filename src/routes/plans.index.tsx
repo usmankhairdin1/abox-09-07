@@ -369,18 +369,15 @@ function FilterRail(p: FilterProps) {
   const toggleIn = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set); next.has(v) ? next.delete(v) : next.add(v); setter(next);
   };
-  const FilterLegend = ({ number, children }: { number: number; children: React.ReactNode }) => (
-    <legend className="mb-2 flex items-center gap-2 text-eyebrow">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-surface text-[10px] tabular-nums text-muted-foreground">{number}</span>
-      {children}
-    </legend>
+  const FilterLegend = ({ children }: { children: React.ReactNode }) => (
+    <legend className="mb-2 text-eyebrow">{children}</legend>
   );
-  const RangeFilter = ({ number, label, min, max, step, value, onChange, suffix }: {
-    number: number; label: string; min: number; max: number; step: number; value: number;
+  const RangeFilter = ({ label, min, max, step, value, onChange, suffix }: {
+    label: string; min: number; max: number; step: number; value: number;
     onChange: (value: number) => void; suffix?: string;
   }) => (
     <fieldset>
-      <FilterLegend number={number}>{label}</FilterLegend>
+      <FilterLegend>{label}</FilterLegend>
       <input type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full accent-[var(--primary)]" aria-label={`Maximum ${label.toLowerCase()}`} />
