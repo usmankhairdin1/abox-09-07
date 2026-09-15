@@ -33,7 +33,7 @@ export function OverflowText({
   }, [text]);
 
   const inner = (
-    <Comp ref={ref as never} className={cn("block truncate", className)}>
+    <Comp ref={ref as never} className={cn("block min-w-0 max-w-full truncate", className)}>
       {text}
     </Comp>
   );

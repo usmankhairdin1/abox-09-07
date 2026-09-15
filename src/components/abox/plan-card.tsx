@@ -51,7 +51,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
               <OverflowText text={`ID ${plan.id}`} className="shrink-0 text-[11px] tabular-nums text-muted-foreground" />
             </div>
             <h3 id={`plan-${plan.id}-name`} className="text-display mt-2 text-2xl leading-tight">
-              <Link to="/plans/$planId" params={{ planId: plan.id }} className="relative inline-block ember-underline">
+              <Link to="/plans/$planId" params={{ planId: plan.id }} className="relative inline-block max-w-full ember-underline">
                 <OverflowText text={plan.name} />
               </Link>
             </h3>
@@ -138,7 +138,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
             <OverflowText text={`ID ${plan.id}`} className="shrink-0 text-[11px] tabular-nums text-muted-foreground" />
           </div>
           <h3 id={`plan-${plan.id}-name`} className="text-display mt-2 text-2xl leading-tight">
-            <Link to="/plans/$planId" params={{ planId: plan.id }} className="relative inline-block ember-underline">
+            <Link to="/plans/$planId" params={{ planId: plan.id }} className="relative inline-block max-w-full ember-underline">
               <OverflowText text={plan.name} />
             </Link>
           </h3>
