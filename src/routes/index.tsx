@@ -15,7 +15,7 @@ import { ProductSwitcher } from "@/components/abox/product-switcher";
 import { AboxMark } from "@/components/abox/logo";
 import {
   Aurora, DotField, OrbitalRings, RadialTicks,
-  CoverageWeave, BlueprintGrid, PolicyLines,
+  CoverageWeave, BlueprintGrid,
 } from "@/components/abox/decor";
 import { FadeRise, Stagger, StaggerItem } from "@/components/abox/motion";
 import { cn } from "@/lib/utils";
