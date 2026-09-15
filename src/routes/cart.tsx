@@ -37,6 +37,7 @@ function Page() {
           scrId="UX-013" eyebrow="Your selections"
           title="Cart"
           description="Review your selected plan, then continue to enrollment."
+          icon={ShoppingCart}
           actions={cart.items.length > 0 && (
             <div className="flex items-center gap-2">
               <Link to="/plans" className="inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm hover:bg-accent">
