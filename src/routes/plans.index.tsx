@@ -55,7 +55,7 @@ function Page() {
       const persisted = loadQuoteState();
       if (persisted) setQuote(persisted);
     }
-  }, []);
+  }, [quote]);
   const [editOpen, setEditOpen] = useState(false);
   const cart = useCart();
   const matchInputs: PlanMatchInputs | null = quote
