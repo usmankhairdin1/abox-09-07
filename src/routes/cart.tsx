@@ -55,7 +55,26 @@ function Page() {
             action={<Link to="/plans" className="mt-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">Browse plans</Link>}
           />
         ) : (
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+          <>
+            {missingAddOns.length > 0 && (
+              <div className="mb-5 rounded-2xl border border-border bg-card p-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-eyebrow">Add-ons available</p>
+                    <p className="mt-1 text-xs text-muted-foreground">Pair extra coverage with your medical plan.</p>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {missingAddOns.map((t) => (
+                        <span key={t} className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">{PRODUCT_LABEL[t]}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <Link to="/coverage" className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                    Explore add-on coverage
+                  </Link>
+                </div>
+              </div>
+            )}
+            <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div className="space-y-4">
               {(Object.keys(grouped) as ProductType[]).map((type) => (
                 <section key={type} className="rounded-2xl border border-border bg-card">
@@ -161,20 +180,9 @@ function Page() {
                 </button>
               </div>
 
-              {missingAddOns.length > 0 && (
-                <div className="rounded-2xl border border-border bg-card p-4">
-                  <p className="text-eyebrow">Add-ons available</p>
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {missingAddOns.map((t) => (
-                      <span key={t} className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">{PRODUCT_LABEL[t]}</span>
-                    ))}
-                  </div>
-                  <p className="mt-2 text-xs text-muted-foreground">Pair extra coverage with your medical plan.</p>
-                  <Link to="/coverage" className="mt-2 inline-flex text-sm font-medium text-primary story-link">Explore add-on coverage</Link>
-                </div>
-              )}
             </aside>
           </div>
+          </>
         )}
       </div>
     </MarketplaceShell>
