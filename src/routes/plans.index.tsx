@@ -41,7 +41,12 @@ const SORT_LABELS: Record<SortKey, string> = {
 };
 
 function Page() {
-  const quote = typeof window === "undefined" ? null : loadQuoteState();
+  // The quote lives in state so the inline "Edit quote" panel can update the
+  // results in place; it is still the one shared quote-store model.
+  const [quote, setQuote] = useState<QuoteState | null>(() =>
+    typeof window === "undefined" ? null : loadQuoteState(),
+  );
+  const [editOpen, setEditOpen] = useState(false);
   const cart = useCart();
   const matchInputs: PlanMatchInputs | null = quote
     ? { priorities: quote.priorities, usage: quote.usage, keepDoctor: quote.keepDoctor }
