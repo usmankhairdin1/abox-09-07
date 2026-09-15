@@ -63,6 +63,8 @@ function Page() {
   const setCarriers = (v: Set<string>) => browseStore.patch({ carriers: [...v] });
   const hsaOnly = browse.hsaOnly;
   const setHsaOnly = (v: boolean) => browseStore.patch({ hsaOnly: v });
+  const easyPricingOnly = browse.easyPricingOnly;
+  const setEasyPricingOnly = (v: boolean) => browseStore.patch({ easyPricingOnly: v });
   const maxPremium = browse.maxPremium;
   const setMaxPremium = (v: number) => browseStore.patch({ maxPremium: v });
   const maxDeductible = browse.maxDeductible;
@@ -102,6 +104,7 @@ function Page() {
       if (metals.size > 0 && !metals.has(p.metalTier)) continue;
       if (networks.size > 0 && !networks.has(p.networkType)) continue;
       if (hsaOnly && !p.hsaEligible) continue;
+      if (easyPricingOnly && !(p.pcpCopay <= 15 && p.specialistCopay <= 40)) continue;
       if (p.monthlyPremium > maxPremium) continue;
       if (p.deductible > maxDeductible) continue;
       if (p.oopMax > maxOop) continue;
@@ -112,7 +115,7 @@ function Page() {
     return Array.from(counts, ([name, count]) => ({ name, count })).sort((a, b) =>
       b.count - a.count || a.name.localeCompare(b.name),
     );
-  }, [showExchange, metals, networks, hsaOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay]);
+  }, [showExchange, metals, networks, hsaOnly, easyPricingOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay]);
 
   const filtered = useMemo(() => {
     const list = SAMPLE_PLANS.filter((p) => {
@@ -122,6 +125,7 @@ function Page() {
       if (networks.size > 0 && !networks.has(p.networkType)) return false;
       if (carriers.size > 0 && !carriers.has(p.carrier)) return false;
       if (hsaOnly && !p.hsaEligible) return false;
+      if (easyPricingOnly && !(p.pcpCopay <= 15 && p.specialistCopay <= 40)) return false;
       if (p.monthlyPremium > maxPremium) return false;
       if (p.deductible > maxDeductible) return false;
       if (p.oopMax > maxOop) return false;
@@ -140,13 +144,13 @@ function Page() {
     });
     return sorted;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- matchOf/subsidizedPriceOf are derived from quote, stable per render
-  }, [showExchange, metals, networks, carriers, hsaOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay, sort]);
+  }, [showExchange, metals, networks, carriers, hsaOnly, easyPricingOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay, sort]);
 
   const clearFilters = () => browseStore.resetFilters();
   const activeFilterCount =
     (showExchange !== "all" ? 1 : 0) + metals.size + networks.size + carriers.size +
-    (hsaOnly ? 1 : 0) + (maxPremium !== 1000 ? 1 : 0) +
-    (maxDeductible !== 7500 ? 1 : 0) + (maxOop !== 9500 ? 1 : 0) +
+    (hsaOnly ? 1 : 0) + (easyPricingOnly ? 1 : 0) +
+    (maxPremium !== 1000 ? 1 : 0) + (maxDeductible !== 7500 ? 1 : 0) + (maxOop !== 9500 ? 1 : 0) +
     (maxPcpCopay !== 50 ? 1 : 0) + (maxSpecialistCopay !== 100 ? 1 : 0);
 
   return (
@@ -191,6 +195,7 @@ function Page() {
               maxOop={maxOop} setMaxOop={setMaxOop}
               maxPcpCopay={maxPcpCopay} setMaxPcpCopay={setMaxPcpCopay}
               maxSpecialistCopay={maxSpecialistCopay} setMaxSpecialistCopay={setMaxSpecialistCopay}
+              easyPricingOnly={easyPricingOnly} setEasyPricingOnly={setEasyPricingOnly}
               activeFilterCount={activeFilterCount} onClear={clearFilters}
               hasSubsidyCheck={!!quote && !quote.skipSubsidy && quote.income != null}
             />
@@ -326,6 +331,7 @@ function Page() {
                 maxOop={maxOop} setMaxOop={setMaxOop}
                 maxPcpCopay={maxPcpCopay} setMaxPcpCopay={setMaxPcpCopay}
                 maxSpecialistCopay={maxSpecialistCopay} setMaxSpecialistCopay={setMaxSpecialistCopay}
+                easyPricingOnly={easyPricingOnly} setEasyPricingOnly={setEasyPricingOnly}
                 activeFilterCount={activeFilterCount} onClear={clearFilters}
                 hasSubsidyCheck={!!quote && !quote.skipSubsidy && quote.income != null}
               />
@@ -349,6 +355,8 @@ interface FilterProps {
   carrierOptions: { name: string; count: number }[];
   hsaOnly: boolean;
   setHsaOnly: (v: boolean) => void;
+  easyPricingOnly: boolean;
+  setEasyPricingOnly: (v: boolean) => void;
   maxPremium: number;
   setMaxPremium: (v: number) => void;
   maxDeductible: number;
@@ -502,6 +510,14 @@ function FilterRail(p: FilterProps) {
         <label className="flex items-center justify-between text-sm">
           <span>HSA-eligible only</span>
           <input type="checkbox" checked={p.hsaOnly} onChange={(e) => p.setHsaOnly(e.target.checked)} />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <FilterLegend>Easy pricing</FilterLegend>
+        <label className="flex items-center justify-between text-sm">
+          <span>Low or $0 doctor visit costs</span>
+          <input type="checkbox" checked={p.easyPricingOnly} onChange={(e) => p.setEasyPricingOnly(e.target.checked)} />
         </label>
       </fieldset>
 

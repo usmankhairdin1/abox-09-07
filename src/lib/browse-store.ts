@@ -11,6 +11,7 @@ export interface BrowseState {
   networks: string[];
   carriers: string[];
   hsaOnly: boolean;
+  easyPricingOnly: boolean;
   maxPremium: number;
   maxDeductible: number;
   maxOop: number;
@@ -28,6 +29,7 @@ const EMPTY: BrowseState = {
   networks: [],
   carriers: [],
   hsaOnly: false,
+  easyPricingOnly: false,
   maxPremium: 1000,
   maxDeductible: 7500,
   maxOop: 9500,
@@ -78,6 +80,7 @@ export const browseStore = {
       networks: [],
       carriers: [],
       hsaOnly: false,
+      easyPricingOnly: false,
       maxPremium: 1000,
       maxDeductible: 7500,
       maxOop: 9500,
