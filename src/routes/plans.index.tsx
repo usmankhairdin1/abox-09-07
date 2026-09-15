@@ -63,6 +63,8 @@ function Page() {
   const setCarriers = (v: Set<string>) => browseStore.patch({ carriers: [...v] });
   const hsaOnly = browse.hsaOnly;
   const setHsaOnly = (v: boolean) => browseStore.patch({ hsaOnly: v });
+  const easyPricingOnly = browse.easyPricingOnly;
+  const setEasyPricingOnly = (v: boolean) => browseStore.patch({ easyPricingOnly: v });
   const maxPremium = browse.maxPremium;
   const setMaxPremium = (v: number) => browseStore.patch({ maxPremium: v });
   const maxDeductible = browse.maxDeductible;
