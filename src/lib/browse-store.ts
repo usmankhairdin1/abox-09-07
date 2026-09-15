@@ -29,6 +29,7 @@ const EMPTY: BrowseState = {
   networks: [],
   carriers: [],
   hsaOnly: false,
+  easyPricingOnly: false,
   maxPremium: 1000,
   maxDeductible: 7500,
   maxOop: 9500,
