@@ -50,7 +50,7 @@ function Page() {
 
         {cart.items.length === 0 ? (
           <EmptyState
-            icon={ShoppingBag}
+            icon={ShoppingCart}
             title="Your cart is empty"
             body="Add a health plan, then optionally bundle dental, vision, or life."
             action={<Link to="/plans" className="mt-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">Browse plans</Link>}
