@@ -1,14 +1,13 @@
 /**
  * UX-001 — Marketplace Landing. Meridian Navy.
  * A hero built around an orbital chart, a horizontal path selector,
- * an asymmetric product bento, a large split employer plate, and a
- * trust ladder — nothing reuses the old three-card layout.
+ * a large split employer plate, and a trust ladder — nothing reuses
+ * the old three-card layout.
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight, Sparkles, ShieldCheck, MessageSquareHeart,
-  Building2, HeartPulse, Compass,
-  Smile, Eye, HandHeart, Activity, Ambulance, HeartHandshake, Check,
+  Building2, HeartPulse, Compass, Check,
 } from "lucide-react";
 
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -16,33 +15,12 @@ import { ProductSwitcher } from "@/components/abox/product-switcher";
 import { AboxMark } from "@/components/abox/logo";
 import {
   Aurora, DotField, OrbitalRings, RadialTicks,
-  HealthPulseShield, CoverageWeave, BlueprintGrid, PolicyLines, FamilySilhouette,
+  CoverageWeave, BlueprintGrid, PolicyLines,
 } from "@/components/abox/decor";
 import { FadeRise, Stagger, StaggerItem } from "@/components/abox/motion";
-import { SAMPLE_PRODUCTS } from "@/lib/sample-data";
 import { cn } from "@/lib/utils";
-import { useMarketplaceState, getMarketplace, getActiveBrand, getAvailability } from "@/lib/marketplace-store";
+import { useMarketplaceState, getMarketplace, getActiveBrand } from "@/lib/marketplace-store";
 import { SuspendedMarketplaceNotice } from "@/components/abox/suspended-marketplace-notice";
-
-/** M04 REQ-M04-AVL-002: only these product keys are governed by marketplace
- *  availability config; ancillary products (life/critical/accident/hospital)
- *  and the employer-only ICHRA card sit outside M04's fixed catalogue. */
-const GOVERNED_PRODUCT_LINES: Record<string, ("IFP_ON_EXCHANGE" | "IFP_OFF_EXCHANGE" | "DENTAL" | "VISION")[]> = {
-  ifp: ["IFP_ON_EXCHANGE", "IFP_OFF_EXCHANGE"],
-  dental: ["DENTAL"],
-  vision: ["VISION"],
-};
-
-const PRODUCT_ICONS: Record<string, typeof HeartPulse> = {
-  ifp: HeartPulse,
-  dental: Smile,
-  vision: Eye,
-  life: HandHeart,
-  critical: Activity,
-  accident: Ambulance,
-  hospital: HeartHandshake,
-  ichra: Building2,
-};
 
 
 export const Route = createFileRoute("/")({
