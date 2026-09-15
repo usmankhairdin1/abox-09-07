@@ -28,10 +28,12 @@ interface Props {
   matchScore?: number;
   /** Estimated after-subsidy monthly price. Only ever set for on-exchange plans — never off-exchange. */
   subsidizedPrice?: number;
+  /** Marks this tile as the current top PlanAI recommendation. */
+  isBestMatch?: boolean;
 }
 
 
-export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, inCompare, saved, compact, horizontal, matchScore, subsidizedPrice }: Props) {
+export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, inCompare, saved, compact, horizontal, matchScore, subsidizedPrice, isBestMatch }: Props) {
   const match = matchScore ?? plan.planOMatch;
   const showSubsidized = subsidizedPrice != null && subsidizedPrice < plan.monthlyPremium;
   const displayedPremium = showSubsidized && subsidizedPrice != null ? subsidizedPrice : plan.monthlyPremium;
