@@ -98,7 +98,6 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
                 </>
               )}
             </Link>
-            <ThemeToggle />
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
