@@ -72,7 +72,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
 
           <nav aria-label="Marketplace navigation" className="flex items-center gap-1">
             {variant === "landing" && <PillLink to="/select">Shop plans</PillLink>}
-            <PillLink to="/ichra">For employers</PillLink>
+            <PillLink to="/ichra">ICHRA</PillLink>
             <PillLink to="/schedule" icon={<LifeBuoy className="h-4 w-4" />}>Agent help</PillLink>
             <Link
               to="/cart"
