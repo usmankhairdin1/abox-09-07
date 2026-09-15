@@ -9,6 +9,7 @@ import { Filter, ShoppingBag, Sparkles, X } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { PlanCard } from "@/components/abox/plan-card";
+import { CarrierMark } from "@/components/abox/carrier-mark";
 import { ShoppingPathBar } from "@/components/abox/shopping-path-bar";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
@@ -479,6 +480,7 @@ function FilterRail(p: FilterProps) {
                   onChange={() => toggleIn(p.carriers, c.name, p.setCarriers)}
                   className="rounded"
                 />
+                <CarrierMark carrier={c.name} size={20} />
                 <span className="min-w-0 flex-1 truncate">{c.name}</span>
                 <span className="tabular-nums text-xs text-muted-foreground">({c.count})</span>
               </label>
