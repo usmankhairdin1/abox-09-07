@@ -11,9 +11,9 @@ import {
   Eye,
   HeartPulse,
   Shield,
-  Smile,
   type LucideIcon,
 } from "lucide-react";
+import { Tooth } from "@/components/icons/tooth-icon";
 import type { ProductType } from "./cart-store";
 
 export interface ShopProduct {
