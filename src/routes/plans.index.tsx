@@ -293,6 +293,26 @@ function Page() {
               </div>
             ) : null}
 
+            {/* Recommendation choices */}
+            <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label="Sort plans by">
+              {(["plano", "premium-asc", "deductible-asc", "best-value"] as SortKey[]).map((k) => (
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => setSort(k)}
+                  aria-pressed={sort === k}
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                    sort === k
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-card text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {SORT_LABELS[k]}
+                </button>
+              ))}
+            </div>
+
             {/* Compare bar */}
             {cart.compareIds.length > 0 && (
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3">
