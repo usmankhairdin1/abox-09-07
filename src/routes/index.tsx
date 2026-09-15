@@ -73,7 +73,6 @@ function LandingPage() {
     <MarketplaceShell variant="landing">
       <Hero />
       <PathTicker />
-      <ProductBento />
       <PlanOOrbital />
       <EmployerPlate />
       <TrustLadder />
