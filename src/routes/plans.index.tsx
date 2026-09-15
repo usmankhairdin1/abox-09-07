@@ -369,18 +369,15 @@ function FilterRail(p: FilterProps) {
   const toggleIn = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set); next.has(v) ? next.delete(v) : next.add(v); setter(next);
   };
-  const FilterLegend = ({ number, children }: { number: number; children: React.ReactNode }) => (
-    <legend className="mb-2 flex items-center gap-2 text-eyebrow">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-surface text-[10px] tabular-nums text-muted-foreground">{number}</span>
-      {children}
-    </legend>
+  const FilterLegend = ({ children }: { children: React.ReactNode }) => (
+    <legend className="mb-2 text-eyebrow">{children}</legend>
   );
-  const RangeFilter = ({ number, label, min, max, step, value, onChange, suffix }: {
-    number: number; label: string; min: number; max: number; step: number; value: number;
+  const RangeFilter = ({ label, min, max, step, value, onChange, suffix }: {
+    label: string; min: number; max: number; step: number; value: number;
     onChange: (value: number) => void; suffix?: string;
   }) => (
     <fieldset>
-      <FilterLegend number={number}>{label}</FilterLegend>
+      <FilterLegend>{label}</FilterLegend>
       <input type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full accent-[var(--primary)]" aria-label={`Maximum ${label.toLowerCase()}`} />
@@ -401,7 +398,7 @@ function FilterRail(p: FilterProps) {
       </div>
 
       <fieldset>
-        <FilterLegend number={1}>Exchange</FilterLegend>
+        <FilterLegend>Exchange</FilterLegend>
         <div className="grid grid-cols-3 gap-1 rounded-full bg-surface p-1">
           {(["all","on","off"] as const).map((v) => (
             <button key={v} onClick={() => p.setShowExchange(v)}
@@ -421,7 +418,7 @@ function FilterRail(p: FilterProps) {
       </fieldset>
 
       <fieldset>
-        <FilterLegend number={2}>Metal tier</FilterLegend>
+        <FilterLegend>Metal tier</FilterLegend>
         <div className="flex flex-wrap gap-1.5">
           {METALS.map((m) => {
             const on = p.metals.has(m);
@@ -439,7 +436,7 @@ function FilterRail(p: FilterProps) {
       </fieldset>
 
       <fieldset>
-        <FilterLegend number={3}>Network</FilterLegend>
+        <FilterLegend>Network</FilterLegend>
         <div className="flex flex-wrap gap-1.5">
           {NETS.map((n) => {
             const on = p.networks.has(n);
@@ -457,7 +454,7 @@ function FilterRail(p: FilterProps) {
       </fieldset>
 
       <fieldset>
-        <FilterLegend number={4}>Carrier</FilterLegend>
+        <FilterLegend>Carrier</FilterLegend>
         <div className="space-y-1.5">
           {p.carrierOptions.map((c) => {
             const checked = p.carriers.has(c.name);
@@ -483,7 +480,7 @@ function FilterRail(p: FilterProps) {
       </fieldset>
 
       <fieldset>
-        <FilterLegend number={5}>Premium</FilterLegend>
+        <FilterLegend>Premium</FilterLegend>
         <input
           type="range" min={100} max={1000} step={25} value={p.maxPremium}
           onChange={(e) => p.setMaxPremium(Number(e.target.value))}
@@ -497,19 +494,19 @@ function FilterRail(p: FilterProps) {
         </div>
       </fieldset>
 
-      <RangeFilter number={6} label="Deductible" min={0} max={7500} step={250} value={p.maxDeductible} onChange={p.setMaxDeductible} />
-      <RangeFilter number={7} label="Out-of-pocket maximum" min={3000} max={9500} step={250} value={p.maxOop} onChange={p.setMaxOop} />
+      <RangeFilter label="Deductible" min={0} max={7500} step={250} value={p.maxDeductible} onChange={p.setMaxDeductible} />
+      <RangeFilter label="Out-of-pocket maximum" min={3000} max={9500} step={250} value={p.maxOop} onChange={p.setMaxOop} />
 
       <fieldset>
-        <FilterLegend number={8}>HSA eligibility</FilterLegend>
+        <FilterLegend>HSA eligibility</FilterLegend>
         <label className="flex items-center justify-between text-sm">
           <span>HSA-eligible only</span>
           <input type="checkbox" checked={p.hsaOnly} onChange={(e) => p.setHsaOnly(e.target.checked)} />
         </label>
       </fieldset>
 
-      <RangeFilter number={9} label="Primary care visit" min={0} max={50} step={5} value={p.maxPcpCopay} onChange={p.setMaxPcpCopay} />
-      <RangeFilter number={10} label="Specialist visit" min={0} max={100} step={5} value={p.maxSpecialistCopay} onChange={p.setMaxSpecialistCopay} />
+      <RangeFilter label="Primary care visit" min={0} max={50} step={5} value={p.maxPcpCopay} onChange={p.setMaxPcpCopay} />
+      <RangeFilter label="Specialist visit" min={0} max={100} step={5} value={p.maxSpecialistCopay} onChange={p.setMaxSpecialistCopay} />
     </div>
   );
 }
