@@ -144,7 +144,7 @@ function Page() {
     });
     return sorted;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- matchOf/subsidizedPriceOf are derived from quote, stable per render
-  }, [showExchange, metals, networks, carriers, hsaOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay, sort]);
+  }, [showExchange, metals, networks, carriers, hsaOnly, easyPricingOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay, sort]);
 
   const clearFilters = () => browseStore.resetFilters();
   const activeFilterCount =
