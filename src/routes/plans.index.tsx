@@ -32,14 +32,14 @@ export const Route = createFileRoute("/plans/")({
   component: Page,
 });
 
-type SortKey = "plano" | "premium-asc" | "premium-desc" | "deductible-asc" | "rating" | "affordable";
+type SortKey = "plano" | "premium-asc" | "premium-desc" | "deductible-asc" | "rating" | "best-value";
 const SORT_LABELS: Record<SortKey, string> = {
-  plano: "PlanAI match (recommended)",
-  "premium-asc": "Lowest premium",
-  affordable: "Most affordable",
+  plano: "Recommended",
+  "premium-asc": "Lowest Premium",
   "premium-desc": "Highest premium",
-  "deductible-asc": "Lowest deductible",
+  "deductible-asc": "Lowest Deductible",
   rating: "Highest rated",
+  "best-value": "Best Value",
 };
 
 function Page() {
