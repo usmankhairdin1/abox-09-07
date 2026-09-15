@@ -513,6 +513,14 @@ function FilterRail(p: FilterProps) {
         </label>
       </fieldset>
 
+      <fieldset>
+        <FilterLegend>Easy pricing</FilterLegend>
+        <label className="flex items-center justify-between text-sm">
+          <span>Low or $0 doctor visit costs</span>
+          <input type="checkbox" checked={p.easyPricingOnly} onChange={(e) => p.setEasyPricingOnly(e.target.checked)} />
+        </label>
+      </fieldset>
+
       <RangeFilter label="Primary care visit" min={0} max={50} step={5} value={p.maxPcpCopay} onChange={p.setMaxPcpCopay} />
       <RangeFilter label="Specialist visit" min={0} max={100} step={5} value={p.maxSpecialistCopay} onChange={p.setMaxSpecialistCopay} />
     </div>
