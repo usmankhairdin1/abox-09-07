@@ -46,6 +46,8 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
             <div className="flex items-center gap-2">
               <CarrierMark carrier={plan.carrier} size={36} />
               <span className="text-serial truncate">{plan.carrier}</span>
+              <span className="text-muted-foreground/60" aria-hidden>·</span>
+              <span className="text-[11px] tabular-nums text-muted-foreground">ID {plan.id}</span>
             </div>
             <h3 id={`plan-${plan.id}-name`} className="text-display mt-2 text-2xl leading-tight">
               <Link to="/plans/$planId" params={{ planId: plan.id }} className="relative inline-block ember-underline">
@@ -131,6 +133,8 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
           <div className="flex items-center gap-2">
             <CarrierMark carrier={plan.carrier} size={compact ? 30 : 34} />
             <span className="text-serial truncate">{plan.carrier}</span>
+            <span className="text-muted-foreground/60" aria-hidden>·</span>
+            <span className="text-[11px] tabular-nums text-muted-foreground">ID {plan.id}</span>
           </div>
           <h3 id={`plan-${plan.id}-name`} className="text-display mt-2 text-2xl leading-tight">
             <Link to="/plans/$planId" params={{ planId: plan.id }} className="relative inline-block ember-underline">
