@@ -234,6 +234,15 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
   );
 }
 
+function BestMatchIndicator() {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-warning/30 bg-warning/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-warning">
+      <Star className="h-3 w-3 fill-warning text-warning" aria-hidden />
+      Best Match
+    </span>
+  );
+}
+
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl bg-background/40 px-3 py-2.5">
