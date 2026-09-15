@@ -159,7 +159,7 @@ function Page() {
 
             <aside className="space-y-4">
               <div className="sticky top-24 rounded-2xl border border-border bg-card p-5">
-                <p className="text-eyebrow">Total (illustrative)</p>
+                <p className="text-eyebrow">Total</p>
                 <p className="text-display mt-2 text-3xl tabular-nums">${totals.monthly}<span className="text-sm text-muted-foreground">/mo</span></p>
                 <p className="mt-1 text-xs text-muted-foreground">Before subsidies, if eligible.</p>
                 <div className="mt-5 space-y-1 text-xs text-muted-foreground">
