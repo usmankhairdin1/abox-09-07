@@ -11,6 +11,7 @@ export interface BrowseState {
   networks: string[];
   carriers: string[];
   hsaOnly: boolean;
+  easyPricingOnly: boolean;
   maxPremium: number;
   maxDeductible: number;
   maxOop: number;
