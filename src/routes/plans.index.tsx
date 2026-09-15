@@ -125,6 +125,7 @@ function Page() {
       if (networks.size > 0 && !networks.has(p.networkType)) return false;
       if (carriers.size > 0 && !carriers.has(p.carrier)) return false;
       if (hsaOnly && !p.hsaEligible) return false;
+      if (easyPricingOnly && !(p.pcpCopay <= 15 && p.specialistCopay <= 40)) return false;
       if (p.monthlyPremium > maxPremium) return false;
       if (p.deductible > maxDeductible) return false;
       if (p.oopMax > maxOop) return false;
