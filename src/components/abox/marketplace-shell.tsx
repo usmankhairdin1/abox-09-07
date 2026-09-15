@@ -8,7 +8,6 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight, ChevronDown, Settings } from "lucide-react";
 import { AboxMark } from "./logo";
 import { PlanOAssistant } from "./plan-o-assistant";
-import { ThemeToggle } from "./theme-toggle";
 import { DotField } from "./decor";
 import { cn } from "@/lib/utils";
 import { useAuthSession } from "@/lib/auth-session";
