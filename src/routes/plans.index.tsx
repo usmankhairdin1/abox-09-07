@@ -32,14 +32,14 @@ export const Route = createFileRoute("/plans/")({
   component: Page,
 });
 
-type SortKey = "plano" | "premium-asc" | "premium-desc" | "deductible-asc" | "rating" | "affordable";
+type SortKey = "plano" | "premium-asc" | "premium-desc" | "deductible-asc" | "rating" | "best-value";
 const SORT_LABELS: Record<SortKey, string> = {
-  plano: "PlanAI match (recommended)",
-  "premium-asc": "Lowest premium",
-  affordable: "Most affordable",
+  plano: "Recommended",
+  "premium-asc": "Lowest Premium",
   "premium-desc": "Highest premium",
-  "deductible-asc": "Lowest deductible",
+  "deductible-asc": "Lowest Deductible",
   rating: "Highest rated",
+  "best-value": "Best Value",
 };
 
 function Page() {
@@ -152,11 +152,11 @@ function Page() {
     const sorted = [...list].sort((a, b) => {
       switch (sort) {
         case "premium-asc": return a.monthlyPremium - b.monthlyPremium || matchOf(b) - matchOf(a);
-        case "affordable": {
-          // Overall affordability from existing data: estimated net monthly
-          // premium after any subsidy, then total out-of-pocket exposure.
-          const cost = (p: SamplePlan) => subsidizedPriceOf(p) ?? p.monthlyPremium;
-          return (cost(a) - cost(b)) || ((a.deductible + a.oopMax) - (b.deductible + b.oopMax)) || matchOf(b) - matchOf(a);
+        case "best-value": {
+          // Best value from existing data only: estimated first-year cost
+          // (annualized effective premium after any on-exchange subsidy + deductible).
+          const annualCost = (p: SamplePlan) => (subsidizedPriceOf(p) ?? p.monthlyPremium) * 12 + p.deductible;
+          return annualCost(a) - annualCost(b) || b.rating - a.rating || matchOf(b) - matchOf(a);
         }
         case "premium-desc": return b.monthlyPremium - a.monthlyPremium || matchOf(b) - matchOf(a);
         case "deductible-asc": return a.deductible - b.deductible || matchOf(b) - matchOf(a);
@@ -267,22 +267,6 @@ function Page() {
                 )}
               </button>
               <div className="ml-auto inline-flex flex-wrap items-center gap-2">
-                {/* Quick shopper-facing sorting shortcuts */}
-                {(["premium-asc", "affordable"] as SortKey[]).map((k) => (
-                  <button
-                    key={k}
-                    type="button"
-                    onClick={() => setSort(k)}
-                    aria-pressed={sort === k}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                      sort === k
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-card text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {SORT_LABELS[k]}
-                  </button>
-                ))}
                 <label htmlFor="sort" className="text-xs uppercase tracking-widest text-muted-foreground">Sort by</label>
                 <select
                   id="sort" value={sort}
@@ -308,6 +292,26 @@ function Page() {
                 </div>
               </div>
             ) : null}
+
+            {/* Recommendation choices */}
+            <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label="Sort plans by">
+              {(["plano", "premium-asc", "deductible-asc", "best-value"] as SortKey[]).map((k) => (
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => setSort(k)}
+                  aria-pressed={sort === k}
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                    sort === k
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-card text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {SORT_LABELS[k]}
+                </button>
+              ))}
+            </div>
 
             {/* Compare bar */}
             {cart.compareIds.length > 0 && (
