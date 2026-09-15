@@ -149,8 +149,8 @@ function Page() {
   const clearFilters = () => browseStore.resetFilters();
   const activeFilterCount =
     (showExchange !== "all" ? 1 : 0) + metals.size + networks.size + carriers.size +
-    (hsaOnly ? 1 : 0) + (maxPremium !== 1000 ? 1 : 0) +
-    (maxDeductible !== 7500 ? 1 : 0) + (maxOop !== 9500 ? 1 : 0) +
+    (hsaOnly ? 1 : 0) + (easyPricingOnly ? 1 : 0) +
+    (maxPremium !== 1000 ? 1 : 0) + (maxDeductible !== 7500 ? 1 : 0) + (maxOop !== 9500 ? 1 : 0) +
     (maxPcpCopay !== 50 ? 1 : 0) + (maxSpecialistCopay !== 100 ? 1 : 0);
 
   return (
