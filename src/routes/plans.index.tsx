@@ -355,6 +355,8 @@ interface FilterProps {
   carrierOptions: { name: string; count: number }[];
   hsaOnly: boolean;
   setHsaOnly: (v: boolean) => void;
+  easyPricingOnly: boolean;
+  setEasyPricingOnly: (v: boolean) => void;
   maxPremium: number;
   setMaxPremium: (v: number) => void;
   maxDeductible: number;
