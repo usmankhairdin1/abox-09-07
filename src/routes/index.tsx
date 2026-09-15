@@ -1,14 +1,13 @@
 /**
  * UX-001 — Marketplace Landing. Meridian Navy.
  * A hero built around an orbital chart, a horizontal path selector,
- * an asymmetric product bento, a large split employer plate, and a
- * trust ladder — nothing reuses the old three-card layout.
+ * a large split employer plate, and a trust ladder — nothing reuses
+ * the old three-card layout.
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight, Sparkles, ShieldCheck, MessageSquareHeart,
-  Building2, HeartPulse, Compass,
-  Smile, Eye, HandHeart, Activity, Ambulance, HeartHandshake, Check,
+  Building2, HeartPulse, Compass, Check,
 } from "lucide-react";
 
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -16,33 +15,12 @@ import { ProductSwitcher } from "@/components/abox/product-switcher";
 import { AboxMark } from "@/components/abox/logo";
 import {
   Aurora, DotField, OrbitalRings, RadialTicks,
-  HealthPulseShield, CoverageWeave, BlueprintGrid, PolicyLines, FamilySilhouette,
+  CoverageWeave, BlueprintGrid,
 } from "@/components/abox/decor";
 import { FadeRise, Stagger, StaggerItem } from "@/components/abox/motion";
-import { SAMPLE_PRODUCTS } from "@/lib/sample-data";
 import { cn } from "@/lib/utils";
-import { useMarketplaceState, getMarketplace, getActiveBrand, getAvailability } from "@/lib/marketplace-store";
+import { useMarketplaceState, getMarketplace, getActiveBrand } from "@/lib/marketplace-store";
 import { SuspendedMarketplaceNotice } from "@/components/abox/suspended-marketplace-notice";
-
-/** M04 REQ-M04-AVL-002: only these product keys are governed by marketplace
- *  availability config; ancillary products (life/critical/accident/hospital)
- *  and the employer-only ICHRA card sit outside M04's fixed catalogue. */
-const GOVERNED_PRODUCT_LINES: Record<string, ("IFP_ON_EXCHANGE" | "IFP_OFF_EXCHANGE" | "DENTAL" | "VISION")[]> = {
-  ifp: ["IFP_ON_EXCHANGE", "IFP_OFF_EXCHANGE"],
-  dental: ["DENTAL"],
-  vision: ["VISION"],
-};
-
-const PRODUCT_ICONS: Record<string, typeof HeartPulse> = {
-  ifp: HeartPulse,
-  dental: Smile,
-  vision: Eye,
-  life: HandHeart,
-  critical: Activity,
-  accident: Ambulance,
-  hospital: HeartHandshake,
-  ichra: Building2,
-};
 
 
 export const Route = createFileRoute("/")({
@@ -73,7 +51,6 @@ function LandingPage() {
     <MarketplaceShell variant="landing">
       <Hero />
       <PathTicker />
-      <ProductBento />
       <PlanOOrbital />
       <EmployerPlate />
       <TrustLadder />
@@ -234,108 +211,6 @@ function PathTicker() {
   );
 }
 
-/* ============================ Product bento ============================ */
-function ProductBento() {
-  const mkt = useMarketplaceState();
-  const availability = getAvailability(mkt);
-  const isEnabled = (key: string) => {
-    const lines = GOVERNED_PRODUCT_LINES[key];
-    if (!lines) return true; // outside M04's fixed catalogue — not gated
-    return availability.some((a) => lines.includes(a.product_line as never) && a.status === "ENABLED" && a.channels.includes("CONSUMER_DIRECT"));
-  };
-  const products = SAMPLE_PRODUCTS.filter((p) => p.emphasis !== "group" && isEnabled(p.key));
-  const [feature, ...rest] = products;
-  return (
-    <section className="relative mx-4 overflow-hidden rounded-3xl border border-hairline bg-card md:mx-8">
-      <div className="absolute inset-0 aurora" aria-hidden />
-      <div className="absolute inset-0 contour opacity-70" aria-hidden />
-      <div className="relative mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h2 className="text-display text-4xl md:text-5xl">Shop by product</h2>
-          </div>
-          <p className="max-w-md text-sm text-muted-foreground">
-            One login. Add health, dental, vision and more — check out once.
-          </p>
-        </div>
-
-        {/* Feature hero — editorial split: content left, custom health illustration right */}
-        {feature && (
-          <Link
-            to={feature.href}
-            className="group relative mb-4 grid gap-8 overflow-hidden rounded-3xl border border-primary/40 bg-gradient-to-br from-primary/8 via-card to-card p-8 md:grid-cols-[1.15fr_1fr] md:gap-10 md:p-12 md:min-h-[360px] card-brackets edge-sheen"
-            style={{ boxShadow: "var(--shadow-plate)" }}
-          >
-            <BlueprintGrid className="opacity-40" />
-            <div className="relative flex flex-col justify-between">
-              <div className="max-w-xl">
-                <p className="text-eyebrow inline-flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  Most people start here · Featured
-                </p>
-                <h3 className="text-display mt-6 text-5xl md:text-7xl leading-[1.02]">{feature.label}</h3>
-                <p className="mt-4 max-w-md text-base text-muted-foreground">{feature.tagline}</p>
-                <ul className="mt-6 grid max-w-md grid-cols-2 gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                  {["ACA · on & off exchange", "HSA-ready plans", "Doctor & Rx search", "Subsidy estimator"].map((f) => (
-                    <li key={f} className="flex items-center gap-2">
-                      <span className="h-1 w-1 rounded-full bg-primary" aria-hidden />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform group-hover:scale-[1.03]" style={{ boxShadow: "var(--shadow-glow)" }}>
-                  Shop {feature.label.toLowerCase()}
-                  <ArrowRight className="h-4 w-4" aria-hidden />
-                </span>
-                <span className="text-serial">Avg. quote · 2 min</span>
-              </div>
-            </div>
-            {/* Custom illustration column */}
-            <div className="relative min-h-[220px]">
-              <HealthPulseShield size={360} className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
-              <FamilySilhouette size={200} className="bottom-2 right-2 opacity-90" />
-            </div>
-          </Link>
-        )}
-
-        {/* Secondary grid — uniform cards with prominent icon tile */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {rest.map((p) => {
-            const Icon = PRODUCT_ICONS[p.key] ?? ShieldCheck;
-            return (
-              <Link
-                key={p.key}
-                to={p.href}
-                className="group relative flex min-h-[200px] flex-col justify-between overflow-hidden rounded-2xl border border-hairline bg-background/60 p-6 transition-all hover:-translate-y-0.5 hover:border-primary/50 card-brackets edge-sheen"
-                style={{ boxShadow: "var(--shadow-card)" }}
-              >
-                <div className="flex items-start">
-                  <span
-                    aria-hidden
-                    className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-hairline bg-primary/8 text-primary transition-all duration-300 group-hover:-rotate-6 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground"
-                  >
-                    <Icon className="h-8 w-8" />
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-display mt-4 text-2xl leading-tight">{p.label}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{p.tagline}</p>
-                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                    Shop {p.label.toLowerCase()}
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-
-      </div>
-    </section>
-  );
-}
 
 /* ============================ PlanAI orbital ============================ */
 function PlanOOrbital() {
