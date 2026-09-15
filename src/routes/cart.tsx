@@ -2,7 +2,7 @@
  * UX-013 — Cart Drawer (rendered as a full page + grouped by product type)
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Trash2, ArrowRight, ShoppingBag, FileText } from "lucide-react";
+import { Trash2, ArrowRight, ShoppingBag, ShoppingCart, FileText } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { EmptyState } from "@/components/abox/empty-state";
