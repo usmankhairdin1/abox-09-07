@@ -41,75 +41,63 @@ export function ShoppingPathBar({ current }: { current: "guided" | "browse" }) {
 
   return (
     <section
-      aria-label="PlanAI and shopping path"
-      className="mb-6 rounded-2xl border border-border bg-card p-4"
+      aria-label="Shopping mode"
+      className="mb-4 rounded-xl border border-border bg-card p-3"
     >
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex min-w-0 items-start gap-3">
-          <span
-            aria-hidden
-            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground"
-          >
-            <Sparkles className="h-5 w-5" />
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-2 md:gap-3">
+          <span className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
+            Shopping mode
           </span>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold">PlanAI is here the whole way</p>
-            <p className="text-sm text-muted-foreground">
-              Ask for help or recommendations at any point — and switch between guided and
-              self-browse without starting over.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => planAiStore.set(true)}
-            className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
-          >
-            <Sparkles className="h-4 w-4" aria-hidden />
-            Ask PlanAI
-          </button>
 
           <div
             role="group"
-            aria-label="Shopping path"
-            className="inline-flex items-center gap-1 rounded-full border border-border bg-surface p-1"
+            aria-label="Choose shopping mode"
+            className="inline-flex items-center gap-1 rounded-full border border-border bg-surface p-0.5"
           >
             <Link
               to="/quote"
               search={{ step: lastStep }}
               aria-current={current === "guided" ? "page" : undefined}
               className={cn(
-                "inline-flex min-h-8 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
+                "inline-flex min-h-7 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors",
                 current === "guided"
                   ? "bg-primary text-primary-foreground"
                   : "text-foreground/80 hover:bg-accent",
               )}
             >
-              <Sparkles className="h-4 w-4" aria-hidden />
+              <Sparkles className="h-3.5 w-3.5" aria-hidden />
               Guide me
             </Link>
             <Link
               to="/plans"
               aria-current={current === "browse" ? "page" : undefined}
               className={cn(
-                "inline-flex min-h-8 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
+                "inline-flex min-h-7 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors",
                 current === "browse"
                   ? "bg-primary text-primary-foreground"
                   : "text-foreground/80 hover:bg-accent",
               )}
             >
-              <Compass className="h-4 w-4" aria-hidden />
+              <Compass className="h-3.5 w-3.5" aria-hidden />
               Browse myself
             </Link>
           </div>
         </div>
+
+        <button
+          type="button"
+          onClick={() => planAiStore.set(true)}
+          className="inline-flex min-h-7 items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+        >
+          <Sparkles className="h-3.5 w-3.5" aria-hidden />
+          Ask PlanAI
+        </button>
       </div>
 
       {kept.length > 0 && (
-        <p className="mt-3 text-xs text-muted-foreground">
-          Kept as you switch: {kept.join(" · ")}
+        <p className="mt-2 text-xs text-muted-foreground">
+          Carried over: {kept.join(" · ")}
           {current === "browse" && lastStep > 1 ? ` · guided quote at step ${lastStep}` : ""}
         </p>
       )}
