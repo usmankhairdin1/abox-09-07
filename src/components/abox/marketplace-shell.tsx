@@ -45,6 +45,8 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
   const brandName = brand?.display_name ?? "ABox";
   const brandTagline = brand?.tagline_en ?? "Agency in a Box";
   const userDisplayName =
+    ((session?.user.user_metadata?.username as string | undefined)?.trim()) ||
+    ((session?.user.user_metadata?.preferred_username as string | undefined)?.trim()) ||
     ((session?.user.user_metadata?.full_name as string | undefined)?.trim()) ||
     session?.user.email ||
     session?.user.phone ||
