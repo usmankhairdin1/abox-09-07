@@ -41,8 +41,8 @@ export function OverflowText({
         <TooltipTrigger asChild>
           {/* tabIndex makes a truncated value discoverable via keyboard */}
           <span
-            tabIndex={0}
-            aria-label={text}
+            tabIndex={overflowing ? 0 : undefined}
+            aria-label={overflowing ? text : undefined}
             onPointerEnter={measure}
             onFocus={measure}
             className="block min-w-0 max-w-full outline-none"
