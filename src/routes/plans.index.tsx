@@ -331,6 +331,7 @@ function Page() {
                 maxOop={maxOop} setMaxOop={setMaxOop}
                 maxPcpCopay={maxPcpCopay} setMaxPcpCopay={setMaxPcpCopay}
                 maxSpecialistCopay={maxSpecialistCopay} setMaxSpecialistCopay={setMaxSpecialistCopay}
+                easyPricingOnly={easyPricingOnly} setEasyPricingOnly={setEasyPricingOnly}
                 activeFilterCount={activeFilterCount} onClear={clearFilters}
                 hasSubsidyCheck={!!quote && !quote.skipSubsidy && quote.income != null}
               />
