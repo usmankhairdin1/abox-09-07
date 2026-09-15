@@ -27,7 +27,7 @@ export interface ShopProduct {
 
 export const SHOP_PRODUCTS: ShopProduct[] = [
   { key: "ifp", label: "Health Insurance", short: "Health", tagline: "Individual & family plans", icon: HeartPulse },
-  { key: "dental", label: "Dental", short: "Dental", tagline: "Preventive to comprehensive", icon: Smile },
+  { key: "dental", label: "Dental", short: "Dental", tagline: "Preventive to comprehensive", icon: Tooth },
   { key: "vision", label: "Vision", short: "Vision", tagline: "Exams, frames, contacts", icon: Eye },
   { key: "life", label: "Life", short: "Life", tagline: "Term life, simple to price", icon: Shield },
   { key: "critical", label: "Critical Illness", short: "Critical", tagline: "Cash benefit if diagnosed", icon: Activity },
