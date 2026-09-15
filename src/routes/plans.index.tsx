@@ -104,6 +104,7 @@ function Page() {
       if (metals.size > 0 && !metals.has(p.metalTier)) continue;
       if (networks.size > 0 && !networks.has(p.networkType)) continue;
       if (hsaOnly && !p.hsaEligible) continue;
+      if (easyPricingOnly && !(p.pcpCopay <= 15 && p.specialistCopay <= 40)) continue;
       if (p.monthlyPremium > maxPremium) continue;
       if (p.deductible > maxDeductible) continue;
       if (p.oopMax > maxOop) continue;
@@ -114,7 +115,7 @@ function Page() {
     return Array.from(counts, ([name, count]) => ({ name, count })).sort((a, b) =>
       b.count - a.count || a.name.localeCompare(b.name),
     );
-  }, [showExchange, metals, networks, hsaOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay]);
+  }, [showExchange, metals, networks, hsaOnly, easyPricingOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay]);
 
   const filtered = useMemo(() => {
     const list = SAMPLE_PLANS.filter((p) => {
