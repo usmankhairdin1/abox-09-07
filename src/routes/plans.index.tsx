@@ -15,7 +15,8 @@ import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { SAMPLE_PLANS, planMatchScore, type SamplePlan, type PlanMatchInputs } from "@/lib/sample-data";
 import { cartStore, useCart, PRODUCT_LABEL } from "@/lib/cart-store";
-import { loadQuoteState, estimateMonthlyAPTC, recommendedExchangeView } from "@/lib/quote-store";
+import { loadQuoteState, estimateMonthlyAPTC, recommendedExchangeView, defaultQuoteState, type QuoteState } from "@/lib/quote-store";
+import { QuoteEditPanel } from "@/components/abox/quote-edit-panel";
 import { SCREENS } from "@/lib/screens";
 import { browseStore, useBrowseState } from "@/lib/browse-store";
 import { formatUSD } from "@/lib/format";
@@ -150,7 +151,7 @@ function Page() {
     });
     return sorted;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- matchOf/subsidizedPriceOf are derived from quote, stable per render
-  }, [showExchange, metals, networks, carriers, hsaOnly, easyPricingOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay, sort]);
+  }, [showExchange, metals, networks, carriers, hsaOnly, easyPricingOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay, sort, quote]);
 
   const clearFilters = () => browseStore.resetFilters();
   const activeFilterCount =
@@ -173,9 +174,15 @@ function Page() {
           }
           actions={
             <div className="flex items-center gap-2">
-              <Link to="/quote" search={{ step: 1 }} className="inline-flex h-10 items-center rounded-full border border-border px-4 text-sm hover:bg-accent">
+              <button
+                type="button"
+                onClick={() => setEditOpen((v) => !v)}
+                aria-expanded={editOpen}
+                aria-controls="edit-quote-panel"
+                className="inline-flex h-10 items-center rounded-full border border-border px-4 text-sm hover:bg-accent"
+              >
                 Edit quote
-              </Link>
+              </button>
               <Link to="/cart" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 <ShoppingBag className="h-4 w-4" aria-hidden />
                 Cart · {cart.items.length}
@@ -183,6 +190,17 @@ function Page() {
             </div>
           }
         />
+
+        {editOpen && (
+          <QuoteEditPanel
+            quote={quote ?? defaultQuoteState()}
+            onApply={(next) => {
+              setQuote(next);
+              setEditOpen(false);
+            }}
+            onClose={() => setEditOpen(false)}
+          />
+        )}
 
         <ShoppingPathBar current="browse" />
 
