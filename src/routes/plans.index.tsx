@@ -5,7 +5,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Filter, ShoppingBag, Sparkles, X } from "lucide-react";
+import { Filter, Sparkles, X } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { PlanCard } from "@/components/abox/plan-card";
@@ -48,6 +48,14 @@ function Page() {
   const [quote, setQuote] = useState<QuoteState | null>(() =>
     typeof window === "undefined" ? null : loadQuoteState(),
   );
+  useEffect(() => {
+    // Hydration fallback: if the server rendered with no quote, re-read the
+    // shopper's persisted quote once after mounting.
+    if (!quote) {
+      const persisted = loadQuoteState();
+      if (persisted) setQuote(persisted);
+    }
+  }, []);
   const [editOpen, setEditOpen] = useState(false);
   const cart = useCart();
   const matchInputs: PlanMatchInputs | null = quote
@@ -167,34 +175,37 @@ function Page() {
     (maxPremium !== 1000 ? 1 : 0) + (maxDeductible !== 7500 ? 1 : 0) + (maxOop !== 9500 ? 1 : 0) +
     (maxPcpCopay !== 50 ? 1 : 0) + (maxSpecialistCopay !== 100 ? 1 : 0);
 
+  const summaryLine = useMemo(() => {
+    const countText = `${filtered.length} Plan${filtered.length === 1 ? "" : "s"} Available`;
+    if (!quote?.zip) return `${countText}.`;
+    const parts = [countText, `for ${quote.zip}`];
+    const personCount = quote.members?.length ?? 0;
+    if (personCount > 0) parts.push(`${personCount} Person${personCount === 1 ? "" : "s"}`);
+    if (quote.effectiveDate) {
+      const d = new Date(`${quote.effectiveDate}T00:00:00`);
+      parts.push(
+        `effective ${d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`,
+      );
+    }
+    return `${parts.join(" · ")}.`;
+  }, [filtered.length, quote]);
+
   return (
     <MarketplaceShell product="ifp">
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
         <PageHeader
-          scrId="UX-009"
-          eyebrow="Plans that fit"
-          title={`${filtered.length} plan${filtered.length === 1 ? "" : "s"} available`}
-          description={
-            quote?.zip
-              ? `Shown for ZIP ${quote.zip}${quote.county ? ` · ${quote.county}` : ""} · effective ${quote.effectiveDate || "—"}.`
-              : "Add your ZIP and household in the wizard to personalize your results."
-          }
+          variant="compact"
+          title={summaryLine}
           actions={
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setEditOpen((v) => !v)}
-                aria-expanded={editOpen}
-                aria-controls="edit-quote-panel"
-                className="inline-flex h-10 items-center rounded-full border border-border px-4 text-sm hover:bg-accent"
-              >
-                Edit quote
-              </button>
-              <Link to="/cart" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-                <ShoppingBag className="h-4 w-4" aria-hidden />
-                Cart · {cart.items.length}
-              </Link>
-            </div>
+            <button
+              type="button"
+              onClick={() => setEditOpen((v) => !v)}
+              aria-expanded={editOpen}
+              aria-controls="edit-quote-panel"
+              className="inline-flex h-9 items-center rounded-full border border-border px-3.5 text-sm hover:bg-accent"
+            >
+              Edit quote
+            </button>
           }
         />
 
