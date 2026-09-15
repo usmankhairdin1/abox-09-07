@@ -2,7 +2,7 @@
  * UX-013 — Cart Drawer (rendered as a full page + grouped by product type)
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Trash2, ArrowRight, ShoppingBag, FileText } from "lucide-react";
+import { Trash2, ArrowRight, ShoppingBag, ShoppingCart, FileText } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { EmptyState } from "@/components/abox/empty-state";
@@ -37,6 +37,7 @@ function Page() {
           scrId="UX-013" eyebrow="Your selections"
           title="Cart"
           description="Review your selected plan, then continue to enrollment."
+          icon={ShoppingCart}
           actions={cart.items.length > 0 && (
             <div className="flex items-center gap-2">
               <Link to="/plans" className="inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm hover:bg-accent">
@@ -49,7 +50,7 @@ function Page() {
 
         {cart.items.length === 0 ? (
           <EmptyState
-            icon={ShoppingBag}
+            icon={ShoppingCart}
             title="Your cart is empty"
             body="Add a health plan, then optionally bundle dental, vision, or life."
             action={<Link to="/plans" className="mt-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">Browse plans</Link>}
