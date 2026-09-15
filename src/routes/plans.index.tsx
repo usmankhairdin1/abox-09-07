@@ -168,6 +168,21 @@ function Page() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- matchOf/subsidizedPriceOf are derived from quote, stable per render
   }, [showExchange, metals, networks, carriers, hsaOnly, easyPricingOnly, maxPremium, maxDeductible, maxOop, maxPcpCopay, maxSpecialistCopay, sort, quote]);
 
+  const bestMatchId = useMemo(() => {
+    if (filtered.length === 0) return null;
+    let best = filtered[0];
+    let bestScore = matchOf(best);
+    for (let i = 1; i < filtered.length; i++) {
+      const p = filtered[i];
+      const s = matchOf(p);
+      if (s > bestScore) {
+        best = p;
+        bestScore = s;
+      }
+    }
+    return best.id;
+  }, [filtered, quote]);
+
   const clearFilters = () => browseStore.resetFilters();
   const activeFilterCount =
     (showExchange !== "all" ? 1 : 0) + metals.size + networks.size + carriers.size +
@@ -351,6 +366,7 @@ function Page() {
                     plan={plan}
                     matchScore={matchOf(plan)}
                     subsidizedPrice={subsidizedPriceOf(plan)}
+                    isBestMatch={plan.id === bestMatchId}
                     horizontal
                     inCart={cart.items.some((i) => i.id === plan.id)}
                     inCompare={cart.compareIds.includes(plan.id)}

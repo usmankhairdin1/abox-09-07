@@ -28,10 +28,12 @@ interface Props {
   matchScore?: number;
   /** Estimated after-subsidy monthly price. Only ever set for on-exchange plans — never off-exchange. */
   subsidizedPrice?: number;
+  /** Marks this tile as the current top PlanAI recommendation. */
+  isBestMatch?: boolean;
 }
 
 
-export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, inCompare, saved, compact, horizontal, matchScore, subsidizedPrice }: Props) {
+export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, inCompare, saved, compact, horizontal, matchScore, subsidizedPrice, isBestMatch }: Props) {
   const match = matchScore ?? plan.planOMatch;
   const showSubsidized = subsidizedPrice != null && subsidizedPrice < plan.monthlyPremium;
   const displayedPremium = showSubsidized && subsidizedPrice != null ? subsidizedPrice : plan.monthlyPremium;
@@ -56,6 +58,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
               </Link>
             </h3>
             <div className="mt-3 flex flex-wrap items-center gap-1.5">
+              {isBestMatch && <BestMatchIndicator />}
               <MetalBadge tier={plan.metalTier} />
               <StatusBadge tone="muted">{plan.networkType}</StatusBadge>
               <StatusBadge tone={plan.onExchange ? "info" : "primary"}>
@@ -143,6 +146,7 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
             </Link>
           </h3>
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
+            {isBestMatch && <BestMatchIndicator />}
             <MetalBadge tier={plan.metalTier} />
             <StatusBadge tone="muted">{plan.networkType}</StatusBadge>
             <StatusBadge tone={plan.onExchange ? "info" : "primary"}>
@@ -227,6 +231,15 @@ export function PlanCard({ plan, onAdd, onCompareToggle, onSaveToggle, inCart, i
         </div>
       </div>
     </article>
+  );
+}
+
+function BestMatchIndicator() {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-warning/30 bg-warning/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-warning">
+      <Star className="h-3 w-3 fill-warning text-warning" aria-hidden />
+      Best Match
+    </span>
   );
 }
 
