@@ -9,7 +9,7 @@ export interface SamplePlan {
   id: string;
   carrier: string;
   name: string;
-  metalTier: "Bronze" | "Silver" | "Gold" | "Platinum" | "Catastrophic";
+  metalTier: "Bronze" | "Expanded Bronze" | "Silver" | "Gold" | "Platinum" | "Catastrophic";
   networkType: "HMO" | "PPO" | "EPO" | "POS";
   onExchange: boolean;
   monthlyPremium: number;
@@ -121,8 +121,8 @@ export const SAMPLE_PLANS: SamplePlan[] = [
   {
     id: "plan-06",
     carrier: "BluePeak",
-    name: "BluePeak Bronze Essentials",
-    metalTier: "Bronze",
+    name: "BluePeak Expanded Bronze Essentials",
+    metalTier: "Expanded Bronze",
     networkType: "HMO",
     onExchange: true,
     monthlyPremium: 268,
