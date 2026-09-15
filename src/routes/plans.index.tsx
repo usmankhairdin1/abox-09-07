@@ -366,6 +366,7 @@ function Page() {
                     plan={plan}
                     matchScore={matchOf(plan)}
                     subsidizedPrice={subsidizedPriceOf(plan)}
+                    isBestMatch={plan.id === bestMatchId}
                     horizontal
                     inCart={cart.items.some((i) => i.id === plan.id)}
                     inCompare={cart.compareIds.includes(plan.id)}
