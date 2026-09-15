@@ -144,6 +144,12 @@ function Page() {
     const sorted = [...list].sort((a, b) => {
       switch (sort) {
         case "premium-asc": return a.monthlyPremium - b.monthlyPremium || matchOf(b) - matchOf(a);
+        case "affordable": {
+          // Overall affordability from existing data: estimated net monthly
+          // premium after any subsidy, then total out-of-pocket exposure.
+          const cost = (p: SamplePlan) => subsidizedPriceOf(p) ?? p.monthlyPremium;
+          return (cost(a) - cost(b)) || ((a.deductible + a.oopMax) - (b.deductible + b.oopMax)) || matchOf(b) - matchOf(a);
+        }
         case "premium-desc": return b.monthlyPremium - a.monthlyPremium || matchOf(b) - matchOf(a);
         case "deductible-asc": return a.deductible - b.deductible || matchOf(b) - matchOf(a);
         case "rating": return b.rating - a.rating || matchOf(b) - matchOf(a);
