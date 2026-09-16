@@ -32,7 +32,7 @@ function Page() {
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-6xl px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
+      <div className="mx-auto max-w-[88rem] px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
         <PageHeader
           scrId="UX-013" eyebrow="Your selections"
           title="Cart"
