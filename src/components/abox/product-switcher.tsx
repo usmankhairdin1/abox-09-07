@@ -17,7 +17,7 @@ interface Props {
   labelOverrides?: Record<string, string>;
 }
 
-export function ProductSwitcher({ active, variant = "strip", className }: Props) {
+export function ProductSwitcher({ active, variant = "strip", className, labelOverrides }: Props) {
   const isChips = variant === "chips";
   const items = (
     <ul className={cn(
