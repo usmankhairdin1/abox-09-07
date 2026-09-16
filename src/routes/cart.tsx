@@ -2,7 +2,7 @@
  * UX-013 — Cart Drawer (rendered as a full page + grouped by product type)
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Trash2, ArrowRight, ShoppingBag, ShoppingCart, FileText } from "lucide-react";
+import { Trash2, ArrowRight, ShoppingBag, ShoppingCart, FileText, Sparkles } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { EmptyState } from "@/components/abox/empty-state";
@@ -58,15 +58,20 @@ function Page() {
         ) : (
           <>
             {missingAddOns.length > 0 && (
-              <div className="mb-5 rounded-2xl border border-border bg-card p-4">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-eyebrow">Add-ons available</p>
-                    <p className="mt-1 text-xs text-muted-foreground">Pair extra coverage with your medical plan.</p>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {missingAddOns.map((t) => (
-                        <span key={t} className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">{PRODUCT_LABEL[t]}</span>
-                      ))}
+              <div className="mb-5 rounded-2xl border border-primary/30 bg-primary-soft/60 p-5">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                      <Sparkles className="h-5 w-5" aria-hidden />
+                    </div>
+                    <div>
+                      <p className="text-lg font-semibold text-foreground">Add-ons available</p>
+                      <p className="mt-1 text-sm text-muted-foreground">Pair extra coverage with your medical plan.</p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {missingAddOns.map((t) => (
+                          <span key={t} className="rounded-full border border-border bg-card px-3 py-1 text-sm font-medium">{PRODUCT_LABEL[t]}</span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   <Link to="/coverage" className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
@@ -75,6 +80,7 @@ function Page() {
                 </div>
               </div>
             )}
+
             <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div className="space-y-4">
               {(Object.keys(grouped) as ProductType[]).map((type) => (
