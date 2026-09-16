@@ -435,11 +435,10 @@ interface FilterProps {
 function FilterRail(p: FilterProps) {
   const METALS: SamplePlan["metalTier"][] = ["Bronze","Expanded Bronze","Silver","Gold","Platinum","Catastrophic"];
   const NETS: SamplePlan["networkType"][] = ["HMO","PPO","EPO","POS"];
-  /** Selected filter chips keep the exact plan-tile badge look; selection is shown with a ring. */
+  /** Filter chips render with the exact same badge treatment as plan tiles
+   *  (no dimming/opacity); selection is indicated only with a ring. */
   const selectionRing = (on: boolean) =>
-    on
-      ? "ring-2 ring-primary ring-offset-2 ring-offset-[var(--card)]"
-      : "opacity-75 hover:opacity-100";
+    on ? "ring-2 ring-primary ring-offset-2 ring-offset-[var(--card)]" : "";
   const toggleIn = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set); next.has(v) ? next.delete(v) : next.add(v); setter(next);
   };
