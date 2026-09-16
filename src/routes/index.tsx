@@ -286,7 +286,7 @@ function EmployerPlate() {
         <Aurora className="opacity-80" />
         <BlueprintGrid tone="hairline" className="opacity-45" />
         <CoverageWeave size={340} labels={["W", "H", "L"]} className="-right-6 -top-4 opacity-70 hidden md:block" />
-        <div className="relative mx-auto grid max-w-[96rem] items-center gap-10 px-6 py-20 md:grid-cols-[1.2fr_1fr] md:px-12 md:py-28">
+        <div className="relative mx-auto grid max-w-8xl items-center gap-10 px-6 py-20 md:grid-cols-[1.2fr_1fr] md:px-12 md:py-28">
           <div>
             <h2 className="text-display text-4xl md:text-6xl">
               Set an allowance.
