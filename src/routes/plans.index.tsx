@@ -210,8 +210,10 @@ function Page() {
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
         <PageHeader
           variant="compact"
-          title={summaryLine}
+          title="Plan available"
+          description={summaryLine}
           actions={
+
             <button
               type="button"
               onClick={() => setEditOpen((v) => !v)}
