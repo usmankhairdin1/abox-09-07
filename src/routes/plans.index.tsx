@@ -482,13 +482,13 @@ function FilterRail(p: FilterProps) {
         <FilterLegend>Exchange</FilterLegend>
         <div className="flex flex-wrap gap-1.5">
           {([
-            { v: "all", label: "All", tone: "muted" },
-            { v: "on", label: "On-exchange", tone: "info" },
-            { v: "off", label: "Off-exchange", tone: "primary" },
+            { v: "all", label: "All", tone: "muted", ringTone: "foreground" as const },
+            { v: "on", label: "On-exchange", tone: "info", ringTone: "info" as const },
+            { v: "off", label: "Off-exchange", tone: "primary", ringTone: "primary" as const },
           ] as const).map((o) => (
             <button key={o.v} onClick={() => p.setShowExchange(o.v)}
               aria-pressed={p.showExchange === o.v}
-              className={cn("rounded-full", selectionRing(p.showExchange === o.v))}
+              className={cn("rounded-full", selectionRing(p.showExchange === o.v, o.ringTone))}
             >
               <StatusBadge tone={o.tone}>{o.label}</StatusBadge>
             </button>
