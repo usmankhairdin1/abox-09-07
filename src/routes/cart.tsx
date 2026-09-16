@@ -65,7 +65,7 @@ function Page() {
                       <Sparkles className="h-5 w-5" aria-hidden />
                     </div>
                     <div>
-                      <p className="text-display text-lg font-semibold">Add-ons available</p>
+                      <p className="text-lg font-semibold text-foreground">Add-ons available</p>
                       <p className="mt-1 text-sm text-muted-foreground">Pair extra coverage with your medical plan.</p>
                       <div className="mt-2 flex flex-wrap gap-2">
                         {missingAddOns.map((t) => (
