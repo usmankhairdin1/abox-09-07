@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { loadQuoteState, type QuoteState } from "@/lib/quote-store";
 import { useBrowseState } from "@/lib/browse-store";
 import { useCart } from "@/lib/cart-store";
-import { planAiStore, useShoppingMode } from "@/lib/shopping-mode";
+import { useShoppingMode } from "@/lib/shopping-mode";
 
 export function ShoppingPathBar({ current }: { current: "guided" | "browse" }) {
   const { lastStep } = useShoppingMode();
@@ -85,14 +85,6 @@ export function ShoppingPathBar({ current }: { current: "guided" | "browse" }) {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => planAiStore.set(true)}
-          className="inline-flex min-h-7 items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
-        >
-          <Sparkles className="h-3.5 w-3.5" aria-hidden />
-          Ask PlanAI
-        </button>
       </div>
 
       {kept.length > 0 && (
