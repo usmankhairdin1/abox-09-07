@@ -7,7 +7,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight, Sparkles, ShieldCheck, MessageSquareHeart,
-  Building2, HeartPulse, Compass, Check,
+  Building2, HeartPulse, Compass, Check, BarChart3, ListChecks,
+  Headset, Clock,
 } from "lucide-react";
 
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
