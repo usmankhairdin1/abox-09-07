@@ -71,7 +71,7 @@ function Hero() {
     <section className="relative isolate flex min-h-[calc(100svh-5.25rem)] items-center overflow-hidden pt-20 pb-8 md:pt-24 md:pb-10">
       <Aurora />
       <DotField className="opacity-30" />
-      <div className="relative mx-auto grid max-w-8xl items-center gap-12 px-4 lg:grid-cols-[1.15fr_1fr] lg:gap-14 md:px-8">
+      <div className="relative mx-auto grid max-w-[88rem] items-center gap-12 px-4 lg:grid-cols-[1.15fr_1fr] lg:gap-14 md:px-8">
         <div>
           <h1 className="text-display text-4xl leading-[0.96] sm:text-5xl md:text-6xl lg:text-7xl">
             {headlineLead}{headlineRest.length > 0 && ","}
@@ -173,7 +173,7 @@ function PathTicker() {
     { title: "Talk to an agent", body: "A licensed human, one click away — PlanAI escalates.", to: "/schedule", icon: MessageSquareHeart },
   ];
   return (
-    <section className="mx-auto max-w-8xl px-4 py-16 md:px-8 md:py-24">
+    <section className="mx-auto max-w-[88rem] px-4 py-16 md:px-8 md:py-24">
       <div className="mb-10">
         <div>
           <p className="text-eyebrow">Choose your path</p>
@@ -216,7 +216,7 @@ function PathTicker() {
 /* ============================ PlanAI orbital ============================ */
 function PlanOOrbital() {
   return (
-    <section className="mx-auto max-w-8xl px-4 py-24 md:px-8 md:py-32">
+    <section className="mx-auto max-w-[88rem] px-4 py-24 md:px-8 md:py-32">
       <div className="grid items-center gap-14 md:grid-cols-[1fr_1.1fr]">
         <div>
           <h2 className="text-display text-4xl md:text-6xl">
@@ -286,7 +286,7 @@ function EmployerPlate() {
         <Aurora className="opacity-80" />
         <BlueprintGrid tone="hairline" className="opacity-45" />
         <CoverageWeave size={340} labels={["W", "H", "L"]} className="-right-6 -top-4 opacity-70 hidden md:block" />
-        <div className="relative mx-auto grid max-w-8xl items-center gap-10 px-6 py-20 md:grid-cols-[1.2fr_1fr] md:px-12 md:py-28">
+        <div className="relative mx-auto grid max-w-[88rem] items-center gap-10 px-6 py-20 md:grid-cols-[1.2fr_1fr] md:px-12 md:py-28">
           <div>
             <h2 className="text-display text-4xl md:text-6xl">
               Set an allowance.
@@ -344,7 +344,7 @@ function TrustLadder() {
     { icon: MessageSquareHeart, title: "A person, whenever you want one", body: "Every screen has a licensed-agent handoff. PlanAI tells you when it's the right call — and gets out of the way." },
   ];
   return (
-    <section className="relative mx-auto max-w-8xl px-4 py-16 md:px-8 md:py-24">
+    <section className="relative mx-auto max-w-[88rem] px-4 py-16 md:px-8 md:py-24">
       <BlueprintGrid tone="hairline" className="opacity-30" />
       <div className="relative mb-10 max-w-xl">
         <h2 className="text-display text-4xl md:text-5xl">Built on rules, not vibes.</h2>
