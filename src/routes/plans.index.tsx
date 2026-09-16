@@ -436,9 +436,16 @@ function FilterRail(p: FilterProps) {
   const METALS: SamplePlan["metalTier"][] = ["Bronze","Expanded Bronze","Silver","Gold","Platinum","Catastrophic"];
   const NETS: SamplePlan["networkType"][] = ["HMO","PPO","EPO","POS"];
   /** Filter chips render with the exact same badge treatment as plan tiles
-   *  (no dimming/opacity); selection is indicated only with a ring. */
-  const selectionRing = (on: boolean) =>
-    on ? "ring-2 ring-primary ring-offset-2 ring-offset-[var(--card)]" : "";
+   *  (no dimming/opacity); selection is indicated only with a ring that
+   *  matches the badge's own tone so it never reads as an extra contrasting
+   *  border (e.g. a blue ring around a muted "All" chip). */
+  const selectionRing = (on: boolean, tone: "primary" | "info" | "foreground" = "primary") => {
+    const color =
+      tone === "info" ? "ring-[var(--info)]" :
+      tone === "foreground" ? "ring-[var(--foreground)]" :
+      "ring-primary";
+    return on ? `ring-2 ${color} ring-offset-2 ring-offset-[var(--card)]` : "";
+  };
   const toggleIn = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set); next.has(v) ? next.delete(v) : next.add(v); setter(next);
   };
@@ -475,13 +482,13 @@ function FilterRail(p: FilterProps) {
         <FilterLegend>Exchange</FilterLegend>
         <div className="flex flex-wrap gap-1.5">
           {([
-            { v: "all", label: "All", tone: "muted" },
-            { v: "on", label: "On-exchange", tone: "info" },
-            { v: "off", label: "Off-exchange", tone: "primary" },
+            { v: "all", label: "All", tone: "muted", ringTone: "foreground" as const },
+            { v: "on", label: "On-exchange", tone: "info", ringTone: "info" as const },
+            { v: "off", label: "Off-exchange", tone: "primary", ringTone: "primary" as const },
           ] as const).map((o) => (
             <button key={o.v} onClick={() => p.setShowExchange(o.v)}
               aria-pressed={p.showExchange === o.v}
-              className={cn("rounded-full", selectionRing(p.showExchange === o.v))}
+              className={cn("rounded-full", selectionRing(p.showExchange === o.v, o.ringTone))}
             >
               <StatusBadge tone={o.tone}>{o.label}</StatusBadge>
             </button>
