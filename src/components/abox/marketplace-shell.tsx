@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useMarketplaceState, getActiveBrand } from "@/lib/marketplace-store";
 import { useCart, cartTotals } from "@/lib/cart-store";
 import { ProductSwitcher } from "./product-switcher";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
