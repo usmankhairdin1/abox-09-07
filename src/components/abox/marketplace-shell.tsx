@@ -148,7 +148,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
       <footer className="relative mt-24 overflow-hidden">
         <div className="mx-4 mb-4 overflow-hidden rounded-3xl bg-sidebar text-sidebar-foreground md:mx-8">
           <DotField className="opacity-40" tone="hairline" />
-          <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-16 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:px-12 md:py-20">
+          <div className="relative mx-auto grid max-w-8xl gap-14 px-6 py-16 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:px-12 md:py-20">
             <div>
               <div className="flex items-center gap-3">
                 <AboxMark size={40} tone="sidebar" />
