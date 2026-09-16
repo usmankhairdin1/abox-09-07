@@ -344,7 +344,7 @@ function TrustLadder() {
     { icon: MessageSquareHeart, title: "A person, whenever you want one", body: "Every screen has a licensed-agent handoff. PlanAI tells you when it's the right call — and gets out of the way." },
   ];
   return (
-    <section className="relative mx-auto max-w-[96rem] px-4 py-16 md:px-8 md:py-24">
+    <section className="relative mx-auto max-w-8xl px-4 py-16 md:px-8 md:py-24">
       <BlueprintGrid tone="hairline" className="opacity-30" />
       <div className="relative mb-10 max-w-xl">
         <h2 className="text-display text-4xl md:text-5xl">Built on rules, not vibes.</h2>
