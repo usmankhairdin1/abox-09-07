@@ -97,16 +97,16 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button
-                    className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground transition-all hover:scale-[1.03] min-h-10"
-                    style={{ boxShadow: "var(--shadow-glow)" }}
+                    className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
                     aria-label={`Account menu for ${userDisplayName}`}
                     aria-haspopup="menu"
                   >
                     <User className="h-4 w-4" aria-hidden />
                     <span className="max-w-[10ch] truncate sm:max-w-[16ch]">{userDisplayName}</span>
-                    <ChevronDown className="h-3.5 w-3.5 transition-transform group-data-[state=open]:rotate-180" aria-hidden />
+                    <ChevronDown className="h-3.5 w-3.5" aria-hidden />
                   </button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent align="end" sideOffset={8} className="w-56">
                   <div className="px-3 py-2">
                     <p className="text-sm font-semibold">{userDisplayName}</p>
