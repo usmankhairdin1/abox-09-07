@@ -12,6 +12,7 @@ import { PlanCard } from "@/components/abox/plan-card";
 import { ShoppingPathBar } from "@/components/abox/shopping-path-bar";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
+import { MetalBadge } from "@/components/abox/metal-badge";
 import { SAMPLE_PLANS, planMatchScore, type SamplePlan, type PlanMatchInputs } from "@/lib/sample-data";
 import { cartStore, useCart, PRODUCT_LABEL } from "@/lib/cart-store";
 import { loadQuoteState, estimateMonthlyAPTC, recommendedExchangeView, defaultQuoteState, type QuoteState } from "@/lib/quote-store";
