@@ -502,19 +502,12 @@ function FilterRail(p: FilterProps) {
         <div className="flex flex-wrap gap-1.5">
           {METALS.map((m) => {
             const on = p.metals.has(m);
-            const { tone, fg } = METAL_TOKENS[m];
             return (
               <button key={m} onClick={() => toggleIn(p.metals, m, p.setMetals)}
                 aria-pressed={on}
-                className={cn("rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.08em]",
-                  on ? "" : "hover:opacity-80")}
-                style={{
-                  borderColor: tone,
-                  backgroundColor: on ? tone : `color-mix(in oklch, ${tone} 15%, transparent)`,
-                  color: on ? fg : "var(--foreground)",
-                }}
+                className={cn("rounded-full", selectionRing(on))}
               >
-                {m}
+                <MetalBadge tier={m} />
               </button>
             );
           })}
@@ -530,10 +523,9 @@ function FilterRail(p: FilterProps) {
             return (
               <button key={n} onClick={() => toggleIn(p.networks, n, p.setNetworks)}
                 aria-pressed={on}
-                className={cn("rounded-full border px-2.5 py-1 text-xs",
-                  on ? "border-primary bg-primary-soft text-primary" : "border-border text-muted-foreground hover:bg-accent")}
+                className={cn("rounded-full", selectionRing(on))}
               >
-                {n}
+                <StatusBadge tone="muted">{n}</StatusBadge>
               </button>
             );
           })}
