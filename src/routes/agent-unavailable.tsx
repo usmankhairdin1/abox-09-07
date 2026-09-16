@@ -17,7 +17,7 @@ function Page() {
     <MarketplaceShell variant="flow">
       <section className="mx-auto max-w-lg px-4 py-32 text-center">
         <span className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-warning/40 bg-warning/10 text-warning"><UserX className="h-8 w-8" aria-hidden /></span>
-        <h1 className="text-display mt-6 text-3xl">That agent isn't available right now</h1>
+        <h1 className="text-display mt-6 text-2xl">That agent isn't available right now</h1>
         <p className="mt-3 text-sm text-muted-foreground">We never substitute another agent silently. Choose how you'd like to continue.</p>
         <div className="mt-8 grid gap-3 text-left">
           <Link to="/schedule" className="rounded-2xl border border-primary/40 bg-primary/5 p-4 hover:bg-primary/10"><p className="font-semibold">Same agency, no specific agent</p><p className="text-sm text-muted-foreground">We'll route you to the next available person there.</p></Link>

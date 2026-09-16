@@ -328,7 +328,7 @@ function QuoteWizardPage() {
               id="wizard-heading"
               ref={headingRef}
               tabIndex={-1}
-              className="text-display mt-2 text-3xl md:text-5xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded"
+              className="text-display mt-2 text-2xl md:text-4xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded"
             >
               {currentMeta.title}
             </h1>

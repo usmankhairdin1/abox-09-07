@@ -34,7 +34,7 @@ function NotFound() {
     <MarketplaceShell product="ifp">
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
         <p className="text-eyebrow">Plan not found</p>
-        <h1 className="text-display mt-2 text-4xl">We couldn't find that plan.</h1>
+        <h1 className="text-display mt-2 text-3xl">We couldn't find that plan.</h1>
         <Link to="/plans" className="mt-6 inline-flex items-center gap-1 text-sm text-primary story-link">
           Back to results
         </Link>

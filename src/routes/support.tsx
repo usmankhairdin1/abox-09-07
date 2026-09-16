@@ -21,7 +21,7 @@ function Page() {
     <MarketplaceShell variant="flow">
       <section className="mx-auto max-w-lg px-4 py-24 text-center">
         <span className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/40 bg-primary/10 text-primary"><LifeBuoy className="h-8 w-8" aria-hidden /></span>
-        <h1 className="text-display mt-6 text-3xl">{content?.support_display_name ?? "Support"}</h1>
+        <h1 className="text-display mt-6 text-2xl">{content?.support_display_name ?? "Support"}</h1>
         {content?.support_intro_en && <p className="mt-3 text-sm text-muted-foreground">{content.support_intro_en}</p>}
         <div className="mt-8 space-y-3 text-left text-sm">
           {content?.support_phone && <p className="flex items-center gap-2 rounded-xl border border-border bg-card p-3"><Phone className="h-4 w-4 text-muted-foreground" /> {content.support_phone}</p>}

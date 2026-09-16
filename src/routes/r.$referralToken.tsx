@@ -39,7 +39,7 @@ function Page() {
     return (
       <MarketplaceShell variant="flow">
         <section className="mx-auto max-w-lg px-4 py-32 text-center">
-          <h1 className="text-display text-3xl">This link isn't available</h1>
+          <h1 className="text-display text-2xl">This link isn't available</h1>
           <p className="mt-3 text-sm text-muted-foreground">The agency or agent behind this link is unavailable. We never substitute another participant silently.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link to="/agent-unavailable" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">See alternatives</Link>
@@ -62,7 +62,7 @@ function Page() {
     <MarketplaceShell variant="flow">
       <section className="mx-auto max-w-lg px-4 py-32 text-center">
         <p className="text-eyebrow">You're entering via a referral</p>
-        <h1 className="text-display mt-4 text-3xl">
+        <h1 className="text-display mt-4 text-2xl">
           {link.link_type === "ORGANIZATION" ? orgRecord?.display_name : link.agent_name}
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">

@@ -263,7 +263,7 @@ function seed(): MktState {
   const brands: Brand[] = [{
     brand_id: "brand-active-001", marketplace_id: MARKETPLACE_ID, status: "ACTIVE",
     display_name: "ABox", tagline_en: "Agency in a Box", tagline_es: "Agencia en una Caja",
-    headline_en: "Insurance, tuned to you.", headline_es: "Seguro, hecho a tu medida.",
+    headline_en: "Insurance, turns to you.", headline_es: "Seguro, hecho a tu medida.",
     intro_en: "Health, dental, vision, life — compared side by side. PlanAI helps you think it through without pushing. If you'd rather talk to a person, a licensed agent is one tap away.",
     intro_es: "Salud, dental, visión, vida — comparados uno al lado del otro. PlanAI te ayuda a pensarlo sin presionar. Si prefieres hablar con una persona, un agente con licencia está a un toque de distancia.",
     primary_color: "#c05a2e", accent_color: "#2e6b5e", version: 3,

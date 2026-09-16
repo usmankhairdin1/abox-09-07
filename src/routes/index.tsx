@@ -73,7 +73,7 @@ function Hero() {
       <DotField className="opacity-30" />
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 lg:grid-cols-[1.15fr_1fr] lg:gap-14 md:px-8">
         <div>
-          <h1 className="text-display text-[52px] leading-[0.96] md:text-[104px]">
+          <h1 className="text-display text-4xl leading-[0.96] sm:text-5xl md:text-6xl lg:text-7xl">
             {headlineLead}{headlineRest.length > 0 && ","}
             <br />
             {headlineRest.length > 0 && (

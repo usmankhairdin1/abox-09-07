@@ -55,7 +55,7 @@ function OperationsHome() {
       <header className="relative overflow-hidden border-b border-hairline pb-10 pt-8 md:pb-12 md:pt-12">
         <div className="flex flex-wrap items-end justify-between gap-8">
           <div className="max-w-3xl">
-            <h1 className="text-display text-4xl leading-none sm:text-5xl md:text-6xl">Good morning, Elena.</h1>
+            <h1 className="text-display text-3xl leading-none sm:text-4xl md:text-5xl">Good morning, Elena.</h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
               Your book is moving. Three cases need attention today and seven new opportunities are ready for follow-up.
             </p>

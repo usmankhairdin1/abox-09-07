@@ -22,7 +22,7 @@ function Page() {
   return (
     <MarketplaceShell variant="flow">
       <section className="mx-auto max-w-lg px-4 py-24">
-        <h1 className="text-display text-3xl text-center">You have an existing journey</h1>
+        <h1 className="text-display text-2xl text-center">You have an existing journey</h1>
         <p className="mt-3 text-center text-sm text-muted-foreground">
           {savedAt ? `Saved ${new Date(savedAt).toLocaleString()}.` : "You have saved progress."} A new referral link never silently moves an existing journey — choose how to continue.
         </p>
