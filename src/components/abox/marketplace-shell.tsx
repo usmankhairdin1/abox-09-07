@@ -10,7 +10,7 @@ import { AboxMark } from "./logo";
 import { PlanOAssistant } from "./plan-o-assistant";
 import { DotField } from "./decor";
 import { cn } from "@/lib/utils";
-import { useAuthSession } from "@/lib/auth-session";
+import { useAuthSession, getDisplayNameFromUser } from "@/lib/auth-session";
 import { supabase } from "@/integrations/supabase/client";
 import { useMarketplaceState, getActiveBrand } from "@/lib/marketplace-store";
 import { useCart, cartTotals } from "@/lib/cart-store";
@@ -43,13 +43,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
   const brand = getActiveBrand(mkt);
   const brandName = brand?.display_name ?? "ABox";
   const brandTagline = brand?.tagline_en ?? "Agency in a Box";
-  const userDisplayName =
-    ((session?.user.user_metadata?.username as string | undefined)?.trim()) ||
-    ((session?.user.user_metadata?.preferred_username as string | undefined)?.trim()) ||
-    ((session?.user.user_metadata?.full_name as string | undefined)?.trim()) ||
-    session?.user.email ||
-    session?.user.phone ||
-    "Account";
+  const userDisplayName = getDisplayNameFromUser(session?.user);
   return (
     <div className="relative flex min-h-dvh flex-col bg-background text-foreground">
       <DotField className="fixed inset-0 -z-10" />
