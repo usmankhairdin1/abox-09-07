@@ -248,10 +248,10 @@ function PlanOOrbital() {
 
         <div className="relative grid grid-cols-2 gap-4">
           {[
-            { label: "Plans compared", value: "220K+" },
-            { label: "Avg. shortlist size", value: "3" },
-            { label: "Escalations to agent", value: "1 in 6", tone: "sage" as const },
-            { label: "Time to first quote", value: "~2 min", tone: "sage" as const },
+            { label: "Plans compared", value: "220K+", icon: BarChart3 },
+            { label: "Avg. shortlist size", value: "3", icon: ListChecks },
+            { label: "Escalations to agent", value: "1 in 6", icon: Headset, tone: "sage" as const },
+            { label: "Time to first quote", value: "~2 min", icon: Clock, tone: "sage" as const },
           ].map((s) => (
             <div
               key={s.label}
@@ -260,9 +260,11 @@ function PlanOOrbital() {
             >
               <span
                 aria-hidden
-                className="absolute right-5 top-5 h-12 w-12 rounded-2xl border"
+                className="absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-2xl border"
                 style={{ borderColor: s.tone === "sage" ? "var(--sage)" : "var(--primary)", opacity: 0.36 }}
-              />
+              >
+                <s.icon className="h-6 w-6" style={{ color: s.tone === "sage" ? "var(--sage)" : "var(--primary)" }} />
+              </span>
               <p className="text-eyebrow max-w-[70%]">{s.label}</p>
               <p className="text-display mt-6 text-4xl tabular-nums">{s.value}</p>
             </div>
