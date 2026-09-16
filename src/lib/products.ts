@@ -7,7 +7,7 @@ import {
   Activity,
   Ambulance,
   BedDouble,
-  Briefcase,
+  HandCoins,
   Eye,
   HeartPulse,
   Shield,
@@ -33,7 +33,7 @@ export const SHOP_PRODUCTS: ShopProduct[] = [
   { key: "critical", label: "Critical Illness", short: "Critical", tagline: "Cash benefit if diagnosed", icon: Activity },
   { key: "accident", label: "Accident", short: "Accident", tagline: "Injury protection", icon: Ambulance },
   { key: "hospital", label: "Hospital Indemnity", short: "Hospital", tagline: "Fixed daily benefit", icon: BedDouble },
-  { key: "ichra", label: "ICHRA for Employers", short: "Employers", tagline: "Set an allowance — team picks", icon: Briefcase },
+  { key: "ichra", label: "ICHRA for Employers", short: "ICHRA", tagline: "Set an allowance — team picks", icon: HandCoins },
 ];
 
 export function productIcon(key: string): LucideIcon {

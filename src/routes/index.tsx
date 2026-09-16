@@ -7,7 +7,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight, Sparkles, ShieldCheck, MessageSquareHeart,
-  Building2, HeartPulse, Compass, Check, BarChart3, ListChecks,
+  HandCoins, HeartPulse, Compass, Check, BarChart3, ListChecks,
   Headset, Clock,
 } from "lucide-react";
 
@@ -87,7 +87,7 @@ function Hero() {
           </p>
           <div className="mt-10">
             <p className="text-eyebrow mb-4">Products available today</p>
-            <ProductSwitcher variant="chips" labelOverrides={{ ichra: "ichra" }} />
+            <ProductSwitcher variant="chips" labelOverrides={{ ichra: "ICHRA" }} />
           </div>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
@@ -305,7 +305,7 @@ function EmployerPlate() {
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-transform hover:scale-[1.03] min-h-11"
                 style={{ boxShadow: "var(--shadow-glow)" }}
               >
-                <Building2 className="h-4 w-4" aria-hidden /> Explore ICHRA
+                <HandCoins className="h-4 w-4" aria-hidden /> Explore ICHRA
               </Link>
               <Link
                 to="/schedule"

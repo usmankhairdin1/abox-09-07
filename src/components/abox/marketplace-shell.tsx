@@ -5,7 +5,7 @@
  * atmosphere.
  */
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight, ChevronDown, Settings, Store, Building2, ShoppingCart } from "lucide-react";
+import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight, ChevronDown, Settings, Store, HandCoins, ShoppingCart } from "lucide-react";
 import { AboxMark } from "./logo";
 import { PlanOAssistant } from "./plan-o-assistant";
 import { DotField } from "./decor";
@@ -68,7 +68,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
             {variant === "landing" && (
               <PillLink to="/select" icon={<Store className="h-4 w-4" />}>Shop plans</PillLink>
             )}
-            <PillLink to="/ichra" icon={<Building2 className="h-4 w-4" />}>ICHRA</PillLink>
+            <PillLink to="/ichra" icon={<HandCoins className="h-4 w-4" />}>ICHRA</PillLink>
             <PillLink to="/schedule" icon={<LifeBuoy className="h-4 w-4" />}>Agent help</PillLink>
             <Link
               to="/cart"
