@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useMarketplaceState, getActiveBrand } from "@/lib/marketplace-store";
 import { useCart, cartTotals } from "@/lib/cart-store";
 import { ProductSwitcher } from "./product-switcher";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -83,7 +83,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
                   : "Cart: empty"
               }
             >
-              <ShoppingBag className="h-4 w-4" aria-hidden />
+              <ShoppingCart className="h-4 w-4" aria-hidden />
               <span>Cart</span>
               {cartTotal.count > 0 && (
                 <>
