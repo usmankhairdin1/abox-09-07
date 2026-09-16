@@ -25,10 +25,11 @@ export function MetalBadge({ tier, className }: { tier: SamplePlan["metalTier"];
       )}
       style={{
         backgroundColor: "var(--tone)",
-        color: "color-mix(in oklch, var(--tone) 45%, oklch(0.15 0 0))",
+        color: "oklch(0.12 0 0)",
       }}
     >
       {tier}
     </span>
   );
 }
+
