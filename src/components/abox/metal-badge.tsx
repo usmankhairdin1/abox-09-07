@@ -7,12 +7,12 @@ import { cn } from "@/lib/utils";
 import type { SamplePlan } from "@/lib/sample-data";
 
 const TIER_VAR: Record<SamplePlan["metalTier"], string> = {
-  Bronze: "[--tone:var(--metal-bronze)]",
-  "Expanded Bronze": "[--tone:var(--metal-expanded-bronze)]",
-  Silver: "[--tone:var(--metal-silver)]",
-  Gold: "[--tone:var(--metal-gold)]",
-  Platinum: "[--tone:var(--metal-platinum)]",
-  Catastrophic: "[--tone:var(--metal-catastrophic)]",
+  Bronze: "[--tone:var(--metal-bronze)] [--tone-fg:var(--metal-bronze-fg)]",
+  "Expanded Bronze": "[--tone:var(--metal-expanded-bronze)] [--tone-fg:var(--metal-expanded-bronze-fg)]",
+  Silver: "[--tone:var(--metal-silver)] [--tone-fg:var(--metal-silver-fg)]",
+  Gold: "[--tone:var(--metal-gold)] [--tone-fg:var(--metal-gold-fg)]",
+  Platinum: "[--tone:var(--metal-platinum)] [--tone-fg:var(--metal-platinum-fg)]",
+  Catastrophic: "[--tone:var(--metal-catastrophic)] [--tone-fg:var(--metal-catastrophic-fg)]",
 };
 
 export function MetalBadge({ tier, className }: { tier: SamplePlan["metalTier"]; className?: string }) {
@@ -25,7 +25,7 @@ export function MetalBadge({ tier, className }: { tier: SamplePlan["metalTier"];
       )}
       style={{
         backgroundColor: "var(--tone)",
-        color: "oklch(0.12 0 0)",
+        color: "var(--tone-fg)",
       }}
     >
       {tier}
