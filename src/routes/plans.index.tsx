@@ -498,11 +498,17 @@ function FilterRail(p: FilterProps) {
         <div className="flex flex-wrap gap-1.5">
           {METALS.map((m) => {
             const on = p.metals.has(m);
+            const tone = METAL_TOKENS[m];
             return (
               <button key={m} onClick={() => toggleIn(p.metals, m, p.setMetals)}
                 aria-pressed={on}
                 className={cn("rounded-full border px-2.5 py-1 text-xs",
-                  on ? "border-primary bg-primary-soft text-primary" : "border-border text-muted-foreground hover:bg-accent")}
+                  on ? "font-medium" : "hover:opacity-80")}
+                style={{
+                  borderColor: tone,
+                  backgroundColor: on ? tone : `color-mix(in oklch, ${tone} 15%, transparent)`,
+                  color: "oklch(0.12 0 0)",
+                }}
               >
                 {m}
               </button>
@@ -510,6 +516,7 @@ function FilterRail(p: FilterProps) {
           })}
         </div>
       </fieldset>
+
 
       <fieldset>
         <FilterLegend>Network</FilterLegend>
