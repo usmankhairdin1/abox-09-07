@@ -434,14 +434,11 @@ interface FilterProps {
 function FilterRail(p: FilterProps) {
   const METALS: SamplePlan["metalTier"][] = ["Bronze","Expanded Bronze","Silver","Gold","Platinum","Catastrophic"];
   const NETS: SamplePlan["networkType"][] = ["HMO","PPO","EPO","POS"];
-  const METAL_TOKENS: Record<SamplePlan["metalTier"], { tone: string; fg: string }> = {
-    Bronze: { tone: "var(--metal-bronze)", fg: "var(--metal-bronze-fg)" },
-    "Expanded Bronze": { tone: "var(--metal-expanded-bronze)", fg: "var(--metal-expanded-bronze-fg)" },
-    Silver: { tone: "var(--metal-silver)", fg: "var(--metal-silver-fg)" },
-    Gold: { tone: "var(--metal-gold)", fg: "var(--metal-gold-fg)" },
-    Platinum: { tone: "var(--metal-platinum)", fg: "var(--metal-platinum-fg)" },
-    Catastrophic: { tone: "var(--metal-catastrophic)", fg: "var(--metal-catastrophic-fg)" },
-  };
+  /** Selected filter chips keep the exact plan-tile badge look; selection is shown with a ring. */
+  const selectionRing = (on: boolean) =>
+    on
+      ? "ring-2 ring-primary ring-offset-2 ring-offset-[var(--card)]"
+      : "opacity-75 hover:opacity-100";
   const toggleIn = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set); next.has(v) ? next.delete(v) : next.add(v); setter(next);
   };
