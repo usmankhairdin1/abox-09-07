@@ -86,7 +86,7 @@ function Hero() {
           </p>
           <div className="mt-10">
             <p className="text-eyebrow mb-4">Products available today</p>
-            <ProductSwitcher variant="chips" />
+            <ProductSwitcher variant="chips" labelOverrides={{ ichra: "ichra" }} />
           </div>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
