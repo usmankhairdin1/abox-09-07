@@ -20,7 +20,7 @@ function Page() {
   return (
     <MarketplaceShell>
       <section className="relative overflow-hidden bg-gradient-to-b from-primary-soft/40 to-background">
-        <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 md:px-8 md:pb-24 md:pt-8">
+        <div className="mx-auto max-w-[88rem] px-4 pb-16 pt-6 md:px-8 md:pb-24 md:pt-8">
           <PageHeader
             eyebrow="For employers"
             title="ICHRA: set an allowance. Team picks the plan."
