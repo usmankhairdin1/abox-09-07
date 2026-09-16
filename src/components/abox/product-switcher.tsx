@@ -13,6 +13,8 @@ interface Props {
   /** "strip" = full-width flow rail, "chips" = inline hero row. */
   variant?: "strip" | "chips";
   className?: string;
+  /** Per-product short-label overrides; used only for the chips variant. */
+  labelOverrides?: Record<string, string>;
 }
 
 export function ProductSwitcher({ active, variant = "strip", className }: Props) {
