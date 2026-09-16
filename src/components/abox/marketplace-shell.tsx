@@ -83,7 +83,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
                   : "Cart: empty"
               }
             >
-              <ShoppingBag className="h-4 w-4" aria-hidden />
+              <ShoppingCart className="h-4 w-4" aria-hidden />
               <span>Cart</span>
               {cartTotal.count > 0 && (
                 <>
