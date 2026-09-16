@@ -5,7 +5,7 @@
  * atmosphere.
  */
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight, ChevronDown, Settings } from "lucide-react";
+import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight, ChevronDown, Settings, Store, Building2, ShoppingCart } from "lucide-react";
 import { AboxMark } from "./logo";
 import { PlanOAssistant } from "./plan-o-assistant";
 import { DotField } from "./decor";
