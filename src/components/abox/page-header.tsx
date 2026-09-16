@@ -38,9 +38,10 @@ export function PageHeader({ eyebrow, scrId, title, description, icon: Icon, act
             )}
             <h1 className={cn(
               isCompact
-                ? "text-sm font-medium text-foreground md:text-base"
+                ? "text-xl font-semibold text-foreground md:text-2xl"
                 : "text-display text-[42px] font-semibold leading-[0.98] tracking-tight md:text-7xl",
             )}>
+
               {title}
             </h1>
           </div>
