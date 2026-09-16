@@ -66,7 +66,7 @@ export function MemberShell({ children }: Props) {
       </a>
 
       <header className="sticky top-4 z-30 flex justify-center px-4 md:px-8">
-        <div className="glass flex w-full max-w-7xl items-center justify-between gap-3 rounded-full pl-4 pr-2 py-2">
+        <div className="glass flex w-full items-center justify-between gap-3 rounded-full pl-4 pr-2 py-2">
           <Link to="/" className="flex items-center gap-2.5">
             <AboxMark size={32} tone="primary" />
             <div className="hidden flex-col leading-tight md:flex">
@@ -92,12 +92,12 @@ export function MemberShell({ children }: Props) {
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 pb-8 pt-4 md:flex-row md:px-8 md:pb-12 md:pt-6">
+      <div className="mx-auto flex w-full max-w-[88rem] flex-1 flex-col gap-8 px-4 pb-8 pt-4 md:flex-row md:px-8 md:pb-12 md:pt-6">
         {/* Arc dot rail */}
         <aside className="md:w-60 md:shrink-0" aria-label="Member navigation">
           <nav className="relative">
-            {/* connecting arc */}
-            <span aria-hidden className="pointer-events-none absolute left-[13px] top-4 bottom-4 hidden w-px bg-gradient-to-b from-primary/60 via-hairline to-transparent md:block" />
+            {/* connecting arc — centered through the icon circles (px-2 + 18px icon center) */}
+            <span aria-hidden className="pointer-events-none absolute left-[26px] top-4 bottom-4 hidden w-px bg-gradient-to-b from-primary/60 via-hairline to-transparent md:block" />
             <ul className="flex gap-1 overflow-x-auto md:flex-col md:gap-3 md:overflow-visible">
               {MEMBER_NAV.map((item) => {
                 const active = pathname === item.to;
