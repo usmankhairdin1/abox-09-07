@@ -71,7 +71,7 @@ function Hero() {
     <section className="relative isolate flex min-h-[calc(100svh-5.25rem)] items-center overflow-hidden pt-20 pb-8 md:pt-24 md:pb-10">
       <Aurora />
       <DotField className="opacity-30" />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-3 lg:grid-cols-[1.15fr_1fr] lg:gap-14 md:px-6">
+      <div className="relative mx-auto grid max-w-8xl items-center gap-12 px-4 lg:grid-cols-[1.15fr_1fr] lg:gap-14 md:px-8">
         <div>
           <h1 className="text-display text-4xl leading-[0.96] sm:text-5xl md:text-6xl lg:text-7xl">
             {headlineLead}{headlineRest.length > 0 && ","}
