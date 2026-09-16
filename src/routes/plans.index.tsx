@@ -575,10 +575,12 @@ function FilterRail(p: FilterProps) {
 
       <fieldset>
         <FilterLegend>HSA eligibility</FilterLegend>
-        <label className="flex items-center justify-between text-sm">
-          <span>HSA-eligible only</span>
-          <input type="checkbox" checked={p.hsaOnly} onChange={(e) => p.setHsaOnly(e.target.checked)} />
-        </label>
+        <div className="flex flex-wrap gap-1.5">
+          <button onClick={() => p.setHsaOnly(!p.hsaOnly)} aria-pressed={p.hsaOnly}
+            className={cn("rounded-full", selectionRing(p.hsaOnly))}>
+            <StatusBadge tone="sage">HSA</StatusBadge>
+          </button>
+        </div>
       </fieldset>
 
       <fieldset>
