@@ -435,13 +435,13 @@ interface FilterProps {
 function FilterRail(p: FilterProps) {
   const METALS: SamplePlan["metalTier"][] = ["Bronze","Expanded Bronze","Silver","Gold","Platinum","Catastrophic"];
   const NETS: SamplePlan["networkType"][] = ["HMO","PPO","EPO","POS"];
-  const METAL_TOKENS: Record<SamplePlan["metalTier"], string> = {
-    Bronze: "var(--metal-bronze)",
-    "Expanded Bronze": "var(--metal-expanded-bronze)",
-    Silver: "var(--metal-silver)",
-    Gold: "var(--metal-gold)",
-    Platinum: "var(--metal-platinum)",
-    Catastrophic: "var(--metal-catastrophic)",
+  const METAL_TOKENS: Record<SamplePlan["metalTier"], { tone: string; fg: string }> = {
+    Bronze: { tone: "var(--metal-bronze)", fg: "var(--metal-bronze-fg)" },
+    "Expanded Bronze": { tone: "var(--metal-expanded-bronze)", fg: "var(--metal-expanded-bronze-fg)" },
+    Silver: { tone: "var(--metal-silver)", fg: "var(--metal-silver-fg)" },
+    Gold: { tone: "var(--metal-gold)", fg: "var(--metal-gold-fg)" },
+    Platinum: { tone: "var(--metal-platinum)", fg: "var(--metal-platinum-fg)" },
+    Catastrophic: { tone: "var(--metal-catastrophic)", fg: "var(--metal-catastrophic-fg)" },
   };
   const toggleIn = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set); next.has(v) ? next.delete(v) : next.add(v); setter(next);
