@@ -17,7 +17,7 @@ function Page() {
     <MarketplaceShell variant="flow">
       <section className="mx-auto max-w-lg px-4 py-32 text-center">
         <span className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-hairline bg-muted text-muted-foreground"><SearchX className="h-8 w-8" aria-hidden /></span>
-        <h1 className="text-display mt-6 text-3xl">No plans ready for that area yet</h1>
+        <h1 className="text-display mt-6 text-2xl">No plans ready for that area yet</h1>
         <p className="mt-3 text-sm text-muted-foreground">We don't show stale, cross-state or simulated plans. Try a different location, another product, or talk to an agent.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link to="/select" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">Correct my location</Link>
