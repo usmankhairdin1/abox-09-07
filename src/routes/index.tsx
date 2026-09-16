@@ -216,7 +216,7 @@ function PathTicker() {
 /* ============================ PlanAI orbital ============================ */
 function PlanOOrbital() {
   return (
-    <section className="mx-auto max-w-[96rem] px-4 py-24 md:px-8 md:py-32">
+    <section className="mx-auto max-w-8xl px-4 py-24 md:px-8 md:py-32">
       <div className="grid items-center gap-14 md:grid-cols-[1fr_1.1fr]">
         <div>
           <h2 className="text-display text-4xl md:text-6xl">
