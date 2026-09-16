@@ -476,14 +476,17 @@ function FilterRail(p: FilterProps) {
 
       <fieldset>
         <FilterLegend>Exchange</FilterLegend>
-        <div className="grid grid-cols-3 gap-1 rounded-full bg-surface p-1">
-          {(["all","on","off"] as const).map((v) => (
-            <button key={v} onClick={() => p.setShowExchange(v)}
-              aria-pressed={p.showExchange === v}
-              className={cn("rounded-full px-2 py-1.5 text-xs font-medium",
-                p.showExchange === v ? "bg-card shadow-[var(--shadow-card)]" : "text-muted-foreground")}
+        <div className="flex flex-wrap gap-1.5">
+          {([
+            { v: "all", label: "All", tone: "muted" },
+            { v: "on", label: "On-exchange", tone: "info" },
+            { v: "off", label: "Off-exchange", tone: "primary" },
+          ] as const).map((o) => (
+            <button key={o.v} onClick={() => p.setShowExchange(o.v)}
+              aria-pressed={p.showExchange === o.v}
+              className={cn("rounded-full", selectionRing(p.showExchange === o.v))}
             >
-              {v === "all" ? "All" : v === "on" ? "On-QHP" : "Off-exch"}
+              <StatusBadge tone={o.tone}>{o.label}</StatusBadge>
             </button>
           ))}
         </div>
