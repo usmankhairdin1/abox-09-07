@@ -500,16 +500,16 @@ function FilterRail(p: FilterProps) {
         <div className="flex flex-wrap gap-1.5">
           {METALS.map((m) => {
             const on = p.metals.has(m);
-            const tone = METAL_TOKENS[m];
+            const { tone, fg } = METAL_TOKENS[m];
             return (
               <button key={m} onClick={() => toggleIn(p.metals, m, p.setMetals)}
                 aria-pressed={on}
-                className={cn("rounded-full border px-2.5 py-1 text-xs",
-                  on ? "font-medium" : "hover:opacity-80")}
+                className={cn("rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.08em]",
+                  on ? "" : "hover:opacity-80")}
                 style={{
                   borderColor: tone,
                   backgroundColor: on ? tone : `color-mix(in oklch, ${tone} 15%, transparent)`,
-                  color: "oklch(0.12 0 0)",
+                  color: on ? fg : "var(--foreground)",
                 }}
               >
                 {m}
