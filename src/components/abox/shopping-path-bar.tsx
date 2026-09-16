@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { loadQuoteState, type QuoteState } from "@/lib/quote-store";
 import { useBrowseState } from "@/lib/browse-store";
 import { useCart } from "@/lib/cart-store";
-import { planAiStore, useShoppingMode } from "@/lib/shopping-mode";
+import { useShoppingMode } from "@/lib/shopping-mode";
 
 export function ShoppingPathBar({ current }: { current: "guided" | "browse" }) {
   const { lastStep } = useShoppingMode();
