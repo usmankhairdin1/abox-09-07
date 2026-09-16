@@ -173,7 +173,7 @@ function PathTicker() {
     { title: "Talk to an agent", body: "A licensed human, one click away — PlanAI escalates.", to: "/schedule", icon: MessageSquareHeart },
   ];
   return (
-    <section className="mx-auto max-w-[96rem] px-4 py-16 md:px-8 md:py-24">
+    <section className="mx-auto max-w-8xl px-4 py-16 md:px-8 md:py-24">
       <div className="mb-10">
         <div>
           <p className="text-eyebrow">Choose your path</p>
