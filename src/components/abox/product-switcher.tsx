@@ -13,9 +13,11 @@ interface Props {
   /** "strip" = full-width flow rail, "chips" = inline hero row. */
   variant?: "strip" | "chips";
   className?: string;
+  /** Per-product short-label overrides; used only for the chips variant. */
+  labelOverrides?: Record<string, string>;
 }
 
-export function ProductSwitcher({ active, variant = "strip", className }: Props) {
+export function ProductSwitcher({ active, variant = "strip", className, labelOverrides }: Props) {
   const isChips = variant === "chips";
   const items = (
     <ul className={cn(
@@ -25,6 +27,7 @@ export function ProductSwitcher({ active, variant = "strip", className }: Props)
       {SHOP_PRODUCTS.map((p) => {
         const Icon = p.icon;
         const isActive = active === p.key;
+        const short = labelOverrides?.[p.key] ?? p.short;
         const to = p.key === "ichra" ? "/ichra" : "/select";
         return (
           <li key={p.key} className="snap-start">
@@ -45,7 +48,7 @@ export function ProductSwitcher({ active, variant = "strip", className }: Props)
               )}
             >
               <Icon className={cn(isChips ? "h-5 w-5 md:h-6 md:w-6" : "h-4 w-4")} aria-hidden />
-              <span>{isChips ? p.short : p.label}</span>
+              <span>{isChips ? short : p.label}</span>
             </Link>
           </li>
         );
