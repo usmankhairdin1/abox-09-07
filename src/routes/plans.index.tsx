@@ -556,7 +556,6 @@ function FilterRail(p: FilterProps) {
                   onChange={() => toggleIn(p.carriers, c.name, p.setCarriers)}
                   className="rounded"
                 />
-                <CarrierMark carrier={c.name} size={20} />
                 <span className="min-w-0 flex-1 truncate">{c.name}</span>
                 <span className="tabular-nums text-xs text-muted-foreground">({c.count})</span>
               </label>
