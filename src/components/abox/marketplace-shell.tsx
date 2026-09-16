@@ -5,7 +5,7 @@
  * atmosphere.
  */
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight, ChevronDown, Settings } from "lucide-react";
+import { LifeBuoy, LogIn, LogOut, User, ArrowUpRight, ChevronDown, Settings, Store, Building2, ShoppingCart } from "lucide-react";
 import { AboxMark } from "./logo";
 import { PlanOAssistant } from "./plan-o-assistant";
 import { DotField } from "./decor";
@@ -15,7 +15,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useMarketplaceState, getActiveBrand } from "@/lib/marketplace-store";
 import { useCart, cartTotals } from "@/lib/cart-store";
 import { ProductSwitcher } from "./product-switcher";
-import { ShoppingCart } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,8 +65,10 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
           </Link>
 
           <nav aria-label="Marketplace navigation" className="flex items-center gap-1">
-            {variant === "landing" && <PillLink to="/select">Shop plans</PillLink>}
-            <PillLink to="/ichra">ICHRA</PillLink>
+            {variant === "landing" && (
+              <PillLink to="/select" icon={<Store className="h-4 w-4" />}>Shop plans</PillLink>
+            )}
+            <PillLink to="/ichra" icon={<Building2 className="h-4 w-4" />}>ICHRA</PillLink>
             <PillLink to="/schedule" icon={<LifeBuoy className="h-4 w-4" />}>Agent help</PillLink>
             <Link
               to="/cart"
