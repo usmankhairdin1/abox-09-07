@@ -12,6 +12,7 @@ import { PlanCard } from "@/components/abox/plan-card";
 import { ShoppingPathBar } from "@/components/abox/shopping-path-bar";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
+import { MetalBadge } from "@/components/abox/metal-badge";
 import { SAMPLE_PLANS, planMatchScore, type SamplePlan, type PlanMatchInputs } from "@/lib/sample-data";
 import { cartStore, useCart, PRODUCT_LABEL } from "@/lib/cart-store";
 import { loadQuoteState, estimateMonthlyAPTC, recommendedExchangeView, defaultQuoteState, type QuoteState } from "@/lib/quote-store";
@@ -434,14 +435,11 @@ interface FilterProps {
 function FilterRail(p: FilterProps) {
   const METALS: SamplePlan["metalTier"][] = ["Bronze","Expanded Bronze","Silver","Gold","Platinum","Catastrophic"];
   const NETS: SamplePlan["networkType"][] = ["HMO","PPO","EPO","POS"];
-  const METAL_TOKENS: Record<SamplePlan["metalTier"], { tone: string; fg: string }> = {
-    Bronze: { tone: "var(--metal-bronze)", fg: "var(--metal-bronze-fg)" },
-    "Expanded Bronze": { tone: "var(--metal-expanded-bronze)", fg: "var(--metal-expanded-bronze-fg)" },
-    Silver: { tone: "var(--metal-silver)", fg: "var(--metal-silver-fg)" },
-    Gold: { tone: "var(--metal-gold)", fg: "var(--metal-gold-fg)" },
-    Platinum: { tone: "var(--metal-platinum)", fg: "var(--metal-platinum-fg)" },
-    Catastrophic: { tone: "var(--metal-catastrophic)", fg: "var(--metal-catastrophic-fg)" },
-  };
+  /** Selected filter chips keep the exact plan-tile badge look; selection is shown with a ring. */
+  const selectionRing = (on: boolean) =>
+    on
+      ? "ring-2 ring-primary ring-offset-2 ring-offset-[var(--card)]"
+      : "opacity-75 hover:opacity-100";
   const toggleIn = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set); next.has(v) ? next.delete(v) : next.add(v); setter(next);
   };
@@ -476,14 +474,17 @@ function FilterRail(p: FilterProps) {
 
       <fieldset>
         <FilterLegend>Exchange</FilterLegend>
-        <div className="grid grid-cols-3 gap-1 rounded-full bg-surface p-1">
-          {(["all","on","off"] as const).map((v) => (
-            <button key={v} onClick={() => p.setShowExchange(v)}
-              aria-pressed={p.showExchange === v}
-              className={cn("rounded-full px-2 py-1.5 text-xs font-medium",
-                p.showExchange === v ? "bg-card shadow-[var(--shadow-card)]" : "text-muted-foreground")}
+        <div className="flex flex-wrap gap-1.5">
+          {([
+            { v: "all", label: "All", tone: "muted" },
+            { v: "on", label: "On-exchange", tone: "info" },
+            { v: "off", label: "Off-exchange", tone: "primary" },
+          ] as const).map((o) => (
+            <button key={o.v} onClick={() => p.setShowExchange(o.v)}
+              aria-pressed={p.showExchange === o.v}
+              className={cn("rounded-full", selectionRing(p.showExchange === o.v))}
             >
-              {v === "all" ? "All" : v === "on" ? "On-QHP" : "Off-exch"}
+              <StatusBadge tone={o.tone}>{o.label}</StatusBadge>
             </button>
           ))}
         </div>
@@ -499,19 +500,12 @@ function FilterRail(p: FilterProps) {
         <div className="flex flex-wrap gap-1.5">
           {METALS.map((m) => {
             const on = p.metals.has(m);
-            const { tone, fg } = METAL_TOKENS[m];
             return (
               <button key={m} onClick={() => toggleIn(p.metals, m, p.setMetals)}
                 aria-pressed={on}
-                className={cn("rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.08em]",
-                  on ? "" : "hover:opacity-80")}
-                style={{
-                  borderColor: tone,
-                  backgroundColor: on ? tone : `color-mix(in oklch, ${tone} 15%, transparent)`,
-                  color: on ? fg : "var(--foreground)",
-                }}
+                className={cn("rounded-full", selectionRing(on))}
               >
-                {m}
+                <MetalBadge tier={m} />
               </button>
             );
           })}
@@ -527,10 +521,9 @@ function FilterRail(p: FilterProps) {
             return (
               <button key={n} onClick={() => toggleIn(p.networks, n, p.setNetworks)}
                 aria-pressed={on}
-                className={cn("rounded-full border px-2.5 py-1 text-xs",
-                  on ? "border-primary bg-primary-soft text-primary" : "border-border text-muted-foreground hover:bg-accent")}
+                className={cn("rounded-full", selectionRing(on))}
               >
-                {n}
+                <StatusBadge tone="muted">{n}</StatusBadge>
               </button>
             );
           })}
@@ -583,10 +576,12 @@ function FilterRail(p: FilterProps) {
 
       <fieldset>
         <FilterLegend>HSA eligibility</FilterLegend>
-        <label className="flex items-center justify-between text-sm">
-          <span>HSA-eligible only</span>
-          <input type="checkbox" checked={p.hsaOnly} onChange={(e) => p.setHsaOnly(e.target.checked)} />
-        </label>
+        <div className="flex flex-wrap gap-1.5">
+          <button onClick={() => p.setHsaOnly(!p.hsaOnly)} aria-pressed={p.hsaOnly}
+            className={cn("rounded-full", selectionRing(p.hsaOnly))}>
+            <StatusBadge tone="sage">HSA</StatusBadge>
+          </button>
+        </div>
       </fieldset>
 
       <fieldset>
