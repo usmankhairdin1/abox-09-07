@@ -174,7 +174,7 @@ export function MarketplaceShell({ children, variant = "flow", showAssistant = t
             <FooterCol title="Trust" links={[["Privacy", "/privacy"], ["Terms", "/terms"], ["Compliance", "/compliance"]]} />
           </div>
           <div className="border-t border-sidebar-border">
-            <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-5 text-xs text-sidebar-foreground/60 md:flex-row md:items-center md:justify-between md:px-12">
+            <div className="mx-auto flex max-w-8xl flex-col gap-2 px-6 py-5 text-xs text-sidebar-foreground/60 md:flex-row md:items-center md:justify-between md:px-12">
               <p>
                 © {new Date().getFullYear()} JET / ABox. PlanAI guidance is educational and non-binding.
                 Not a substitute for licensed advice. QHP displays follow federal display rules.
