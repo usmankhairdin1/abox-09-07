@@ -300,7 +300,7 @@ function QuoteWizardPage() {
         {announce}
       </p>
 
-      <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-4 md:px-8 md:pb-12 md:pt-6">
+      <div className="mx-auto w-full max-w-[88rem] px-4 pb-8 pt-4 md:px-8 md:pb-12 md:pt-6">
         <ShoppingPathBar current="guided" />
 
         <div className="flex flex-wrap items-center justify-between gap-3">

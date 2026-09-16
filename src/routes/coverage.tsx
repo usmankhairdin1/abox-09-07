@@ -26,7 +26,7 @@ function Page() {
   const quote = typeof window === "undefined" ? null : loadQuoteState();
   return (
     <MarketplaceShell product="dental">
-      <div className="mx-auto max-w-7xl px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
+      <div className="mx-auto max-w-[88rem] px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
         <Link to="/plans" className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to health plans
         </Link>

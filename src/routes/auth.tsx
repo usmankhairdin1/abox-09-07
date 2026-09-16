@@ -117,7 +117,7 @@ function Page() {
 
   return (
     <MarketplaceShell showAssistant={false}>
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-14 pt-6 md:grid-cols-2 md:px-8 md:pt-8">
+      <div className="mx-auto grid max-w-[88rem] gap-10 px-4 pb-14 pt-6 md:grid-cols-2 md:px-8 md:pt-8">
         <div>
           <PageHeader
             eyebrow={mode === "signin" ? "Welcome back" : "Create your ABox"}

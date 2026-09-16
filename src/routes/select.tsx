@@ -30,7 +30,7 @@ function Page() {
 
   return (
     <MarketplaceShell product={active.key}>
-      <div className="mx-auto max-w-7xl px-4 pb-12 pt-6 md:px-8 md:pb-16 md:pt-8">
+      <div className="mx-auto max-w-[88rem] px-4 pb-12 pt-6 md:px-8 md:pb-16 md:pt-8">
         <PageHeader
           scrId="UX-002"
           eyebrow={`${active.label} · ${active.tagline}`}

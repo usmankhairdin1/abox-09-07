@@ -68,7 +68,7 @@ export function ProductSwitcher({ active, variant = "strip", className, labelOve
   return (
     <nav
       aria-label="Available products"
-      className={cn("mx-auto mt-3 w-full max-w-7xl px-4 md:px-8", className)}
+      className={cn("mx-auto mt-3 w-full max-w-[88rem] px-4 md:px-8", className)}
     >
       <div className="glass flex items-center gap-3 rounded-2xl px-3 py-2">
         <span className="text-eyebrow hidden shrink-0 lg:inline">Shop</span>
