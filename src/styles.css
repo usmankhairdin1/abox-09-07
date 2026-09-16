@@ -143,6 +143,13 @@
   --metal-gold: oklch(0.66 0.130 92);
   --metal-platinum: oklch(0.56 0.075 205);
   --metal-catastrophic: oklch(0.56 0.150 25);
+  --metal-bronze-fg: oklch(0.99 0 0);
+  --metal-expanded-bronze-fg: oklch(0.99 0 0);
+  --metal-silver-fg: oklch(0.99 0 0);
+  --metal-gold-fg: oklch(0.16 0.02 92);
+  --metal-platinum-fg: oklch(0.99 0 0);
+  --metal-catastrophic-fg: oklch(0.99 0 0);
+
 
   --border: oklch(0.30 0.04 265 / 0.10);
   --border-strong: oklch(0.30 0.04 265 / 0.24);
