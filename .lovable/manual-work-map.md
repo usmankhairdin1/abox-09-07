@@ -1,0 +1,299 @@
+# ABox — Manual Work, Presentation & Source-of-Truth Map
+
+Audit of the codebase as it exists today. Nothing was changed. Every path, export and count below was read or searched in the current code during this audit; where it contradicts an earlier phase record, this document is the later reading.
+
+Two words are used strictly:
+- **PRODUCTION** — editing it changes what users see.
+- **REFERENCE** — documentation. Editing it changes nothing users see.
+
+---
+
+## 1. Management presentation map
+
+| What | URL | Route file | Kind | Audience | What it shows | What it does NOT control |
+| --- | --- | --- | --- | --- | --- | --- |
+| A. Brand / Design Guide | `/design-guide` | `src/routes/design-guide.tsx` | REFERENCE | Management, non-technical | Plain-language explanation of the system: what a pattern is, who owns what, open decisions, why duplicates remain, what must be settled before Figma | Nothing. It writes no value the product reads. It is not a theme editor |
+| B. Technical Design System | `/design-system` | `src/routes/design-system.tsx` | REFERENCE | Designers, engineers | Tokens as rendered, component specs, patterns, dependency graph, readiness records | Nothing. Not a theme editor |
+| C. Foundation/token documentation | `/design-system`, foundation sections | same file, data from `src/lib/design/foundation*.ts`, `color-*.ts`, `spacing*.ts`, `typography*.ts` | REFERENCE | Both | The real token values, read live from CSS variables | The values themselves — those live in `src/styles.css` |
+| D. Component documentation | `/design-system`, component sections | data from `src/lib/design/spec-components-*.ts`, `components.ts` | REFERENCE | Both | 64 building blocks with anatomy, props, variants, states | The components themselves, in `src/components/` |
+| E. Pattern documentation | `/design-system`, pattern sections | data from `src/lib/design/pattern-*.ts` | REFERENCE | Both | 23 recurring arrangements with anatomy, states, responsive, density | Any rendered page |
+| F. Experience-pattern documentation | `/design-system` and `/design-guide` | `experience-patterns.ts`, `experience-extensions.ts`, `experience-readiness.ts` | REFERENCE | Both | How the four experiences differ and why | Experience behaviour |
+| G. Figma-readiness documentation | `/design-system` → Figma readiness / library blueprint | `figma-readiness.ts`, `figma-library-readiness.ts`, `pattern-figma.ts`, `spec-figma-*.ts` | REFERENCE | Both | 5 ready / 10 partial / 2 blocked areas, proposed library structure | Nothing exists in Figma |
+| H. Governance / ownership | `/design-guide` → ownership and approval sections | `canonical-boundaries.ts`, `change-governance.ts` | REFERENCE | Management | Who owns each layer, what review each change needs | It is not enforced by any build step |
+| I. Canonicalization decision register | `/design-system` → decision register; `/design-guide` → how decisions are recorded | `canonical-decision-register.ts` | REFERENCE | Both | 14 open decisions, real options, consequences, approvals | No decision is selected |
+| J. Other management-facing | `/app/jet/branding` and `/marketplace/admin/assets` | see sections 5 and 6 | **PRODUCTION** | Admins | The real runtime brand and asset screens | These are product screens, not documentation |
+
+**Design Guide = management-facing reference. Design System = technical reference. Neither is a runtime theme editor.** Both routes are direct-URL only and appear in no navigation, header, sidebar, menu or breadcrumb.
+
+---
+
+## 2. Manual production edit map
+
+| # | Task | Exact file | Export / section | Consumed by | Affects | Does not affect |
+| --- | --- | --- | --- | --- | --- | --- |
+| A | Global colours | `src/styles.css` | `:root` block, lines ~92–177 (`--background`, `--foreground`, `--surface`, `--panel`, `--card`, `--popover`, `--ink`) | Every screen, through Tailwind colour utilities | The whole application, both themes | Tenant brand values chosen at runtime |
+| B | Semantic colours | `src/styles.css` | `--primary`, `--primary-soft`, `--secondary`, `--sage`, `--sage-soft`, `--muted`, `--accent`, `--destructive`, `--warning`, `--info`, `--success` plus each `-foreground`; aliased in `@theme inline` lines 32–79 | StatusBadge, buttons, all tone usage | Everything using that tone | Metal tiers, which are separate variables |
+| C | Typography | `src/styles.css` | `@utility text-display` (line ~282), `text-eyebrow`, `text-serial`; sizes otherwise literal per component | Headings and labels app-wide | Only those three utilities | Ordinary `text-sm` / `text-lg` sizes — **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE**, written per component |
+| D | Font families | `src/styles.css` | `--font-sans` (Inter Tight), `--font-display` (Bricolage Grotesque), `--font-serif` and `--font-mono` (both alias existing families) | Everything | All text | Font loading, which is a `<link>` in `src/routes/__root.tsx` |
+| E | Font weights | no central definition | — | — | — | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE**: `font-medium`, `font-semibold` etc. written per component |
+| F | Spacing | no central definition; Tailwind's default scale | — | — | — | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE**: `p-5`, `gap-2`, `px-3` etc. written per file |
+| G | Radius | `src/styles.css` | `--radius-sm` … `--radius-4xl` (lines 19–25) and `--radius: 0.875rem` (line 92) | `rounded-*` utilities everywhere | All rounded corners | Any hard-coded `rounded-[Npx]` |
+| H | Borders | `src/styles.css` | `--border`, `--border-strong`, `--hairline`, `--input` | Every bordered surface | All borders and hairlines | Border widths, set per component |
+| I | Shadows / elevation | `src/styles.css` | `--shadow-card`, `--shadow-elevated`, `--shadow-drawer`, `--shadow-plate`, `--shadow-glow`; `--shadow-overlay` alias | Cards, dialogs, drawers | All elevation | Tailwind default `shadow-*` where used directly |
+| J | Control heights | `src/components/abox/action-pill.ts` for pills (h-8/h-9/h-10/h-11); `src/components/ui/button.tsx` for buttons | `ACTION_PILL` map | 33 files import ACTION_PILL; 20 import Button | Those controls | Inputs and selects, which set their own heights — **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| K | Icon sizing | no central definition | — | — | — | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE**: `h-4 w-4` etc. per call site, across 144 files using lucide-react |
+| L | Motion | `src/styles.css` keyframes and `.animate-fade-rise`, `.animate-hairline`, `.animate-orbit`, `.animate-orbit-slow`, `.animate-drift`, `.animate-pulse-ring`, `.animate-shimmer`; plus `src/components/abox/motion.tsx` | Decorative surfaces | Those animations | Radix transitions inside primitives |
+| M | Shared UI primitives | `src/components/ui/*` (49 files) | per file | Button 20 files, Card 6, Input 5, Select 5, Label 3, Dialog 3, Skeleton 2, Badge 1, Tabs 1 | Every screen importing them | Route-local kits, which do not use them |
+| N | ABox business components | `src/components/abox/*` (27 modules + `decor/`) | per file | see section 3 | Many screens at once | Route-local kits |
+| O | Page headers | `src/components/abox/page-header.tsx` | `PageHeader` | 23 files | Those screens | Marketing headings in `src/routes/index.tsx` and the masthead inside `internal-shell.tsx` — separate code |
+| P | Status badges | `src/components/abox/status-badge.tsx`; tiers in `src/components/abox/metal-badge.tsx` | `StatusBadge` (tones sage / primary / warning / muted / destructive / info, composed with `color-mix`), `MetalBadge` | StatusBadge 87 files; MetalBadge 2 files | All status chips | Plain text labels |
+| Q | Action pills | `src/components/abox/action-pill.ts` | `ACTION_PILL` (8 variants) | 33 files | Every pill using the constant | Any pill still written as a literal class string |
+| R | Cards / surfaces | `src/components/ui/card.tsx` (6 importers) **and** the literal `rounded-2xl border border-hairline bg-card` written directly in **107 files** | — | both | Only what you edit | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| S | Tables | `src/components/abox/data-table.tsx` (19 importers); `src/components/ui/table.tsx` (0 direct importers found); raw `<table>` in 5 route files and in `src/components/lucie/ui.tsx`, `src/components/lucie-app/ui.tsx` | `DataTable` | 19 files plus route-local | Only the one edited | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| T | Forms | `src/components/ui/input.tsx`, `select.tsx`, `label.tsx`; `src/components/m06/kit.tsx`; `src/components/m08/kit.tsx` | per file | primitives 3–5 files each; kits used by their module screens | Only the one edited | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| U | Navigation | `src/lib/nav-config.ts` | `WORKSPACES`, `MEMBER_NAV` | `internal-shell.tsx`, `member-shell.tsx` | Internal and member destinations | The marketplace shell, whose pill nav is written inline in `marketplace-shell.tsx` |
+| V | Shells | `src/components/abox/internal-shell.tsx` (89 files), `marketplace-shell.tsx` (30), `member-shell.tsx` (4: member index, quotes, settings, messages) | each default export | those routes | Only that shell's screens | The other two shells |
+| W | Patterns | no pattern file exists in production | — | — | — | Patterns are arrangements written inside components and routes; edit the parts, not a pattern file |
+| X | Experience-specific layouts | `src/routes/index.tsx` (marketing), `plans.index.tsx` + `cart.tsx` (shopping), `agency.*` / `app.*` (admin), `member.*` (member) | route components | that experience | Those screens | Other experiences |
+| Y | Route-specific UI | the individual file under `src/routes/` | route component | one screen | That screen only | Everything else |
+| Z | Branding | `src/routes/app.jet.branding.tsx`; marks drawn in `src/components/abox/logo.tsx`; favicon `public/favicon.ico` | `AboxMark`, `AboxWordmark` | Logo used in 3 files | The brand screens and marks | Global tokens — the branding screen currently displays swatches, it does not write tokens |
+| AA | Marketplace assets | `src/routes/marketplace.admin.assets.tsx` + `src/lib/marketplace-store.ts` | `AssetType`, `getAssets`, `marketplaceStore.addAsset/updateAsset` | that route and sibling marketplace admin routes | Asset records | Design tokens or components |
+| AB | Navigation configuration | `src/lib/nav-config.ts` | `WORKSPACES`, `MEMBER_NAV` | two shells | Destination lists, labels, icons | Marketplace nav (inline) and route definitions (file names under `src/routes/`) |
+
+---
+
+## 3. Component edit map
+
+| Component | Production file | Export | Importers (production) | Shared? | Styling comes from | Multi-screen impact | Safe as a shared source |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Button | `src/components/ui/button.tsx` | `Button`, `buttonVariants` | 20 | shared primitive | variants in-file + tokens | yes | yes |
+| ACTION_PILL | `src/components/abox/action-pill.ts` | `ACTION_PILL` | 33 | shared constant | literal Tailwind strings in-file | yes | yes |
+| StatusBadge | `src/components/abox/status-badge.tsx` | `StatusBadge` | 87 | shared | tone vars + `color-mix` in-file | yes, widest of any ABox component | yes |
+| MetalBadge | `src/components/abox/metal-badge.tsx` | `MetalBadge` | 2 | shared | `--metal-*` and `--metal-*-fg` tokens | limited | yes |
+| PageHeader | `src/components/abox/page-header.tsx` | `PageHeader` | 23 | shared | in-file classes + tokens | yes | yes, but two other screen-opening treatments exist |
+| KpiCard | `src/components/abox/kpi-card.tsx` | `KpiCard` | 16 | shared | in-file + tone tokens | yes | yes |
+| DataTable | `src/components/abox/data-table.tsx` | `DataTable` | 19 | shared | in-file (`min-w-[640px]`, `text-sm`, `px-5 py-4`) | yes | yes for its own consumers; other tables exist |
+| EmptyState | `src/components/abox/empty-state.tsx` | `EmptyState` | 8 | shared | in-file | yes | yes |
+| PlanCard | `src/components/abox/plan-card.tsx` | `PlanCard` | 4 | shared | in-file + tier tokens | shopping only | yes |
+| CarrierMark | `src/components/abox/carrier-mark.tsx` | `CarrierMark` | 1 direct (re-used inside plan surfaces) | shared | in-file, deterministic monogram | limited | yes |
+| InternalShell | `src/components/abox/internal-shell.tsx` | `InternalShell` | 89 | shared | in-file + `nav-config` + sidebar tokens | highest reach in the app | yes |
+| MarketplaceShell | `src/components/abox/marketplace-shell.tsx` | `MarketplaceShell` | 30 | shared | in-file, nav written inline | yes, all shopping screens | yes |
+| MemberShell | `src/components/abox/member-shell.tsx` | `MemberShell` | 4 | shared | in-file + `MEMBER_NAV` | member area only | yes |
+| ModuleTabs | `src/components/abox/module-tabs.tsx` | `ModuleTabs` | 2 | shared | in-file | limited | yes |
+| ProductSwitcher | `src/components/abox/product-switcher.tsx` | — | 1 | shared | in-file | one surface | yes |
+| QuoteEditPanel | `src/components/abox/quote-edit-panel.tsx` | — | 1 | shared | in-file | one surface | yes |
+| DownlineWizardStepper | `src/components/abox/downline-wizard-stepper.tsx` | — | 8 | shared | in-file (`px-2.5 py-1.5 text-xs`) | downline flow | yes |
+| OverflowText | `src/components/abox/overflow-text.tsx` | `OverflowText` | used inside `plan-card.tsx` | shared | in-file | indirect | yes |
+| AboxMark / AboxWordmark | `src/components/abox/logo.tsx` | `AboxMark`, `AboxWordmark` | 3 | shared | in-file SVG + tokens | brand surfaces | yes |
+| PlanOAssistant | `src/components/abox/plan-o-assistant.tsx` | `PlanOAssistant` | 1 — imported by `internal-shell.tsx`, so it renders across internal screens | shared | in-file | yes, via the shell | yes |
+| PlanAI assistant module | `src/components/abox/planai-assistant.tsx` | — | **0 importers found** | currently unused file | in-file | none today | FUTURE OPPORTUNITY — NOT IMPLEMENTED: the PlanAI experience users see is written inside the shopping routes and `marketplace-shell.tsx`, not in this module |
+| Form primitives | `src/components/ui/input.tsx`, `select.tsx`, `label.tsx` | `Input`, `Select*`, `Label` | 5 / 5 / 3 | shared | in-file + tokens | moderate | yes for their own consumers |
+| M06 kit | `src/components/m06/kit.tsx` (+ `registry.tsx`, `workforce-page.tsx`, `screens/`) | kit exports | M06 screens | route-local | in-file | that module only | no — module-owned |
+| M08 kit | `src/components/m08/kit.tsx` (+ `screens.tsx`, `selling-setup.tsx`) | kit exports | M08 screens | route-local | in-file | that module only | no — module-owned |
+| Lucie kits | `src/components/lucie/ui.tsx`, `src/components/lucie-app/ui.tsx`, `src/components/lucie-app/frames.tsx` | kit exports | Lucie screens | route-local | in-file | those screens | no — module-owned |
+| ai-elements | `src/components/ai-elements/conversation.tsx`, `message.tsx`, `prompt-input.tsx`, `shimmer.tsx` | per file | Lucie conversation screens | route-local | in-file | those screens | no — module-owned |
+| Dialog | `src/components/ui/dialog.tsx` | `Dialog*` | 3 (`app.jet.form-configurator.tsx`, `app.jet.products.tsx`, plus `ui/command.tsx`) | shared primitive | Radix + in-file | limited | yes |
+| Skeleton | `src/components/ui/skeleton.tsx` | `Skeleton` | 2 (`lucie-app/ui.tsx`, `ui/sidebar.tsx`) | shared primitive | in-file | limited | yes |
+| ToothIcon | `src/components/icons/tooth-icon.tsx` | `ToothIcon` | dental product surfaces | shared | wraps Tabler `IconDental` | dental icon only | yes |
+| Reference kit | `src/components/design/reference-kit.tsx` | many | only the two design routes | REFERENCE | in-file | none on the product | not a product component |
+
+---
+
+## 4. Design token / foundation edit map
+
+| Category | Current file | Exact token / class | Example consumers | Global or local | Manual edit impact |
+| --- | --- | --- | --- | --- | --- |
+| Colour | `src/styles.css` | `--background`, `--foreground`, `--surface`, `--panel`, `--card`, `--popover`, `--ink` | every screen | global | application-wide, both themes |
+| Semantic colour | `src/styles.css` | `--primary`, `--secondary`, `--sage`, `--muted`, `--accent`, `--destructive`, `--warning`, `--info`, `--success` + `-foreground` | StatusBadge, buttons | global | every tone usage |
+| Brand | `src/styles.css` compatibility block | `--brand-accent: var(--primary)` | brand-tinted surfaces | global alias | follows primary unless repointed |
+| Surface | `src/styles.css` | `--surface`, `--panel`, and aliases `--surface-1/2/3` | cards, panels | global | all surfaces |
+| Foreground | `src/styles.css` | each `*-foreground` variable | text on tinted backgrounds | global | text contrast everywhere |
+| Border | `src/styles.css` | `--border`, `--border-strong`, `--hairline` | every bordered surface | global | all borders |
+| Input / ring | `src/styles.css` | `--input`, `--ring`, `--color-ring-offset-background` | form controls, focus rings | global | focus visibility app-wide |
+| Status | `src/styles.css` | `--warning`, `--info`, `--success`, `--destructive` | StatusBadge tones | global | all status chips |
+| Tier / metal | `src/styles.css` | `--metal-bronze`, `--metal-expanded-bronze`, `--metal-silver`, `--metal-gold`, `--metal-platinum`, `--metal-catastrophic` and each `-fg`, with separate dark values | MetalBadge, plan tiles, metal filters | global | all plan tier chips |
+| Typography | `src/styles.css` | `--font-sans`, `--font-display`, `--font-serif`, `--font-mono`; `@utility text-display`, `text-eyebrow`, `text-serial` | headings, eyebrows, serial text | global for families and those three utilities; **local for sizes and weights** | families: app-wide. Sizes: **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| Spacing | none | Tailwind default scale used literally | every file | **local** | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| Radius | `src/styles.css` | `--radius`, `--radius-sm` … `--radius-4xl` | all rounded corners | global | every corner |
+| Shadow | `src/styles.css` | `--shadow-card`, `--shadow-elevated`, `--shadow-drawer`, `--shadow-plate`, `--shadow-glow`, `--shadow-overlay` | cards, overlays, drawers | global | all elevation |
+| Opacity | none | written as `/10`, `/24` etc. inside individual colour values and classes | borders, overlays | **local** | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| Breakpoints | Tailwind defaults | `sm md lg xl` used literally | every responsive class | **local usage of a global scale** | changing a breakpoint means editing each class |
+| Control sizing | `src/components/abox/action-pill.ts`; `src/components/ui/button.tsx`; each form primitive | `ACTION_PILL` heights h-8/h-9/h-10/h-11; button size variants | 33 and 20 files | **partly local** | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| Icon sizing | none | `h-4 w-4` style classes per call site | 144 files use lucide-react | **local** | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| Motion | `src/styles.css` keyframes and `.animate-*`; `src/components/abox/motion.tsx` | `abox-fade-rise`, `abox-hairline-draw`, `abox-orbit`, `abox-drift`, `abox-pulse-ring`, shimmer | decorative surfaces | global for these | those animations only |
+| Density | none | padding and gap literals per surface | every surface | **local** | **NO SINGLE SOURCE OF TRUTH — CURRENTLY LOCAL/MULTIPLE** |
+| Compatibility aliases | `src/styles.css` end block | `--brand-accent`, `--ai`, `--ai-foreground`, `--surface-1/2/3`, `--shadow-overlay`, plus `--color-*` mappings | assistant and surface treatments | global | repointing an alias moves everything bound to it |
+
+---
+
+## 5. Branding & white-label map
+
+- **Management view** — `/app/jet/branding` (and the marketplace-scoped brand screen at `/marketplace/admin/brand`).
+- **Runtime implementation** — `src/routes/app.jet.branding.tsx`: renders the palette swatches (reading `--primary`, `--sage`, `--background`, `--sidebar` live), the logo / mark / favicon upload placeholders, and the disclosures field. Marketplace brand records are typed in `src/lib/marketplace-store.ts` (`Brand` interface).
+- **Marks** — `src/components/abox/logo.tsx` exports `AboxMark` and `AboxWordmark`, both drawn in code with token-bound tones (`primary`, `sage`, `sidebar`, `foreground`). There are no image files for the brand.
+- **Favicon** — `public/favicon.ico`.
+- **Storage / state** — marketplace-scoped brand data lives in `src/lib/marketplace-store.ts`. The JET branding screen currently displays values and holds a disclosures field; it does not write design tokens.
+- **Boundary** — branding is **runtime-owned**. `/design-guide` documents that boundary; it is not the branding screen and changes nothing here.
+
+FUTURE OPPORTUNITY — NOT IMPLEMENTED: the branding screen's upload tiles are presentational placeholders today; no upload persistence was found on that route.
+
+---
+
+## 6. Marketplace asset map
+
+- **Admin URL** — `/marketplace/admin/assets`.
+- **Route file** — `src/routes/marketplace.admin.assets.tsx` (documented as SCR-M04-006, REQ-M04-BRD-004).
+- **Main component** — the route's own `Page`, inside `InternalShell` with `StatusBadge` and `ACTION_PILL`.
+- **Asset store / state** — `src/lib/marketplace-store.ts`: `AssetType` = `LOGO | MARK | FAVICON | HERO`, `MarketplaceAsset`, `getAssets`, `useMarketplaceState`, `marketplaceStore.addAsset` / `updateAsset`.
+- **Upload flow** — a file input per type; `onUpload` creates an asset record with status `SCANNING`.
+- **Validation / scan flow** — the record transitions to `VALID` after the scan step in the same handler.
+- **Preview** — each type renders its existing assets in its own card.
+- **Retirement / delete** — a delete affordance is present on the asset rows (Trash2 control).
+- **Runtime ownership** — assets are marketplace records held in the marketplace store, owned by the product at runtime.
+- **Distinct from** — the design-system asset documentation (`src/lib/design/assets.ts`, `iconography*.ts`), which only describes that no image files exist in `src/` and that brand marks are code-drawn. That documentation owns nothing.
+
+---
+
+## 7. Design-system reference map
+
+All 118 modules in `src/lib/design/`, the reference kit and the two design routes are REFERENCE. **Verified: no file outside `src/lib/design/`, `src/components/design/` and the two design routes imports any of them.** Editing any of them changes documentation only.
+
+| Group | Files | Purpose | Kind | Production imports it? | Changing it changes the app? |
+| --- | --- | --- | --- | --- | --- |
+| Foundations | `foundation.ts`, `foundation-model.ts`, `foundation-*.ts`, `color-foundation.ts`, `color-roles.ts`, `status-tone.ts`, `spacing*.ts`, `layout*.ts`, `typography*.ts`, `icon-motion-density.ts`, `token-naming.ts`, `design-tokens.ts` (in `src/lib/`) | Documents the real token values, read live from CSS variables | current documentation | no | no |
+| Components | `components.ts`, `component-*.ts`, `inventory.ts`, `canonical-components.ts`, `spec-*.ts`, `spec-components-*.ts`, `spec-registry.ts` | Inventory and specification of 64 building blocks | mixed: inventory is current, specs are future specification | no | no |
+| Patterns | `pattern-*.ts`, `screen-pattern-map.ts`, `pattern-registry.ts` | 23 patterns with anatomy, variants, states, responsive, density | current documentation plus future targets | no | no |
+| Experiences | `experience-patterns.ts`, `experience-extensions.ts`, `foundation-experience.ts`, `experience-readiness.ts` | Four experiences and their differences | current documentation | no | no |
+| Graph | `graph-*.ts` (19 modules), `graph-registry.ts` | One dependency graph from foundation to screen | current documentation | no | no |
+| Governance | `governance.ts`, `spec-governance.ts`, `pattern-governance.ts`, `foundation-governance.ts`, `change-governance.ts`, `canonical-boundaries.ts`, `canonical-candidates.ts`, `canonical-decision-register.ts`, `migration-readiness.ts`, `regression-contract.ts`, `naming-readiness.ts`, `accessibility-readiness.ts`, `content-readiness.ts`, `readiness-registry.ts`, `canonical-readiness-types.ts` | Ownership, open decisions, approval process, protection contract | future specification | no | no |
+| Figma | `figma-variables.ts`, `figma-library.ts`, `spec-figma-mapping.ts`, `spec-figma-library.ts`, `pattern-figma.ts`, `figma-readiness.ts`, `figma-library-readiness.ts` | Proposed library structure and readiness | future specification — nothing exists in Figma | no | no |
+| Reference UI | `src/components/design/reference-kit.tsx`, `src/routes/design-system.tsx`, `src/routes/design-guide.tsx` | The two unlisted reference pages and their display helpers | reference UI | the two routes only | no, beyond those two pages |
+| Documentation | `.lovable/design-system.md`, `roadmap.md` | Written record of phases 1–11 | documentation | no | no |
+
+---
+
+## 8. "If I want to change X" quick map
+
+| I want to change… | Go here | Responsibility | Expected impact |
+| --- | --- | --- | --- |
+| Global primary colour | `src/styles.css` → `--primary` (and `--primary-foreground`, `--primary-soft`, plus the `.dark` values) | single global source | every primary surface in the app, both themes |
+| A button | `src/components/ui/button.tsx` | shared primitive | 20 importing files |
+| An action pill | `src/components/abox/action-pill.ts` → `ACTION_PILL` | shared constant | 33 files; any pill still written inline is unaffected |
+| A status badge | `src/components/abox/status-badge.tsx`; tiers in `metal-badge.tsx` | shared | 87 files for StatusBadge |
+| A page header | `src/components/abox/page-header.tsx` | shared | 23 files — **but** marketing headings (`src/routes/index.tsx`) and the shell masthead (`internal-shell.tsx`) are separate and need editing too |
+| A card | **multiple**: `src/components/ui/card.tsx` (6 files) **and** the literal surface string in 107 files | no single owner | editing the component reaches only its 6 importers |
+| Table styling | **multiple**: `src/components/abox/data-table.tsx` (19 files), `src/components/ui/table.tsx`, raw `<table>` in 5 routes and the two Lucie kits | no single owner | only the one you edit |
+| Form styling | **multiple**: `src/components/ui/input.tsx`, `select.tsx`, `label.tsx`, `src/components/m06/kit.tsx`, `src/components/m08/kit.tsx` | no single owner | only the one you edit |
+| Typography | `src/styles.css` for families and the three text utilities; otherwise **per component** | split | families change everything; sizes must be edited per file |
+| Spacing | **per file** — no central definition | no single owner | only the file you edit |
+| Radius | `src/styles.css` → `--radius*` | single global source | all rounded corners |
+| Shadows | `src/styles.css` → `--shadow-*` | single global source | all elevation |
+| Icon size | **per call site** across 144 files | no single owner | only where you edit |
+| One specific page only | that file under `src/routes/` | route-local | that screen only |
+| A shell | `internal-shell.tsx` (89 screens), `marketplace-shell.tsx` (30), or `member-shell.tsx` (4) | one shell each | every screen inside that shell |
+| Navigation | `src/lib/nav-config.ts` → `WORKSPACES` / `MEMBER_NAV`; marketplace nav is inline in `marketplace-shell.tsx` | split | internal and member destinations; marketplace needs the shell file |
+| Branding & white-label | `src/routes/app.jet.branding.tsx`, `src/components/abox/logo.tsx`, `public/favicon.ico`, `Brand` in `src/lib/marketplace-store.ts` | runtime-owned | brand screens and marks |
+| Marketplace assets | `src/routes/marketplace.admin.assets.tsx` + `src/lib/marketplace-store.ts` | runtime-owned | asset records and that admin screen |
+| Management documentation | `src/routes/design-guide.tsx` (+ the `src/lib/design/*` data it reads) | reference | the `/design-guide` page only |
+| Technical design-system documentation | `src/routes/design-system.tsx` (+ `src/lib/design/*`) | reference | the `/design-system` page only |
+| Something for Figma | `src/lib/design/figma-readiness.ts`, `figma-library-readiness.ts`, `pattern-figma.ts`, `spec-figma-*.ts` | reference proposal | documentation only; nothing exists in Figma |
+
+---
+
+## 9. "What not to edit" map
+
+**Reference only — editing these documents or specifies the system but does NOT change the running product:**
+- `src/lib/design/*` (118 modules)
+- `src/lib/design-tokens.ts` (read only by the two design routes and the reference kit)
+- `src/components/design/reference-kit.tsx`
+- `src/routes/design-system.tsx`
+- `src/routes/design-guide.tsx`
+- `.lovable/design-system.md`
+- `roadmap.md`
+
+**Production — editing these DOES change the running product:**
+- `src/styles.css`
+- `src/components/ui/*`
+- `src/components/abox/*`
+- `src/components/m06/*`, `m08/*`, `lucie/*`, `lucie-app/*`, `ai-elements/*`, `icons/*`
+- everything under `src/routes/` except the two design routes
+- `src/lib/nav-config.ts`, `marketplace-store.ts`, `cart-store.ts`, `quote-store.ts`, `org-store.ts` and the other stores in `src/lib/`
+- `public/favicon.ico`
+
+---
+
+## 10. Production vs reference matrix
+
+| Area | Live production? | Reference only? | Management view? | Manual edit location | Impact scope |
+| --- | --- | --- | --- | --- | --- |
+| Foundations | yes | documented separately | `/design-system` | `src/styles.css` | application-wide |
+| Components | yes | documented separately | `/design-system` | `src/components/ui/*`, `src/components/abox/*` | many screens |
+| Patterns | yes, as written code | documented separately | `/design-system` | the components and routes that form them | varies |
+| Experiences | yes | documented separately | `/design-guide` | route files per experience | that experience |
+| Branding | yes | described only | `/app/jet/branding` | that route, `logo.tsx`, `favicon.ico` | brand surfaces |
+| Marketplace assets | yes | described only | `/marketplace/admin/assets` | that route + `marketplace-store.ts` | asset records |
+| Navigation | yes | documented separately | none | `nav-config.ts` + `marketplace-shell.tsx` | internal + member, or marketplace |
+| Routes | yes | inventoried | none | `src/routes/*` | one screen each |
+| Design System page | no | yes | `/design-system` | `design-system.tsx` | that page only |
+| Design Guide page | no | yes | `/design-guide` | `design-guide.tsx` | that page only |
+| Figma blueprint | no | yes | `/design-system` | `figma-*.ts` | nothing — no Figma exists |
+| Governance | no | yes | `/design-guide` | governance modules | nothing enforced |
+| Documentation | no | yes | in repo | `.lovable/design-system.md`, `roadmap.md` | nothing |
+
+---
+
+## 11. Source-of-truth warnings
+
+No winner is chosen, nothing is ranked, nothing is fixed.
+
+| Concept | Current multiple sources | Consumers | Difference | Impact if edited manually |
+| --- | --- | --- | --- | --- |
+| Card / surface | `src/components/ui/card.tsx`; the literal `rounded-2xl border …  bg-card` string | 6 files vs 107 files | padding and border token differ per site | editing the component reaches 6 files; the other 107 keep their own |
+| Table | `abox/data-table.tsx`; `ui/table.tsx`; raw `<table>` in 5 routes; `lucie/ui.tsx`; `lucie-app/ui.tsx` | 19 vs 0 direct vs route-local | cell padding, min width, empty handling, labelling | a change lands in one only |
+| Form fields | `ui/input.tsx` + `select.tsx` + `label.tsx`; `m06/kit.tsx`; `m08/kit.tsx` | 5 / 5 / 3 vs module screens | label placement, help and error text, validation wiring | governed module screens are unaffected by primitive edits |
+| Screen opening header | `abox/page-header.tsx`; marketing headings in `routes/index.tsx`; masthead inside `internal-shell.tsx` | 23 vs landing vs internal screens | eyebrow, icon tile, hairline, heading level | three edits needed to change "the page header" everywhere |
+| Shell navigation | `internal-shell.tsx`; `marketplace-shell.tsx`; `member-shell.tsx` | 89 / 30 / 4 | rail vs floating pill vs arc rail; different collapse points; nav-config vs inline | a navigation change needs up to three files |
+| Navigation configuration | `nav-config.ts` for internal and member; inline in `marketplace-shell.tsx` | two shells vs one | data-driven vs written in the component | marketplace destinations are not in nav-config |
+| Assistant surface | `abox/plan-o-assistant.tsx` (rendered via `internal-shell.tsx`); `abox/planai-assistant.tsx` (**no importers**); PlanAI text inside shopping routes and `marketplace-shell.tsx`; `ai-elements/*` for Lucie | internal screens / none / shopping / Lucie | different message models, composers and persistence | editing `planai-assistant.tsx` changes nothing visible today |
+| Control sizing | `action-pill.ts` (h-8/h-9/h-10/h-11); `ui/button.tsx` size variants; form primitives | 33 / 20 / 5 | 36px and 40px both in use | one change does not align the others |
+| Icon sizing | per call site | 144 files | `h-4 w-4` and others chosen locally | no single edit can change icon size globally |
+| Spacing, density, opacity | per file literals | application-wide | `p-5` vs `p-6`, `gap-1.5` vs `gap-2` | only the file you edit changes |
+| Typography sizes and weights | per component (families are central) | application-wide | several heading sizes, five uppercase tracking values | a global type change means many files |
+| `.story-link` | used 89 times, **no definition found** in `src/styles.css` | 89 sites | the class currently styles nothing | defining it would visibly change 89 links |
+
+---
+
+## 12. Management handoff
+
+Five destinations, and what each is for:
+
+1. **Design Guide — `/design-guide`.** The plain-language reference: what the system contains, who owns which part, which decisions are open and what each would cost. Read this for status and decisions. It changes nothing in the product.
+2. **Design System — `/design-system`.** The technical counterpart: exact values, components, patterns and how they connect. For designers and engineers. It also changes nothing in the product.
+3. **Branding & White-Label — `/app/jet/branding`.** A real product screen for brand configuration: palette, logo, mark, favicon and disclosures.
+4. **Marketplace Asset Management — `/marketplace/admin/assets`.** A real product screen for uploading, validating, previewing and retiring marketplace artwork.
+5. **Future Figma blueprint — the Figma readiness and library sections of `/design-guide` and `/design-system`.** A written proposal only. Nothing exists in Figma today.
+
+The first two are documentation. The next two are the live product. Keeping that line clear matters: changing a page in the guide does not change what a customer sees.
+
+---
+
+## 13. Developer handoff
+
+Start here, by intent:
+
+- **Global foundation** — `src/styles.css`. Colour, semantic tone, tier, border, radius, shadow, font family, the three text utilities, animations and the compatibility aliases. One file, application-wide effect.
+- **Shared components** — `src/components/ui/*` for primitives, `src/components/abox/*` for ABox components. Check the consumer count in section 3 before editing: StatusBadge reaches 87 files and InternalShell 89.
+- **Patterns** — there is no pattern file. A pattern is an arrangement of the above; change the parts.
+- **Experience / page** — the specific file under `src/routes/`. Changes there stay on that screen.
+- **Branding** — `src/routes/app.jet.branding.tsx`, `src/components/abox/logo.tsx`, `public/favicon.ico`, `Brand` in `src/lib/marketplace-store.ts`.
+- **Marketplace assets** — `src/routes/marketplace.admin.assets.tsx` with `src/lib/marketplace-store.ts`.
+- **Navigation** — `src/lib/nav-config.ts` for internal and member; marketplace navigation is inline in `marketplace-shell.tsx`.
+- **Route-local** — `src/components/m06/*`, `m08/*`, `lucie/*`, `lucie-app/*`, `ai-elements/*`: owned by their module, not shared.
+
+**Warning:** several concepts are implemented in more than one place — cards, tables, form fields, screen headers, navigation, assistants, control sizing, icon size, spacing and type scale. Section 11 lists every one with its real files. Editing one of them does not change the others.
+
+Nothing in `src/lib/design/`, `src/components/design/`, `/design-system`, `/design-guide`, `.lovable/design-system.md` or `roadmap.md` affects the running product.
+
+---
+
+*Audit only. No file under `src/` or `public/` was created, modified or deleted while producing this map.*
