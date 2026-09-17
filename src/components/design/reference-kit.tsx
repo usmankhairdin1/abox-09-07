@@ -1264,3 +1264,656 @@ export function ComponentStateTable({
     </div>
   );
 }
+
+/* -----------------------------------------------------------------
+ * Phase 6 — architecture blueprint display helpers.
+ *
+ * Documentation-only rendering. Every helper below is consumed by
+ * /design-system and /design-guide and by nothing else. No production
+ * component is affected by anything in this section.
+ * ----------------------------------------------------------------- */
+
+/** Chip for the controlled Phase 6 label vocabulary. */
+export function ArchLabelChip({ label }: { label: string }) {
+  const tone: "sage" | "muted" | "warning" | "primary" = label.startsWith("CURRENT")
+    ? "sage"
+    : label.startsWith("GOVERNANCE")
+      ? "primary"
+      : label.startsWith("OBSERVED") ||
+          label.startsWith("INSTALLED") ||
+          label.startsWith("POSSIBLY") ||
+          label.startsWith("UNOWNED")
+        ? "muted"
+        : "warning";
+  return <MetaChip tone={tone}>{label}</MetaChip>;
+}
+
+/** Architecture layers: responsibility, what belongs, dependency direction. */
+export function ArchLayerList({
+  entries,
+}: {
+  entries: {
+    id: string;
+    layer: string;
+    responsibility: string;
+    belongs: string;
+    excludes: string;
+    source: string;
+    dependsOn: string;
+    consumedBy: string;
+    phase: string;
+    label: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {entries.map((e) => (
+        <div key={e.id} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-semibold">{e.layer}</p>
+            <ArchLabelChip label={e.label} />
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">{e.responsibility}</p>
+          <dl className="mt-4 grid gap-3 md:grid-cols-2">
+            <div>
+              <dt className="text-serial">Belongs here</dt>
+              <dd className="mt-1 text-sm text-muted-foreground">{e.belongs}</dd>
+            </div>
+            <div>
+              <dt className="text-serial">Does not belong</dt>
+              <dd className="mt-1 text-sm text-muted-foreground">{e.excludes}</dd>
+            </div>
+            <div>
+              <dt className="text-serial">Depends on</dt>
+              <dd className="mt-1 text-sm text-muted-foreground">{e.dependsOn}</dd>
+            </div>
+            <div>
+              <dt className="text-serial">Consumed by</dt>
+              <dd className="mt-1 text-sm text-muted-foreground">{e.consumedBy}</dd>
+            </div>
+          </dl>
+          <p className="text-serial mt-4">
+            {e.source} · {e.phase}
+          </p>
+          {e.note && <p className="mt-2 text-xs text-warning">{e.note}</p>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Future canonical component map. Current evidence and proposal stay apart. */
+export function CanonicalMapTable({
+  entries,
+}: {
+  entries: {
+    canonical: string;
+    currentName: string;
+    currentSource: string;
+    taxonomy: string;
+    tier: string;
+    classification: string;
+    consumers: string;
+    usage: string;
+    variants: string;
+    sizes: string;
+    states: string;
+    anatomy: string;
+    responsive: string;
+    dependencies: string;
+    relationships: string;
+    related: string;
+    duplication: string;
+    accessibility: string;
+    typography: string;
+    spacing: string;
+    iconography: string;
+    tokens: string;
+    normalization: string;
+    migration: string;
+    figma: string;
+    label: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {entries.map((e) => (
+        <div key={e.canonical} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <MetaChip tone="warning">Future canonical target</MetaChip>
+            <p className="text-sm font-semibold">{e.canonical}</p>
+          </div>
+          <div className="mt-3 rounded-xl border border-sage/30 bg-sage-soft/40 p-4">
+            <MetaChip tone="sage">Current implementation</MetaChip>
+            <p className="mt-2 text-sm font-medium">{e.currentName}</p>
+            <p className="text-serial mt-1">{e.currentSource}</p>
+            <dl className="mt-3 grid gap-3 md:grid-cols-2">
+              {[
+                ["Taxonomy", `${e.taxonomy} · ${e.tier} · ${e.classification}`],
+                ["Consumers", `${e.consumers} — ${e.usage}`],
+                ["Variants", e.variants],
+                ["Sizes", e.sizes],
+                ["States", e.states],
+                ["Anatomy", e.anatomy],
+                ["Responsive", e.responsive],
+                ["Dependencies", e.dependencies],
+                ["Relationships", e.relationships],
+                ["Related", e.related],
+                ["Accessibility", e.accessibility],
+                ["Typography", e.typography],
+                ["Spacing", e.spacing],
+                ["Iconography", e.iconography],
+                ["Tokens", e.tokens],
+                ["Duplication", e.duplication],
+              ].map(([term, detail]) => (
+                <div key={term}>
+                  <dt className="text-serial">{term}</dt>
+                  <dd className="mt-1 text-sm text-muted-foreground">{detail}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div className="mt-3 rounded-xl border border-warning/40 bg-warning/5 p-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <ArchLabelChip label={e.label} />
+            </div>
+            <dl className="mt-3 grid gap-3 md:grid-cols-3">
+              <div>
+                <dt className="text-serial">Normalization</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{e.normalization}</dd>
+              </div>
+              <div>
+                <dt className="text-serial">Migration notes</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{e.migration}</dd>
+              </div>
+              <div>
+                <dt className="text-serial">Figma mapping</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{e.figma}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Observable criteria for the component-vs-pattern framework. */
+export function CriteriaTable({
+  entries,
+}: {
+  entries: {
+    criterion: string;
+    question: string;
+    test: string;
+    indicates: string;
+    example: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="960px"
+      head={["Criterion", "Observable test", "Indicates", "Production example"]}
+    >
+      {entries.map((e) => (
+        <tr key={e.criterion} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{e.criterion}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{e.question}</p>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{e.test}</td>
+          <td className="px-5 py-4 text-muted-foreground">{e.indicates}</td>
+          <td className="px-5 py-4 text-muted-foreground">{e.example}</td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Blueprint table: current evidence in one column, the proposal in the next. */
+export function BlueprintTable({
+  rows,
+}: {
+  rows: {
+    item: string;
+    source: string;
+    current: string;
+    future: string;
+    label: string;
+    phase: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="1000px"
+      head={["Item", "Current implementation", "Future canonical target", "Label & evidence"]}
+    >
+      {rows.map((r) => (
+        <tr key={r.item} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{r.item}</p>
+            <p className="text-serial mt-1">{r.source}</p>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{r.current}</td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {r.future}
+            {r.note && <span className="mt-1 block text-xs text-warning">{r.note}</span>}
+          </td>
+          <td className="px-5 py-4">
+            <ArchLabelChip label={r.label} />
+            <p className="text-serial mt-2">{r.phase}</p>
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Architecture relationship edges, current and proposed. */
+export function ArchRelationshipTable({
+  entries,
+}: {
+  entries: {
+    from: string;
+    relation: string;
+    to: string;
+    nature: string;
+    evidence: string;
+    label: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <RefTable minWidth="900px" head={["From", "Relationship", "To", "Nature & evidence"]}>
+      {entries.map((e) => (
+        <tr key={`${e.from}-${e.relation}-${e.to}`} className={ROW}>
+          <td className="px-5 py-4 font-medium">{e.from}</td>
+          <td className="px-5 py-4 text-muted-foreground">{e.relation}</td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {e.to}
+            {e.note && <span className="mt-1 block text-xs text-warning">{e.note}</span>}
+          </td>
+          <td className="px-5 py-4">
+            <MetaChip tone={e.nature === "current" ? "sage" : "warning"}>
+              {e.nature === "current" ? "Exists today" : "Proposed"}
+            </MetaChip>
+            <p className="text-serial mt-2">{e.evidence}</p>
+            <div className="mt-2">
+              <ArchLabelChip label={e.label} />
+            </div>
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Duplicate / overlap areas. No winner is shown, because none is chosen. */
+export function OverlapList({
+  entries,
+}: {
+  entries: {
+    area: string;
+    implementations: string;
+    evidence: string;
+    consumers: string;
+    differences: string;
+    risks: string;
+    decision: string;
+    sequence: string;
+    label: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {entries.map((e) => (
+        <div key={e.area} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-semibold">{e.area}</p>
+            <ArchLabelChip label={e.label} />
+          </div>
+          <dl className="mt-3 grid gap-3 md:grid-cols-2">
+            {[
+              ["Implementations involved", e.implementations],
+              ["Consumers", e.consumers],
+              ["Differences", e.differences],
+              ["Risks of consolidation", e.risks],
+              ["Decision required", e.decision],
+              ["Proposed sequence", e.sequence],
+            ].map(([term, detail]) => (
+              <div key={term}>
+                <dt className="text-serial">{term}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{detail}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="text-serial mt-4">{e.evidence}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Route-local kit architecture. */
+export function KitTable({
+  entries,
+}: {
+  entries: {
+    kit: string;
+    source: string;
+    purpose: string;
+    consumers: string;
+    reusableScope: string;
+    experienceScope: string;
+    dependencies: string;
+    overlap: string;
+    classification: string;
+    migration: string;
+    label: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {entries.map((e) => (
+        <div key={e.kit} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-semibold">{e.kit}</p>
+            <ArchLabelChip label={e.label} />
+          </div>
+          <p className="text-serial mt-1">{e.source}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{e.purpose}</p>
+          <dl className="mt-3 grid gap-3 md:grid-cols-2">
+            {[
+              ["Consumers", e.consumers],
+              ["Reusable scope", e.reusableScope],
+              ["Experience scope", e.experienceScope],
+              ["Dependencies", e.dependencies],
+              ["Classification", e.classification],
+              ["Overlap with Core", e.overlap],
+              ["Future migration considerations", e.migration],
+            ].map(([term, detail]) => (
+              <div key={term}>
+                <dt className="text-serial">{term}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Shell family architecture. */
+export function ShellTable({
+  entries,
+}: {
+  entries: {
+    shell: string;
+    source: string;
+    purpose: string;
+    responsibility: string;
+    routes: string;
+    dependencies: string;
+    navigation: string;
+    responsive: string;
+    branding: string;
+    coreRelationship: string;
+    figma: string;
+    label: string;
+  }[];
+}) {
+  return (
+    <div className="grid gap-4 lg:grid-cols-3">
+      {entries.map((e) => (
+        <div key={e.shell} className="rounded-2xl border border-hairline bg-card p-5">
+          <p className="text-sm font-semibold">{e.shell}</p>
+          <p className="text-serial mt-1">{e.source}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{e.purpose}</p>
+          <dl className="mt-3 space-y-3">
+            {[
+              ["Route coverage", e.routes],
+              ["Structural responsibility", e.responsibility],
+              ["Navigation", e.navigation],
+              ["Responsive", e.responsive],
+              ["Branding", e.branding],
+              ["Shared dependencies", e.dependencies],
+              ["Relationship to Core", e.coreRelationship],
+              ["Future Figma representation", e.figma],
+            ].map(([term, detail]) => (
+              <div key={term}>
+                <dt className="text-serial">{term}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{detail}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-4">
+            <ArchLabelChip label={e.label} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Naming conventions, with codebase and Figma compatibility stated. */
+export function NamingTable({
+  entries,
+}: {
+  entries: {
+    subject: string;
+    convention: string;
+    example: string;
+    codebaseFit: string;
+    figmaFit: string;
+    label: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="1000px"
+      head={["Subject", "Convention", "Fit with current codebase", "Fit with Figma"]}
+    >
+      {entries.map((e) => (
+        <tr key={e.subject} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{e.subject}</p>
+            <div className="mt-2">
+              <ArchLabelChip label={e.label} />
+            </div>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {e.convention}
+            <span className="text-serial mt-2 block">{e.example}</span>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{e.codebaseFit}</td>
+          <td className="px-5 py-4 text-muted-foreground">{e.figmaFit}</td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Figma library sections: purpose, what belongs, what does not. */
+export function FigmaSectionTable({
+  entries,
+}: {
+  entries: {
+    section: string;
+    purpose: string;
+    belongs: string;
+    excludes: string;
+    source: string;
+    mapping: string;
+    governanceOwner: string;
+    migration: string;
+    label: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {entries.map((e) => (
+        <div key={e.section} className="rounded-2xl border border-warning/40 bg-warning/5 p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-semibold">{e.section}</p>
+            <ArchLabelChip label={e.label} />
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">{e.purpose}</p>
+          <dl className="mt-3 grid gap-3 md:grid-cols-2">
+            {[
+              ["What belongs", e.belongs],
+              ["What does not belong", e.excludes],
+              ["Source in codebase", e.source],
+              ["Mapping", e.mapping],
+              ["Governance owner", e.governanceOwner],
+              ["Migration notes", e.migration],
+            ].map(([term, detail]) => (
+              <div key={term}>
+                <dt className="text-serial">{term}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Token / style to Figma variable mapping, including stated limitations. */
+export function FigmaVariableTable({
+  entries,
+}: {
+  entries: {
+    source: string;
+    figma: string;
+    kind: string;
+    mapping: string;
+    limitation: string;
+    label: string;
+  }[];
+}) {
+  return (
+    <RefTable minWidth="960px" head={["Source in code", "Figma target", "Mapping", "Limitation"]}>
+      {entries.map((e) => (
+        <tr key={e.source} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{e.source}</p>
+            <div className="mt-2">
+              <ArchLabelChip label={e.label} />
+            </div>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {e.figma}
+            <span className="text-serial mt-1 block">{e.kind}</span>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{e.mapping}</td>
+          <td className="px-5 py-4 text-muted-foreground">{e.limitation}</td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Migration roadmap phases. Sequence only — nothing is executed. */
+export function MigrationList({
+  entries,
+}: {
+  entries: {
+    phase: string;
+    title: string;
+    goal: string;
+    prerequisites: string;
+    affected: string;
+    risk: string;
+    validation: string;
+    rollback: string;
+    visualDiff: string;
+    label: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {entries.map((e) => (
+        <div key={e.phase} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <MetaChip tone="muted">{e.phase}</MetaChip>
+            <p className="text-sm font-semibold">{e.title}</p>
+            <MetaChip tone={e.risk === "low" ? "sage" : e.risk === "medium" ? "muted" : "warning"}>
+              {e.risk} risk
+            </MetaChip>
+            <ArchLabelChip label={e.label} />
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">{e.goal}</p>
+          <dl className="mt-3 grid gap-3 md:grid-cols-2">
+            {[
+              ["Prerequisites", e.prerequisites],
+              ["Affected areas", e.affected],
+              ["Validation requirements", e.validation],
+              ["Rollback expectations", e.rollback],
+              ["Visual diffing", e.visualDiff],
+            ].map(([term, detail]) => (
+              <div key={term}>
+                <dt className="text-serial">{term}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Experience architecture: one system, applied differently. */
+export function ExperienceArchTable({
+  entries,
+}: {
+  entries: {
+    experience: string;
+    routes: string;
+    hierarchy: string;
+    density: string;
+    components: string;
+    patterns: string;
+    typography: string;
+    brand: string;
+    rule: string;
+    label: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {entries.map((e) => (
+        <div key={e.experience} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-semibold">{e.experience}</p>
+            <ArchLabelChip label={e.label} />
+          </div>
+          <p className="text-serial mt-1">{e.routes}</p>
+          <dl className="mt-3 grid gap-3 md:grid-cols-2">
+            {[
+              ["Hierarchy", e.hierarchy],
+              ["Density", e.density],
+              ["Components used", e.components],
+              ["Patterns", e.patterns],
+              ["Typography", e.typography],
+              ["Brand expression", e.brand],
+            ].map(([term, detail]) => (
+              <div key={term}>
+                <dt className="text-serial">{term}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{detail}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-4 rounded-xl border border-primary/30 bg-primary-soft/40 p-4 text-sm">
+            {e.rule}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}

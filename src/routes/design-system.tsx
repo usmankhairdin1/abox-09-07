@@ -111,6 +111,19 @@ import {
   AnatomyList,
   VariantTable,
   ComponentStateTable,
+  ArchLayerList,
+  CanonicalMapTable,
+  CriteriaTable,
+  BlueprintTable,
+  ArchRelationshipTable,
+  OverlapList,
+  KitTable,
+  ShellTable,
+  NamingTable,
+  FigmaSectionTable,
+  FigmaVariableTable,
+  MigrationList,
+  ExperienceArchTable,
 } from "@/components/design/reference-kit";
 import {
   COMPONENT_TAXONOMY,
@@ -210,7 +223,39 @@ import {
   COMPONENT_DEFERRED_OPPORTUNITIES,
   FIGMA_COMPONENT_MAPPING,
   FUTURE_FIGMA_ORGANIZATION,
+  ARCHITECTURE_GOVERNANCE_RULES,
+  CHANGE_PROPAGATION_MODEL,
+  EXPERIENCE_ARCHITECTURE,
 } from "@/lib/design/governance";
+import {
+  CORE_ARCHITECTURE,
+  COMPONENT_HIERARCHY,
+  DEPENDENCY_RULES,
+  CROSS_PHASE_TRACEABILITY,
+} from "@/lib/design/architecture";
+import { CLASSIFICATION_CRITERIA, CLASSIFICATION_RESULTS } from "@/lib/design/classification";
+import { CANONICAL_COMPONENT_MAP, CANONICAL_SUMMARY } from "@/lib/design/canonical-components";
+import { ALL_BLUEPRINTS } from "@/lib/design/blueprints";
+import {
+  ARCH_RELATIONSHIPS,
+  DEPENDENCY_MODEL,
+  LITERAL_VALUE_FINDINGS,
+} from "@/lib/design/architecture-relationships";
+import {
+  OVERLAP_MAP,
+  ROUTE_LOCAL_KITS,
+  SHELL_ARCHITECTURE,
+  SHELL_SHARED_CONCERNS,
+  MIGRATION_ROADMAP,
+  OPEN_FUTURE_DECISIONS,
+} from "@/lib/design/normalization";
+import {
+  BRAND_ARCHITECTURE,
+  ASSET_ARCHITECTURE,
+  ASSET_OWNERSHIP_RULES,
+} from "@/lib/design/brand-asset-architecture";
+import { NAMING_CONVENTIONS } from "@/lib/design/naming";
+import { FIGMA_LIBRARY_BLUEPRINT, FIGMA_VARIABLE_MAPPINGS } from "@/lib/design/figma-library";
 
 export const Route = createFileRoute("/design-system")({
   head: () => ({
@@ -305,6 +350,24 @@ const TOC = [
   { id: "component-governance", label: "Component governance" },
   { id: "component-figma", label: "Figma components" },
   { id: "future-figma-library", label: "Future Figma library" },
+  { id: "arch-core", label: "ABox Core architecture" },
+  { id: "arch-hierarchy", label: "Component hierarchy" },
+  { id: "arch-classification", label: "Component vs pattern" },
+  { id: "arch-canonical", label: "Canonical component map" },
+  { id: "arch-blueprints", label: "Structural blueprints" },
+  { id: "arch-dependencies", label: "Dependency model" },
+  { id: "arch-relationships", label: "Architecture relationships" },
+  { id: "arch-overlap", label: "Duplicate & overlap map" },
+  { id: "arch-kits", label: "Route-local kit architecture" },
+  { id: "arch-shells", label: "Shell architecture" },
+  { id: "arch-brand", label: "Brand & asset architecture" },
+  { id: "arch-naming", label: "Naming conventions" },
+  { id: "arch-figma-library", label: "Figma library blueprint" },
+  { id: "arch-figma-variables", label: "Figma variable mapping" },
+  { id: "arch-experiences", label: "Experience architecture" },
+  { id: "arch-governance", label: "Architecture governance" },
+  { id: "arch-migration", label: "Migration roadmap" },
+  { id: "arch-traceability", label: "Cross-phase traceability" },
 ];
 
 function DesignSystemPage() {
@@ -1766,6 +1829,234 @@ function DesignSystemPage() {
           </MaturityCallout>
           <DefinitionRows
             rows={FUTURE_FIGMA_ORGANIZATION.map((f) => ({ term: f.level, detail: f.detail }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="arch-core"
+          eyebrow="Phase 6 blueprint"
+          title="ABox Core architecture"
+          intro="One unified system: Foundations, Components, Patterns and Experience Guidance. This section describes what a future canonical system should target. Nothing here has been applied to the application."
+        >
+          <MaturityCallout kind="opportunity" title="Blueprint only — the application is unchanged">
+            <p>
+              Rows labelled CURRENT IMPLEMENTATION are measured from production. Every other label
+              is a proposal. No production component, route, token or behaviour was modified to
+              produce this architecture.
+            </p>
+          </MaturityCallout>
+          <ArchLayerList entries={CORE_ARCHITECTURE} />
+        </RefSection>
+
+        <RefSection
+          id="arch-hierarchy"
+          eyebrow="Phase 6 blueprint"
+          title="Component hierarchy and dependency direction"
+          intro="Seven levels from token to screen. Dependencies point in one direction only; the rules below state what may never depend on what."
+        >
+          <ArchLayerList entries={COMPONENT_HIERARCHY} />
+          <RuleList items={DEPENDENCY_RULES} />
+        </RefSection>
+
+        <RefSection
+          id="arch-classification"
+          eyebrow="Phase 6 blueprint"
+          title="Component vs pattern framework"
+          intro="Observable criteria for deciding what is a primitive, a component, a compound component, a pattern or an experience pattern — applied to the real inventory."
+        >
+          <CriteriaTable entries={CLASSIFICATION_CRITERIA} />
+          <BlueprintTable rows={CLASSIFICATION_RESULTS} />
+        </RefSection>
+
+        <RefSection
+          id="arch-canonical"
+          eyebrow="Phase 6 blueprint"
+          title="Future canonical component map"
+          intro={`${CANONICAL_SUMMARY.candidates} candidates — ${CANONICAL_SUMMARY.core} ABox Core, ${CANONICAL_SUMMARY.experience} experience-specific. Each entry pairs the measured current implementation with the canonical target a future phase would work towards. No component has been renamed, replaced or consolidated.`}
+        >
+          <CanonicalMapTable entries={CANONICAL_COMPONENT_MAP} />
+        </RefSection>
+
+        <RefSection
+          id="arch-blueprints"
+          eyebrow="Phase 6 blueprint"
+          title="Anatomy, variant, state, accessibility, responsive and density blueprints"
+          intro="Current production evidence on the left, the future canonical target on the right. The two are never merged, so the reader always knows which is which."
+        >
+          {ALL_BLUEPRINTS.map((group) => (
+            <RefBlock key={group.id} title={group.title} note={group.summary}>
+              <BlueprintTable rows={group.rows} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="arch-dependencies"
+          eyebrow="Phase 6 blueprint"
+          title="Token → component → pattern → screen dependency model"
+          intro="How a change at the token level reaches a screen today, and where the chain currently breaks because a value is written as a literal rather than owned by a token."
+        >
+          <DefinitionRows
+            rows={DEPENDENCY_MODEL.map((d) => ({
+              term: d.level,
+              detail: `${d.detail} Example: ${d.example}. Depends on: ${d.depends}.`,
+            }))}
+          />
+          <RefBlock
+            title="Literal values that bypass the chain"
+            note="Recorded as findings. None of these has been changed."
+          >
+            <RuleList items={LITERAL_VALUE_FINDINGS} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="arch-relationships"
+          eyebrow="Phase 6 blueprint"
+          title="Architecture relationship map"
+          intro="Containment, composition, dependency and sibling relationships. Each edge is marked as existing today or proposed."
+        >
+          <ArchRelationshipTable entries={ARCH_RELATIONSHIPS} />
+        </RefSection>
+
+        <RefSection
+          id="arch-overlap"
+          eyebrow="Phase 6 blueprint"
+          title="Duplicate and overlap normalization map"
+          intro="Every overlapping implementation is documented with its consumers, differences, risks and the decision a future phase must make. No winner has been chosen and nothing has been consolidated."
+        >
+          <MaturityCallout kind="opportunity" title="No production winner selected">
+            <p>
+              Choosing between duplicate implementations is deliberately deferred. Each area below
+              records what a decision would require, not what the decision is.
+            </p>
+          </MaturityCallout>
+          <OverlapList entries={OVERLAP_MAP} />
+        </RefSection>
+
+        <RefSection
+          id="arch-kits"
+          eyebrow="Phase 6 blueprint"
+          title="Route-local kit architecture"
+          intro="Module-scoped kits described as architecture rather than as defects: what each owns, what is genuinely reusable and what is legitimately experience-specific."
+        >
+          <KitTable entries={ROUTE_LOCAL_KITS} />
+        </RefSection>
+
+        <RefSection
+          id="arch-shells"
+          eyebrow="Phase 6 blueprint"
+          title="Shell architecture and route coverage"
+          intro="Three shell families cover 123 routes. Shells own structure, navigation and responsive frame; they never own component definitions."
+        >
+          <ShellTable entries={SHELL_ARCHITECTURE} />
+          <RefBlock
+            title="Shared shell concerns"
+            note="Common responsibilities across all three shells."
+          >
+            <RuleList items={SHELL_SHARED_CONCERNS} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="arch-brand"
+          eyebrow="Phase 6 blueprint"
+          title="Brand and asset architecture boundaries"
+          intro="What belongs to the design system and what stays owned by Branding & White-Label and Marketplace Asset Management at runtime. Neither system was modified."
+        >
+          <BlueprintTable rows={BRAND_ARCHITECTURE} />
+          <BlueprintTable rows={ASSET_ARCHITECTURE} />
+          <RuleList items={ASSET_OWNERSHIP_RULES} />
+        </RefSection>
+
+        <RefSection
+          id="arch-naming"
+          eyebrow="Phase 6 blueprint"
+          title="Naming conventions"
+          intro="A convention designed to fit the codebase as it already is, so adopting it forces no rename. Where an existing name does not fit, the row says so instead of proposing a correction."
+        >
+          <NamingTable entries={NAMING_CONVENTIONS} />
+        </RefSection>
+
+        <RefSection
+          id="arch-figma-library"
+          eyebrow="Future Figma organization"
+          title="Figma library structure blueprint"
+          intro="A specification for a library that does not exist. Nothing has been drawn, converted, exported or synchronised, and no DOM-to-Figma conversion is implied."
+        >
+          <MaturityCallout kind="opportunity" title="No Figma component exists">
+            <p>
+              This is a written structure derived from the audited implementation. Building the
+              library is a separate future phase.
+            </p>
+          </MaturityCallout>
+          <FigmaSectionTable entries={FIGMA_LIBRARY_BLUEPRINT} />
+        </RefSection>
+
+        <RefSection
+          id="arch-figma-variables"
+          eyebrow="Future Figma organization"
+          title="Token and style to Figma variable mapping"
+          intro="Where a one-to-one mapping holds and, just as importantly, where it does not."
+        >
+          <FigmaVariableTable entries={FIGMA_VARIABLE_MAPPINGS} />
+        </RefSection>
+
+        <RefSection
+          id="arch-experiences"
+          eyebrow="Phase 6 blueprint"
+          title="Experience architecture"
+          intro="One core system applied at three densities. Each experience composes and configures Core; none of them forks it."
+        >
+          <ExperienceArchTable entries={EXPERIENCE_ARCHITECTURE} />
+        </RefSection>
+
+        <RefSection
+          id="arch-governance"
+          eyebrow="Phase 6 blueprint"
+          title="Architecture governance and change propagation"
+          intro="The rules a future canonical system would follow, and how a change travels from decision to screen — including where it currently stops."
+        >
+          <RuleList items={ARCHITECTURE_GOVERNANCE_RULES} />
+          <RefBlock
+            title="Change propagation model"
+            note="Steps 1–3 exist today. Step 4 does not. Step 5 is partial by design."
+          >
+            <DefinitionRows
+              rows={CHANGE_PROPAGATION_MODEL.map((c) => ({
+                term: c.step,
+                detail: `${c.detail} [${c.label}]`,
+              }))}
+            />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="arch-migration"
+          eyebrow="Future migration"
+          title="Normalization migration roadmap"
+          intro="A proposed sequence for a future controlled normalization phase. Nothing in this roadmap has been executed."
+        >
+          <MigrationList entries={MIGRATION_ROADMAP} />
+          <RefBlock
+            title="Open decisions"
+            note="Questions a future phase must answer before it can begin."
+          >
+            <RuleList items={OPEN_FUTURE_DECISIONS} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="arch-traceability"
+          eyebrow="Phase 6 blueprint"
+          title="Cross-phase traceability"
+          intro="Which audit phase supplies the evidence behind each part of this architecture."
+        >
+          <DefinitionRows
+            rows={CROSS_PHASE_TRACEABILITY.map((t) => ({
+              term: t.phase,
+              detail: `Feeds: ${t.feeds}. Artifacts: ${t.artifacts}.`,
+            }))}
           />
         </RefSection>
       </RefContainer>

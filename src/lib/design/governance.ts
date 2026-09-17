@@ -855,3 +855,131 @@ export const FUTURE_FIGMA_ORGANIZATION = [
       "Web/Marketing, Shopping/Marketplace, Dashboard/Admin and a reserved Future slot — contextual usage only, never separate libraries.",
   },
 ];
+
+/* -----------------------------------------------------------------
+ * Phase 6 — architecture governance, experience architecture and the
+ * change-propagation model.
+ *
+ * DOCUMENTATION ONLY. These are rules a future canonical system should
+ * follow. They are not enforced by any runtime mechanism, and adopting
+ * them requires no change to the current application.
+ * ----------------------------------------------------------------- */
+
+/** Governance rules for the future canonical system. */
+export const ARCHITECTURE_GOVERNANCE_RULES = [
+  "GOVERNANCE RULE — Adding a component: it needs two unrelated consumers, a stable anatomy and a props interface. One consumer means it stays route-local.",
+  "GOVERNANCE RULE — Modifying a component: changes to a shared component are reviewed against every experience that consumes it, not just the one that prompted the change.",
+  "GOVERNANCE RULE — Adding a variant: a new variant needs a semantic reason. 'This screen wants it slightly different' is a composition problem, not a variant.",
+  "GOVERNANCE RULE — Adding a state: a state must be expressible in the platform's own vocabulary and must have an accessibility expression, not only a visual one.",
+  "GOVERNANCE RULE — Adding a token: a token must be used by at least two components or be a genuine brand decision. A value used once is a literal, not a token.",
+  "GOVERNANCE RULE — Deprecating a component: mark it deprecated, migrate consumers, then remove. Never remove first.",
+  "GOVERNANCE RULE — Resolving duplicates: document both implementations, decide explicitly, migrate with visual diffs. Never resolve a duplicate by quietly deleting one side.",
+  "GOVERNANCE RULE — Experience extensions: an experience may compose and configure Core; it may never fork a Core component.",
+  "GOVERNANCE RULE — Branding changes: the product brand is a Core foundation; tenant brand values stay runtime configuration owned by Branding & White-Label.",
+  "GOVERNANCE RULE — Asset changes: uploaded assets stay owned by Marketplace Asset Management. The design system documents slots, never content.",
+  "GOVERNANCE RULE — Figma synchronization: code is the source of truth. When they disagree, Figma is corrected.",
+  "GOVERNANCE RULE — Production synchronization: the reference layer describes production. A reference page must never show something production does not do.",
+  "GOVERNANCE RULE — Accessibility review: keyboard, focus, semantics, labels and contrast are reviewed before a component is considered done.",
+  "GOVERNANCE RULE — Responsive review: every component is reviewed at desktop and mobile widths before it is considered done.",
+  "GOVERNANCE RULE — Governed module vocabulary (M08 controlled outcomes, traceability identifiers) is owned by its build packet, not by the design system.",
+];
+
+/** How a change travels, and where it currently stops. */
+export const CHANGE_PROPAGATION_MODEL = [
+  {
+    step: "1 · Source of truth",
+    detail:
+      "A decision is made and recorded — a token value, a component API, a pattern rule. Today that source is the production code itself.",
+    label: "CURRENT IMPLEMENTATION",
+  },
+  {
+    step: "2 · Shared token or component",
+    detail:
+      "The decision lands in src/styles.css or in the owning component, so every consumer inherits it at once.",
+    label: "CURRENT IMPLEMENTATION",
+  },
+  {
+    step: "3 · Reference library",
+    detail:
+      "The reference layer and both reference pages are updated to describe the new reality. They describe; they never define.",
+    label: "CURRENT IMPLEMENTATION",
+  },
+  {
+    step: "4 · Figma",
+    detail:
+      "The Figma library is updated to mirror the code. This step does not exist yet — no library has been built.",
+    label: "FUTURE MIGRATION",
+  },
+  {
+    step: "5 · Application",
+    detail:
+      "Screens pick the change up automatically wherever they consume the shared owner, and manually wherever they do not.",
+    label: "OBSERVED VARIATION",
+  },
+  {
+    step: "Known limit",
+    detail:
+      "The application has NOT been migrated to every abstraction this blueprint proposes. Unowned patterns — card surface, form field, results toolbar, loading — do not propagate automatically, because nothing owns them.",
+    label: "UNOWNED AREA",
+  },
+];
+
+/** How the one shared system is applied differently per experience. */
+export const EXPERIENCE_ARCHITECTURE = [
+  {
+    experience: "Web / Marketing",
+    routes: "Landing, ICHRA, support, FAQ, legal and referral surfaces",
+    hierarchy:
+      "Strong editorial hierarchy: one dominant headline per section, generous vertical rhythm, a viewport-aware hero.",
+    density: "Comfortable — h-11 actions, larger padding, wider gaps.",
+    components:
+      "Core PageHeader, ACTION_PILL at lg, surface cards, product chips with their icons, Logo.",
+    patterns: "Hero, section blocks, card rows, CTA rows.",
+    typography: "The largest heading steps in the product; paragraph sizes stay modest by design.",
+    brand: "The most brand-expressive surface. The mark and wordmark are prominent.",
+    rule: "Uses the same components as everywhere else, at a looser density. No marketing-only component set.",
+    label: "CURRENT IMPLEMENTATION",
+  },
+  {
+    experience: "Shopping / Commerce",
+    routes: "Plans, plan detail, compare, coverage, cart, quote, apply, review, select",
+    hierarchy:
+      "Scannable and dense. Comparison beats decoration: identity, classification, price, action in the same order every time.",
+    density: "Default to compact — h-8 and h-9 controls, tight chip spacing.",
+    components:
+      "PlanCard, MetalBadge, StatusBadge, CarrierMark, OverflowText, ACTION_PILL, Select, EmptyState.",
+    patterns:
+      "Filter rail, results toolbar, results list, cart summary, add-ons, shopping mode bar.",
+    typography: "Tabular numerics for premiums, formatted consistently; small dense labels.",
+    brand: "Restrained. Carrier and tier identity carry more weight than ABox branding here.",
+    rule: "Filters render the exact same badge components as the listings — that is why they match, and it must stay that way.",
+    label: "CURRENT IMPLEMENTATION",
+  },
+  {
+    experience: "Dashboard / Admin",
+    routes: "Agency, workforce, marketplace admin, platform, JET and governed module screens",
+    hierarchy:
+      "Shell-led. Navigation is persistent; the page states what it is and then gets to the data.",
+    density: "Compact — dense tables, tight KPI rows, small status chips.",
+    components:
+      "InternalShell, PageHeader, DataTable, KpiCard, StatusBadge, EmptyState, plus route-local kits.",
+    patterns:
+      "KPI row, data table, filter toolbar, wizard, detail tabs, governed traceability rails.",
+    typography: "text-sm body with uppercase serial headers; numerics tabular throughout.",
+    brand: "Minimal. The mark appears in the shell and nowhere else.",
+    rule: "The densest context in the product. It is where route-local kits accumulated, and where future consolidation would pay off most.",
+    label: "CURRENT IMPLEMENTATION",
+  },
+  {
+    experience: "Future experiences",
+    routes: "None yet",
+    hierarchy: "Inherits Core.",
+    density: "Picks one of the three documented densities rather than inventing a fourth.",
+    components: "Core only. A new experience starts with zero components of its own.",
+    patterns: "Core patterns first; a new pattern only after it has been used twice.",
+    typography: "Core ramp.",
+    brand: "Core brand foundations plus runtime tenant configuration.",
+    rule: "A new experience is a guidance document, not a new library. This is the rule that keeps one system from becoming four.",
+    label: "GOVERNANCE RULE",
+  },
+];

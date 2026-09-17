@@ -707,3 +707,68 @@ states (medium); unify the status tone vocabulary (high); give the card surface 
 fate of the unused primitives and the ai-elements tree (low); keyboard path for clickable rows
 (low); announce loading states (low); shared accessible-name helper for icon-only controls (low);
 reconcile the Button and ACTION_PILL ladders (medium).
+
+---
+
+## Phase 6 — Architecture & Normalization Blueprint
+
+**Status: documentation / reference layer only. The application was not changed.**
+
+Phase 6 turns the Phase 1–5 audit into an architecture specification for a future
+canonical ABox Design System and a future design library. It selects no winners,
+fixes no inconsistencies, deletes no components and introduces no aliases into
+production code.
+
+### Label vocabulary
+
+Every Phase 6 row carries exactly one label so the reader never has to guess:
+
+`CURRENT IMPLEMENTATION` · `OBSERVED VARIATION` · `OBSERVED DUPLICATE` ·
+`OBSERVED OVERLAP` · `INSTALLED BUT UNUSED` · `POSSIBLY UNUSED` · `UNOWNED AREA` ·
+`GOVERNANCE RULE` · `FUTURE CANONICAL TARGET` · `FUTURE OPPORTUNITY` ·
+`FUTURE FIGMA ORGANIZATION` · `FUTURE MIGRATION` · `FUTURE DECISION`
+
+### CURRENT IMPLEMENTATION — what the architecture describes
+
+- One unified ABox Core: Foundations → Components → Patterns → Experience Guidance.
+- A seven-level hierarchy from token to screen, with one-directional dependencies.
+- Three shell families covering 123 routes; six route-local kits alongside them.
+- Brand marks are code-drawn Core foundations; tenant and marketplace assets remain
+  runtime data owned by Branding & White-Label and Marketplace Asset Management.
+- Steps 1–3 of change propagation work today: decision → shared owner → reference layer.
+
+### FUTURE CANONICAL TARGET — what a later phase could aim for
+
+- A canonical component map pairing each measured implementation with a target name,
+  classification, variant/size/state set and anatomy.
+- Anatomy, variant, state, accessibility, responsive and density blueprints, with
+  production evidence and the proposal kept in separate columns.
+- A naming convention that the current codebase already satisfies almost everywhere,
+  so adoption forces no rename.
+- A migration roadmap, lowest risk first, each phase carrying prerequisites,
+  validation, rollback and visual-diff requirements.
+
+### FUTURE DECISION — deliberately left open
+
+Duplicate and overlap areas are recorded with consumers, differences, risks and the
+decision required. No production winner has been chosen. Unowned areas — card
+surface, form field, results toolbar, loading — still do not propagate automatically,
+because nothing owns them.
+
+### NOT DONE — stated plainly
+
+- No Figma library, component, variable or style exists. Nothing was drawn, converted,
+  exported or synchronised, and no DOM-to-Figma conversion is implied.
+- The application has not been migrated to any abstraction this blueprint proposes.
+- No inconsistency found in the audit was fixed.
+
+### Reference-layer files added in Phase 6
+
+`src/lib/design/architecture.ts`, `classification.ts`, `canonical-components.ts`,
+`blueprints.ts`, `architecture-relationships.ts`, `normalization.ts`,
+`brand-asset-architecture.ts`, `naming.ts`, `figma-library.ts`, plus Phase 6 types in
+`types.ts` and Phase 6 governance/experience/change-propagation exports in
+`governance.ts`.
+
+Consumed only by `/design-system` (technical) and `/design-guide` (management). Both
+remain unlisted and reachable by direct URL only.

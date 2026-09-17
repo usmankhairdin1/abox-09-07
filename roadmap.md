@@ -146,3 +146,28 @@ Card padding and border-token variation, section-heading and card-description si
 uppercase tracking values, unused Font Awesome dependency, single Tabler import, `h-4 w-4` vs
 `size-4`, the circular icon container, decor compatibility aliases, machine-readable Figma token
 export, breadcrumbs / pagination / avatars / charts awaiting real feature use.
+
+## Phase 6 — Architecture & Normalization Blueprint (complete)
+
+- [x] Unified ABox Core architecture, component hierarchy and dependency rules
+- [x] Component-vs-pattern classification framework with observable criteria
+- [x] Future canonical component map, current evidence paired with proposed target
+- [x] Anatomy, variant, state, accessibility, responsive and density blueprints
+- [x] Architecture relationship map and token → screen dependency model
+- [x] Duplicate / overlap normalization map — documented, no winner chosen
+- [x] Route-local kit architecture and three shell families across 123 routes
+- [x] Brand and asset ownership boundaries (Branding & Marketplace untouched)
+- [x] Naming conventions compatible with the current codebase
+- [x] Future Figma library blueprint and variable mapping (nothing built)
+- [x] Architecture governance, change propagation, experience architecture
+- [x] Migration roadmap with risk, validation, rollback and visual-diff requirements
+- [x] `/design-system` and `/design-guide` extended; both still unlisted
+- [x] `.lovable/design-system.md` updated
+
+### Deferred (requires separate approval)
+
+- [ ] Resolve duplicate implementations — each needs an explicit decision
+- [ ] Assign owners to unowned patterns (card surface, form field, results toolbar, loading)
+- [ ] Name the literal values that currently bypass the token chain
+- [ ] Build the design library; it does not exist
+- [ ] Execute any migration phase
