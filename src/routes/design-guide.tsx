@@ -78,6 +78,9 @@ import {
   FIGMA_LAYOUT_MAPPING,
   LAYOUT_GOVERNANCE_RULES,
   LAYOUT_UNOWNED_AREAS,
+  FIGMA_TYPOGRAPHY_MAPPING,
+  TYPOGRAPHY_GOVERNANCE_RULES,
+  TYPOGRAPHY_UNOWNED_AREAS,
 } from "@/lib/design/governance";
 
 export const Route = createFileRoute("/design-guide")({
@@ -118,6 +121,7 @@ const TOC = [
   { id: "accessibility", label: "Accessibility" },
   { id: "experiences", label: "Experiences" },
   { id: "spacing-layout", label: "Spacing & layout" },
+  { id: "typography-governance", label: "Typography" },
   { id: "figma", label: "Figma mapping" },
 ];
 
@@ -837,16 +841,101 @@ function DesignGuidePage() {
         </RefSection>
 
         <RefSection
-          id="figma"
+          id="typography-governance"
           eyebrow="15"
+          title="Typography governance"
+          intro="Two typefaces, three working weights and a small set of named roles carry the entire product. The audit behind this section measured what actually ships rather than proposing a new type scale."
+        >
+          <div className="grid gap-4 lg:grid-cols-2">
+            <MaturityCallout kind="current" title="Two typefaces, one system">
+              <p>
+                Bricolage Grotesque sets headings and headline numbers; Inter Tight sets everything
+                else. Every experience &mdash; marketing, shopping and the admin workspaces &mdash;
+                shares that same pairing. There is no second type system to choose between.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Roles, not sizes">
+              <p>
+                New work picks an existing role &mdash; page title, section heading, body, label,
+                caption, badge, identifier &mdash; and reuses its treatment. Choosing a size
+                directly is how a system drifts.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="State is colour, never weight">
+              <p>
+                Muted, error, success, warning and disabled text all change colour or opacity only.
+                Text never gets bigger or bolder to signal a state, and colour is never the only
+                signal &mdash; the wording always carries the meaning too.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Numbers line up">
+              <p>
+                Prices, totals, KPI values and identifiers use tabular figures so digits sit in
+                fixed-width columns. Any new number shown in a list or table follows the same rule.
+              </p>
+            </MaturityCallout>
+          </div>
+          <RefBlock title="The rules">
+            <RuleList items={TYPOGRAPHY_GOVERNANCE_RULES} />
+          </RefBlock>
+          <RefBlock
+            title="Known variation"
+            note="Recorded from the live product. These are not defects to fix on sight &mdash; changing them re-types many screens at once."
+          >
+            <RuleList items={TYPOGRAPHY_UNOWNED_AREAS} tone="warning" />
+          </RefBlock>
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            <MaturityCallout kind="current" title="Marketing & web pages">
+              <p>
+                The largest type in the product lives here, and only here. Headlines step down on
+                smaller screens; body copy does not.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Shopping & marketplace">
+              <p>
+                Dense, scannable type: small labels, tight badges and tabular prices. Plan names use
+                the heading face at a modest size so a long name stays readable.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Dashboards & admin">
+              <p>
+                Compact titles, uppercase micro-labels and tabular data. Large type is reserved for
+                headline metrics.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Future experiences">
+              <p>
+                Any new surface inherits this same type system. An experience may adjust density and
+                scale within the documented roles; it does not introduce a new typeface, weight or
+                scale.
+              </p>
+            </MaturityCallout>
+          </div>
+          <RefBlock
+            title="Bilingual readiness"
+            note="Spanish runs roughly 15&ndash;25% longer than English."
+          >
+            <p className="text-sm text-muted-foreground">
+              Type choices assume text will grow. Labels wrap rather than shrink, long values
+              truncate with the full text available on hover and focus, and no layout depends on a
+              fixed character count.
+            </p>
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="figma"
+          eyebrow="16"
           title="Where this goes next: Figma"
           intro="When the design library is built in Figma, it will mirror this implementation one-to-one rather than being drawn from scratch. Nothing has been converted yet — this is the agreed mapping."
         >
           <DefinitionRows
-            rows={[...FIGMA_MAPPING, ...FIGMA_LAYOUT_MAPPING].map((m) => ({
-              term: m.implementation,
-              detail: `→ ${m.figma}. ${m.note}`,
-            }))}
+            rows={[...FIGMA_MAPPING, ...FIGMA_LAYOUT_MAPPING, ...FIGMA_TYPOGRAPHY_MAPPING].map(
+              (m) => ({
+                term: m.implementation,
+                detail: `→ ${m.figma}. ${m.note}`,
+              }),
+            )}
           />
         </RefSection>
 

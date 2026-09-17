@@ -122,6 +122,22 @@ import {
   STRUCTURAL_RELATIONSHIPS,
 } from "@/lib/design/spatial-relationships";
 import {
+  FONT_FAMILIES,
+  FONT_WEIGHTS,
+  TYPE_SCALE,
+  LINE_HEIGHT_AND_TRACKING,
+  TYPOGRAPHY_UTILITIES,
+  SEMANTIC_TYPOGRAPHY,
+  NUMERIC_TYPOGRAPHY,
+} from "@/lib/design/typography";
+import {
+  RESPONSIVE_TYPOGRAPHY,
+  TYPOGRAPHY_STATES,
+  TEXT_BEHAVIOR,
+  READABILITY_CONVENTIONS,
+  COMPONENT_TYPOGRAPHY,
+} from "@/lib/design/typography-behavior";
+import {
   OWNERSHIP_HIERARCHY,
   SAFE_CHANGE_RULES,
   INTENTIONAL_ONE_OFFS,
@@ -132,6 +148,11 @@ import {
   LAYOUT_GOVERNANCE_RULES,
   LAYOUT_DEFERRED_OPPORTUNITIES,
   LAYOUT_UNOWNED_AREAS,
+  FIGMA_TYPOGRAPHY_MAPPING,
+  TYPOGRAPHY_GOVERNANCE_RULES,
+  TYPOGRAPHY_MATURITY,
+  TYPOGRAPHY_UNOWNED_AREAS,
+  TYPOGRAPHY_DEFERRED_OPPORTUNITIES,
 } from "@/lib/design/governance";
 
 export const Route = createFileRoute("/design-system")({
@@ -183,6 +204,16 @@ const TOC = [
   { id: "layout-patterns", label: "Layout patterns" },
   { id: "governance", label: "Governance" },
   { id: "layout-governance", label: "Layout governance" },
+  { id: "type-families", label: "Font families" },
+  { id: "type-scale-audit", label: "Type scale" },
+  { id: "type-utilities", label: "Type utilities" },
+  { id: "type-semantic", label: "Semantic type" },
+  { id: "type-responsive", label: "Responsive type" },
+  { id: "type-components", label: "Component type" },
+  { id: "type-states", label: "Type states" },
+  { id: "type-data", label: "Numeric & data type" },
+  { id: "type-readability", label: "Readability" },
+  { id: "type-governance", label: "Type governance" },
   { id: "experiences", label: "Experiences" },
   { id: "figma", label: "Figma mapping" },
 ];
@@ -1075,6 +1106,154 @@ function DesignSystemPage() {
             <MaturityCallout kind="opportunity" title="Not applied — would change rendered output">
               <ul className="mt-2 space-y-2">
                 {LAYOUT_DEFERRED_OPPORTUNITIES.map((o) => (
+                  <li key={o.item}>
+                    <span className="font-medium text-foreground">{o.item}</span> — {o.detail}{" "}
+                    <MetaChip tone="warning">{o.risk}</MetaChip>
+                  </li>
+                ))}
+              </ul>
+            </MaturityCallout>
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="type-families"
+          eyebrow="Phase 3 audit"
+          title="Font families & weights"
+          intro="Two real families ship: Inter Tight for everything and Bricolage Grotesque for headings. The serif and mono tokens alias those stacks — there is no serif or monospace face in the product."
+        >
+          <RefBlock title="Families">
+            <FoundationTable entries={FONT_FAMILIES} />
+          </RefBlock>
+          <RefBlock title="Weights">
+            <FoundationTable entries={FONT_WEIGHTS} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="type-scale-audit"
+          eyebrow="Phase 3 audit"
+          title="Type scale as measured"
+          intro="Every size that ships, with its occurrence count. text-sm (779 uses) is the real body size; text-base is used as a heading size, not for body copy. Sub-scale literals exist because Tailwind's scale stops at 12px."
+        >
+          <RefBlock title="Sizes">
+            <SpacingTable entries={TYPE_SCALE} />
+          </RefBlock>
+          <RefBlock title="Line height & tracking">
+            <FoundationTable entries={LINE_HEIGHT_AND_TRACKING} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="type-utilities"
+          eyebrow="Phase 3 audit"
+          title="Typography utilities"
+          intro="The three shipping typography utilities, plus the link utilities. One of them — .story-link — is referenced 89 times and has no definition anywhere."
+        >
+          <FoundationTable entries={TYPOGRAPHY_UTILITIES} />
+        </RefSection>
+
+        <RefSection
+          id="type-semantic"
+          eyebrow="Phase 3 audit"
+          title="Semantic typography hierarchy"
+          intro="Each role as implemented. Where two surfaces use different values for the same role, that is recorded as an observed variation rather than resolved."
+        >
+          <RelationshipTable entries={SEMANTIC_TYPOGRAPHY.entries} />
+        </RefSection>
+
+        <RefSection
+          id="type-responsive"
+          eyebrow="Phase 3 audit"
+          title="Responsive typography"
+          intro="Body text never changes size across breakpoints. Only display, title, subtitle and the input primitive step — and the input deliberately runs larger on mobile to stop iOS zooming on focus."
+        >
+          <ResponsiveTable entries={RESPONSIVE_TYPOGRAPHY} />
+        </RefSection>
+
+        <RefSection
+          id="type-components"
+          eyebrow="Phase 3 audit"
+          title="Component typography cross-reference"
+          intro="Typography as applied by each shipping component, cross-referenced with the component inventory. Inventory only — no component was altered."
+        >
+          <RelationshipTable entries={COMPONENT_TYPOGRAPHY.entries} />
+        </RefSection>
+
+        <RefSection
+          id="type-states"
+          eyebrow="Phase 3 audit"
+          title="Typography states & text behaviour"
+          intro="State is carried by colour and opacity. Weight and size do not change between states anywhere in the application."
+        >
+          <RefBlock title={TYPOGRAPHY_STATES.title} note={TYPOGRAPHY_STATES.summary}>
+            <RelationshipTable entries={TYPOGRAPHY_STATES.entries} />
+          </RefBlock>
+          <RefBlock title={TEXT_BEHAVIOR.title} note={TEXT_BEHAVIOR.summary}>
+            <RelationshipTable entries={TEXT_BEHAVIOR.entries} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="type-data"
+          eyebrow="Phase 3 audit"
+          title="Numeric & data typography"
+          intro="tabular-nums appears 90 times and is the only numeric alignment convention. Figures align through tabular figures in Inter Tight, not a monospace face."
+        >
+          <RelationshipTable entries={NUMERIC_TYPOGRAPHY.entries} />
+        </RefSection>
+
+        <RefSection
+          id="type-readability"
+          eyebrow="Phase 3 audit"
+          title="Readability & accessibility conventions"
+          intro="What the implementation already does for legibility, contrast, screen readers, touch and reduced motion."
+        >
+          <DensityTable entries={READABILITY_CONVENTIONS} />
+        </RefSection>
+
+        <RefSection
+          id="type-governance"
+          eyebrow="Phase 3 governance"
+          title="Typography governance & maturity"
+          intro="Rules, maturity of each role using the existing governance language, areas with no owner, the Figma text-style blueprint, and the changes deliberately not made."
+        >
+          <RefBlock title="Governance rules">
+            <RuleList items={TYPOGRAPHY_GOVERNANCE_RULES} />
+          </RefBlock>
+          <RefBlock
+            title="Maturity"
+            note="Implementation maturity, not a judgement of design quality."
+          >
+            <DefinitionRows
+              rows={TYPOGRAPHY_MATURITY.map((m) => ({
+                term: m.item,
+                detail: m.detail,
+                meta: m.maturity,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock
+            title="Unowned typography areas"
+            note="Recurring typography that no component or utility currently owns."
+          >
+            <RuleList items={TYPOGRAPHY_UNOWNED_AREAS} tone="warning" />
+          </RefBlock>
+          <RefBlock
+            title="Figma text-style mapping"
+            note="Blueprint only. Nothing has been converted and no runtime class was renamed."
+          >
+            <DefinitionRows
+              rows={FIGMA_TYPOGRAPHY_MAPPING.map((m) => ({
+                term: m.implementation,
+                detail: `→ ${m.figma}. ${m.note}`,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock title="Deferred opportunities">
+            <MaturityCallout kind="opportunity" title="Not applied — would change rendered type">
+              <ul className="mt-2 space-y-2">
+                {TYPOGRAPHY_DEFERRED_OPPORTUNITIES.map((o) => (
                   <li key={o.item}>
                     <span className="font-medium text-foreground">{o.item}</span> — {o.detail}{" "}
                     <MetaChip tone="warning">{o.risk}</MetaChip>
