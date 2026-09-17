@@ -412,6 +412,26 @@ const TOC = [
   { id: "arch-governance", label: "Architecture governance" },
   { id: "arch-migration", label: "Migration roadmap" },
   { id: "arch-traceability", label: "Cross-phase traceability" },
+  { id: "fnd-model", label: "Foundation model" },
+  { id: "fnd-color", label: "Colour foundation" },
+  { id: "fnd-color-roles", label: "Colour role chains" },
+  { id: "fnd-theme", label: "Theme modes" },
+  { id: "fnd-tone", label: "Status tone vocabulary" },
+  { id: "fnd-tier", label: "Tier foundation" },
+  { id: "fnd-type", label: "Typography foundation" },
+  { id: "fnd-space", label: "Spacing foundation" },
+  { id: "fnd-layout", label: "Layout & shape foundation" },
+  { id: "fnd-icon-motion", label: "Icon, motion & density" },
+  { id: "fnd-component-roles", label: "Component foundation roles" },
+  { id: "fnd-naming", label: "Token naming system" },
+  { id: "fnd-map", label: "Primitive → semantic map" },
+  { id: "fnd-figma", label: "Figma variable mapping" },
+  { id: "fnd-a11y", label: "Foundation accessibility" },
+  { id: "fnd-boundaries", label: "Ownership boundaries" },
+  { id: "fnd-experience", label: "Experience expression" },
+  { id: "fnd-maturity", label: "Foundation maturity" },
+  { id: "fnd-governance", label: "Foundation governance" },
+
 ];
 
 function DesignSystemPage() {
