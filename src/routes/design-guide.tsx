@@ -128,6 +128,7 @@ const TOC = [
   { id: "spacing-layout", label: "Spacing & layout" },
   { id: "typography-governance", label: "Typography" },
   { id: "icon-asset-governance", label: "Icons & assets" },
+  { id: "component-governance", label: "Components" },
   { id: "figma", label: "Figma mapping" },
 ];
 
