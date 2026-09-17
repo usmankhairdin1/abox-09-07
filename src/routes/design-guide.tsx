@@ -1187,9 +1187,9 @@ function DesignGuidePage() {
               {CANONICAL_SUMMARY.candidates} pieces of the interface are used widely enough to be
               treated as shared building blocks — {CANONICAL_SUMMARY.core} of them belong to the
               core set used everywhere, and {CANONICAL_SUMMARY.experience} are specific to one part
-              of the product. Three page frames cover 123 screens, and{" "}
-              {ROUTE_LOCAL_KITS.length} areas of the product have grown their own small local sets
-              of building blocks alongside the shared ones.
+              of the product. Three page frames cover 123 screens, and {ROUTE_LOCAL_KITS.length}{" "}
+              areas of the product have grown their own small local sets of building blocks
+              alongside the shared ones.
             </p>
           </RefBlock>
           <RefBlock title="Where the evidence comes from">

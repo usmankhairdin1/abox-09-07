@@ -82,8 +82,7 @@ export const BRAND_ARCHITECTURE: BlueprintRow[] = [
     item: "Marketplace brand assets",
     source: "src/routes/marketplace.admin.brand.tsx, marketplace.admin.assets.tsx",
     current: "Per-marketplace assets are uploaded and managed by Marketplace Asset Management.",
-    future:
-      "RUNTIME BRAND CONFIGURATION. The reference pages must never become an asset editor.",
+    future: "RUNTIME BRAND CONFIGURATION. The reference pages must never become an asset editor.",
     label: "GOVERNANCE RULE",
     phase: "Phase 4 — iconography & assets",
   },

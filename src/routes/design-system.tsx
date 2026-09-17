@@ -1950,7 +1950,10 @@ function DesignSystemPage() {
           intro="Three shell families cover 123 routes. Shells own structure, navigation and responsive frame; they never own component definitions."
         >
           <ShellTable entries={SHELL_ARCHITECTURE} />
-          <RefBlock title="Shared shell concerns" note="Common responsibilities across all three shells.">
+          <RefBlock
+            title="Shared shell concerns"
+            note="Common responsibilities across all three shells."
+          >
             <RuleList items={SHELL_SHARED_CONCERNS} />
           </RefBlock>
         </RefSection>

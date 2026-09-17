@@ -81,7 +81,8 @@ export const FIGMA_LIBRARY_BLUEPRINT: FigmaSectionEntry[] = [
   },
   {
     section: "05 Documentation",
-    purpose: "The written rules: design guide, usage, accessibility, content, do/don't, governance.",
+    purpose:
+      "The written rules: design guide, usage, accessibility, content, do/don't, governance.",
     belongs:
       "Accessibility requirements, responsive rules, branding and asset governance, the duplicate resolution process, change propagation and the migration record.",
     excludes: "Anything that contradicts the code. Code is the source of truth.",

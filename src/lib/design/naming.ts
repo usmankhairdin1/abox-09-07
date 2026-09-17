@@ -17,7 +17,8 @@ export const NAMING_CONVENTIONS: NamingRule[] = [
       "--{role} for a base role and --{role}-{modifier} for a derived one. Role names describe meaning, never appearance.",
     example: "--primary, --primary-foreground, --primary-soft, --sage, --sage-soft, --hairline",
     codebaseFit: "Already satisfied. Every token in src/styles.css follows this shape today.",
-    figmaFit: "Maps directly to a Figma colour variable with the same name minus the leading dashes.",
+    figmaFit:
+      "Maps directly to a Figma colour variable with the same name minus the leading dashes.",
     label: "CURRENT IMPLEMENTATION",
   },
   {
@@ -51,14 +52,14 @@ export const NAMING_CONVENTIONS: NamingRule[] = [
     convention:
       "Parent name plus a dotted or suffixed part name; parts are never exported as standalone top-level names.",
     example: "Card / CardHeader / CardContent / CardFooter",
-    codebaseFit: "Satisfied by the shadcn primitives; the ABox compounds keep their parts internal.",
+    codebaseFit:
+      "Satisfied by the shadcn primitives; the ABox compounds keep their parts internal.",
     figmaFit: "Nested Figma components inside the parent.",
     label: "CURRENT IMPLEMENTATION",
   },
   {
     subject: "Route-local kits",
-    convention:
-      "Prefix with the module so a name collision with Core is impossible at a glance.",
+    convention: "Prefix with the module so a name collision with Core is impossible at a glance.",
     example: "M06StatusTag rather than StatusTag; M06Sheet rather than Sheet",
     codebaseFit:
       "FUTURE DECISION — not satisfied today. The M06 kit's Sheet collides by name with ui/Sheet.",

@@ -322,7 +322,8 @@ export const CANONICAL_COMPONENT_MAP: CanonicalComponentEntry[] = [
     related: "ui/Table (unused), lucie table, lucie-app DataTable, m06 tables",
     duplication:
       "OBSERVED DUPLICATE — four table implementations coexist; ui/Table has no production consumer.",
-    accessibility: "scope=col headers and an sr-only caption; row click has no keyboard equivalent.",
+    accessibility:
+      "scope=col headers and an sr-only caption; row click has no keyboard equivalent.",
     typography: "text-sm body, 10px uppercase tracked head",
     spacing: "px-5 py-4 cells",
     iconography: "Supplied by cell content.",

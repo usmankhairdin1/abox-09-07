@@ -66,7 +66,8 @@ export const ANATOMY_BLUEPRINT: BlueprintGroup = {
       source: "Repeated route markup",
       current:
         "No component, so no fixed anatomy. Padding is p-4, p-5 or p-6 depending on the screen; the border token alternates between border and hairline.",
-      future: "FUTURE DECISION — the canonical padding and border for a card surface is not settled by the evidence. Both variants are in active production use.",
+      future:
+        "FUTURE DECISION — the canonical padding and border for a card surface is not settled by the evidence. Both variants are in active production use.",
       label: "FUTURE DECISION",
       phase: "Phase 2 — spacing, layout, responsive",
     },
@@ -93,7 +94,8 @@ export const ANATOMY_BLUEPRINT: BlueprintGroup = {
     {
       item: "EmptyState",
       source: "src/components/abox/empty-state.tsx",
-      current: "Optional decorative background, optional icon, title, optional body, optional action.",
+      current:
+        "Optional decorative background, optional icon, title, optional body, optional action.",
       future: "Same anatomy with a Size property for inline versus full-page use.",
       label: "CURRENT IMPLEMENTATION",
       phase: "Phase 5 — components, variants, states",
@@ -523,7 +525,8 @@ export const RESPONSIVE_BLUEPRINT: BlueprintGroup = {
     {
       item: "Navigation",
       source: "internal-shell.tsx, marketplace-shell.tsx, member-shell.tsx",
-      current: "Rail collapses into a Sheet below lg; the member arc reflows; header links condense.",
+      current:
+        "Rail collapses into a Sheet below lg; the member arc reflows; header links condense.",
       future: "Shared navigation collapse rule in the future shell base.",
       label: "CURRENT IMPLEMENTATION",
       phase: "Phase 2 — spacing, layout, responsive",
@@ -564,7 +567,8 @@ export const RESPONSIVE_BLUEPRINT: BlueprintGroup = {
     {
       item: "Dialogs and drawers",
       source: "ui/dialog.tsx, ui/sheet.tsx, ui/drawer.tsx",
-      current: "Dialog centres; sheet enters from a side; drawer is used only on the reference page.",
+      current:
+        "Dialog centres; sheet enters from a side; drawer is used only on the reference page.",
       future: "Document when each is appropriate; the choice is currently ad hoc.",
       label: "OBSERVED VARIATION",
       phase: "Phase 5 — components, variants, states",

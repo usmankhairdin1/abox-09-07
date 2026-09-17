@@ -421,7 +421,8 @@ export interface CanonicalComponentEntry {
   taxonomy: ComponentCategory;
   /** ABox Core or experience-scoped in the future system. */
   tier: "ABox Core" | "Experience-specific";
-  classification: "primitive" | "component" | "compound component" | "pattern" | "experience pattern";
+  classification:
+    "primitive" | "component" | "compound component" | "pattern" | "experience pattern";
   /** Measured direct import sites today. */
   consumers: string;
   /** Direct vs indirect reach, as measured. */

@@ -55,13 +55,17 @@ export const OVERLAP_MAP: OverlapArea[] = [
   },
   {
     area: "Empty states",
-    implementations: "abox/empty-state.tsx · DataTable empty row · m06 StateBlock · lucie-app EmptyState",
+    implementations:
+      "abox/empty-state.tsx · DataTable empty row · m06 StateBlock · lucie-app EmptyState",
     evidence: "Phase 5 component inventory",
     consumers: "abox EmptyState 10 direct",
-    differences: "Decorative background, icon support, action support, inline versus full-page scale.",
+    differences:
+      "Decorative background, icon support, action support, inline versus full-page scale.",
     risks: "Low structural risk; the kits' empty states also carry governed wording.",
-    decision: "FUTURE DECISION — whether the table empty row and the standalone empty state share one component.",
-    sequence: "1) Collect every empty message in the product. 2) Separate wording from layout. 3) Decide the scale property.",
+    decision:
+      "FUTURE DECISION — whether the table empty row and the standalone empty state share one component.",
+    sequence:
+      "1) Collect every empty message in the product. 2) Separate wording from layout. 3) Decide the scale property.",
     label: "OBSERVED DUPLICATE",
     phase: "Phase 5 — components, variants, states",
   },
@@ -74,8 +78,10 @@ export const OVERLAP_MAP: OverlapArea[] = [
       "Two coexisting implementations of the same idea, one of them predating the Plan-AI rename.",
     risks:
       "Low, because neither is mounted. But the ai-elements tree hangs off one of them, so removing either affects what else becomes unreachable.",
-    decision: "FUTURE DECISION — which assistant the product intends to keep, and whether ai-elements stays.",
-    sequence: "1) Confirm the product intent for the assistant. 2) Trace ai-elements reachability. 3) Decide together, not separately.",
+    decision:
+      "FUTURE DECISION — which assistant the product intends to keep, and whether ai-elements stays.",
+    sequence:
+      "1) Confirm the product intent for the assistant. 2) Trace ai-elements reachability. 3) Decide together, not separately.",
     label: "OBSERVED DUPLICATE",
     phase: "Phase 5 — components, variants, states",
   },
@@ -105,7 +111,8 @@ export const OVERLAP_MAP: OverlapArea[] = [
       "Shape (rounded-md versus rounded-full), height ramp, whether it is a component or a class string, focus handling.",
     risks:
       "ACTION_PILL is applied to both buttons and links. A component-based replacement changes the DOM on 35 files.",
-    decision: "FUTURE DECISION — one action component with an appearance property, or two documented paths.",
+    decision:
+      "FUTURE DECISION — one action component with an appearance property, or two documented paths.",
     sequence:
       "1) Classify every ACTION_PILL site as button or link. 2) Decide the appearance model. 3) Migrate in small batches with screenshots.",
     label: "OBSERVED OVERLAP",
@@ -136,7 +143,8 @@ export const OVERLAP_MAP: OverlapArea[] = [
     differences: "Padding, radius, border token, hover behaviour.",
     risks: "Every route would need a visual diff. This is the widest-reaching unowned pattern.",
     decision: "FUTURE DECISION — the canonical padding and border for a card surface.",
-    sequence: "1) Catalogue every card instance with its exact classes. 2) Group by intent. 3) Decide the property set. 4) Migrate by route family.",
+    sequence:
+      "1) Catalogue every card instance with its exact classes. 2) Group by intent. 3) Decide the property set. 4) Migrate by route family.",
     label: "UNOWNED AREA",
     phase: "Phase 2 — spacing, layout, responsive",
   },
@@ -147,7 +155,8 @@ export const OVERLAP_MAP: OverlapArea[] = [
     consumers: "1",
     differences: "Single implementation, but it mixes sorting, shopping mode and quote editing.",
     risks: "Low today; the risk is future divergence if a second results screen copies it.",
-    decision: "FUTURE DECISION — whether a shared results toolbar is warranted before a second consumer exists.",
+    decision:
+      "FUTURE DECISION — whether a shared results toolbar is warranted before a second consumer exists.",
     sequence: "1) Wait for a second consumer. 2) Extract only then.",
     label: "UNOWNED AREA",
     phase: "Phase 5 — components, variants, states",
@@ -174,7 +183,8 @@ export const OVERLAP_MAP: OverlapArea[] = [
     risks:
       "Absorbing a kit into Core risks losing governed semantics; leaving them risks continued divergence.",
     decision: "FUTURE DECISION — per kit, not as a class. See the route-local kit architecture.",
-    sequence: "1) Handle each kit separately. 2) Start with the kit that has the least governed vocabulary.",
+    sequence:
+      "1) Handle each kit separately. 2) Start with the kit that has the least governed vocabulary.",
     label: "OBSERVED OVERLAP",
     phase: "Phase 5 — components, variants, states",
   },
@@ -186,7 +196,8 @@ export const OVERLAP_MAP: OverlapArea[] = [
     differences: "Two entirely different components sharing one name in one codebase.",
     risks: "Renaming either is a code change with no visual effect but a real import surface.",
     decision: "FUTURE DECISION — which name changes, if either.",
-    sequence: "1) Confirm both are intentional. 2) Decide naming at the same time as the naming convention lands.",
+    sequence:
+      "1) Confirm both are intentional. 2) Decide naming at the same time as the naming convention lands.",
     label: "OBSERVED OVERLAP",
     phase: "Phase 6 — direct production read",
   },
@@ -222,7 +233,8 @@ export const ROUTE_LOCAL_KITS: RouteKitEntry[] = [
     dependencies: "M06 kit.",
     overlap: "Minor — mostly layout helpers rather than new visual vocabulary.",
     classification: "Pattern collection, not a component library.",
-    migration: "FUTURE MIGRATION — follows whatever happens to the M06 kit; never migrated independently.",
+    migration:
+      "FUTURE MIGRATION — follows whatever happens to the M06 kit; never migrated independently.",
     label: "CURRENT IMPLEMENTATION",
   },
   {
@@ -253,7 +265,8 @@ export const ROUTE_LOCAL_KITS: RouteKitEntry[] = [
     dependencies: "Foundation tokens, Lucie release data.",
     overlap: "OBSERVED OVERLAP — its table, page head and tags overlap the Core equivalents.",
     classification: "Route-local kit.",
-    migration: "FUTURE MIGRATION — a candidate once the Core table and header decisions are made, not before.",
+    migration:
+      "FUTURE MIGRATION — a candidate once the Core table and header decisions are made, not before.",
     label: "OBSERVED OVERLAP",
   },
   {
@@ -274,7 +287,8 @@ export const ROUTE_LOCAL_KITS: RouteKitEntry[] = [
   },
   {
     kit: "ai-elements",
-    source: "src/components/ai-elements/conversation.tsx, message.tsx, prompt-input.tsx, shimmer.tsx",
+    source:
+      "src/components/ai-elements/conversation.tsx, message.tsx, prompt-input.tsx, shimmer.tsx",
     purpose: "Chat surface primitives for an assistant experience.",
     consumers:
       "Reachable only through PlanAiAssistant, which itself has no located route consumer today.",
@@ -303,7 +317,8 @@ export const SHELL_ARCHITECTURE: ShellArchEntry[] = [
     dependencies: "Sheet, Input, DropdownMenu, Tooltip, nav-config, Logo, auth session.",
     navigation:
       "A grouped rail driven by nav-config, with expanded and collapsed states and a mobile Sheet.",
-    responsive: "The rail becomes a Sheet below lg; the search control appears only at lg and above.",
+    responsive:
+      "The rail becomes a Sheet below lg; the search control appears only at lg and above.",
     branding: "Renders the ABox mark; does not own white-label configuration.",
     coreRelationship: "ABox Core · Shell. Consumes primitives and Core components only.",
     figma: "Frame template with Rail (expanded/collapsed) and Viewport properties.",
@@ -358,8 +373,7 @@ export const MIGRATION_ROADMAP: MigrationPhaseEntry[] = [
   {
     phase: "Phase A",
     title: "Foundations",
-    goal:
-      "Name the values that are currently written as literals — container width, table min-width, header offset, tracking steps — without changing any rendered value.",
+    goal: "Name the values that are currently written as literals — container width, table min-width, header offset, tracking steps — without changing any rendered value.",
     prerequisites: "Phase 1–3 audits (complete).",
     affected: "src/styles.css and the places that reference the literals.",
     risk: "low",
@@ -371,12 +385,12 @@ export const MIGRATION_ROADMAP: MigrationPhaseEntry[] = [
   {
     phase: "Phase B",
     title: "Canonical shared components",
-    goal:
-      "Agree the canonical action, field, status and surface components and build them alongside the existing ones. Nothing is replaced yet.",
+    goal: "Agree the canonical action, field, status and surface components and build them alongside the existing ones. Nothing is replaced yet.",
     prerequisites: "Phase A; the open FUTURE DECISIONs on action, field and tone vocabulary.",
     affected: "src/components/abox/* and src/components/ui/* — additions only.",
     risk: "low",
-    validation: "New components render in the reference pages only; no production consumer changes.",
+    validation:
+      "New components render in the reference pages only; no production consumer changes.",
     rollback: "Delete the new components; production never referenced them.",
     visualDiff: "Not required — production output is untouched.",
     label: "FUTURE MIGRATION",
@@ -384,12 +398,12 @@ export const MIGRATION_ROADMAP: MigrationPhaseEntry[] = [
   {
     phase: "Phase C",
     title: "Compound components",
-    goal:
-      "Bring the page header, table and card surface onto the canonical base, one component at a time.",
+    goal: "Bring the page header, table and card surface onto the canonical base, one component at a time.",
     prerequisites: "Phase B; a resolved decision on density properties.",
     affected: "PageHeader 25 consumers, DataTable 20 consumers, unowned card markup across routes.",
     risk: "medium",
-    validation: "Per-consumer screenshots at desktop and mobile; heading sizes verified numerically.",
+    validation:
+      "Per-consumer screenshots at desktop and mobile; heading sizes verified numerically.",
     rollback: "Per-component revert; each component migrates independently.",
     visualDiff: "Required for every consumer.",
     label: "FUTURE MIGRATION",
@@ -409,12 +423,12 @@ export const MIGRATION_ROADMAP: MigrationPhaseEntry[] = [
   {
     phase: "Phase E",
     title: "Experience-specific patterns",
-    goal:
-      "Formalise the filter rail, results toolbar, cart summary and dashboard KPI row as documented experience patterns.",
+    goal: "Formalise the filter rail, results toolbar, cart summary and dashboard KPI row as documented experience patterns.",
     prerequisites: "Phase D.",
     affected: "Shopping and dashboard routes.",
     risk: "medium",
-    validation: "Behavioural checks alongside visual diffs — filters and sorting must behave identically.",
+    validation:
+      "Behavioural checks alongside visual diffs — filters and sorting must behave identically.",
     rollback: "Per-pattern revert.",
     visualDiff: "Required.",
     label: "FUTURE MIGRATION",
@@ -422,12 +436,12 @@ export const MIGRATION_ROADMAP: MigrationPhaseEntry[] = [
   {
     phase: "Phase F",
     title: "Figma library synchronization",
-    goal:
-      "Build the Figma library from the canonical system, mapping variables, components, variants and states one to one.",
+    goal: "Build the Figma library from the canonical system, mapping variables, components, variants and states one to one.",
     prerequisites: "Phases A–E, so the library mirrors something real.",
     affected: "Figma only. No code changes.",
     risk: "low",
-    validation: "Every Figma variable resolves to a real token; every component maps to a real implementation.",
+    validation:
+      "Every Figma variable resolves to a real token; every component maps to a real implementation.",
     rollback: "Figma versioning.",
     visualDiff: "Not applicable to code.",
     label: "FUTURE MIGRATION",
@@ -435,8 +449,7 @@ export const MIGRATION_ROADMAP: MigrationPhaseEntry[] = [
   {
     phase: "Phase G",
     title: "Controlled production migration",
-    goal:
-      "Retire duplicate implementations and route-local overlaps where a decision has been made and validated.",
+    goal: "Retire duplicate implementations and route-local overlaps where a decision has been made and validated.",
     prerequisites: "Every FUTURE DECISION in this blueprint resolved and recorded.",
     affected: "Route-local kits, duplicate tables, headers, empty states and assistants.",
     risk: "high",

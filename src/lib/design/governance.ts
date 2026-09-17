@@ -948,7 +948,8 @@ export const EXPERIENCE_ARCHITECTURE = [
     density: "Default to compact — h-8 and h-9 controls, tight chip spacing.",
     components:
       "PlanCard, MetalBadge, StatusBadge, CarrierMark, OverflowText, ACTION_PILL, Select, EmptyState.",
-    patterns: "Filter rail, results toolbar, results list, cart summary, add-ons, shopping mode bar.",
+    patterns:
+      "Filter rail, results toolbar, results list, cart summary, add-ons, shopping mode bar.",
     typography: "Tabular numerics for premiums, formatted consistently; small dense labels.",
     brand: "Restrained. Carrier and tier identity carry more weight than ABox branding here.",
     rule: "Filters render the exact same badge components as the listings — that is why they match, and it must stay that way.",
@@ -957,10 +958,13 @@ export const EXPERIENCE_ARCHITECTURE = [
   {
     experience: "Dashboard / Admin",
     routes: "Agency, workforce, marketplace admin, platform, JET and governed module screens",
-    hierarchy: "Shell-led. Navigation is persistent; the page states what it is and then gets to the data.",
+    hierarchy:
+      "Shell-led. Navigation is persistent; the page states what it is and then gets to the data.",
     density: "Compact — dense tables, tight KPI rows, small status chips.",
-    components: "InternalShell, PageHeader, DataTable, KpiCard, StatusBadge, EmptyState, plus route-local kits.",
-    patterns: "KPI row, data table, filter toolbar, wizard, detail tabs, governed traceability rails.",
+    components:
+      "InternalShell, PageHeader, DataTable, KpiCard, StatusBadge, EmptyState, plus route-local kits.",
+    patterns:
+      "KPI row, data table, filter toolbar, wizard, detail tabs, governed traceability rails.",
     typography: "text-sm body with uppercase serial headers; numerics tabular throughout.",
     brand: "Minimal. The mark appears in the shell and nowhere else.",
     rule: "The densest context in the product. It is where route-local kits accumulated, and where future consolidation would pay off most.",
