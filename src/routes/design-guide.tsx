@@ -82,6 +82,11 @@ import {
   TYPOGRAPHY_GOVERNANCE_RULES,
   TYPOGRAPHY_UNOWNED_AREAS,
 } from "@/lib/design/governance";
+import {
+  ASSET_OWNERSHIP,
+  ASSET_UNUSED_FINDINGS,
+  FIGMA_ICON_ASSET_MAPPING,
+} from "@/lib/design/assets";
 
 export const Route = createFileRoute("/design-guide")({
   head: () => ({
@@ -122,6 +127,7 @@ const TOC = [
   { id: "experiences", label: "Experiences" },
   { id: "spacing-layout", label: "Spacing & layout" },
   { id: "typography-governance", label: "Typography" },
+  { id: "icon-asset-governance", label: "Icons & assets" },
   { id: "figma", label: "Figma mapping" },
 ];
 
@@ -924,13 +930,125 @@ function DesignGuidePage() {
         </RefSection>
 
         <RefSection
-          id="figma"
+          id="icon-asset-governance"
           eyebrow="16"
+          title="Iconography &amp; asset governance"
+          intro="One icon set serves the whole product, and every brand mark is drawn in code rather than shipped as a picture. That is what lets a partner&rsquo;s branding change without anyone producing new artwork."
+        >
+          <div className="grid gap-4 lg:grid-cols-2">
+            <MaturityCallout kind="current" title="One shared icon set">
+              <p>
+                Around 150 icons from a single library cover marketing, shopping and the admin
+                workspaces. New work picks an icon that already carries the meaning it needs; adding
+                a second icon library is a decision for the design system, not a per-screen choice.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Icons never carry meaning alone">
+              <p>
+                An icon always sits beside a word, and colour always reinforces a label rather than
+                replacing it. Where a control shows only an icon, it still announces a name to
+                screen readers and keeps a large enough tap target on phones.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Brand marks are code, not pictures">
+              <p>
+                The ABox mark is drawn from the brand colours at runtime, so it adapts to light and
+                dark and to a partner&rsquo;s palette automatically. There is no logo file to
+                re-export when branding changes.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="The product ships no photography">
+              <p>
+                There are no photos or illustrations in the product today &mdash; identity comes from
+                type, colour, icons and drawn background artwork. Introducing the first image is a
+                deliberate decision that needs its own conventions, not an incidental one.
+              </p>
+            </MaturityCallout>
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            <MaturityCallout kind="current" title="Where partner branding lives">
+              <p>
+                Logos, marks and favicons for a partner are uploaded and managed in the existing
+                Branding and Marketplace Assets screens. Those screens are the source of truth. This
+                guide describes where those assets appear; it never stores or edits them, and the
+                design system must not grow a second place to manage them.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Carrier marks are placeholders">
+              <p>
+                The small circular carrier badges on plan listings are generated initials, not real
+                carrier logos. They are deliberately consistent per carrier so the experience feels
+                settled. Replacing them with licensed logos is an asset and permissions decision, not
+                a styling tweak.
+              </p>
+            </MaturityCallout>
+          </div>
+
+          <RefBlock title="Who owns what">
+            <DefinitionRows
+              rows={ASSET_OWNERSHIP.map((o) => ({
+                term: o.category,
+                detail: `Owned by ${o.owner}. Safe to change: ${o.safeToChange}. Needs review: ${o.needsReview}.`,
+              }))}
+            />
+          </RefBlock>
+
+          <RefBlock
+            title="Known observations"
+            note="Recorded from the live product. None of these break anything today; each is a decision waiting to be taken deliberately."
+          >
+            <RuleList items={ASSET_UNUSED_FINDINGS} tone="warning" />
+          </RefBlock>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            <MaturityCallout kind="current" title="Web / Marketing">
+              <p>
+                The only place drawn background artwork appears. Brand presentation is strongest
+                here, and the forward arrow is the consistent signal that an action moves you on.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Shopping / Marketplace">
+              <p>
+                Smaller, denser icons: cart, store, product marks and carrier badges. Every product
+                has exactly one icon, defined in one place, so it looks the same wherever it appears.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Dashboard / Admin">
+              <p>
+                The widest icon vocabulary &mdash; navigation, status, documents, uploads and
+                hierarchy. Status icons always travel with their status word.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Future experiences">
+              <p>
+                A new surface inherits this icon set and these brand marks unchanged. It may use
+                icons more or less densely; it does not bring its own icon library or its own logo.
+              </p>
+            </MaturityCallout>
+          </div>
+
+          <RefBlock
+            title="Change propagation"
+            note="Because icons and marks are shared, a change is rarely local."
+          >
+            <p className="text-sm text-muted-foreground">
+              Changing a product&rsquo;s icon changes it on every screen at once, and changing the
+              brand mark changes every header. That is the intended behaviour &mdash; it is also why
+              these changes get reviewed rather than made in passing. The reverse also holds: never
+              copy an icon or mark into a screen to customise it locally.
+            </p>
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="figma"
+          eyebrow="17"
           title="Where this goes next: Figma"
           intro="When the design library is built in Figma, it will mirror this implementation one-to-one rather than being drawn from scratch. Nothing has been converted yet — this is the agreed mapping."
         >
           <DefinitionRows
-            rows={[...FIGMA_MAPPING, ...FIGMA_LAYOUT_MAPPING, ...FIGMA_TYPOGRAPHY_MAPPING].map(
+            rows={[...FIGMA_MAPPING, ...FIGMA_LAYOUT_MAPPING, ...FIGMA_TYPOGRAPHY_MAPPING, ...FIGMA_ICON_ASSET_MAPPING].map(
               (m) => ({
                 term: m.implementation,
                 detail: `→ ${m.figma}. ${m.note}`,
