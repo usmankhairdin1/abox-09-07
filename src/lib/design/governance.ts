@@ -301,3 +301,136 @@ export const FIGMA_MAPPING = [
     note: "md is the primary breakpoint in the implementation.",
   },
 ];
+
+/* -----------------------------------------------------------------
+ * Phase 2 — spacing & layout governance.
+ * Documentation only; consumed by /design-system and /design-guide.
+ * ----------------------------------------------------------------- */
+
+export const LAYOUT_GOVERNANCE_RULES = [
+  "GOVERNANCE RULE — Spacing is governed by the existing implementation. The shipping value wins over any tidier alternative.",
+  "GOVERNANCE RULE — Reuse a recurring spacing relationship before inventing a new one; the audit tables are the lookup.",
+  "GOVERNANCE RULE — Reuse a layout pattern only where one genuinely exists today; do not force a screen into a pattern it never used.",
+  "GOVERNANCE RULE — Inconsistent spacing is recorded as OBSERVED VARIATION, never silently normalized.",
+  "GOVERNANCE RULE — Shared spacing and layout belong to the Core Design System; experience-specific layouts are usage patterns, not separate systems.",
+  "GOVERNANCE RULE — No spacing token exists in src/styles.css today. Introducing one is a future opportunity that must not re-space existing screens.",
+  "GOVERNANCE RULE — The web experience is capped at max-w-[88rem]; the admin shell at max-w-[1500px]. These are deliberately different and must not be merged.",
+  "GOVERNANCE RULE — Dashboard and admin surfaces are out of scope for web-experience width and spacing decisions.",
+];
+
+export const LAYOUT_DEFERRED_OPPORTUNITIES = [
+  {
+    item: "Web-experience container component",
+    detail:
+      "max-w-[88rem] px-4 md:px-8 is repeated at 23 call sites with differing vertical padding. A component could own the horizontal contract only.",
+    risk: "Medium — vertical padding differs per surface, so a naive component would re-space pages",
+  },
+  {
+    item: "Card padding convergence",
+    detail: "p-5 (ABox), p-6 (shadcn Card), p-4 and p-3 all serve card-like surfaces.",
+    risk: "High — would visibly re-space most screens",
+  },
+  {
+    item: "Detail-split width alignment",
+    detail: "Summary columns are 320px on plan detail and 360px in the cart, with gap-6 vs gap-5.",
+    risk: "Medium — changes two shopping screens",
+  },
+  {
+    item: "Results toolbar component",
+    detail: "The count / filter-trigger / sort row recurs in shape but has no owning component.",
+    risk: "Medium — extraction must preserve each call site's exact classes",
+  },
+  {
+    item: "Icon-to-text gap convergence",
+    detail: "gap-1.5 and gap-2 both express the same icon/label relationship.",
+    risk: "Medium — affects hundreds of controls",
+  },
+  {
+    item: "Table density convergence",
+    detail: "ABox DataTable (px-5 py-4) and the shadcn table primitive (h-10 px-2) are different densities.",
+    risk: "Medium — would change row heights",
+  },
+  {
+    item: "Touch-target floor",
+    detail: "min-h-11 is applied to 16 controls and min-h-10 to 3; most controls rely on their height class.",
+    risk: "Low — additive, but would grow some 36px controls",
+  },
+  {
+    item: "Spacing token export for Figma",
+    detail: "A spacing/layout variable set could be generated once a token layer exists.",
+    risk: "None — additive tooling",
+  },
+];
+
+export const LAYOUT_UNOWNED_AREAS = [
+  "Page container (max-w-[88rem] px-4 md:px-8) — recurring, no owner.",
+  "Shopping page vertical padding (pt-4 pb-8 md:pt-6 md:pb-10) — recurring, no owner.",
+  "Card grid recipe (grid gap-4 sm:grid-cols-2 lg:grid-cols-3|4) — recurring, no owner.",
+  "Results toolbar row — recurring in shape, no owner.",
+  "Detail split with sticky summary — two implementations, no owner.",
+  "Form field rhythm (space-y-2 / space-y-3 / space-y-4) — variable, no owner.",
+  "Section heading to supporting text spacing — mostly consistent, no owner.",
+];
+
+export const FIGMA_LAYOUT_MAPPING = [
+  {
+    implementation: "Observed spacing value (gap-2, p-5, px-4 md:px-8)",
+    figma: "Number variable in a spacing collection",
+    note: "Named by observed purpose, not by a new invented scale.",
+  },
+  {
+    implementation: "Semantic spacing relationship (heading → supporting text)",
+    figma: "Documented spacing rule on the pattern frame",
+    note: "Relationships that vary are documented as variants, not collapsed.",
+  },
+  {
+    implementation: "Web-experience container (max-w-[88rem] px-4 md:px-8)",
+    figma: "Layout template frame at 1408px with responsive gutter notes",
+    note: "Admin's max-w-[1500px] is a second, separate template.",
+  },
+  {
+    implementation: "Card grid (grid gap-4 sm:grid-cols-2 lg:grid-cols-4)",
+    figma: "Grid style plus a layout pattern frame",
+    note: "Column counts recorded per breakpoint.",
+  },
+  {
+    implementation: "Flex row (inline-flex items-center gap-2, min-w-0 flex-1, shrink-0)",
+    figma: "Auto Layout with fill/hug sizing guidance",
+    note: "min-w-0 flex-1 maps to Fill; shrink-0 maps to Hug.",
+  },
+  {
+    implementation: "Breakpoints sm 640 / md 768 / lg 1024 / xl 1280",
+    figma: "Frame presets used for responsive documentation",
+    note: "md and lg carry almost all structural change in this codebase.",
+  },
+  {
+    implementation: "Control dimension (h-9 primitive, h-10 marketplace, h-11 touch)",
+    figma: "Component size property",
+    note: "Three sizes, matching the observed density modes.",
+  },
+  {
+    implementation: "Page shell (Marketplace / Internal / Member)",
+    figma: "Layout template per shell",
+    note: "Header, rail offsets and footer captured as template regions.",
+  },
+  {
+    implementation: "Form structure (label → control → helper)",
+    figma: "Form pattern frame with Auto Layout spacing",
+    note: "Variation in helper spacing recorded as an observed range.",
+  },
+  {
+    implementation: "Dashboard structure (KPI row → table → panels)",
+    figma: "Dashboard pattern frame",
+    note: "Uses the admin template, not the web template.",
+  },
+  {
+    implementation: "Marketplace structure (filter rail → toolbar → results)",
+    figma: "Shopping pattern frame",
+    note: "Rail 256px, gap 24px, results single-column.",
+  },
+  {
+    implementation: "Overlay structure (dialog 512px, drawer 384px)",
+    figma: "Overlay component sizes",
+    note: "Interior p-6 with gap-4 regions.",
+  },
+];
