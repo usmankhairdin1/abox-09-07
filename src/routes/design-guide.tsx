@@ -117,6 +117,7 @@ const TOC = [
   { id: "governance", label: "Governance" },
   { id: "accessibility", label: "Accessibility" },
   { id: "experiences", label: "Experiences" },
+  { id: "spacing-layout", label: "Spacing & layout" },
   { id: "figma", label: "Figma mapping" },
 ];
 
