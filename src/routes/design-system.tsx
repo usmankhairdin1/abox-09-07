@@ -98,10 +98,29 @@ import {
   DefinitionRows,
   MaturityCallout,
   MetaChip,
+  SpacingTable,
+  ContainerTable,
+  ResponsiveTable,
+  DensityTable,
+  DimensionTable,
+  LayoutPatternList,
+  RuleList,
 } from "@/components/design/reference-kit";
 import { FOUNDATION } from "@/lib/design/foundation";
 import { SPACING_RELATIONSHIPS, TYPOGRAPHY_RELATIONSHIPS } from "@/lib/design/relationships";
 import { COMPONENT_INVENTORY, PATTERN_INVENTORY, STATE_INVENTORY } from "@/lib/design/inventory";
+import { SPACING_GROUPS } from "@/lib/design/spacing";
+import {
+  CONTAINERS,
+  DIMENSIONS,
+  GRID_FLEX_RELATIONSHIPS,
+  LAYOUT_PATTERNS,
+} from "@/lib/design/layout";
+import {
+  DENSITY_MODES,
+  RESPONSIVE_PATTERNS,
+  STRUCTURAL_RELATIONSHIPS,
+} from "@/lib/design/spatial-relationships";
 import {
   OWNERSHIP_HIERARCHY,
   SAFE_CHANGE_RULES,
@@ -109,6 +128,10 @@ import {
   DEFERRED_OPPORTUNITIES,
   EXPERIENCES,
   FIGMA_MAPPING,
+  FIGMA_LAYOUT_MAPPING,
+  LAYOUT_GOVERNANCE_RULES,
+  LAYOUT_DEFERRED_OPPORTUNITIES,
+  LAYOUT_UNOWNED_AREAS,
 } from "@/lib/design/governance";
 
 export const Route = createFileRoute("/design-system")({
