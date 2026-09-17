@@ -750,13 +750,95 @@ function DesignGuidePage() {
         </RefSection>
 
         <RefSection
-          id="figma"
+          id="spacing-layout"
           eyebrow="14"
+          title="Spacing & layout governance"
+          intro="Spacing and layout are governed by the product as it exists today. The audit behind this section measured the real values in the codebase rather than proposing a tidier system."
+        >
+          <div className="grid gap-4 lg:grid-cols-2">
+            <MaturityCallout kind="current" title="How spacing is decided today">
+              <p>
+                There is no spacing token in the stylesheet. Spacing is written directly on each
+                screen, so the shipping screens are the reference. Reuse a value that already serves
+                the same purpose instead of choosing a new one.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Layout patterns are reused, not invented">
+              <p>
+                Page shells, card grids, filter rails, detail splits, tables, overlays and empty
+                states all exist. A new screen picks the closest existing pattern; it does not create
+                a parallel one.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="opportunity" title="Inconsistency is recorded, not corrected">
+              <p>
+                Where similar areas use different values — card padding, section rhythm, summary
+                column widths — the difference is documented as an observed variation. Silently
+                normalising it would visibly re-space live screens.
+              </p>
+            </MaturityCallout>
+            <MaturityCallout kind="current" title="Shared belongs to the core system">
+              <p>
+                Shared spacing and layout belong to the Core Design System. Experience-specific
+                layouts are documented as usage patterns of that one system — never as separate
+                design systems with their own scales.
+              </p>
+            </MaturityCallout>
+          </div>
+
+          <div className="mt-8">
+            <RuleList items={LAYOUT_GOVERNANCE_RULES} />
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-base font-semibold">Guidance by experience</h3>
+            <p className="mt-1 max-w-3xl text-xs text-muted-foreground">
+              Same tokens, same components, different context. Container and density notes describe
+              what each experience already does.
+            </p>
+            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              {EXPERIENCES.map((e) => (
+                <div key={e.id} className="rounded-2xl border border-hairline bg-card p-5">
+                  <p className="text-base font-semibold">{e.title}</p>
+                  <dl className="mt-3 space-y-1.5 text-xs text-muted-foreground">
+                    <div>
+                      <dt className="inline font-medium text-foreground">Container: </dt>
+                      <dd className="inline">{e.container}</dd>
+                    </div>
+                    <div>
+                      <dt className="inline font-medium text-foreground">Density: </dt>
+                      <dd className="inline">{e.density}</dd>
+                    </div>
+                    <div>
+                      <dt className="inline font-medium text-foreground">Shell: </dt>
+                      <dd className="inline">{e.shellAndChrome}</dd>
+                    </div>
+                  </dl>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-base font-semibold">Still unowned</h3>
+            <p className="mt-1 max-w-3xl text-xs text-muted-foreground">
+              Recurring layout areas with no single owner. Listed so the gap is visible, not to
+              trigger an immediate change.
+            </p>
+            <div className="mt-4">
+              <RuleList items={LAYOUT_UNOWNED_AREAS} tone="warning" />
+            </div>
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="figma"
+          eyebrow="15"
           title="Where this goes next: Figma"
           intro="When the design library is built in Figma, it will mirror this implementation one-to-one rather than being drawn from scratch. Nothing has been converted yet — this is the agreed mapping."
         >
           <DefinitionRows
-            rows={FIGMA_MAPPING.map((m) => ({
+            rows={[...FIGMA_MAPPING, ...FIGMA_LAYOUT_MAPPING].map((m) => ({
               term: m.implementation,
               detail: `→ ${m.figma}. ${m.note}`,
             }))}
