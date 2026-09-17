@@ -772,3 +772,93 @@ because nothing owns them.
 
 Consumed only by `/design-system` (technical) and `/design-guide` (management). Both
 remain unlisted and reachable by direct URL only.
+
+---
+
+## Phase 7 — Foundation Specification & Token Governance
+
+Reference-only. No production token, component, screen or style was changed.
+
+### CURRENT IMPLEMENTATION — what the audit measured
+
+- **Colour.** Every colour is a semantic CSS variable in `src/styles.css`, defined in
+  full for both `:root` and `.dark`, and each surface ships with a paired foreground.
+  Measured usage: `text-muted-foreground` 716, `border-border` 497, `bg-card` 264,
+  `text-primary` 268, `bg-primary` 229, `bg-background` 149, `border-hairline` 98,
+  `bg-surface` 79, `ring-ring` 68, `text-sage` 41, `bg-sage` 28, `bg-warning` 24,
+  `text-destructive` 47, `bg-destructive` 19, `bg-panel` 3, `bg-info` 1, `bg-success` 1.
+- **Tier colour.** Six metal tiers with explicit foregrounds, identical in both themes,
+  always full opacity. The most mature category in the system.
+- **Status tone.** `StatusBadge` accepts six tones and derives the chip surface, text and
+  border by mixing one `--tone` variable at 12%, 34% and 88%. Shared with `InternalShell`
+  across 89 files.
+- **Typography.** Inter Tight for text, Bricolage Grotesque for display, with serif and
+  mono aliased to them; JetBrains Mono is declared but unused. Only three named roles
+  exist — `text-display` 194, `text-eyebrow` 225, `text-serial` 16. Sizes are otherwise
+  chosen per call site: `text-sm` 779, `font-medium` 406.
+- **Spacing.** The Tailwind 4px ladder, used consistently: `gap-2` 316, `px-3` 238,
+  `gap-1` 232, `p-5` 187, `gap-3` 173, `px-4` 154, `gap-4` 133.
+- **Shape and elevation.** Seven radius steps, five named shadows. `rounded-full` 297,
+  `rounded-2xl` 264, `rounded-lg` 170, `rounded-xl` 89, `rounded-md` 52; `shadow-card` 37,
+  `shadow-glow` 11, `shadow-elevated` 9, `shadow-plate` 6, `shadow-drawer` 3.
+- **Icons.** Lucide in 144 files with 149 distinct icons; Tabler imported once for
+  `IconDental`; Font Awesome installed and unused. Sizes: 16px 274 + 28, 14px 68,
+  12px 34, 20px 26.
+- **Motion.** Six keyframes on one shared easing curve, `cubic-bezier(0.2, 0.7, 0.2, 1)`,
+  plus a global `prefers-reduced-motion` rule.
+- **Density.** `Button` and `Input` default to 36px; 40px is widespread at call sites
+  (`h-10` 143, `h-9` 47). A 44px touch floor applies below 640px.
+- **Layout.** 88rem centred container across web and shopping (23 occurrences);
+  dashboards deliberately use shell-managed width.
+
+### OBSERVED VARIATION — recorded, not corrected
+
+- Two control heights, 36px and 40px, in active parallel use.
+- Two class spellings for the same 16px icon size.
+- Card padding at `p-4`, `p-5` and `p-6`; `gap-1.5` alongside `gap-2`.
+- Heading and description sizes differ between comparable surfaces.
+- Focus ring width and offset vary between primitives and hand-written call sites.
+- Five compatibility aliases remain: `--brand-accent`, `--surface-1/2/3`,
+  `--shadow-overlay`, `--ai`.
+- `.story-link` is used 89 times with no definition found.
+
+### FUTURE OPPORTUNITY — proposed, not implemented
+
+- A primitive layer beneath the existing semantic variables.
+- A named token system per category: `space/`, `radius/`, `icon/`, `motion/`, `type/`,
+  `tier/`, `status/`, `control/`, `brand/`.
+- Role-based text styles; named motion durations; declared density modes.
+- A disabled state expressed by token rather than 50% opacity.
+
+### Figma mapping constraints worth knowing up front
+
+- Colours are authored in oklch; Figma stores hex/sRGB, so conversion is lossy at gamut
+  edges. Code stays the source of truth and Figma mirrors it, one direction only.
+- Multi-layer shadows are effect styles, never variables.
+- `color-mix` tone derivation has no Figma equivalent — either six precomputed tone
+  triplets per mode, or tone stays code-only. Open decision.
+- Keyframe animation and the generated `CarrierMark` cannot be represented as library
+  assets.
+
+### Boundaries
+
+Branding & White-Label and Marketplace Asset Management remain the runtime sources of
+truth and were not read, mirrored or modified. Tier and status colours are recorded as
+non-configurable; brand colour, logo and product name are the configurable set.
+
+### NOT DONE
+
+No duplicate was resolved, no value renamed, no alias removed, no unused dependency
+deleted, no Figma asset created, and no application file outside the reference layer
+touched.
+
+### Reference-layer files added in Phase 7
+
+`src/lib/design/foundation-model.ts`, `color-foundation.ts`, `color-roles.ts`,
+`status-tone.ts`, `typography-foundation.ts`, `spacing-foundation.ts`,
+`layout-foundation.ts`, `icon-motion-density.ts`, `component-roles.ts`,
+`token-naming.ts`, `figma-variables.ts`, `foundation-accessibility.ts`,
+`foundation-boundaries.ts`, `foundation-experience.ts`, `foundation-governance.ts`,
+plus Phase 7 types in `types.ts` and five display tables in `reference-kit.tsx`.
+
+Consumed only by `/design-system` and `/design-guide`, both still unlisted.
