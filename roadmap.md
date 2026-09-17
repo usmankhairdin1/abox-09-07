@@ -171,3 +171,33 @@ export, breadcrumbs / pagination / avatars / charts awaiting real feature use.
 - [ ] Name the literal values that currently bypass the token chain
 - [ ] Build the design library; it does not exist
 - [ ] Execute any migration phase
+
+## Phase 7 — Foundation Specification & Token Governance (complete)
+
+- [x] Foundation model: primitive → semantic → component → pattern → screen
+- [x] Complete colour foundation with copied values, both themes, usage counts
+- [x] Colour role chains, role overlaps and theme-mode map
+- [x] Status tone vocabulary and separate tier foundation with governance
+- [x] Typography foundation: families, weights, scale, rhythm, roles, responsive
+- [x] Spacing scale and spacing relationship specifications
+- [x] Layout, container, breakpoint, shape, elevation and opacity foundation
+- [x] Icon, motion and density foundation with measured evidence
+- [x] Component foundation role maps for 11 canonical candidates
+- [x] Token naming system and primitive → semantic → component map
+- [x] Figma variable/style mapping including what cannot be mapped
+- [x] Foundation-level accessibility records
+- [x] Ownership boundaries: core vs white-label vs marketplace assets
+- [x] Experience expression guidance — one system, contextual use
+- [x] Foundation maturity (descriptive, unscored) and governance rules
+- [x] `/design-system` and `/design-guide` extended; both still unlisted
+- [x] `.lovable/design-system.md` updated
+
+### Deferred (requires separate approval)
+
+- [ ] Decide between 36px and 40px control heights
+- [ ] Choose a canonical card padding and heading scale
+- [ ] Consolidate the focus treatment into one foundation rule
+- [ ] Replace opacity-based disabled state with tokens
+- [ ] Retire the five compatibility aliases and the unused icon dependency
+- [ ] Decide whether tone mixing is precomputed for Figma
+- [ ] Build any Figma library; none exists

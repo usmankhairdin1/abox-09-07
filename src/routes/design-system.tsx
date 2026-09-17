@@ -124,7 +124,48 @@ import {
   FigmaVariableTable,
   MigrationList,
   ExperienceArchTable,
+  TokenSpecTable,
+  RoleChainTable,
+  ComponentRoleList,
+  FoundationA11yTable,
+  FoundationMaturityTable,
 } from "@/components/design/reference-kit";
+
+import { FOUNDATION_MODEL, FOUNDATION_CURRENT_STATE } from "@/lib/design/foundation-model";
+import { COLOR_FOUNDATION, COLOR_TOKEN_COUNT } from "@/lib/design/color-foundation";
+import { COLOR_ROLE_CHAINS, COLOR_ROLE_OVERLAPS, THEME_MODE_MAP } from "@/lib/design/color-roles";
+import {
+  TONE_VOCABULARY,
+  TONE_OVERLAPS,
+  TIER_FOUNDATION,
+  TIER_GOVERNANCE,
+} from "@/lib/design/status-tone";
+import {
+  TYPE_FAMILY_SPEC,
+  TYPE_WEIGHT_SPEC,
+  TYPE_SIZE_SPEC,
+  TYPE_RHYTHM_SPEC,
+  TYPE_ROLE_SPEC,
+  RESPONSIVE_TYPE_SPEC,
+} from "@/lib/design/typography-foundation";
+import { SPACING_SCALE_SPEC, SPACING_RELATIONSHIP_SPEC } from "@/lib/design/spacing-foundation";
+import { CONTAINER_SPEC, BREAKPOINT_SPEC, SHAPE_SPEC } from "@/lib/design/layout-foundation";
+import {
+  ICON_FOUNDATION_SPEC,
+  MOTION_FOUNDATION_SPEC,
+  DENSITY_FOUNDATION_SPEC,
+} from "@/lib/design/icon-motion-density";
+import { COMPONENT_FOUNDATION_ROLES } from "@/lib/design/component-roles";
+import { TOKEN_NAMING_RULES, PRIMITIVE_SEMANTIC_MAP } from "@/lib/design/token-naming";
+import { FIGMA_VARIABLE_MAP } from "@/lib/design/figma-variables";
+import { FOUNDATION_ACCESSIBILITY } from "@/lib/design/foundation-accessibility";
+import { FOUNDATION_BOUNDARIES } from "@/lib/design/foundation-boundaries";
+import { FOUNDATION_EXPERIENCE_GUIDANCE } from "@/lib/design/foundation-experience";
+import {
+  FOUNDATION_MATURITY,
+  FOUNDATION_GOVERNANCE_RULES,
+} from "@/lib/design/foundation-governance";
+
 import {
   COMPONENT_TAXONOMY,
   COMPONENT_GROUPS,
@@ -368,6 +409,25 @@ const TOC = [
   { id: "arch-governance", label: "Architecture governance" },
   { id: "arch-migration", label: "Migration roadmap" },
   { id: "arch-traceability", label: "Cross-phase traceability" },
+  { id: "fnd-model", label: "Foundation model" },
+  { id: "fnd-color", label: "Colour foundation" },
+  { id: "fnd-color-roles", label: "Colour role chains" },
+  { id: "fnd-theme", label: "Theme modes" },
+  { id: "fnd-tone", label: "Status tone vocabulary" },
+  { id: "fnd-tier", label: "Tier foundation" },
+  { id: "fnd-type", label: "Typography foundation" },
+  { id: "fnd-space", label: "Spacing foundation" },
+  { id: "fnd-layout", label: "Layout & shape foundation" },
+  { id: "fnd-icon-motion", label: "Icon, motion & density" },
+  { id: "fnd-component-roles", label: "Component foundation roles" },
+  { id: "fnd-naming", label: "Token naming system" },
+  { id: "fnd-map", label: "Primitive → semantic map" },
+  { id: "fnd-figma", label: "Figma variable mapping" },
+  { id: "fnd-a11y", label: "Foundation accessibility" },
+  { id: "fnd-boundaries", label: "Ownership boundaries" },
+  { id: "fnd-experience", label: "Experience expression" },
+  { id: "fnd-maturity", label: "Foundation maturity" },
+  { id: "fnd-governance", label: "Foundation governance" },
 ];
 
 function DesignSystemPage() {
@@ -2058,6 +2118,235 @@ function DesignSystemPage() {
               detail: `Feeds: ${t.feeds}. Artifacts: ${t.artifacts}.`,
             }))}
           />
+        </RefSection>
+
+        <RefSection
+          id="fnd-model"
+          eyebrow="Phase 7 foundation"
+          title="Foundation model"
+          intro="How a value travels from a primitive to a screen. The layers on the left are proposed; the state below records what production actually does today."
+        >
+          <ArchLayerList entries={FOUNDATION_MODEL} />
+          <RefBlock
+            title="Current state, stated plainly"
+            note="The system is already semantic in colour and shape, and call-site based in type, space and density."
+          >
+            <BlueprintTable rows={FOUNDATION_CURRENT_STATE} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="fnd-color"
+          eyebrow="Phase 7 foundation"
+          title="Colour foundation"
+          intro={`Every colour token in styles.css, with its copied value, both theme values, its purpose, its measured usage and its future role. ${COLOR_TOKEN_COUNT} tokens are recorded.`}
+        >
+          {COLOR_FOUNDATION.map((group) => (
+            <RefBlock key={group.id} title={group.title} note={group.summary}>
+              <TokenSpecTable tokens={group.tokens} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="fnd-color-roles"
+          eyebrow="Phase 7 foundation"
+          title="Colour role chains"
+          intro="Which component slot consumes which colour role, and where two roles overlap in meaning."
+        >
+          <RoleChainTable entries={COLOR_ROLE_CHAINS} />
+          <RefBlock title="Overlapping roles" note="Recorded, not resolved.">
+            <BlueprintTable rows={COLOR_ROLE_OVERLAPS} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="fnd-theme"
+          eyebrow="Phase 7 foundation"
+          title="Theme modes"
+          intro="What changes between light and dark, and what deliberately does not."
+        >
+          <BlueprintTable rows={THEME_MODE_MAP} />
+        </RefSection>
+
+        <RefSection
+          id="fnd-tone"
+          eyebrow="Phase 7 foundation"
+          title="Status tone vocabulary"
+          intro="The six tones StatusBadge accepts, how each is mixed, and which meanings currently share a tone."
+        >
+          <BlueprintTable rows={TONE_VOCABULARY} />
+          <RefBlock title="Tone overlaps" note="Where one tone carries more than one meaning.">
+            <BlueprintTable rows={TONE_OVERLAPS} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="fnd-tier"
+          eyebrow="Phase 7 foundation"
+          title="Tier foundation"
+          intro="Metal tier colours are a separate foundation from status colour. They carry product meaning, are identical in both themes and always render at full opacity."
+        >
+          <TokenSpecTable tokens={TIER_FOUNDATION} />
+          <RefBlock title="Tier governance" note="Why tiers stay separate and non-configurable.">
+            <BlueprintTable rows={TIER_GOVERNANCE} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="fnd-type"
+          eyebrow="Phase 7 foundation"
+          title="Typography foundation"
+          intro="Families, weights, the measured size scale, rhythm, semantic roles and responsive behaviour."
+        >
+          <RefBlock title="Families">
+            <BlueprintTable rows={TYPE_FAMILY_SPEC} />
+          </RefBlock>
+          <RefBlock title="Weights">
+            <BlueprintTable rows={TYPE_WEIGHT_SPEC} />
+          </RefBlock>
+          <RefBlock title="Size scale">
+            <BlueprintTable rows={TYPE_SIZE_SPEC} />
+          </RefBlock>
+          <RefBlock title="Line height & tracking">
+            <BlueprintTable rows={TYPE_RHYTHM_SPEC} />
+          </RefBlock>
+          <RefBlock title="Semantic roles">
+            <BlueprintTable rows={TYPE_ROLE_SPEC} />
+          </RefBlock>
+          <RefBlock title="Responsive typography">
+            <BlueprintTable rows={RESPONSIVE_TYPE_SPEC} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="fnd-space"
+          eyebrow="Phase 7 foundation"
+          title="Spacing foundation"
+          intro="The spacing ladder as actually used, and the relationships between elements that the ladder alone does not express."
+        >
+          <BlueprintTable rows={SPACING_SCALE_SPEC} />
+          <RefBlock
+            title="Spacing relationships"
+            note="Rules implied by the markup, stated explicitly."
+          >
+            <BlueprintTable rows={SPACING_RELATIONSHIP_SPEC} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="fnd-layout"
+          eyebrow="Phase 7 foundation"
+          title="Layout & shape foundation"
+          intro="Containers, breakpoints, radii, borders, elevation and opacity."
+        >
+          <RefBlock title="Containers">
+            <BlueprintTable rows={CONTAINER_SPEC} />
+          </RefBlock>
+          <RefBlock title="Breakpoints">
+            <BlueprintTable rows={BREAKPOINT_SPEC} />
+          </RefBlock>
+          <RefBlock title="Shape, elevation & opacity">
+            <BlueprintTable rows={SHAPE_SPEC} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="fnd-icon-motion"
+          eyebrow="Phase 7 foundation"
+          title="Icon, motion & density foundation"
+          intro="Icon libraries and sizes, animation and easing, and the control heights that set density."
+        >
+          <RefBlock title="Iconography">
+            <BlueprintTable rows={ICON_FOUNDATION_SPEC} />
+          </RefBlock>
+          <RefBlock title="Motion">
+            <BlueprintTable rows={MOTION_FOUNDATION_SPEC} />
+          </RefBlock>
+          <RefBlock title="Density & controls">
+            <BlueprintTable rows={DENSITY_FOUNDATION_SPEC} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="fnd-component-roles"
+          eyebrow="Phase 7 foundation"
+          title="Component foundation roles"
+          intro="For each canonical component candidate: which foundation role each slot would consume, and what production uses for that slot today."
+        >
+          <ComponentRoleList specs={COMPONENT_FOUNDATION_ROLES} />
+        </RefSection>
+
+        <RefSection
+          id="fnd-naming"
+          eyebrow="Phase 7 foundation"
+          title="Token naming system"
+          intro="A proposed naming convention per category, tested against the current codebase and against Figma's constraints. No production token is renamed."
+        >
+          <NamingTable entries={TOKEN_NAMING_RULES} />
+        </RefSection>
+
+        <RefSection
+          id="fnd-map"
+          eyebrow="Phase 7 foundation"
+          title="Primitive → semantic → component map"
+          intro="The complete chain for the values with the strongest production evidence."
+        >
+          <RoleChainTable entries={PRIMITIVE_SEMANTIC_MAP} />
+        </RefSection>
+
+        <RefSection
+          id="fnd-figma"
+          eyebrow="Phase 7 foundation"
+          title="Figma variable & style mapping"
+          intro="How this foundation would map into collections, modes, variables and styles — including what cannot be mapped at all. Nothing has been created in Figma."
+        >
+          <BlueprintTable rows={FIGMA_VARIABLE_MAP} />
+        </RefSection>
+
+        <RefSection
+          id="fnd-a11y"
+          eyebrow="Phase 7 foundation"
+          title="Foundation accessibility"
+          intro="Accessibility treated as a foundation property rather than a component detail. Observations only."
+        >
+          <FoundationA11yTable records={FOUNDATION_ACCESSIBILITY} />
+        </RefSection>
+
+        <RefSection
+          id="fnd-boundaries"
+          eyebrow="Phase 7 foundation"
+          title="Ownership boundaries"
+          intro="What the core foundation owns, what white-label configuration may change, and what stays fixed. Branding and Marketplace Asset Management remain the runtime sources of truth."
+        >
+          <BlueprintTable rows={FOUNDATION_BOUNDARIES} />
+        </RefSection>
+
+        <RefSection
+          id="fnd-experience"
+          eyebrow="Phase 7 foundation"
+          title="Experience expression"
+          intro="One core foundation, expressed differently per experience. These are contextual notes, not separate systems."
+        >
+          <BlueprintTable rows={FOUNDATION_EXPERIENCE_GUIDANCE} />
+        </RefSection>
+
+        <RefSection
+          id="fnd-maturity"
+          eyebrow="Phase 7 foundation"
+          title="Foundation maturity"
+          intro="A descriptive read of each category: what exists, how centralised it is, what varies and what decision remains open. No scores, no ranking."
+        >
+          <FoundationMaturityTable records={FOUNDATION_MATURITY} />
+        </RefSection>
+
+        <RefSection
+          id="fnd-governance"
+          eyebrow="Phase 7 foundation"
+          title="Foundation governance"
+          intro="How tokens would be added, changed, deprecated and approved in a future controlled system."
+        >
+          <BlueprintTable rows={FOUNDATION_GOVERNANCE_RULES} />
         </RefSection>
       </RefContainer>
     </RefPage>

@@ -106,6 +106,17 @@ import {
   FIGMA_ICON_ASSET_MAPPING,
 } from "@/lib/design/assets";
 import { COMPONENT_EXPERIENCE_SPLIT } from "@/lib/design/component-relationships";
+import { FOUNDATION_CURRENT_STATE } from "@/lib/design/foundation-model";
+import { COLOR_TOKEN_COUNT } from "@/lib/design/color-foundation";
+import { TIER_GOVERNANCE } from "@/lib/design/status-tone";
+import { FOUNDATION_ACCESSIBILITY } from "@/lib/design/foundation-accessibility";
+import { FOUNDATION_BOUNDARIES } from "@/lib/design/foundation-boundaries";
+import { FOUNDATION_EXPERIENCE_GUIDANCE } from "@/lib/design/foundation-experience";
+import {
+  FOUNDATION_MATURITY,
+  FOUNDATION_GOVERNANCE_RULES,
+} from "@/lib/design/foundation-governance";
+import { FIGMA_VARIABLE_MAP } from "@/lib/design/figma-variables";
 
 export const Route = createFileRoute("/design-guide")({
   head: () => ({
@@ -155,6 +166,13 @@ const TOC = [
   { id: "architecture-governance", label: "Architecture rules" },
   { id: "future-library", label: "Future design library" },
   { id: "migration", label: "What would change next" },
+  { id: "foundation-state", label: "Foundation: where we stand" },
+  { id: "foundation-ownership", label: "What can be branded" },
+  { id: "foundation-experience", label: "One system, each experience" },
+  { id: "foundation-accessibility", label: "Accessibility built in" },
+  { id: "foundation-figma", label: "What Figma can hold" },
+  { id: "foundation-maturity", label: "Foundation readiness" },
+  { id: "foundation-rules", label: "Rules for changing the system" },
 ];
 
 const PRINCIPLES = [
@@ -1301,6 +1319,104 @@ function DesignGuidePage() {
           >
             <RuleList items={OPEN_FUTURE_DECISIONS} />
           </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="foundation-state"
+          eyebrow="Foundation"
+          title="Where the foundation stands today"
+          intro={`Color and shape are already centralized: ${COLOR_TOKEN_COUNT} color tokens are defined in one place, in both light and dark. Type, spacing and control size are still decided page by page. Nothing below has been changed — this is a description of the product as it ships.`}
+        >
+          <DefinitionRows
+            rows={FOUNDATION_CURRENT_STATE.map((r) => ({
+              term: r.item,
+              detail: `Today: ${r.current} Future: ${r.future}`,
+            }))}
+          />
+          <RefBlock
+            title="Why plan tiers are held apart"
+            note="Tier colors carry product meaning, so they are deliberately not part of the status palette and are not brandable."
+          >
+            <DefinitionRows
+              rows={TIER_GOVERNANCE.map((r) => ({ term: r.item, detail: r.future }))}
+            />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="foundation-ownership"
+          eyebrow="Foundation"
+          title="What a brand can change, and what stays fixed"
+          intro="Branding and marketplace asset screens remain the live controls. This page only records where the line sits."
+        >
+          <DefinitionRows
+            rows={FOUNDATION_BOUNDARIES.map((r) => ({
+              term: r.item,
+              detail: `Today: ${r.current} Proposed: ${r.future}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="foundation-experience"
+          eyebrow="Foundation"
+          title="One system, expressed per experience"
+          intro="Marketing, shopping and administration look different on purpose. They share the same colors, shapes and rules underneath."
+        >
+          <DefinitionRows
+            rows={FOUNDATION_EXPERIENCE_GUIDANCE.map((r) => ({
+              term: r.item,
+              detail: r.current,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="foundation-accessibility"
+          eyebrow="Foundation"
+          title="Accessibility is part of the foundation"
+          intro="Several guarantees are already built into the shared layer rather than left to each page."
+        >
+          <DefinitionRows
+            rows={FOUNDATION_ACCESSIBILITY.map((r) => ({
+              term: r.topic,
+              detail: `${r.current} Future requirement: ${r.requirement}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="foundation-figma"
+          eyebrow="Foundation"
+          title="What a future Figma library could hold"
+          intro="Most of the system maps cleanly. A few things cannot be represented in Figma at all, and it is better to know that before the work starts."
+        >
+          <DefinitionRows
+            rows={FIGMA_VARIABLE_MAP.map((r) => ({ term: r.item, detail: r.future }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="foundation-maturity"
+          eyebrow="Foundation"
+          title="Readiness by category"
+          intro="A plain read of each part of the system: what exists, what varies, and what decision is still open. No scores or rankings."
+        >
+          <DefinitionRows
+            rows={FOUNDATION_MATURITY.map((m) => ({
+              term: `${m.category} · ${m.centralization}`,
+              detail: `${m.implementation} Varies: ${m.variation} Open decision: ${m.openDecision}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="foundation-rules"
+          eyebrow="Foundation"
+          title="Rules for changing the system"
+          intro="Proposed process for a future controlled phase. None of it is enforced today."
+        >
+          <RuleList items={FOUNDATION_GOVERNANCE_RULES.map((r) => `${r.item}: ${r.future}`)} />
         </RefSection>
 
         <footer className="border-t border-hairline py-10 text-xs text-muted-foreground">
