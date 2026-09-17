@@ -48,8 +48,12 @@ export interface RelationshipEntry {
   observed: string;
   /** Where it was observed. */
   source: string;
-  /** Consistency as found — not normalized. */
-  consistency: "consistent" | "varies";
+  /**
+   * Consistency as found — not normalized. Phase 5 widened this to the shared
+   * `Consistency` scale; the renderer still treats anything other than
+   * "consistent" as varying, so no previously written row changes appearance.
+   */
+  consistency: Consistency;
   note?: string;
 }
 
