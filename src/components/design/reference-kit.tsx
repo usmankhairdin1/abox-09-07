@@ -1917,3 +1917,236 @@ export function ExperienceArchTable({
     </div>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Phase 7 — foundation specification display                          */
+/* ------------------------------------------------------------------ */
+
+/** One foundation token: copied value, purpose, usage, future role, Figma. */
+export function TokenSpecTable({
+  tokens,
+}: {
+  tokens: {
+    name: string;
+    value: string;
+    darkValue?: string;
+    modes: string;
+    purpose: string;
+    consumers: string;
+    usage: string;
+    foreground?: string;
+    contrast?: string;
+    source: string;
+    status: string;
+    futureRole: string;
+    figma: string;
+    migration: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="1180px"
+      head={["Token", "Value", "Purpose & consumers", "Usage", "Future role", "Figma & migration"]}
+    >
+      {tokens.map((t) => (
+        <tr key={t.name} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{t.name}</p>
+            <p className="text-serial mt-1">{t.source}</p>
+            <div className="mt-2">
+              <ArchLabelChip label={t.status} />
+            </div>
+          </td>
+          <td className="px-5 py-4">
+            <p className="text-serial">{t.value}</p>
+            {t.darkValue && <p className="text-serial mt-1">dark: {t.darkValue}</p>}
+            <p className="text-serial mt-1 text-muted-foreground">{t.modes}</p>
+            {t.foreground && (
+              <p className="text-serial mt-1">on: {t.foreground}</p>
+            )}
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {t.purpose}
+            <span className="text-serial mt-1 block">{t.consumers}</span>
+            {t.contrast && (
+              <span className="mt-1 block text-xs text-warning">{t.contrast}</span>
+            )}
+          </td>
+          <td className="px-5 py-4 text-serial">{t.usage}</td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {t.futureRole}
+            {t.note && <span className="mt-1 block text-xs text-warning">{t.note}</span>}
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {t.figma}
+            <span className="text-serial mt-1 block">{t.migration}</span>
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** primitive → semantic → component role → experience. */
+export function RoleChainTable({
+  entries,
+}: {
+  entries: {
+    primitive: string;
+    semantic: string;
+    componentRole: string;
+    experience: string;
+    evidence: string;
+    label: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="1000px"
+      head={["Primitive", "Semantic role", "Component role", "Experience", "Evidence"]}
+    >
+      {entries.map((e) => (
+        <tr key={`${e.primitive}-${e.semantic}`} className={ROW}>
+          <td className="px-5 py-4 text-serial">{e.primitive}</td>
+          <td className="px-5 py-4 font-medium">{e.semantic}</td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {e.componentRole}
+            {e.note && <span className="mt-1 block text-xs text-warning">{e.note}</span>}
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{e.experience}</td>
+          <td className="px-5 py-4">
+            <p className="text-serial">{e.evidence}</p>
+            <div className="mt-2">
+              <ArchLabelChip label={e.label} />
+            </div>
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Which foundation role each component slot would consume. */
+export function ComponentRoleList({
+  specs,
+}: {
+  specs: {
+    component: string;
+    source: string;
+    roles: { slot: string; foundation: string; current: string }[];
+    label: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {specs.map((s) => (
+        <div key={s.component} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-medium">{s.component}</p>
+            <ArchLabelChip label={s.label} />
+          </div>
+          <p className="text-serial mt-1">{s.source}</p>
+          <dl className="mt-4 grid gap-2 sm:grid-cols-2">
+            {s.roles.map((r) => (
+              <div key={r.slot} className="rounded-xl border border-hairline p-3">
+                <dt className="text-eyebrow">{r.slot}</dt>
+                <dd className="mt-1 text-sm font-medium">{r.foundation}</dd>
+                <dd className="text-serial mt-1">today: {r.current}</dd>
+              </div>
+            ))}
+          </dl>
+          {s.note && <p className="mt-3 text-xs text-warning">{s.note}</p>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Foundation-level accessibility records. */
+export function FoundationA11yTable({
+  records,
+}: {
+  records: {
+    topic: string;
+    current: string;
+    requirement: string;
+    consumers: string;
+    status: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="980px"
+      head={["Topic", "Current implementation", "Future requirement", "Consumers & status"]}
+    >
+      {records.map((r) => (
+        <tr key={r.topic} className={ROW}>
+          <td className="px-5 py-4 font-medium">{r.topic}</td>
+          <td className="px-5 py-4 text-muted-foreground">{r.current}</td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {r.requirement}
+            {r.note && <span className="mt-1 block text-xs text-warning">{r.note}</span>}
+          </td>
+          <td className="px-5 py-4">
+            <p className="text-serial">{r.consumers}</p>
+            <div className="mt-2">
+              <ArchLabelChip label={r.status} />
+            </div>
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Descriptive foundation maturity. No scores. */
+export function FoundationMaturityTable({
+  records,
+}: {
+  records: {
+    category: string;
+    implementation: string;
+    evidence: string;
+    centralization: string;
+    variation: string;
+    ownership: string;
+    futureTarget: string;
+    readiness: string;
+    openDecision: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="1120px"
+      head={["Category", "Current implementation", "Centralisation", "Observed variation", "Future target", "Open decision"]}
+    >
+      {records.map((r) => (
+        <tr key={r.category} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{r.category}</p>
+            <p className="text-serial mt-1">{r.ownership}</p>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {r.implementation}
+            <span className="text-serial mt-1 block">{r.evidence}</span>
+          </td>
+          <td className="px-5 py-4">
+            <MetaChip tone={r.centralization === "CENTRALIZED" ? "sage" : "warning"}>
+              {r.centralization}
+            </MetaChip>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{r.variation}</td>
+          <td className="px-5 py-4 text-muted-foreground">
+            {r.futureTarget}
+            <span className="text-serial mt-1 block">{r.readiness}</span>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{r.openDecision}</td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
