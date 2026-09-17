@@ -952,8 +952,8 @@ export function AssetTable({
     note?: string;
   }[];
 }) {
-  const tone = (status: string) =>
-    status === "in-use" ? "sage" : status === "runtime-managed" ? "info" : "warning";
+  const tone = (status: string): "muted" | "primary" | "sage" | "warning" =>
+    status === "in-use" ? "sage" : status === "runtime-managed" ? "primary" : "warning";
   return (
     <div className="overflow-hidden rounded-2xl border border-hairline bg-card">
       <div className="overflow-x-auto">
