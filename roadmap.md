@@ -201,3 +201,25 @@ export, breadcrumbs / pagination / avatars / charts awaiting real feature use.
 - [ ] Retire the five compatibility aliases and the unused icon dependency
 - [ ] Decide whether tone mixing is precomputed for Figma
 - [ ] Build any Figma library; none exists
+
+## Phase 8 — ABox Core canonical component library specification
+
+- [x] Shared specification shape extending the existing reference types
+- [x] Anatomy vocabulary, property model, variant, state, size/density and icon governance
+- [x] Component specifications across 11 categories, assembled by one registry
+- [x] Composition, relationship and foundation dependency chains
+- [x] Duplicate and overlap register — recorded side by side, no winner selected
+- [x] Route-local kit relationships and experience extension boundaries
+- [x] Accessibility per category and content/text behavior rules
+- [x] Figma library blueprint and per-component property mapping, with stated limits
+- [x] Naming governance, documentation template, maturity categories, open decisions
+- [x] `/design-system` and `/design-guide` extended; both still unlisted
+- [x] `.lovable/design-system.md` updated
+
+### Deferred (requires separate approval)
+
+- [ ] Resolve the nine open decisions recorded in the specification
+- [ ] Choose between any of the ten recorded duplicate implementations
+- [ ] Give the recorded unowned patterns a component owner
+- [ ] Any production migration towards a canonical target
+- [ ] Build any Figma library; none exists
