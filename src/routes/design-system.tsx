@@ -1884,7 +1884,7 @@ function DesignSystemPage() {
           intro="Current production evidence on the left, the future canonical target on the right. The two are never merged, so the reader always knows which is which."
         >
           {ALL_BLUEPRINTS.map((group) => (
-            <RefBlock key={group.id} title={group.title} caption={group.summary}>
+            <RefBlock key={group.id} title={group.title} note={group.summary}>
               <BlueprintTable rows={group.rows} />
             </RefBlock>
           ))}
@@ -1904,7 +1904,7 @@ function DesignSystemPage() {
           />
           <RefBlock
             title="Literal values that bypass the chain"
-            caption="Recorded as findings. None of these has been changed."
+            note="Recorded as findings. None of these has been changed."
           >
             <RuleList items={LITERAL_VALUE_FINDINGS} />
           </RefBlock>
@@ -1950,7 +1950,7 @@ function DesignSystemPage() {
           intro="Three shell families cover 123 routes. Shells own structure, navigation and responsive frame; they never own component definitions."
         >
           <ShellTable entries={SHELL_ARCHITECTURE} />
-          <RefBlock title="Shared shell concerns" caption="Common responsibilities across all three shells.">
+          <RefBlock title="Shared shell concerns" note="Common responsibilities across all three shells.">
             <RuleList items={SHELL_SHARED_CONCERNS} />
           </RefBlock>
         </RefSection>
@@ -2017,7 +2017,7 @@ function DesignSystemPage() {
           <RuleList items={ARCHITECTURE_GOVERNANCE_RULES} />
           <RefBlock
             title="Change propagation model"
-            caption="Steps 1–3 exist today. Step 4 does not. Step 5 is partial by design."
+            note="Steps 1–3 exist today. Step 4 does not. Step 5 is partial by design."
           >
             <DefinitionRows
               rows={CHANGE_PROPAGATION_MODEL.map((c) => ({
@@ -2037,7 +2037,7 @@ function DesignSystemPage() {
           <MigrationList entries={MIGRATION_ROADMAP} />
           <RefBlock
             title="Open decisions"
-            caption="Questions a future phase must answer before it can begin."
+            note="Questions a future phase must answer before it can begin."
           >
             <RuleList items={OPEN_FUTURE_DECISIONS} />
           </RefBlock>
