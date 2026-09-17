@@ -350,3 +350,246 @@ export interface ComponentStateEntry {
   source: string;
   note?: string;
 }
+
+/* -----------------------------------------------------------------
+ * Phase 6 — architecture & normalization blueprint types.
+ *
+ * DOCUMENTATION ONLY. Phase 6 describes what a future canonical design
+ * system SHOULD target. Nothing here describes an abstraction that exists
+ * in production today unless the row is explicitly labelled
+ * "CURRENT IMPLEMENTATION". Consumed by `/design-system` and
+ * `/design-guide` only.
+ * ----------------------------------------------------------------- */
+
+/**
+ * The controlled label vocabulary. Every Phase 6 row carries exactly one, so
+ * a reader can never confuse what ships today with what is proposed.
+ */
+export type ArchLabel =
+  | "CURRENT IMPLEMENTATION"
+  | "OBSERVED VARIATION"
+  | "OBSERVED DUPLICATE"
+  | "OBSERVED OVERLAP"
+  | "INSTALLED BUT UNUSED"
+  | "POSSIBLY UNUSED"
+  | "UNOWNED AREA"
+  | "GOVERNANCE RULE"
+  | "FUTURE CANONICAL TARGET"
+  | "FUTURE OPPORTUNITY"
+  | "FUTURE FIGMA ORGANIZATION"
+  | "FUTURE MIGRATION"
+  | "FUTURE DECISION";
+
+/** Which completed audit phase supplies the evidence for a row. */
+export type EvidencePhase =
+  | "Phase 1 — foundations"
+  | "Phase 2 — spacing, layout, responsive"
+  | "Phase 3 — typography"
+  | "Phase 4 — iconography & assets"
+  | "Phase 5 — components, variants, states"
+  | "Phase 6 — direct production read";
+
+/** One level of the ABox Core architecture or of the component hierarchy. */
+export interface ArchLayerEntry {
+  id: string;
+  /** Layer name, e.g. "Foundations" or "Compound component". */
+  layer: string;
+  /** Plain description of the level's responsibility. */
+  responsibility: string;
+  /** What belongs at this level, with production examples. */
+  belongs: string;
+  /** What explicitly does not belong here. */
+  excludes: string;
+  /** Where the level lives, or would live, in the codebase. */
+  source: string;
+  /** Allowed downward dependencies. */
+  dependsOn: string;
+  /** Who is allowed to consume this level. */
+  consumedBy: string;
+  phase: EvidencePhase;
+  label: ArchLabel;
+  note?: string;
+}
+
+/** A future canonical component candidate, mapped to its current evidence. */
+export interface CanonicalComponentEntry {
+  /** Proposed future canonical name. Does NOT exist in production. */
+  canonical: string;
+  /** Current implementation name as written in code today. */
+  currentName: string;
+  currentSource: string;
+  taxonomy: ComponentCategory;
+  /** ABox Core or experience-scoped in the future system. */
+  tier: "ABox Core" | "Experience-specific";
+  classification: "primitive" | "component" | "compound component" | "pattern" | "experience pattern";
+  /** Measured direct import sites today. */
+  consumers: string;
+  /** Direct vs indirect reach, as measured. */
+  usage: string;
+  variants: string;
+  sizes: string;
+  states: string;
+  anatomy: string;
+  responsive: string;
+  dependencies: string;
+  relationships: string;
+  related: string;
+  duplication: string;
+  accessibility: string;
+  typography: string;
+  spacing: string;
+  iconography: string;
+  tokens: string;
+  /** What normalization, if any, a future phase would target. */
+  normalization: string;
+  migration: string;
+  figma: string;
+  label: ArchLabel;
+  phase: EvidencePhase;
+}
+
+/** One observable criterion in the component-vs-pattern framework. */
+export interface ClassificationCriterion {
+  criterion: string;
+  question: string;
+  /** How the criterion is judged, in observable terms. */
+  test: string;
+  /** Which levels the criterion pushes towards when satisfied. */
+  indicates: string;
+  /** A production example that demonstrates the criterion. */
+  example: string;
+  phase: EvidencePhase;
+}
+
+/**
+ * A blueprint row. `current` is evidence; `future` is a proposal.
+ * The two are never merged into one sentence.
+ */
+export interface BlueprintRow {
+  item: string;
+  source: string;
+  /** CURRENT IMPLEMENTATION — what production does today. */
+  current: string;
+  /** FUTURE CANONICAL TARGET — what a future system should target. */
+  future: string;
+  label: ArchLabel;
+  phase: EvidencePhase;
+  note?: string;
+}
+
+export interface BlueprintGroup {
+  id: string;
+  title: string;
+  summary: string;
+  rows: BlueprintRow[];
+}
+
+/** A single edge in the architecture relationship map. */
+export interface ArchRelationshipEntry {
+  from: string;
+  /** Edge kind, e.g. "contains", "uses primitive", "depends on token". */
+  relation: string;
+  to: string;
+  /** Whether the edge exists today or is proposed. */
+  nature: "current" | "future";
+  evidence: string;
+  label: ArchLabel;
+  note?: string;
+}
+
+/** A duplicate or overlap area, recorded without choosing a winner. */
+export interface OverlapArea {
+  area: string;
+  implementations: string;
+  evidence: string;
+  consumers: string;
+  differences: string;
+  risks: string;
+  /** The decision a future phase must make — deliberately left open. */
+  decision: string;
+  /** Sequence of steps that would precede any decision. */
+  sequence: string;
+  label: ArchLabel;
+  phase: EvidencePhase;
+}
+
+/** A route-local kit, described as architecture rather than as a defect. */
+export interface RouteKitEntry {
+  kit: string;
+  source: string;
+  purpose: string;
+  consumers: string;
+  reusableScope: string;
+  experienceScope: string;
+  dependencies: string;
+  overlap: string;
+  classification: string;
+  migration: string;
+  label: ArchLabel;
+}
+
+/** One of the three shell families. */
+export interface ShellArchEntry {
+  shell: string;
+  source: string;
+  purpose: string;
+  responsibility: string;
+  routes: string;
+  dependencies: string;
+  navigation: string;
+  responsive: string;
+  branding: string;
+  coreRelationship: string;
+  figma: string;
+  label: ArchLabel;
+}
+
+/** A naming convention rule for a future canonical system. */
+export interface NamingRule {
+  subject: string;
+  convention: string;
+  example: string;
+  /** How the rule sits against the current codebase. */
+  codebaseFit: string;
+  figmaFit: string;
+  label: ArchLabel;
+  note?: string;
+}
+
+/** One section of the proposed future Figma library. */
+export interface FigmaSectionEntry {
+  section: string;
+  purpose: string;
+  belongs: string;
+  excludes: string;
+  source: string;
+  mapping: string;
+  governanceOwner: string;
+  migration: string;
+  label: ArchLabel;
+}
+
+/** A token/style to Figma variable mapping, including its limits. */
+export interface FigmaVariableMapping {
+  source: string;
+  figma: string;
+  kind: string;
+  mapping: string;
+  /** Where a one-to-one mapping does not hold, stated plainly. */
+  limitation: string;
+  label: ArchLabel;
+}
+
+/** One phase of the proposed migration roadmap. */
+export interface MigrationPhaseEntry {
+  phase: string;
+  title: string;
+  goal: string;
+  prerequisites: string;
+  affected: string;
+  risk: "low" | "medium" | "high";
+  validation: string;
+  rollback: string;
+  visualDiff: string;
+  label: ArchLabel;
+}
