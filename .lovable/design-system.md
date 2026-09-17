@@ -282,3 +282,118 @@ tokens or forked components.
 | Brand asset (AboxMark tones, CarrierMark) | Library asset / component set |
 | Experience guide | Page or section in the library file |
 | Breakpoints sm 640 / md 768 / lg 1024 / xl 1280 | Frame presets |
+
+---
+
+## Phase 2b — Spacing & layout audit
+
+Reference modules added: `src/lib/design/spacing.ts`, `layout.ts`, `spatial-relationships.ts`,
+plus layout sections appended to `governance.ts`. Documentation only — imported exclusively by
+`/design-system` and `/design-guide`. No application file was modified in this phase.
+
+### Spacing source of truth — CURRENT IMPLEMENTATION
+
+There is **no spacing token in `src/styles.css`**. Spacing is expressed entirely with Tailwind
+utility classes at each call site, on the default 0.25rem step scale. The audit tables are
+therefore the record of what ships. Approximate occurrence counts across `src/routes` and
+`src/components`:
+
+| Value | Uses | Purpose |
+| --- | --- | --- |
+| `gap-2` | 316 | Default icon-to-text / control gap; also baked into `button.tsx` |
+| `px-3` | 238 | Control interior padding |
+| `gap-1` | 232 | Tightest inline grouping |
+| `p-5` | 187 | De-facto ABox card interior |
+| `gap-3` | 173 | Composite block grouping |
+| `px-4` | 154 | Page gutter (mobile) and control padding |
+| `gap-4` | 133 | Card-grid gutter |
+| `py-2` | 129 | Control vertical padding |
+| `px-5` | 102 | Table cell / emphasis control padding |
+| `p-4` | 77 | Compact card interior |
+| `p-3` | 70 | Dense strip padding |
+| `gap-6` | 52 | Filter rail ↔ results, main ↔ sidebar |
+| `p-6` | 48 | shadcn Card / dialog / sheet interior |
+| `space-y-5` | 42 | Admin section stacking |
+| `max-w-[88rem]` | 23 | Web-experience container ceiling |
+
+### Containers — CURRENT IMPLEMENTATION
+
+| Container | Ceiling | Gutters | Notes |
+| --- | --- | --- | --- |
+| Web experience | `max-w-[88rem]` (1408px) | `px-4 md:px-8` | 23 call sites, no owning component |
+| Admin / internal shell | `max-w-[1500px]` | `px-4 md:px-8` content, `px-3 sm:px-4 lg:px-8` topbar | rail offset `lg:pl-[292px]` / `lg:pl-[104px]` |
+| Floating glass header | none (full bleed) | `px-4 md:px-8` | `sticky top-4`, `top-6` on landing |
+| Shopping split | inherits 88rem | `gap-6` | `aside w-64 shrink-0`, hidden below `lg` |
+| Detail split | inherits 88rem | `gap-6` / `gap-5` | `lg:grid-cols-[1fr_320px]` and `[minmax(0,1fr)_360px]` |
+| Member shell | `max-w-[88rem]` | `px-4 md:px-8`, `pt-10 md:pt-14` | nav rail flips orientation at `md` |
+| Overlays | dialog `max-w-lg`, sheet `w-3/4 sm:max-w-sm` | `p-6`, `gap-4` | nav drawer overrides to `w-[300px] p-0` |
+
+### Responsive — CURRENT IMPLEMENTATION
+
+Breakpoint modifier counts: `md` 246, `sm` 173, `lg` 87, `xl` 22, `2xl` 2. Structural change is
+concentrated at `md` (gutters, typography, orientation) and `lg` (rails, split collapse).
+The dominant grid step is `sm:grid-cols-2` (53 uses). Overflow is always handled by horizontal
+scrolling — columns are never dropped or reflowed.
+
+### Density — CURRENT IMPLEMENTATION
+
+Eight observed contextual modes: primitive (36px controls), marketplace (40px), card comfortable
+(`p-5`), card spacious (`p-6`), card compact (`p-3`/`p-4`), table dense, navigation dense, and
+marketing spacious. No density token exists; these are descriptions, not a system.
+
+### Dimensions — CURRENT IMPLEMENTATION
+
+`h-10` (142 uses) is the most common explicit control height, followed by `h-11` (69), `h-9` (46)
+and `h-8` (43). Primitive buttons and inputs are `h-9`. `min-h-11` appears on 16 controls and
+`min-h-10` on 3. Filter rail `w-64`; admin rail 292px / 104px; dialog 512px; drawer 384px.
+Viewport-relative sizing uses `svh`/`dvh` deliberately: hero `min-h-[calc(100svh-5.25rem)]`,
+shells `min-h-dvh`, assistant panels `h-[min(620px,calc(100dvh-7rem))]`.
+
+### OBSERVED VARIATION
+
+- Card interiors run `p-3` / `p-4` / `p-5` / `p-6` across comparable surfaces.
+- Marketplace controls are 40px while shadcn primitives are 36px (deliberate, both ship).
+- Detail splits use 320px and 360px summary columns, with `gap-6` and `gap-5`.
+- Icon-to-text gap is both `gap-1.5` and `gap-2`.
+- Two table densities: ABox `DataTable` `px-5 py-4` vs shadcn table head `h-10 px-2`.
+- Marketing sections use two rhythms: `py-16 md:py-24` and `py-24 md:py-32`.
+- Block stacking uses `space-y-4`, `space-y-5` and `space-y-6` for the same structural role.
+- Admin gutters add an `sm` step the web experience does not have.
+- Hero and editorial grids each tune their own fraction ratio (1.15fr/1fr, 1fr/1.1fr, 1.2fr/1fr).
+
+None of these were normalized.
+
+### GOVERNANCE RULE
+
+- Spacing is governed by the existing implementation; the shipping value wins.
+- Reuse a recurring spacing relationship before inventing a new one.
+- Reuse a layout pattern only where one genuinely exists.
+- Inconsistency is recorded as OBSERVED VARIATION, never silently normalized.
+- Shared spacing and layout belong to the Core Design System; experience layouts are usage
+  patterns of that system, not separate systems.
+- The 1408px web ceiling and the 1500px admin ceiling are deliberately different — do not merge.
+- Dashboard and admin surfaces are out of scope for web-experience width and spacing decisions.
+- Reference modules stay documentation-only and unimported by application code.
+
+### Unowned recurring areas — FUTURE OPPORTUNITY
+
+Page container, shopping page vertical padding (`pt-4 pb-8 md:pt-6 md:pb-10`), card grid recipe,
+results toolbar row, detail split with sticky summary, form field rhythm, and section
+heading → supporting text spacing all recur with no component or token owner.
+
+### Deferred — FUTURE OPPORTUNITY
+
+Web-experience container component; card padding convergence; detail-split width alignment;
+results toolbar component; icon-to-text gap convergence; table density convergence; a universal
+touch-target floor; and a spacing/layout variable export for Figma. Each would change rendered
+output or add tooling, so none were applied. All Phase 1 and Phase 2 deferred opportunities above
+remain open and unchanged.
+
+### Figma mapping — blueprint only
+
+Spacing value → number variable; semantic relationship → documented spacing rule; container →
+layout template (two templates: 1408px web, 1500px admin); grid → grid style plus pattern frame;
+flex (`min-w-0 flex-1` / `shrink-0`) → Auto Layout Fill / Hug; breakpoint → frame preset;
+control dimension → component size property; shells → layout templates; form, dashboard, shopping
+and overlay structures → pattern frames. Nothing has been converted and no runtime code was
+altered to ease future conversion.
