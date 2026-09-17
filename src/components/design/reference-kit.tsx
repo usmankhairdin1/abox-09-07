@@ -1927,7 +1927,7 @@ export function TokenSpecTable({
   tokens,
 }: {
   tokens: {
-    name: string;
+    token: string;
     value: string;
     darkValue?: string;
     modes: string;
@@ -1950,9 +1950,9 @@ export function TokenSpecTable({
       head={["Token", "Value", "Purpose & consumers", "Usage", "Future role", "Figma & migration"]}
     >
       {tokens.map((t) => (
-        <tr key={t.name} className={ROW}>
+        <tr key={t.token} className={ROW}>
           <td className="px-5 py-4">
-            <p className="font-medium">{t.name}</p>
+            <p className="font-medium">{t.token}</p>
             <p className="text-serial mt-1">{t.source}</p>
             <div className="mt-2">
               <ArchLabelChip label={t.status} />

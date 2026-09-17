@@ -2130,7 +2130,7 @@ function DesignSystemPage() {
           title="Foundation model"
           intro="How a value travels from a primitive to a screen. The layers on the left are proposed; the state below records what production actually does today."
         >
-          <ArchLayerList layers={FOUNDATION_MODEL} />
+          <ArchLayerList entries={FOUNDATION_MODEL} />
           <RefBlock
             title="Current state, stated plainly"
             note="The system is already semantic in colour and shape, and call-site based in type, space and density."
@@ -2284,7 +2284,7 @@ function DesignSystemPage() {
           title="Token naming system"
           intro="A proposed naming convention per category, tested against the current codebase and against Figma's constraints. No production token is renamed."
         >
-          <NamingTable rules={TOKEN_NAMING_RULES} />
+          <NamingTable entries={TOKEN_NAMING_RULES} />
         </RefSection>
 
         <RefSection
