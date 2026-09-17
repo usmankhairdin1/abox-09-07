@@ -37,14 +37,17 @@ export const RESPONSIVE_OWNERSHIP: ResponsiveOwnership[] = [
   },
   {
     layer: "core-component",
-    belongsHere: "Only behavior intrinsic to the component, such as an overlay becoming full width on small viewports.",
+    belongsHere:
+      "Only behavior intrinsic to the component, such as an overlay becoming full width on small viewports.",
     doesNotBelongHere: "Layout decisions that belong to the consumer.",
-    currentEvidence: "Button has no internal breakpoints; Dialog and Sheet adapt to small viewports.",
+    currentEvidence:
+      "Button has no internal breakpoints; Dialog and Sheet adapt to small viewports.",
     status: "CURRENT IMPLEMENTATION",
   },
   {
     layer: "compound",
-    belongsHere: "How its parts reflow: field stacking, card header wrapping, table horizontal scroll.",
+    belongsHere:
+      "How its parts reflow: field stacking, card header wrapping, table horizontal scroll.",
     doesNotBelongHere: "Page-level column changes.",
     currentEvidence: "Tables scroll horizontally on narrow viewports.",
     status: "CURRENT IMPLEMENTATION",
@@ -65,7 +68,8 @@ export const RESPONSIVE_OWNERSHIP: ResponsiveOwnership[] = [
   },
   {
     layer: "screen",
-    belongsHere: "Only genuinely screen-specific arrangements, such as the viewport-aware hero height.",
+    belongsHere:
+      "Only genuinely screen-specific arrangements, such as the viewport-aware hero height.",
     doesNotBelongHere: "Re-implementing a pattern's responsive rules.",
     currentEvidence: "Landing hero uses a viewport-aware minimum height with centred content.",
     status: "CURRENT IMPLEMENTATION",
@@ -80,11 +84,40 @@ export const RESPONSIVE_OWNERSHIP: ResponsiveOwnership[] = [
 ];
 
 export const RESPONSIVE_TRACES: { chain: string; behavior: string; status: SpecLabel }[] = [
-  { chain: "Container role → marketplace shell → plans screen", behavior: "Header runs full width; content is constrained to 88rem and collapses to a single column.", status: "CURRENT IMPLEMENTATION" },
-  { chain: "Table compound → list pattern → agency screen", behavior: "Horizontal scroll rather than column dropping, so no data is hidden.", status: "CURRENT IMPLEMENTATION" },
-  { chain: "Overlay component → dialog pattern → dashboard workflow", behavior: "Modal surfaces become full width on small viewports; drawers anchor to an edge.", status: "CURRENT IMPLEMENTATION" },
-  { chain: "Field compound → form pattern → settings screen", behavior: "Inline field layouts stack; label association is unaffected.", status: "CURRENT IMPLEMENTATION" },
-  { chain: "Shell navigation → each experience", behavior: "Three shells collapse navigation independently at their own breakpoints.", status: "OBSERVED VARIATION" },
-  { chain: "Control height role → touch viewports", behavior: "Dense 32px controls stay 32px on touch.", status: "FUTURE OPPORTUNITY" },
-  { chain: "Density role → data components", behavior: "Not established: density is not a property, so it cannot respond to viewport.", status: "FUTURE DECISION" },
+  {
+    chain: "Container role → marketplace shell → plans screen",
+    behavior:
+      "Header runs full width; content is constrained to 88rem and collapses to a single column.",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    chain: "Table compound → list pattern → agency screen",
+    behavior: "Horizontal scroll rather than column dropping, so no data is hidden.",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    chain: "Overlay component → dialog pattern → dashboard workflow",
+    behavior: "Modal surfaces become full width on small viewports; drawers anchor to an edge.",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    chain: "Field compound → form pattern → settings screen",
+    behavior: "Inline field layouts stack; label association is unaffected.",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    chain: "Shell navigation → each experience",
+    behavior: "Three shells collapse navigation independently at their own breakpoints.",
+    status: "OBSERVED VARIATION",
+  },
+  {
+    chain: "Control height role → touch viewports",
+    behavior: "Dense 32px controls stay 32px on touch.",
+    status: "FUTURE OPPORTUNITY",
+  },
+  {
+    chain: "Density role → data components",
+    behavior: "Not established: density is not a property, so it cannot respond to viewport.",
+    status: "FUTURE DECISION",
+  },
 ];

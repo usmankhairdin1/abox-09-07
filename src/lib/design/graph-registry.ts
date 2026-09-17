@@ -130,36 +130,68 @@ function chainFrom(id: string, title: string, question: string, path: string[]):
 }
 
 export const TRACED_CHAINS: TracedChain[] = [
-  chainFrom(
-    "chain.tier",
-    "Why is a plan tier that colour?",
-    "Screen back to foundation",
-    ["scr.plans", "exp.shop", "pat.filter-results", "cpd.plan-card", "cmp.metal-badge", "crole.tier-indicator", "role.tier", "fnd.tier"],
-  ),
+  chainFrom("chain.tier", "Why is a plan tier that colour?", "Screen back to foundation", [
+    "scr.plans",
+    "exp.shop",
+    "pat.filter-results",
+    "cpd.plan-card",
+    "cmp.metal-badge",
+    "crole.tier-indicator",
+    "role.tier",
+    "fnd.tier",
+  ]),
   chainFrom(
     "chain.action",
     "Where does a button's colour come from?",
     "Foundation forward to screen",
-    ["fnd.color", "role.action-surface", "crole.primary-action", "cmp.button", "cpd.page-header", "pat.detail-page", "exp.dash", "scr.org"],
+    [
+      "fnd.color",
+      "role.action-surface",
+      "crole.primary-action",
+      "cmp.button",
+      "cpd.page-header",
+      "pat.detail-page",
+      "exp.dash",
+      "scr.org",
+    ],
   ),
   chainFrom(
     "chain.status",
     "What decides how a status reads in a table?",
     "Screen back to foundation",
-    ["scr.org", "exp.dash", "pat.table-screen", "cpd.table", "cmp.status-badge", "crole.status-indicator", "role.status-tone", "fnd.status"],
+    [
+      "scr.org",
+      "exp.dash",
+      "pat.table-screen",
+      "cpd.table",
+      "cmp.status-badge",
+      "crole.status-indicator",
+      "role.status-tone",
+      "fnd.status",
+    ],
   ),
   chainFrom(
     "chain.field",
     "What connects a form label to its input?",
     "Foundation forward to screen",
-    ["fnd.type", "role.text-primary", "crole.field-label", "cmp.form", "cpd.field", "pat.form-layout", "exp.member", "scr.settings"],
+    [
+      "fnd.type",
+      "role.text-primary",
+      "crole.field-label",
+      "cmp.form",
+      "cpd.field",
+      "pat.form-layout",
+      "exp.member",
+      "scr.settings",
+    ],
   ),
-  chainFrom(
-    "chain.container",
-    "Why is the page this wide?",
-    "Foundation forward to screen",
-    ["fnd.layout", "role.container", "shell.marketplace", "exp.shop", "scr.cart"],
-  ),
+  chainFrom("chain.container", "Why is the page this wide?", "Foundation forward to screen", [
+    "fnd.layout",
+    "role.container",
+    "shell.marketplace",
+    "exp.shop",
+    "scr.cart",
+  ]),
 ];
 
 export const GRAPH_SUMMARY = {
@@ -185,17 +217,69 @@ export const EDGE_STATUS_COUNTS: { label: SpecLabel; count: number }[] = Array.f
   .sort((a, b) => b.count - a.count);
 
 export const STATUS_LEGEND: StatusRecord[] = [
-  { status: "CURRENT IMPLEMENTATION", meaning: "The relationship exists in the code today.", readAs: "Evidence." },
-  { status: "OBSERVED VARIATION", meaning: "It exists, and it differs between places.", readAs: "Evidence, with a caveat." },
-  { status: "OBSERVED OVERLAP", meaning: "More than one thing fills the same conceptual role.", readAs: "Evidence, recorded without ranking." },
-  { status: "OBSERVED DUPLICATE", meaning: "The same idea is built more than once.", readAs: "Evidence, recorded without a winner." },
-  { status: "INSTALLED BUT UNUSED", meaning: "Present in the project, imported nowhere.", readAs: "Evidence of absence." },
-  { status: "POSSIBLY UNUSED", meaning: "Available with little or no adoption found.", readAs: "Evidence, stated cautiously." },
-  { status: "UNOWNED AREA", meaning: "A recurring relationship with no component owner.", readAs: "Evidence of a gap." },
-  { status: "GOVERNANCE RULE", meaning: "A rule about how the system should be treated.", readAs: "A rule, not a measurement." },
-  { status: "FUTURE CANONICAL TARGET", meaning: "A proposed relationship.", readAs: "Does not exist." },
-  { status: "FUTURE OPPORTUNITY", meaning: "A possible improvement with no proposal attached.", readAs: "Does not exist." },
-  { status: "FUTURE FIGMA ORGANIZATION", meaning: "A proposed design-file arrangement.", readAs: "Does not exist." },
-  { status: "FUTURE MIGRATION", meaning: "Work a future approved phase could do.", readAs: "Has not started." },
-  { status: "FUTURE DECISION", meaning: "Evidence is insufficient to state the relationship.", readAs: "Unanswered on purpose." },
+  {
+    status: "CURRENT IMPLEMENTATION",
+    meaning: "The relationship exists in the code today.",
+    readAs: "Evidence.",
+  },
+  {
+    status: "OBSERVED VARIATION",
+    meaning: "It exists, and it differs between places.",
+    readAs: "Evidence, with a caveat.",
+  },
+  {
+    status: "OBSERVED OVERLAP",
+    meaning: "More than one thing fills the same conceptual role.",
+    readAs: "Evidence, recorded without ranking.",
+  },
+  {
+    status: "OBSERVED DUPLICATE",
+    meaning: "The same idea is built more than once.",
+    readAs: "Evidence, recorded without a winner.",
+  },
+  {
+    status: "INSTALLED BUT UNUSED",
+    meaning: "Present in the project, imported nowhere.",
+    readAs: "Evidence of absence.",
+  },
+  {
+    status: "POSSIBLY UNUSED",
+    meaning: "Available with little or no adoption found.",
+    readAs: "Evidence, stated cautiously.",
+  },
+  {
+    status: "UNOWNED AREA",
+    meaning: "A recurring relationship with no component owner.",
+    readAs: "Evidence of a gap.",
+  },
+  {
+    status: "GOVERNANCE RULE",
+    meaning: "A rule about how the system should be treated.",
+    readAs: "A rule, not a measurement.",
+  },
+  {
+    status: "FUTURE CANONICAL TARGET",
+    meaning: "A proposed relationship.",
+    readAs: "Does not exist.",
+  },
+  {
+    status: "FUTURE OPPORTUNITY",
+    meaning: "A possible improvement with no proposal attached.",
+    readAs: "Does not exist.",
+  },
+  {
+    status: "FUTURE FIGMA ORGANIZATION",
+    meaning: "A proposed design-file arrangement.",
+    readAs: "Does not exist.",
+  },
+  {
+    status: "FUTURE MIGRATION",
+    meaning: "Work a future approved phase could do.",
+    readAs: "Has not started.",
+  },
+  {
+    status: "FUTURE DECISION",
+    meaning: "Evidence is insufficient to state the relationship.",
+    readAs: "Unanswered on purpose.",
+  },
 ];

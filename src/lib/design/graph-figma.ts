@@ -17,7 +17,8 @@ export const FIGMA_TRACES: FigmaTrace[] = [
   {
     layer: "foundation",
     codeSide: "Tokens in the stylesheet, read at runtime.",
-    figmaSide: "Variable collections with light, dark and tenant modes, plus text and effect styles.",
+    figmaSide:
+      "Variable collections with light, dark and tenant modes, plus text and effect styles.",
     translationLoss: "Colour conversion is lossy; layered shadows flatten.",
     status: "FUTURE FIGMA ORGANIZATION",
   },
@@ -59,7 +60,8 @@ export const FIGMA_TRACES: FigmaTrace[] = [
   {
     layer: "experience-pattern",
     codeSide: "Experience extensions and shells.",
-    figmaSide: "Separate library pages per experience, each declaring the core component it builds on.",
+    figmaSide:
+      "Separate library pages per experience, each declaring the core component it builds on.",
     translationLoss: "Shell behavior such as routing and session state is code-only.",
     status: "FUTURE FIGMA ORGANIZATION",
   },

@@ -76,10 +76,19 @@ import {
   FIGMA_LIMITS,
 } from "@/lib/design/spec-figma-library";
 import { SPEC_GOVERNANCE_RULES, OPEN_DECISIONS } from "@/lib/design/spec-governance";
-import { GRAPH_LAYERS, GRAPH_SUMMARY, TRACED_CHAINS, IMPACT_MODEL } from "@/lib/design/graph-registry";
+import {
+  GRAPH_LAYERS,
+  GRAPH_SUMMARY,
+  TRACED_CHAINS,
+  IMPACT_MODEL,
+} from "@/lib/design/graph-registry";
 import { SCREEN_TRACEABILITY } from "@/lib/design/graph-screens";
 import { OWNERSHIP_MODEL } from "@/lib/design/graph-brand-boundary";
-import { PROPAGATION_RULES, MIGRATION_STAGES, MIGRATION_BOUNDARY } from "@/lib/design/graph-governance";
+import {
+  PROPAGATION_RULES,
+  MIGRATION_STAGES,
+  MIGRATION_BOUNDARY,
+} from "@/lib/design/graph-governance";
 import { DUPLICATE_MAPPINGS } from "@/lib/design/graph-duplicates";
 import { PATTERN_SUMMARY, PATTERN_TAXONOMY } from "@/lib/design/pattern-registry";
 import { PATTERN_DUPLICATES } from "@/lib/design/pattern-duplicates";
@@ -92,6 +101,14 @@ import {
 } from "@/lib/design/pattern-governance";
 import { FIGMA_PATTERN_RULES } from "@/lib/design/pattern-figma";
 import { PATTERN_VARIANTS } from "@/lib/design/pattern-variants";
+import { READINESS_SUMMARY, READINESS_RECORDS } from "@/lib/design/readiness-registry";
+import { CANONICAL_CANDIDATES } from "@/lib/design/canonical-candidates";
+import { DECISION_REGISTER } from "@/lib/design/canonical-decision-register";
+import { CANONICAL_BOUNDARIES } from "@/lib/design/canonical-boundaries";
+import { CHANGE_GOVERNANCE } from "@/lib/design/change-governance";
+import { REGRESSION_CONTRACT, REGRESSION_COVERAGE } from "@/lib/design/regression-contract";
+import { FIGMA_BLOCKERS } from "@/lib/design/figma-readiness";
+import { LIBRARY_RULES } from "@/lib/design/figma-library-readiness";
 import {
   OWNERSHIP_HIERARCHY,
   SAFE_CHANGE_RULES,
@@ -218,6 +235,15 @@ const TOC = [
   { id: "pat-differences", label: "Handling differences" },
   { id: "pat-approval", label: "When tidying needs approval" },
   { id: "pat-figma-guide", label: "Patterns and Figma" },
+  { id: "rd-canonical", label: "What canonical means" },
+  { id: "rd-not-canonical", label: "What does not become canonical" },
+  { id: "rd-decisions-guide", label: "How decisions are recorded" },
+  { id: "rd-owners-guide", label: "Who owns what" },
+  { id: "rd-approval-guide", label: "How changes get approved" },
+  { id: "rd-duplicates-guide", label: "Why duplicates remain" },
+  { id: "rd-regression-guide", label: "How the product is protected" },
+  { id: "rd-figma-guide", label: "Before a Figma library exists" },
+  { id: "rd-alignment-guide", label: "Keeping Figma and the product aligned" },
 ];
 
 const PRINCIPLES = [
@@ -1591,7 +1617,6 @@ function DesignGuidePage() {
           />
         </RefSection>
 
-
         <RefSection
           id="fit-together"
           eyebrow="How it fits"
@@ -1602,10 +1627,22 @@ function DesignGuidePage() {
           <div className="mt-4">
             <DefinitionRows
               rows={[
-                { term: "Connections recorded", detail: `${GRAPH_SUMMARY.edges} relationships between ${GRAPH_SUMMARY.nodes} pieces of the system.` },
-                { term: "Real today", detail: `${GRAPH_SUMMARY.currentEdges} of them exist in the product now.` },
-                { term: "Proposals only", detail: `${GRAPH_SUMMARY.futureEdges} describe a possible future and do not exist.` },
-                { term: "Left unanswered", detail: `${GRAPH_SUMMARY.openDecisionEdges} could not be established from the code, so they were not guessed.` },
+                {
+                  term: "Connections recorded",
+                  detail: `${GRAPH_SUMMARY.edges} relationships between ${GRAPH_SUMMARY.nodes} pieces of the system.`,
+                },
+                {
+                  term: "Real today",
+                  detail: `${GRAPH_SUMMARY.currentEdges} of them exist in the product now.`,
+                },
+                {
+                  term: "Proposals only",
+                  detail: `${GRAPH_SUMMARY.futureEdges} describe a possible future and do not exist.`,
+                },
+                {
+                  term: "Left unanswered",
+                  detail: `${GRAPH_SUMMARY.openDecisionEdges} could not be established from the code, so they were not guessed.`,
+                },
               ]}
             />
           </div>
@@ -1699,13 +1736,15 @@ function DesignGuidePage() {
           intro="Nothing has been tidied up. If it ever is, this is the order it would happen in, and every step would be checked against the live product first."
         >
           <DefinitionRows
-            rows={MIGRATION_STAGES.map((m) => ({ term: `${m.stage}. ${m.name}`, detail: m.meaning }))}
+            rows={MIGRATION_STAGES.map((m) => ({
+              term: `${m.stage}. ${m.name}`,
+              detail: m.meaning,
+            }))}
           />
           <div className="mt-4">
             <RuleList items={MIGRATION_BOUNDARY} tone="warning" />
           </div>
         </RefSection>
-
 
         <RefSection
           id="pat-what"
@@ -1715,12 +1754,28 @@ function DesignGuidePage() {
         >
           <DefinitionRows
             rows={[
-              { term: "Patterns recorded", detail: `${PATTERN_SUMMARY.patterns} arrangements, grouped into ${PATTERN_SUMMARY.categories} kinds of work.` },
+              {
+                term: "Patterns recorded",
+                detail: `${PATTERN_SUMMARY.patterns} arrangements, grouped into ${PATTERN_SUMMARY.categories} kinds of work.`,
+              },
               { term: "Working as intended today", detail: `${PATTERN_SUMMARY.current} of them.` },
-              { term: "Built more than one way", detail: `${PATTERN_SUMMARY.variationsOrDuplicates} of them, all kept as they are.` },
-              { term: "Nobody currently responsible", detail: `${PATTERN_SUMMARY.unowned} of them.` },
-              { term: "Not decided", detail: `${PATTERN_SUMMARY.open} left open because the code does not answer the question.` },
-              { term: "Important", detail: "Looking alike is not enough. Two things only count as the same pattern when the code shows they are." },
+              {
+                term: "Built more than one way",
+                detail: `${PATTERN_SUMMARY.variationsOrDuplicates} of them, all kept as they are.`,
+              },
+              {
+                term: "Nobody currently responsible",
+                detail: `${PATTERN_SUMMARY.unowned} of them.`,
+              },
+              {
+                term: "Not decided",
+                detail: `${PATTERN_SUMMARY.open} left open because the code does not answer the question.`,
+              },
+              {
+                term: "Important",
+                detail:
+                  "Looking alike is not enough. Two things only count as the same pattern when the code shows they are.",
+              },
             ]}
           />
           {PATTERN_TAXONOMY.filter((g) => g.patterns.length > 0).map((group) => (
@@ -1738,7 +1793,9 @@ function DesignGuidePage() {
           title="Component, pattern, experience pattern"
           intro="Three different things, often confused. Getting the level right decides who is allowed to change something."
         >
-          <DefinitionRows rows={PATTERN_DEFINITION_RULES.map((r) => ({ term: r.question, detail: r.rule }))} />
+          <DefinitionRows
+            rows={PATTERN_DEFINITION_RULES.map((r) => ({ term: r.question, detail: r.rule }))}
+          />
         </RefSection>
 
         <RefSection
@@ -1747,7 +1804,9 @@ function DesignGuidePage() {
           title="Who owns a pattern"
           intro="Ownership decides who can approve a change. Brand settings and marketplace artwork stay outside the design system entirely."
         >
-          <DefinitionRows rows={PATTERN_OWNERSHIP_RULES.map((r) => ({ term: r.question, detail: r.rule }))} />
+          <DefinitionRows
+            rows={PATTERN_OWNERSHIP_RULES.map((r) => ({ term: r.question, detail: r.rule }))}
+          />
         </RefSection>
 
         <RefSection
@@ -1813,6 +1872,207 @@ function DesignGuidePage() {
           intro="Nothing has been created in Figma. What exists is a written plan for how each pattern would be built there, if and when that work is approved."
         >
           <RuleList items={FIGMA_PATTERN_RULES} tone="warning" />
+        </RefSection>
+
+        <RefSection
+          id="rd-canonical"
+          eyebrow="Readiness"
+          title="What canonical means"
+          intro="Canonical means one agreed way of doing something, written down clearly enough to build from. Nothing has been made canonical. This work only establishes which areas are ready for that conversation."
+        >
+          <DefinitionRows
+            rows={[
+              {
+                term: "Areas assessed",
+                detail: `${READINESS_SUMMARY.subjects} parts of the product looked at in detail.`,
+              },
+              {
+                term: "Areas that could be settled",
+                detail: `${READINESS_SUMMARY.candidates} listed as open for a decision.`,
+              },
+              {
+                term: "Decisions actually taken",
+                detail: `${READINESS_SUMMARY.decisionsSelected}. None.`,
+              },
+              {
+                term: "Changes made to the product",
+                detail: `${READINESS_SUMMARY.migrationsPerformed}. None.`,
+              },
+              {
+                term: "Things created in Figma",
+                detail: `${READINESS_SUMMARY.figmaAssetsCreated}. None.`,
+              },
+              {
+                term: "Why this matters",
+                detail:
+                  "Every one of these decisions changes something customers see. That is why a person takes them, not the documentation.",
+              },
+            ]}
+          />
+        </RefSection>
+
+        <RefSection
+          id="rd-not-canonical"
+          eyebrow="Readiness"
+          title="What does not become canonical automatically"
+          intro="Being used a lot does not make something correct. Neither does looking tidy. Nothing is promoted on those grounds."
+        >
+          <RuleList
+            items={[
+              "Usage counts show how far something reaches, not whether it is right.",
+              "Two things that look alike are not the same thing unless the product uses them for the same job.",
+              "Something built in only one place is not yet a shared pattern, however good it looks.",
+              "An area nobody owns cannot be made standard until somebody owns it.",
+              "Tenant branding and marketplace artwork are never absorbed into the design system.",
+            ]}
+          />
+        </RefSection>
+
+        <RefSection
+          id="rd-decisions-guide"
+          eyebrow="Readiness"
+          title="How design decisions are recorded"
+          intro="Every open question is written with the choices that genuinely exist and what each one would cost. No option is recommended, so the choice stays with you."
+        >
+          <DefinitionRows
+            rows={DECISION_REGISTER.map((d) => ({
+              term: d.subject,
+              detail: d.options.map((o) => `${o.option}: ${o.consequence}`).join(" "),
+              meta: `${d.requiredApprovals.join(", ")}${d.requiresProductionMigration ? " · would change the live product" : ""}${d.blocksFigma ? " · holds up Figma work" : ""}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="rd-owners-guide"
+          eyebrow="Readiness"
+          title="Who owns foundations, components, patterns and experiences"
+          intro="Ownership decides who can approve a change. Where two owners appear to claim something, that is an open question rather than a rule."
+        >
+          <DefinitionRows
+            rows={CANONICAL_BOUNDARIES.map((b) => ({
+              term: b.layer,
+              detail: b.belongsHere,
+              meta: `Owner: ${String(b.owner)}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="rd-approval-guide"
+          eyebrow="Readiness"
+          title="How production changes get approved"
+          intro="The deeper a change sits, the further it reaches. A colour value touches everything; a single page touches only itself."
+        >
+          <DefinitionRows
+            rows={CHANGE_GOVERNANCE.map((g) => ({
+              term: g.layer,
+              detail: `Must check: ${g.consumersToCheck}`,
+              meta:
+                [
+                  g.visualRegression ? "before-and-after images" : null,
+                  g.accessibilityReview ? "accessibility review" : null,
+                  g.responsiveReview ? "screen-size review" : null,
+                  g.productApproval ? "product approval" : null,
+                  g.migrationApproval ? "approval to change the live product" : null,
+                ]
+                  .filter(Boolean)
+                  .join(" · ") || "no extra review",
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="rd-duplicates-guide"
+          eyebrow="Readiness"
+          title="Why duplicates remain until a decision is made"
+          intro="Several things are built more than one way. Picking one is not a tidy-up: it changes real screens, so it waits for a decision."
+        >
+          <DefinitionRows
+            rows={CANONICAL_CANDIDATES.filter(
+              (c) => c.blocker === "duplicate implementation" || c.blocker === "no owner",
+            ).map((c) => ({
+              term: c.area,
+              detail: c.requiredDecision,
+              meta: `Used by: ${c.consumers}`,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList
+              items={[
+                "Nothing has been merged, renamed, removed or replaced.",
+                "No version has been marked preferred, best or highest priority.",
+                "Each option is described by what it would cost, so the trade-off is visible before anyone commits.",
+              ]}
+              tone="warning"
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-regression-guide"
+          eyebrow="Readiness"
+          title="How visual checking protects the existing product"
+          intro="Before any future tidy-up, the product is photographed as it is. Afterwards it must look and behave exactly the same, or the change is reversed."
+        >
+          <DefinitionRows
+            rows={[
+              { term: "Pages checked", detail: REGRESSION_COVERAGE.routes.join(", ") },
+              {
+                term: "Screen sizes",
+                detail: REGRESSION_COVERAGE.viewports.map((v) => v.name).join(", "),
+              },
+              { term: "Languages", detail: REGRESSION_COVERAGE.languages.join(" and ") },
+              {
+                term: "What must not change",
+                detail: REGRESSION_CONTRACT.map((c) => c.dimension.toLowerCase()).join(", "),
+              },
+              {
+                term: "If something differs",
+                detail: "It is treated as a failure, even when it looks like an improvement.",
+              },
+            ]}
+          />
+        </RefSection>
+
+        <RefSection
+          id="rd-figma-guide"
+          eyebrow="Readiness"
+          title="What must be resolved before a real Figma library is created"
+          intro="Some parts of the system are documented well enough to rebuild in Figma. Others cannot be, because the product does the same thing in more than one way."
+        >
+          <RuleList items={FIGMA_BLOCKERS} tone="warning" />
+          <div className="mt-4">
+            <DefinitionRows
+              rows={[
+                { term: "Ready now", detail: `${READINESS_SUMMARY.figmaReady} areas.` },
+                { term: "Partly ready", detail: `${READINESS_SUMMARY.figmaPartial} areas.` },
+                { term: "Held up", detail: `${READINESS_SUMMARY.figmaBlocked} areas.` },
+                {
+                  term: "Decisions in the way",
+                  detail: `${READINESS_SUMMARY.decisionsBlockingFigma} of ${READINESS_SUMMARY.openDecisions}.`,
+                },
+              ]}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-alignment-guide"
+          eyebrow="Readiness"
+          title="How Figma and the product would stay aligned"
+          intro="The rule is simple: the live product is always right. Where the two disagree, the design file is corrected, not the product."
+        >
+          <RuleList items={LIBRARY_RULES} />
+          <div className="mt-4">
+            <DefinitionRows
+              rows={READINESS_RECORDS.filter((r) => r.figmaReadiness === "READY").map((r) => ({
+                term: r.subject,
+                detail: "Documented well enough to be rebuilt faithfully.",
+                meta: `Used by: ${r.currentConsumers}`,
+              }))}
+            />
+          </div>
         </RefSection>
 
         <footer className="border-t border-hairline py-10 text-xs text-muted-foreground">

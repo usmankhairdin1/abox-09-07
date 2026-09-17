@@ -63,7 +63,8 @@ export const EXPERIENCE_EXTENSIONS: ExperienceExtensionRecord[] = [
     experienceA: "Web / Marketing",
     behaviorA: "Product links, cart and account in a floating header.",
     experienceB: "Shopping / Commerce",
-    behaviorB: "The same header, with the cart label switching to 'Cart · N' and a monthly total from sm.",
+    behaviorB:
+      "The same header, with the cart label switching to 'Cart · N' and a monthly total from sm.",
     classification: "extension",
     evidence: "marketplace-shell.tsx serves both; 30 files",
     status: "CURRENT IMPLEMENTATION",

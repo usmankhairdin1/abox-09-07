@@ -61,7 +61,9 @@ export function chainForScreen(screenId: string): string[] {
   if (!trace) return [];
   return [
     nodeName(screenId),
-    trace.experienceId === "not established" ? "experience not established" : nodeName(trace.experienceId),
+    trace.experienceId === "not established"
+      ? "experience not established"
+      : nodeName(trace.experienceId),
     trace.patternIds.map(nodeName).join(" / ") || "no pattern edge",
     trace.compounds.join(" / ") || "no compound edge",
     trace.components.join(" / ") || "no component edge",

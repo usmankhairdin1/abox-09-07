@@ -9,7 +9,8 @@ export const PATTERN_RESPONSIVE: PatternResponsiveRecord[] = [
   {
     patternId: "pat.filter-results",
     breakpoint: "lg (1024px)",
-    structuralChange: "The filter rail leaves the layout and becomes a modal dialog opened from a trigger.",
+    structuralChange:
+      "The filter rail leaves the layout and becomes a modal dialog opened from a trigger.",
     desktop: "w-64 aside beside the results.",
     tablet: "No rail; a rounded-full 'Filters' trigger sits above the results.",
     mobile: "Same as tablet; the dialog fills the viewport.",
@@ -17,13 +18,15 @@ export const PATTERN_RESPONSIVE: PatternResponsiveRecord[] = [
     controlsCollapse: true,
     columnsStack: true,
     densityChanges: false,
-    evidence: "plans.index.tsx lines 244 (hidden lg:block), 279 (lg:hidden), 374 (fixed inset-0 lg:hidden)",
+    evidence:
+      "plans.index.tsx lines 244 (hidden lg:block), 279 (lg:hidden), 374 (fixed inset-0 lg:hidden)",
     status: "CURRENT IMPLEMENTATION",
   },
   {
     patternId: "pat.page-header",
     breakpoint: "md (768px)",
-    structuralChange: "Title and icon tile step up a size; alignment changes from items-start to items-center.",
+    structuralChange:
+      "Title and icon tile step up a size; alignment changes from items-start to items-center.",
     desktop: "text-4xl default title, h-14 icon tile.",
     tablet: "text-4xl from md; icon tile h-14.",
     mobile: "text-3xl title, h-12 icon tile, icon top-aligned to the title.",
@@ -51,7 +54,8 @@ export const PATTERN_RESPONSIVE: PatternResponsiveRecord[] = [
   {
     patternId: "pat.hero",
     breakpoint: "lg (1024px) with type steps at sm and md",
-    structuralChange: "The illustrative panel moves below the copy; the headline steps down four sizes.",
+    structuralChange:
+      "The illustrative panel moves below the copy; the headline steps down four sizes.",
     desktop: "lg:grid-cols-[1.15fr_1fr], text-7xl headline, gap-14.",
     tablet: "Single column, text-6xl headline, gap-12.",
     mobile: "Single column, text-4xl headline, panel centred rather than right-aligned.",
@@ -65,7 +69,8 @@ export const PATTERN_RESPONSIVE: PatternResponsiveRecord[] = [
   {
     patternId: "pat.card-collection",
     breakpoint: "md (768px)",
-    structuralChange: "Marketing card grids drop from three columns to one. The plan results grid does not change.",
+    structuralChange:
+      "Marketing card grids drop from three columns to one. The plan results grid does not change.",
     desktop: "md:grid-cols-3 for marketing; one column for plan results.",
     tablet: "Three columns from md.",
     mobile: "One column.",
@@ -80,20 +85,25 @@ export const PATTERN_RESPONSIVE: PatternResponsiveRecord[] = [
     patternId: "pat.navigation",
     breakpoint: "lg for internal, md for marketplace and member, sm for label truncation",
     structuralChange: "Each shell collapses differently; there is no shared rule.",
-    desktop: "Internal fixed rail with 292px content offset; marketplace shows its full link row; member shows a vertical rail with the connecting arc.",
-    tablet: "Internal switches to an 'Open navigation' button; marketplace hides its links; member keeps the vertical rail from md.",
-    mobile: "Member nav becomes a horizontally scrollable row; marketplace keeps only the brand, cart and account; account labels truncate from sm.",
+    desktop:
+      "Internal fixed rail with 292px content offset; marketplace shows its full link row; member shows a vertical rail with the connecting arc.",
+    tablet:
+      "Internal switches to an 'Open navigation' button; marketplace hides its links; member keeps the vertical rail from md.",
+    mobile:
+      "Member nav becomes a horizontally scrollable row; marketplace keeps only the brand, cart and account; account labels truncate from sm.",
     reorders: true,
     controlsCollapse: true,
     columnsStack: true,
     densityChanges: true,
-    evidence: "internal-shell.tsx lines 63, 74, 89, 359; marketplace-shell.tsx lines 61, 92, 197; member-shell.tsx lines 72, 89, 95, 100, 101",
+    evidence:
+      "internal-shell.tsx lines 63, 74, 89, 359; marketplace-shell.tsx lines 61, 92, 197; member-shell.tsx lines 72, 89, 95, 100, 101",
     status: "OBSERVED OVERLAP",
   },
   {
     patternId: "pat.table-screen",
     breakpoint: "None declared",
-    structuralChange: "The table does not restructure. It keeps a 640px minimum width and scrolls horizontally.",
+    structuralChange:
+      "The table does not restructure. It keeps a 640px minimum width and scrolls horizontally.",
     desktop: "Full-width table.",
     tablet: "Horizontal scroll once the container is under 640px.",
     mobile: "Horizontal scroll; no card fallback exists.",

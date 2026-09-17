@@ -1,0 +1,476 @@
+/**
+ * Phase 11 — decision register.
+ *
+ * DOCUMENTATION ONLY. Every unresolved question carried forward from Phases
+ * 5–10, written so a person can decide it. Options are the implementations
+ * that genuinely exist in the code today. No option is recommended, ranked or
+ * selected, and nothing here has been acted on.
+ */
+import type { DecisionRecord } from "./canonical-readiness-types";
+
+export const DECISION_REGISTER: DecisionRecord[] = [
+  {
+    id: "dec.table",
+    subject: "Which table implementation future screens use",
+    decisionType: "technical decision",
+    currentEvidence:
+      "DataTable in 20 files at min-w-[640px], text-sm, px-5 py-4; the table primitive and route-local tables render records with different padding, empty handling and labelling.",
+    affectedComponents: ["DataTable", "Table primitive", "route-local tables"],
+    affectedExperiences: ["Dashboard / Admin", "Member / Account"],
+    affectedScreens: ["/agency/my-organization", "governed module screens"],
+    ownership: "design-system",
+    options: [
+      {
+        option: "DataTable",
+        existsAs: "src/components/abox/data-table.tsx",
+        consumers: "20 files",
+        consequence:
+          "Route-local tables would need migrating; their current densities would change.",
+      },
+      {
+        option: "Table primitive",
+        existsAs: "src/components/ui/table.tsx",
+        consumers: "route-local admin screens",
+        consequence:
+          "DataTable's built-in empty handling and min width would have to be rebuilt per screen.",
+      },
+      {
+        option: "Keep all three",
+        existsAs: "today's state",
+        consumers: "as measured",
+        consequence: "No visual change; duplication and its maintenance cost continue.",
+      },
+    ],
+    requiredApprovals: ["design system owner", "engineering review"],
+    dependencyConstraints:
+      "Table density interacts with the unresolved control-height and card-padding questions.",
+    blocksFigma: true,
+    requiresProductionMigration: true,
+    status: "BLOCKED BY DUPLICATE",
+  },
+  {
+    id: "dec.form-field",
+    subject: "Whether governed module kits adopt a shared field composition",
+    decisionType: "technical decision",
+    currentEvidence:
+      "Input, Select and Label primitives alongside independent field compositions in the M06 and M08 kits.",
+    affectedComponents: ["Input", "Select", "Label", "M06 kit fields", "M08 kit fields"],
+    affectedExperiences: ["Dashboard / Admin"],
+    affectedScreens: ["M06 profile screens", "M08 selling setup screens"],
+    ownership: "design-system",
+    options: [
+      {
+        option: "Shared field composition",
+        existsAs: "would be built from the primitives",
+        consumers: "none yet",
+        consequence:
+          "Both kits change; governed screens need revalidation against their controlled identifiers.",
+      },
+      {
+        option: "Kits stay independent",
+        existsAs: "today's state",
+        consumers: "M06 and M08 screens",
+        consequence: "Governed screens stay untouched; three field models continue.",
+      },
+    ],
+    requiredApprovals: ["design system owner", "product owner", "accessibility review"],
+    dependencyConstraints:
+      "M06 and M08 screens carry controlled SCR/REQ/AC identifiers; any change needs governed revalidation.",
+    blocksFigma: true,
+    requiresProductionMigration: true,
+    status: "BLOCKED BY DUPLICATE",
+  },
+  {
+    id: "dec.screen-header",
+    subject: "Whether marketing headings and the shell masthead are the same thing as PageHeader",
+    decisionType: "design decision",
+    currentEvidence:
+      "PageHeader in 25 files; marketing section headings inline in src/routes/index.tsx; a separate masthead in internal-shell.tsx lines 114-119.",
+    affectedComponents: ["PageHeader", "InternalShell masthead", "marketing headings"],
+    affectedExperiences: ["Web / Marketing", "Dashboard / Admin"],
+    affectedScreens: ["/", "/plans", "internal routes"],
+    ownership: "design-system",
+    options: [
+      {
+        option: "One screen-opening pattern",
+        existsAs: "would extend PageHeader",
+        consumers: "25 plus unowned placements",
+        consequence: "Marketing spacing and heading levels would change visibly.",
+      },
+      {
+        option: "Three separate treatments",
+        existsAs: "today's state",
+        consumers: "as measured",
+        consequence: "No visual change; the marketing heading area stays unowned.",
+      },
+    ],
+    requiredApprovals: ["design system owner", "experience owner"],
+    dependencyConstraints:
+      "Marketing heading sizes were tuned deliberately in earlier work and must not be silently reverted.",
+    blocksFigma: true,
+    requiresProductionMigration: true,
+    status: "BLOCKED BY DUPLICATE",
+  },
+  {
+    id: "dec.shells",
+    subject: "Whether the three shells should share a navigation base",
+    decisionType: "product decision",
+    currentEvidence:
+      "InternalShell 89 consumers, MarketplaceShell 30, MemberShell on member routes; different collapse breakpoints and account controls.",
+    affectedComponents: ["InternalShell", "MarketplaceShell", "MemberShell"],
+    affectedExperiences: ["Dashboard / Admin", "Shopping / Commerce", "Member / Account"],
+    affectedScreens: ["/agency/my-organization", "/plans", "/member/settings"],
+    ownership: "business",
+    options: [
+      {
+        option: "Shared navigation primitives under three shells",
+        existsAs: "would be extracted",
+        consumers: "three shells",
+        consequence:
+          "Highest reach of any change on record; every internal and marketplace screen is affected.",
+      },
+      {
+        option: "Three intentionally separate shells",
+        existsAs: "today's state",
+        consumers: "as measured",
+        consequence: "No change; the overlap remains documented and accepted.",
+      },
+    ],
+    requiredApprovals: ["product owner", "design system owner", "engineering review"],
+    dependencyConstraints: "Each shell serves a different audience with different permissions.",
+    blocksFigma: false,
+    requiresProductionMigration: true,
+    status: "BLOCKED BY EXPERIENCE VARIATION",
+  },
+  {
+    id: "dec.loading-error-owner",
+    subject: "Who owns loading and error presentation",
+    decisionType: "ownership decision",
+    currentEvidence:
+      "EmptyState covers the empty case in 10 files; skeletons appear in 4 files; error presentation is written per route.",
+    affectedComponents: ["EmptyState", "Skeleton", "inline error markup"],
+    affectedExperiences: ["all four"],
+    affectedScreens: ["application-wide"],
+    ownership: "none",
+    options: [
+      {
+        option: "Design system owns all three states",
+        existsAs: "one third exists today",
+        consumers: "10 and 4 respectively",
+        consequence:
+          "New surfaces would be introduced; existing ad hoc error markup would be replaced.",
+      },
+      {
+        option: "Remain per route",
+        existsAs: "today's state",
+        consumers: "various",
+        consequence: "No change; the area stays unowned and inconsistent.",
+      },
+    ],
+    requiredApprovals: ["design system owner", "product owner"],
+    dependencyConstraints:
+      "Error content is bilingual and interacts with governed module messaging.",
+    blocksFigma: true,
+    requiresProductionMigration: true,
+    status: "NEEDS OWNER",
+  },
+  {
+    id: "dec.control-height",
+    subject: "36px versus 40px control height",
+    decisionType: "design decision",
+    currentEvidence:
+      "Both heights are used for equivalent controls on different surfaces; recorded in Phases 2, 7 and 10.",
+    affectedComponents: ["Button", "Input", "Select", "action pills"],
+    affectedExperiences: ["all four"],
+    affectedScreens: ["application-wide"],
+    ownership: "design-system",
+    options: [
+      {
+        option: "36px default",
+        existsAs: "used on dense surfaces",
+        consumers: "dense screens",
+        consequence: "Marketing and member controls shrink visibly.",
+      },
+      {
+        option: "40px default",
+        existsAs: "used on roomier surfaces",
+        consumers: "those screens",
+        consequence: "Dense admin screens grow and may reflow.",
+      },
+      {
+        option: "Both as named sizes",
+        existsAs: "today's state, unnamed",
+        consumers: "all",
+        consequence: "No visual change; the scale gains names only.",
+      },
+    ],
+    requiredApprovals: ["design system owner"],
+    dependencyConstraints: "Interacts with table density and card padding.",
+    blocksFigma: true,
+    requiresProductionMigration: false,
+    status: "NEEDS DESIGN DECISION",
+  },
+  {
+    id: "dec.card-padding",
+    subject: "p-5 versus p-6 card padding",
+    decisionType: "design decision",
+    currentEvidence: "p-5 measured 187 times; p-6 used alongside it on comparable surfaces.",
+    affectedComponents: ["Card", "KpiCard", "surface literals"],
+    affectedExperiences: ["all four"],
+    affectedScreens: ["application-wide"],
+    ownership: "design-system",
+    options: [
+      {
+        option: "p-5 everywhere",
+        existsAs: "dominant literal",
+        consumers: "187 occurrences",
+        consequence: "Roomier cards tighten visibly.",
+      },
+      {
+        option: "p-6 everywhere",
+        existsAs: "used on several surfaces",
+        consumers: "fewer",
+        consequence: "Most cards grow; dense screens reflow.",
+      },
+      {
+        option: "Two named densities",
+        existsAs: "today's state",
+        consumers: "all",
+        consequence: "No visual change.",
+      },
+    ],
+    requiredApprovals: ["design system owner"],
+    dependencyConstraints: "None beyond the other spacing questions.",
+    blocksFigma: false,
+    requiresProductionMigration: false,
+    status: "NEEDS DESIGN DECISION",
+  },
+  {
+    id: "dec.stacking-breakpoint",
+    subject: "Inconsistent stacking breakpoints",
+    decisionType: "design decision",
+    currentEvidence:
+      "Cart and hero stack at lg; member settings stacks at md; plan results and the filter rail switch at lg.",
+    affectedComponents: ["cart layout", "hero", "member shell", "plans layout"],
+    affectedExperiences: ["Web / Marketing", "Shopping / Commerce", "Member / Account"],
+    affectedScreens: ["/", "/cart", "/plans", "/member/settings"],
+    ownership: "design-system",
+    options: [
+      {
+        option: "Single stacking breakpoint",
+        existsAs: "would be chosen from lg or md",
+        consumers: "all listed screens",
+        consequence: "Tablet layout changes on at least one screen whichever is chosen.",
+      },
+      {
+        option: "Per-layout breakpoints",
+        existsAs: "today's state",
+        consumers: "as measured",
+        consequence: "No change; tablet behaviour stays inconsistent between screens.",
+      },
+    ],
+    requiredApprovals: ["design system owner", "experience owner"],
+    dependencyConstraints: "Tablet is a real viewport for agency users.",
+    blocksFigma: false,
+    requiresProductionMigration: true,
+    status: "NEEDS DESIGN DECISION",
+  },
+  {
+    id: "dec.assistant",
+    subject: "Which assistant surface is the shared one",
+    decisionType: "product decision",
+    currentEvidence:
+      "PlanAI on shopping routes, a legacy Plan-O surface, and the ai-elements kit on Lucie screens, with different message models and composers.",
+    affectedComponents: ["PlanAI", "Plan-O assistant", "ai-elements"],
+    affectedExperiences: ["Shopping / Commerce", "Dashboard / Admin"],
+    affectedScreens: ["/plans", "Lucie screens"],
+    ownership: "route",
+    options: [
+      {
+        option: "PlanAI",
+        existsAs: "shopping assistant with session-backed state",
+        consumers: "shopping routes",
+        consequence: "Lucie screens would change conversation behaviour.",
+      },
+      {
+        option: "ai-elements kit",
+        existsAs: "Lucie conversation kit",
+        consumers: "Lucie screens",
+        consequence: "Shopping would lose its session persistence unless rebuilt.",
+      },
+      {
+        option: "Keep separate",
+        existsAs: "today's state",
+        consumers: "as measured",
+        consequence: "No change; three conversation models continue.",
+      },
+    ],
+    requiredApprovals: ["product owner", "design system owner"],
+    dependencyConstraints:
+      "PlanAI progress persistence is a shipped behaviour and must not regress.",
+    blocksFigma: true,
+    requiresProductionMigration: true,
+    status: "BLOCKED BY DUPLICATE",
+  },
+  {
+    id: "dec.overlay",
+    subject: "Whether the plans filter overlay adopts the Dialog primitive",
+    decisionType: "technical decision",
+    currentEvidence:
+      "Dialog primitive in 4 files; a route-local overlay at src/routes/plans.index.tsx line 374 with its own focus and close handling.",
+    affectedComponents: ["Dialog", "plans filter overlay"],
+    affectedExperiences: ["Shopping / Commerce"],
+    affectedScreens: ["/plans"],
+    ownership: "design-system",
+    options: [
+      {
+        option: "Adopt Dialog",
+        existsAs: "src/components/ui/dialog.tsx",
+        consumers: "4 files",
+        consequence: "Mobile filter animation and focus behaviour change on a high-traffic screen.",
+      },
+      {
+        option: "Keep route-local",
+        existsAs: "today's state",
+        consumers: "one route",
+        consequence: "No change; two overlay behaviours continue.",
+      },
+    ],
+    requiredApprovals: ["design system owner", "accessibility review"],
+    dependencyConstraints: "The mobile filter flow is central to shopping.",
+    blocksFigma: false,
+    requiresProductionMigration: true,
+    status: "NEEDS TECHNICAL DECISION",
+  },
+  {
+    id: "dec.story-link",
+    subject: "The .story-link class used 89 times with no definition found",
+    decisionType: "technical decision",
+    currentEvidence: "Phase 3 measured 89 uses and no matching definition in the stylesheet.",
+    affectedComponents: ["text links across the application"],
+    affectedExperiences: ["all four"],
+    affectedScreens: ["application-wide"],
+    ownership: "none",
+    options: [
+      {
+        option: "Define it",
+        existsAs: "currently undefined",
+        consumers: "89 uses",
+        consequence:
+          "Every one of those links would gain styling it does not have today, a visible change.",
+      },
+      {
+        option: "Leave as is",
+        existsAs: "today's state",
+        consumers: "89 uses",
+        consequence: "No change; a dead class name persists.",
+      },
+    ],
+    requiredApprovals: ["design system owner"],
+    dependencyConstraints: "None identified.",
+    blocksFigma: false,
+    requiresProductionMigration: false,
+    status: "NEEDS TECHNICAL DECISION",
+    note: "Recorded as evidence, not as a defect to fix in this phase.",
+  },
+  {
+    id: "dec.pagination",
+    subject: "Whether pagination is part of the system at all",
+    decisionType: "product decision",
+    currentEvidence: "The pagination primitive is installed and has no production consumer.",
+    affectedComponents: ["Pagination primitive"],
+    affectedExperiences: ["none today"],
+    affectedScreens: ["none"],
+    ownership: "none",
+    options: [
+      {
+        option: "Adopt where lists grow",
+        existsAs: "installed primitive",
+        consumers: "none",
+        consequence: "New behaviour on list screens; a product decision, not a styling one.",
+      },
+      {
+        option: "Leave unused",
+        existsAs: "today's state",
+        consumers: "none",
+        consequence: "No change.",
+      },
+    ],
+    requiredApprovals: ["product owner"],
+    dependencyConstraints: "None.",
+    blocksFigma: false,
+    requiresProductionMigration: false,
+    status: "NEEDS EVIDENCE",
+    note: "FUTURE DECISION — insufficient implementation evidence.",
+  },
+  {
+    id: "dec.typography-roles",
+    subject: "Whether heading sizes collapse into fewer named roles",
+    decisionType: "design decision",
+    currentEvidence:
+      "Several heading sizes and five uppercase tracking values measured in Phase 3; heading sizes were tuned deliberately in earlier product work.",
+    affectedComponents: ["headings across all shells and pages"],
+    affectedExperiences: ["all four"],
+    affectedScreens: ["application-wide"],
+    ownership: "design-system",
+    options: [
+      {
+        option: "Fewer roles",
+        existsAs: "would be derived from current values",
+        consumers: "application-wide",
+        consequence: "Visible type changes on pages whose sizes were deliberately chosen.",
+      },
+      {
+        option: "Name the current values as they are",
+        existsAs: "today's state",
+        consumers: "application-wide",
+        consequence: "No visual change; the scale simply gains names.",
+      },
+    ],
+    requiredApprovals: ["design system owner", "experience owner"],
+    dependencyConstraints:
+      "Earlier approved work reduced heading sizes across pages; that intent must not be undone.",
+    blocksFigma: true,
+    requiresProductionMigration: false,
+    status: "NEEDS DESIGN DECISION",
+  },
+  {
+    id: "dec.brand-boundary",
+    subject: "How the future system describes runtime brand and marketplace values",
+    decisionType: "ownership decision",
+    currentEvidence:
+      "Branding & White-Label and Marketplace Asset Management resolve tenant values at runtime; Phases 4–10 place both outside design-system ownership.",
+    affectedComponents: ["brand mark slots", "marketplace image slots"],
+    affectedExperiences: ["all four"],
+    affectedScreens: ["/app/jet/branding", "marketplace asset administration"],
+    ownership: "runtime",
+    options: [
+      {
+        option: "System defines the slot only",
+        existsAs: "today's effective boundary",
+        consumers: "all brand-aware surfaces",
+        consequence: "No change; the boundary becomes explicit.",
+      },
+      {
+        option: "System owns brand defaults too",
+        existsAs: "not implemented",
+        consumers: "none",
+        consequence:
+          "Would move tenant configuration into the design system, contrary to the recorded boundary.",
+      },
+    ],
+    requiredApprovals: ["product owner", "design system owner"],
+    dependencyConstraints: "Tenant configuration must stay runtime-resolved.",
+    blocksFigma: false,
+    requiresProductionMigration: false,
+    status: "READY FOR FUTURE DECISION",
+  },
+];
+
+export const DECISION_RULES: string[] = [
+  "GOVERNANCE RULE — every option listed is an implementation that exists in the code today, or explicitly marked as not implemented.",
+  "GOVERNANCE RULE — no option is recommended, preferred, ranked or scored. The register exists so a person can decide.",
+  "GOVERNANCE RULE — a decision is only settled when a named approver records it; until then the status stays open.",
+  "GOVERNANCE RULE — a decision marked as requiring production migration cannot be acted on inside a documentation phase.",
+  "FUTURE DECISION — every record above is open. None has been decided or acted on.",
+];

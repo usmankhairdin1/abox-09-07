@@ -15,10 +15,19 @@ export const PATTERN_DUPLICATES: PatternDuplicateRecord[] = [
     concept: "Tabular record presentation",
     implementations: [
       { name: "DataTable", source: "src/components/abox/data-table.tsx", consumers: "20 files" },
-      { name: "Table primitive", source: "src/components/ui/table.tsx", consumers: "route-local admin screens" },
-      { name: "Route-local tables", source: "governed module screens", consumers: "written per route" },
+      {
+        name: "Table primitive",
+        source: "src/components/ui/table.tsx",
+        consumers: "route-local admin screens",
+      },
+      {
+        name: "Route-local tables",
+        source: "governed module screens",
+        consumers: "written per route",
+      },
     ],
-    differences: "Cell padding, minimum width, empty-row handling and whether an aria-label is required.",
+    differences:
+      "Cell padding, minimum width, empty-row handling and whether an aria-label is required.",
     ownership: "Mixed: ABox, primitive and route",
     resolution: "unresolved",
     status: "OBSERVED DUPLICATE",
@@ -26,7 +35,11 @@ export const PATTERN_DUPLICATES: PatternDuplicateRecord[] = [
   {
     concept: "Field and form composition",
     implementations: [
-      { name: "Primitive fields", source: "Input, Label, Select", consumers: "7 files each for Input and Select, 5 for Label" },
+      {
+        name: "Primitive fields",
+        source: "Input, Label, Select",
+        consumers: "7 files each for Input and Select, 5 for Label",
+      },
       { name: "M06 route kit fields", source: "M06 route-local kit", consumers: "M06 screens" },
       { name: "M08 route kit fields", source: "M08 route-local kit", consumers: "M08 screens" },
     ],
@@ -38,11 +51,24 @@ export const PATTERN_DUPLICATES: PatternDuplicateRecord[] = [
   {
     concept: "Shell navigation",
     implementations: [
-      { name: "InternalShell", source: "src/components/abox/internal-shell.tsx", consumers: "89 files" },
-      { name: "MarketplaceShell", source: "src/components/abox/marketplace-shell.tsx", consumers: "30 files" },
-      { name: "MemberShell", source: "src/components/abox/member-shell.tsx", consumers: "member routes" },
+      {
+        name: "InternalShell",
+        source: "src/components/abox/internal-shell.tsx",
+        consumers: "89 files",
+      },
+      {
+        name: "MarketplaceShell",
+        source: "src/components/abox/marketplace-shell.tsx",
+        consumers: "30 files",
+      },
+      {
+        name: "MemberShell",
+        source: "src/components/abox/member-shell.tsx",
+        consumers: "member routes",
+      },
     ],
-    differences: "Rail versus floating header, collapse breakpoint, search presence and account control treatment.",
+    differences:
+      "Rail versus floating header, collapse breakpoint, search presence and account control treatment.",
     ownership: "Business",
     resolution: "observed",
     status: "OBSERVED OVERLAP",
@@ -51,8 +77,16 @@ export const PATTERN_DUPLICATES: PatternDuplicateRecord[] = [
   {
     concept: "Assistant surface",
     implementations: [
-      { name: "PlanAI", source: "src/components/abox/planai-assistant.tsx", consumers: "shopping routes" },
-      { name: "Plan-O assistant", source: "src/components/abox/plan-o-assistant.tsx", consumers: "legacy surface" },
+      {
+        name: "PlanAI",
+        source: "src/components/abox/planai-assistant.tsx",
+        consumers: "shopping routes",
+      },
+      {
+        name: "Plan-O assistant",
+        source: "src/components/abox/plan-o-assistant.tsx",
+        consumers: "legacy surface",
+      },
       { name: "ai-elements kit", source: "route-local ai-elements", consumers: "Lucie screens" },
     ],
     differences: "Message model, composer, persistence and accessibility handling.",
@@ -64,7 +98,11 @@ export const PATTERN_DUPLICATES: PatternDuplicateRecord[] = [
     concept: "Overlay surface",
     implementations: [
       { name: "Dialog primitive", source: "src/components/ui/dialog.tsx", consumers: "4 files" },
-      { name: "Route-local filter overlay", source: "src/routes/plans.index.tsx line 374", consumers: "plans route" },
+      {
+        name: "Route-local filter overlay",
+        source: "src/routes/plans.index.tsx line 374",
+        consumers: "plans route",
+      },
     ],
     differences: "Focus trapping, close affordance and animation.",
     ownership: "Primitive and route",
@@ -75,10 +113,19 @@ export const PATTERN_DUPLICATES: PatternDuplicateRecord[] = [
     concept: "Screen opening header",
     implementations: [
       { name: "PageHeader", source: "src/components/abox/page-header.tsx", consumers: "25 files" },
-      { name: "Marketing section headings", source: "src/routes/index.tsx", consumers: "landing sections" },
-      { name: "InternalShell page masthead", source: "internal-shell.tsx lines 114-119", consumers: "internal routes" },
+      {
+        name: "Marketing section headings",
+        source: "src/routes/index.tsx",
+        consumers: "landing sections",
+      },
+      {
+        name: "InternalShell page masthead",
+        source: "internal-shell.tsx lines 114-119",
+        consumers: "internal routes",
+      },
     ],
-    differences: "Whether an eyebrow, icon tile or hairline exists, and which heading level is used.",
+    differences:
+      "Whether an eyebrow, icon tile or hairline exists, and which heading level is used.",
     ownership: "ABox, route and shell",
     resolution: "unresolved",
     status: "OBSERVED DUPLICATE",

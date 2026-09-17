@@ -953,3 +953,22 @@ Reference layer only. No production file was changed in this phase.
 - FUTURE OPPORTUNITY — aligning stacking breakpoints, card padding, control heights or table densities would each change production output and remain out of scope until separately approved.
 - FUTURE OPPORTUNITY — `pattern-figma.ts` is a blueprint. Nothing exists in Figma: no file, component, variant, style or asset has been created.
 - Branding & White-Label and Marketplace Asset Management stay runtime-owned. Patterns consume those values; the design system does not take their configuration.
+
+## Phase 11 — Governance, canonicalization readiness & Figma readiness
+
+Reference layer only. No production file was changed. No duplicate was merged, renamed, deleted or migrated; no winner was selected; nothing was ranked or scored; no Figma file, component, variable, style or asset was created.
+
+- Modules: `canonical-readiness-types.ts`, `canonical-candidates.ts`, `canonical-decision-register.ts`, `canonical-boundaries.ts`, `change-governance.ts`, `migration-readiness.ts`, `regression-contract.ts`, `figma-readiness.ts`, `figma-library-readiness.ts`, `naming-readiness.ts`, `accessibility-readiness.ts`, `content-readiness.ts`, `experience-readiness.ts`, assembled by `readiness-registry.ts`. Consumed only by `/design-system` and `/design-guide`.
+- CURRENT IMPLEMENTATION — readiness subjects are keyed to existing Phase 9 graph node ids; component records come from the Phase 8 registry and pattern records from Phase 10. `READINESS_INTEGRITY` reports any subject, candidate or decision that lacks its backing record. No second graph or inventory exists.
+- CURRENT IMPLEMENTATION — readiness is categorical (READY FOR FUTURE DECISION, NEEDS EVIDENCE, NEEDS OWNER, NEEDS PRODUCT / DESIGN / TECHNICAL DECISION, BLOCKED BY DUPLICATE, BLOCKED BY EXPERIENCE VARIATION, DEFERRED, NOT APPLICABLE). There is no score, rank, tier or priority anywhere in the layer.
+- OBSERVED DUPLICATE — tables (DataTable, table primitive, route-local), form fields (primitives, M06 kit, M08 kit), assistant surfaces (PlanAI, Plan-O, ai-elements), screen opening headers (PageHeader, marketing headings, shell masthead). All remain as they are.
+- OBSERVED OVERLAP — three shells implement navigation independently, by audience.
+- OBSERVED VARIATION — 36px vs 40px controls, p-5 vs p-6 cards, lg vs md stacking, hero pill height, gap-1.5 vs gap-2, CarrierMark as an illustrative monogram.
+- UNOWNED — marketing section headers, icon containers, loading and error presentation.
+- INSTALLED BUT UNUSED — the pagination primitive, recorded as FUTURE DECISION — insufficient implementation evidence.
+- FUTURE DECISION — 14 decision records are open. None is recommended or selected. Each lists only options that exist in the code, their consequences, required approvals, whether Figma work is blocked, and whether production migration would be required.
+- Figma READY — foundation values, component hierarchy, experience extensions, asset ownership, branding boundary.
+- Figma PARTIAL — semantic variables, typography styles, component definitions, variants, states, properties, patterns, accessibility metadata, responsive behaviour, content model.
+- Figma BLOCKED — naming (collisions unresolved) and density (control height and card padding undecided). Library governance is FUTURE DECISION — no owner or process.
+- FUTURE OPPORTUNITY — the ten-stage migration model and the proposed library structure are shapes for future approved work. No stage has been performed and no first target has been chosen.
+- Branding & White-Label and Marketplace Asset Management stay runtime-owned; the system models the slot, never the tenant value.

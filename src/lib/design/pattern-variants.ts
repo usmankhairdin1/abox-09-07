@@ -10,7 +10,8 @@ export const PATTERN_VARIANTS: PatternVariantRecord[] = [
   {
     patternId: "pat.page-header",
     variant: "Default",
-    difference: "Eyebrow shown, h-12/h-14 icon tile, text-3xl md:text-4xl display title, mb-12, closing hairline rule.",
+    difference:
+      "Eyebrow shown, h-12/h-14 icon tile, text-3xl md:text-4xl display title, mb-12, closing hairline rule.",
     seenIn: "Most PageHeader consumers",
     keptBecause: "It is the opening header for a full screen.",
     status: "CURRENT IMPLEMENTATION",
@@ -18,7 +19,8 @@ export const PATTERN_VARIANTS: PatternVariantRecord[] = [
   {
     patternId: "pat.page-header",
     variant: "Compact",
-    difference: "No eyebrow, h-9 icon tile, text-xl md:text-2xl title, mb-6, no hairline rule, text-xs description.",
+    difference:
+      "No eyebrow, h-9 icon tile, text-xl md:text-2xl title, mb-6, no hairline rule, text-xs description.",
     seenIn: "Plan results header",
     keptBecause: "A results screen must keep the results near the top.",
     status: "CURRENT IMPLEMENTATION",
@@ -90,7 +92,8 @@ export const PATTERN_VARIANTS: PatternVariantRecord[] = [
   {
     patternId: "pat.navigation",
     variant: "Internal left rail",
-    difference: "Fixed rail from lg, collapsible between 292px and 104px, with a sticky glass top bar.",
+    difference:
+      "Fixed rail from lg, collapsible between 292px and 104px, with a sticky glass top bar.",
     seenIn: "internal-shell.tsx",
     keptBecause: "Operators need deep navigation always in view.",
     status: "CURRENT IMPLEMENTATION",
