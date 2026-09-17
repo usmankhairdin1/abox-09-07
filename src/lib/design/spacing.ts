@@ -36,7 +36,8 @@ export const SPACING_SCALE: SpacingGroup = {
       value: "gap-2",
       computed: "0.5rem / 8px",
       occurrences: 316,
-      purpose: "Default icon-to-text and control-to-control gap. Most used spacing value in the app.",
+      purpose:
+        "Default icon-to-text and control-to-control gap. Most used spacing value in the app.",
       where: "buttons, nav links, filter chips, badge rows, toolbars",
       frequency: "recurring",
       consistency: "consistent",
@@ -50,7 +51,8 @@ export const SPACING_SCALE: SpacingGroup = {
       value: "gap-3",
       computed: "0.75rem / 12px",
       occurrences: 173,
-      purpose: "Grouping of small composite blocks — avatar/icon plus text stacks, header action clusters.",
+      purpose:
+        "Grouping of small composite blocks — avatar/icon plus text stacks, header action clusters.",
       where: "internal-shell topbar, cart line items, KPI internals",
       frequency: "recurring",
       consistency: "mostly-consistent",
@@ -103,7 +105,8 @@ export const SPACING_SCALE: SpacingGroup = {
       value: "gap-8 / gap-10 / gap-12 / gap-14",
       computed: "2rem – 3.5rem",
       occurrences: 21,
-      purpose: "Marketing-scale separation between hero columns, footer columns and editorial blocks.",
+      purpose:
+        "Marketing-scale separation between hero columns, footer columns and editorial blocks.",
       where: "index.tsx hero (gap-12, lg:gap-14), marketplace-shell footer (gap-14)",
       frequency: "occasional",
       consistency: "variable",
@@ -127,7 +130,8 @@ export const SPACING_PADDING: SpacingGroup = {
       computed: "1rem → 2rem",
       occurrences: 154,
       purpose: "Standard page horizontal gutter for web-experience and member pages.",
-      where: "index.tsx sections, plans.index.tsx, cart.tsx, member-shell, marketplace-shell header/footer",
+      where:
+        "index.tsx sections, plans.index.tsx, cart.tsx, member-shell, marketplace-shell header/footer",
       frequency: "recurring",
       consistency: "consistent",
       source: "call site, paired with max-w-[88rem]",

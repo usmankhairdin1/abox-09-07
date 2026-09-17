@@ -552,15 +552,31 @@ export function SpacingTable({
           <td className="px-5 py-4">
             <span className="flex flex-wrap gap-1.5">
               <ConsistencyChip value={e.consistency} />
-              <MetaChip>{e.frequency === "recurring" ? "Recurring" : e.frequency === "occasional" ? "Occasional" : "One-off"}</MetaChip>
+              <MetaChip>
+                {e.frequency === "recurring"
+                  ? "Recurring"
+                  : e.frequency === "occasional"
+                    ? "Occasional"
+                    : "One-off"}
+              </MetaChip>
             </span>
           </td>
           <td className="px-5 py-4">
             <span className="flex flex-wrap gap-1.5">
               <MetaChip
-                tone={e.centralizable === "safe" ? "sage" : e.centralizable === "unsafe" ? "warning" : "muted"}
+                tone={
+                  e.centralizable === "safe"
+                    ? "sage"
+                    : e.centralizable === "unsafe"
+                      ? "warning"
+                      : "muted"
+                }
               >
-                {e.centralizable === "safe" ? "Safe" : e.centralizable === "unsafe" ? "Unsafe" : "Conditional"}
+                {e.centralizable === "safe"
+                  ? "Safe"
+                  : e.centralizable === "unsafe"
+                    ? "Unsafe"
+                    : "Conditional"}
               </MetaChip>
               <MetaChip tone={e.risk === "high" ? "warning" : "muted"}>{e.risk} risk</MetaChip>
             </span>
@@ -593,7 +609,10 @@ export function ContainerTable({
   }[];
 }) {
   return (
-    <RefTable minWidth="1000px" head={["Container", "Width & gutters", "Responsive", "Consumers", "Variations"]}>
+    <RefTable
+      minWidth="1000px"
+      head={["Container", "Width & gutters", "Responsive", "Consumers", "Variations"]}
+    >
       {entries.map((e) => (
         <tr key={e.name} className={ROW}>
           <td className="px-5 py-4">
@@ -636,7 +655,10 @@ export function ResponsiveTable({
   }[];
 }) {
   return (
-    <RefTable minWidth="1040px" head={["Pattern", "Trigger", "Desktop", "Tablet", "Mobile", "Where"]}>
+    <RefTable
+      minWidth="1040px"
+      head={["Pattern", "Trigger", "Desktop", "Tablet", "Mobile", "Where"]}
+    >
       {entries.map((e) => (
         <tr key={e.name} className={ROW}>
           <td className="px-5 py-4">
@@ -676,7 +698,10 @@ export function DensityTable({
   }[];
 }) {
   return (
-    <RefTable minWidth="960px" head={["Mode", "Context", "Control height", "Padding & gap", "Type & icon", "Source"]}>
+    <RefTable
+      minWidth="960px"
+      head={["Mode", "Context", "Control height", "Padding & gap", "Type & icon", "Source"]}
+    >
       {entries.map((e) => (
         <tr key={e.mode} className={ROW}>
           <td className="px-5 py-4">
@@ -775,19 +800,27 @@ export function LayoutPatternList({
           <p className="mt-2 text-sm text-muted-foreground">{e.purpose}</p>
           <dl className="mt-4 space-y-2 text-xs">
             <div>
-              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">Anatomy</dt>
+              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Anatomy
+              </dt>
               <dd className="mt-0.5 text-muted-foreground">{e.anatomy}</dd>
             </div>
             <div>
-              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">Spacing</dt>
+              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Spacing
+              </dt>
               <dd className="mt-0.5 text-muted-foreground">{e.spacing}</dd>
             </div>
             <div>
-              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">Responsive</dt>
+              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Responsive
+              </dt>
               <dd className="mt-0.5 text-muted-foreground">{e.responsive}</dd>
             </div>
             <div>
-              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">Examples</dt>
+              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Examples
+              </dt>
               <dd className="text-serial mt-0.5 break-all">{e.examples}</dd>
             </div>
           </dl>
@@ -803,7 +836,13 @@ export function LayoutPatternList({
 }
 
 /** Simple governance / unowned-area list. */
-export function RuleList({ items, tone = "muted" }: { items: string[]; tone?: "muted" | "warning" }) {
+export function RuleList({
+  items,
+  tone = "muted",
+}: {
+  items: string[];
+  tone?: "muted" | "warning";
+}) {
   return (
     <ul className="space-y-2">
       {items.map((item) => (

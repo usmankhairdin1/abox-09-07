@@ -67,7 +67,8 @@ export const CONTAINERS: ContainerEntry[] = [
     gutters: "gap-6 (plan detail), gap-5 (cart)",
     alignment: "Summary column uses sticky top-24",
     responsive: "Collapses to one column below lg.",
-    consumers: "plans.$planId.tsx (lg:grid-cols-[1fr_320px]), cart.tsx (lg:grid-cols-[minmax(0,1fr)_360px])",
+    consumers:
+      "plans.$planId.tsx (lg:grid-cols-[1fr_320px]), cart.tsx (lg:grid-cols-[minmax(0,1fr)_360px])",
     source: "route files",
     shared: "local",
     variations:
@@ -139,7 +140,8 @@ export const GRID_FLEX_RELATIONSHIPS: RelationshipGroup = {
     },
     {
       pair: "Toolbar → items",
-      observed: "flex flex-wrap items-center justify-between gap-3, with an ml-auto trailing cluster.",
+      observed:
+        "flex flex-wrap items-center justify-between gap-3, with an ml-auto trailing cluster.",
       source: "plans.index.tsx results toolbar, admin page toolbars",
       consistency: "consistent",
       note: "ml-auto rather than a spacer element is the standard trailing-group technique.",
@@ -153,14 +155,16 @@ export const GRID_FLEX_RELATIONSHIPS: RelationshipGroup = {
     },
     {
       pair: "Flex child sizing",
-      observed: "min-w-0 flex-1 for fluid children; shrink-0 for icons, rails and trailing actions.",
+      observed:
+        "min-w-0 flex-1 for fluid children; shrink-0 for icons, rails and trailing actions.",
       source: "internal-shell, marketplace-shell, cart line items",
       consistency: "consistent",
       note: "min-w-0 is applied consistently to allow truncation inside flex rows.",
     },
     {
       pair: "Wrapping convention",
-      observed: "flex-wrap on header/action rows; flex-col → sm:flex-row for stacked-to-inline blocks.",
+      observed:
+        "flex-wrap on header/action rows; flex-col → sm:flex-row for stacked-to-inline blocks.",
       source: "cart.tsx add-ons banner, page headers",
       consistency: "mostly consistent" as unknown as "varies",
     },
@@ -284,11 +288,13 @@ export const DIMENSIONS: DimensionEntry[] = [
 export const LAYOUT_PATTERNS: LayoutPattern[] = [
   {
     name: "Marketplace page shell",
-    purpose: "Public and shopping surfaces: floating glass header, fluid main, dark rounded footer.",
+    purpose:
+      "Public and shopping surfaces: floating glass header, fluid main, dark rounded footer.",
     anatomy: "skip link → sticky glass header → main flex-1 → footer in a rounded inset card",
     examples: "index.tsx, plans.index.tsx, cart.tsx, select.tsx, coverage.tsx",
     responsive: "Header nav items and brand tagline hide below md; footer grid collapses below md.",
-    spacing: "Header sticky top-4 px-4/md:px-8; footer mx-4/md:mx-8 with px-6 py-16 → md:px-12 md:py-20.",
+    spacing:
+      "Header sticky top-4 px-4/md:px-8; footer mx-4/md:mx-8 with px-6 py-16 → md:px-12 md:py-20.",
     shared: "shared",
     source: "components/abox/marketplace-shell.tsx",
     ownership: "business",
@@ -297,10 +303,13 @@ export const LAYOUT_PATTERNS: LayoutPattern[] = [
   {
     name: "Internal / admin shell",
     purpose: "Authenticated operational surfaces with a collapsible navigation rail.",
-    anatomy: "rail → content offset → sticky glass topbar → optional masthead card → main + gap-6 row",
+    anatomy:
+      "rail → content offset → sticky glass topbar → optional masthead card → main + gap-6 row",
     examples: "all /app and /agency routes",
-    responsive: "Rail hidden below lg and replaced by a Sheet drawer; topbar search hidden below lg.",
-    spacing: "Topbar px-3/sm:px-4/lg:px-8 py-3; content px-4/md:px-8 pb-10/md:pb-16; masthead px-6 pt-6 pb-10 → md:px-12.",
+    responsive:
+      "Rail hidden below lg and replaced by a Sheet drawer; topbar search hidden below lg.",
+    spacing:
+      "Topbar px-3/sm:px-4/lg:px-8 py-3; content px-4/md:px-8 pb-10/md:pb-16; masthead px-6 pt-6 pb-10 → md:px-12.",
     shared: "shared",
     source: "components/abox/internal-shell.tsx",
     ownership: "business",
@@ -347,7 +356,8 @@ export const LAYOUT_PATTERNS: LayoutPattern[] = [
   {
     name: "Filter rail",
     purpose: "Persistent faceted filters alongside results.",
-    anatomy: "aside w-64 shrink-0 hidden lg:block → space-y-6 card → chip groups (flex flex-wrap gap-1.5)",
+    anatomy:
+      "aside w-64 shrink-0 hidden lg:block → space-y-6 card → chip groups (flex flex-wrap gap-1.5)",
     examples: "routes/plans.index.tsx",
     responsive: "Hidden below lg; same filters surface through a trigger.",
     spacing: "rounded-2xl border p-4 with space-y-6 groups.",
@@ -367,7 +377,8 @@ export const LAYOUT_PATTERNS: LayoutPattern[] = [
     source: "recurring call-site pattern",
     ownership: "pattern",
     maturity: "current",
-    opportunity: "FUTURE OPPORTUNITY — genuinely recurring but unowned; a grid pattern could be documented as a class recipe.",
+    opportunity:
+      "FUTURE OPPORTUNITY — genuinely recurring but unowned; a grid pattern could be documented as a class recipe.",
   },
   {
     name: "KPI row",
@@ -396,7 +407,8 @@ export const LAYOUT_PATTERNS: LayoutPattern[] = [
   {
     name: "Detail split with sticky summary",
     purpose: "Long content beside a persistent decision panel.",
-    anatomy: "grid lg:grid-cols-[1fr_320px] (or [minmax(0,1fr)_360px]) → main space-y-6 → aside sticky top-24",
+    anatomy:
+      "grid lg:grid-cols-[1fr_320px] (or [minmax(0,1fr)_360px]) → main space-y-6 → aside sticky top-24",
     examples: "plans.$planId.tsx, cart.tsx",
     responsive: "Collapses to a single column below lg; summary drops below content.",
     spacing: "gap-6 (detail), gap-5 (cart); aside space-y-4.",

@@ -771,8 +771,8 @@ function DesignGuidePage() {
             <MaturityCallout kind="current" title="Layout patterns are reused, not invented">
               <p>
                 Page shells, card grids, filter rails, detail splits, tables, overlays and empty
-                states all exist. A new screen picks the closest existing pattern; it does not create
-                a parallel one.
+                states all exist. A new screen picks the closest existing pattern; it does not
+                create a parallel one.
               </p>
             </MaturityCallout>
             <MaturityCallout kind="opportunity" title="Inconsistency is recorded, not corrected">

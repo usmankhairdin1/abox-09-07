@@ -921,7 +921,6 @@ function DesignSystemPage() {
           <LayoutPatternList entries={LAYOUT_PATTERNS} />
         </RefSection>
 
-
         <RefSection
           id="governance"
           eyebrow="Governance"

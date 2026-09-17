@@ -347,12 +347,14 @@ export const LAYOUT_DEFERRED_OPPORTUNITIES = [
   },
   {
     item: "Table density convergence",
-    detail: "ABox DataTable (px-5 py-4) and the shadcn table primitive (h-10 px-2) are different densities.",
+    detail:
+      "ABox DataTable (px-5 py-4) and the shadcn table primitive (h-10 px-2) are different densities.",
     risk: "Medium — would change row heights",
   },
   {
     item: "Touch-target floor",
-    detail: "min-h-11 is applied to 16 controls and min-h-10 to 3; most controls rely on their height class.",
+    detail:
+      "min-h-11 is applied to 16 controls and min-h-10 to 3; most controls rely on their height class.",
     risk: "Low — additive, but would grow some 36px controls",
   },
   {

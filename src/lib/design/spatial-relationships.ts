@@ -79,7 +79,8 @@ export const STRUCTURAL_RELATIONSHIPS: RelationshipGroup = {
     },
     {
       pair: "Toolbar → filters",
-      observed: "Toolbar sits above results with mb-4; the filter rail is a sibling column at gap-6.",
+      observed:
+        "Toolbar sits above results with mb-4; the filter rail is a sibling column at gap-6.",
       source: "routes/plans.index.tsx",
       consistency: "consistent",
     },
@@ -91,13 +92,15 @@ export const STRUCTURAL_RELATIONSHIPS: RelationshipGroup = {
     },
     {
       pair: "Sidebar → main content",
-      observed: "Admin uses a padding offset (lg:pl-[292px] / lg:pl-[104px]) rather than a flex gap.",
+      observed:
+        "Admin uses a padding offset (lg:pl-[292px] / lg:pl-[104px]) rather than a flex gap.",
       source: "components/abox/internal-shell.tsx",
       consistency: "consistent",
     },
     {
       pair: "Navigation → content",
-      observed: "Member shell gap-8 between the icon rail and content; admin nav offset via padding.",
+      observed:
+        "Member shell gap-8 between the icon rail and content; admin nav offset via padding.",
       source: "member-shell.tsx, internal-shell.tsx",
       consistency: "varies",
     },
@@ -109,7 +112,8 @@ export const STRUCTURAL_RELATIONSHIPS: RelationshipGroup = {
     },
     {
       pair: "Label → control",
-      observed: "Label sits directly above with the parent space-y-1.5 or space-y-2 governing the gap.",
+      observed:
+        "Label sits directly above with the parent space-y-1.5 or space-y-2 governing the gap.",
       source: "form composition across routes",
       consistency: "mostly consistent" as unknown as "varies",
     },
@@ -152,7 +156,8 @@ export const STRUCTURAL_RELATIONSHIPS: RelationshipGroup = {
     },
     {
       pair: "Drawer sections",
-      observed: "gap-4 panel regions; the admin nav drawer overrides to p-0 with a px-5 py-5 brand header.",
+      observed:
+        "gap-4 panel regions; the admin nav drawer overrides to p-0 with a px-5 py-5 brand header.",
       source: "components/ui/sheet.tsx, internal-shell.tsx",
       consistency: "varies",
     },
@@ -170,7 +175,8 @@ export const STRUCTURAL_RELATIONSHIPS: RelationshipGroup = {
     },
     {
       pair: "Cart item → cart item",
-      observed: "space-y-4 in the main column; action row indented with pl-[56px] to align under content.",
+      observed:
+        "space-y-4 in the main column; action row indented with pl-[56px] to align under content.",
       source: "routes/cart.tsx",
       consistency: "consistent",
       note: "pl-[56px] is a deliberate optical alignment to the 40px icon plus gap-3.",
