@@ -6,7 +6,7 @@
  * varies, the variation is recorded as observed and any tidy-up is listed as
  * a FUTURE OPPORTUNITY in governance.ts.
  *
- * Consumers: `/design-system`, `/design-guide`.
+ * Consumers: /design-system, /design-guide.
  */
 import type { RelationshipGroup } from "./types";
 

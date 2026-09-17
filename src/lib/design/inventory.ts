@@ -3,12 +3,12 @@
  * states are actually implemented.
  *
  * DOCUMENTATION ONLY. Consumer counts were measured by import across
- * `src/routes` and `src/components`, excluding the component's own folder and
+ * src/routes and src/components, excluding the component's own folder and
  * the two reference pages. "available-unused" means the primitive is installed
  * and ready but no application screen imports it yet — that is a fact, not a
  * defect, and it must not trigger any change to the application.
  *
- * Consumers: `/design-system`, `/design-guide`.
+ * Consumers: /design-system, /design-guide.
  */
 import type { InventoryGroup } from "./types";
 
@@ -410,7 +410,7 @@ export const PATTERN_INVENTORY: InventoryGroup[] = [
         ownership: "pattern",
         states: "static, hoverable, bracketed",
         status: "in-use",
-        note: "No component owner; border token varies between `border` and `hairline`. Centralizing would risk visual change — deferred.",
+        note: "No component owner; border token varies between border and hairline. Centralizing would risk visual change — deferred.",
       },
       {
         name: "Section heading",

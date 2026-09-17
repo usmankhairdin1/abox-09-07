@@ -3,7 +3,7 @@
  * one-offs, deferred opportunities, experience guidance and the Figma
  * mapping blueprint.
  *
- * DOCUMENTATION ONLY. Consumers: `/design-system`, `/design-guide`.
+ * DOCUMENTATION ONLY. Consumers: /design-system, /design-guide.
  */
 
 export interface OwnershipLayer {
@@ -125,7 +125,7 @@ export const DEFERRED_OPPORTUNITIES = [
   {
     item: "SurfaceCard component",
     detail:
-      "Repeated rounded-2xl border bg-card p-5 markup, but the border token alternates between `border` and `hairline`.",
+      "Repeated rounded-2xl border bg-card p-5 markup, but the border token alternates between border and hairline.",
     risk: "Could change rendered output",
   },
   {

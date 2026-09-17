@@ -2,11 +2,11 @@
  * Foundation inventory — audited from the running implementation.
  *
  * DOCUMENTATION ONLY: no values are defined here. Colour, radius, shadow and
- * font values are read live from `src/styles.css` by the reference pages;
+ * font values are read live from src/styles.css by the reference pages;
  * the strings below record structural facts (counts, class names, conventions)
  * that were measured in the codebase.
  *
- * Consumers: `/design-system`, `/design-guide`. Never imported by app screens.
+ * Consumers: /design-system, /design-guide. Never imported by app screens.
  */
 import type { FoundationCategory } from "./types";
 
@@ -15,7 +15,7 @@ export const FOUNDATION: FoundationCategory[] = [
     id: "color-architecture",
     title: "Color architecture",
     summary:
-      "One token file drives every colour. `@theme inline` maps each custom property into a Tailwind utility, `:root` holds the light theme and `.dark` overrides it. Components reference utilities (bg-primary, text-muted-foreground); they never hardcode a colour.",
+      "One token file drives every colour. @theme inline maps each custom property into a Tailwind utility, :root holds the light theme and .dark overrides it. Components reference utilities (bg-primary, text-muted-foreground); they never hardcode a colour.",
     entries: [
       {
         name: "@theme inline color map",
@@ -129,7 +129,7 @@ export const FOUNDATION: FoundationCategory[] = [
     id: "typography",
     title: "Typography",
     summary:
-      "Two families and a measured type scale. Display type comes from Bricolage Grotesque via `@layer base` on h1–h3 and the `.text-display` utility; everything else is Inter Tight.",
+      "Two families and a measured type scale. Display type comes from Bricolage Grotesque via @layer base on h1–h3 and the .text-display utility; everything else is Inter Tight.",
     entries: [
       {
         name: "--font-sans",
@@ -389,7 +389,7 @@ export const FOUNDATION: FoundationCategory[] = [
     id: "responsive",
     title: "Breakpoints & responsive behaviour",
     summary:
-      "Tailwind's default breakpoints, unmodified. No custom `screens` block exists. Responsiveness is expressed per component, and `md` carries most of the work.",
+      "Tailwind's default breakpoints, unmodified. No custom screens block exists. Responsiveness is expressed per component, and md carries most of the work.",
     entries: [
       {
         name: "sm (640px)",
@@ -476,7 +476,7 @@ export const FOUNDATION: FoundationCategory[] = [
       },
       {
         name: "Border widths",
-        value: "1px everywhere; `* { border-color: var(--color-border) }` sets the default colour",
+        value: "1px everywhere; * { border-color: var(--color-border) } sets the default colour",
         source: "src/styles.css @layer base",
         consumers: "All bordered elements",
         ownership: "foundation",
@@ -767,7 +767,7 @@ export const FOUNDATION: FoundationCategory[] = [
     id: "utilities",
     title: "Utility classes & effects",
     summary:
-      "Custom `@utility` definitions that carry the ABox surface language. Each is defined once and consumed by class name.",
+      "Custom @utility definitions that carry the ABox surface language. Each is defined once and consumed by class name.",
     entries: [
       {
         name: "glass",
