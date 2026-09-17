@@ -30,7 +30,8 @@ export const TYPE_FAMILY_SPEC: BlueprintRow[] = [
   {
     item: "--font-serif alias",
     source: "src/styles.css @theme inline",
-    current: "Declared as Bricolage Grotesque then Inter Tight — it resolves to the display family, not to a serif.",
+    current:
+      "Declared as Bricolage Grotesque then Inter Tight — it resolves to the display family, not to a serif.",
     future:
       "FUTURE DECISION — keep as a documented compatibility alias or retire it. The name does not describe the value.",
     label: "OBSERVED OVERLAP",
@@ -70,7 +71,8 @@ export const TYPE_WEIGHT_SPEC: BlueprintRow[] = [
     source: "Headings, card titles, badge text",
     current:
       "Used for component titles and for all headings, since h1–h3 set weight 600 in the base layer.",
-    future: "Weight / Semibold, referenced by display, page title, section title and component title.",
+    future:
+      "Weight / Semibold, referenced by display, page title, section title and component title.",
     label: "CURRENT IMPLEMENTATION",
     phase: P3,
   },

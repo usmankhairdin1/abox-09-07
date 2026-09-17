@@ -11,7 +11,8 @@ export const TOKEN_NAMING_RULES: NamingRule[] = [
     example: "color/navy/600 = oklch(0.31 0.090 265)",
     codebaseFit:
       "No primitive layer exists today; primitives would be added beneath the current variables without touching them.",
-    figmaFit: "Maps directly to a Color variable in a Primitives collection, hidden from consumers.",
+    figmaFit:
+      "Maps directly to a Color variable in a Primitives collection, hidden from consumers.",
     label: "FUTURE CANONICAL TARGET",
   },
   {
@@ -43,7 +44,8 @@ export const TOKEN_NAMING_RULES: NamingRule[] = [
   },
   {
     subject: "Spacing",
-    convention: "space/<number> where the number is the pixel value times 25, matching the 4px base.",
+    convention:
+      "space/<number> where the number is the pixel value times 25, matching the 4px base.",
     example: "space/100 = 4px, space/200 = 8px, space/500 = 20px",
     codebaseFit:
       "The Tailwind ladder already supplies these values; the token names sit alongside, not instead.",

@@ -154,7 +154,8 @@ export const COLOR_ROLE_OVERLAPS: BlueprintRow[] = [
     item: "Two surface vocabularies",
     source: "--surface / --panel / --card and --surface-1 / -2 / -3",
     current: "Both naming families are live; the numbered set exists for compatibility.",
-    future: "One vocabulary in the canonical layer, with the numbered set kept as documented aliases.",
+    future:
+      "One vocabulary in the canonical layer, with the numbered set kept as documented aliases.",
     label: "OBSERVED OVERLAP",
     phase: "Phase 1 — foundations",
   },

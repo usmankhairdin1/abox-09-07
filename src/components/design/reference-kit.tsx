@@ -1962,16 +1962,12 @@ export function TokenSpecTable({
             <p className="text-serial">{t.value}</p>
             {t.darkValue && <p className="text-serial mt-1">dark: {t.darkValue}</p>}
             <p className="text-serial mt-1 text-muted-foreground">{t.modes}</p>
-            {t.foreground && (
-              <p className="text-serial mt-1">on: {t.foreground}</p>
-            )}
+            {t.foreground && <p className="text-serial mt-1">on: {t.foreground}</p>}
           </td>
           <td className="px-5 py-4 text-muted-foreground">
             {t.purpose}
             <span className="text-serial mt-1 block">{t.consumers}</span>
-            {t.contrast && (
-              <span className="mt-1 block text-xs text-warning">{t.contrast}</span>
-            )}
+            {t.contrast && <span className="mt-1 block text-xs text-warning">{t.contrast}</span>}
           </td>
           <td className="px-5 py-4 text-serial">{t.usage}</td>
           <td className="px-5 py-4 text-muted-foreground">
@@ -2122,7 +2118,14 @@ export function FoundationMaturityTable({
   return (
     <RefTable
       minWidth="1120px"
-      head={["Category", "Current implementation", "Centralisation", "Observed variation", "Future target", "Open decision"]}
+      head={[
+        "Category",
+        "Current implementation",
+        "Centralisation",
+        "Observed variation",
+        "Future target",
+        "Open decision",
+      ]}
     >
       {records.map((r) => (
         <tr key={r.category} className={ROW}>

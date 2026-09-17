@@ -163,8 +163,7 @@ export const SPACING_RELATIONSHIP_SPEC: BlueprintRow[] = [
   {
     item: "Icon → text",
     source: "Buttons, nav links, badges, action pills",
-    current:
-      "gap-2 inside buttons and nav links; gap-1.5 inside badges; gap-1 for micro labels.",
+    current: "gap-2 inside buttons and nav links; gap-1.5 inside badges; gap-1 for micro labels.",
     future: "Rule tied to text size: 8px at body, 6px at label, 4px at micro.",
     label: "CURRENT IMPLEMENTATION",
     phase: P2,

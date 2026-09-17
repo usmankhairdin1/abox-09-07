@@ -19,8 +19,7 @@ export const FIGMA_VARIABLE_MAP: BlueprintRow[] = [
   {
     item: "Collection — ABox Semantic, modes Light / Dark",
     source: "src/styles.css :root and .dark",
-    current:
-      "Both themes are fully defined; the dark block overrides the same variable names.",
+    current: "Both themes are fully defined; the dark block overrides the same variable names.",
     future:
       "One collection, two modes. Name parity between the blocks is what makes this a clean mapping.",
     label: "CURRENT IMPLEMENTATION",

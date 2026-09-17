@@ -8,7 +8,8 @@ export const FOUNDATION_MATURITY: FoundationMaturityRecord[] = [
   {
     category: "Colour",
     implementation: "Semantic variables in both light and dark, with paired foregrounds.",
-    evidence: "Full :root and .dark blocks; 264 bg-card, 716 text-muted-foreground, 497 border-border.",
+    evidence:
+      "Full :root and .dark blocks; 264 bg-card, 716 text-muted-foreground, 497 border-border.",
     centralization: "CENTRALIZED",
     variation:
       "Five compatibility aliases remain; bg-info, bg-success and bg-panel are used once or twice each.",
@@ -75,7 +76,8 @@ export const FOUNDATION_MATURITY: FoundationMaturityRecord[] = [
   {
     category: "Shape and elevation",
     implementation: "Seven radius steps and five named shadows.",
-    evidence: "rounded-full 297, rounded-2xl 264, rounded-lg 170, rounded-xl 89, rounded-md 52; shadow-card 37, glow 11, elevated 9, plate 6, drawer 3.",
+    evidence:
+      "rounded-full 297, rounded-2xl 264, rounded-lg 170, rounded-xl 89, rounded-md 52; shadow-card 37, glow 11, elevated 9, plate 6, drawer 3.",
     centralization: "CENTRALIZED",
     variation: "Radius classes are chosen per call site rather than by semantic role.",
     ownership: "styles.css",
@@ -97,9 +99,11 @@ export const FOUNDATION_MATURITY: FoundationMaturityRecord[] = [
   {
     category: "Motion",
     implementation: "Six keyframes on one shared easing curve with a global reduced-motion rule.",
-    evidence: "107 transition and 22 duration occurrences; orbit 4, drift 3, fade-rise 2, pulse-ring 2, shimmer 1.",
+    evidence:
+      "107 transition and 22 duration occurrences; orbit 4, drift 3, fade-rise 2, pulse-ring 2, shimmer 1.",
     centralization: "PARTIALLY CENTRALIZED",
-    variation: "Durations are per-utility; the common 150ms is a framework default, not a declared value.",
+    variation:
+      "Durations are per-utility; the common 150ms is a framework default, not a declared value.",
     ownership: "styles.css",
     futureTarget: "Named duration roles.",
     readiness: "Easing is ready; durations are not.",

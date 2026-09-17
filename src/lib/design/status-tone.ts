@@ -41,7 +41,8 @@ export const TONE_VOCABULARY: BlueprintRow[] = [
   {
     item: "MetaChip tones in the reference layer",
     source: "src/components/design/reference-kit.tsx",
-    current: "Four tones: muted, primary, sage, warning — documentation only, never shipped in the app.",
+    current:
+      "Four tones: muted, primary, sage, warning — documentation only, never shipped in the app.",
     future: "Reference-only; excluded from the canonical component set.",
     label: "CURRENT IMPLEMENTATION",
     phase: P5,
@@ -99,7 +100,8 @@ export const TONE_OVERLAPS: BlueprintRow[] = [
     item: "Two badge families",
     source: "StatusBadge vs Badge",
     current: "Different shapes, sizes, typography and colour mechanics for adjacent purposes.",
-    future: "FUTURE DECISION — one badge with a status axis, or two components with stated purposes.",
+    future:
+      "FUTURE DECISION — one badge with a status axis, or two components with stated purposes.",
     label: "FUTURE DECISION",
     phase: P5,
   },
@@ -220,8 +222,10 @@ export const TIER_GOVERNANCE: BlueprintRow[] = [
   {
     item: "Filter chips reuse the listing badge",
     source: "/plans metal filters",
-    current: "Filter chips use the same solid MetalBadge treatment as the plan tiles, at full opacity.",
-    future: "One tier presentation shared by filter and result, recorded as the canonical behaviour.",
+    current:
+      "Filter chips use the same solid MetalBadge treatment as the plan tiles, at full opacity.",
+    future:
+      "One tier presentation shared by filter and result, recorded as the canonical behaviour.",
     label: "CURRENT IMPLEMENTATION",
     phase: P5,
   },

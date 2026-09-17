@@ -604,19 +604,11 @@ export interface MigrationPhaseEntry {
 
 /** How a foundation value is expressed in the codebase today. */
 export type FoundationKind =
-  | "primitive"
-  | "semantic"
-  | "alias"
-  | "utility"
-  | "call-site literal"
-  | "convention";
+  "primitive" | "semantic" | "alias" | "utility" | "call-site literal" | "convention";
 
 /** Descriptive centralization classification. Never a score or a rank. */
 export type CentralizationLevel =
-  | "CENTRALIZED"
-  | "PARTIALLY CENTRALIZED"
-  | "CALL-SITE BASED"
-  | "UNOWNED";
+  "CENTRALIZED" | "PARTIALLY CENTRALIZED" | "CALL-SITE BASED" | "UNOWNED";
 
 /** One foundation token or value, with current evidence and future target kept apart. */
 export interface TokenSpec {

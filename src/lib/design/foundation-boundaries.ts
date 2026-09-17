@@ -68,8 +68,7 @@ export const FOUNDATION_BOUNDARIES: BlueprintRow[] = [
     source: "88rem web container vs dashboard shells",
     current:
       "Web and shopping share the 88rem container; dashboards deliberately do not, by explicit instruction.",
-    future:
-      "Recorded as an experience-level decision that the core foundation must not override.",
+    future: "Recorded as an experience-level decision that the core foundation must not override.",
     label: "GOVERNANCE RULE",
     phase: "Phase 2 — spacing, layout, responsive",
   },
@@ -85,8 +84,7 @@ export const FOUNDATION_BOUNDARIES: BlueprintRow[] = [
   {
     item: "Reference layer",
     source: "src/lib/design/*, reference-kit, /design-system, /design-guide",
-    current:
-      "Consumed only by the two unlisted routes. No production screen imports any of it.",
+    current: "Consumed only by the two unlisted routes. No production screen imports any of it.",
     future: "Remains read-only documentation. It never becomes a runtime dependency.",
     label: "GOVERNANCE RULE",
     phase: "Phase 6 — direct production read",

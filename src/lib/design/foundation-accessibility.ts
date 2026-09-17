@@ -27,8 +27,7 @@ export const FOUNDATION_ACCESSIBILITY: FoundationA11yRecord[] = [
     topic: "Status tone contrast",
     current:
       "Tone chips mix the tone 88% with the foreground colour for text, which keeps text dark on a 12% tint.",
-    requirement:
-      "Any future precomputed tone palette must reproduce the same effective contrast.",
+    requirement: "Any future precomputed tone palette must reproduce the same effective contrast.",
     consumers: "StatusBadge across 89 files",
     status: "CURRENT IMPLEMENTATION",
   },

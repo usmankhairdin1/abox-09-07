@@ -40,7 +40,8 @@ export const ICON_FOUNDATION_SPEC: BlueprintRow[] = [
     source: "src/components/abox/decor/*, auth surfaces, AboxMark, AboxWordmark, CarrierMark",
     current:
       "Brand marks and decorative graphics are drawn in code, not stored as files. CarrierMark generates a deterministic monogram with a fallback.",
-    future: "Figma components for the marks; CarrierMark stays generated because it is data-driven.",
+    future:
+      "Figma components for the marks; CarrierMark stays generated because it is data-driven.",
     label: "CURRENT IMPLEMENTATION",
     phase: P4,
   },
@@ -136,7 +137,8 @@ export const MOTION_FOUNDATION_SPEC: BlueprintRow[] = [
     source: "src/styles.css",
     current:
       "cubic-bezier(0.2, 0.7, 0.2, 1) is the single shared curve, used by every entrance and hover transition.",
-    future: "One easing token Motion / Standard. This is the most consistent motion decision present.",
+    future:
+      "One easing token Motion / Standard. This is the most consistent motion decision present.",
     label: "CURRENT IMPLEMENTATION",
     phase: P1,
   },

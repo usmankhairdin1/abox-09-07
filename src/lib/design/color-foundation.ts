@@ -449,7 +449,8 @@ const DATAVIZ: TokenSpec[] = [
     status: "OBSERVED OVERLAP",
     futureRole: "`dataviz/series-1`.",
     figma: "Color variable / Dataviz / Series 1.",
-    migration: "Equals --primary; a future phase decides whether series 1 should be brand-coloured.",
+    migration:
+      "Equals --primary; a future phase decides whether series 1 should be brand-coloured.",
   }),
   t({
     token: "--chart-2",

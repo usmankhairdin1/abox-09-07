@@ -148,10 +148,7 @@ import {
   TYPE_ROLE_SPEC,
   RESPONSIVE_TYPE_SPEC,
 } from "@/lib/design/typography-foundation";
-import {
-  SPACING_SCALE_SPEC,
-  SPACING_RELATIONSHIP_SPEC,
-} from "@/lib/design/spacing-foundation";
+import { SPACING_SCALE_SPEC, SPACING_RELATIONSHIP_SPEC } from "@/lib/design/spacing-foundation";
 import { CONTAINER_SPEC, BREAKPOINT_SPEC, SHAPE_SPEC } from "@/lib/design/layout-foundation";
 import {
   ICON_FOUNDATION_SPEC,
@@ -431,7 +428,6 @@ const TOC = [
   { id: "fnd-experience", label: "Experience expression" },
   { id: "fnd-maturity", label: "Foundation maturity" },
   { id: "fnd-governance", label: "Foundation governance" },
-
 ];
 
 function DesignSystemPage() {
@@ -2230,7 +2226,10 @@ function DesignSystemPage() {
           intro="The spacing ladder as actually used, and the relationships between elements that the ladder alone does not express."
         >
           <BlueprintTable rows={SPACING_SCALE_SPEC} />
-          <RefBlock title="Spacing relationships" note="Rules implied by the markup, stated explicitly.">
+          <RefBlock
+            title="Spacing relationships"
+            note="Rules implied by the markup, stated explicitly."
+          >
             <BlueprintTable rows={SPACING_RELATIONSHIP_SPEC} />
           </RefBlock>
         </RefSection>
@@ -2350,7 +2349,6 @@ function DesignSystemPage() {
           <BlueprintTable rows={FOUNDATION_GOVERNANCE_RULES} />
         </RefSection>
       </RefContainer>
-
     </RefPage>
   );
 }

@@ -37,7 +37,8 @@ export const CONTAINER_SPEC: BlueprintRow[] = [
   {
     item: "Member shell",
     source: "src/components/abox/member-shell.tsx",
-    current: "Full-width header, 88rem content, left icon navigation with a centred connecting arc.",
+    current:
+      "Full-width header, 88rem content, left icon navigation with a centred connecting arc.",
     future: "Container / Web reused, with a member navigation pattern.",
     label: "CURRENT IMPLEMENTATION",
     phase: P2,
@@ -200,7 +201,8 @@ export const SHAPE_SPEC: BlueprintRow[] = [
   },
   {
     item: "Elevation tokens",
-    source: "--shadow-card 37, --shadow-elevated 9, --shadow-plate 6, --shadow-drawer 3, --shadow-glow 11 uses",
+    source:
+      "--shadow-card 37, --shadow-elevated 9, --shadow-plate 6, --shadow-drawer 3, --shadow-glow 11 uses",
     current:
       "Five navy-tinted shadow recipes, each a multi-layer stack. --shadow-overlay aliases --shadow-elevated.",
     future:
