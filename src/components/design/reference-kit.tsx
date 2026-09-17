@@ -2422,3 +2422,155 @@ export function DuplicateRegisterTable({
     </div>
   );
 }
+
+/* -----------------------------------------------------------------
+ * Phase 9 — integrated dependency graph helpers.
+ * Documentation-only rendering. Every value comes from the graph registry
+ * under `src/lib/design/graph-*`; nothing is restated here.
+ * ----------------------------------------------------------------- */
+
+/** One readable chain through the layers, screen to foundation or back. */
+export function DependencyChainList({
+  chains,
+}: {
+  chains: {
+    id: string;
+    title: string;
+    question: string;
+    steps: { layer: string; label: string; evidence: string; status: string }[];
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {chains.map((c) => (
+        <div key={c.id} className="rounded-2xl border border-hairline bg-card p-5">
+          <p className="font-medium">{c.title}</p>
+          <p className="text-serial mt-1">{c.question}</p>
+          <ol className="mt-4 space-y-2">
+            {c.steps.map((s, i) => (
+              <li key={`${c.id}-${s.label}`} className="rounded-xl border border-hairline p-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-serial">{String(i + 1).padStart(2, "0")}</span>
+                  <p className="text-sm font-medium">{s.label}</p>
+                  <MetaChip tone="muted">{s.layer}</MetaChip>
+                  <ArchLabelChip label={s.status} />
+                </div>
+                <p className="mt-1 text-sm text-muted-foreground">{s.evidence}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** One representative screen and every layer it depends on. */
+export function TraceabilityCard({
+  records,
+}: {
+  records: {
+    screen: string;
+    route: string;
+    experience: string;
+    patterns: string[];
+    components: string[];
+    foundation: string[];
+    variations: string[];
+    ownershipBoundary: string;
+    status: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {records.map((r) => (
+        <div key={r.route} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-medium">{r.screen}</p>
+            <MetaChip tone="muted">{r.experience}</MetaChip>
+            <ArchLabelChip label={r.status} />
+          </div>
+          <p className="text-serial mt-1">{r.route}</p>
+          <dl className="mt-4 grid gap-2 md:grid-cols-3">
+            {[
+              ["Patterns", r.patterns],
+              ["Components", r.components],
+              ["Foundation", r.foundation],
+            ].map(([term, items]) => (
+              <div key={term as string} className="rounded-xl border border-hairline p-3">
+                <dt className="text-eyebrow">{term as string}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">
+                  {(items as string[]).join(", ")}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          {r.variations.length > 0 && (
+            <ul className="mt-3 space-y-1">
+              {r.variations.map((v) => (
+                <li key={v} className="text-xs text-warning">
+                  {v}
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="text-serial mt-3">Ownership: {r.ownershipBoundary}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** A change and the layers the graph can reach from it. */
+export function ImpactTable({
+  records,
+}: {
+  records: {
+    change: string;
+    layer: string;
+    reachableRoles: string[];
+    reachableComponents: string[];
+    reachablePatterns: string[];
+    reachableExperiences: string[];
+    reachableScreens: string[];
+    confidence: string;
+    status: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-3">
+      {records.map((r) => (
+        <div key={r.change} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-medium">{r.change}</p>
+            <MetaChip tone="muted">{r.layer}</MetaChip>
+            <MetaChip tone={r.confidence === "evidenced" ? "sage" : "warning"}>
+              {r.confidence}
+            </MetaChip>
+            <ArchLabelChip label={r.status} />
+          </div>
+          <dl className="mt-3 grid gap-2 md:grid-cols-5">
+            {[
+              ["Roles", r.reachableRoles],
+              ["Components", r.reachableComponents],
+              ["Patterns", r.reachablePatterns],
+              ["Experiences", r.reachableExperiences],
+              ["Screens", r.reachableScreens],
+            ].map(([term, items]) => (
+              <div key={term as string} className="rounded-xl border border-hairline p-3">
+                <dt className="text-eyebrow">{term as string}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">
+                  {(items as string[]).length === 0
+                    ? "none reachable"
+                    : (items as string[]).join(", ")}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          {r.note && <p className="mt-3 text-xs text-warning">{r.note}</p>}
+        </div>
+      ))}
+    </div>
+  );
+}

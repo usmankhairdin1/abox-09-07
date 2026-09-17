@@ -1,0 +1,52 @@
+/**
+ * Phase 9 — semantic role → component role edges.
+ * DOCUMENTATION ONLY. Where production holds more than one meaning for one
+ * conceptual role, both are carried. No winner is chosen.
+ */
+import type { DependencyEdge, DependencyNode } from "./graph-types";
+
+export const COMPONENT_ROLE_NODES: DependencyNode[] = [
+  { id: "crole.primary-action", layer: "component-role", name: "Primary action", ownership: "primitive", status: "OBSERVED OVERLAP", evidence: "Button default variant and ACTION_PILL primary both fill this role" },
+  { id: "crole.secondary-action", layer: "component-role", name: "Secondary action", ownership: "primitive", status: "OBSERVED OVERLAP", evidence: "Button outline/secondary and ACTION_PILL outline" },
+  { id: "crole.destructive-action", layer: "component-role", name: "Destructive action", ownership: "primitive", status: "CURRENT IMPLEMENTATION", evidence: "Button destructive variant" },
+  { id: "crole.input-control", layer: "component-role", name: "Input control", ownership: "primitive", status: "CURRENT IMPLEMENTATION", evidence: "input.tsx, select.tsx, textarea.tsx at h-9" },
+  { id: "crole.field-label", layer: "component-role", name: "Field label", ownership: "primitive", status: "OBSERVED DUPLICATE", evidence: "form.tsx FormLabel, bare Label, route-local wrappers" },
+  { id: "crole.supporting-text", layer: "component-role", name: "Supporting text", ownership: "primitive", status: "CURRENT IMPLEMENTATION", evidence: "CardDescription, FormDescription, PageHeader description" },
+  { id: "crole.error-text", layer: "component-role", name: "Error text", ownership: "primitive", status: "CURRENT IMPLEMENTATION", evidence: "form.tsx FormMessage" },
+  { id: "crole.status-indicator", layer: "component-role", name: "Status indicator", ownership: "business", status: "OBSERVED OVERLAP", evidence: "StatusBadge 89 files, Badge, Alert, toast" },
+  { id: "crole.tier-indicator", layer: "component-role", name: "Tier indicator", ownership: "business", status: "CURRENT IMPLEMENTATION", evidence: "MetalBadge in tiles, detail and filters" },
+  { id: "crole.card-surface", layer: "component-role", name: "Card surface", ownership: "primitive", status: "OBSERVED VARIATION", evidence: "card.tsx plus ABox cards; padding is not uniform" },
+  { id: "crole.data-surface", layer: "component-role", name: "Data surface", ownership: "business", status: "OBSERVED DUPLICATE", evidence: "table.tsx, data-table.tsx, route-local tables" },
+  { id: "crole.nav-surface", layer: "component-role", name: "Navigation surface", ownership: "business", status: "OBSERVED OVERLAP", evidence: "Three shells implement navigation; the sidebar primitive is unused by them" },
+  { id: "crole.overlay-surface", layer: "component-role", name: "Overlay surface", ownership: "primitive", status: "CURRENT IMPLEMENTATION", evidence: "dialog.tsx, sheet.tsx, drawer.tsx, popover.tsx" },
+  { id: "crole.feedback-surface", layer: "component-role", name: "Feedback surface", ownership: "primitive", status: "OBSERVED OVERLAP", evidence: "alert.tsx and sonner.tsx carry parallel tone sets" },
+  { id: "crole.glyph-slot", layer: "component-role", name: "Glyph slot", ownership: "pattern", status: "OBSERVED VARIATION", evidence: "Icons passed as children, not as named slots" },
+  { id: "crole.loading-surface", layer: "component-role", name: "Loading surface", ownership: "pattern", status: "UNOWNED AREA", evidence: "Skeleton and Spinner composed per screen" },
+];
+
+export const ROLE_EDGES: DependencyEdge[] = [
+  { from: "role.action-surface", to: "crole.primary-action", relation: "consumes", status: "OBSERVED OVERLAP", evidence: "button.tsx and action-pill.ts both read the same token", ownership: "Primitive and ABox", note: "Two implementations of one conceptual role. Both preserved; neither preferred." },
+  { from: "role.action-foreground", to: "crole.primary-action", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "--primary-foreground on filled actions", ownership: "Primitive" },
+  { from: "role.action-surface", to: "crole.secondary-action", relation: "consumes", status: "OBSERVED OVERLAP", evidence: "outline treatments in both action paths", ownership: "Primitive and ABox" },
+  { from: "role.destructive", to: "crole.destructive-action", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "button.tsx destructive variant", ownership: "Primitive", note: "Simultaneously a visual and a semantic variant." },
+  { from: "role.surface", to: "crole.card-surface", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "--card read by card.tsx and ABox cards", ownership: "Primitive" },
+  { from: "role.surface", to: "crole.data-surface", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "--card and hairline in table containers", ownership: "ABox" },
+  { from: "role.surface", to: "crole.overlay-surface", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "--card plus scrim in Radix overlays", ownership: "Primitive" },
+  { from: "role.surface", to: "crole.nav-surface", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "Shell backgrounds and sidebar roles", ownership: "Shell" },
+  { from: "role.focus", to: "crole.input-control", relation: "consumes", status: "OBSERVED VARIATION", evidence: "focus-visible rings differ by primitive", ownership: "Primitive" },
+  { from: "role.focus", to: "crole.primary-action", relation: "consumes", status: "OBSERVED VARIATION", evidence: "Ring width and offset differ across action paths", ownership: "Primitive and ABox" },
+  { from: "role.text-primary", to: "crole.field-label", relation: "consumes", status: "OBSERVED DUPLICATE", evidence: "Three field systems render a label", ownership: "Primitive and route-local" },
+  { from: "role.text-supporting", to: "crole.supporting-text", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "--muted-foreground across descriptions", ownership: "Primitive" },
+  { from: "role.destructive", to: "crole.error-text", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "FormMessage colour", ownership: "Primitive" },
+  { from: "role.status-tone", to: "crole.status-indicator", relation: "consumes", status: "OBSERVED OVERLAP", evidence: "StatusBadge, Badge, Alert and toast read overlapping tones", ownership: "ABox and primitive" },
+  { from: "role.status-tone", to: "crole.feedback-surface", relation: "consumes", status: "OBSERVED OVERLAP", evidence: "alert.tsx and sonner.tsx", ownership: "Primitive" },
+  { from: "role.tier", to: "crole.tier-indicator", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "metal-badge.tsx picks a foreground against the tier background", ownership: "ABox" },
+  { from: "role.type-role", to: "crole.supporting-text", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "text-sm and text-xs description roles", ownership: "Foundation" },
+  { from: "role.control-height", to: "crole.input-control", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "h-9 baseline on form primitives", ownership: "Primitive" },
+  { from: "role.control-height", to: "crole.primary-action", relation: "consumes", status: "OBSERVED VARIATION", evidence: "Two ladders: 32/36/40 and 32/36/40/44", ownership: "Primitive and ABox" },
+  { from: "role.glyph", to: "crole.glyph-slot", relation: "consumes", status: "OBSERVED VARIATION", evidence: "Base button rule sizes child SVG; call sites sometimes set it again", ownership: "No single owner" },
+  { from: "role.shape", to: "crole.card-surface", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "rounded-2xl family plus hairline", ownership: "Foundation" },
+  { from: "role.motion", to: "crole.overlay-surface", relation: "consumes", status: "CURRENT IMPLEMENTATION", evidence: "Radix data-state transitions", ownership: "Primitive" },
+  { from: "role.disabled", to: "crole.input-control", relation: "consumes", status: "FUTURE DECISION", evidence: "Not established: disabled is opacity, not a role", ownership: "Undecided" },
+  { from: "role.rhythm", to: "crole.loading-surface", relation: "consumes", status: "UNOWNED AREA", evidence: "Skeleton blocks are sized per screen", ownership: "No single owner" },
+];
