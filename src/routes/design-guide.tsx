@@ -85,7 +85,21 @@ import {
   COMPONENT_UNOWNED_AREAS,
   COMPONENT_DEFERRED_OPPORTUNITIES,
   FUTURE_FIGMA_ORGANIZATION,
+  ARCHITECTURE_GOVERNANCE_RULES,
+  CHANGE_PROPAGATION_MODEL,
+  EXPERIENCE_ARCHITECTURE,
 } from "@/lib/design/governance";
+import { CORE_ARCHITECTURE, CROSS_PHASE_TRACEABILITY } from "@/lib/design/architecture";
+import { CANONICAL_SUMMARY } from "@/lib/design/canonical-components";
+import {
+  OVERLAP_MAP,
+  ROUTE_LOCAL_KITS,
+  SHELL_ARCHITECTURE,
+  MIGRATION_ROADMAP,
+  OPEN_FUTURE_DECISIONS,
+} from "@/lib/design/normalization";
+import { ASSET_OWNERSHIP_RULES } from "@/lib/design/brand-asset-architecture";
+import { FIGMA_LIBRARY_BLUEPRINT } from "@/lib/design/figma-library";
 import {
   ASSET_OWNERSHIP,
   ASSET_UNUSED_FINDINGS,
@@ -135,6 +149,12 @@ const TOC = [
   { id: "icon-asset-governance", label: "Icons & assets" },
   { id: "component-governance", label: "Components" },
   { id: "figma", label: "Figma mapping" },
+  { id: "architecture", label: "System architecture" },
+  { id: "duplicates", label: "Duplicate decisions" },
+  { id: "experience-architecture", label: "One system, three contexts" },
+  { id: "architecture-governance", label: "Architecture rules" },
+  { id: "future-library", label: "Future design library" },
+  { id: "migration", label: "What would change next" },
 ];
 
 const PRINCIPLES = [
@@ -1137,6 +1157,150 @@ function DesignGuidePage() {
               detail: `→ ${m.figma}. ${m.note}`,
             }))}
           />
+        </RefSection>
+
+        <RefSection
+          id="architecture"
+          eyebrow="18"
+          title="How the system is organised"
+          intro="A single design system with four parts: the foundations everything is built from, the components made out of them, the repeated layouts those components form, and the guidance for how each part of the product uses them."
+        >
+          <MaturityCallout kind="opportunity" title="This is a plan, not a change">
+            <p>
+              Nothing in this section has been applied to the product. The application looks and
+              behaves exactly as it did before. This describes what a future, carefully controlled
+              tidy-up would aim for, so the decision can be made deliberately rather than
+              accidentally.
+            </p>
+          </MaturityCallout>
+          <DefinitionRows
+            rows={CORE_ARCHITECTURE.map((a) => ({
+              term: a.layer,
+              detail: `${a.responsibility} Belongs here: ${a.belongs}`,
+            }))}
+          />
+          <RefBlock
+            title="What we found when we counted"
+            note="Measured from the product as it exists today."
+          >
+            <p className="text-sm text-muted-foreground">
+              {CANONICAL_SUMMARY.candidates} pieces of the interface are used widely enough to be
+              treated as shared building blocks — {CANONICAL_SUMMARY.core} of them belong to the
+              core set used everywhere, and {CANONICAL_SUMMARY.experience} are specific to one part
+              of the product. Three page frames cover 123 screens, and{" "}
+              {ROUTE_LOCAL_KITS.length} areas of the product have grown their own small local sets
+              of building blocks alongside the shared ones.
+            </p>
+          </RefBlock>
+          <RefBlock title="Where the evidence comes from">
+            <DefinitionRows
+              rows={CROSS_PHASE_TRACEABILITY.map((t) => ({ term: t.phase, detail: t.feeds }))}
+            />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="duplicates"
+          eyebrow="19"
+          title="Where we do the same thing more than one way"
+          intro="Several parts of the interface are built more than once in slightly different ways. We have written each one down together with what a decision would involve. We have deliberately not picked a winner, because choosing badly here is how a product quietly changes appearance."
+        >
+          <DefinitionRows
+            rows={OVERLAP_MAP.map((o) => ({
+              term: o.area,
+              detail: `${o.implementations} Decision still to make: ${o.decision}`,
+            }))}
+          />
+          <RefBlock
+            title="Local sets of building blocks"
+            note="Not a fault. Some of this is appropriate, some is duplication."
+          >
+            <DefinitionRows
+              rows={ROUTE_LOCAL_KITS.map((k) => ({ term: k.kit, detail: k.purpose }))}
+            />
+          </RefBlock>
+          <RefBlock title="The three page frames">
+            <DefinitionRows
+              rows={SHELL_ARCHITECTURE.map((s) => ({
+                term: s.shell,
+                detail: `${s.purpose} Covers: ${s.routes}`,
+              }))}
+            />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="experience-architecture"
+          eyebrow="20"
+          title="One system, used differently in each part of the product"
+          intro="The marketing pages, the shopping experience and the internal workspaces all use the same building blocks. What changes between them is how tightly packed and how brand-forward they are — not which components exist."
+        >
+          <DefinitionRows
+            rows={EXPERIENCE_ARCHITECTURE.map((e) => ({
+              term: e.experience,
+              detail: `${e.hierarchy} Density: ${e.density} ${e.rule}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="architecture-governance"
+          eyebrow="21"
+          title="Rules for changing the system"
+          intro="Who may add, change or retire something, and what has to be true before they do."
+        >
+          <RuleList items={ARCHITECTURE_GOVERNANCE_RULES} />
+          <RefBlock
+            title="How a change reaches the screen"
+            note="Steps 1 to 3 work today. Step 4 does not exist yet."
+          >
+            <DefinitionRows
+              rows={CHANGE_PROPAGATION_MODEL.map((c) => ({ term: c.step, detail: c.detail }))}
+            />
+          </RefBlock>
+          <RefBlock title="Logos, imagery and per-marketplace assets">
+            <RuleList items={ASSET_OWNERSHIP_RULES} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="future-library"
+          eyebrow="22"
+          title="What the shared design library would contain"
+          intro="A written structure for the shared library a design team would work in. Nothing has been built, drawn or exported — this is the agreed shape, so the work can start from the real product rather than from a blank page."
+        >
+          <MaturityCallout kind="opportunity" title="Not built yet">
+            <p>
+              No design file exists. This section exists so that when one is created, it mirrors the
+              product instead of inventing a second, competing version of it.
+            </p>
+          </MaturityCallout>
+          <DefinitionRows
+            rows={FIGMA_LIBRARY_BLUEPRINT.map((f) => ({
+              term: f.section,
+              detail: `${f.purpose} Does not belong: ${f.excludes}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="migration"
+          eyebrow="23"
+          title="What a future tidy-up would involve"
+          intro="A suggested order of work, lowest risk first. None of it has been done, and each step would need its own approval and its own before-and-after comparison."
+        >
+          <DefinitionRows
+            rows={MIGRATION_ROADMAP.map((m) => ({
+              term: `${m.phase} · ${m.title} (${m.risk} risk)`,
+              detail: `${m.goal} Validation: ${m.validation}`,
+            }))}
+          />
+          <RefBlock
+            title="Decisions still open"
+            note="Questions that need answering before any of the above begins."
+          >
+            <RuleList items={OPEN_FUTURE_DECISIONS} />
+          </RefBlock>
         </RefSection>
 
         <footer className="border-t border-hairline py-10 text-xs text-muted-foreground">
