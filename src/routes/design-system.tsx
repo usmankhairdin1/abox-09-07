@@ -68,7 +68,7 @@ import { CarrierMark } from "@/components/abox/carrier-mark";
 import { PlanCard } from "@/components/abox/plan-card";
 import { EmptyState } from "@/components/abox/empty-state";
 import { DataTable } from "@/components/abox/data-table";
-import { AboxMark } from "@/components/abox/logo";
+import { AboxMark, AboxWordmark } from "@/components/abox/logo";
 import { OverflowText } from "@/components/abox/overflow-text";
 import { ACTION_PILL } from "@/components/abox/action-pill";
 
