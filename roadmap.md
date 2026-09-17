@@ -227,3 +227,5 @@ export, breadcrumbs / pagination / avatars / charts awaiting real feature use.
 - [x] Phase 9 — Integrated system & dependency graph (reference layer only; `/design-system` and `/design-guide` extended, application unchanged)
 
 - [x] Phase 10 — Pattern & experience architecture specification (reference layer only; `/design-system` and `/design-guide` extended, application unchanged)
+
+- [x] Phase 11 — Governance, canonicalization readiness & Figma readiness audit (reference layer only; 14 open decisions recorded, none selected; application unchanged)

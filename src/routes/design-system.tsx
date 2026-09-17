@@ -226,6 +226,27 @@ import {
 } from "@/lib/design/pattern-governance";
 import { PATTERN_FIGMA_MAPPINGS, FIGMA_PATTERN_RULES } from "@/lib/design/pattern-figma";
 
+import {
+  READINESS_RECORDS,
+  READINESS_SUMMARY,
+  READINESS_STATE_COUNTS,
+  READINESS_INTEGRITY,
+  REGISTRY_SOURCE_RULES,
+  figmaBlockers,
+} from "@/lib/design/readiness-registry";
+import { CANONICAL_CANDIDATES, CANDIDATE_RULES } from "@/lib/design/canonical-candidates";
+import { DECISION_REGISTER, DECISION_RULES } from "@/lib/design/canonical-decision-register";
+import { CANONICAL_BOUNDARIES, BOUNDARY_RULES } from "@/lib/design/canonical-boundaries";
+import { CHANGE_GOVERNANCE, ESCALATION_RULES } from "@/lib/design/change-governance";
+import { MIGRATION_STAGES as READINESS_MIGRATION_STAGES, MIGRATION_PRECONDITIONS, ROLLBACK_MODEL } from "@/lib/design/migration-readiness";
+import { REGRESSION_CONTRACT, REGRESSION_COVERAGE, REGRESSION_RULES } from "@/lib/design/regression-contract";
+import { FIGMA_READINESS, FIGMA_BLOCKERS, FIGMA_READINESS_RULES } from "@/lib/design/figma-readiness";
+import { LIBRARY_STRUCTURE_SKETCH, LIBRARY_GROUPS, LIBRARY_RULES } from "@/lib/design/figma-library-readiness";
+import { NAMING_READINESS, NAMING_RULES } from "@/lib/design/naming-readiness";
+import { ACCESSIBILITY_READINESS, ACCESSIBILITY_RULES } from "@/lib/design/accessibility-readiness";
+import { CONTENT_READINESS, CONTENT_RULES as CONTENT_READINESS_RULES } from "@/lib/design/content-readiness";
+import { EXPERIENCE_READINESS, EXPERIENCE_READINESS_RULES } from "@/lib/design/experience-readiness";
+
 import { FOUNDATION_MODEL, FOUNDATION_CURRENT_STATE } from "@/lib/design/foundation-model";
 import { COLOR_FOUNDATION, COLOR_TOKEN_COUNT } from "@/lib/design/color-foundation";
 import { COLOR_ROLE_CHAINS, COLOR_ROLE_OVERLAPS, THEME_MODE_MAP } from "@/lib/design/color-roles";
@@ -588,6 +609,19 @@ const TOC = [
   { id: "pat-duplicates", label: "Pattern duplicates" },
   { id: "pat-governance", label: "Pattern governance" },
   { id: "pat-figma", label: "Figma pattern blueprint" },
+  { id: "rd-readiness", label: "Canonicalization readiness" },
+  { id: "rd-candidates", label: "Candidate register" },
+  { id: "rd-decisions", label: "Decision register" },
+  { id: "rd-boundaries", label: "Ownership boundaries" },
+  { id: "rd-governance", label: "Change governance" },
+  { id: "rd-migration", label: "Migration readiness" },
+  { id: "rd-regression", label: "Regression contract" },
+  { id: "rd-figma", label: "Figma readiness" },
+  { id: "rd-library", label: "Figma library blueprint" },
+  { id: "rd-naming", label: "Naming readiness" },
+  { id: "rd-a11y", label: "Accessibility readiness" },
+  { id: "rd-content", label: "Content readiness" },
+  { id: "rd-experience", label: "Experience readiness" },
 ];
 
 function DesignSystemPage() {
@@ -3691,6 +3725,367 @@ function DesignSystemPage() {
                 { term: "Dossiers assembled", detail: `${PATTERN_DOSSIERS.length} patterns, each joining specification, graph node, anatomy, variants, states, responsive, density, composition, experiences and Figma proposal.` },
               ]}
             />
+          </div>
+        </RefSection>
+
+        {/* ---------------- Phase 11 — governance, canonicalization & Figma readiness ---------------- */}
+
+        <RefSection
+          id="rd-readiness"
+          eyebrow="Phase 11 readiness"
+          title="Canonicalization readiness"
+          intro="For each subject: what exists, who uses it, what is still undecided, and what approval any change would need. Readiness is categorical — there is no score, rank or priority anywhere in this layer, because a number would imply a winner."
+        >
+          <DefinitionRows
+            rows={[
+              { term: "Subjects assessed", detail: `${READINESS_SUMMARY.subjects}, each keyed to an existing Phase 9 graph node` },
+              { term: "Candidates recorded", detail: `${READINESS_SUMMARY.candidates} areas open for a future decision` },
+              { term: "Open decisions", detail: `${READINESS_SUMMARY.openDecisions}, of which ${READINESS_SUMMARY.decisionsBlockingFigma} block Figma work and ${READINESS_SUMMARY.decisionsRequiringMigration} would require production migration` },
+              { term: "Decisions selected", detail: `${READINESS_SUMMARY.decisionsSelected}` },
+              { term: "Migrations performed", detail: `${READINESS_SUMMARY.migrationsPerformed}` },
+              { term: "Figma assets created", detail: `${READINESS_SUMMARY.figmaAssetsCreated}` },
+              { term: "Readiness states", detail: Object.entries(READINESS_STATE_COUNTS).map(([k, v]) => `${k}: ${v}`).join(" · ") },
+              { term: "Registry integrity", detail: READINESS_INTEGRITY.subjectsWithoutGraphNode.length === 0 && READINESS_INTEGRITY.decisionsWithoutOptions.length === 0 && READINESS_INTEGRITY.candidatesWithoutEvidence.length === 0 ? "Every subject exists in the Phase 9 graph, every candidate carries evidence, every decision carries real options." : `Subjects without a graph node: ${READINESS_INTEGRITY.subjectsWithoutGraphNode.join(", ") || "none"}` },
+            ]}
+          />
+          <div className="mt-6">
+            <SpecMatrixTable
+              columns={["Subject", "Current implementation", "Consumers", "Ownership", "Open decisions", "Approvals", "Migration risk", "Figma", "Readiness"]}
+              rows={READINESS_RECORDS.map((r) => ({
+                key: r.id,
+                cells: [
+                  r.subject,
+                  r.currentImplementation,
+                  r.currentConsumers,
+                  String(r.ownership),
+                  r.unresolvedDecisions.join(", ") || "none",
+                  r.requiredApprovals.join(", "),
+                  r.migrationRisk,
+                  r.figmaReadiness,
+                  r.readiness,
+                ],
+                label: r.governanceStatus,
+                note: r.evidence,
+              }))}
+            />
+          </div>
+          <div className="mt-6 grid gap-3 md:grid-cols-2">
+            {READINESS_RECORDS.map((r) => (
+              <div key={`${r.id}-detail`} className="rounded-2xl border border-hairline bg-card p-5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="font-medium">{r.subject}</p>
+                  <ArchLabelChip label={r.governanceStatus} />
+                </div>
+                <dl className="mt-3 space-y-1 text-sm text-muted-foreground">
+                  <div><dt className="inline text-foreground">Accessibility: </dt><dd className="inline">{r.accessibilityReadiness}</dd></div>
+                  <div><dt className="inline text-foreground">Responsive: </dt><dd className="inline">{r.responsiveReadiness}</dd></div>
+                  <div><dt className="inline text-foreground">Content: </dt><dd className="inline">{r.contentReadiness}</dd></div>
+                  <div><dt className="inline text-foreground">Naming: </dt><dd className="inline">{r.namingReadiness}</dd></div>
+                  <div><dt className="inline text-foreground">Foundation: </dt><dd className="inline">{r.foundationReadiness}</dd></div>
+                  <div><dt className="inline text-foreground">Experience: </dt><dd className="inline">{r.experienceReadiness}</dd></div>
+                  {r.observedVariations.length > 0 && (
+                    <div><dt className="inline text-foreground">Observed variation: </dt><dd className="inline">{r.observedVariations.join(" · ")}</dd></div>
+                  )}
+                  {r.note && <div className="text-serial">{r.note}</div>}
+                </dl>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4">
+            <RuleList items={REGISTRY_SOURCE_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-candidates"
+          eyebrow="Phase 11 readiness"
+          title="Candidate register"
+          intro="Areas that could become canonical in a future approved phase. A candidate is not a selected winner. The register is unordered and carries no rank, score or priority."
+        >
+          <SpecMatrixTable
+            columns={["Area", "Current implementation", "Observed variation", "Potential canonical target", "Required decision", "Consumers", "Blocker", "Readiness"]}
+            rows={CANONICAL_CANDIDATES.map((c) => ({
+              key: c.id,
+              cells: [c.area, c.currentImplementation, c.observedVariation, c.potentialCanonicalTarget, c.requiredDecision, c.consumers, c.blocker, c.readiness],
+              label: c.status,
+              note: c.note ? `${c.evidence} — ${c.note}` : c.evidence,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={CANDIDATE_RULES} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-decisions"
+          eyebrow="Phase 11 readiness"
+          title="Decision register"
+          intro="Unresolved questions carried forward from Phases 5 to 10, written so a person can decide them. Options are implementations that exist in the code. No option is recommended."
+        >
+          <div className="space-y-3">
+            {DECISION_REGISTER.map((d) => (
+              <div key={d.id} className="rounded-2xl border border-hairline bg-card p-5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="font-medium">{d.subject}</p>
+                  <MetaChip tone="muted">{d.decisionType}</MetaChip>
+                  <ArchLabelChip label={d.status} />
+                  {d.blocksFigma && <MetaChip tone="warning">blocks Figma</MetaChip>}
+                  {d.requiresProductionMigration && <MetaChip tone="warning">migration required</MetaChip>}
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">{d.currentEvidence}</p>
+                <div className="mt-3">
+                  <SpecMatrixTable
+                    columns={["Option", "Exists as", "Consumers", "Consequence"]}
+                    rows={d.options.map((o) => ({
+                      key: `${d.id}-${o.option}`,
+                      cells: [o.option, o.existsAs, o.consumers, o.consequence],
+                      label: "FUTURE DECISION",
+                    }))}
+                  />
+                </div>
+                <dl className="mt-3 space-y-1 text-sm text-muted-foreground">
+                  <div><dt className="inline text-foreground">Affected: </dt><dd className="inline">{[...d.affectedComponents, ...d.affectedExperiences, ...d.affectedScreens].join(" · ")}</dd></div>
+                  <div><dt className="inline text-foreground">Approvals: </dt><dd className="inline">{d.requiredApprovals.join(", ")}</dd></div>
+                  <div><dt className="inline text-foreground">Constraints: </dt><dd className="inline">{d.dependencyConstraints}</dd></div>
+                  {d.note && <div className="text-serial">{d.note}</div>}
+                </dl>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4">
+            <RuleList items={DECISION_RULES} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-boundaries"
+          eyebrow="Phase 11 readiness"
+          title="Ownership boundaries"
+          intro="What belongs to each layer, and what deliberately does not. Runtime branding and marketplace assets stay outside design-system ownership."
+        >
+          <SpecMatrixTable
+            columns={["Layer", "Belongs here", "Does not belong here", "Owner", "Evidence"]}
+            rows={CANONICAL_BOUNDARIES.map((b) => ({
+              key: b.layer,
+              cells: [b.layer, b.belongsHere, b.doesNotBelongHere, String(b.owner), b.evidence],
+              label: b.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={BOUNDARY_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-governance"
+          eyebrow="Phase 11 readiness"
+          title="Change governance"
+          intro="How a change at each layer should be handled in a future approved phase. Documentation only — no build step enforces it."
+        >
+          <SpecMatrixTable
+            columns={["Layer", "Owner", "Evidence required", "May change independently", "Consumers to check", "Visual", "A11y", "Responsive", "Product", "Migration"]}
+            rows={CHANGE_GOVERNANCE.map((g) => ({
+              key: g.layer,
+              cells: [
+                g.layer,
+                String(g.owner),
+                g.evidenceRequired,
+                g.mayChangeIndependently,
+                g.consumersToCheck,
+                g.visualRegression ? "required" : "no",
+                g.accessibilityReview ? "required" : "no",
+                g.responsiveReview ? "required" : "no",
+                g.productApproval ? "required" : "no",
+                g.migrationApproval ? "required" : "no",
+              ],
+              label: g.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={ESCALATION_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-migration"
+          eyebrow="Phase 11 readiness"
+          title="Migration readiness"
+          intro="A conceptual shape for a future migration. No stage has been performed, no first target has been chosen, and targets are not ranked."
+        >
+          <SpecMatrixTable
+            columns={["#", "Stage", "Purpose", "Entry condition", "Evidence produced", "Exit condition", "Approval"]}
+            rows={READINESS_MIGRATION_STAGES.map((m) => ({
+              key: m.stage,
+              cells: [String(m.order), m.stage, m.purpose, m.entryCondition, m.evidenceProduced, m.exitCondition, m.approval],
+              label: m.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={MIGRATION_PRECONDITIONS} tone="warning" />
+          </div>
+          <div className="mt-4">
+            <RuleList items={ROLLBACK_MODEL} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-regression"
+          eyebrow="Phase 11 readiness"
+          title="Regression contract"
+          intro="What any future canonicalization must prove it did not change, and the evidence that proves it."
+        >
+          <SpecMatrixTable
+            columns={["Dimension", "Must remain", "Evidence required", "Method"]}
+            rows={REGRESSION_CONTRACT.map((c) => ({
+              key: c.dimension,
+              cells: [c.dimension, c.mustRemain, c.evidenceRequired, c.method],
+              label: c.status,
+            }))}
+          />
+          <div className="mt-4">
+            <DefinitionRows
+              rows={[
+                { term: "Routes covered", detail: REGRESSION_COVERAGE.routes.join(", ") },
+                { term: "Viewports", detail: REGRESSION_COVERAGE.viewports.map((v) => `${v.name} ${v.size}`).join(" · ") },
+                { term: "Languages", detail: REGRESSION_COVERAGE.languages.join(", ") },
+                { term: "States", detail: REGRESSION_COVERAGE.states.join(", ") },
+              ]}
+            />
+          </div>
+          <div className="mt-4">
+            <RuleList items={REGRESSION_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-figma"
+          eyebrow="Phase 11 readiness"
+          title="Figma readiness"
+          intro="Whether the documented system could become a real library. Nothing exists in Figma: no file, component, variable, style, asset or library has been created."
+        >
+          <DefinitionRows
+            rows={[
+              { term: "Ready", detail: `${READINESS_SUMMARY.figmaReady} areas` },
+              { term: "Partial", detail: `${READINESS_SUMMARY.figmaPartial} areas` },
+              { term: "Blocked", detail: `${READINESS_SUMMARY.figmaBlocked} areas` },
+              { term: "Decisions blocking library work", detail: figmaBlockers().map((d) => d.id).join(", ") },
+            ]}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Area", "Current evidence", "Gap", "Blocker", "Readiness"]}
+              rows={FIGMA_READINESS.map((a) => ({
+                key: a.area,
+                cells: [a.area, a.currentEvidence, a.gap, a.blocker, a.readiness],
+                label: a.readiness === "READY" ? "CURRENT IMPLEMENTATION" : "FUTURE DECISION",
+                note: a.note,
+              }))}
+            />
+          </div>
+          <div className="mt-4">
+            <RuleList items={FIGMA_BLOCKERS} tone="warning" />
+          </div>
+          <div className="mt-4">
+            <RuleList items={FIGMA_READINESS_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-library"
+          eyebrow="Phase 11 readiness"
+          title="Future Figma library blueprint"
+          intro="A proposed structure mapped from the Phase 8 to 10 specifications. It is not final, and no part of it exists."
+        >
+          <pre className="text-serial overflow-x-auto rounded-2xl border border-hairline bg-card p-5">{LIBRARY_STRUCTURE_SKETCH}</pre>
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Group", "Would contain", "Mapped from", "Evidence supports grouping", "Readiness"]}
+              rows={LIBRARY_GROUPS.map((g) => ({
+                key: g.group,
+                cells: [g.group, g.wouldContain, g.mappedFrom, g.justified ? "yes" : "not yet", g.readiness],
+                label: "FUTURE FIGMA ORGANIZATION",
+                note: g.note,
+              }))}
+            />
+          </div>
+          <div className="mt-4">
+            <RuleList items={LIBRARY_RULES} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-naming"
+          eyebrow="Phase 11 readiness"
+          title="Naming readiness"
+          intro="Collisions, ambiguities and aliases found in the current names. Nothing is renamed; every future name below is a proposal."
+        >
+          <SpecMatrixTable
+            columns={["Current name", "Current usage", "Conflict", "Future proposal", "Migration impact"]}
+            rows={NAMING_READINESS.map((n) => ({
+              key: n.currentName,
+              cells: [n.currentName, n.currentUsage, n.conflict, n.futureProposal, n.migrationImpact],
+              label: n.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={NAMING_RULES} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-a11y"
+          eyebrow="Phase 11 readiness"
+          title="Accessibility readiness"
+          intro="Evidence found in the current code and the gaps a future canonical system would have to close. No accessibility behaviour is changed here."
+        >
+          <SpecMatrixTable
+            columns={["Area", "Current evidence", "Gap", "Readiness"]}
+            rows={ACCESSIBILITY_READINESS.map((a) => ({
+              key: a.area,
+              cells: [a.area, a.currentEvidence, a.gap, a.readiness],
+              label: a.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={ACCESSIBILITY_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-content"
+          eyebrow="Phase 11 readiness"
+          title="Content readiness"
+          intro="Whether each subject has a content model complete enough for a future component library. No product copy is changed."
+        >
+          <SpecMatrixTable
+            columns={["Subject", "Required", "Optional", "Long text", "Empty", "Error", "Loading", "Numeric", "Bilingual", "Readiness"]}
+            rows={CONTENT_READINESS.map((c) => ({
+              key: c.subject,
+              cells: [c.subject, c.requiredContent, c.optionalContent, c.longTextBehavior, c.emptyContent, c.errorContent, c.loadingContent, c.numericContent, c.bilingualNote, c.readiness],
+              label: c.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={CONTENT_READINESS_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="rd-experience"
+          eyebrow="Phase 11 readiness"
+          title="Experience readiness"
+          intro="Whether the experience architecture is defined well enough for future canonical work. Intentional differences are preserved, never flattened."
+        >
+          <SpecMatrixTable
+            columns={["Experience", "Shared core behaviour", "Extensions", "Intentional differences", "Unresolved differences", "Ownership", "Figma implication", "Readiness"]}
+            rows={EXPERIENCE_READINESS.map((e) => ({
+              key: e.experience,
+              cells: [e.experience, e.sharedCoreBehavior, e.experienceExtensions, e.intentionalDifferences, e.unresolvedDifferences, String(e.ownership), e.figmaImplication, e.readiness],
+              label: e.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={EXPERIENCE_READINESS_RULES} />
           </div>
         </RefSection>
       </RefContainer>
