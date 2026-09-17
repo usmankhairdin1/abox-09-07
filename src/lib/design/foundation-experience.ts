@@ -64,6 +64,6 @@ export const FOUNDATION_EXPERIENCE_GUIDANCE: BlueprintRow[] = [
     future:
       "A new experience inherits the full core and may only add container width, density mode and decorative permission. It may not introduce colour roles, tiers or type families.",
     label: "GOVERNANCE RULE",
-    phase: "Phase 6 — architecture & normalization blueprint",
+    phase: "Phase 6 — direct production read",
   },
 ];

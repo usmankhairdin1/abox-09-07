@@ -89,7 +89,7 @@ export const FOUNDATION_BOUNDARIES: BlueprintRow[] = [
       "Consumed only by the two unlisted routes. No production screen imports any of it.",
     future: "Remains read-only documentation. It never becomes a runtime dependency.",
     label: "GOVERNANCE RULE",
-    phase: "Phase 6 — architecture & normalization blueprint",
+    phase: "Phase 6 — direct production read",
   },
   {
     item: "Unowned patterns",
