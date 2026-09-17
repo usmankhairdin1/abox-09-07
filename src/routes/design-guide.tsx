@@ -87,6 +87,8 @@ import {
   ASSET_UNUSED_FINDINGS,
   FIGMA_ICON_ASSET_MAPPING,
 } from "@/lib/design/assets";
+import { COMPONENT_EXPERIENCE_SPLIT } from "@/lib/design/component-relationships";
+
 
 export const Route = createFileRoute("/design-guide")({
   head: () => ({
