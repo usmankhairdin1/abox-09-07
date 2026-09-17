@@ -612,7 +612,10 @@ function DesignGuidePage() {
           title="How the system is governed"
           intro="The design system is owned in layers. A decision lives in exactly one place, and everything below it inherits that decision."
         >
-          <RefBlock title="Who owns what" note="Reading top to bottom: the higher the layer, the wider the blast radius of a change.">
+          <RefBlock
+            title="Who owns what"
+            note="Reading top to bottom: the higher the layer, the wider the blast radius of a change."
+          >
             <DefinitionRows
               rows={OWNERSHIP_HIERARCHY.map((l) => ({
                 term: l.layer,
@@ -623,9 +626,18 @@ function DesignGuidePage() {
           <RefBlock title="How a change propagates">
             <div className="grid gap-4 md:grid-cols-3">
               {[
-                { title: "Change a token", body: "Update one value in the style foundation and every screen, both light and dark, follows immediately." },
-                { title: "Change a component", body: "Update the single owning component and every page that uses it updates — this is a product change and needs product review." },
-                { title: "Change one screen", body: "Stays local to that screen. Safe, but it is how drift starts: prefer adding a variant to the shared component." },
+                {
+                  title: "Change a token",
+                  body: "Update one value in the style foundation and every screen, both light and dark, follows immediately.",
+                },
+                {
+                  title: "Change a component",
+                  body: "Update the single owning component and every page that uses it updates — this is a product change and needs product review.",
+                },
+                {
+                  title: "Change one screen",
+                  body: "Stays local to that screen. Safe, but it is how drift starts: prefer adding a variant to the shared component.",
+                },
               ].map((c) => (
                 <div key={c.title} className="rounded-2xl border border-hairline bg-card p-5">
                   <p className="text-sm font-semibold">{c.title}</p>
@@ -676,12 +688,30 @@ function DesignGuidePage() {
         >
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[
-              { title: "Contrast by pairing", body: "Every surface and status colour ships with a matching text colour. Dark backgrounds take light text; light backgrounds take dark text." },
-              { title: "Never colour alone", body: "Status is always stated in words alongside its colour, so meaning survives colour blindness and greyscale printing." },
-              { title: "Visible focus", body: "Keyboard focus draws a ring from the shared focus colour on every interactive element." },
-              { title: "Touch targets", body: "On phones, every button and link is at least 44px tall." },
-              { title: "Reduced motion", body: "If the operating system asks for less motion, every animation and transition switches off." },
-              { title: "Skip to content", body: "Each shell starts with a skip link that appears on keyboard focus." },
+              {
+                title: "Contrast by pairing",
+                body: "Every surface and status colour ships with a matching text colour. Dark backgrounds take light text; light backgrounds take dark text.",
+              },
+              {
+                title: "Never colour alone",
+                body: "Status is always stated in words alongside its colour, so meaning survives colour blindness and greyscale printing.",
+              },
+              {
+                title: "Visible focus",
+                body: "Keyboard focus draws a ring from the shared focus colour on every interactive element.",
+              },
+              {
+                title: "Touch targets",
+                body: "On phones, every button and link is at least 44px tall.",
+              },
+              {
+                title: "Reduced motion",
+                body: "If the operating system asks for less motion, every animation and transition switches off.",
+              },
+              {
+                title: "Skip to content",
+                body: "Each shell starts with a skip link that appears on keyboard focus.",
+              },
             ].map((c) => (
               <div key={c.title} className="rounded-2xl border border-hairline bg-card p-5">
                 <p className="text-sm font-semibold">{c.title}</p>
@@ -732,7 +762,6 @@ function DesignGuidePage() {
             }))}
           />
         </RefSection>
-
 
         <footer className="border-t border-hairline py-10 text-xs text-muted-foreground">
           This guide documents the design language. Runtime brand configuration and white-label
