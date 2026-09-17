@@ -467,3 +467,99 @@ one text style per observed size/line-height/tracking triple, roles named after 
 (`display`, `eyebrow`, `serial`, `body`, `caption`, `badge`) rather than an h1/h2/h3
 ladder the product does not use, desktop/mobile variants for responsive steps, and a
 tabular-figure data style.
+
+---
+
+## Phase 4 — Iconography & assets audit (reference layer only)
+
+Documentation-only phase. No production icon, mark, size, stroke, colour, route,
+component or asset path was changed. Branding & White-Label and Marketplace Asset
+Management were inspected as evidence and remain the runtime sources of truth.
+
+### CURRENT IMPLEMENTATION — icon sources
+- `lucide-react` — 149 distinct icons across 144 files. The de facto icon system.
+- `@tabler/icons-react` — exactly one import, `IconDental`, wrapped by
+  `src/components/icons/tooth-icon.tsx` and used as the Dental product icon.
+- Inline SVG in three files only: `abox/logo.tsx` (brand mark),
+  `abox/decor/index.tsx` (decorative primitives), `routes/auth.tsx`.
+- No icon font, no CSS-drawn icon, no image-based icon.
+
+### CURRENT IMPLEMENTATION — sizes
+`h-4 w-4` 281, `h-3.5 w-3.5` 68, `h-3 w-3` 34, `h-5 w-5` 32, `size-4` 31, `h-8 w-8` 18,
+`h-9 w-9` 14, `h-10/h-12/h-6/size-5` smaller. The Button primitive enforces
+`[&_svg]:size-4 [&_svg]:shrink-0`. 36px is the shared control, icon-button and
+brand-mark footprint.
+
+### CURRENT IMPLEMENTATION — treatment
+Stroke width is **never** overridden on a Lucide icon anywhere in the product; explicit
+`strokeWidth` (0.75/1/1.25/1.75) exists only inside the decorative primitives. Icons are
+outline-only, use `currentColor` by default, and where coloured always use a semantic
+token — no hex or arbitrary colour appears on any icon. Opacity is not used to tone icons
+down. No icon carries a shadow or filter.
+
+### CURRENT IMPLEMENTATION — accessibility & states
+`aria-hidden` 257 uses across 99 files; `aria-label` 90; `sr-only` 28. Dialog and Sheet
+close buttons are the reference icon-only pattern. Focus lives on the wrapping control,
+never the glyph. A global rule gives a 44px minimum touch target below 640px. State is
+carried by colour, and sometimes by the wrapper's background or border — never by size,
+stroke or glyph substitution.
+
+### CURRENT IMPLEMENTATION — logos, marks & imagery
+- `AboxMark` — inline SVG, four tones (`primary`/`sage`/`sidebar`/`foreground`), default
+  36px, `aria-hidden`, every fill and stroke a CSS variable.
+- `AboxWordmark` — text, not artwork; default and compact variants.
+- `CarrierMark` — deterministic initial monograms on hue-derived discs, documented in its
+  own source as illustrative placeholders rather than official carrier logos.
+- `public/favicon.ico` — the only binary visual asset in the repository.
+- **No raster imagery, no committed SVG file, no `<img>` element, no `src/assets`
+  directory.** Runtime-uploaded LOGO/MARK/FAVICON/HERO assets exist only through
+  Marketplace Asset Management (REQ-M04-BRD-004).
+
+### OBSERVED VARIATION
+- `h-4 w-4` and `size-4` express the same 16px size in two syntaxes.
+- Four overlapping negative-status glyphs: `XCircle`, `Ban`, `ShieldAlert`, `PauseCircle`.
+- `Settings` and `Settings2` both open configuration.
+- `ShoppingCart` and `ShoppingBag` both signal commerce.
+- The auth route holds inline decorative SVG outside the decor module.
+- No single loading-icon convention.
+
+### UNOWNED AREA
+- Dual-purpose glyphs: `Eye` (Vision product + preview), `Shield` (Life product +
+  security), `Users` (ICHRA product + people — intentional), `Activity` (Critical Illness
+  + metrics).
+- The circular icon container — roughly 104 similar `rounded-full` bordered wrappers with
+  no owning component.
+- Imagery conventions: because nothing renders an image, there is no alt-text,
+  aspect-ratio or object-fit convention to document.
+
+### INSTALLED BUT UNUSED / POSSIBLY UNUSED / OBSERVED DUPLICATE
+- INSTALLED BUT UNUSED — `@fortawesome/free-solid-svg-icons` has no import in `src`.
+- POSSIBLY UNUSED — nine decor primitives (`CornerCrop`, `TickerRule`, `MarqueeSerial`,
+  `IsoStack`, `GlassPanel`, `HealthPulseShield`, `PolicyLines`, `FamilySilhouette`,
+  `PlateFrame`) have no consumer found; only six are used, all on the landing page.
+- OBSERVED DUPLICATE — `HairlineGrid`, `ConcentricArcs`, `DiagonalWeave` are compatibility
+  aliases resolving to `DotField` and `OrbitalRings`.
+- AVAILABLE BUT UNUSED — the `Avatar` primitive has no consuming screen.
+
+### GOVERNANCE RULE
+One icon library; a second is a design-system decision, not a per-screen one. Product
+glyphs are set only in `src/lib/products.ts`. Icons never carry meaning alone. Icon colour
+is always a token. Brand marks read tokens so white-label re-themes them without a new
+asset. Branding & White-Label and Marketplace Asset Management own runtime assets — the
+design system documents them and must never duplicate them. Carrier monograms are
+placeholders; replacing them is an asset and licensing decision.
+
+### FUTURE OPPORTUNITY (not applied)
+Remove the unused Font Awesome dependency; consolidate the single Tabler import; converge
+`h-4 w-4` with `size-4`; a shared `Icon` wrapper or icon-size tokens; an `IconButton` with
+a required label; an `IconDisc` for the repeated circular wrapper; resolve the decor
+aliases and unused primitives; a negative-status glyph mapping; define imagery conventions
+before the first image ships; a generated Figma icon-library export.
+
+### FIGMA BLUEPRINT
+One shared icon library containing only the icons in use; size as a component property
+(12/14/16/20, 16 default); colour inherited rather than baked in; state as a variant on
+the parent control, not the icon; semantic categories as library pages; the product-icon
+map as a documentation table; `AboxMark` as a brand component with tone variants;
+`AboxWordmark` as a text style; `CarrierMark` explicitly labelled illustrative; decor as a
+marketing-only illustration section; marketplace assets as documented placeholder slots.

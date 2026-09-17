@@ -87,3 +87,26 @@ Documentation, reference and governance only. No application file was modified.
 - Typography: JetBrains Mono binding/removal, `.story-link` definition/removal,
   SectionHeading component, tracking convergence, sub-scale tokens, micro-type floor,
   success token convergence, tabular dates, Figma text-style export.
+
+## Phase 4 — Iconography & assets audit (complete)
+
+- Added reference-only `src/lib/design/iconography.ts` (sources, semantic inventory, size
+  audit, stroke/fill/colour treatment), `src/lib/design/iconography-behavior.ts`
+  (accessibility, states, relationships, experience conventions) and
+  `src/lib/design/assets.ts` (logos and brand marks, imagery, naming and organization,
+  asset behaviour, unused findings, ownership, maturity, deferred work, Figma mapping).
+- Added `IconEntry`, `IconCategory`, `AssetEntry` and `AssetGroup` types, plus `IconTable`
+  and `AssetTable` display helpers.
+- Extended `/design-system` with thirteen technical iconography and asset sections and
+  `/design-guide` with a management-facing "Iconography & asset governance" section.
+- Updated `.lovable/design-system.md` with the Phase 4 findings.
+- No production icon, mark, asset, component, route or style was changed. Branding &
+  White-Label and Marketplace Asset Management were inspected only.
+
+### Deferred (carried forward)
+- All Phase 1–3 deferred opportunities remain open.
+- Icons & assets: remove unused Font Awesome dependency; consolidate the single Tabler
+  import; converge `h-4 w-4` / `size-4`; shared Icon wrapper or icon-size tokens;
+  IconButton with a required label; IconDisc for the circular wrapper; resolve decor
+  aliases and unused primitives; negative-status glyph mapping; define imagery conventions
+  before the first image ships; generated Figma icon-library export.
