@@ -223,7 +223,39 @@ import {
   COMPONENT_DEFERRED_OPPORTUNITIES,
   FIGMA_COMPONENT_MAPPING,
   FUTURE_FIGMA_ORGANIZATION,
+  ARCHITECTURE_GOVERNANCE_RULES,
+  CHANGE_PROPAGATION_MODEL,
+  EXPERIENCE_ARCHITECTURE,
 } from "@/lib/design/governance";
+import {
+  CORE_ARCHITECTURE,
+  COMPONENT_HIERARCHY,
+  DEPENDENCY_RULES,
+  CROSS_PHASE_TRACEABILITY,
+} from "@/lib/design/architecture";
+import { CLASSIFICATION_CRITERIA, CLASSIFICATION_RESULTS } from "@/lib/design/classification";
+import { CANONICAL_COMPONENT_MAP, CANONICAL_SUMMARY } from "@/lib/design/canonical-components";
+import { ALL_BLUEPRINTS } from "@/lib/design/blueprints";
+import {
+  ARCH_RELATIONSHIPS,
+  DEPENDENCY_MODEL,
+  LITERAL_VALUE_FINDINGS,
+} from "@/lib/design/architecture-relationships";
+import {
+  OVERLAP_MAP,
+  ROUTE_LOCAL_KITS,
+  SHELL_ARCHITECTURE,
+  SHELL_SHARED_CONCERNS,
+  MIGRATION_ROADMAP,
+  OPEN_FUTURE_DECISIONS,
+} from "@/lib/design/normalization";
+import {
+  BRAND_ARCHITECTURE,
+  ASSET_ARCHITECTURE,
+  ASSET_OWNERSHIP_RULES,
+} from "@/lib/design/brand-asset-architecture";
+import { NAMING_CONVENTIONS } from "@/lib/design/naming";
+import { FIGMA_LIBRARY_BLUEPRINT, FIGMA_VARIABLE_MAPPINGS } from "@/lib/design/figma-library";
 
 export const Route = createFileRoute("/design-system")({
   head: () => ({
