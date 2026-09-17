@@ -110,3 +110,39 @@ Documentation, reference and governance only. No application file was modified.
   IconButton with a required label; IconDisc for the circular wrapper; resolve decor
   aliases and unused primitives; negative-status glyph mapping; define imagery conventions
   before the first image ships; generated Figma icon-library export.
+
+## Phase 5 — Complete component inventory + reference governance (complete)
+
+Reference/documentation layer only. No production component, route, style or behaviour changed.
+
+Added `src/lib/design/components.ts`, `component-variants.ts`, `component-states.ts`,
+`component-relationships.ts`; extended `types.ts`, `governance.ts`, `reference-kit.tsx`,
+`/design-system` (19 new sections), `/design-guide` (one management section) and
+`.lovable/design-system.md`.
+
+Inventoried: 27 ABox modules, 49 UI primitives (29 consumed, 20 not), 3 shells covering 123
+routes, 1 icon component, 6 route-local kits, 1 reference-only kit. Recorded taxonomy, ownership,
+consumer map, shared vs experience-specific, anatomy, variants, sizes, states, responsive
+behaviour, relationships, composition classification, duplication, unused findings, accessibility
+and the Phase 2/3/4 cross-references.
+
+### Deferred component opportunities (carried forward)
+
+- Converge the four table implementations — high risk.
+- Converge the parallel page headers and empty states — medium.
+- Unify the 15-value status tone vocabulary — high.
+- Give the card surface a component owner — high.
+- Introduce a shared Field component; `ui/form.tsx` is installed and unused — high.
+- Resolve the two coexisting assistant implementations — medium.
+- Decide the fate of the 20 unused primitives and the `ai-elements` tree — low.
+- Keyboard path for clickable DataTable rows — low.
+- Announce loading states to assistive technology — low.
+- Shared accessible-name helper for icon-only controls — low.
+- Reconcile the Button and ACTION_PILL action ladders — medium.
+
+### Carried forward from earlier phases
+
+Card padding and border-token variation, section-heading and card-description size variation,
+uppercase tracking values, unused Font Awesome dependency, single Tabler import, `h-4 w-4` vs
+`size-4`, the circular icon container, decor compatibility aliases, machine-readable Figma token
+export, breadcrumbs / pagination / avatars / charts awaiting real feature use.
