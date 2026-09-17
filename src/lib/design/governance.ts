@@ -760,7 +760,8 @@ export const FIGMA_COMPONENT_MAPPING = [
   },
   {
     production: "ACTION_PILL keys",
-    figma: "One Action Pill component with Tone (primary/outline) and Size (xs/sm/md/lg) properties",
+    figma:
+      "One Action Pill component with Tone (primary/outline) and Size (xs/sm/md/lg) properties",
     note: "smCard becomes a Surface boolean rather than a fifth size.",
   },
   {
@@ -834,7 +835,10 @@ export const FUTURE_FIGMA_ORGANIZATION = [
   },
   { level: "ABOX CORE → Components → Data", detail: "Data Table, KPI Card." },
   { level: "ABOX CORE → Components → Navigation", detail: "Module Tabs, Tabs, nav item." },
-  { level: "ABOX CORE → Components → Overlays", detail: "Dialog, Sheet, Dropdown, Tooltip, Popover." },
+  {
+    level: "ABOX CORE → Components → Overlays",
+    detail: "Dialog, Sheet, Dropdown, Tooltip, Popover.",
+  },
   {
     level: "ABOX CORE → Components → Feedback",
     detail: "Empty State, Skeleton, Spinner, Progress, Toast, Alert.",

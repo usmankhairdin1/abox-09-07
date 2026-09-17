@@ -8,12 +8,7 @@
  * component's own folder and the two reference pages excluded. Where a count
  * cannot be established reliably the entry says so instead of guessing.
  */
-import type {
-  AnatomyEntry,
-  ComponentGroup,
-  FoundationCategory,
-  RelationshipGroup,
-} from "./types";
+import type { AnatomyEntry, ComponentGroup, FoundationCategory, RelationshipGroup } from "./types";
 
 /* ---------------------------------------------------------------- taxonomy */
 
@@ -103,7 +98,8 @@ export const COMPONENT_TAXONOMY: FoundationCategory = {
     {
       name: "FEEDBACK",
       value: "Reports state of the system to the person",
-      source: "ui/sonner.tsx, skeleton.tsx, progress.tsx, spinner.tsx, alert.tsx, abox/empty-state.tsx",
+      source:
+        "ui/sonner.tsx, skeleton.tsx, progress.tsx, spinner.tsx, alert.tsx, abox/empty-state.tsx",
       consumers: "Toaster, Skeleton, Progress, Spinner, Alert, EmptyState",
       ownership: "primitive",
       shared: "source-of-truth",
@@ -112,7 +108,8 @@ export const COMPONENT_TAXONOMY: FoundationCategory = {
     {
       name: "COMMERCE",
       value: "Plan, product, cart and marketplace UI",
-      source: "abox/plan-card.tsx, product-switcher.tsx, shopping-path-bar.tsx, quote-edit-panel.tsx",
+      source:
+        "abox/plan-card.tsx, product-switcher.tsx, shopping-path-bar.tsx, quote-edit-panel.tsx",
       consumers: "Shopping and marketplace routes only",
       ownership: "business",
       shared: "source-of-truth",
@@ -982,7 +979,8 @@ export const SHELL_AND_LOCAL_COMPONENTS: ComponentGroup = {
       layer: "production",
       scope: "specialized-local",
       consumers: "1",
-      consumerDetail: "Direct: abox/planai-assistant.tsx only, which itself has no located route consumer.",
+      consumerDetail:
+        "Direct: abox/planai-assistant.tsx only, which itself has no located route consumer.",
       experience: "Shopping / Marketplace",
       dependencies: "Radix, ui primitives",
       children: "Composer, attachments, action menu, submit, thread",
@@ -1354,7 +1352,8 @@ export const COMPONENT_MATURITY = [
   {
     area: "Commerce UI",
     state: "CENTRALIZED",
-    detail: "PlanCard, MetalBadge, CarrierMark, ProductSwitcher and ShoppingPathBar each own their pattern.",
+    detail:
+      "PlanCard, MetalBadge, CarrierMark, ProductSwitcher and ShoppingPathBar each own their pattern.",
   },
   {
     area: "Brand marks",

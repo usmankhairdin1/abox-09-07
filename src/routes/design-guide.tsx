@@ -93,7 +93,6 @@ import {
 } from "@/lib/design/assets";
 import { COMPONENT_EXPERIENCE_SPLIT } from "@/lib/design/component-relationships";
 
-
 export const Route = createFileRoute("/design-guide")({
   head: () => ({
     meta: [
@@ -1120,8 +1119,6 @@ function DesignGuidePage() {
             />
           </RefBlock>
         </RefSection>
-
-
 
         <RefSection
           id="figma"

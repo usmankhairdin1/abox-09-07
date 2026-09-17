@@ -248,7 +248,8 @@ export const COMPONENT_ACCESSIBILITY: RelationshipGroup = {
     },
     {
       pair: "Disabled treatment",
-      observed: "disabled:pointer-events-none, opacity-50, cursor-not-allowed on the real attribute",
+      observed:
+        "disabled:pointer-events-none, opacity-50, cursor-not-allowed on the real attribute",
       source: "ui/button.tsx",
       consistency: "consistent",
     },
