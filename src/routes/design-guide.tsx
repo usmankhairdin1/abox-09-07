@@ -110,6 +110,10 @@ const TOC = [
   { id: "layouts", label: "Layout & navigation" },
   { id: "icons", label: "Iconography" },
   { id: "patterns", label: "UI patterns" },
+  { id: "governance", label: "Governance" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "experiences", label: "Experiences" },
+  { id: "figma", label: "Figma mapping" },
 ];
 
 const PRINCIPLES = [

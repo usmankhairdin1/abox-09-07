@@ -843,7 +843,10 @@ function DesignSystemPage() {
               ))}
             </ul>
           </RefBlock>
-          <RefBlock title="Intentional one-offs" note="Deliberate local decisions. They look like inconsistencies and must not be normalized.">
+          <RefBlock
+            title="Intentional one-offs"
+            note="Deliberate local decisions. They look like inconsistencies and must not be normalized."
+          >
             <MaturityCallout kind="current" title="Leave these exactly as they are">
               <ul className="mt-2 space-y-2">
                 {INTENTIONAL_ONE_OFFS.map((o) => (
@@ -855,8 +858,14 @@ function DesignSystemPage() {
               </ul>
             </MaturityCallout>
           </RefBlock>
-          <RefBlock title="Deferred opportunities" note="Identified during the audit and intentionally NOT applied, because each could change rendered output or behaviour.">
-            <MaturityCallout kind="opportunity" title="Not implemented — candidates for a future phase">
+          <RefBlock
+            title="Deferred opportunities"
+            note="Identified during the audit and intentionally NOT applied, because each could change rendered output or behaviour."
+          >
+            <MaturityCallout
+              kind="opportunity"
+              title="Not implemented — candidates for a future phase"
+            >
               <ul className="mt-2 space-y-2">
                 {DEFERRED_OPPORTUNITIES.map((o) => (
                   <li key={o.item}>
@@ -880,11 +889,26 @@ function DesignSystemPage() {
               <div key={e.id} className="rounded-2xl border border-hairline bg-card p-5">
                 <p className="text-base font-semibold">{e.title}</p>
                 <dl className="mt-3 space-y-1.5 text-xs text-muted-foreground">
-                  <div><dt className="inline font-medium text-foreground">Surfaces: </dt><dd className="inline">{e.surfaces}</dd></div>
-                  <div><dt className="inline font-medium text-foreground">Container: </dt><dd className="inline">{e.container}</dd></div>
-                  <div><dt className="inline font-medium text-foreground">Density: </dt><dd className="inline">{e.density}</dd></div>
-                  <div><dt className="inline font-medium text-foreground">Shell: </dt><dd className="inline">{e.shellAndChrome}</dd></div>
-                  <div><dt className="inline font-medium text-foreground">Components: </dt><dd className="inline">{e.typicalComponents}</dd></div>
+                  <div>
+                    <dt className="inline font-medium text-foreground">Surfaces: </dt>
+                    <dd className="inline">{e.surfaces}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline font-medium text-foreground">Container: </dt>
+                    <dd className="inline">{e.container}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline font-medium text-foreground">Density: </dt>
+                    <dd className="inline">{e.density}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline font-medium text-foreground">Shell: </dt>
+                    <dd className="inline">{e.shellAndChrome}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline font-medium text-foreground">Components: </dt>
+                    <dd className="inline">{e.typicalComponents}</dd>
+                  </div>
                 </dl>
                 <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
                   {e.guidance.map((g) => (

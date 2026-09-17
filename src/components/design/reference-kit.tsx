@@ -211,7 +211,11 @@ export function OwnershipChip({ ownership }: { ownership: string }) {
         : ownership === "pattern"
           ? "muted"
           : "sage";
-  return <MetaChip tone={tone as "primary" | "sage" | "warning" | "muted"}>{OWNERSHIP_LABEL[ownership] ?? ownership}</MetaChip>;
+  return (
+    <MetaChip tone={tone as "primary" | "sage" | "warning" | "muted"}>
+      {OWNERSHIP_LABEL[ownership] ?? ownership}
+    </MetaChip>
+  );
 }
 
 /** Foundation inventory table: name, value, source, consumers, ownership. */
@@ -235,11 +239,21 @@ export function FoundationTable({
         <table className="w-full min-w-[860px] text-sm">
           <thead className="border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             <tr>
-              <th scope="col" className="px-5 py-4 font-semibold">Name</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Current implementation</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Source of truth</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Consumers</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Ownership</th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Name
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Current implementation
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Source of truth
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Consumers
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Ownership
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -250,12 +264,20 @@ export function FoundationTable({
                   {e.note && <p className="mt-1 text-xs text-muted-foreground">{e.note}</p>}
                 </td>
                 <td className="px-5 py-4 text-muted-foreground">{e.value}</td>
-                <td className="px-5 py-4"><span className="text-serial">{e.source}</span></td>
+                <td className="px-5 py-4">
+                  <span className="text-serial">{e.source}</span>
+                </td>
                 <td className="px-5 py-4 text-muted-foreground">{e.consumers}</td>
                 <td className="px-5 py-4">
                   <span className="flex flex-wrap gap-1.5">
                     <OwnershipChip ownership={e.ownership} />
-                    <MetaChip>{e.shared === "source-of-truth" ? "Shared" : e.shared === "convention" ? "Convention" : "One-off"}</MetaChip>
+                    <MetaChip>
+                      {e.shared === "source-of-truth"
+                        ? "Shared"
+                        : e.shared === "convention"
+                          ? "Convention"
+                          : "One-off"}
+                    </MetaChip>
                     {e.maturity === "opportunity" && <MetaChip tone="warning">Future</MetaChip>}
                   </span>
                 </td>
@@ -280,10 +302,18 @@ export function RelationshipTable({
         <table className="w-full min-w-[760px] text-sm">
           <thead className="border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             <tr>
-              <th scope="col" className="px-5 py-4 font-semibold">Relationship</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Observed implementation</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Where</th>
-              <th scope="col" className="px-5 py-4 font-semibold">As found</th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Relationship
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Observed implementation
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Where
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                As found
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -294,7 +324,9 @@ export function RelationshipTable({
                   {e.observed}
                   {e.note && <span className="mt-1 block text-xs">{e.note}</span>}
                 </td>
-                <td className="px-5 py-4"><span className="text-serial">{e.source}</span></td>
+                <td className="px-5 py-4">
+                  <span className="text-serial">{e.source}</span>
+                </td>
                 <td className="px-5 py-4">
                   <MetaChip tone={e.consistency === "consistent" ? "sage" : "warning"}>
                     {e.consistency === "consistent" ? "Consistent" : "Varies"}
@@ -334,11 +366,21 @@ export function InventoryTable({
         <table className="w-full min-w-[820px] text-sm">
           <thead className="border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             <tr>
-              <th scope="col" className="px-5 py-4 font-semibold">Component</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Source</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Consumers</th>
-              <th scope="col" className="px-5 py-4 font-semibold">States / variants today</th>
-              <th scope="col" className="px-5 py-4 font-semibold">Status</th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Component
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Source
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Consumers
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                States / variants today
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Status
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -348,13 +390,19 @@ export function InventoryTable({
                   <p className="font-medium">{e.name}</p>
                   {e.note && <p className="mt-1 text-xs text-muted-foreground">{e.note}</p>}
                 </td>
-                <td className="px-5 py-4"><span className="text-serial">{e.source}</span></td>
+                <td className="px-5 py-4">
+                  <span className="text-serial">{e.source}</span>
+                </td>
                 <td className="px-5 py-4 tabular-nums text-muted-foreground">{e.consumers}</td>
                 <td className="px-5 py-4 text-muted-foreground">{e.states}</td>
                 <td className="px-5 py-4">
                   <span className="flex flex-wrap gap-1.5">
                     <MetaChip tone={statusTone[e.status] ?? "muted"}>
-                      {e.status === "in-use" ? "In use" : e.status === "available-unused" ? "Available" : "Internal"}
+                      {e.status === "in-use"
+                        ? "In use"
+                        : e.status === "available-unused"
+                          ? "Available"
+                          : "Internal"}
                     </MetaChip>
                     <OwnershipChip ownership={e.ownership} />
                   </span>
