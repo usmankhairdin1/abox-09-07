@@ -71,7 +71,7 @@ export const ICON_ACCESSIBILITY: RelationshipGroup = {
       observed:
         "281 occurrences, but the overwhelming majority are React props named title on components and page headers, not HTML title tooltips. CarrierMark is a genuine HTML title, paired with aria-hidden.",
       source: "abox/carrier-mark.tsx and component props",
-      consistency: "variable",
+      consistency: "varies",
       note: "OBSERVED VARIATION — CarrierMark is aria-hidden with a title, so its carrier name is available on hover but not to a screen reader; the carrier name is always printed as text beside it.",
     },
     {
@@ -151,7 +151,7 @@ export const ICON_STATES: RelationshipGroup = {
       observed:
         "A spinning Loader-class glyph with animate-spin where present; most async surfaces use skeletons or text instead of an icon.",
       source: "Async actions across routes",
-      consistency: "variable",
+      consistency: "varies",
       note: "OBSERVED VARIATION — there is no single loading-icon convention.",
     },
     {
@@ -252,7 +252,7 @@ export const ICON_RELATIONSHIPS: RelationshipGroup = {
       pair: "Icon → circular container",
       observed: "14–16px glyph centred in a 32px or 36px rounded-full bordered disc.",
       source: "Roughly 104 occurrences across routes and components",
-      consistency: "variable",
+      consistency: "varies",
       note: "UNOWNED AREA — repeated markup with no owning component.",
     },
     {
