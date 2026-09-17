@@ -223,3 +223,5 @@ export, breadcrumbs / pagination / avatars / charts awaiting real feature use.
 - [ ] Give the recorded unowned patterns a component owner
 - [ ] Any production migration towards a canonical target
 - [ ] Build any Figma library; none exists
+
+- [x] Phase 9 — Integrated system & dependency graph (reference layer only; `/design-system` and `/design-guide` extended, application unchanged)

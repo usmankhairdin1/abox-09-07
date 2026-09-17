@@ -920,3 +920,19 @@ plus three display helpers in `reference-kit.tsx` (`ComponentSpecCard`,
 
 `spec-registry.ts` is the single assembly point; both reference pages render from it and
 no specification is restated inline. Both routes remain unlisted and direct-URL only.
+
+## Phase 9 — Integrated system & dependency graph
+
+CURRENT IMPLEMENTATION — the graph describes the product as it exists; no production file was changed in this phase.
+
+- Model lives in `src/lib/design/graph-*.ts`, assembled by `graph-registry.ts`. Consumed only by `/design-system` and `/design-guide`.
+- Eight layers: foundation → semantic role → component role → core component → compound → pattern → experience pattern → screen. Dependencies point one direction only.
+- Edges are created only from code evidence (imports, measured consumer counts, route composition). Visual similarity never creates an edge.
+- Every edge carries a status: CURRENT IMPLEMENTATION, OBSERVED VARIATION, OBSERVED DUPLICATE, OBSERVED OVERLAP, UNOWNED AREA, INSTALLED BUT UNUSED, GOVERNANCE RULE, FUTURE CANONICAL TARGET, FUTURE DECISION.
+- Consumer counts reuse the Phase 5 measurements; reference-page usage is never counted as production consumption.
+- Duplicates map several implementations to one conceptual role, with no winner, ranking or score.
+- Route-local kits (M06, M06 common, M08, Lucie, Lucie-app, ai-elements) and the three shells are represented in place; nothing is merged or moved.
+- Branding & White-Label and Marketplace Asset Management are modelled as runtime consumers of the foundation. Tenant values fill roles; they never become tokens.
+- Change impact is derived by traversing edges, not written by hand. Where the graph cannot answer safely it reports `not-determinable`.
+
+FUTURE OPPORTUNITY — resolving duplicates, assigning owners to unowned patterns, and any migration remain deferred and approval-dependent. Migration stages are conceptual; none has started and no first component is named. Nothing exists in Figma.
