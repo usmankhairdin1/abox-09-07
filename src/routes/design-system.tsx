@@ -132,6 +132,7 @@ import {
   ComponentSpecCard,
   SpecMatrixTable,
   DuplicateRegisterTable,
+  ArchLabelChip,
   DependencyChainList,
   TraceabilityCard,
   ImpactTable,
@@ -198,6 +199,32 @@ import {
   MIGRATION_BOUNDARY,
 } from "@/lib/design/graph-governance";
 import { SHARED_VERSUS_SPECIFIC } from "@/lib/design/graph-experiences";
+
+import {
+  PATTERN_TAXONOMY,
+  PATTERN_SUMMARY,
+  PATTERN_DOSSIERS,
+  REGISTRY_INTEGRITY,
+  REGISTRY_RULES,
+} from "@/lib/design/pattern-registry";
+import { PATTERN_ANATOMY } from "@/lib/design/pattern-anatomy";
+import { PATTERN_COMPOSITION, COMPOSITION_RULES as PATTERN_COMPOSITION_RULES } from "@/lib/design/pattern-composition";
+import { PATTERN_VARIANTS } from "@/lib/design/pattern-variants";
+import { PATTERN_STATES } from "@/lib/design/pattern-states";
+import { PATTERN_RESPONSIVE, RESPONSIVE_PATTERN_NOTES } from "@/lib/design/pattern-responsive";
+import { PATTERN_DENSITY, DENSITY_OPEN_QUESTIONS } from "@/lib/design/pattern-density";
+import { EXPERIENCE_PATTERNS } from "@/lib/design/experience-patterns";
+import { EXPERIENCE_EXTENSIONS, EXTENSION_RULES } from "@/lib/design/experience-extensions";
+import { SCREEN_PATTERN_MAP, SCREEN_MAP_RULES, chainForScreen } from "@/lib/design/screen-pattern-map";
+import { PATTERN_DUPLICATES, DUPLICATE_HANDLING_RULES } from "@/lib/design/pattern-duplicates";
+import {
+  PATTERN_DEFINITION_RULES,
+  CANONICALIZATION_EVIDENCE,
+  PATTERN_OWNERSHIP_RULES,
+  PATTERN_DOCUMENTATION_DUTIES,
+  APPROVAL_GATE,
+} from "@/lib/design/pattern-governance";
+import { PATTERN_FIGMA_MAPPINGS, FIGMA_PATTERN_RULES } from "@/lib/design/pattern-figma";
 
 import { FOUNDATION_MODEL, FOUNDATION_CURRENT_STATE } from "@/lib/design/foundation-model";
 import { COLOR_FOUNDATION, COLOR_TOKEN_COUNT } from "@/lib/design/color-foundation";
@@ -548,6 +575,19 @@ const TOC = [
   { id: "graph-impact", label: "Change impact" },
   { id: "graph-governance", label: "Change propagation" },
   { id: "graph-migration", label: "Migration boundary" },
+  { id: "pat-taxonomy", label: "Pattern taxonomy" },
+  { id: "pat-anatomy", label: "Pattern anatomy" },
+  { id: "pat-composition", label: "Pattern composition" },
+  { id: "pat-variants", label: "Pattern variants" },
+  { id: "pat-states", label: "Pattern states" },
+  { id: "pat-responsive", label: "Pattern responsive" },
+  { id: "pat-density", label: "Pattern density" },
+  { id: "pat-experience", label: "Experience patterns" },
+  { id: "pat-extensions", label: "Experience extensions" },
+  { id: "pat-screens", label: "Screen to pattern" },
+  { id: "pat-duplicates", label: "Pattern duplicates" },
+  { id: "pat-governance", label: "Pattern governance" },
+  { id: "pat-figma", label: "Figma pattern blueprint" },
 ];
 
 function DesignSystemPage() {
@@ -3311,6 +3351,346 @@ function DesignSystemPage() {
           />
           <div className="mt-4">
             <RuleList items={MIGRATION_BOUNDARY} tone="warning" />
+          </div>
+        </RefSection>
+
+        {/* ---------------- Phase 10 — pattern & experience architecture ---------------- */}
+
+        <RefSection
+          id="pat-taxonomy"
+          eyebrow="Phase 10 patterns"
+          title="Pattern taxonomy"
+          intro="A pattern is a recurring arrangement that solves one screen problem. Repeated markup is not enough, and visual similarity is never evidence. Where the code does not support a pattern, the record says so instead of guessing."
+        >
+          <DefinitionRows
+            rows={[
+              { term: "Patterns recorded", detail: `${PATTERN_SUMMARY.patterns} across ${PATTERN_SUMMARY.categories} categories` },
+              { term: "Current implementation", detail: `${PATTERN_SUMMARY.current} patterns` },
+              { term: "Variation, duplicate or overlap", detail: `${PATTERN_SUMMARY.variationsOrDuplicates} patterns`, meta: "kept as they are; no winner chosen" },
+              { term: "Unowned", detail: `${PATTERN_SUMMARY.unowned} patterns with no owning component` },
+              { term: "Open", detail: `${PATTERN_SUMMARY.open} recorded as FUTURE DECISION or FUTURE CANONICAL TARGET` },
+              { term: "Evidence recorded", detail: `${PATTERN_SUMMARY.anatomyParts} anatomy parts, ${PATTERN_SUMMARY.variants} variants, ${PATTERN_SUMMARY.states} states, ${PATTERN_SUMMARY.responsiveRecords} responsive records, ${PATTERN_SUMMARY.densityRecords} density records` },
+              { term: "Registry integrity", detail: REGISTRY_INTEGRITY.specsWithoutGraphNode.length === 0 && REGISTRY_INTEGRITY.graphNodesWithoutSpec.length === 0 ? "Every pattern id exists in both the Phase 9 graph and the Phase 10 specification." : `Specs without a graph node: ${REGISTRY_INTEGRITY.specsWithoutGraphNode.join(", ") || "none"}. Graph nodes without a spec: ${REGISTRY_INTEGRITY.graphNodesWithoutSpec.join(", ") || "none"}.` },
+            ]}
+          />
+          {PATTERN_TAXONOMY.filter((g) => g.patterns.length > 0).map((group) => (
+            <div key={group.category} className="mt-6">
+              <p className="text-eyebrow">{group.title}</p>
+              <div className="mt-3">
+                <SpecMatrixTable
+                  columns={["Pattern", "Problem it solves", "Ownership", "Evidence"]}
+                  rows={group.patterns.map((p) => ({
+                    key: p.id,
+                    cells: [p.name, p.problem, String(p.ownership), p.evidence],
+                    label: p.status,
+                    note: p.note,
+                  }))}
+                />
+              </div>
+            </div>
+          ))}
+          <div className="mt-4">
+            <RuleList items={REGISTRY_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-anatomy"
+          eyebrow="Phase 10 patterns"
+          title="Pattern anatomy"
+          intro="The named parts of each pattern, in the order the code renders them, with the component that fills each slot. A slot with no owner says so."
+        >
+          {PATTERN_ANATOMY.map((record) => (
+            <div key={record.patternId} className="mb-6 rounded-2xl border border-hairline bg-card p-5">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="font-medium">{record.name}</p>
+                <ArchLabelChip label={record.status} />
+              </div>
+              <p className="text-serial mt-1">{record.order}</p>
+              <div className="mt-4">
+                <SpecMatrixTable
+                  columns={["Part", "Filled by", "Required", "Evidence"]}
+                  rows={record.parts.map((part) => ({
+                    key: `${record.patternId}-${part.part}`,
+                    cells: [part.part, part.filledBy, part.required ? "required" : "optional", part.evidence],
+                    label: part.status,
+                    note: part.note,
+                  }))}
+                />
+              </div>
+            </div>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="pat-composition"
+          eyebrow="Phase 10 patterns"
+          title="Pattern composition"
+          intro="Pattern, compound, component, semantic role and foundation, computed by walking the Phase 9 graph. This view declares no relationships of its own, so the two phases cannot drift apart."
+        >
+          <SpecMatrixTable
+            columns={["Pattern", "Compound", "Components", "Roles", "Foundations", "Evidence"]}
+            rows={PATTERN_COMPOSITION.map((row, i) => ({
+              key: `${row.patternId}-${row.compound}-${i}`,
+              cells: [
+                row.pattern,
+                row.compound,
+                row.components.join(", ") || "no component edge",
+                row.roles.join(", ") || "no role edge",
+                row.foundations.join(", ") || "no foundation edge",
+                row.evidence,
+              ],
+              label: row.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={PATTERN_COMPOSITION_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-variants"
+          eyebrow="Phase 10 patterns"
+          title="Pattern variants"
+          intro="Structural differences that genuinely exist. Each entry records why both forms are kept. Frequency is evidence of reach, never of correctness, so no winner is chosen here."
+        >
+          <SpecMatrixTable
+            columns={["Pattern", "Variant", "Difference", "Seen in", "Kept because"]}
+            rows={PATTERN_VARIANTS.map((v, i) => ({
+              key: `${v.patternId}-${v.variant}-${i}`,
+              cells: [v.patternId.replace("pat.", ""), v.variant, v.difference, v.seenIn, v.keptBecause],
+              label: v.status,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="pat-states"
+          eyebrow="Phase 10 patterns"
+          title="Pattern states"
+          intro="Only states the code actually handles. A state the code does not handle is recorded as absent rather than described."
+        >
+          <SpecMatrixTable
+            columns={["Pattern", "State", "Behavior", "Evidence"]}
+            rows={PATTERN_STATES.map((st, i) => ({
+              key: `${st.patternId}-${st.state}-${i}`,
+              cells: [st.patternId.replace("pat.", ""), st.state, st.behavior, st.evidence],
+              label: st.status,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="pat-responsive"
+          eyebrow="Phase 10 patterns"
+          title="Pattern responsive behaviour"
+          intro="Transcribed from the breakpoint classes the code already carries. No breakpoint is introduced and nothing is normalised."
+        >
+          <SpecMatrixTable
+            columns={["Pattern", "Breakpoint", "Structural change", "Desktop", "Tablet", "Mobile", "Stacks", "Collapses", "Reorders", "Density"]}
+            rows={PATTERN_RESPONSIVE.map((r, i) => ({
+              key: `${r.patternId}-${i}`,
+              cells: [
+                r.patternId.replace("pat.", ""),
+                r.breakpoint,
+                r.structuralChange,
+                r.desktop,
+                r.tablet,
+                r.mobile,
+                r.columnsStack ? "yes" : "no",
+                r.controlsCollapse ? "yes" : "no",
+                r.reorders ? "yes" : "no",
+                r.densityChanges ? "changes" : "same",
+              ],
+              label: r.status,
+              note: r.evidence,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={RESPONSIVE_PATTERN_NOTES} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-density"
+          eyebrow="Phase 10 patterns"
+          title="Pattern density"
+          intro="Control height, padding, gap, type and icon size per density mode, exactly as the code has them. Differences are preserved, not reconciled."
+        >
+          <SpecMatrixTable
+            columns={["Pattern", "Mode", "Control height", "Padding", "Gap", "Typography", "Icon", "Evidence"]}
+            rows={PATTERN_DENSITY.map((d, i) => ({
+              key: `${d.patternId}-${d.mode}-${i}`,
+              cells: [d.patternId.replace("pat.", ""), d.mode, d.controlHeight, d.padding, d.gap, d.typography, d.iconSize, d.evidence],
+              label: d.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={DENSITY_OPEN_QUESTIONS} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-experience"
+          eyebrow="Phase 10 patterns"
+          title="Experience patterns"
+          intro="A pattern specialised for one experience: same anatomy, different composition, density or wording. Intentional differences are preserved."
+        >
+          <SpecMatrixTable
+            columns={["Experience", "Pattern", "Purpose", "Composition", "Responsive", "Screens", "Ownership"]}
+            rows={EXPERIENCE_PATTERNS.map((e, i) => ({
+              key: `${e.experienceId}-${e.patternId}-${i}`,
+              cells: [
+                e.experienceId.replace("exp.", ""),
+                e.patternId.replace("pat.", ""),
+                e.purpose,
+                e.composition,
+                e.responsive,
+                e.screens.join(", "),
+                e.ownership,
+              ],
+              label: e.status,
+              note: e.variations.length > 0 ? e.variations.join(" · ") : e.note,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="pat-extensions"
+          eyebrow="Phase 10 patterns"
+          title="Experience extensions"
+          intro="Where one core pattern behaves differently by experience. An extension keeps the anatomy; a separate system is only recorded where the code really shows two independent implementations."
+        >
+          <SpecMatrixTable
+            columns={["Core pattern", "Experience A", "Behaviour A", "Experience B", "Behaviour B", "Classification", "Evidence"]}
+            rows={EXPERIENCE_EXTENSIONS.map((e, i) => ({
+              key: `${e.corePattern}-${i}`,
+              cells: [e.corePattern.replace("pat.", ""), e.experienceA, e.behaviorA, e.experienceB, e.behaviorB, e.classification, e.evidence],
+              label: e.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={EXTENSION_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-screens"
+          eyebrow="Phase 10 patterns"
+          title="Screen to pattern traceability"
+          intro="Representative routes followed down through experience, pattern, compound, component, role and foundation. Routes and relationships come from the Phase 9 graph; nothing is re-declared here."
+        >
+          <div className="space-y-3">
+            {SCREEN_PATTERN_MAP.map((trace) => (
+              <div key={trace.screenId} className="rounded-2xl border border-hairline bg-card p-5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="font-medium">{trace.route}</p>
+                  <MetaChip tone="muted">{trace.experienceId.replace("exp.", "")}</MetaChip>
+                  <ArchLabelChip label={trace.status} />
+                </div>
+                <p className="text-serial mt-2">{chainForScreen(trace.screenId).join(" → ")}</p>
+                <dl className="mt-4 grid gap-2 md:grid-cols-4">
+                  {[
+                    ["Patterns", trace.patternIds.map((p) => p.replace("pat.", ""))],
+                    ["Compounds", trace.compounds],
+                    ["Components", trace.components],
+                    ["Foundation", trace.foundations],
+                  ].map(([term, items]) => (
+                    <div key={term as string} className="rounded-xl border border-hairline p-3">
+                      <dt className="text-eyebrow">{term as string}</dt>
+                      <dd className="mt-1 text-sm text-muted-foreground">
+                        {(items as string[]).length === 0 ? "no edge recorded" : (items as string[]).join(", ")}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4">
+            <RuleList items={SCREEN_MAP_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-duplicates"
+          eyebrow="Phase 10 patterns"
+          title="Pattern duplicate and overlap register"
+          intro="Pattern-level duplication, listed beside the implementations that produce it. Nothing is ranked, scored, merged, renamed, deleted or migrated."
+        >
+          <DuplicateRegisterTable
+            entries={PATTERN_DUPLICATES.map((d) => ({
+              area: d.concept,
+              implementations: d.implementations.map((i) => ({ name: i.name, source: i.source, scope: i.consumers })),
+              overlap: d.differences,
+              future: d.resolution === "unresolved" ? "Unresolved — needs an explicit decision" : "Observed and accepted",
+              label: d.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={DUPLICATE_HANDLING_RULES} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-governance"
+          eyebrow="Phase 10 patterns"
+          title="Pattern governance"
+          intro="How future pattern work should be conducted. These rules are documentation; no build step enforces them and nothing shipping changes because of them."
+        >
+          {[
+            { title: "Component, compound, pattern or experience pattern", rows: PATTERN_DEFINITION_RULES },
+            { title: "Evidence required before canonicalisation", rows: CANONICALIZATION_EVIDENCE },
+            { title: "Ownership", rows: PATTERN_OWNERSHIP_RULES },
+            { title: "Documentation duties", rows: PATTERN_DOCUMENTATION_DUTIES },
+          ].map((block) => (
+            <div key={block.title} className="mt-6">
+              <p className="text-eyebrow">{block.title}</p>
+              <div className="mt-3">
+                <SpecMatrixTable
+                  columns={["Question", "Rule"]}
+                  rows={block.rows.map((r) => ({ key: r.question, cells: [r.question, r.rule], label: r.status }))}
+                />
+              </div>
+            </div>
+          ))}
+          <div className="mt-6">
+            <RuleList items={APPROVAL_GATE} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-figma"
+          eyebrow="Phase 10 patterns"
+          title="Future Figma pattern blueprint"
+          intro="A proposal for how each pattern would become a Figma component set. Nothing exists in Figma: no file, component, variant, style or asset has been created."
+        >
+          <SpecMatrixTable
+            columns={["Pattern", "Proposed structure", "Variant properties", "State properties", "Responsive", "Density", "Content model"]}
+            rows={PATTERN_FIGMA_MAPPINGS.map((f) => ({
+              key: f.patternId,
+              cells: [
+                f.patternId.replace("pat.", ""),
+                f.figmaStructure,
+                f.variantProperties.join(", ") || "none",
+                f.stateProperties.join(", ") || "none",
+                f.responsiveVariants,
+                f.densityVariants,
+                f.contentModel,
+              ],
+              label: f.status,
+              note: f.componentProperties.join(" · "),
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={FIGMA_PATTERN_RULES} tone="warning" />
+          </div>
+          <div className="mt-4">
+            <DefinitionRows
+              rows={[
+                { term: "Dossiers assembled", detail: `${PATTERN_DOSSIERS.length} patterns, each joining specification, graph node, anatomy, variants, states, responsive, density, composition, experiences and Figma proposal.` },
+              ]}
+            />
           </div>
         </RefSection>
       </RefContainer>
