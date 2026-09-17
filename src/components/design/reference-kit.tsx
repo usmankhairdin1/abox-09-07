@@ -1006,3 +1006,261 @@ export function AssetTable({
     </div>
   );
 }
+
+/* -----------------------------------------------------------------
+ * Phase 5 — component inventory display helpers.
+ * Documentation-only rendering. No production component is affected.
+ * ----------------------------------------------------------------- */
+
+const COMPONENT_STATUS_LABEL: Record<string, string> = {
+  "in-use": "In use",
+  "internal-only": "Internal",
+  "installed-unused": "Installed, unused",
+  "possibly-unused": "Possibly unused",
+  "reference-only": "Reference only",
+};
+
+/** Full component inventory table: identity, classification, consumers, maturity. */
+export function ComponentTable({
+  entries,
+}: {
+  entries: {
+    name: string;
+    source: string;
+    category: string;
+    kind: string;
+    layer: string;
+    scope: string;
+    consumers: string;
+    consumerDetail: string;
+    experience: string;
+    dependencies: string;
+    children: string;
+    maturity: string;
+    status: string;
+    note?: string;
+  }[];
+}) {
+  const tone = (status: string): "sage" | "muted" | "warning" =>
+    status === "in-use" ? "sage" : status === "internal-only" ? "muted" : "warning";
+  return (
+    <div className="overflow-hidden rounded-2xl border border-hairline bg-card">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[980px] text-sm">
+          <thead className="border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <tr>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Component
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Classification
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Consumers
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Composition
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Maturity
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((e) => (
+              <tr key={e.name} className="border-b border-hairline/60 align-top last:border-0">
+                <td className="px-5 py-4">
+                  <p className="font-medium">{e.name}</p>
+                  <p className="text-serial mt-1">{e.source}</p>
+                  <span className="mt-2 flex flex-wrap gap-1">
+                    <MetaChip tone={tone(e.status)}>
+                      {COMPONENT_STATUS_LABEL[e.status] ?? e.status}
+                    </MetaChip>
+                    {e.layer === "reference" && <MetaChip tone="primary">Reference</MetaChip>}
+                  </span>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  <span className="block text-foreground">{e.category}</span>
+                  {e.kind}
+                  <span className="mt-1 block text-xs">{e.scope}</span>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  <span className="block font-medium tabular-nums text-foreground">
+                    {e.consumers}
+                  </span>
+                  {e.consumerDetail}
+                  <span className="mt-1 block text-xs">{e.experience}</span>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  <span className="block">{e.children}</span>
+                  <span className="mt-1 block text-xs">Depends on: {e.dependencies}</span>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  {e.maturity}
+                  {e.note && <span className="mt-1 block text-xs text-warning">{e.note}</span>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/** Component anatomy: the parts that actually exist, in render order. */
+export function AnatomyList({
+  entries,
+}: {
+  entries: { component: string; source: string; parts: string[]; note?: string }[];
+}) {
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      {entries.map((e) => (
+        <div key={e.component} className="rounded-2xl border border-hairline bg-card p-5">
+          <p className="text-sm font-semibold">{e.component}</p>
+          <p className="text-serial mt-1">{e.source}</p>
+          <ol className="mt-3 space-y-1.5">
+            {e.parts.map((p, i) => (
+              <li key={p} className="flex gap-2 text-sm text-muted-foreground">
+                <span className="tabular-nums text-xs text-muted-foreground/70">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span>{p}</span>
+              </li>
+            ))}
+          </ol>
+          {e.note && <p className="mt-3 text-xs text-warning">{e.note}</p>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Variant / size property inventory with measured usage. */
+export function VariantTable({
+  entries,
+}: {
+  entries: {
+    component: string;
+    property: string;
+    values: string;
+    used: string;
+    unused: string;
+    consumers: string;
+    source: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-hairline bg-card">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[900px] text-sm">
+          <thead className="border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <tr>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Component &amp; property
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Allowed values
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Measured use
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Unused
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((e) => (
+              <tr
+                key={`${e.component}-${e.property}`}
+                className="border-b border-hairline/60 align-top last:border-0"
+              >
+                <td className="px-5 py-4">
+                  <p className="font-medium">{e.component}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{e.property}</p>
+                  <p className="text-serial mt-1">{e.source}</p>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">{e.values}</td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  <span className="block">{e.used}</span>
+                  <span className="mt-1 block text-xs">{e.consumers}</span>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  {e.unused}
+                  {e.note && <span className="mt-1 block text-xs text-warning">{e.note}</span>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/** Per-component state inventory. */
+export function ComponentStateTable({
+  entries,
+}: {
+  entries: {
+    component: string;
+    states: string;
+    expression: string;
+    changesContent: string;
+    changesIcon: string;
+    accessibility: string;
+    source: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-hairline bg-card">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[960px] text-sm">
+          <thead className="border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <tr>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Component
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                States today
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                How it is expressed
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Content / icon change
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Accessibility
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((e) => (
+              <tr key={e.component} className="border-b border-hairline/60 align-top last:border-0">
+                <td className="px-5 py-4">
+                  <p className="font-medium">{e.component}</p>
+                  <p className="text-serial mt-1">{e.source}</p>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">{e.states}</td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  {e.expression}
+                  {e.note && <span className="mt-1 block text-xs text-warning">{e.note}</span>}
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  <span className="block">Content: {e.changesContent}</span>
+                  <span className="mt-1 block text-xs">Icon: {e.changesIcon}</span>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">{e.accessibility}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

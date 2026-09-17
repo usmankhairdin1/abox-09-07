@@ -241,3 +241,108 @@ export interface AssetGroup {
   summary: string;
   entries: AssetEntry[];
 }
+
+/* -----------------------------------------------------------------
+ * Phase 5 — component inventory audit types.
+ * Documentation only. Consumed by `/design-system` and `/design-guide`.
+ * ----------------------------------------------------------------- */
+
+/** Primary taxonomy bucket. One category per component. */
+export type ComponentCategory =
+  | "foundation-primitive"
+  | "form-control"
+  | "action"
+  | "display"
+  | "container"
+  | "data"
+  | "navigation"
+  | "overlay"
+  | "feedback"
+  | "commerce"
+  | "brand"
+  | "shell"
+  | "pattern"
+  | "specialized"
+  | "reference-only";
+
+/** What the thing actually is, structurally. */
+export type ComponentKind =
+  | "primitive"
+  | "component"
+  | "composition"
+  | "wrapper"
+  | "layout-helper"
+  | "page-local"
+  | "repeated-markup"
+  | "pattern-candidate";
+
+/** Which experience(s) consume it, derived from real consumers. */
+export type ComponentScope =
+  | "core-shared"
+  | "multi-experience"
+  | "web-marketing"
+  | "shopping-marketplace"
+  | "dashboard-admin"
+  | "specialized-local"
+  | "reference-only";
+
+export interface ComponentEntry {
+  name: string;
+  source: string;
+  category: ComponentCategory;
+  kind: ComponentKind;
+  layer: "production" | "reference";
+  scope: ComponentScope;
+  /** Approximate direct import sites, as measured. "n/a" when not reliably countable. */
+  consumers: string;
+  /** Representative consumers, indirect consumers noted explicitly. */
+  consumerDetail: string;
+  experience: string;
+  dependencies: string;
+  /** Major child components rendered inside it. */
+  children: string;
+  /** Descriptive maturity label — never a score. */
+  maturity: string;
+  status: "in-use" | "internal-only" | "installed-unused" | "possibly-unused" | "reference-only";
+  note?: string;
+}
+
+export interface ComponentGroup {
+  id: string;
+  title: string;
+  summary: string;
+  entries: ComponentEntry[];
+}
+
+/** Actual anatomy of a component, as implemented. */
+export interface AnatomyEntry {
+  component: string;
+  source: string;
+  parts: string[];
+  note?: string;
+}
+
+/** One variant/size/appearance property and its measured usage. */
+export interface VariantEntry {
+  component: string;
+  property: string;
+  values: string;
+  used: string;
+  unused: string;
+  consumers: string;
+  source: string;
+  note?: string;
+}
+
+/** States a component actually implements and how each is expressed. */
+export interface ComponentStateEntry {
+  component: string;
+  states: string;
+  expression: string;
+  /** Does the state alter rendered content, not just styling? */
+  changesContent: string;
+  changesIcon: string;
+  accessibility: string;
+  source: string;
+  note?: string;
+}
