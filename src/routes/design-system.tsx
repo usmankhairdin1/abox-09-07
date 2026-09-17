@@ -850,6 +850,79 @@ function DesignSystemPage() {
         </RefSection>
 
         <RefSection
+          id="spacing-audit"
+          eyebrow="Phase 2 audit"
+          title="Spacing foundation"
+          intro="Measured from src/routes and src/components. The application has no spacing token in src/styles.css — spacing is expressed with Tailwind utilities at each call site, so these tables are the actual source of truth. Counts are approximate and describe scale."
+        >
+          {SPACING_GROUPS.map((group) => (
+            <RefBlock key={group.id} title={group.title} note={group.summary}>
+              <SpacingTable entries={group.entries} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="layout-containers"
+          eyebrow="Phase 2 audit"
+          title="Layout foundation — containers"
+          intro="Every recurring container behaviour as implemented. The web experience and the admin shell deliberately use different ceilings; both are preserved."
+        >
+          <ContainerTable entries={CONTAINERS} />
+        </RefSection>
+
+        <RefSection
+          id="layout-structure"
+          eyebrow="Phase 2 audit"
+          title="Structural relationships, grid & flex"
+          intro="Observed spacing between adjacent structural elements, and the grid and flex conventions that produce them. Consistency is reported as found and is not normalized."
+        >
+          <RefBlock title={STRUCTURAL_RELATIONSHIPS.title} note={STRUCTURAL_RELATIONSHIPS.summary}>
+            <RelationshipTable entries={STRUCTURAL_RELATIONSHIPS.entries} />
+          </RefBlock>
+          <RefBlock title={GRID_FLEX_RELATIONSHIPS.title} note={GRID_FLEX_RELATIONSHIPS.summary}>
+            <RelationshipTable entries={GRID_FLEX_RELATIONSHIPS.entries} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="responsive-audit"
+          eyebrow="Phase 2 audit"
+          title="Responsive foundation"
+          intro="Breakpoint usage measured in the codebase: md carries 246 modifiers, sm 173, lg 87, xl 22 and 2xl 2. These are the real responsive relationships, not Tailwind's defaults listed generically."
+        >
+          <ResponsiveTable entries={RESPONSIVE_PATTERNS} />
+        </RefSection>
+
+        <RefSection
+          id="density-audit"
+          eyebrow="Phase 2 audit"
+          title="Density"
+          intro="Observed contextual density modes. These are descriptions of what ships, not tokens — no density token exists in the implementation."
+        >
+          <DensityTable entries={DENSITY_MODES} />
+        </RefSection>
+
+        <RefSection
+          id="dimensions-audit"
+          eyebrow="Phase 2 audit"
+          title="Dimensional relationships"
+          intro="Recurring dimensions that set layout quality, cross-referenced with the foundation audit's control-height and icon-size records."
+        >
+          <DimensionTable entries={DIMENSIONS} />
+        </RefSection>
+
+        <RefSection
+          id="layout-patterns"
+          eyebrow="Phase 2 audit"
+          title="Layout patterns"
+          intro="Structural patterns present in the application today. Nothing here is a new runtime pattern — each entry points at the code that already implements it."
+        >
+          <LayoutPatternList entries={LAYOUT_PATTERNS} />
+        </RefSection>
+
+
+        <RefSection
           id="governance"
           eyebrow="Governance"
           title="Ownership & safe change"
