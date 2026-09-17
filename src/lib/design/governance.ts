@@ -652,3 +652,206 @@ export const FIGMA_TYPOGRAPHY_MAPPING = [
     note: "Use the role names already in the code — display, eyebrow, serial, body, caption, badge — rather than inventing an h1/h2/h3 ladder the product does not use.",
   },
 ];
+
+/* -----------------------------------------------------------------
+ * Phase 5 — component governance, maturity, mapping and future library.
+ * Documentation only. Consumed by `/design-system` and `/design-guide`.
+ * ----------------------------------------------------------------- */
+
+export const COMPONENT_GOVERNANCE_RULES = [
+  "GOVERNANCE RULE — a component belongs in the core system when at least two experiences consume it and it carries no product-specific business meaning. StatusBadge, Button, ACTION_PILL, PageHeader, EmptyState and the motion wrappers meet that test today.",
+  "GOVERNANCE RULE — a component stays experience-specific when its meaning only exists in that experience. PlanCard, MetalBadge and CarrierMark are shopping concepts; the M08 outcome and dimension components are governed concepts. Neither set should be generalised into the core.",
+  "GOVERNANCE RULE — before adding a component, check the shared layer and the four module kits. Four parallel table, header and empty-state implementations already exist; a fifth should be a deliberate decision, not an accident.",
+  "GOVERNANCE RULE — existing component APIs stay as they are until a migration is planned on purpose. Renaming a variant, adding a required prop or changing a default re-renders live screens.",
+  "GOVERNANCE RULE — variants are added, never repurposed. Changing what an existing variant name means silently changes every screen that uses it.",
+  "GOVERNANCE RULE — state is expressed through colour, weight, background and border. No component changes its icon or its size to express a state today, and new work should keep that.",
+  "GOVERNANCE RULE — accessibility behaviour belongs to the primitive. Focus rings, disabled handling, dialog semantics and icon sizing are owned by src/components/ui and must not be re-implemented in a screen.",
+  "GOVERNANCE RULE — components consume tokens, never literal colour values. Metal tiers and their paired foregrounds are fixed token pairs.",
+  "GOVERNANCE RULE — brand marks come from abox/logo.tsx and abox/carrier-mark.tsx. Runtime logo, favicon and hero assets remain owned by Branding & White-Label and Marketplace Asset Management; the component layer never duplicates that ownership.",
+  "GOVERNANCE RULE — src/components/design/reference-kit.tsx is documentation rendering. It must never be imported by an application screen, and no application component may import anything from src/lib/design.",
+  "GOVERNANCE RULE — a change to a core shared component is reviewed against all three experiences before it ships, because the shells alone reach 123 routes.",
+];
+
+export const COMPONENT_UNOWNED_AREAS = [
+  "UNOWNED AREA — the card surface. The dominant rounded-2xl border bg-card treatment is markup, and the border token varies between border and hairline.",
+  "UNOWNED AREA — form fields. There is no shared Field component; ui/form.tsx is installed and unused while three module kits each define their own.",
+  "UNOWNED AREA — the results toolbar and filter chip row, both repeated without a component.",
+  "UNOWNED AREA — loading. Skeleton and Spinner exist, but each module kit ships its own LoadingRows and no loading state is announced to assistive technology.",
+  "UNOWNED AREA — the circular icon container, roughly 104 occurrences with no component owner.",
+  "UNOWNED AREA — the status tone vocabulary. Fifteen distinct tone values express one conceptual scale across StatusBadge and the module kits.",
+  "UNOWNED AREA — bilingual strings. M08 owns a string table and a language toggle; there is no product-wide equivalent.",
+];
+
+export const COMPONENT_DEFERRED_OPPORTUNITIES = [
+  {
+    title: "Converge the four table implementations",
+    detail:
+      "DataTable, lucie Table, lucie-app DataTable and the raw ui/table.tsx primitive. Column APIs differ, so any convergence re-renders admin screens.",
+    risk: "high",
+  },
+  {
+    title: "Converge the parallel page headers and empty states",
+    detail:
+      "lucie PageHead and lucie-app PageHeader/EmptyState duplicate ABox components by name and purpose.",
+    risk: "medium",
+  },
+  {
+    title: "Unify the status tone vocabulary",
+    detail:
+      "StatusBadge tones, m06 Tone and lucie-app ChipTone describe one scale in three vocabularies. Mapping them would change rendered colours.",
+    risk: "high",
+  },
+  {
+    title: "Give the card surface a component owner",
+    detail:
+      "Centralising it would have to pick one padding and one border token, changing screens that currently differ.",
+    risk: "high",
+  },
+  {
+    title: "Introduce a shared Field component",
+    detail: "Would replace three module field systems and re-lay-out every form.",
+    risk: "high",
+  },
+  {
+    title: "Resolve the two assistant implementations",
+    detail:
+      "PlanAiAssistant and PlanOAssistant both exist with no located route consumer. Behavioural, not styling.",
+    risk: "medium",
+  },
+  {
+    title: "Decide the fate of the 20 unused primitives and the ai-elements tree",
+    detail:
+      "Keep as installed capability or remove. Either way it is a dependency decision, not a design decision.",
+    risk: "low",
+  },
+  {
+    title: "Add a keyboard path for clickable table rows",
+    detail: "Rows carry onClick on a tr with no keyboard equivalent.",
+    risk: "low",
+  },
+  {
+    title: "Announce loading states",
+    detail: "aria-busy or a live region for skeleton regions.",
+    risk: "low",
+  },
+  {
+    title: "Add a shared accessible-name helper for icon-only controls",
+    detail: "The convention is followed by hand today.",
+    risk: "low",
+  },
+  {
+    title: "Reconcile the Button and ACTION_PILL action ladders",
+    detail:
+      "Button stops at h-10 and is rounded-md; the pill reaches h-11 and is rounded-full. Both are intentional today.",
+    risk: "medium",
+  },
+];
+
+export const FIGMA_COMPONENT_MAPPING = [
+  {
+    production: "src/components/ui primitives",
+    figma: "Core library → Components, as base components with variant properties",
+    note: "Only the 29 with a production consumer belong in the first library pass.",
+  },
+  {
+    production: "Button variant and size props",
+    figma: "Two Figma variant properties — Variant (6 values) and Size (5 values)",
+    note: "Mirror the cva names exactly; do not rename in Figma.",
+  },
+  {
+    production: "ACTION_PILL keys",
+    figma:
+      "One Action Pill component with Tone (primary/outline) and Size (xs/sm/md/lg) properties",
+    note: "smCard becomes a Surface boolean rather than a fifth size.",
+  },
+  {
+    production: "StatusBadge tone",
+    figma: "Status Badge component with a six-value Tone property",
+    note: "The module-kit tone vocabularies stay out of the core library.",
+  },
+  {
+    production: "MetalBadge tier",
+    figma: "Metal Badge with a six-value Tier property bound to the metal token pairs",
+    note: "Fill and foreground are a fixed pair per tier.",
+  },
+  {
+    production: "Component states",
+    figma: "State property — default, hover, focus, disabled, selected, loading where implemented",
+    note: "Only states that exist in code; no invented states.",
+  },
+  {
+    production: "Card family, Dialog, Sheet",
+    figma: "Parent component with nested header, content and footer subcomponents",
+    note: "Nested components, not detached copies.",
+  },
+  {
+    production: "PlanCard",
+    figma: "Commerce component composing Carrier Mark, Metal Badge and Status Badge instances",
+    note: "Composition, so the children stay linked to the core components.",
+  },
+  {
+    production: "The three shells",
+    figma: "Page frame templates, one per experience",
+    note: "Templates rather than components — they define the page, not a part of it.",
+  },
+  {
+    production: "Repeated markup (card surface, section heading, results toolbar)",
+    figma: "Pattern candidates documented in the Patterns section",
+    note: "Not promoted to components automatically.",
+  },
+  {
+    production: "Module kits (M06, M08, Lucie, Lucie-app)",
+    figma: "Experience sections, not core components",
+    note: "Their duplication is documented so it is not replicated in Figma.",
+  },
+  {
+    production: "reference-kit.tsx",
+    figma: "Not mapped — documentation rendering only",
+    note: "Never becomes a Figma component.",
+  },
+];
+
+export const FUTURE_FIGMA_ORGANIZATION = [
+  {
+    level: "ABOX CORE → Foundations",
+    detail: "Tokens, Typography, Iconography, Assets — sourced from the Phase 1–4 audits.",
+  },
+  {
+    level: "ABOX CORE → Components → Actions",
+    detail: "Button, Action Pill, Button Group, Save & Continue.",
+  },
+  {
+    level: "ABOX CORE → Components → Forms",
+    detail:
+      "Input, Textarea, Select, Checkbox, Radio, Switch, Slider, Label. A Field pattern is documented but has no production owner.",
+  },
+  {
+    level: "ABOX CORE → Components → Display",
+    detail: "Status Badge, Metal Badge, Badge, Overflow Text.",
+  },
+  {
+    level: "ABOX CORE → Components → Containers",
+    detail: "Card family plus the card-surface pattern candidate.",
+  },
+  { level: "ABOX CORE → Components → Data", detail: "Data Table, KPI Card." },
+  { level: "ABOX CORE → Components → Navigation", detail: "Module Tabs, Tabs, nav item." },
+  {
+    level: "ABOX CORE → Components → Overlays",
+    detail: "Dialog, Sheet, Dropdown, Tooltip, Popover.",
+  },
+  {
+    level: "ABOX CORE → Components → Feedback",
+    detail: "Empty State, Skeleton, Spinner, Progress, Toast, Alert.",
+  },
+  { level: "ABOX CORE → Components → Brand", detail: "ABox Mark, Wordmark, Carrier Mark." },
+  {
+    level: "ABOX CORE → Patterns",
+    detail:
+      "Page structures (three frames), forms, data, navigation, commerce, and the documented experience patterns.",
+  },
+  {
+    level: "Experience guidance",
+    detail:
+      "Web/Marketing, Shopping/Marketplace, Dashboard/Admin and a reserved Future slot — contextual usage only, never separate libraries.",
+  },
+];

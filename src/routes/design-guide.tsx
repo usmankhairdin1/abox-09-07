@@ -81,12 +81,17 @@ import {
   FIGMA_TYPOGRAPHY_MAPPING,
   TYPOGRAPHY_GOVERNANCE_RULES,
   TYPOGRAPHY_UNOWNED_AREAS,
+  COMPONENT_GOVERNANCE_RULES,
+  COMPONENT_UNOWNED_AREAS,
+  COMPONENT_DEFERRED_OPPORTUNITIES,
+  FUTURE_FIGMA_ORGANIZATION,
 } from "@/lib/design/governance";
 import {
   ASSET_OWNERSHIP,
   ASSET_UNUSED_FINDINGS,
   FIGMA_ICON_ASSET_MAPPING,
 } from "@/lib/design/assets";
+import { COMPONENT_EXPERIENCE_SPLIT } from "@/lib/design/component-relationships";
 
 export const Route = createFileRoute("/design-guide")({
   head: () => ({
@@ -128,6 +133,7 @@ const TOC = [
   { id: "spacing-layout", label: "Spacing & layout" },
   { id: "typography-governance", label: "Typography" },
   { id: "icon-asset-governance", label: "Icons & assets" },
+  { id: "component-governance", label: "Components" },
   { id: "figma", label: "Figma mapping" },
 ];
 
@@ -1039,6 +1045,78 @@ function DesignGuidePage() {
               these changes get reviewed rather than made in passing. The reverse also holds: never
               copy an icon or mark into a screen to customise it locally.
             </p>
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="component-governance"
+          eyebrow="17"
+          title="Component governance"
+          intro="The product is built from a shared set of components. This section explains what belongs in that shared set, what stays specific to one experience, and how changes are meant to travel. It documents the rules — it is not a place to change anything."
+        >
+          <RefBlock title="What belongs in the core system">
+            <p className="text-sm text-muted-foreground">
+              A component joins the core set when more than one part of the product needs it and it
+              carries no business meaning of its own — a button, a badge, a page title block, an
+              empty result message. A component stays specific to one part of the product when its
+              meaning only exists there: a plan tile, a metal tier, a licensing outcome. Keeping
+              that line clear is what stops the shared set from turning into a dumping ground.
+            </p>
+          </RefBlock>
+          <RefBlock title="The rules we work to">
+            <RuleList items={COMPONENT_GOVERNANCE_RULES} />
+          </RefBlock>
+          <RefBlock
+            title="Where ownership is currently unclear"
+            note="Named honestly so the gaps are visible. Nothing here is broken today."
+          >
+            <RuleList items={COMPONENT_UNOWNED_AREAS} tone="warning" />
+          </RefBlock>
+          <RefBlock title="Known improvements, deliberately not made yet">
+            <MaturityCallout
+              kind="opportunity"
+              title="Each of these would change screens people use today"
+            >
+              <p className="mb-2">
+                The audit found several places where the same idea is built more than once. None of
+                them is being changed in this phase, because every fix would alter live screens.
+                They are recorded so the decision can be made on purpose later.
+              </p>
+              <ul className="space-y-2">
+                {COMPONENT_DEFERRED_OPPORTUNITIES.map((o) => (
+                  <li key={o.title}>
+                    <span className="font-medium text-foreground">{o.title}</span> — {o.detail}
+                  </li>
+                ))}
+              </ul>
+            </MaturityCallout>
+          </RefBlock>
+          <RefBlock title="Guidance by part of the product">
+            <DefinitionRows
+              rows={COMPONENT_EXPERIENCE_SPLIT.map((e) => ({
+                term: e.experience,
+                detail: e.guidance,
+                meta: e.components,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock title="How this connects to everything else">
+            <p className="text-sm text-muted-foreground">
+              Components take their colours, type and spacing from the shared tokens, and their
+              icons from the shared icon set — never from values written directly into a screen.
+              Logos, uploaded imagery and per-marketplace brand assets stay owned by the existing
+              Branding and Marketplace Asset screens; the component layer displays them and never
+              takes over managing them. When a shared component changes, it changes everywhere at
+              once, so those changes are reviewed across all parts of the product before they ship.
+            </p>
+          </RefBlock>
+          <RefBlock
+            title="What the future Figma library would look like"
+            note="Proposed organization only. This does not exist yet."
+          >
+            <DefinitionRows
+              rows={FUTURE_FIGMA_ORGANIZATION.map((f) => ({ term: f.level, detail: f.detail }))}
+            />
           </RefBlock>
         </RefSection>
 

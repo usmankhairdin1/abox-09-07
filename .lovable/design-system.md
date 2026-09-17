@@ -563,3 +563,147 @@ the parent control, not the icon; semantic categories as library pages; the prod
 map as a documentation table; `AboxMark` as a brand component with tone variants;
 `AboxWordmark` as a text style; `CarrierMark` explicitly labelled illustrative; decor as a
 marketing-only illustration section; marketplace assets as documented placeholder slots.
+
+---
+
+## Phase 5 — Complete component inventory + reference governance
+
+Documentation and reference-layer work only. No production component, route, style or behaviour
+was changed. Every finding below is recorded, not fixed.
+
+Reference modules added: `src/lib/design/components.ts`, `component-variants.ts`,
+`component-states.ts`, `component-relationships.ts`. `types.ts` and `governance.ts` were extended
+additively. Consumed only by `/design-system` and `/design-guide`.
+
+### CURRENT IMPLEMENTATION — inventory
+
+- **ABox business components** — 27 modules under `src/components/abox` plus the `decor` folder.
+- **shadcn/UI primitives** — 49 modules under `src/components/ui`; 29 have a production consumer.
+- **Icon components** — one, `src/components/icons/tooth-icon.tsx`, wrapping Tabler `IconDental`.
+- **Shells** — three (Internal, Marketplace, Member) covering 123 routes.
+- **Route-local kits** — M06 kit, M06 screen common, M08 kit, Lucie kit, Lucie-app kit,
+  `src/components/ai-elements`. Real reusable components, owned by a module rather than by the
+  design system. Recorded here for the first time.
+- **Reference-only** — `src/components/design/reference-kit.tsx`, two consumers, both docs pages.
+
+Taxonomy: fifteen categories from FOUNDATION PRIMITIVE through REFERENCE ONLY, one per component.
+
+### CURRENT IMPLEMENTATION — consumers
+
+Measured by import path, each component's own folder and both reference pages excluded.
+StatusBadge 89, InternalShell 89, ACTION_PILL 35 files / 82 key references, MarketplaceShell 30,
+PageHeader 25, Button 22, DataTable 20, KpiCard 18, EmptyState 10, PlanCard 6, Logo 5,
+MetalBadge 4, MemberShell 4, CarrierMark 3.
+
+Direct counts understate three components: `motion` (1 direct, reaching most screens through
+PageHeader and KpiCard), `OverflowText` (0 route imports, reaching plan surfaces through PlanCard)
+and `ToothIcon` (1 direct import, rendering on every dental product surface).
+
+### CURRENT IMPLEMENTATION — variants, sizes, states
+
+- Button — variant: outline 18, ghost 11, secondary 2, destructive 2, link 1; `default` is never
+  written explicitly. Size: sm 12, icon 5, icon-sm 3, lg 1; `default` never passed explicitly.
+- ACTION_PILL — primaryMd 21, outlineXs 11, primaryLg 10, outlineLg 8, outlineSmCard 7,
+  outlineSm 7, outlineMd 6, primaryXs 4. The only export where every variant is in use.
+- StatusBadge — primary 34, muted 31, warning 29, sage 27, info 16, destructive 4.
+- MetalBadge — all six tiers render from live data, each a token fill with a paired foreground.
+- State is expressed through colour, weight, background and border. No component changes its icon
+  or its size to express a state, and only SaveContinueButton and PlanCard change content.
+
+### OBSERVED VARIATION
+
+- Two action ladders: Button is rounded-md and stops at h-10; ACTION_PILL is rounded-full and
+  reaches h-11. `primaryLg` uses px-6 while `outlineLg` uses px-5.
+- PlanCard uses eight boolean flags rather than a cva variant prop.
+- CarrierMark and AboxMark take a numeric pixel size rather than a named scale.
+- PlanCard's responsive strategy is prop-driven, not breakpoint-driven.
+- DataTable scrolls horizontally below 640px rather than restacking.
+- InternalShell's search control is desktop-only with no mobile equivalent.
+
+### OBSERVED DUPLICATE / OBSERVED OVERLAP
+
+- Tables — `abox/data-table.tsx`, `lucie/ui.tsx` Table, `lucie-app/ui.tsx` DataTable, plus the
+  unused `ui/table.tsx`. Column APIs differ; none is a drop-in replacement.
+- Page headers — ABox PageHeader, lucie PageHead, lucie-app PageHeader.
+- Empty states — ABox EmptyState and lucie-app EmptyState.
+- Assistants — `planai-assistant.tsx` and `plan-o-assistant.tsx`.
+- Name collision — `ui/sheet.tsx` and `m06/kit.tsx` both export `Sheet` for different things.
+- Status vocabulary — 15 distinct tone values across StatusBadge, m06 `Tone` and lucie-app
+  `ChipTone` for one conceptual scale.
+- Form fields — the ui primitives, m06 Field/TextInput/Picker and lucie-app Field; `ui/form.tsx`
+  is installed and used by none of them.
+- Actions — Button, ACTION_PILL and m06 `Btn`.
+- Tabs — `ui/tabs.tsx` (panel switching) and `abox/module-tabs.tsx` (link navigation).
+
+### INSTALLED BUT UNUSED / POSSIBLY UNUSED
+
+- INSTALLED BUT UNUSED (high confidence) — 20 of 49 primitives: Accordion, AlertDialog,
+  AspectRatio, Avatar, Breadcrumb, Calendar, Carousel, Chart, Collapsible, ContextMenu, Form,
+  InputOTP, Menubar, NavigationMenu, Pagination, Resizable, ScrollArea, Sidebar, Table,
+  ToggleGroup. Also `abox/theme-toggle.tsx` and `abox/placeholder-screen.tsx`.
+- POSSIBLY UNUSED (medium confidence) — both assistants and the whole `ai-elements` tree, which is
+  reachable only through PlanAiAssistant; several decor exports (CornerCrop, TickerRule,
+  MarqueeSerial, IsoStack, GlassPanel, PolicyLines, FamilySilhouette).
+- Unused variants — Badge secondary/destructive/outline; KpiCard warning tone.
+- Nothing was deleted or uninstalled.
+
+### UNOWNED AREA
+
+Card surface; form fields; results toolbar and filter chip row; loading (no shared convention, no
+announcement); the circular icon container (~104 occurrences); the status tone vocabulary;
+product-wide bilingual strings.
+
+### CURRENT IMPLEMENTATION — accessibility
+
+Native semantics throughout, skip links in the shells, `focus-visible:ring-1 ring-ring`, real
+`disabled` attributes, `aria-hidden` on decorative icons (257 occurrences across 99 files),
+`aria-pressed` on toggles, `th scope="col"` and optional sr-only captions in DataTable, Radix
+dialog semantics, 44px mobile touch targets, and reduced-motion collapsing every duration.
+
+FUTURE OPPORTUNITY — clickable table rows are not keyboard reachable; loading states are not
+announced; error text is not always associated with `aria-describedby`; there is no shared helper
+enforcing an accessible name on icon-only controls.
+
+### Cross-references
+
+Typography (Phase 3) — Button `text-sm font-medium`, DataTable header
+`text-[10px] uppercase tracking-[0.18em]`, body `text-sm`, prices `$#,##0.00` with tabular
+numerals. Section headings and card descriptions still use several sizes per role.
+
+Spacing (Phase 2) — Button `px-4 py-2`, table cells `px-5 py-4`, card padding dominated by `p-5`,
+icon-to-text gap `gap-2` in Button vs `gap-1/1.5` in the pills, content width `max-w-[88rem]`.
+
+Iconography (Phase 4) — `size-4` enforced inside Button, 16px the dominant size, stroke never
+overridden, StatusBadge deliberately uses a dot rather than a glyph, EmptyState's 48px square
+frame is the only non-circular icon container.
+
+### Maturity
+
+CENTRALIZED — page frame, commerce UI, brand marks, reference layer.
+PARTIALLY CENTRALIZED — actions, feedback, the decor set.
+SHARED — overlays, most primitives.
+DUPLICATED — tables, page headers, empty states, status tags.
+UNOWNED — card surface, form fields.
+REPEATED — navigation beyond the shells.
+EXPERIENCE-SPECIFIC and previously UNDOCUMENTED — the four module kits.
+
+No scores, rankings or grades.
+
+### FUTURE FIGMA ORGANIZATION
+
+One core library — Foundations (tokens, typography, iconography, assets), Components (actions,
+forms, display, containers, data, navigation, overlays, feedback, brand), Patterns (page
+structures, forms, data, navigation, commerce), and contextual experience guidance for
+Web/Marketing, Shopping/Marketplace, Dashboard/Admin and a reserved Future slot. Variant props map
+to Figma variant properties under their existing names; repeated markup maps to pattern candidates
+rather than automatic components; reference-kit is never mapped. This hierarchy does not exist in
+production today.
+
+### FUTURE OPPORTUNITY — deferred
+
+Converge the four table implementations (high risk); converge the parallel page headers and empty
+states (medium); unify the status tone vocabulary (high); give the card surface a component owner
+(high); introduce a shared Field component (high); resolve the two assistants (medium); decide the
+fate of the unused primitives and the ai-elements tree (low); keyboard path for clickable rows
+(low); announce loading states (low); shared accessible-name helper for icon-only controls (low);
+reconcile the Button and ACTION_PILL ladders (medium).
