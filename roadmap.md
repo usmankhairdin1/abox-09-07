@@ -20,6 +20,37 @@
 - [x] .lovable/design-system.md rewritten (CURRENT IMPLEMENTATION vs FUTURE OPPORTUNITY)
 - [x] Validation: tsgo, lint, build, both pages desktop+mobile, no nav links, baseline comparison
 
+## Phase 2b — spacing & layout audit (done)
+
+Documentation, reference and governance only. No application file was modified.
+
+- [x] Spacing source-of-truth audit — scale, padding, vertical rhythm (`src/lib/design/spacing.ts`)
+- [x] Layout audit — containers, grid/flex relationships, dimensions, layout patterns
+      (`src/lib/design/layout.ts`)
+- [x] Structural relationships, responsive patterns, density modes
+      (`src/lib/design/spatial-relationships.ts`)
+- [x] Layout governance rules, unowned areas, deferred opportunities, Figma layout mapping
+      (appended to `src/lib/design/governance.ts`)
+- [x] Reference-only display primitives: SpacingTable, ContainerTable, ResponsiveTable,
+      DensityTable, DimensionTable, LayoutPatternList, RuleList
+- [x] /design-system: spacing foundation, containers, grid & structure, responsive, density,
+      dimensions, layout patterns, layout governance, extended Figma mapping
+- [x] /design-guide: spacing & layout governance section with per-experience guidance
+- [x] Validation: tsgo, eslint, production build, both pages desktop+mobile, no nav links,
+      no application file changed
+
+### Key findings — GOVERNANCE RULE / OBSERVED VARIATION
+
+- CURRENT IMPLEMENTATION — no spacing token exists in `src/styles.css`; spacing lives at call sites.
+- CURRENT IMPLEMENTATION — `max-w-[88rem] px-4 md:px-8` is the web-experience container (23 sites);
+  the admin shell uses `max-w-[1500px]` with a three-step gutter.
+- OBSERVED VARIATION — card interiors run p-3 / p-4 / p-5 / p-6 across comparable surfaces.
+- OBSERVED VARIATION — marketplace controls are 40px while shadcn primitives are 36px.
+- OBSERVED VARIATION — detail splits use 320px and 360px summary columns with gap-6 and gap-5.
+- OBSERVED VARIATION — icon-to-text gaps are both gap-1.5 and gap-2.
+- OBSERVED VARIATION — two table densities (DataTable px-5 py-4, shadcn head h-10 px-2).
+- GOVERNANCE RULE — none of the above was normalized; the shipping implementation wins.
+
 ## Phase 3 — deferred (not started, each recorded as FUTURE OPPORTUNITY)
 
 - [ ] Near-miss pill class strings (needs per-site visual verification)
@@ -28,3 +59,11 @@
 - [ ] Consolidate the two assistant implementations (behavioural)
 - [ ] Govern breadcrumbs / pagination / avatars / charts when a feature needs them
 - [ ] Machine-readable token export for the Figma library
+- [ ] Web-experience container component (horizontal contract only — vertical padding differs)
+- [ ] Card padding convergence (high risk — would re-space most screens)
+- [ ] Detail-split width alignment (320px vs 360px)
+- [ ] Results toolbar component (recurring shape, no owner)
+- [ ] Icon-to-text gap convergence (gap-1.5 vs gap-2)
+- [ ] Table density convergence
+- [ ] Universal touch-target floor (min-h-11 applied to 16 controls today, not universally)
+- [ ] Spacing/layout variable export for Figma
