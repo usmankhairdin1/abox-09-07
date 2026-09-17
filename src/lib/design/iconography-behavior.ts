@@ -28,7 +28,7 @@ export const ICON_ACCESSIBILITY: RelationshipGroup = {
       observed:
         "Button size=\"icon\" gives a 36px square target; the accessible name comes from an aria-label on the control.",
       source: "components/ui/button.tsx and consumers such as marketplace.admin.assets.tsx",
-      consistency: "mostly-consistent" as unknown as "consistent",
+      consistency: "varies",
       note: "OBSERVED VARIATION — most icon-only controls are labelled, but the convention is applied per call site, not enforced by a component.",
     },
     {
@@ -240,7 +240,7 @@ export const ICON_RELATIONSHIPS: RelationshipGroup = {
       observed:
         "20px glyph beside a section or page heading, gap-2. The cart heading is the reference example.",
       source: "routes/cart.tsx and marketing sections",
-      consistency: "mostly-consistent" as unknown as "consistent",
+      consistency: "varies",
     },
     {
       pair: "Icon → empty state",
