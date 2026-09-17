@@ -205,6 +205,11 @@ import {
   TYPOGRAPHY_MATURITY,
   TYPOGRAPHY_UNOWNED_AREAS,
   TYPOGRAPHY_DEFERRED_OPPORTUNITIES,
+  COMPONENT_GOVERNANCE_RULES,
+  COMPONENT_UNOWNED_AREAS,
+  COMPONENT_DEFERRED_OPPORTUNITIES,
+  FIGMA_COMPONENT_MAPPING,
+  FUTURE_FIGMA_ORGANIZATION,
 } from "@/lib/design/governance";
 
 export const Route = createFileRoute("/design-system")({
@@ -281,6 +286,25 @@ const TOC = [
   { id: "asset-governance", label: "Asset governance" },
   { id: "experiences", label: "Experiences" },
   { id: "figma", label: "Figma mapping" },
+  { id: "component-taxonomy", label: "Component taxonomy" },
+  { id: "component-source-inventory", label: "Component inventory (full)" },
+  { id: "component-consumers", label: "Consumer map" },
+  { id: "component-experience", label: "Shared vs experience" },
+  { id: "component-anatomy", label: "Anatomy" },
+  { id: "component-variants", label: "Variants" },
+  { id: "component-sizes", label: "Sizes" },
+  { id: "component-state-audit", label: "Component states" },
+  { id: "component-responsive", label: "Component responsive" },
+  { id: "component-composition", label: "Composition relationships" },
+  { id: "component-classification", label: "Composition vs component" },
+  { id: "component-duplication", label: "Duplicates & overlap" },
+  { id: "component-unused", label: "Installed but unused" },
+  { id: "component-a11y", label: "Component accessibility" },
+  { id: "component-crossref", label: "Type / space / icon cross-ref" },
+  { id: "component-maturity", label: "Component maturity" },
+  { id: "component-governance", label: "Component governance" },
+  { id: "component-figma", label: "Figma components" },
+  { id: "future-figma-library", label: "Future Figma library" },
 ];
 
 function DesignSystemPage() {
