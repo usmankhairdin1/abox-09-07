@@ -397,3 +397,73 @@ flex (`min-w-0 flex-1` / `shrink-0`) → Auto Layout Fill / Hug; breakpoint → 
 control dimension → component size property; shells → layout templates; form, dashboard, shopping
 and overlay structures → pattern frames. Nothing has been converted and no runtime code was
 altered to ease future conversion.
+
+---
+
+## Phase 3 — Typography audit (reference layer only)
+
+Documentation-only phase. No application screen, route, component, token or style
+value was changed. Reference modules are consumed only by `/design-system` and
+`/design-guide`.
+
+### CURRENT IMPLEMENTATION
+
+**Font architecture**
+- `--font-sans` — `"Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif`
+- `--font-display` — `"Bricolage Grotesque", "Inter Tight", …`
+- `--font-serif` aliases the display stack; `--font-mono` aliases the sans stack. Neither
+  is a real serif or monospace face.
+- `h1, h2, h3, .font-display` — display family, weight 600, `letter-spacing -0.028em`,
+  `font-variation-settings "wdth" 102, "opsz" 32`.
+- `body` sets `font-feature-settings "ss01", "cv11"`.
+
+**Utilities**
+- `.text-display` (194) — display family, 600, `-0.032em`, line-height `1.02`, `opsz 48`. Size is never declared.
+- `.text-eyebrow` (229) — 11px, weight 500, uppercase, muted.
+- `.text-serial` (46) — 10px, uppercase, muted, tabular figures.
+- `.ember-underline` — 2px primary hover/focus underline.
+
+**Measured scale** — `text-sm` 779, `text-xs` 464, `text-xl` 94, `text-2xl` 61,
+`text-lg` 29, `text-base` 29, `text-3xl` 20, `text-4xl` 19, `text-5xl` 7, `text-6xl` 7,
+`text-7xl` 1. Sub-scale literals: 10px (34), 11px (23), 10.5px (3), 0.8rem (4), 9px (1).
+
+**Weights** — `font-medium` 406, `font-semibold` 125, `font-normal` 10, `font-bold` 1.
+
+**Colour** — `text-muted-foreground` 803, `text-primary` 276, `text-foreground` 159,
+`text-destructive` 49, `text-sage` 44, `text-warning` 19. State is expressed through
+colour and opacity only; size and weight never change between states.
+
+**Data typography** — `tabular-nums` 90 uses on prices, totals, KPI values and identifiers.
+
+**Accessibility** — `sr-only` 22, `aria-live` 3, 44px minimum touch target below 640px,
+reduced-motion rule collapses transitions, `OverflowText` reveals truncated values on
+hover and focus.
+
+### OBSERVED VARIATION (recorded, not corrected)
+- Section headings use `text-base`, `text-xl` and `text-2xl` for the same role.
+- Card descriptions are `text-xs` or `text-sm` depending on whether the shadcn Card is used.
+- Uppercase tracking uses 0.08em, 0.12em, 0.14em, 0.18em and `tracking-widest`.
+- Table headers ship in two densities (shadcn `font-medium` vs ABox 10px uppercase).
+- Action pills use `font-semibold` where the Button primitive uses `font-medium`.
+- `text-sage` (44) and `text-success` (3) both express success.
+
+### INSTALLED BUT UNUSED
+- JetBrains Mono is requested in `__root.tsx` at weights 400/500 and referenced nowhere.
+- `--font-serif` has no consumer.
+- `.story-link` is referenced 89 times and defined in no stylesheet.
+- `font-bold` is loaded for both families and used once (the 404 numeral).
+- Breadcrumb, Pagination and Avatar primitives have no consumer.
+
+### FUTURE OPPORTUNITY (not applied)
+Bind or remove JetBrains Mono; define or remove `.story-link`; a `SectionHeading`
+component; uppercase tracking convergence; named sub-scale tokens for 10px/11px;
+raising the micro-type floor above 10px; success token convergence; tabular figures for
+dates; a generated Figma text-style export. Each would change rendered output and is
+therefore recorded only.
+
+### FIGMA BLUEPRINT
+Two families, three working weights, variable-font axis values on the display styles,
+one text style per observed size/line-height/tracking triple, roles named after the code
+(`display`, `eyebrow`, `serial`, `body`, `caption`, `badge`) rather than an h1/h2/h3
+ladder the product does not use, desktop/mobile variants for responsive steps, and a
+tabular-figure data style.

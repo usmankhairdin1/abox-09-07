@@ -67,3 +67,23 @@ Documentation, reference and governance only. No application file was modified.
 - [ ] Table density convergence
 - [ ] Universal touch-target floor (min-h-11 applied to 16 controls today, not universally)
 - [ ] Spacing/layout variable export for Figma
+
+## Phase 3 — Typography audit & governance (complete)
+
+- Added reference-only `src/lib/design/typography.ts` (families, weights, measured scale,
+  line height & tracking, utilities, semantic roles, numeric typography) and
+  `src/lib/design/typography-behavior.ts` (responsive, states, text behaviour,
+  readability conventions, component cross-reference).
+- Added typography governance, maturity, unowned areas, deferred opportunities and Figma
+  text-style mapping to `src/lib/design/governance.ts`.
+- Extended `/design-system` with ten technical typography sections and `/design-guide`
+  with a management typography governance section plus experience guidance.
+- Updated `.lovable/design-system.md` with CURRENT IMPLEMENTATION / OBSERVED VARIATION /
+  INSTALLED BUT UNUSED / FUTURE OPPORTUNITY.
+- No application screen, route, component, token or style value was changed.
+
+### Deferred (carried forward)
+- All Phase 1 and Phase 2 deferred opportunities remain open.
+- Typography: JetBrains Mono binding/removal, `.story-link` definition/removal,
+  SectionHeading component, tracking convergence, sub-scale tokens, micro-type floor,
+  success token convergence, tabular dates, Figma text-style export.
