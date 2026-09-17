@@ -124,7 +124,51 @@ import {
   FigmaVariableTable,
   MigrationList,
   ExperienceArchTable,
+  TokenSpecTable,
+  RoleChainTable,
+  ComponentRoleList,
+  FoundationA11yTable,
+  FoundationMaturityTable,
 } from "@/components/design/reference-kit";
+
+import { FOUNDATION_MODEL, FOUNDATION_CURRENT_STATE } from "@/lib/design/foundation-model";
+import { COLOR_FOUNDATION, COLOR_TOKEN_COUNT } from "@/lib/design/color-foundation";
+import { COLOR_ROLE_CHAINS, COLOR_ROLE_OVERLAPS, THEME_MODE_MAP } from "@/lib/design/color-roles";
+import {
+  TONE_VOCABULARY,
+  TONE_OVERLAPS,
+  TIER_FOUNDATION,
+  TIER_GOVERNANCE,
+} from "@/lib/design/status-tone";
+import {
+  TYPE_FAMILY_SPEC,
+  TYPE_WEIGHT_SPEC,
+  TYPE_SIZE_SPEC,
+  TYPE_RHYTHM_SPEC,
+  TYPE_ROLE_SPEC,
+  RESPONSIVE_TYPE_SPEC,
+} from "@/lib/design/typography-foundation";
+import {
+  SPACING_SCALE_SPEC,
+  SPACING_RELATIONSHIP_SPEC,
+} from "@/lib/design/spacing-foundation";
+import { CONTAINER_SPEC, BREAKPOINT_SPEC, SHAPE_SPEC } from "@/lib/design/layout-foundation";
+import {
+  ICON_FOUNDATION_SPEC,
+  MOTION_FOUNDATION_SPEC,
+  DENSITY_FOUNDATION_SPEC,
+} from "@/lib/design/icon-motion-density";
+import { COMPONENT_FOUNDATION_ROLES } from "@/lib/design/component-roles";
+import { TOKEN_NAMING_RULES, PRIMITIVE_SEMANTIC_MAP } from "@/lib/design/token-naming";
+import { FIGMA_VARIABLE_MAP } from "@/lib/design/figma-variables";
+import { FOUNDATION_ACCESSIBILITY } from "@/lib/design/foundation-accessibility";
+import { FOUNDATION_BOUNDARIES } from "@/lib/design/foundation-boundaries";
+import { FOUNDATION_EXPERIENCE_GUIDANCE } from "@/lib/design/foundation-experience";
+import {
+  FOUNDATION_MATURITY,
+  FOUNDATION_GOVERNANCE_RULES,
+} from "@/lib/design/foundation-governance";
+
 import {
   COMPONENT_TAXONOMY,
   COMPONENT_GROUPS,
