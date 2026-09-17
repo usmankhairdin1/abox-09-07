@@ -1,82 +1,78 @@
-# Phase 17 — Canonical ActionPill Production Implementation & Controlled Migration
+# Phase 17 (Revised) — Canonical ActionPill Contract Without Slot
 
-## Goal
+The Slot/`asChild` proposal is withdrawn. This revision answers the six questions from the actual code and defines an API that keeps each consumer's existing DOM element exactly where it is today.
 
-Introduce one canonical production ActionPill source and point the verified consumers at it, with zero observable change to the running application. This is source centralization only — no redesign, no normalization, no unrelated cleanup.
+## Answers from the current code
 
-## Re-measurement (confirmed against current code)
+**1. What do button consumers render today?**
+A native `<button>` with `className={ACTION_PILL.<variant>}` and, per site, `onClick`, sometimes `type`, `disabled`, `title`, `aria-*`; children are text plus an optional leading lucide icon. Example, `routes/marketplace.admin.readiness.tsx:27`:
+`<button onClick={…} className={ACTION_PILL.primaryMd}><RotateCw className="h-4 w-4" aria-hidden /> Recalculate</button>`. 52 such elements.
 
-- `src/components/abox/action-pill.ts` exports `ACTION_PILL` (8 keys) and `ActionPillVariant`.
-- 34 files reference `ACTION_PILL` (33 consumers plus the source file), 99 references total.
-- Variant distribution: primaryMd 19, outlineXs 10, primaryLg 9, outlineLg 7, outlineSmCard 6, outlineSm 6, outlineMd 4, primaryXs 3.
-- Element usage: 52 `<button>`, 22 `<Link>`. Every call site is a bare `className={ACTION_PILL.<variant>}`; zero `cn()` compositions, zero appended classes.
-- `@radix-ui/react-slot` is already a dependency and already used by `ui/button.tsx`.
+**2. What do Link consumers render today?**
+TanStack Router `<Link>` with typed routing props (`to`, `params`, `search`) plus `className={ACTION_PILL.<variant>}`. `<Link>` renders an `<a>` and additionally owns active-state handling, prefetch behaviour and click interception. 22 such elements.
 
-This matches the Phase 16 evidence, so no discrepancy stop is triggered.
+**3. Can one component preserve both without changing emitted DOM?**
+Not without risk. A native-element component preserves `<button>` perfectly. For `<Link>`, any wrapper must hand the class to the router component itself; that is only exactly preservable if the consumer keeps rendering `<Link>`.
 
-## Canonical source
+**4. Does Radix Slot preserve everything the test requires?**
+Reading `@radix-ui/react-slot` (already used by `ui/button.tsx:42` and `ui/sidebar.tsx`), Slot merges parent props into the single child: `className` is concatenated parent-then-child, `style` merged, refs composed, and overlapping event handlers are **chained** — both the parent's and the child's run. Non-handler props from the child win. So className and DOM element would match, but three deltas cannot be asserted as identical without proof per site: handler chaining semantics, ref composition, and the requirement of exactly one child element. On top of that, Slot erases TanStack Router's typed link props from the call site's type surface. That is more behavioural delta than this phase permits.
 
-Create one new file: `src/components/abox/action-pill.tsx`.
+**5. Does the app already use a comparable pattern in production?**
+Yes — `ui/button.tsx` and `ui/sidebar.tsx` use `asChild`, and `Button asChild` wraps `Link` in `app.index.tsx`, `app.employer.results.tsx`, `app.employer.census.tsx`, `app.employer.contribution.tsx`. Those are existing, already-shipped usages; they demonstrate the pattern works in this app, but they are not proof that converting an existing bare `<Link className=…>` to a Slot-wrapped `<Link>` is behaviourally identical, which is the standard here.
 
-- It imports `ACTION_PILL` from the existing `action-pill.ts` — the class strings keep their single owner and are never re-typed or re-ordered.
-- It re-exports `ACTION_PILL` and `ActionPillVariant` so the map stays reachable from one place.
-- `action-pill.ts` is not modified and not deleted. No second copy of the strings is created.
+**6. Safer alternative**
+Keep the element type at the consumer boundary. One canonical source, two entry points into it.
 
-Component contract, derived only from current usage:
+## Revised canonical contract
 
-```tsx
-ActionPill({ variant, asChild, className, children, ...rest })
-```
+One new file: `src/components/abox/action-pill.tsx`. `action-pill.ts` is not modified, not moved, not deleted; it stays the sole owner of the class strings and the new file imports them.
 
-- `variant` — required, one of the eight existing keys. No default.
-- `asChild` — optional; when true renders the single child element (Radix `Slot`) so `<Link>` call sites keep their exact DOM. When false renders `<button>`, matching the 52 button call sites.
-- `className` — optional, merged via `cn` after the variant string, so with no caller class the output string is byte-identical to today.
-- All other props (`type`, `disabled`, `onClick`, `aria-*`, `title`, `data-*`) pass through untouched.
-- Forwards a ref, like `ui/button`.
-- No new variants, no new defaults, no renames, no added wrapper element, no added transition/focus utilities.
-
-## Migration
-
-Migrate the 33 verified consumers one controlled group at a time, grouped by variant so each variant's parity is proven once.
-
-Per consumer, the only change is the call-site form:
+Two exports, both resolving to the same `ACTION_PILL` map:
 
 ```tsx
-// before
-<button className={ACTION_PILL.primaryMd} onClick={…}>…</button>
-// after
-<ActionPill variant="primaryMd" onClick={…}>…</ActionPill>
+// 1. For the 52 native button consumers — renders <button>, nothing else.
+export const ActionPill = React.forwardRef<HTMLButtonElement, ActionPillProps>(
+  ({ variant, className, ...props }, ref) => (
+    <button ref={ref} className={cn(ACTION_PILL[variant], className)} {...props} />
+  ),
+);
 
-// before
-<Link to="…" className={ACTION_PILL.outlineXs}>…</Link>
-// after
-<ActionPill variant="outlineXs" asChild><Link to="…">…</Link></ActionPill>
+// 2. For the 22 Link consumers and any non-button element — returns the class string.
+export function actionPillClass(variant: ActionPillVariant, className?: string): string;
 ```
 
-Surrounding JSX, props, handlers, content, routes, responsive classes and any local non-pill styling stay exactly as they are. No surrounding refactoring, no text replacement, no similarity-based migration.
+- No Slot, no `asChild`, no wrapper element, no polymorphism.
+- `variant` required, no defaults, no renames, no new variants, class strings untouched.
+- `className` optional; with no caller class `cn(ACTION_PILL[variant])` returns the identical string, so the rendered `class` attribute is byte-identical.
+- All props spread straight onto `<button>`: `onClick`, `type`, `disabled`, `title`, `aria-*`, `data-*`. No prop is injected, defaulted, chained or intercepted. Ref forwards to the same element.
+- Keyboard, focus, disabled and accessibility semantics come from the same native `<button>` the consumer renders today.
 
-Sequence: first target `routes/marketplace.admin.readiness.tsx` (single `primaryMd` Link). Verify parity, then proceed through the remaining consumers in the Phase 16 register order, verifying after each group.
+### Button consumers
 
-## Excluded — not touched
+`<button className={ACTION_PILL.primaryXs} onClick={…}>…</button>`
+→ `<ActionPill variant="primaryXs" onClick={…}>…</ActionPill>`
+Same element, same attributes, same class string, same handler identity.
 
-Landing hero pills in `src/routes/index.tsx` (inline marketing classes, not the shared map), all `ui/button` consumers, StatusBadge, PageHeader, cards, forms, tables, shells, route-local kits (M06, M08, Lucie, Lucie-app, ai-elements, icon helpers), branding and white-label, marketplace asset management, and every token in `src/styles.css`.
+### Link consumers
 
-## Preservation evidence
+`<Link to="…" className={ACTION_PILL.outlineXs}>…</Link>`
+→ `<Link to="…" className={actionPillClass("outlineXs")}>…</Link>`
+The `<Link>` element, its typed routing props, active handling and prefetch behaviour are untouched; only the source of the class string moves to the canonical module. Zero DOM, prop, event, ref or navigation delta by construction.
 
-The decisive check is string-level: for every migrated call site the rendered `class` attribute and the emitted DOM element type must be identical to the pre-change markup. Because the component emits `ACTION_PILL[variant]` verbatim and `Slot` merges onto the caller's own element, this is structurally guaranteed; it will still be verified, not assumed.
+This is a genuine shared source, not documentation: both call-site forms resolve through `action-pill.tsx`, so a future change to the canonical source reaches every verified consumer.
 
-## Validation
+## First-consumer proof before any wider migration
 
-- Baselines captured before migration: `/marketplace/admin/readiness`, `/marketplace/admin`, `/agency/organization-admin`, `/agency/downlines/new/contacts`, `/platform/organizations` at desktop 1440, tablet 834 and mobile 390, plus default / hover / focus-visible / disabled states where they exist on those pages.
-- After migration: same captures compared against baselines, plus rendered class-attribute and element-type comparison, keyboard traversal, link navigation, accessible names, and console output.
-- Typecheck, ESLint, production build, route rendering checks.
-- Import audit confirming nothing in production imports `src/lib/design/**` or `src/components/design/**`.
-- Final git diff inspected: only `src/components/abox/action-pill.tsx` plus the migrated consumer files.
+1. Capture baselines for `/marketplace/admin/readiness` (button, `primaryMd`) and `/platform/organizations` (Link, `outlineXs`) at 1440 / 834 / 390, in default, hover, focus-visible and disabled where present.
+2. Create `action-pill.tsx` with zero consumers; typecheck and build.
+3. Migrate exactly those two consumers — one button, one Link.
+4. Prove preservation: compare the rendered `class` attribute string and `tagName` of each pill before and after, compare screenshots, exercise the click handler and the link navigation, check tab order, accessible name and console.
+5. Report the proof and stop. No further consumer is migrated until this contract and its proof are approved.
 
-## Stop and rollback
+## Rollback
 
-Any unexplained visual, responsive, interaction, accessibility, navigation, content or functional difference stops the phase. The consumer is not patched and foundations are not touched; the change is reverted so the application returns to its exact pre-phase state, and the discrepancy is reported instead of completion.
+Revert the two consumer files to their prior `ACTION_PILL` call sites and leave or remove `action-pill.tsx`; nothing else was touched, so the app returns to its exact pre-phase state. No consumer is left partially migrated, and no compensating edit is made to consumers, foundations or unrelated components.
 
-## Final report
+## Out of scope
 
-Delivered per the requested 28 points, including the consumer-by-consumer list, preservation evidence, validation results and diff scope. Completion is claimed only if exact preservation is verified.
+Foundations and tokens, `ACTION_PILL` string values, Button, StatusBadge, PageHeader, cards, forms, tables, shells, route-local kits, landing hero pills, branding and white-label, marketplace assets, and the remaining 31 consumers.
