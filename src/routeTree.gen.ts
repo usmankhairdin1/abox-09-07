@@ -23,6 +23,7 @@ import { Route as CompareRouteImport } from './routes/compare'
 import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as CoverageRouteImport } from './routes/coverage'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as DesignGuideRouteImport } from './routes/design-guide'
 import { Route as DesignSystemRouteImport } from './routes/design-system'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as HandoffRouteImport } from './routes/handoff'
@@ -230,6 +231,11 @@ const CoverageRoute = CoverageRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignGuideRoute = DesignGuideRouteImport.update({
+  id: '/design-guide',
+  path: '/design-guide',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DesignSystemRoute = DesignSystemRouteImport.update({
@@ -986,6 +992,7 @@ export interface FileRoutesByFullPath {
   '/compliance': typeof ComplianceRoute
   '/coverage': typeof CoverageRoute
   '/dashboard': typeof DashboardRoute
+  '/design-guide': typeof DesignGuideRoute
   '/design-system': typeof DesignSystemRoute
   '/faq': typeof FaqRoute
   '/handoff': typeof HandoffRoute
@@ -1139,6 +1146,7 @@ export interface FileRoutesByTo {
   '/compliance': typeof ComplianceRoute
   '/coverage': typeof CoverageRoute
   '/dashboard': typeof DashboardRoute
+  '/design-guide': typeof DesignGuideRoute
   '/design-system': typeof DesignSystemRoute
   '/faq': typeof FaqRoute
   '/handoff': typeof HandoffRoute
@@ -1293,6 +1301,7 @@ export interface FileRoutesById {
   '/compliance': typeof ComplianceRoute
   '/coverage': typeof CoverageRoute
   '/dashboard': typeof DashboardRoute
+  '/design-guide': typeof DesignGuideRoute
   '/design-system': typeof DesignSystemRoute
   '/faq': typeof FaqRoute
   '/handoff': typeof HandoffRoute
@@ -1449,6 +1458,7 @@ export interface FileRouteTypes {
     | '/compliance'
     | '/coverage'
     | '/dashboard'
+    | '/design-guide'
     | '/design-system'
     | '/faq'
     | '/handoff'
@@ -1602,6 +1612,7 @@ export interface FileRouteTypes {
     | '/compliance'
     | '/coverage'
     | '/dashboard'
+    | '/design-guide'
     | '/design-system'
     | '/faq'
     | '/handoff'
@@ -1755,6 +1766,7 @@ export interface FileRouteTypes {
     | '/compliance'
     | '/coverage'
     | '/dashboard'
+    | '/design-guide'
     | '/design-system'
     | '/faq'
     | '/handoff'
@@ -1910,6 +1922,7 @@ export interface RootRouteChildren {
   ComplianceRoute: typeof ComplianceRoute
   CoverageRoute: typeof CoverageRoute
   DashboardRoute: typeof DashboardRoute
+  DesignGuideRoute: typeof DesignGuideRoute
   DesignSystemRoute: typeof DesignSystemRoute
   FaqRoute: typeof FaqRoute
   HandoffRoute: typeof HandoffRoute
@@ -2036,6 +2049,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-guide': {
+      id: '/design-guide'
+      path: '/design-guide'
+      fullPath: '/design-guide'
+      preLoaderRoute: typeof DesignGuideRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/design-system': {
@@ -3312,6 +3332,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComplianceRoute: ComplianceRoute,
   CoverageRoute: CoverageRoute,
   DashboardRoute: DashboardRoute,
+  DesignGuideRoute: DesignGuideRoute,
   DesignSystemRoute: DesignSystemRoute,
   FaqRoute: FaqRoute,
   HandoffRoute: HandoffRoute,
