@@ -594,3 +594,110 @@ export interface MigrationPhaseEntry {
   visualDiff: string;
   label: ArchLabel;
 }
+
+/* -----------------------------------------------------------------
+ * Phase 7 — foundation source-of-truth & Figma variable specification.
+ * Documentation only. Nothing below defines a runtime design value, and
+ * nothing below may be imported by application screens or business logic.
+ * Consumers: `/design-system` and `/design-guide` only.
+ * ----------------------------------------------------------------- */
+
+/** How a foundation value is expressed in the codebase today. */
+export type FoundationKind =
+  | "primitive"
+  | "semantic"
+  | "alias"
+  | "utility"
+  | "call-site literal"
+  | "convention";
+
+/** Descriptive centralization classification. Never a score or a rank. */
+export type CentralizationLevel =
+  | "CENTRALIZED"
+  | "PARTIALLY CENTRALIZED"
+  | "CALL-SITE BASED"
+  | "UNOWNED";
+
+/** One foundation token or value, with current evidence and future target kept apart. */
+export interface TokenSpec {
+  /** Name exactly as written in production, or the utility/class observed. */
+  token: string;
+  /** Light-mode or single value, verbatim. */
+  value: string;
+  /** Dark-mode value where `.dark` redefines it. */
+  darkValue?: string;
+  /** Whether light and dark differ. */
+  modes: "same" | "different" | "not themed";
+  kind: FoundationKind;
+  purpose: string;
+  /** Known consumers in plain terms. */
+  consumers: string;
+  /** Measured usage, e.g. "229 class occurrences". */
+  usage: string;
+  /** Paired foreground token where one exists. */
+  foreground?: string;
+  /** Contrast / accessibility observation — never a correction. */
+  contrast?: string;
+  source: string;
+  /** CURRENT IMPLEMENTATION or the observed-variation family. */
+  status: ArchLabel;
+  /** FUTURE CANONICAL TARGET role. Not production. */
+  futureRole: string;
+  /** Figma variable or style candidate. Nothing exists yet. */
+  figma: string;
+  migration: string;
+  phase: EvidencePhase;
+  note?: string;
+}
+
+export interface TokenSpecGroup {
+  id: string;
+  title: string;
+  summary: string;
+  tokens: TokenSpec[];
+}
+
+/** primitive → semantic → component role → experience usage. */
+export interface RoleChainEntry {
+  primitive: string;
+  semantic: string;
+  componentRole: string;
+  experience: string;
+  evidence: string;
+  label: ArchLabel;
+  note?: string;
+}
+
+/** Future foundation-consumption map for one canonical component candidate. */
+export interface ComponentRoleSpec {
+  component: string;
+  source: string;
+  roles: { slot: string; foundation: string; current: string }[];
+  label: ArchLabel;
+  note?: string;
+}
+
+/** Foundation-level accessibility governance record. */
+export interface FoundationA11yRecord {
+  topic: string;
+  /** What production does today. */
+  current: string;
+  /** What a future canonical system would require. */
+  requirement: string;
+  consumers: string;
+  status: ArchLabel;
+  note?: string;
+}
+
+/** Descriptive maturity record. No scoring, no ranking. */
+export interface FoundationMaturityRecord {
+  category: string;
+  implementation: string;
+  evidence: string;
+  centralization: CentralizationLevel;
+  variation: string;
+  ownership: string;
+  futureTarget: string;
+  readiness: string;
+  openDecision: string;
+}
