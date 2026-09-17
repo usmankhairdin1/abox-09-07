@@ -859,3 +859,150 @@ export function RuleList({
     </ul>
   );
 }
+
+/* -----------------------------------------------------------------
+ * Phase 4 — iconography & asset display helpers.
+ * Documentation-only rendering. No production component is affected.
+ * ----------------------------------------------------------------- */
+
+/** Semantic icon inventory table. */
+export function IconTable({
+  entries,
+}: {
+  entries: {
+    name: string;
+    library: string;
+    role: string;
+    usage: number;
+    where: string;
+    size: string;
+    treatment: string;
+    interactive: string;
+    semantics: string;
+    experience: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-hairline bg-card">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[920px] text-sm">
+          <thead className="border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <tr>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Icon
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Role &amp; where
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Size
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Treatment
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Import sites
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((e) => (
+              <tr key={e.name} className="border-b border-hairline/60 align-top last:border-0">
+                <td className="px-5 py-4">
+                  <span className="font-medium">{e.name}</span>
+                  <span className="mt-1 block text-serial">{e.library}</span>
+                  <span className="mt-2 flex flex-wrap gap-1">
+                    <MetaChip>{e.semantics}</MetaChip>
+                    <MetaChip>{e.interactive}</MetaChip>
+                  </span>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  <span className="block text-foreground">{e.role}</span>
+                  {e.where}
+                  <span className="mt-1 block text-xs">{e.experience}</span>
+                  {e.note && <span className="mt-1 block text-xs text-warning">{e.note}</span>}
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">{e.size}</td>
+                <td className="px-5 py-4 text-muted-foreground">{e.treatment}</td>
+                <td className="px-5 py-4 tabular-nums">{e.usage}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/** Logo / brand mark / media asset table. */
+export function AssetTable({
+  entries,
+}: {
+  entries: {
+    name: string;
+    kind: string;
+    source: string;
+    consumers: string;
+    variants: string;
+    dimensions: string;
+    accessibility: string;
+    owner: string;
+    status: string;
+    note?: string;
+  }[];
+}) {
+  const tone = (status: string) =>
+    status === "in-use" ? "sage" : status === "runtime-managed" ? "info" : "warning";
+  return (
+    <div className="overflow-hidden rounded-2xl border border-hairline bg-card">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[940px] text-sm">
+          <thead className="border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <tr>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Asset
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Source &amp; consumers
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Variants &amp; size
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Accessibility
+              </th>
+              <th scope="col" className="px-5 py-4 font-semibold">
+                Owner
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((e) => (
+              <tr key={e.name} className="border-b border-hairline/60 align-top last:border-0">
+                <td className="px-5 py-4">
+                  <span className="font-medium">{e.name}</span>
+                  <span className="mt-1 block text-xs text-muted-foreground">{e.kind}</span>
+                  <span className="mt-2 block">
+                    <MetaChip tone={tone(e.status)}>{e.status}</MetaChip>
+                  </span>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  <span className="text-serial">{e.source}</span>
+                  <span className="mt-1 block">{e.consumers}</span>
+                  {e.note && <span className="mt-1 block text-xs text-warning">{e.note}</span>}
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">
+                  {e.variants}
+                  <span className="mt-1 block text-xs">{e.dimensions}</span>
+                </td>
+                <td className="px-5 py-4 text-muted-foreground">{e.accessibility}</td>
+                <td className="px-5 py-4 text-muted-foreground">{e.owner}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
