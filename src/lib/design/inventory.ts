@@ -1,0 +1,121 @@
+/**
+ * Component and pattern inventory — what exists today, who uses it, and which
+ * states are actually implemented.
+ *
+ * DOCUMENTATION ONLY. Consumer counts were measured by import across
+ * `src/routes` and `src/components`, excluding the component's own folder and
+ * the two reference pages. "available-unused" means the primitive is installed
+ * and ready but no application screen imports it yet — that is a fact, not a
+ * defect, and it must not trigger any change to the application.
+ *
+ * Consumers: `/design-system`, `/design-guide`.
+ */
+import type { InventoryGroup } from "./types";
+
+export const COMPONENT_INVENTORY: InventoryGroup[] = [
+  {
+    id: "abox",
+    title: "ABox business components",
+    summary:
+      "src/components/abox — each one is the single owner of its pattern. Pages compose these instead of re-implementing them.",
+    entries: [
+      { name: "InternalShell", source: "abox/internal-shell.tsx", consumers: 89, ownership: "business", states: "rail expanded / collapsed / sheet, sticky header, search, skip link", status: "in-use" },
+      { name: "StatusBadge", source: "abox/status-badge.tsx", consumers: 87, ownership: "business", states: "6 tones: sage, primary, warning, muted, destructive, info", status: "in-use", note: "Tone drives dot, text and border through color-mix; always full opacity." },
+      { name: "ACTION_PILL", source: "abox/action-pill.ts", consumers: 33, ownership: "business", states: "primary xs/md/lg, outline xs/sm/smCard/md/lg", status: "in-use", note: "Class strings only — no element or DOM contract." },
+      { name: "MarketplaceShell", source: "abox/marketplace-shell.tsx", consumers: 30, ownership: "business", states: "default / landing header offset, signed-in vs signed-out, cart empty vs filled", status: "in-use" },
+      { name: "PageHeader", source: "abox/page-header.tsx", consumers: 23, ownership: "business", states: "default and compact; optional eyebrow, icon, description, actions", status: "in-use" },
+      { name: "DataTable", source: "abox/data-table.tsx", consumers: 19, ownership: "business", states: "rows, empty row, hover, clickable row, column alignment, sr-only caption", status: "in-use" },
+      { name: "KpiCard", source: "abox/kpi-card.tsx", consumers: 16, ownership: "business", states: "4 tones, optional delta, hint, icon; hover lift + brackets + sheen", status: "in-use" },
+      { name: "EmptyState", source: "abox/empty-state.tsx", consumers: 8, ownership: "business", states: "optional icon, body, action", status: "in-use" },
+      { name: "DownlineWizardStepper", source: "abox/downline-wizard-stepper.tsx", consumers: 8, ownership: "business", states: "step complete / current / upcoming", status: "in-use" },
+      { name: "DownlineContextBanner", source: "abox/downline-context-banner.tsx", consumers: 6, ownership: "business", states: "context present / absent", status: "in-use" },
+      { name: "PlanCard", source: "abox/plan-card.tsx", consumers: 4, ownership: "business", states: "stacked / horizontal, best-match, in-cart, subsidised price", status: "in-use" },
+      { name: "MemberShell", source: "abox/member-shell.tsx", consumers: 4, ownership: "business", states: "nav item active / inactive, connecting arc", status: "in-use" },
+      { name: "SaveContinueButton", source: "abox/save-continue-button.tsx", consumers: 3, ownership: "business", states: "idle / saving / saved", status: "in-use" },
+      { name: "SuspendedMarketplaceNotice", source: "abox/suspended-marketplace-notice.tsx", consumers: 2, ownership: "business", states: "single", status: "in-use" },
+      { name: "ShoppingPathBar", source: "abox/shopping-path-bar.tsx", consumers: 2, ownership: "business", states: "Guide me / Browse myself selection", status: "in-use" },
+      { name: "ModuleTabs", source: "abox/module-tabs.tsx", consumers: 2, ownership: "business", states: "active / inactive tab", status: "in-use" },
+      { name: "MetalBadge", source: "abox/metal-badge.tsx", consumers: 2, ownership: "business", states: "6 tiers, each a solid token fill with a paired foreground", status: "in-use", note: "Also consumed inside PlanCard and the plans filter rail." },
+      { name: "Logo / AboxMark", source: "abox/logo.tsx", consumers: 2, ownership: "business", states: "4 tones, sizeable", status: "in-use" },
+      { name: "QuoteEditPanel", source: "abox/quote-edit-panel.tsx", consumers: 1, ownership: "business", states: "open / closed, apply / cancel", status: "in-use" },
+      { name: "ProductSwitcher", source: "abox/product-switcher.tsx", consumers: 1, ownership: "business", states: "active product, cart-aware", status: "in-use" },
+      { name: "CarrierMark", source: "abox/carrier-mark.tsx", consumers: 1, ownership: "business", states: "deterministic monogram, neutral fallback", status: "in-use", note: "Also used inside PlanCard and the cart." },
+      { name: "FadeRise / CountUp (motion)", source: "abox/motion.tsx", consumers: 1, ownership: "business", states: "entrance animation, numeric roll-in", status: "in-use", note: "Consumed indirectly by PageHeader and KpiCard." },
+      { name: "OverflowText", source: "abox/overflow-text.tsx", consumers: 0, ownership: "business", states: "truncated with hover/focus reveal", status: "internal-only", note: "Used inside PlanCard rather than directly by routes." },
+      { name: "ThemeToggle", source: "abox/theme-toggle.tsx", consumers: 0, ownership: "business", states: "light / dark", status: "available-unused", note: "Toggle was intentionally removed from the UI; the component file remains." },
+      { name: "PlanAiAssistant / PlanOAssistant", source: "abox/planai-assistant.tsx, abox/plan-o-assistant.tsx", consumers: 0, ownership: "business", states: "open / closed, message thread", status: "available-unused", note: "Two coexisting implementations. Consolidation is behavioural, not styling — deferred." },
+      { name: "PlaceholderScreen", source: "abox/placeholder-screen.tsx", consumers: 0, ownership: "business", states: "single", status: "available-unused" },
+      { name: "Decor (DotField, DiagonalWeave)", source: "abox/decor/", consumers: 0, ownership: "business", states: "background decoration", status: "internal-only", note: "Consumed by the shells and EmptyState." },
+    ],
+  },
+  {
+    id: "ui-in-use",
+    title: "UI primitives in application use",
+    summary:
+      "src/components/ui — shadcn primitives that application screens import today. These own focus, keyboard and disabled behaviour.",
+    entries: [
+      { name: "Button", source: "ui/button.tsx", consumers: 14, ownership: "primitive", states: "6 variants × 4 sizes; hover, focus-visible ring, disabled", status: "in-use" },
+      { name: "Card", source: "ui/card.tsx", consumers: 6, ownership: "primitive", states: "header / content / footer composition", status: "in-use" },
+      { name: "Select", source: "ui/select.tsx", consumers: 5, ownership: "primitive", states: "open, selected, disabled, keyboard navigation", status: "in-use" },
+      { name: "Tooltip", source: "ui/tooltip.tsx", consumers: 3, ownership: "primitive", states: "hover / focus reveal", status: "in-use" },
+      { name: "Input", source: "ui/input.tsx", consumers: 3, ownership: "primitive", states: "default, focus, disabled, aria-invalid", status: "in-use" },
+      { name: "DropdownMenu", source: "ui/dropdown-menu.tsx", consumers: 3, ownership: "primitive", states: "open, item hover, separator, keyboard", status: "in-use" },
+      { name: "Sheet", source: "ui/sheet.tsx", consumers: 2, ownership: "primitive", states: "side panels, overlay, close", status: "in-use", note: "Backs the mobile navigation rail." },
+      { name: "Label", source: "ui/label.tsx", consumers: 2, ownership: "primitive", states: "default, peer-disabled", status: "in-use" },
+      { name: "Dialog", source: "ui/dialog.tsx", consumers: 2, ownership: "primitive", states: "open / closed, header, description, close", status: "in-use" },
+      { name: "Textarea, Tabs, Slider, Skeleton, RadioGroup, Progress, Popover, InputGroup, HoverCard, Command, ButtonGroup, Badge, Spinner, Sonner", source: "ui/*", consumers: 1, ownership: "primitive", states: "primitive defaults", status: "in-use", note: "Each has exactly one application consumer today." },
+    ],
+  },
+  {
+    id: "ui-available",
+    title: "UI primitives installed but not yet consumed",
+    summary:
+      "Installed, themed and ready. No application screen imports them yet. Listed for inventory completeness — no action is implied.",
+    entries: [
+      { name: "Accordion, AlertDialog, Alert, AspectRatio, Avatar, Breadcrumb, Calendar, Carousel, Chart, Checkbox, Collapsible", source: "ui/*", consumers: 0, ownership: "primitive", states: "primitive defaults", status: "available-unused" },
+      { name: "ContextMenu, Drawer, Form, InputOTP, Menubar, NavigationMenu, Pagination", source: "ui/*", consumers: 0, ownership: "primitive", states: "primitive defaults", status: "available-unused", note: "Drawer is used by the reference page example only." },
+      { name: "Resizable, ScrollArea, Separator, Sidebar, Switch, Table, Toggle, ToggleGroup", source: "ui/*", consumers: 0, ownership: "primitive", states: "primitive defaults", status: "available-unused", note: "Tables render through ABox DataTable rather than the raw Table primitive." },
+    ],
+  },
+];
+
+export const PATTERN_INVENTORY: InventoryGroup[] = [
+  {
+    id: "patterns",
+    title: "Recurring patterns",
+    summary:
+      "Repeated markup arrangements. Some already have a component owner; others are conventions that live in route files.",
+    entries: [
+      { name: "Page frame", source: "The three shells", consumers: 123, ownership: "business", states: "marketplace / member / internal", status: "in-use" },
+      { name: "Page title block", source: "abox/page-header.tsx", consumers: 23, ownership: "business", states: "default / compact", status: "in-use" },
+      { name: "Action pill row", source: "abox/action-pill.ts", consumers: 33, ownership: "business", states: "primary / outline × 5 sizes", status: "in-use" },
+      { name: "Surface card", source: "route markup: rounded-2xl border bg-card p-5", consumers: 0, ownership: "pattern", states: "static, hoverable, bracketed", status: "in-use", note: "No component owner; border token varies between `border` and `hairline`. Centralizing would risk visual change — deferred." },
+      { name: "Section heading", source: "route markup", consumers: 0, ownership: "pattern", states: "text-base / text-xl / text-2xl variants", status: "in-use", note: "No shared component; sizes vary by route. Deferred." },
+      { name: "Filter rail", source: "src/routes/plans.index.tsx", consumers: 1, ownership: "local", states: "chip selected / unselected, drawer on mobile", status: "in-use", note: "Chips reuse the exact result badges at full opacity." },
+      { name: "Results toolbar", source: "src/routes/plans.index.tsx", consumers: 1, ownership: "local", states: "sort select, shopping-mode bar, edit quote", status: "in-use" },
+      { name: "Search control", source: "abox/internal-shell.tsx", consumers: 1, ownership: "business", states: "resting, ⌘K hint, lg+ only", status: "in-use" },
+      { name: "Toast notifications", source: "ui/sonner.tsx mounted in routes/__root.tsx", consumers: 1, ownership: "primitive", states: "default toast with description", status: "in-use", note: "Triggered from cart-store on plan replacement." },
+      { name: "Loading / skeleton", source: "ui/skeleton.tsx, animate-shimmer", consumers: 1, ownership: "primitive", states: "skeleton block, shimmer surface", status: "in-use" },
+      { name: "Empty state", source: "abox/empty-state.tsx", consumers: 8, ownership: "business", states: "icon, body, action", status: "in-use" },
+      { name: "Wizard / stepper", source: "abox/downline-wizard-stepper.tsx", consumers: 8, ownership: "business", states: "complete / current / upcoming", status: "in-use" },
+      { name: "Plan comparison", source: "src/routes/compare.tsx", consumers: 1, ownership: "local", states: "side-by-side plan columns", status: "in-use" },
+      { name: "Breadcrumbs", source: "—", consumers: 0, ownership: "pattern", states: "—", status: "available-unused", note: "FUTURE OPPORTUNITY: the primitive exists; no screen uses breadcrumbs today." },
+      { name: "Pagination", source: "—", consumers: 0, ownership: "pattern", states: "—", status: "available-unused", note: "FUTURE OPPORTUNITY: result lists are not paginated today." },
+      { name: "Avatars", source: "—", consumers: 0, ownership: "pattern", states: "—", status: "available-unused", note: "FUTURE OPPORTUNITY: the account control uses a User icon, not an avatar image." },
+      { name: "Charts", source: "ui/chart.tsx + chart-1…5 tokens", consumers: 0, ownership: "primitive", states: "—", status: "available-unused", note: "Tokens and primitive exist; no dashboard chart consumes them yet." },
+    ],
+  },
+];
+
+export const STATE_INVENTORY = [
+  { state: "Default", implementation: "Component base classes", source: "ui/* and abox/*", note: "Every component ships a resting state." },
+  { state: "Hover", implementation: "hover:bg-*/90, hover:bg-accent, card hover lift (-translate-y-0.5), edge-sheen sweep, card-brackets reveal", source: "button.tsx, kpi-card.tsx, styles.css", note: "Hover motion runs at 300–700ms on the signature easing." },
+  { state: "Focus", implementation: "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring; skip links use focus:not-sr-only", source: "button.tsx, shells", note: "Ring colour comes from the --ring token." },
+  { state: "Active / selected", implementation: "aria-pressed on filter chips; active nav link weight and background; ring-2 ring-offset-2 where the pattern calls for it", source: "plans.index.tsx, shells", note: "Exchange filters intentionally carry no selection ring." },
+  { state: "Disabled", implementation: "disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed", source: "ui/button.tsx", note: "Primitive-owned; consistent across controls." },
+  { state: "Error", implementation: "aria-invalid styling on inputs plus text-xs text-destructive message", source: "ui/input.tsx, route forms" },
+  { state: "Success", implementation: "sage-toned badge or text-xs text-sage confirmation", source: "route forms, StatusBadge" },
+  { state: "Loading", implementation: "Skeleton blocks, Spinner primitive, animate-shimmer, SaveContinueButton saving state", source: "ui/skeleton.tsx, ui/spinner.tsx, styles.css" },
+  { state: "Empty", implementation: "EmptyState component; DataTable empty row", source: "abox/empty-state.tsx, abox/data-table.tsx" },
+  { state: "Reduced motion", implementation: "All animation and transition durations collapse to 0.01ms", source: "styles.css @layer base" },
+] as const;

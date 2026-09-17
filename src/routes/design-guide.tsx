@@ -64,7 +64,17 @@ import {
   RefToc,
   Swatch,
   SwatchGrid,
+  DefinitionRows,
+  MaturityCallout,
 } from "@/components/design/reference-kit";
+import {
+  OWNERSHIP_HIERARCHY,
+  SAFE_CHANGE_RULES,
+  INTENTIONAL_ONE_OFFS,
+  DEFERRED_OPPORTUNITIES,
+  EXPERIENCES,
+  FIGMA_MAPPING,
+} from "@/lib/design/governance";
 
 export const Route = createFileRoute("/design-guide")({
   head: () => ({
@@ -591,6 +601,134 @@ function DesignGuidePage() {
             </div>
           </div>
         </RefSection>
+
+        <RefSection
+          id="governance"
+          eyebrow="11"
+          title="How the system is governed"
+          intro="The design system is owned in layers. A decision lives in exactly one place, and everything below it inherits that decision."
+        >
+          <RefBlock title="Who owns what" note="Reading top to bottom: the higher the layer, the wider the blast radius of a change.">
+            <DefinitionRows
+              rows={OWNERSHIP_HIERARCHY.map((l) => ({
+                term: l.layer,
+                detail: `${l.owns}. ${l.changeRule}`,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock title="How a change propagates">
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                { title: "Change a token", body: "Update one value in the style foundation and every screen, both light and dark, follows immediately." },
+                { title: "Change a component", body: "Update the single owning component and every page that uses it updates — this is a product change and needs product review." },
+                { title: "Change one screen", body: "Stays local to that screen. Safe, but it is how drift starts: prefer adding a variant to the shared component." },
+              ].map((c) => (
+                <div key={c.title} className="rounded-2xl border border-hairline bg-card p-5">
+                  <p className="text-sm font-semibold">{c.title}</p>
+                  <p className="mt-2 text-sm text-muted-foreground">{c.body}</p>
+                </div>
+              ))}
+            </div>
+          </RefBlock>
+          <RefBlock title="Shared versus deliberately local">
+            <div className="grid gap-4 lg:grid-cols-2">
+              <MaturityCallout kind="current" title="Deliberately local — do not 'fix' these">
+                <ul className="mt-2 space-y-2">
+                  {INTENTIONAL_ONE_OFFS.slice(0, 5).map((o) => (
+                    <li key={o.item}>
+                      <span className="font-medium text-foreground">{o.item}</span> — {o.detail}
+                    </li>
+                  ))}
+                </ul>
+              </MaturityCallout>
+              <MaturityCallout kind="opportunity" title="Identified, intentionally not done yet">
+                <ul className="mt-2 space-y-2">
+                  {DEFERRED_OPPORTUNITIES.slice(0, 5).map((o) => (
+                    <li key={o.item}>
+                      <span className="font-medium text-foreground">{o.item}</span> — {o.detail}
+                    </li>
+                  ))}
+                </ul>
+              </MaturityCallout>
+            </div>
+          </RefBlock>
+          <RefBlock title="Working rules">
+            <ul className="space-y-2 rounded-2xl border border-hairline bg-card p-5 text-sm text-muted-foreground">
+              {SAFE_CHANGE_RULES.map((r) => (
+                <li key={r} className="flex gap-2">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                  <span>{r}</span>
+                </li>
+              ))}
+            </ul>
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="accessibility"
+          eyebrow="12"
+          title="Accessibility principles"
+          intro="Accessibility is built into the foundation rather than added per screen."
+        >
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              { title: "Contrast by pairing", body: "Every surface and status colour ships with a matching text colour. Dark backgrounds take light text; light backgrounds take dark text." },
+              { title: "Never colour alone", body: "Status is always stated in words alongside its colour, so meaning survives colour blindness and greyscale printing." },
+              { title: "Visible focus", body: "Keyboard focus draws a ring from the shared focus colour on every interactive element." },
+              { title: "Touch targets", body: "On phones, every button and link is at least 44px tall." },
+              { title: "Reduced motion", body: "If the operating system asks for less motion, every animation and transition switches off." },
+              { title: "Skip to content", body: "Each shell starts with a skip link that appears on keyboard focus." },
+            ].map((c) => (
+              <div key={c.title} className="rounded-2xl border border-hairline bg-card p-5">
+                <p className="text-sm font-semibold">{c.title}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{c.body}</p>
+              </div>
+            ))}
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="experiences"
+          eyebrow="13"
+          title="Experience guidance"
+          intro="One core design system and one master guide. Each experience gets guidance on context — never its own colours, fonts or component copies."
+        >
+          <div className="grid gap-4 lg:grid-cols-2">
+            {EXPERIENCES.map((e) => (
+              <div key={e.id} className="rounded-2xl border border-hairline bg-card p-5">
+                <p className="text-base font-semibold">{e.title}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{e.surfaces}</p>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">Feel: </span>
+                  {e.density}
+                </p>
+                <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
+                  {e.guidance.map((g) => (
+                    <li key={g} className="flex gap-2">
+                      <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" />
+                      <span>{g}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="figma"
+          eyebrow="14"
+          title="Where this goes next: Figma"
+          intro="When the design library is built in Figma, it will mirror this implementation one-to-one rather than being drawn from scratch. Nothing has been converted yet — this is the agreed mapping."
+        >
+          <DefinitionRows
+            rows={FIGMA_MAPPING.map((m) => ({
+              term: m.implementation,
+              detail: `→ ${m.figma}. ${m.note}`,
+            }))}
+          />
+        </RefSection>
+
 
         <footer className="border-t border-hairline py-10 text-xs text-muted-foreground">
           This guide documents the design language. Runtime brand configuration and white-label

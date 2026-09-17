@@ -92,7 +92,24 @@ import {
   Swatch,
   SwatchGrid,
   useTokenValue,
+  FoundationTable,
+  RelationshipTable,
+  InventoryTable,
+  DefinitionRows,
+  MaturityCallout,
+  MetaChip,
 } from "@/components/design/reference-kit";
+import { FOUNDATION } from "@/lib/design/foundation";
+import { SPACING_RELATIONSHIPS, TYPOGRAPHY_RELATIONSHIPS } from "@/lib/design/relationships";
+import { COMPONENT_INVENTORY, PATTERN_INVENTORY, STATE_INVENTORY } from "@/lib/design/inventory";
+import {
+  OWNERSHIP_HIERARCHY,
+  SAFE_CHANGE_RULES,
+  INTENTIONAL_ONE_OFFS,
+  DEFERRED_OPPORTUNITIES,
+  EXPERIENCES,
+  FIGMA_MAPPING,
+} from "@/lib/design/governance";
 
 export const Route = createFileRoute("/design-system")({
   head: () => ({
@@ -128,6 +145,15 @@ const TOC = [
   { id: "abox", label: "ABox components" },
   { id: "states", label: "States" },
   { id: "patterns", label: "Patterns" },
+  { id: "foundation-audit", label: "Foundation audit" },
+  { id: "spacing-relationships", label: "Spacing relationships" },
+  { id: "type-relationships", label: "Type relationships" },
+  { id: "component-inventory", label: "Component inventory" },
+  { id: "state-inventory", label: "State inventory" },
+  { id: "pattern-inventory", label: "Pattern inventory" },
+  { id: "governance", label: "Governance" },
+  { id: "experiences", label: "Experiences" },
+  { id: "figma", label: "Figma mapping" },
 ];
 
 function DesignSystemPage() {
@@ -710,6 +736,181 @@ function DesignSystemPage() {
               Internal dashboards keep their own shell widths.
             </p>
           </div>
+        </RefSection>
+
+        <RefSection
+          id="foundation-audit"
+          eyebrow="Audit"
+          title="Foundation inventory"
+          intro="Every foundation category audited against the running implementation: what it is, where the source of truth lives, who consumes it, and whether it is a true shared token, a recurring convention or an intentional one-off. Values are recorded as measured — nothing here was normalized."
+        >
+          {FOUNDATION.map((cat) => (
+            <RefBlock key={cat.id} title={cat.title} note={cat.summary}>
+              <FoundationTable entries={cat.entries} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="spacing-relationships"
+          eyebrow="Audit"
+          title="Spacing relationships"
+          intro="Beyond the raw scale: the recurring spacing pairings the application actually uses, measured at real call sites. Where the implementation varies, the variation is recorded as found and left untouched."
+        >
+          {SPACING_RELATIONSHIPS.map((g) => (
+            <RefBlock key={g.id} title={g.title} note={g.summary}>
+              <RelationshipTable entries={g.entries} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="type-relationships"
+          eyebrow="Audit"
+          title="Typography relationships"
+          intro="Which size, weight and colour follows which, as implemented today."
+        >
+          {TYPOGRAPHY_RELATIONSHIPS.map((g) => (
+            <RefBlock key={g.id} title={g.title} note={g.summary}>
+              <RelationshipTable entries={g.entries} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="component-inventory"
+          eyebrow="Audit"
+          title="Component inventory"
+          intro="Consumer counts are import counts across src/routes and src/components, excluding each component's own folder and these reference pages. 'Available' means the primitive is installed and themed but no application screen imports it yet — a fact, not a defect."
+        >
+          {COMPONENT_INVENTORY.map((g) => (
+            <RefBlock key={g.id} title={g.title} note={g.summary}>
+              <InventoryTable entries={g.entries} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="state-inventory"
+          eyebrow="Audit"
+          title="State inventory"
+          intro="The interaction and feedback states that exist in the implementation, and where each one is defined."
+        >
+          <DefinitionRows
+            rows={STATE_INVENTORY.map((s) => ({
+              term: s.state,
+              detail: "note" in s && s.note ? `${s.implementation} — ${s.note}` : s.implementation,
+              meta: s.source,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="pattern-inventory"
+          eyebrow="Audit"
+          title="Pattern inventory"
+          intro="Repeated arrangements across the product. Some already have a component owner; others remain route-level conventions and are recorded as such."
+        >
+          {PATTERN_INVENTORY.map((g) => (
+            <RefBlock key={g.id} title={g.title} note={g.summary}>
+              <InventoryTable entries={g.entries} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="governance"
+          eyebrow="Governance"
+          title="Ownership & safe change"
+          intro="Which layer owns which decision, and the rules that keep a change from leaking into the shipped product unintentionally."
+        >
+          <RefBlock title="Ownership hierarchy">
+            <DefinitionRows
+              rows={OWNERSHIP_HIERARCHY.map((l) => ({
+                term: l.layer,
+                detail: `${l.owns}. ${l.changeRule}`,
+                meta: l.source,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock title="Safe centralization rules">
+            <ul className="space-y-2 rounded-2xl border border-hairline bg-card p-5 text-sm text-muted-foreground">
+              {SAFE_CHANGE_RULES.map((r) => (
+                <li key={r} className="flex gap-2">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-sage" aria-hidden />
+                  <span>{r}</span>
+                </li>
+              ))}
+            </ul>
+          </RefBlock>
+          <RefBlock title="Intentional one-offs" note="Deliberate local decisions. They look like inconsistencies and must not be normalized.">
+            <MaturityCallout kind="current" title="Leave these exactly as they are">
+              <ul className="mt-2 space-y-2">
+                {INTENTIONAL_ONE_OFFS.map((o) => (
+                  <li key={o.item}>
+                    <span className="font-medium text-foreground">{o.item}</span> — {o.detail}{" "}
+                    <span className="text-serial">{o.source}</span>
+                  </li>
+                ))}
+              </ul>
+            </MaturityCallout>
+          </RefBlock>
+          <RefBlock title="Deferred opportunities" note="Identified during the audit and intentionally NOT applied, because each could change rendered output or behaviour.">
+            <MaturityCallout kind="opportunity" title="Not implemented — candidates for a future phase">
+              <ul className="mt-2 space-y-2">
+                {DEFERRED_OPPORTUNITIES.map((o) => (
+                  <li key={o.item}>
+                    <span className="font-medium text-foreground">{o.item}</span> — {o.detail}{" "}
+                    <MetaChip tone="warning">{o.risk}</MetaChip>
+                  </li>
+                ))}
+              </ul>
+            </MaturityCallout>
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="experiences"
+          eyebrow="Governance"
+          title="Experience guidance"
+          intro="One core system, three shipped experiences plus a slot for future ones. Experiences share every token and component; only context-specific usage differs."
+        >
+          <div className="grid gap-4 lg:grid-cols-2">
+            {EXPERIENCES.map((e) => (
+              <div key={e.id} className="rounded-2xl border border-hairline bg-card p-5">
+                <p className="text-base font-semibold">{e.title}</p>
+                <dl className="mt-3 space-y-1.5 text-xs text-muted-foreground">
+                  <div><dt className="inline font-medium text-foreground">Surfaces: </dt><dd className="inline">{e.surfaces}</dd></div>
+                  <div><dt className="inline font-medium text-foreground">Container: </dt><dd className="inline">{e.container}</dd></div>
+                  <div><dt className="inline font-medium text-foreground">Density: </dt><dd className="inline">{e.density}</dd></div>
+                  <div><dt className="inline font-medium text-foreground">Shell: </dt><dd className="inline">{e.shellAndChrome}</dd></div>
+                  <div><dt className="inline font-medium text-foreground">Components: </dt><dd className="inline">{e.typicalComponents}</dd></div>
+                </dl>
+                <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
+                  {e.guidance.map((g) => (
+                    <li key={g} className="flex gap-2">
+                      <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" />
+                      <span>{g}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="figma"
+          eyebrow="Blueprint"
+          title="Future Figma mapping"
+          intro="How this implementation will map into a Figma library when that work begins. Blueprint only — no conversion has been performed and no Figma file exists yet."
+        >
+          <DefinitionRows
+            rows={FIGMA_MAPPING.map((m) => ({
+              term: m.implementation,
+              detail: `→ ${m.figma}. ${m.note}`,
+            }))}
+          />
         </RefSection>
       </RefContainer>
     </RefPage>
