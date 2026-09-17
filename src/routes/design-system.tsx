@@ -1050,7 +1050,6 @@ function DesignSystemPage() {
           </RefBlock>
         </RefSection>
 
-
         <RefSection
           id="icon-sources"
           eyebrow="Phase 4 audit"
@@ -1125,7 +1124,10 @@ function DesignSystemPage() {
           intro="Every mark is drawn in code from CSS variables. That is why the product needs no dark-mode logo file and why white-labelling re-themes the mark without a new asset."
         >
           <AssetTable entries={BRAND_ASSETS.entries} />
-          <RefBlock title="Live marks" note="Rendered from the production components — the same code the application ships.">
+          <RefBlock
+            title="Live marks"
+            note="Rendered from the production components — the same code the application ships."
+          >
             <RefStage>
               <div className="flex flex-wrap items-center gap-6">
                 <div className="flex items-center gap-3">
@@ -1222,7 +1224,10 @@ function DesignSystemPage() {
             />
           </RefBlock>
           <RefBlock title="Deferred opportunities">
-            <MaturityCallout kind="opportunity" title="Not applied — would change production code or rendered output">
+            <MaturityCallout
+              kind="opportunity"
+              title="Not applied — would change production code or rendered output"
+            >
               <ul className="mt-2 space-y-2">
                 {ICON_ASSET_DEFERRED.map((o) => (
                   <li key={o.item}>

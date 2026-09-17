@@ -26,7 +26,7 @@ export const ICON_ACCESSIBILITY: RelationshipGroup = {
     {
       pair: "Icon-only button",
       observed:
-        "Button size=\"icon\" gives a 36px square target; the accessible name comes from an aria-label on the control.",
+        'Button size="icon" gives a 36px square target; the accessible name comes from an aria-label on the control.',
       source: "components/ui/button.tsx and consumers such as marketplace.admin.assets.tsx",
       consistency: "varies",
       note: "OBSERVED VARIATION — most icon-only controls are labelled, but the convention is applied per call site, not enforced by a component.",
@@ -34,7 +34,7 @@ export const ICON_ACCESSIBILITY: RelationshipGroup = {
     {
       pair: "Dialog / Sheet close",
       observed:
-        "An X icon with a sibling <span className=\"sr-only\">Close</span> — visible glyph, spoken label.",
+        'An X icon with a sibling <span className="sr-only">Close</span> — visible glyph, spoken label.',
       source: "components/ui/dialog.tsx, sheet.tsx",
       consistency: "consistent",
       note: "The cleanest icon-only accessibility pattern in the codebase.",
@@ -90,14 +90,15 @@ export const ICON_ACCESSIBILITY: RelationshipGroup = {
     },
     {
       pair: "Disabled icon control",
-      observed: "disabled:pointer-events-none disabled:opacity-50 on the control; the icon dims with it.",
+      observed:
+        "disabled:pointer-events-none disabled:opacity-50 on the control; the icon dims with it.",
       source: "components/ui/button.tsx",
       consistency: "consistent",
     },
     {
       pair: "Brand mark accessibility",
       observed:
-        "AboxMark is hard-coded aria-hidden=\"true\". Where it appears in a shell header it sits beside the AboxWordmark text, so the brand still has a readable name.",
+        'AboxMark is hard-coded aria-hidden="true". Where it appears in a shell header it sits beside the AboxWordmark text, so the brand still has a readable name.',
       source: "abox/logo.tsx and the three shells",
       consistency: "consistent",
     },
@@ -142,7 +143,8 @@ export const ICON_STATES: RelationshipGroup = {
     },
     {
       pair: "Disabled",
-      observed: "opacity-50 on the control and pointer events removed. No separate disabled icon exists.",
+      observed:
+        "opacity-50 on the control and pointer events removed. No separate disabled icon exists.",
       source: "components/ui/button.tsx",
       consistency: "consistent",
     },
@@ -189,13 +191,15 @@ export const ICON_RELATIONSHIPS: RelationshipGroup = {
   entries: [
     {
       pair: "Icon → text",
-      observed: "gap-2 at 16px icons, gap-1.5 at 14px, gap-1 at 12px. Vertically centred via items-center.",
+      observed:
+        "gap-2 at 16px icons, gap-1.5 at 14px, gap-1 at 12px. Vertically centred via items-center.",
       source: "Global convention across routes",
       consistency: "consistent",
     },
     {
       pair: "Icon → button label",
-      observed: "gap-2, enforced by the Button primitive's base class along with size-4 and shrink-0.",
+      observed:
+        "gap-2, enforced by the Button primitive's base class along with size-4 and shrink-0.",
       source: "components/ui/button.tsx",
       consistency: "consistent",
     },
@@ -213,13 +217,15 @@ export const ICON_RELATIONSHIPS: RelationshipGroup = {
     },
     {
       pair: "Icon → navigation item",
-      observed: "16px glyph, gap-2 to a text-sm font-medium label, in both the marketplace header and the admin rail.",
+      observed:
+        "16px glyph, gap-2 to a text-sm font-medium label, in both the marketplace header and the admin rail.",
       source: "abox/marketplace-shell.tsx, internal-shell.tsx",
       consistency: "consistent",
     },
     {
       pair: "Icon → input",
-      observed: "16px muted glyph absolutely positioned inside the field, with left padding on the input to clear it.",
+      observed:
+        "16px muted glyph absolutely positioned inside the field, with left padding on the input to clear it.",
       source: "Search fields",
       consistency: "consistent",
     },
@@ -264,7 +270,8 @@ export const ICON_RELATIONSHIPS: RelationshipGroup = {
     },
     {
       pair: "Brand mark → sidebar",
-      observed: "AboxMark tone=\"sidebar\" beside a text-display text-lg wordmark and a muted workspace name.",
+      observed:
+        'AboxMark tone="sidebar" beside a text-display text-lg wordmark and a muted workspace name.',
       source: "abox/internal-shell.tsx",
       consistency: "consistent",
     },

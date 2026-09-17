@@ -28,7 +28,8 @@ export const BRAND_ASSETS: AssetGroup = {
         "marketplace-shell, internal-shell, member-shell, routes/index.tsx, quote.tsx, placeholder-screen, both assistants, app.jet.branding.tsx",
       variants: "tone: primary | sage | sidebar | foreground; size prop (default 36)",
       dimensions: "36px default; the size prop drives both the span and the svg",
-      accessibility: "aria-hidden=\"true\" hard-coded; the adjacent wordmark text carries the brand name",
+      accessibility:
+        'aria-hidden="true" hard-coded; the adjacent wordmark text carries the brand name',
       owner: "Design system (component) — recoloured at runtime by Branding & White-Label tokens",
       status: "in-use",
       note: "CURRENT IMPLEMENTATION — every fill and stroke reads a CSS variable (--surface, --primary, --sage, --hairline, --sidebar-*), so the mark re-themes with the brand automatically.",
@@ -52,11 +53,11 @@ export const BRAND_ASSETS: AssetGroup = {
       consumers: "abox/plan-card.tsx, routes/cart.tsx",
       variants: "size prop (default 36); neutral fallback when a name yields no initials",
       dimensions: "36px disc; font size computed as size × 0.34",
-      accessibility: "aria-hidden with an HTML title; the carrier name is always printed as text beside it",
+      accessibility:
+        "aria-hidden with an HTML title; the carrier name is always printed as text beside it",
       owner: "Design system (component)",
       status: "in-use",
-      note:
-        "CURRENT IMPLEMENTATION — the component's own source states these are illustrative placeholders, not official carrier logos. Initials sit on a hue derived deterministically from the carrier name, so a carrier always renders the same mark. Real carrier logos would arrive through asset management, not through this component.",
+      note: "CURRENT IMPLEMENTATION — the component's own source states these are illustrative placeholders, not official carrier logos. Initials sit on a hue derived deterministically from the carrier name, so a carrier always renders the same mark. Real carrier logos would arrive through asset management, not through this component.",
     },
     {
       name: "favicon.ico",
@@ -73,15 +74,15 @@ export const BRAND_ASSETS: AssetGroup = {
     {
       name: "Marketplace LOGO / MARK / FAVICON / HERO",
       kind: "Runtime-uploaded assets",
-      source: "src/routes/marketplace.admin.assets.tsx (REQ-M04-BRD-004), backed by marketplace-store",
+      source:
+        "src/routes/marketplace.admin.assets.tsx (REQ-M04-BRD-004), backed by marketplace-store",
       consumers: "Marketplace-branded surfaces at runtime",
       variants: "Four fixed asset types, one active each; HERO is optional",
       dimensions: "Set by the uploaded file; validated through the existing scan flow",
       accessibility: "Handled by the consuming surface",
       owner: "Marketplace Asset Management — existing runtime functionality",
       status: "runtime-managed",
-      note:
-        "GOVERNANCE RULE — the design system documents that these exist and are the source of truth for marketplace branding. It must not duplicate, replace or preview-manage them. When no asset is uploaded, the screen states that an approved baseline is used.",
+      note: "GOVERNANCE RULE — the design system documents that these exist and are the source of truth for marketplace branding. It must not duplicate, replace or preview-manage them. When no asset is uploaded, the screen states that an approved baseline is used.",
     },
     {
       name: "White-label brand configuration",
@@ -142,8 +143,7 @@ export const MEDIA_ASSETS: AssetGroup = {
       accessibility: "—",
       owner: "—",
       status: "in-use",
-      note:
-        "UNOWNED AREA — because no image is rendered, there is no alt-text convention, no object-fit convention and no aspect-ratio convention to document. These will need to be defined the first time an image ships.",
+      note: "UNOWNED AREA — because no image is rendered, there is no alt-text convention, no object-fit convention and no aspect-ratio convention to document. These will need to be defined the first time an image ships.",
     },
     {
       name: "Decorative SVG primitives",
@@ -151,12 +151,12 @@ export const MEDIA_ASSETS: AssetGroup = {
       source: "src/components/abox/decor/index.tsx",
       consumers: "src/routes/index.tsx only",
       variants: "size, tone, className props; opacity applied at the call site",
-      dimensions: "Caller-driven — for example OrbitalRings at 560, RadialTicks at 420, CoverageWeave at 340",
+      dimensions:
+        "Caller-driven — for example OrbitalRings at 560, RadialTicks at 420, CoverageWeave at 340",
       accessibility: "Background artwork, pointer-events-none, not announced",
       owner: "Design system (components)",
       status: "in-use",
-      note:
-        "These stand in for illustration. Six are used on the landing page: Aurora, DotField, OrbitalRings, RadialTicks, CoverageWeave, BlueprintGrid. Several are hidden below md.",
+      note: "These stand in for illustration. Six are used on the landing page: Aurora, DotField, OrbitalRings, RadialTicks, CoverageWeave, BlueprintGrid. Several are hidden below md.",
     },
     {
       name: "Auth screen artwork",
@@ -207,7 +207,8 @@ export const ASSET_ORGANIZATION: FoundationCategory = {
     },
     {
       name: "Decorative art location",
-      value: "src/components/abox/decor/index.tsx — a single barrel file holding every decorative primitive.",
+      value:
+        "src/components/abox/decor/index.tsx — a single barrel file holding every decorative primitive.",
       source: "src/components/abox/decor/",
       consumers: "routes/index.tsx",
       ownership: "business",
@@ -346,7 +347,8 @@ export const ASSET_BEHAVIOR: RelationshipGroup = {
     },
     {
       pair: "Loading / error state",
-      observed: "Uploaded assets move through SCANNING to VALID, shown as a status row with a retire action.",
+      observed:
+        "Uploaded assets move through SCANNING to VALID, shown as a status row with a retire action.",
       source: "routes/marketplace.admin.assets.tsx",
       consistency: "consistent",
     },
@@ -382,8 +384,10 @@ export const ASSET_OWNERSHIP = [
     category: "Core shared icons (lucide-react)",
     sourceOfTruth: "The lucide-react package plus the conventions recorded in this audit",
     owner: "Design system",
-    safeToChange: "Adding a new icon for a new feature, following the existing size and colour conventions",
-    needsReview: "Replacing an icon already used across screens, or changing a default size or stroke",
+    safeToChange:
+      "Adding a new icon for a new feature, following the existing size and colour conventions",
+    needsReview:
+      "Replacing an icon already used across screens, or changing a default size or stroke",
     centralized: "Yes — one library serves every experience",
   },
   {
@@ -391,7 +395,8 @@ export const ASSET_OWNERSHIP = [
     sourceOfTruth: "src/lib/products.ts",
     owner: "Product, through that single map",
     safeToChange: "Nothing in isolation — the map is the only place a product glyph may be set",
-    needsReview: "Any change to a product's glyph, since it propagates to every product surface at once",
+    needsReview:
+      "Any change to a product's glyph, since it propagates to every product surface at once",
     centralized: "Yes — already a single source of truth",
   },
   {
@@ -407,7 +412,8 @@ export const ASSET_OWNERSHIP = [
     sourceOfTruth: "src/components/abox/logo.tsx",
     owner: "Design system, themed by Branding & White-Label tokens",
     safeToChange: "Using an existing tone or size in a new place",
-    needsReview: "Changing the mark geometry, adding a tone, or hard-coding a colour instead of a token",
+    needsReview:
+      "Changing the mark geometry, adding a tone, or hard-coding a colour instead of a token",
     centralized: "Yes",
   },
   {
@@ -415,7 +421,8 @@ export const ASSET_OWNERSHIP = [
     sourceOfTruth: "src/components/abox/carrier-mark.tsx",
     owner: "Design system",
     safeToChange: "Using the component in a new plan context",
-    needsReview: "Replacing placeholder monograms with real carrier logos — that is an asset-management decision with licensing implications, not a styling change",
+    needsReview:
+      "Replacing placeholder monograms with real carrier logos — that is an asset-management decision with licensing implications, not a styling change",
     centralized: "Yes",
   },
   {
@@ -457,22 +464,86 @@ export const ASSET_OWNERSHIP = [
  * ------------------------------------------------------------------ */
 
 export const ICON_ASSET_MATURITY = [
-  { item: "Icon library choice", maturity: "centralized", detail: "One library carries 149 icons across 144 files." },
-  { item: "Stroke width", maturity: "centralized", detail: "Never overridden — the library default is universal." },
-  { item: "Icon colour", maturity: "centralized", detail: "currentColor or a semantic token; no literal colour on any icon." },
-  { item: "Product icon mapping", maturity: "centralized", detail: "src/lib/products.ts is the single source of truth." },
-  { item: "Brand mark", maturity: "centralized", detail: "One token-driven component with four tones." },
-  { item: "Carrier mark", maturity: "centralized", detail: "One deterministic component with a documented placeholder status." },
-  { item: "Button icon sizing", maturity: "centralized", detail: "Enforced by the Button primitive's [&_svg]:size-4 rule." },
-  { item: "Icon size ladder", maturity: "partially centralized", detail: "Four sizes dominate, but only the Button case is enforced; the rest is convention." },
-  { item: "Icon accessibility", maturity: "partially centralized", detail: "aria-hidden is near-universal; icon-only labelling is per call site." },
-  { item: "Circular icon container", maturity: "repeated", detail: "Roughly 104 similar wrappers with no owning component." },
-  { item: "Negative-status glyphs", maturity: "inconsistent", detail: "XCircle, Ban, ShieldAlert and PauseCircle overlap in meaning." },
-  { item: "Dual-purpose glyphs", maturity: "unowned", detail: "Eye, Shield, Users and Activity each carry two meanings." },
-  { item: "Loading icon", maturity: "inconsistent", detail: "No single spinner convention across async surfaces." },
-  { item: "Decorative artwork", maturity: "undocumented", detail: "Most primitives are unused and none carried usage guidance before this audit." },
-  { item: "Imagery conventions", maturity: "future opportunity", detail: "No image ships, so alt text, aspect ratio and object-fit have no convention yet." },
-  { item: "Second icon library", maturity: "future opportunity", detail: "Tabler is carried for one glyph; Font Awesome for none." },
+  {
+    item: "Icon library choice",
+    maturity: "centralized",
+    detail: "One library carries 149 icons across 144 files.",
+  },
+  {
+    item: "Stroke width",
+    maturity: "centralized",
+    detail: "Never overridden — the library default is universal.",
+  },
+  {
+    item: "Icon colour",
+    maturity: "centralized",
+    detail: "currentColor or a semantic token; no literal colour on any icon.",
+  },
+  {
+    item: "Product icon mapping",
+    maturity: "centralized",
+    detail: "src/lib/products.ts is the single source of truth.",
+  },
+  {
+    item: "Brand mark",
+    maturity: "centralized",
+    detail: "One token-driven component with four tones.",
+  },
+  {
+    item: "Carrier mark",
+    maturity: "centralized",
+    detail: "One deterministic component with a documented placeholder status.",
+  },
+  {
+    item: "Button icon sizing",
+    maturity: "centralized",
+    detail: "Enforced by the Button primitive's [&_svg]:size-4 rule.",
+  },
+  {
+    item: "Icon size ladder",
+    maturity: "partially centralized",
+    detail: "Four sizes dominate, but only the Button case is enforced; the rest is convention.",
+  },
+  {
+    item: "Icon accessibility",
+    maturity: "partially centralized",
+    detail: "aria-hidden is near-universal; icon-only labelling is per call site.",
+  },
+  {
+    item: "Circular icon container",
+    maturity: "repeated",
+    detail: "Roughly 104 similar wrappers with no owning component.",
+  },
+  {
+    item: "Negative-status glyphs",
+    maturity: "inconsistent",
+    detail: "XCircle, Ban, ShieldAlert and PauseCircle overlap in meaning.",
+  },
+  {
+    item: "Dual-purpose glyphs",
+    maturity: "unowned",
+    detail: "Eye, Shield, Users and Activity each carry two meanings.",
+  },
+  {
+    item: "Loading icon",
+    maturity: "inconsistent",
+    detail: "No single spinner convention across async surfaces.",
+  },
+  {
+    item: "Decorative artwork",
+    maturity: "undocumented",
+    detail: "Most primitives are unused and none carried usage guidance before this audit.",
+  },
+  {
+    item: "Imagery conventions",
+    maturity: "future opportunity",
+    detail: "No image ships, so alt text, aspect ratio and object-fit have no convention yet.",
+  },
+  {
+    item: "Second icon library",
+    maturity: "future opportunity",
+    detail: "Tabler is carried for one glyph; Font Awesome for none.",
+  },
 ];
 
 export const ICON_ASSET_DEFERRED = [
@@ -483,7 +554,8 @@ export const ICON_ASSET_DEFERRED = [
   },
   {
     item: "Consolidate the single Tabler import",
-    detail: "Would require replacing the dental glyph, which was chosen deliberately after several attempts.",
+    detail:
+      "Would require replacing the dental glyph, which was chosen deliberately after several attempts.",
     risk: "High — reopens a settled decision",
   },
   {

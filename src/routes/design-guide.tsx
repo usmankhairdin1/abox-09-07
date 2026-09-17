@@ -959,9 +959,9 @@ function DesignGuidePage() {
             </MaturityCallout>
             <MaturityCallout kind="current" title="The product ships no photography">
               <p>
-                There are no photos or illustrations in the product today &mdash; identity comes from
-                type, colour, icons and drawn background artwork. Introducing the first image is a
-                deliberate decision that needs its own conventions, not an incidental one.
+                There are no photos or illustrations in the product today &mdash; identity comes
+                from type, colour, icons and drawn background artwork. Introducing the first image
+                is a deliberate decision that needs its own conventions, not an incidental one.
               </p>
             </MaturityCallout>
           </div>
@@ -979,8 +979,8 @@ function DesignGuidePage() {
               <p>
                 The small circular carrier badges on plan listings are generated initials, not real
                 carrier logos. They are deliberately consistent per carrier so the experience feels
-                settled. Replacing them with licensed logos is an asset and permissions decision, not
-                a styling tweak.
+                settled. Replacing them with licensed logos is an asset and permissions decision,
+                not a styling tweak.
               </p>
             </MaturityCallout>
           </div>
@@ -1011,7 +1011,8 @@ function DesignGuidePage() {
             <MaturityCallout kind="current" title="Shopping / Marketplace">
               <p>
                 Smaller, denser icons: cart, store, product marks and carrier badges. Every product
-                has exactly one icon, defined in one place, so it looks the same wherever it appears.
+                has exactly one icon, defined in one place, so it looks the same wherever it
+                appears.
               </p>
             </MaturityCallout>
             <MaturityCallout kind="current" title="Dashboard / Admin">
@@ -1048,12 +1049,15 @@ function DesignGuidePage() {
           intro="When the design library is built in Figma, it will mirror this implementation one-to-one rather than being drawn from scratch. Nothing has been converted yet — this is the agreed mapping."
         >
           <DefinitionRows
-            rows={[...FIGMA_MAPPING, ...FIGMA_LAYOUT_MAPPING, ...FIGMA_TYPOGRAPHY_MAPPING, ...FIGMA_ICON_ASSET_MAPPING].map(
-              (m) => ({
-                term: m.implementation,
-                detail: `→ ${m.figma}. ${m.note}`,
-              }),
-            )}
+            rows={[
+              ...FIGMA_MAPPING,
+              ...FIGMA_LAYOUT_MAPPING,
+              ...FIGMA_TYPOGRAPHY_MAPPING,
+              ...FIGMA_ICON_ASSET_MAPPING,
+            ].map((m) => ({
+              term: m.implementation,
+              detail: `→ ${m.figma}. ${m.note}`,
+            }))}
           />
         </RefSection>
 

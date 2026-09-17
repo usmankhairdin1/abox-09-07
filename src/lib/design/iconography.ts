@@ -26,7 +26,7 @@ export const ICON_SOURCES: FoundationCategory = {
     {
       name: "lucide-react",
       value:
-        "Named ES imports, e.g. import { ArrowRight } from \"lucide-react\". 149 distinct icons across 144 files. Rendered as SVG with currentColor and the library's default 2px stroke.",
+        'Named ES imports, e.g. import { ArrowRight } from "lucide-react". 149 distinct icons across 144 files. Rendered as SVG with currentColor and the library\'s default 2px stroke.',
       source: "package.json — lucide-react ^0.575.0",
       consumers:
         "Every experience: marketing landing, marketplace shell, plan and cart screens, all three shells, admin tables, dialogs, empty states.",
@@ -40,7 +40,8 @@ export const ICON_SOURCES: FoundationCategory = {
       value:
         "One import: IconDental, wrapped by the local Tooth component. Chosen because Lucide has no tooth glyph.",
       source: "package.json ^3.46.0 → src/components/icons/tooth-icon.tsx",
-      consumers: "src/lib/products.ts — the Dental product icon, rendered wherever that product appears.",
+      consumers:
+        "src/lib/products.ts — the Dental product icon, rendered wherever that product appears.",
       ownership: "business",
       shared: "one-off",
       maturity: "current",
@@ -59,9 +60,10 @@ export const ICON_SOURCES: FoundationCategory = {
     {
       name: "Inline SVG — brand mark",
       value:
-        "Hand-authored <svg viewBox=\"0 0 40 40\"> inside AboxMark: disc, inner ring, dashed mid ring, orbital dot, chevron A. All fills and strokes read CSS variables.",
+        'Hand-authored <svg viewBox="0 0 40 40"> inside AboxMark: disc, inner ring, dashed mid ring, orbital dot, chevron A. All fills and strokes read CSS variables.',
       source: "src/components/abox/logo.tsx",
-      consumers: "All three shells, the landing page, the quote screen, both assistants, placeholder screens, the branding screen.",
+      consumers:
+        "All three shells, the landing page, the quote screen, both assistants, placeholder screens, the branding screen.",
       ownership: "business",
       shared: "source-of-truth",
       maturity: "current",
@@ -88,7 +90,8 @@ export const ICON_SOURCES: FoundationCategory = {
     },
     {
       name: "Icon fonts / glyphs / CSS icons",
-      value: "None. No icon font is loaded, and no ::before glyph or CSS-drawn icon convention exists.",
+      value:
+        "None. No icon font is loaded, and no ::before glyph or CSS-drawn icon convention exists.",
       source: "src/styles.css, src/routes/__root.tsx",
       consumers: "—",
       ownership: "foundation",
@@ -98,7 +101,8 @@ export const ICON_SOURCES: FoundationCategory = {
     },
     {
       name: "Image-based icons",
-      value: "None. There is no <img> element anywhere in src and no raster icon asset in the repository.",
+      value:
+        "None. There is no <img> element anywhere in src and no raster icon asset in the repository.",
       source: "src/**",
       consumers: "—",
       ownership: "foundation",
@@ -343,14 +347,15 @@ export const ICON_CATEGORIES: IconCategory[] = [
         interactive: "interactive",
         semantics: "meaningful",
         experience: "All",
-        note: "Dialog and Sheet pair it with an sr-only \"Close\" label — the cleanest icon-only pattern in the codebase.",
+        note: 'Dialog and Sheet pair it with an sr-only "Close" label — the cleanest icon-only pattern in the codebase.',
       },
     ],
   },
   {
     id: "icons-finding",
     title: "Search, filter & sort",
-    summary: "A small, stable set. Search icons sit inside inputs at a fixed offset; filter and sort glyphs sit on controls.",
+    summary:
+      "A small, stable set. Search icons sit inside inputs at a fixed offset; filter and sort glyphs sit on controls.",
     entries: [
       {
         name: "Search",
@@ -664,7 +669,8 @@ export const ICON_CATEGORIES: IconCategory[] = [
         library: "lucide-react",
         role: "PlanAI / assisted content / highlight",
         usage: 17,
-        where: "PlanAI assistant, AI-assisted panels, the cart add-ons banner, marketing highlights",
+        where:
+          "PlanAI assistant, AI-assisted panels, the cart add-ons banner, marketing highlights",
         size: "h-4 w-4, h-3.5 w-3.5 inline",
         treatment: "text-ai or text-primary",
         interactive: "static",
@@ -969,7 +975,8 @@ export const ICON_TREATMENT: FoundationCategory = {
     },
     {
       name: "Muted treatment",
-      value: "text-muted-foreground is the resting state for supporting and utility icons; hover promotes to foreground.",
+      value:
+        "text-muted-foreground is the resting state for supporting and utility icons; hover promotes to foreground.",
       source: "Tables, meta rows, search fields",
       consumers: "Admin and shopping surfaces",
       ownership: "pattern",
@@ -999,7 +1006,8 @@ export const ICON_TREATMENT: FoundationCategory = {
     },
     {
       name: "Square icon container",
-      value: "rounded-md with border-hairline and bg-background — the EmptyState frame at h-12 w-12.",
+      value:
+        "rounded-md with border-hairline and bg-background — the EmptyState frame at h-12 w-12.",
       source: "src/components/abox/empty-state.tsx",
       consumers: "Every empty state",
       ownership: "business",
