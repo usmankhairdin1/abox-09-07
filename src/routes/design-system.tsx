@@ -1033,12 +1033,57 @@ function DesignSystemPage() {
           title="Future Figma mapping"
           intro="How this implementation will map into a Figma library when that work begins. Blueprint only — no conversion has been performed and no Figma file exists yet."
         >
-          <DefinitionRows
-            rows={FIGMA_MAPPING.map((m) => ({
-              term: m.implementation,
-              detail: `→ ${m.figma}. ${m.note}`,
-            }))}
-          />
+          <RefBlock
+            title="Tokens, components and states"
+            note="Established in the foundation phase."
+          >
+            <DefinitionRows
+              rows={FIGMA_MAPPING.map((m) => ({
+                term: m.implementation,
+                detail: `→ ${m.figma}. ${m.note}`,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock
+            title="Spacing, layout and responsive behaviour"
+            note="Added in Phase 2. Blueprint only — no Figma file, no conversion, and no runtime code was altered to make conversion easier later."
+          >
+            <DefinitionRows
+              rows={FIGMA_LAYOUT_MAPPING.map((m) => ({
+                term: m.implementation,
+                detail: `→ ${m.figma}. ${m.note}`,
+              }))}
+            />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="layout-governance"
+          eyebrow="Phase 2 governance"
+          title="Spacing & layout governance"
+          intro="Rules that keep the audit honest, the areas that still have no owner, and the opportunities that were deliberately not taken because they would have re-spaced shipping screens."
+        >
+          <RefBlock title="Governance rules">
+            <RuleList items={LAYOUT_GOVERNANCE_RULES} />
+          </RefBlock>
+          <RefBlock
+            title="Unowned recurring areas"
+            note="Recurring spacing and layout that no component or token currently owns. Recorded, not centralized."
+          >
+            <RuleList items={LAYOUT_UNOWNED_AREAS} tone="warning" />
+          </RefBlock>
+          <RefBlock title="Deferred opportunities">
+            <MaturityCallout kind="opportunity" title="Not applied — would change rendered output">
+              <ul className="mt-2 space-y-2">
+                {LAYOUT_DEFERRED_OPPORTUNITIES.map((o) => (
+                  <li key={o.item}>
+                    <span className="font-medium text-foreground">{o.item}</span> — {o.detail}{" "}
+                    <MetaChip tone="warning">{o.risk}</MetaChip>
+                  </li>
+                ))}
+              </ul>
+            </MaturityCallout>
+          </RefBlock>
         </RefSection>
       </RefContainer>
     </RefPage>
