@@ -462,3 +462,400 @@ export function MaturityCallout({
     </div>
   );
 }
+
+/* -----------------------------------------------------------------
+ * Phase 2 — spacing & layout audit display primitives.
+ * Documentation-only; consumed by /design-system and /design-guide.
+ * ----------------------------------------------------------------- */
+
+function RefTable({
+  minWidth,
+  head,
+  children,
+}: {
+  minWidth: string;
+  head: string[];
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-hairline bg-card">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm" style={{ minWidth }}>
+          <thead className="border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <tr>
+              {head.map((h) => (
+                <th key={h} scope="col" className="px-5 py-4 font-semibold">
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>{children}</tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+const ROW = "border-b border-hairline/60 align-top last:border-0";
+
+function ConsistencyChip({ value }: { value: string }) {
+  const tone =
+    value === "consistent" ? "sage" : value === "mostly-consistent" ? "muted" : "warning";
+  const label =
+    value === "consistent"
+      ? "Consistent"
+      : value === "mostly-consistent"
+        ? "Mostly consistent"
+        : value === "one-off"
+          ? "One-off"
+          : "Variable";
+  return <MetaChip tone={tone as "sage" | "muted" | "warning"}>{label}</MetaChip>;
+}
+
+/** Spacing audit table: value, purpose, frequency, risk. */
+export function SpacingTable({
+  entries,
+}: {
+  entries: {
+    value: string;
+    computed: string;
+    occurrences: number;
+    purpose: string;
+    where: string;
+    frequency: string;
+    consistency: string;
+    source: string;
+    ownership: string;
+    centralizable: string;
+    risk: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="980px"
+      head={["Value", "Uses", "Purpose & where", "As found", "Centralizable", "Ownership"]}
+    >
+      {entries.map((e) => (
+        <tr key={e.value} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="text-serial">{e.value}</p>
+            <p className="mt-1 text-[11px] tabular-nums text-muted-foreground">{e.computed}</p>
+          </td>
+          <td className="px-5 py-4 tabular-nums text-muted-foreground">{e.occurrences}</td>
+          <td className="px-5 py-4 text-muted-foreground">
+            <span className="block text-foreground">{e.purpose}</span>
+            <span className="mt-1 block text-xs">{e.where}</span>
+            {e.note && <span className="mt-1 block text-xs">{e.note}</span>}
+          </td>
+          <td className="px-5 py-4">
+            <span className="flex flex-wrap gap-1.5">
+              <ConsistencyChip value={e.consistency} />
+              <MetaChip>
+                {e.frequency === "recurring"
+                  ? "Recurring"
+                  : e.frequency === "occasional"
+                    ? "Occasional"
+                    : "One-off"}
+              </MetaChip>
+            </span>
+          </td>
+          <td className="px-5 py-4">
+            <span className="flex flex-wrap gap-1.5">
+              <MetaChip
+                tone={
+                  e.centralizable === "safe"
+                    ? "sage"
+                    : e.centralizable === "unsafe"
+                      ? "warning"
+                      : "muted"
+                }
+              >
+                {e.centralizable === "safe"
+                  ? "Safe"
+                  : e.centralizable === "unsafe"
+                    ? "Unsafe"
+                    : "Conditional"}
+              </MetaChip>
+              <MetaChip tone={e.risk === "high" ? "warning" : "muted"}>{e.risk} risk</MetaChip>
+            </span>
+          </td>
+          <td className="px-5 py-4">
+            <OwnershipChip ownership={e.ownership} />
+            <p className="text-serial mt-1.5 break-all">{e.source}</p>
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Container inventory table. */
+export function ContainerTable({
+  entries,
+}: {
+  entries: {
+    name: string;
+    widthBehavior: string;
+    maxWidth: string;
+    gutters: string;
+    alignment: string;
+    responsive: string;
+    consumers: string;
+    source: string;
+    shared: string;
+    variations: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="1000px"
+      head={["Container", "Width & gutters", "Responsive", "Consumers", "Variations"]}
+    >
+      {entries.map((e) => (
+        <tr key={e.name} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{e.name}</p>
+            <span className="mt-1.5 flex flex-wrap gap-1.5">
+              <MetaChip tone={e.shared === "shared" ? "sage" : "warning"}>
+                {e.shared === "shared" ? "Shared" : "Local"}
+              </MetaChip>
+            </span>
+            <p className="text-serial mt-1.5 break-all">{e.source}</p>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">
+            <span className="text-serial block">{e.maxWidth}</span>
+            <span className="text-serial mt-1 block">{e.gutters}</span>
+            <span className="mt-1 block text-xs">{e.widthBehavior}</span>
+            <span className="mt-1 block text-xs">{e.alignment}</span>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{e.responsive}</td>
+          <td className="px-5 py-4 text-muted-foreground">{e.consumers}</td>
+          <td className="px-5 py-4 text-muted-foreground">{e.variations}</td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Responsive pattern table: desktop / tablet / mobile as implemented. */
+export function ResponsiveTable({
+  entries,
+}: {
+  entries: {
+    name: string;
+    trigger: string;
+    desktop: string;
+    tablet: string;
+    mobile: string;
+    source: string;
+    consumers: string;
+    variations: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="1040px"
+      head={["Pattern", "Trigger", "Desktop", "Tablet", "Mobile", "Where"]}
+    >
+      {entries.map((e) => (
+        <tr key={e.name} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{e.name}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{e.variations}</p>
+          </td>
+          <td className="px-5 py-4">
+            <span className="text-serial">{e.trigger}</span>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{e.desktop}</td>
+          <td className="px-5 py-4 text-muted-foreground">{e.tablet}</td>
+          <td className="px-5 py-4 text-muted-foreground">{e.mobile}</td>
+          <td className="px-5 py-4">
+            <span className="text-serial break-all">{e.source}</span>
+            <p className="mt-1 text-xs text-muted-foreground">{e.consumers}</p>
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Density table: observed contextual density modes. */
+export function DensityTable({
+  entries,
+}: {
+  entries: {
+    mode: string;
+    context: string;
+    controlHeight: string;
+    padding: string;
+    gap: string;
+    typography: string;
+    iconSize: string;
+    source: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <RefTable
+      minWidth="960px"
+      head={["Mode", "Context", "Control height", "Padding & gap", "Type & icon", "Source"]}
+    >
+      {entries.map((e) => (
+        <tr key={e.mode} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{e.mode}</p>
+            {e.note && <p className="mt-1 text-xs text-muted-foreground">{e.note}</p>}
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{e.context}</td>
+          <td className="px-5 py-4">
+            <span className="text-serial">{e.controlHeight}</span>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">
+            <span className="text-serial block">{e.padding}</span>
+            <span className="text-serial mt-1 block">{e.gap}</span>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">
+            <span className="block">{e.typography}</span>
+            <span className="mt-1 block text-xs">{e.iconSize}</span>
+          </td>
+          <td className="px-5 py-4">
+            <span className="text-serial break-all">{e.source}</span>
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Dimensional inventory table. */
+export function DimensionTable({
+  entries,
+}: {
+  entries: {
+    element: string;
+    value: string;
+    occurrences: string;
+    source: string;
+    ownership: string;
+    note?: string;
+  }[];
+}) {
+  return (
+    <RefTable minWidth="880px" head={["Element", "Observed value", "Uses", "Source", "Ownership"]}>
+      {entries.map((e) => (
+        <tr key={e.element} className={ROW}>
+          <td className="px-5 py-4">
+            <p className="font-medium">{e.element}</p>
+            {e.note && <p className="mt-1 text-xs text-muted-foreground">{e.note}</p>}
+          </td>
+          <td className="px-5 py-4">
+            <span className="text-serial">{e.value}</span>
+          </td>
+          <td className="px-5 py-4 text-muted-foreground">{e.occurrences}</td>
+          <td className="px-5 py-4">
+            <span className="text-serial break-all">{e.source}</span>
+          </td>
+          <td className="px-5 py-4">
+            <OwnershipChip ownership={e.ownership} />
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Layout pattern cards: anatomy, examples, responsive behaviour. */
+export function LayoutPatternList({
+  entries,
+}: {
+  entries: {
+    name: string;
+    purpose: string;
+    anatomy: string;
+    examples: string;
+    responsive: string;
+    spacing: string;
+    shared: string;
+    source: string;
+    ownership: string;
+    maturity: string;
+    opportunity?: string;
+  }[];
+}) {
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      {entries.map((e) => (
+        <article key={e.name} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-start justify-between gap-2">
+            <h4 className="text-sm font-semibold">{e.name}</h4>
+            <span className="flex flex-wrap gap-1.5">
+              <OwnershipChip ownership={e.ownership} />
+              <MetaChip tone={e.shared === "shared" ? "sage" : "muted"}>
+                {e.shared === "shared" ? "Shared" : "Local"}
+              </MetaChip>
+            </span>
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">{e.purpose}</p>
+          <dl className="mt-4 space-y-2 text-xs">
+            <div>
+              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Anatomy
+              </dt>
+              <dd className="mt-0.5 text-muted-foreground">{e.anatomy}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Spacing
+              </dt>
+              <dd className="mt-0.5 text-muted-foreground">{e.spacing}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Responsive
+              </dt>
+              <dd className="mt-0.5 text-muted-foreground">{e.responsive}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Examples
+              </dt>
+              <dd className="text-serial mt-0.5 break-all">{e.examples}</dd>
+            </div>
+          </dl>
+          {e.opportunity && (
+            <p className="mt-4 rounded-xl border border-warning/40 bg-warning/5 p-3 text-xs text-muted-foreground">
+              {e.opportunity}
+            </p>
+          )}
+        </article>
+      ))}
+    </div>
+  );
+}
+
+/** Simple governance / unowned-area list. */
+export function RuleList({
+  items,
+  tone = "muted",
+}: {
+  items: string[];
+  tone?: "muted" | "warning";
+}) {
+  return (
+    <ul className="space-y-2">
+      {items.map((item) => (
+        <li
+          key={item}
+          className={cn(
+            "rounded-xl border p-4 text-sm text-muted-foreground",
+            tone === "warning" ? "border-warning/40 bg-warning/5" : "border-hairline bg-card",
+          )}
+        >
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}

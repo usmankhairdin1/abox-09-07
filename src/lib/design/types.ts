@@ -78,3 +78,104 @@ export interface InventoryGroup {
   summary: string;
   entries: InventoryEntry[];
 }
+
+/* -----------------------------------------------------------------
+ * Phase 2 — spacing & layout audit types.
+ * Documentation only. No value below is consumed at runtime by the
+ * application; `/design-system` and `/design-guide` are the only readers.
+ * ----------------------------------------------------------------- */
+
+/** How widely a spacing or layout value recurs across the codebase. */
+export type Frequency = "recurring" | "occasional" | "one-off";
+
+/** Consistency of a pattern exactly as found — never normalized. */
+export type Consistency = "consistent" | "mostly-consistent" | "variable" | "one-off";
+
+export interface SpacingEntry {
+  /** Utility class or arbitrary value as written in production code. */
+  value: string;
+  /** Computed length for reference. */
+  computed: string;
+  /** Approximate occurrences across src/routes + src/components. */
+  occurrences: number;
+  /** What the value is used for. */
+  purpose: string;
+  /** Representative places it occurs. */
+  where: string;
+  frequency: Frequency;
+  consistency: Consistency;
+  /** Where the decision currently lives. */
+  source: string;
+  ownership: Ownership;
+  /** Whether a future token could safely absorb it. */
+  centralizable: "safe" | "conditional" | "unsafe";
+  /** Visual risk if the value were ever changed. */
+  risk: "low" | "medium" | "high";
+  note?: string;
+}
+
+export interface SpacingGroup {
+  id: string;
+  title: string;
+  summary: string;
+  entries: SpacingEntry[];
+}
+
+export interface ContainerEntry {
+  name: string;
+  widthBehavior: string;
+  maxWidth: string;
+  gutters: string;
+  alignment: string;
+  responsive: string;
+  consumers: string;
+  source: string;
+  shared: "shared" | "local";
+  variations: string;
+}
+
+export interface ResponsivePattern {
+  name: string;
+  trigger: string;
+  desktop: string;
+  tablet: string;
+  mobile: string;
+  source: string;
+  consumers: string;
+  variations: string;
+}
+
+export interface DensityEntry {
+  mode: string;
+  context: string;
+  controlHeight: string;
+  padding: string;
+  gap: string;
+  typography: string;
+  iconSize: string;
+  source: string;
+  note?: string;
+}
+
+export interface DimensionEntry {
+  element: string;
+  value: string;
+  occurrences: string;
+  source: string;
+  ownership: Ownership;
+  note?: string;
+}
+
+export interface LayoutPattern {
+  name: string;
+  purpose: string;
+  anatomy: string;
+  examples: string;
+  responsive: string;
+  spacing: string;
+  shared: "shared" | "local";
+  source: string;
+  ownership: Ownership;
+  maturity: Maturity;
+  opportunity?: string;
+}

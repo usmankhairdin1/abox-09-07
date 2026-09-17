@@ -98,10 +98,29 @@ import {
   DefinitionRows,
   MaturityCallout,
   MetaChip,
+  SpacingTable,
+  ContainerTable,
+  ResponsiveTable,
+  DensityTable,
+  DimensionTable,
+  LayoutPatternList,
+  RuleList,
 } from "@/components/design/reference-kit";
 import { FOUNDATION } from "@/lib/design/foundation";
 import { SPACING_RELATIONSHIPS, TYPOGRAPHY_RELATIONSHIPS } from "@/lib/design/relationships";
 import { COMPONENT_INVENTORY, PATTERN_INVENTORY, STATE_INVENTORY } from "@/lib/design/inventory";
+import { SPACING_GROUPS } from "@/lib/design/spacing";
+import {
+  CONTAINERS,
+  DIMENSIONS,
+  GRID_FLEX_RELATIONSHIPS,
+  LAYOUT_PATTERNS,
+} from "@/lib/design/layout";
+import {
+  DENSITY_MODES,
+  RESPONSIVE_PATTERNS,
+  STRUCTURAL_RELATIONSHIPS,
+} from "@/lib/design/spatial-relationships";
 import {
   OWNERSHIP_HIERARCHY,
   SAFE_CHANGE_RULES,
@@ -109,6 +128,10 @@ import {
   DEFERRED_OPPORTUNITIES,
   EXPERIENCES,
   FIGMA_MAPPING,
+  FIGMA_LAYOUT_MAPPING,
+  LAYOUT_GOVERNANCE_RULES,
+  LAYOUT_DEFERRED_OPPORTUNITIES,
+  LAYOUT_UNOWNED_AREAS,
 } from "@/lib/design/governance";
 
 export const Route = createFileRoute("/design-system")({
@@ -151,7 +174,15 @@ const TOC = [
   { id: "component-inventory", label: "Component inventory" },
   { id: "state-inventory", label: "State inventory" },
   { id: "pattern-inventory", label: "Pattern inventory" },
+  { id: "spacing-audit", label: "Spacing audit" },
+  { id: "layout-containers", label: "Containers" },
+  { id: "layout-structure", label: "Grid & structure" },
+  { id: "responsive-audit", label: "Responsive" },
+  { id: "density-audit", label: "Density" },
+  { id: "dimensions-audit", label: "Dimensions" },
+  { id: "layout-patterns", label: "Layout patterns" },
   { id: "governance", label: "Governance" },
+  { id: "layout-governance", label: "Layout governance" },
   { id: "experiences", label: "Experiences" },
   { id: "figma", label: "Figma mapping" },
 ];
@@ -819,6 +850,78 @@ function DesignSystemPage() {
         </RefSection>
 
         <RefSection
+          id="spacing-audit"
+          eyebrow="Phase 2 audit"
+          title="Spacing foundation"
+          intro="Measured from src/routes and src/components. The application has no spacing token in src/styles.css — spacing is expressed with Tailwind utilities at each call site, so these tables are the actual source of truth. Counts are approximate and describe scale."
+        >
+          {SPACING_GROUPS.map((group) => (
+            <RefBlock key={group.id} title={group.title} note={group.summary}>
+              <SpacingTable entries={group.entries} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="layout-containers"
+          eyebrow="Phase 2 audit"
+          title="Layout foundation — containers"
+          intro="Every recurring container behaviour as implemented. The web experience and the admin shell deliberately use different ceilings; both are preserved."
+        >
+          <ContainerTable entries={CONTAINERS} />
+        </RefSection>
+
+        <RefSection
+          id="layout-structure"
+          eyebrow="Phase 2 audit"
+          title="Structural relationships, grid & flex"
+          intro="Observed spacing between adjacent structural elements, and the grid and flex conventions that produce them. Consistency is reported as found and is not normalized."
+        >
+          <RefBlock title={STRUCTURAL_RELATIONSHIPS.title} note={STRUCTURAL_RELATIONSHIPS.summary}>
+            <RelationshipTable entries={STRUCTURAL_RELATIONSHIPS.entries} />
+          </RefBlock>
+          <RefBlock title={GRID_FLEX_RELATIONSHIPS.title} note={GRID_FLEX_RELATIONSHIPS.summary}>
+            <RelationshipTable entries={GRID_FLEX_RELATIONSHIPS.entries} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="responsive-audit"
+          eyebrow="Phase 2 audit"
+          title="Responsive foundation"
+          intro="Breakpoint usage measured in the codebase: md carries 246 modifiers, sm 173, lg 87, xl 22 and 2xl 2. These are the real responsive relationships, not Tailwind's defaults listed generically."
+        >
+          <ResponsiveTable entries={RESPONSIVE_PATTERNS} />
+        </RefSection>
+
+        <RefSection
+          id="density-audit"
+          eyebrow="Phase 2 audit"
+          title="Density"
+          intro="Observed contextual density modes. These are descriptions of what ships, not tokens — no density token exists in the implementation."
+        >
+          <DensityTable entries={DENSITY_MODES} />
+        </RefSection>
+
+        <RefSection
+          id="dimensions-audit"
+          eyebrow="Phase 2 audit"
+          title="Dimensional relationships"
+          intro="Recurring dimensions that set layout quality, cross-referenced with the foundation audit's control-height and icon-size records."
+        >
+          <DimensionTable entries={DIMENSIONS} />
+        </RefSection>
+
+        <RefSection
+          id="layout-patterns"
+          eyebrow="Phase 2 audit"
+          title="Layout patterns"
+          intro="Structural patterns present in the application today. Nothing here is a new runtime pattern — each entry points at the code that already implements it."
+        >
+          <LayoutPatternList entries={LAYOUT_PATTERNS} />
+        </RefSection>
+
+        <RefSection
           id="governance"
           eyebrow="Governance"
           title="Ownership & safe change"
@@ -929,12 +1032,57 @@ function DesignSystemPage() {
           title="Future Figma mapping"
           intro="How this implementation will map into a Figma library when that work begins. Blueprint only — no conversion has been performed and no Figma file exists yet."
         >
-          <DefinitionRows
-            rows={FIGMA_MAPPING.map((m) => ({
-              term: m.implementation,
-              detail: `→ ${m.figma}. ${m.note}`,
-            }))}
-          />
+          <RefBlock
+            title="Tokens, components and states"
+            note="Established in the foundation phase."
+          >
+            <DefinitionRows
+              rows={FIGMA_MAPPING.map((m) => ({
+                term: m.implementation,
+                detail: `→ ${m.figma}. ${m.note}`,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock
+            title="Spacing, layout and responsive behaviour"
+            note="Added in Phase 2. Blueprint only — no Figma file, no conversion, and no runtime code was altered to make conversion easier later."
+          >
+            <DefinitionRows
+              rows={FIGMA_LAYOUT_MAPPING.map((m) => ({
+                term: m.implementation,
+                detail: `→ ${m.figma}. ${m.note}`,
+              }))}
+            />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="layout-governance"
+          eyebrow="Phase 2 governance"
+          title="Spacing & layout governance"
+          intro="Rules that keep the audit honest, the areas that still have no owner, and the opportunities that were deliberately not taken because they would have re-spaced shipping screens."
+        >
+          <RefBlock title="Governance rules">
+            <RuleList items={LAYOUT_GOVERNANCE_RULES} />
+          </RefBlock>
+          <RefBlock
+            title="Unowned recurring areas"
+            note="Recurring spacing and layout that no component or token currently owns. Recorded, not centralized."
+          >
+            <RuleList items={LAYOUT_UNOWNED_AREAS} tone="warning" />
+          </RefBlock>
+          <RefBlock title="Deferred opportunities">
+            <MaturityCallout kind="opportunity" title="Not applied — would change rendered output">
+              <ul className="mt-2 space-y-2">
+                {LAYOUT_DEFERRED_OPPORTUNITIES.map((o) => (
+                  <li key={o.item}>
+                    <span className="font-medium text-foreground">{o.item}</span> — {o.detail}{" "}
+                    <MetaChip tone="warning">{o.risk}</MetaChip>
+                  </li>
+                ))}
+              </ul>
+            </MaturityCallout>
+          </RefBlock>
         </RefSection>
       </RefContainer>
     </RefPage>
