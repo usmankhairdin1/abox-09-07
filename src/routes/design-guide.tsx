@@ -81,6 +81,17 @@ import { SCREEN_TRACEABILITY } from "@/lib/design/graph-screens";
 import { OWNERSHIP_MODEL } from "@/lib/design/graph-brand-boundary";
 import { PROPAGATION_RULES, MIGRATION_STAGES, MIGRATION_BOUNDARY } from "@/lib/design/graph-governance";
 import { DUPLICATE_MAPPINGS } from "@/lib/design/graph-duplicates";
+import { PATTERN_SUMMARY, PATTERN_TAXONOMY } from "@/lib/design/pattern-registry";
+import { PATTERN_DUPLICATES } from "@/lib/design/pattern-duplicates";
+import { EXPERIENCE_PATTERNS } from "@/lib/design/experience-patterns";
+import { EXPERIENCE_EXTENSIONS } from "@/lib/design/experience-extensions";
+import {
+  PATTERN_DEFINITION_RULES,
+  PATTERN_OWNERSHIP_RULES,
+  APPROVAL_GATE,
+} from "@/lib/design/pattern-governance";
+import { FIGMA_PATTERN_RULES } from "@/lib/design/pattern-figma";
+import { PATTERN_VARIANTS } from "@/lib/design/pattern-variants";
 import {
   OWNERSHIP_HIERARCHY,
   SAFE_CHANGE_RULES,
@@ -200,6 +211,13 @@ const TOC = [
   { id: "fit-change", label: "How a change spreads" },
   { id: "fit-owners", label: "Who owns what" },
   { id: "fit-migration", label: "Why change needs approval" },
+  { id: "pat-what", label: "What a pattern is" },
+  { id: "pat-levels", label: "Component, pattern, experience" },
+  { id: "pat-who", label: "Who owns a pattern" },
+  { id: "pat-spread", label: "How pattern changes spread" },
+  { id: "pat-differences", label: "Handling differences" },
+  { id: "pat-approval", label: "When tidying needs approval" },
+  { id: "pat-figma-guide", label: "Patterns and Figma" },
 ];
 
 const PRINCIPLES = [
@@ -1686,6 +1704,115 @@ function DesignGuidePage() {
           <div className="mt-4">
             <RuleList items={MIGRATION_BOUNDARY} tone="warning" />
           </div>
+        </RefSection>
+
+
+        <RefSection
+          id="pat-what"
+          eyebrow="Patterns"
+          title="What a pattern is"
+          intro="A pattern is a recurring arrangement that solves one problem on a screen — a page opening, a filter-and-results view, a cart summary. It sits above individual buttons and below a whole page."
+        >
+          <DefinitionRows
+            rows={[
+              { term: "Patterns recorded", detail: `${PATTERN_SUMMARY.patterns} arrangements, grouped into ${PATTERN_SUMMARY.categories} kinds of work.` },
+              { term: "Working as intended today", detail: `${PATTERN_SUMMARY.current} of them.` },
+              { term: "Built more than one way", detail: `${PATTERN_SUMMARY.variationsOrDuplicates} of them, all kept as they are.` },
+              { term: "Nobody currently responsible", detail: `${PATTERN_SUMMARY.unowned} of them.` },
+              { term: "Not decided", detail: `${PATTERN_SUMMARY.open} left open because the code does not answer the question.` },
+              { term: "Important", detail: "Looking alike is not enough. Two things only count as the same pattern when the code shows they are." },
+            ]}
+          />
+          {PATTERN_TAXONOMY.filter((g) => g.patterns.length > 0).map((group) => (
+            <div key={group.category} className="mt-4">
+              <DefinitionRows
+                rows={[{ term: group.title, detail: group.patterns.map((p) => p.name).join(", ") }]}
+              />
+            </div>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="pat-levels"
+          eyebrow="Patterns"
+          title="Component, pattern, experience pattern"
+          intro="Three different things, often confused. Getting the level right decides who is allowed to change something."
+        >
+          <DefinitionRows rows={PATTERN_DEFINITION_RULES.map((r) => ({ term: r.question, detail: r.rule }))} />
+        </RefSection>
+
+        <RefSection
+          id="pat-who"
+          eyebrow="Patterns"
+          title="Who owns a pattern"
+          intro="Ownership decides who can approve a change. Brand settings and marketplace artwork stay outside the design system entirely."
+        >
+          <DefinitionRows rows={PATTERN_OWNERSHIP_RULES.map((r) => ({ term: r.question, detail: r.rule }))} />
+        </RefSection>
+
+        <RefSection
+          id="pat-spread"
+          eyebrow="Patterns"
+          title="How a pattern change spreads"
+          intro="Because each pattern is now written down with the pages that use it, a proposed change can be costed before anyone starts."
+        >
+          <DefinitionRows
+            rows={EXPERIENCE_PATTERNS.slice(0, 10).map((e) => ({
+              term: `${e.patternId.replace("pat.", "")} in ${e.ownership}`,
+              detail: `Used on ${e.screens.join(", ") || "no recorded page"}. ${e.purpose}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="pat-differences"
+          eyebrow="Patterns"
+          title="How differences are handled"
+          intro="Where the product does the same thing two ways, both are written down with the reason each is kept. Nothing is quietly made uniform, because every such tidy-up would change what customers see."
+        >
+          <DefinitionRows
+            rows={PATTERN_VARIANTS.slice(0, 10).map((v) => ({
+              term: `${v.patternId.replace("pat.", "")} — ${v.variant}`,
+              detail: v.difference,
+              meta: `Kept because: ${v.keptBecause}`,
+            }))}
+          />
+          <div className="mt-4">
+            <DefinitionRows
+              rows={EXPERIENCE_EXTENSIONS.slice(0, 6).map((e, i) => ({
+                term: `${i + 1}. ${e.corePattern.replace("pat.", "")}`,
+                detail: `${e.experienceA}: ${e.behaviorA} ${e.experienceB}: ${e.behaviorB}`,
+                meta: e.classification,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-approval"
+          eyebrow="Patterns"
+          title="When tidying up needs your approval"
+          intro="Several things are built more than once. None has been changed. Choosing one version is a business decision with visible consequences, so it is never taken automatically."
+        >
+          <DefinitionRows
+            rows={PATTERN_DUPLICATES.map((d) => ({
+              term: d.concept,
+              detail: `${d.implementations.length} ways it is built: ${d.implementations.map((i) => i.name).join(", ")}.`,
+              meta: d.resolution === "unresolved" ? "Needs a decision" : "Observed and accepted",
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={APPROVAL_GATE} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="pat-figma-guide"
+          eyebrow="Patterns"
+          title="How future Figma patterns would relate to the product"
+          intro="Nothing has been created in Figma. What exists is a written plan for how each pattern would be built there, if and when that work is approved."
+        >
+          <RuleList items={FIGMA_PATTERN_RULES} tone="warning" />
         </RefSection>
 
         <footer className="border-t border-hairline py-10 text-xs text-muted-foreground">

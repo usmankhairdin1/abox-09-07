@@ -936,3 +936,20 @@ CURRENT IMPLEMENTATION — the graph describes the product as it exists; no prod
 - Change impact is derived by traversing edges, not written by hand. Where the graph cannot answer safely it reports `not-determinable`.
 
 FUTURE OPPORTUNITY — resolving duplicates, assigning owners to unowned patterns, and any migration remain deferred and approval-dependent. Migration stages are conceptual; none has started and no first component is named. Nothing exists in Figma.
+
+## Phase 10 — Pattern & experience architecture
+
+Reference layer only. No production file was changed in this phase.
+
+- Modules live in `src/lib/design/pattern-*.ts`, `experience-patterns.ts`, `experience-extensions.ts` and `screen-pattern-map.ts`, assembled by `pattern-registry.ts`. Consumed only by `/design-system` and `/design-guide`.
+- CURRENT IMPLEMENTATION — pattern ids are the same `pat.*` ids the Phase 9 graph uses. Composition and screen traceability are computed by walking Phase 9 edges, not re-declared, and `REGISTRY_INTEGRITY` surfaces any id present in one phase and missing from the other.
+- CURRENT IMPLEMENTATION — anatomy, states, responsive behaviour and density are transcribed from real files: `page-header.tsx`, `kpi-card.tsx`, `data-table.tsx`, `empty-state.tsx`, `downline-wizard-stepper.tsx`, the three shells, `index.tsx`, `plans.index.tsx`, `cart.tsx`, `member.settings.tsx`.
+- OBSERVED VARIATION — stacking breakpoints differ: cart and hero stack at lg, member stacks at md. Card grids are three-column in marketing and single-column in plan results. Hero action pills sit at h-11 against the shared pill height.
+- OBSERVED DUPLICATE — tabular presentation (DataTable, table primitive, route-local tables), field/form composition (primitive fields, M06 kit, M08 kit), assistant surfaces (PlanAI, Plan-O, ai-elements), and screen opening headers (PageHeader, marketing section headings, internal shell masthead).
+- OBSERVED OVERLAP — the three shells implement navigation independently; that is deliberate per audience and recorded, not corrected.
+- UNOWNED — marketing section headers have no owning component; loading and error presentation have no owner while the empty case does.
+- INSTALLED BUT UNUSED — the pagination primitive has no production consumer, so pagination is recorded as FUTURE DECISION — insufficient implementation evidence.
+- FUTURE DECISION — no duplicate has a winner, no density question is settled, no unowned pattern has been assigned an owner.
+- FUTURE OPPORTUNITY — aligning stacking breakpoints, card padding, control heights or table densities would each change production output and remain out of scope until separately approved.
+- FUTURE OPPORTUNITY — `pattern-figma.ts` is a blueprint. Nothing exists in Figma: no file, component, variant, style or asset has been created.
+- Branding & White-Label and Marketplace Asset Management stay runtime-owned. Patterns consume those values; the design system does not take their configuration.
