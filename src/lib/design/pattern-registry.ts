@@ -41,7 +41,11 @@ export function patternDossier(id: string) {
 export const PATTERN_DOSSIERS = PATTERN_SPECS.map((p) => patternDossier(p.id));
 
 /** Patterns grouped for the reference page, in taxonomy order. */
-export const PATTERN_TAXONOMY: { category: PatternSpec["category"]; title: string; patterns: PatternSpec[] }[] = [
+export const PATTERN_TAXONOMY: {
+  category: PatternSpec["category"];
+  title: string;
+  patterns: PatternSpec[];
+}[] = [
   { category: "page-structure", title: "Page structure" },
   { category: "selection-and-filtering", title: "Selection and filtering" },
   { category: "data-presentation", title: "Data presentation" },
@@ -63,8 +67,12 @@ export const PATTERN_TAXONOMY: { category: PatternSpec["category"]; title: strin
 export const REGISTRY_INTEGRITY = {
   specIds: PATTERN_SPECS.map((p) => p.id),
   graphIds: PATTERN_NODES.map((n) => n.id),
-  specsWithoutGraphNode: PATTERN_SPECS.filter((p) => !PATTERN_NODES.some((n) => n.id === p.id)).map((p) => p.id),
-  graphNodesWithoutSpec: PATTERN_NODES.filter((n) => !PATTERN_SPECS.some((p) => p.id === n.id)).map((n) => nodeName(n.id)),
+  specsWithoutGraphNode: PATTERN_SPECS.filter((p) => !PATTERN_NODES.some((n) => n.id === p.id)).map(
+    (p) => p.id,
+  ),
+  graphNodesWithoutSpec: PATTERN_NODES.filter((n) => !PATTERN_SPECS.some((p) => p.id === n.id)).map(
+    (n) => nodeName(n.id),
+  ),
 };
 
 export const PATTERN_SUMMARY = {
@@ -83,10 +91,15 @@ export const PATTERN_SUMMARY = {
   figmaProposals: PATTERN_FIGMA_MAPPINGS.length,
   current: PATTERN_SPECS.filter((p) => p.status === "CURRENT IMPLEMENTATION").length,
   variationsOrDuplicates: PATTERN_SPECS.filter(
-    (p) => p.status === "OBSERVED VARIATION" || p.status === "OBSERVED DUPLICATE" || p.status === "OBSERVED OVERLAP",
+    (p) =>
+      p.status === "OBSERVED VARIATION" ||
+      p.status === "OBSERVED DUPLICATE" ||
+      p.status === "OBSERVED OVERLAP",
   ).length,
   unowned: PATTERN_SPECS.filter((p) => p.status === "UNOWNED AREA").length,
-  open: PATTERN_SPECS.filter((p) => p.status === "FUTURE DECISION" || p.status === "FUTURE CANONICAL TARGET").length,
+  open: PATTERN_SPECS.filter(
+    (p) => p.status === "FUTURE DECISION" || p.status === "FUTURE CANONICAL TARGET",
+  ).length,
 };
 
 export const REGISTRY_RULES: string[] = [

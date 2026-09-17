@@ -33,14 +33,16 @@ export const BRAND_BOUNDARY: BoundaryEdge[] = [
   {
     from: "BrandMark / Wordmark components",
     to: "Runtime brand assets",
-    direction: "Components describe placement, tone and clear space; assets are supplied at runtime.",
+    direction:
+      "Components describe placement, tone and clear space; assets are supplied at runtime.",
     status: "CURRENT IMPLEMENTATION",
     rule: "Marks are code-drawn today; no image files ship except the favicon.",
   },
   {
     from: "CarrierMark",
     to: "Marketplace asset management",
-    direction: "The monogram is a deterministic fallback; real artwork would come from asset management.",
+    direction:
+      "The monogram is a deterministic fallback; real artwork would come from asset management.",
     status: "OBSERVED VARIATION",
     rule: "The mark is explicitly illustrative and is not carrier artwork.",
   },
@@ -61,13 +63,67 @@ export const BRAND_BOUNDARY: BoundaryEdge[] = [
 ];
 
 export const OWNERSHIP_MODEL: OwnershipRecord[] = [
-  { layer: "Foundation", ownedBy: "The stylesheet", changesRequire: "Review of every semantic role that reads the value", outsideTheSystem: "Tenant brand values", status: "CURRENT IMPLEMENTATION" },
-  { layer: "Semantic role", ownedBy: "The design system", changesRequire: "Review of every component role that consumes it", outsideTheSystem: "Domain meaning such as tier or exchange status", status: "CURRENT IMPLEMENTATION" },
-  { layer: "Core component", ownedBy: "Primitive and ABox component authors", changesRequire: "Review of measured consumers", outsideTheSystem: "Business logic and data", status: "CURRENT IMPLEMENTATION" },
-  { layer: "Compound", ownedBy: "The component that defines the composition", changesRequire: "Review of the patterns built on it", outsideTheSystem: "Screen-specific arrangements", status: "CURRENT IMPLEMENTATION" },
-  { layer: "Pattern", ownedBy: "No single owner today for several patterns", changesRequire: "Review of every experience that uses it", outsideTheSystem: "One-off screen layouts", status: "UNOWNED AREA" },
-  { layer: "Experience", ownedBy: "The shell and its screens", changesRequire: "Review of the screens inside it", outsideTheSystem: "Other experiences", status: "CURRENT IMPLEMENTATION" },
-  { layer: "Screen", ownedBy: "The route", changesRequire: "Nothing beyond itself, provided it composes rather than redefines", outsideTheSystem: "Shared components", status: "CURRENT IMPLEMENTATION" },
-  { layer: "Runtime branding", ownedBy: "Branding & White-Label", changesRequire: "Its own approval path", outsideTheSystem: "The whole design system", status: "GOVERNANCE RULE" },
-  { layer: "Runtime assets", ownedBy: "Marketplace Asset Management", changesRequire: "Its own approval path", outsideTheSystem: "The whole design system", status: "GOVERNANCE RULE" },
+  {
+    layer: "Foundation",
+    ownedBy: "The stylesheet",
+    changesRequire: "Review of every semantic role that reads the value",
+    outsideTheSystem: "Tenant brand values",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    layer: "Semantic role",
+    ownedBy: "The design system",
+    changesRequire: "Review of every component role that consumes it",
+    outsideTheSystem: "Domain meaning such as tier or exchange status",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    layer: "Core component",
+    ownedBy: "Primitive and ABox component authors",
+    changesRequire: "Review of measured consumers",
+    outsideTheSystem: "Business logic and data",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    layer: "Compound",
+    ownedBy: "The component that defines the composition",
+    changesRequire: "Review of the patterns built on it",
+    outsideTheSystem: "Screen-specific arrangements",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    layer: "Pattern",
+    ownedBy: "No single owner today for several patterns",
+    changesRequire: "Review of every experience that uses it",
+    outsideTheSystem: "One-off screen layouts",
+    status: "UNOWNED AREA",
+  },
+  {
+    layer: "Experience",
+    ownedBy: "The shell and its screens",
+    changesRequire: "Review of the screens inside it",
+    outsideTheSystem: "Other experiences",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    layer: "Screen",
+    ownedBy: "The route",
+    changesRequire: "Nothing beyond itself, provided it composes rather than redefines",
+    outsideTheSystem: "Shared components",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    layer: "Runtime branding",
+    ownedBy: "Branding & White-Label",
+    changesRequire: "Its own approval path",
+    outsideTheSystem: "The whole design system",
+    status: "GOVERNANCE RULE",
+  },
+  {
+    layer: "Runtime assets",
+    ownedBy: "Marketplace Asset Management",
+    changesRequire: "Its own approval path",
+    outsideTheSystem: "The whole design system",
+    status: "GOVERNANCE RULE",
+  },
 ];

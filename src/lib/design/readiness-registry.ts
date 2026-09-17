@@ -57,14 +57,17 @@ export const READINESS_RECORDS: ReadinessRecord[] = [
     id: "pat.filter-results",
     subjectType: "pattern",
     subject: "Filter and results pattern",
-    currentImplementation: "Filter rail above lg with a dialog below lg, compact header with count and sort, results list.",
+    currentImplementation:
+      "Filter rail above lg with a dialog below lg, compact header with count and sort, results list.",
     currentConsumers: "plans route",
     ownership: "business",
-    evidence: "src/routes/plans.index.tsx rail, trigger and overlay at line 374; results grid at line 345.",
+    evidence:
+      "src/routes/plans.index.tsx rail, trigger and overlay at line 374; results grid at line 345.",
     observedVariations: ["Route-local overlay rather than the Dialog primitive"],
     duplicateRelationships: ["dec.overlay"],
     dependencies: ["StatusBadge", "MetalBadge", "PageHeader compact"],
-    accessibilityReadiness: "Selection is carried by aria-pressed, including where the visible ring was removed.",
+    accessibilityReadiness:
+      "Selection is carried by aria-pressed, including where the visible ring was removed.",
     responsiveReadiness: "Fully transcribed at lg.",
     contentReadiness: "Count, sort and filter groups defined.",
     namingReadiness: "No conflict.",
@@ -177,7 +180,8 @@ export const READINESS_RECORDS: ReadinessRecord[] = [
     id: "pat.empty-loading-error",
     subjectType: "pattern",
     subject: "Absent-content presentation",
-    currentImplementation: "EmptyState covers empty; skeletons cover some loading; error is written per route.",
+    currentImplementation:
+      "EmptyState covers empty; skeletons cover some loading; error is written per route.",
     currentConsumers: "10 files and 4 files respectively",
     ownership: "none",
     evidence: "src/components/abox/empty-state.tsx; src/components/ui/skeleton.tsx.",
@@ -201,7 +205,8 @@ export const READINESS_RECORDS: ReadinessRecord[] = [
     id: "pat.status-tier",
     subjectType: "pattern",
     subject: "Status and tier badges",
-    currentImplementation: "StatusBadge and MetalBadge with tone and tier tokens, full opacity, accessible foregrounds.",
+    currentImplementation:
+      "StatusBadge and MetalBadge with tone and tier tokens, full opacity, accessible foregrounds.",
     currentConsumers: "89 files",
     ownership: "design-system",
     evidence: "Metal tokens including Expanded Bronze; filter chips reuse the listing treatments.",
@@ -256,7 +261,8 @@ export const READINESS_RECORDS: ReadinessRecord[] = [
     observedVariations: ["Focus trapping", "Close affordance", "Animation"],
     duplicateRelationships: ["dec.overlay"],
     dependencies: ["surface tokens", "motion"],
-    accessibilityReadiness: "The primitive announces; the route-local overlay is outside that coverage.",
+    accessibilityReadiness:
+      "The primitive announces; the route-local overlay is outside that coverage.",
     responsiveReadiness: "The route-local overlay exists only below lg.",
     contentReadiness: "Defined for the primitive.",
     namingReadiness: "No conflict.",
@@ -361,7 +367,8 @@ export const READINESS_SUMMARY = {
   candidates: CANONICAL_CANDIDATES.length,
   openDecisions: DECISION_REGISTER.length,
   decisionsBlockingFigma: figmaBlockers().length,
-  decisionsRequiringMigration: DECISION_REGISTER.filter((d) => d.requiresProductionMigration).length,
+  decisionsRequiringMigration: DECISION_REGISTER.filter((d) => d.requiresProductionMigration)
+    .length,
   boundaries: CANONICAL_BOUNDARIES.length,
   governanceLayers: CHANGE_GOVERNANCE.length,
   migrationStages: MIGRATION_STAGES.length,
@@ -383,8 +390,12 @@ export const READINESS_SUMMARY = {
 
 /** Surfaces any readiness subject the earlier phases do not know about. */
 export const READINESS_INTEGRITY = {
-  subjectsWithoutGraphNode: READINESS_RECORDS.filter((r) => !GRAPH_NODES.some((n) => n.id === r.id)).map((r) => r.id),
-  candidatesWithoutEvidence: CANONICAL_CANDIDATES.filter((c) => c.evidence.trim().length === 0).map((c) => c.id),
+  subjectsWithoutGraphNode: READINESS_RECORDS.filter(
+    (r) => !GRAPH_NODES.some((n) => n.id === r.id),
+  ).map((r) => r.id),
+  candidatesWithoutEvidence: CANONICAL_CANDIDATES.filter((c) => c.evidence.trim().length === 0).map(
+    (c) => c.id,
+  ),
   decisionsWithoutOptions: DECISION_REGISTER.filter((d) => d.options.length === 0).map((d) => d.id),
 };
 

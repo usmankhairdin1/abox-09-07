@@ -208,14 +208,21 @@ import {
   REGISTRY_RULES,
 } from "@/lib/design/pattern-registry";
 import { PATTERN_ANATOMY } from "@/lib/design/pattern-anatomy";
-import { PATTERN_COMPOSITION, COMPOSITION_RULES as PATTERN_COMPOSITION_RULES } from "@/lib/design/pattern-composition";
+import {
+  PATTERN_COMPOSITION,
+  COMPOSITION_RULES as PATTERN_COMPOSITION_RULES,
+} from "@/lib/design/pattern-composition";
 import { PATTERN_VARIANTS } from "@/lib/design/pattern-variants";
 import { PATTERN_STATES } from "@/lib/design/pattern-states";
 import { PATTERN_RESPONSIVE, RESPONSIVE_PATTERN_NOTES } from "@/lib/design/pattern-responsive";
 import { PATTERN_DENSITY, DENSITY_OPEN_QUESTIONS } from "@/lib/design/pattern-density";
 import { EXPERIENCE_PATTERNS } from "@/lib/design/experience-patterns";
 import { EXPERIENCE_EXTENSIONS, EXTENSION_RULES } from "@/lib/design/experience-extensions";
-import { SCREEN_PATTERN_MAP, SCREEN_MAP_RULES, chainForScreen } from "@/lib/design/screen-pattern-map";
+import {
+  SCREEN_PATTERN_MAP,
+  SCREEN_MAP_RULES,
+  chainForScreen,
+} from "@/lib/design/screen-pattern-map";
 import { PATTERN_DUPLICATES, DUPLICATE_HANDLING_RULES } from "@/lib/design/pattern-duplicates";
 import {
   PATTERN_DEFINITION_RULES,
@@ -238,14 +245,36 @@ import { CANONICAL_CANDIDATES, CANDIDATE_RULES } from "@/lib/design/canonical-ca
 import { DECISION_REGISTER, DECISION_RULES } from "@/lib/design/canonical-decision-register";
 import { CANONICAL_BOUNDARIES, BOUNDARY_RULES } from "@/lib/design/canonical-boundaries";
 import { CHANGE_GOVERNANCE, ESCALATION_RULES } from "@/lib/design/change-governance";
-import { MIGRATION_STAGES as READINESS_MIGRATION_STAGES, MIGRATION_PRECONDITIONS, ROLLBACK_MODEL } from "@/lib/design/migration-readiness";
-import { REGRESSION_CONTRACT, REGRESSION_COVERAGE, REGRESSION_RULES } from "@/lib/design/regression-contract";
-import { FIGMA_READINESS, FIGMA_BLOCKERS, FIGMA_READINESS_RULES } from "@/lib/design/figma-readiness";
-import { LIBRARY_STRUCTURE_SKETCH, LIBRARY_GROUPS, LIBRARY_RULES } from "@/lib/design/figma-library-readiness";
+import {
+  MIGRATION_STAGES as READINESS_MIGRATION_STAGES,
+  MIGRATION_PRECONDITIONS,
+  ROLLBACK_MODEL,
+} from "@/lib/design/migration-readiness";
+import {
+  REGRESSION_CONTRACT,
+  REGRESSION_COVERAGE,
+  REGRESSION_RULES,
+} from "@/lib/design/regression-contract";
+import {
+  FIGMA_READINESS,
+  FIGMA_BLOCKERS,
+  FIGMA_READINESS_RULES,
+} from "@/lib/design/figma-readiness";
+import {
+  LIBRARY_STRUCTURE_SKETCH,
+  LIBRARY_GROUPS,
+  LIBRARY_RULES,
+} from "@/lib/design/figma-library-readiness";
 import { NAMING_READINESS, NAMING_RULES } from "@/lib/design/naming-readiness";
 import { ACCESSIBILITY_READINESS, ACCESSIBILITY_RULES } from "@/lib/design/accessibility-readiness";
-import { CONTENT_READINESS, CONTENT_RULES as CONTENT_READINESS_RULES } from "@/lib/design/content-readiness";
-import { EXPERIENCE_READINESS, EXPERIENCE_READINESS_RULES } from "@/lib/design/experience-readiness";
+import {
+  CONTENT_READINESS,
+  CONTENT_RULES as CONTENT_READINESS_RULES,
+} from "@/lib/design/content-readiness";
+import {
+  EXPERIENCE_READINESS,
+  EXPERIENCE_READINESS_RULES,
+} from "@/lib/design/experience-readiness";
 
 import { FOUNDATION_MODEL, FOUNDATION_CURRENT_STATE } from "@/lib/design/foundation-model";
 import { COLOR_FOUNDATION, COLOR_TOKEN_COUNT } from "@/lib/design/color-foundation";
@@ -3081,24 +3110,54 @@ function DesignSystemPage() {
         >
           <DefinitionRows
             rows={[
-              { term: "Layers", detail: `${GRAPH_SUMMARY.layers} layers from foundation to screen` },
-              { term: "Nodes", detail: `${GRAPH_SUMMARY.nodes} nodes`, meta: "tokens, roles, components, compounds, patterns, experiences, kits, shells, screens" },
-              { term: "Edges", detail: `${GRAPH_SUMMARY.edges} relationships`, meta: `${GRAPH_SUMMARY.currentEdges} current, ${GRAPH_SUMMARY.futureEdges} future` },
-              { term: "Recorded duplication", detail: `${GRAPH_SUMMARY.duplicateEdges} edges marked as duplicate or overlap`, meta: "several implementations into one role; no winner chosen" },
-              { term: "Unowned relationships", detail: `${GRAPH_SUMMARY.unownedEdges} edges with no component owner` },
-              { term: "Left open", detail: `${GRAPH_SUMMARY.openDecisionEdges} edges marked FUTURE DECISION`, meta: "not established from code evidence" },
+              {
+                term: "Layers",
+                detail: `${GRAPH_SUMMARY.layers} layers from foundation to screen`,
+              },
+              {
+                term: "Nodes",
+                detail: `${GRAPH_SUMMARY.nodes} nodes`,
+                meta: "tokens, roles, components, compounds, patterns, experiences, kits, shells, screens",
+              },
+              {
+                term: "Edges",
+                detail: `${GRAPH_SUMMARY.edges} relationships`,
+                meta: `${GRAPH_SUMMARY.currentEdges} current, ${GRAPH_SUMMARY.futureEdges} future`,
+              },
+              {
+                term: "Recorded duplication",
+                detail: `${GRAPH_SUMMARY.duplicateEdges} edges marked as duplicate or overlap`,
+                meta: "several implementations into one role; no winner chosen",
+              },
+              {
+                term: "Unowned relationships",
+                detail: `${GRAPH_SUMMARY.unownedEdges} edges with no component owner`,
+              },
+              {
+                term: "Left open",
+                detail: `${GRAPH_SUMMARY.openDecisionEdges} edges marked FUTURE DECISION`,
+                meta: "not established from code evidence",
+              },
             ]}
           />
           <div className="mt-4">
             <SpecMatrixTable
               columns={["Status", "Edges"]}
-              rows={EDGE_STATUS_COUNTS.map((e) => ({ key: e.label, cells: [e.label, String(e.count)], label: e.label }))}
+              rows={EDGE_STATUS_COUNTS.map((e) => ({
+                key: e.label,
+                cells: [e.label, String(e.count)],
+                label: e.label,
+              }))}
             />
           </div>
           <div className="mt-4">
             <SpecMatrixTable
               columns={["Status", "Meaning", "Read as"]}
-              rows={STATUS_LEGEND.map((s) => ({ key: s.status, cells: [s.status, s.meaning, s.readAs], label: s.status }))}
+              rows={STATUS_LEGEND.map((s) => ({
+                key: s.status,
+                cells: [s.status, s.meaning, s.readAs],
+                label: s.status,
+              }))}
             />
           </div>
         </RefSection>
@@ -3119,12 +3178,46 @@ function DesignSystemPage() {
         </RefSection>
 
         {[
-          { id: "graph-foundation", title: "Foundation → semantic role", layers: ["foundation"], intro: "Which foundation value defines which meaning. Links to the Phase 7 records rather than repeating the token inventory." },
-          { id: "graph-roles", title: "Semantic role → component role → component", layers: ["semantic-role", "component-role"], intro: "Where a meaning is consumed, and by which shipping implementation. Where two implementations fill one role, both edges are drawn." },
-          { id: "graph-compounds", title: "Component → compound", layers: ["core-component"], intro: "Fixed compositions supported by Phase 8 evidence. Unsupported structures are marked FUTURE DECISION." },
-          { id: "graph-patterns", title: "Compound → pattern", layers: ["compound"], intro: "Recurring arrangements that solve one screen problem. Repeated markup alone does not qualify." },
-          { id: "graph-experiences", title: "Pattern → experience", layers: ["pattern"], intro: "Which experience uses which pattern, and where a difference is intentional." },
-          { id: "graph-screens", title: "Experience → screen", layers: ["experience-pattern"], intro: "How experience guidance reaches real routes. No route is modified." },
+          {
+            id: "graph-foundation",
+            title: "Foundation → semantic role",
+            layers: ["foundation"],
+            intro:
+              "Which foundation value defines which meaning. Links to the Phase 7 records rather than repeating the token inventory.",
+          },
+          {
+            id: "graph-roles",
+            title: "Semantic role → component role → component",
+            layers: ["semantic-role", "component-role"],
+            intro:
+              "Where a meaning is consumed, and by which shipping implementation. Where two implementations fill one role, both edges are drawn.",
+          },
+          {
+            id: "graph-compounds",
+            title: "Component → compound",
+            layers: ["core-component"],
+            intro:
+              "Fixed compositions supported by Phase 8 evidence. Unsupported structures are marked FUTURE DECISION.",
+          },
+          {
+            id: "graph-patterns",
+            title: "Compound → pattern",
+            layers: ["compound"],
+            intro:
+              "Recurring arrangements that solve one screen problem. Repeated markup alone does not qualify.",
+          },
+          {
+            id: "graph-experiences",
+            title: "Pattern → experience",
+            layers: ["pattern"],
+            intro: "Which experience uses which pattern, and where a difference is intentional.",
+          },
+          {
+            id: "graph-screens",
+            title: "Experience → screen",
+            layers: ["experience-pattern"],
+            intro: "How experience guidance reaches real routes. No route is modified.",
+          },
         ].map((group) => (
           <RefSection
             key={group.id}
@@ -3135,7 +3228,9 @@ function DesignSystemPage() {
           >
             <SpecMatrixTable
               columns={["From", "Relation", "To", "Evidence", "Ownership"]}
-              rows={GRAPH_EDGES.filter((e) => group.layers.includes(GRAPH_NODES.find((n) => n.id === e.from)?.layer ?? "")).map((e, i) => ({
+              rows={GRAPH_EDGES.filter((e) =>
+                group.layers.includes(GRAPH_NODES.find((n) => n.id === e.from)?.layer ?? ""),
+              ).map((e, i) => ({
                 key: `${e.from}-${e.to}-${i}`,
                 cells: [nodeName(e.from), e.relation, nodeName(e.to), e.evidence, e.ownership],
                 label: e.status,
@@ -3189,7 +3284,11 @@ function DesignSystemPage() {
           <DuplicateRegisterTable
             entries={DUPLICATE_MAPPINGS.map((d) => ({
               area: d.conceptualRole,
-              implementations: d.implementations.map((i) => ({ name: i.name, source: i.source, scope: i.measured })),
+              implementations: d.implementations.map((i) => ({
+                name: i.name,
+                source: i.source,
+                scope: i.measured,
+              })),
               overlap: d.graphEffect,
               future: d.futureRole,
               label: d.status,
@@ -3208,7 +3307,13 @@ function DesignSystemPage() {
         >
           <SpecMatrixTable
             columns={["From", "Relation", "To", "Evidence", "Ownership"]}
-            rows={GRAPH_EDGES.filter((e) => e.from.startsWith("kit.") || e.from.startsWith("shell.") || e.to.startsWith("kit.") || e.to.startsWith("shell.")).map((e, i) => ({
+            rows={GRAPH_EDGES.filter(
+              (e) =>
+                e.from.startsWith("kit.") ||
+                e.from.startsWith("shell.") ||
+                e.to.startsWith("kit.") ||
+                e.to.startsWith("shell."),
+            ).map((e, i) => ({
               key: `kit-${e.from}-${e.to}-${i}`,
               cells: [nodeName(e.from), e.relation, nodeName(e.to), e.evidence, e.ownership],
               label: e.status,
@@ -3253,10 +3358,22 @@ function DesignSystemPage() {
           intro="Accessibility followed through the chain, with current behavior, observed gaps and future governance kept apart."
         >
           <SpecMatrixTable
-            columns={["Chain", "Requirement", "Current implementation", "Observed gap", "Future governance"]}
+            columns={[
+              "Chain",
+              "Requirement",
+              "Current implementation",
+              "Observed gap",
+              "Future governance",
+            ]}
             rows={ACCESSIBILITY_TRACES.map((a) => ({
               key: a.chain,
-              cells: [a.chain, a.requirement, a.currentImplementation, a.observedGap, a.futureGovernance],
+              cells: [
+                a.chain,
+                a.requirement,
+                a.currentImplementation,
+                a.observedGap,
+                a.futureGovernance,
+              ],
               label: a.status,
             }))}
           />
@@ -3279,7 +3396,11 @@ function DesignSystemPage() {
           <div className="mt-4">
             <SpecMatrixTable
               columns={["Chain", "Behavior"]}
-              rows={RESPONSIVE_TRACES.map((r) => ({ key: r.chain, cells: [r.chain, r.behavior], label: r.status }))}
+              rows={RESPONSIVE_TRACES.map((r) => ({
+                key: r.chain,
+                cells: [r.chain, r.behavior],
+                label: r.status,
+              }))}
             />
           </div>
         </RefSection>
@@ -3398,13 +3519,36 @@ function DesignSystemPage() {
         >
           <DefinitionRows
             rows={[
-              { term: "Patterns recorded", detail: `${PATTERN_SUMMARY.patterns} across ${PATTERN_SUMMARY.categories} categories` },
+              {
+                term: "Patterns recorded",
+                detail: `${PATTERN_SUMMARY.patterns} across ${PATTERN_SUMMARY.categories} categories`,
+              },
               { term: "Current implementation", detail: `${PATTERN_SUMMARY.current} patterns` },
-              { term: "Variation, duplicate or overlap", detail: `${PATTERN_SUMMARY.variationsOrDuplicates} patterns`, meta: "kept as they are; no winner chosen" },
-              { term: "Unowned", detail: `${PATTERN_SUMMARY.unowned} patterns with no owning component` },
-              { term: "Open", detail: `${PATTERN_SUMMARY.open} recorded as FUTURE DECISION or FUTURE CANONICAL TARGET` },
-              { term: "Evidence recorded", detail: `${PATTERN_SUMMARY.anatomyParts} anatomy parts, ${PATTERN_SUMMARY.variants} variants, ${PATTERN_SUMMARY.states} states, ${PATTERN_SUMMARY.responsiveRecords} responsive records, ${PATTERN_SUMMARY.densityRecords} density records` },
-              { term: "Registry integrity", detail: REGISTRY_INTEGRITY.specsWithoutGraphNode.length === 0 && REGISTRY_INTEGRITY.graphNodesWithoutSpec.length === 0 ? "Every pattern id exists in both the Phase 9 graph and the Phase 10 specification." : `Specs without a graph node: ${REGISTRY_INTEGRITY.specsWithoutGraphNode.join(", ") || "none"}. Graph nodes without a spec: ${REGISTRY_INTEGRITY.graphNodesWithoutSpec.join(", ") || "none"}.` },
+              {
+                term: "Variation, duplicate or overlap",
+                detail: `${PATTERN_SUMMARY.variationsOrDuplicates} patterns`,
+                meta: "kept as they are; no winner chosen",
+              },
+              {
+                term: "Unowned",
+                detail: `${PATTERN_SUMMARY.unowned} patterns with no owning component`,
+              },
+              {
+                term: "Open",
+                detail: `${PATTERN_SUMMARY.open} recorded as FUTURE DECISION or FUTURE CANONICAL TARGET`,
+              },
+              {
+                term: "Evidence recorded",
+                detail: `${PATTERN_SUMMARY.anatomyParts} anatomy parts, ${PATTERN_SUMMARY.variants} variants, ${PATTERN_SUMMARY.states} states, ${PATTERN_SUMMARY.responsiveRecords} responsive records, ${PATTERN_SUMMARY.densityRecords} density records`,
+              },
+              {
+                term: "Registry integrity",
+                detail:
+                  REGISTRY_INTEGRITY.specsWithoutGraphNode.length === 0 &&
+                  REGISTRY_INTEGRITY.graphNodesWithoutSpec.length === 0
+                    ? "Every pattern id exists in both the Phase 9 graph and the Phase 10 specification."
+                    : `Specs without a graph node: ${REGISTRY_INTEGRITY.specsWithoutGraphNode.join(", ") || "none"}. Graph nodes without a spec: ${REGISTRY_INTEGRITY.graphNodesWithoutSpec.join(", ") || "none"}.`,
+              },
             ]}
           />
           {PATTERN_TAXONOMY.filter((g) => g.patterns.length > 0).map((group) => (
@@ -3435,7 +3579,10 @@ function DesignSystemPage() {
           intro="The named parts of each pattern, in the order the code renders them, with the component that fills each slot. A slot with no owner says so."
         >
           {PATTERN_ANATOMY.map((record) => (
-            <div key={record.patternId} className="mb-6 rounded-2xl border border-hairline bg-card p-5">
+            <div
+              key={record.patternId}
+              className="mb-6 rounded-2xl border border-hairline bg-card p-5"
+            >
               <div className="flex flex-wrap items-center gap-2">
                 <p className="font-medium">{record.name}</p>
                 <ArchLabelChip label={record.status} />
@@ -3446,7 +3593,12 @@ function DesignSystemPage() {
                   columns={["Part", "Filled by", "Required", "Evidence"]}
                   rows={record.parts.map((part) => ({
                     key: `${record.patternId}-${part.part}`,
-                    cells: [part.part, part.filledBy, part.required ? "required" : "optional", part.evidence],
+                    cells: [
+                      part.part,
+                      part.filledBy,
+                      part.required ? "required" : "optional",
+                      part.evidence,
+                    ],
                     label: part.status,
                     note: part.note,
                   }))}
@@ -3492,7 +3644,13 @@ function DesignSystemPage() {
             columns={["Pattern", "Variant", "Difference", "Seen in", "Kept because"]}
             rows={PATTERN_VARIANTS.map((v, i) => ({
               key: `${v.patternId}-${v.variant}-${i}`,
-              cells: [v.patternId.replace("pat.", ""), v.variant, v.difference, v.seenIn, v.keptBecause],
+              cells: [
+                v.patternId.replace("pat.", ""),
+                v.variant,
+                v.difference,
+                v.seenIn,
+                v.keptBecause,
+              ],
               label: v.status,
             }))}
           />
@@ -3521,7 +3679,18 @@ function DesignSystemPage() {
           intro="Transcribed from the breakpoint classes the code already carries. No breakpoint is introduced and nothing is normalised."
         >
           <SpecMatrixTable
-            columns={["Pattern", "Breakpoint", "Structural change", "Desktop", "Tablet", "Mobile", "Stacks", "Collapses", "Reorders", "Density"]}
+            columns={[
+              "Pattern",
+              "Breakpoint",
+              "Structural change",
+              "Desktop",
+              "Tablet",
+              "Mobile",
+              "Stacks",
+              "Collapses",
+              "Reorders",
+              "Density",
+            ]}
             rows={PATTERN_RESPONSIVE.map((r, i) => ({
               key: `${r.patternId}-${i}`,
               cells: [
@@ -3552,10 +3721,28 @@ function DesignSystemPage() {
           intro="Control height, padding, gap, type and icon size per density mode, exactly as the code has them. Differences are preserved, not reconciled."
         >
           <SpecMatrixTable
-            columns={["Pattern", "Mode", "Control height", "Padding", "Gap", "Typography", "Icon", "Evidence"]}
+            columns={[
+              "Pattern",
+              "Mode",
+              "Control height",
+              "Padding",
+              "Gap",
+              "Typography",
+              "Icon",
+              "Evidence",
+            ]}
             rows={PATTERN_DENSITY.map((d, i) => ({
               key: `${d.patternId}-${d.mode}-${i}`,
-              cells: [d.patternId.replace("pat.", ""), d.mode, d.controlHeight, d.padding, d.gap, d.typography, d.iconSize, d.evidence],
+              cells: [
+                d.patternId.replace("pat.", ""),
+                d.mode,
+                d.controlHeight,
+                d.padding,
+                d.gap,
+                d.typography,
+                d.iconSize,
+                d.evidence,
+              ],
               label: d.status,
             }))}
           />
@@ -3571,7 +3758,15 @@ function DesignSystemPage() {
           intro="A pattern specialised for one experience: same anatomy, different composition, density or wording. Intentional differences are preserved."
         >
           <SpecMatrixTable
-            columns={["Experience", "Pattern", "Purpose", "Composition", "Responsive", "Screens", "Ownership"]}
+            columns={[
+              "Experience",
+              "Pattern",
+              "Purpose",
+              "Composition",
+              "Responsive",
+              "Screens",
+              "Ownership",
+            ]}
             rows={EXPERIENCE_PATTERNS.map((e, i) => ({
               key: `${e.experienceId}-${e.patternId}-${i}`,
               cells: [
@@ -3596,10 +3791,26 @@ function DesignSystemPage() {
           intro="Where one core pattern behaves differently by experience. An extension keeps the anatomy; a separate system is only recorded where the code really shows two independent implementations."
         >
           <SpecMatrixTable
-            columns={["Core pattern", "Experience A", "Behaviour A", "Experience B", "Behaviour B", "Classification", "Evidence"]}
+            columns={[
+              "Core pattern",
+              "Experience A",
+              "Behaviour A",
+              "Experience B",
+              "Behaviour B",
+              "Classification",
+              "Evidence",
+            ]}
             rows={EXPERIENCE_EXTENSIONS.map((e, i) => ({
               key: `${e.corePattern}-${i}`,
-              cells: [e.corePattern.replace("pat.", ""), e.experienceA, e.behaviorA, e.experienceB, e.behaviorB, e.classification, e.evidence],
+              cells: [
+                e.corePattern.replace("pat.", ""),
+                e.experienceA,
+                e.behaviorA,
+                e.experienceB,
+                e.behaviorB,
+                e.classification,
+                e.evidence,
+              ],
               label: e.status,
             }))}
           />
@@ -3633,7 +3844,9 @@ function DesignSystemPage() {
                     <div key={term as string} className="rounded-xl border border-hairline p-3">
                       <dt className="text-eyebrow">{term as string}</dt>
                       <dd className="mt-1 text-sm text-muted-foreground">
-                        {(items as string[]).length === 0 ? "no edge recorded" : (items as string[]).join(", ")}
+                        {(items as string[]).length === 0
+                          ? "no edge recorded"
+                          : (items as string[]).join(", ")}
                       </dd>
                     </div>
                   ))}
@@ -3655,9 +3868,16 @@ function DesignSystemPage() {
           <DuplicateRegisterTable
             entries={PATTERN_DUPLICATES.map((d) => ({
               area: d.concept,
-              implementations: d.implementations.map((i) => ({ name: i.name, source: i.source, scope: i.consumers })),
+              implementations: d.implementations.map((i) => ({
+                name: i.name,
+                source: i.source,
+                scope: i.consumers,
+              })),
               overlap: d.differences,
-              future: d.resolution === "unresolved" ? "Unresolved — needs an explicit decision" : "Observed and accepted",
+              future:
+                d.resolution === "unresolved"
+                  ? "Unresolved — needs an explicit decision"
+                  : "Observed and accepted",
               label: d.status,
             }))}
           />
@@ -3673,7 +3893,10 @@ function DesignSystemPage() {
           intro="How future pattern work should be conducted. These rules are documentation; no build step enforces them and nothing shipping changes because of them."
         >
           {[
-            { title: "Component, compound, pattern or experience pattern", rows: PATTERN_DEFINITION_RULES },
+            {
+              title: "Component, compound, pattern or experience pattern",
+              rows: PATTERN_DEFINITION_RULES,
+            },
             { title: "Evidence required before canonicalisation", rows: CANONICALIZATION_EVIDENCE },
             { title: "Ownership", rows: PATTERN_OWNERSHIP_RULES },
             { title: "Documentation duties", rows: PATTERN_DOCUMENTATION_DUTIES },
@@ -3683,7 +3906,11 @@ function DesignSystemPage() {
               <div className="mt-3">
                 <SpecMatrixTable
                   columns={["Question", "Rule"]}
-                  rows={block.rows.map((r) => ({ key: r.question, cells: [r.question, r.rule], label: r.status }))}
+                  rows={block.rows.map((r) => ({
+                    key: r.question,
+                    cells: [r.question, r.rule],
+                    label: r.status,
+                  }))}
                 />
               </div>
             </div>
@@ -3700,7 +3927,15 @@ function DesignSystemPage() {
           intro="A proposal for how each pattern would become a Figma component set. Nothing exists in Figma: no file, component, variant, style or asset has been created."
         >
           <SpecMatrixTable
-            columns={["Pattern", "Proposed structure", "Variant properties", "State properties", "Responsive", "Density", "Content model"]}
+            columns={[
+              "Pattern",
+              "Proposed structure",
+              "Variant properties",
+              "State properties",
+              "Responsive",
+              "Density",
+              "Content model",
+            ]}
             rows={PATTERN_FIGMA_MAPPINGS.map((f) => ({
               key: f.patternId,
               cells: [
@@ -3722,7 +3957,10 @@ function DesignSystemPage() {
           <div className="mt-4">
             <DefinitionRows
               rows={[
-                { term: "Dossiers assembled", detail: `${PATTERN_DOSSIERS.length} patterns, each joining specification, graph node, anatomy, variants, states, responsive, density, composition, experiences and Figma proposal.` },
+                {
+                  term: "Dossiers assembled",
+                  detail: `${PATTERN_DOSSIERS.length} patterns, each joining specification, graph node, anatomy, variants, states, responsive, density, composition, experiences and Figma proposal.`,
+                },
               ]}
             />
           </div>
@@ -3738,19 +3976,51 @@ function DesignSystemPage() {
         >
           <DefinitionRows
             rows={[
-              { term: "Subjects assessed", detail: `${READINESS_SUMMARY.subjects}, each keyed to an existing Phase 9 graph node` },
-              { term: "Candidates recorded", detail: `${READINESS_SUMMARY.candidates} areas open for a future decision` },
-              { term: "Open decisions", detail: `${READINESS_SUMMARY.openDecisions}, of which ${READINESS_SUMMARY.decisionsBlockingFigma} block Figma work and ${READINESS_SUMMARY.decisionsRequiringMigration} would require production migration` },
+              {
+                term: "Subjects assessed",
+                detail: `${READINESS_SUMMARY.subjects}, each keyed to an existing Phase 9 graph node`,
+              },
+              {
+                term: "Candidates recorded",
+                detail: `${READINESS_SUMMARY.candidates} areas open for a future decision`,
+              },
+              {
+                term: "Open decisions",
+                detail: `${READINESS_SUMMARY.openDecisions}, of which ${READINESS_SUMMARY.decisionsBlockingFigma} block Figma work and ${READINESS_SUMMARY.decisionsRequiringMigration} would require production migration`,
+              },
               { term: "Decisions selected", detail: `${READINESS_SUMMARY.decisionsSelected}` },
               { term: "Migrations performed", detail: `${READINESS_SUMMARY.migrationsPerformed}` },
               { term: "Figma assets created", detail: `${READINESS_SUMMARY.figmaAssetsCreated}` },
-              { term: "Readiness states", detail: Object.entries(READINESS_STATE_COUNTS).map(([k, v]) => `${k}: ${v}`).join(" · ") },
-              { term: "Registry integrity", detail: READINESS_INTEGRITY.subjectsWithoutGraphNode.length === 0 && READINESS_INTEGRITY.decisionsWithoutOptions.length === 0 && READINESS_INTEGRITY.candidatesWithoutEvidence.length === 0 ? "Every subject exists in the Phase 9 graph, every candidate carries evidence, every decision carries real options." : `Subjects without a graph node: ${READINESS_INTEGRITY.subjectsWithoutGraphNode.join(", ") || "none"}` },
+              {
+                term: "Readiness states",
+                detail: Object.entries(READINESS_STATE_COUNTS)
+                  .map(([k, v]) => `${k}: ${v}`)
+                  .join(" · "),
+              },
+              {
+                term: "Registry integrity",
+                detail:
+                  READINESS_INTEGRITY.subjectsWithoutGraphNode.length === 0 &&
+                  READINESS_INTEGRITY.decisionsWithoutOptions.length === 0 &&
+                  READINESS_INTEGRITY.candidatesWithoutEvidence.length === 0
+                    ? "Every subject exists in the Phase 9 graph, every candidate carries evidence, every decision carries real options."
+                    : `Subjects without a graph node: ${READINESS_INTEGRITY.subjectsWithoutGraphNode.join(", ") || "none"}`,
+              },
             ]}
           />
           <div className="mt-6">
             <SpecMatrixTable
-              columns={["Subject", "Current implementation", "Consumers", "Ownership", "Open decisions", "Approvals", "Migration risk", "Figma", "Readiness"]}
+              columns={[
+                "Subject",
+                "Current implementation",
+                "Consumers",
+                "Ownership",
+                "Open decisions",
+                "Approvals",
+                "Migration risk",
+                "Figma",
+                "Readiness",
+              ]}
               rows={READINESS_RECORDS.map((r) => ({
                 key: r.id,
                 cells: [
@@ -3771,20 +4041,44 @@ function DesignSystemPage() {
           </div>
           <div className="mt-6 grid gap-3 md:grid-cols-2">
             {READINESS_RECORDS.map((r) => (
-              <div key={`${r.id}-detail`} className="rounded-2xl border border-hairline bg-card p-5">
+              <div
+                key={`${r.id}-detail`}
+                className="rounded-2xl border border-hairline bg-card p-5"
+              >
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-medium">{r.subject}</p>
                   <ArchLabelChip label={r.governanceStatus} />
                 </div>
                 <dl className="mt-3 space-y-1 text-sm text-muted-foreground">
-                  <div><dt className="inline text-foreground">Accessibility: </dt><dd className="inline">{r.accessibilityReadiness}</dd></div>
-                  <div><dt className="inline text-foreground">Responsive: </dt><dd className="inline">{r.responsiveReadiness}</dd></div>
-                  <div><dt className="inline text-foreground">Content: </dt><dd className="inline">{r.contentReadiness}</dd></div>
-                  <div><dt className="inline text-foreground">Naming: </dt><dd className="inline">{r.namingReadiness}</dd></div>
-                  <div><dt className="inline text-foreground">Foundation: </dt><dd className="inline">{r.foundationReadiness}</dd></div>
-                  <div><dt className="inline text-foreground">Experience: </dt><dd className="inline">{r.experienceReadiness}</dd></div>
+                  <div>
+                    <dt className="inline text-foreground">Accessibility: </dt>
+                    <dd className="inline">{r.accessibilityReadiness}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline text-foreground">Responsive: </dt>
+                    <dd className="inline">{r.responsiveReadiness}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline text-foreground">Content: </dt>
+                    <dd className="inline">{r.contentReadiness}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline text-foreground">Naming: </dt>
+                    <dd className="inline">{r.namingReadiness}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline text-foreground">Foundation: </dt>
+                    <dd className="inline">{r.foundationReadiness}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline text-foreground">Experience: </dt>
+                    <dd className="inline">{r.experienceReadiness}</dd>
+                  </div>
                   {r.observedVariations.length > 0 && (
-                    <div><dt className="inline text-foreground">Observed variation: </dt><dd className="inline">{r.observedVariations.join(" · ")}</dd></div>
+                    <div>
+                      <dt className="inline text-foreground">Observed variation: </dt>
+                      <dd className="inline">{r.observedVariations.join(" · ")}</dd>
+                    </div>
                   )}
                   {r.note && <div className="text-serial">{r.note}</div>}
                 </dl>
@@ -3803,10 +4097,28 @@ function DesignSystemPage() {
           intro="Areas that could become canonical in a future approved phase. A candidate is not a selected winner. The register is unordered and carries no rank, score or priority."
         >
           <SpecMatrixTable
-            columns={["Area", "Current implementation", "Observed variation", "Potential canonical target", "Required decision", "Consumers", "Blocker", "Readiness"]}
+            columns={[
+              "Area",
+              "Current implementation",
+              "Observed variation",
+              "Potential canonical target",
+              "Required decision",
+              "Consumers",
+              "Blocker",
+              "Readiness",
+            ]}
             rows={CANONICAL_CANDIDATES.map((c) => ({
               key: c.id,
-              cells: [c.area, c.currentImplementation, c.observedVariation, c.potentialCanonicalTarget, c.requiredDecision, c.consumers, c.blocker, c.readiness],
+              cells: [
+                c.area,
+                c.currentImplementation,
+                c.observedVariation,
+                c.potentialCanonicalTarget,
+                c.requiredDecision,
+                c.consumers,
+                c.blocker,
+                c.readiness,
+              ],
               label: c.status,
               note: c.note ? `${c.evidence} — ${c.note}` : c.evidence,
             }))}
@@ -3830,7 +4142,9 @@ function DesignSystemPage() {
                   <MetaChip tone="muted">{d.decisionType}</MetaChip>
                   <ArchLabelChip label={d.status} />
                   {d.blocksFigma && <MetaChip tone="warning">blocks Figma</MetaChip>}
-                  {d.requiresProductionMigration && <MetaChip tone="warning">migration required</MetaChip>}
+                  {d.requiresProductionMigration && (
+                    <MetaChip tone="warning">migration required</MetaChip>
+                  )}
                 </div>
                 <p className="mt-2 text-sm text-muted-foreground">{d.currentEvidence}</p>
                 <div className="mt-3">
@@ -3844,9 +4158,24 @@ function DesignSystemPage() {
                   />
                 </div>
                 <dl className="mt-3 space-y-1 text-sm text-muted-foreground">
-                  <div><dt className="inline text-foreground">Affected: </dt><dd className="inline">{[...d.affectedComponents, ...d.affectedExperiences, ...d.affectedScreens].join(" · ")}</dd></div>
-                  <div><dt className="inline text-foreground">Approvals: </dt><dd className="inline">{d.requiredApprovals.join(", ")}</dd></div>
-                  <div><dt className="inline text-foreground">Constraints: </dt><dd className="inline">{d.dependencyConstraints}</dd></div>
+                  <div>
+                    <dt className="inline text-foreground">Affected: </dt>
+                    <dd className="inline">
+                      {[
+                        ...d.affectedComponents,
+                        ...d.affectedExperiences,
+                        ...d.affectedScreens,
+                      ].join(" · ")}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="inline text-foreground">Approvals: </dt>
+                    <dd className="inline">{d.requiredApprovals.join(", ")}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline text-foreground">Constraints: </dt>
+                    <dd className="inline">{d.dependencyConstraints}</dd>
+                  </div>
                   {d.note && <div className="text-serial">{d.note}</div>}
                 </dl>
               </div>
@@ -3883,7 +4212,18 @@ function DesignSystemPage() {
           intro="How a change at each layer should be handled in a future approved phase. Documentation only — no build step enforces it."
         >
           <SpecMatrixTable
-            columns={["Layer", "Owner", "Evidence required", "May change independently", "Consumers to check", "Visual", "A11y", "Responsive", "Product", "Migration"]}
+            columns={[
+              "Layer",
+              "Owner",
+              "Evidence required",
+              "May change independently",
+              "Consumers to check",
+              "Visual",
+              "A11y",
+              "Responsive",
+              "Product",
+              "Migration",
+            ]}
             rows={CHANGE_GOVERNANCE.map((g) => ({
               key: g.layer,
               cells: [
@@ -3913,10 +4253,26 @@ function DesignSystemPage() {
           intro="A conceptual shape for a future migration. No stage has been performed, no first target has been chosen, and targets are not ranked."
         >
           <SpecMatrixTable
-            columns={["#", "Stage", "Purpose", "Entry condition", "Evidence produced", "Exit condition", "Approval"]}
+            columns={[
+              "#",
+              "Stage",
+              "Purpose",
+              "Entry condition",
+              "Evidence produced",
+              "Exit condition",
+              "Approval",
+            ]}
             rows={READINESS_MIGRATION_STAGES.map((m) => ({
               key: m.stage,
-              cells: [String(m.order), m.stage, m.purpose, m.entryCondition, m.evidenceProduced, m.exitCondition, m.approval],
+              cells: [
+                String(m.order),
+                m.stage,
+                m.purpose,
+                m.entryCondition,
+                m.evidenceProduced,
+                m.exitCondition,
+                m.approval,
+              ],
               label: m.status,
             }))}
           />
@@ -3946,7 +4302,12 @@ function DesignSystemPage() {
             <DefinitionRows
               rows={[
                 { term: "Routes covered", detail: REGRESSION_COVERAGE.routes.join(", ") },
-                { term: "Viewports", detail: REGRESSION_COVERAGE.viewports.map((v) => `${v.name} ${v.size}`).join(" · ") },
+                {
+                  term: "Viewports",
+                  detail: REGRESSION_COVERAGE.viewports
+                    .map((v) => `${v.name} ${v.size}`)
+                    .join(" · "),
+                },
                 { term: "Languages", detail: REGRESSION_COVERAGE.languages.join(", ") },
                 { term: "States", detail: REGRESSION_COVERAGE.states.join(", ") },
               ]}
@@ -3968,7 +4329,12 @@ function DesignSystemPage() {
               { term: "Ready", detail: `${READINESS_SUMMARY.figmaReady} areas` },
               { term: "Partial", detail: `${READINESS_SUMMARY.figmaPartial} areas` },
               { term: "Blocked", detail: `${READINESS_SUMMARY.figmaBlocked} areas` },
-              { term: "Decisions blocking library work", detail: figmaBlockers().map((d) => d.id).join(", ") },
+              {
+                term: "Decisions blocking library work",
+                detail: figmaBlockers()
+                  .map((d) => d.id)
+                  .join(", "),
+              },
             ]}
           />
           <div className="mt-4">
@@ -3996,13 +4362,27 @@ function DesignSystemPage() {
           title="Future Figma library blueprint"
           intro="A proposed structure mapped from the Phase 8 to 10 specifications. It is not final, and no part of it exists."
         >
-          <pre className="text-serial overflow-x-auto rounded-2xl border border-hairline bg-card p-5">{LIBRARY_STRUCTURE_SKETCH}</pre>
+          <pre className="text-serial overflow-x-auto rounded-2xl border border-hairline bg-card p-5">
+            {LIBRARY_STRUCTURE_SKETCH}
+          </pre>
           <div className="mt-4">
             <SpecMatrixTable
-              columns={["Group", "Would contain", "Mapped from", "Evidence supports grouping", "Readiness"]}
+              columns={[
+                "Group",
+                "Would contain",
+                "Mapped from",
+                "Evidence supports grouping",
+                "Readiness",
+              ]}
               rows={LIBRARY_GROUPS.map((g) => ({
                 key: g.group,
-                cells: [g.group, g.wouldContain, g.mappedFrom, g.justified ? "yes" : "not yet", g.readiness],
+                cells: [
+                  g.group,
+                  g.wouldContain,
+                  g.mappedFrom,
+                  g.justified ? "yes" : "not yet",
+                  g.readiness,
+                ],
                 label: "FUTURE FIGMA ORGANIZATION",
                 note: g.note,
               }))}
@@ -4020,10 +4400,22 @@ function DesignSystemPage() {
           intro="Collisions, ambiguities and aliases found in the current names. Nothing is renamed; every future name below is a proposal."
         >
           <SpecMatrixTable
-            columns={["Current name", "Current usage", "Conflict", "Future proposal", "Migration impact"]}
+            columns={[
+              "Current name",
+              "Current usage",
+              "Conflict",
+              "Future proposal",
+              "Migration impact",
+            ]}
             rows={NAMING_READINESS.map((n) => ({
               key: n.currentName,
-              cells: [n.currentName, n.currentUsage, n.conflict, n.futureProposal, n.migrationImpact],
+              cells: [
+                n.currentName,
+                n.currentUsage,
+                n.conflict,
+                n.futureProposal,
+                n.migrationImpact,
+              ],
               label: n.status,
             }))}
           />
@@ -4058,10 +4450,32 @@ function DesignSystemPage() {
           intro="Whether each subject has a content model complete enough for a future component library. No product copy is changed."
         >
           <SpecMatrixTable
-            columns={["Subject", "Required", "Optional", "Long text", "Empty", "Error", "Loading", "Numeric", "Bilingual", "Readiness"]}
+            columns={[
+              "Subject",
+              "Required",
+              "Optional",
+              "Long text",
+              "Empty",
+              "Error",
+              "Loading",
+              "Numeric",
+              "Bilingual",
+              "Readiness",
+            ]}
             rows={CONTENT_READINESS.map((c) => ({
               key: c.subject,
-              cells: [c.subject, c.requiredContent, c.optionalContent, c.longTextBehavior, c.emptyContent, c.errorContent, c.loadingContent, c.numericContent, c.bilingualNote, c.readiness],
+              cells: [
+                c.subject,
+                c.requiredContent,
+                c.optionalContent,
+                c.longTextBehavior,
+                c.emptyContent,
+                c.errorContent,
+                c.loadingContent,
+                c.numericContent,
+                c.bilingualNote,
+                c.readiness,
+              ],
               label: c.status,
             }))}
           />
@@ -4077,10 +4491,28 @@ function DesignSystemPage() {
           intro="Whether the experience architecture is defined well enough for future canonical work. Intentional differences are preserved, never flattened."
         >
           <SpecMatrixTable
-            columns={["Experience", "Shared core behaviour", "Extensions", "Intentional differences", "Unresolved differences", "Ownership", "Figma implication", "Readiness"]}
+            columns={[
+              "Experience",
+              "Shared core behaviour",
+              "Extensions",
+              "Intentional differences",
+              "Unresolved differences",
+              "Ownership",
+              "Figma implication",
+              "Readiness",
+            ]}
             rows={EXPERIENCE_READINESS.map((e) => ({
               key: e.experience,
-              cells: [e.experience, e.sharedCoreBehavior, e.experienceExtensions, e.intentionalDifferences, e.unresolvedDifferences, String(e.ownership), e.figmaImplication, e.readiness],
+              cells: [
+                e.experience,
+                e.sharedCoreBehavior,
+                e.experienceExtensions,
+                e.intentionalDifferences,
+                e.unresolvedDifferences,
+                String(e.ownership),
+                e.figmaImplication,
+                e.readiness,
+              ],
               label: e.status,
             }))}
           />

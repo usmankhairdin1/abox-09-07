@@ -14,7 +14,10 @@ export const EXPERIENCE_PATTERNS: ExperiencePatternSpec[] = [
     patternId: "pat.hero",
     purpose: "Open the public site with one claim and one obvious next step.",
     composition: "Viewport-aware centred section, split into copy and an illustrative panel.",
-    variations: ["Headline steps across four breakpoints", "Hero action pills sit at h-11 rather than the standard pill height"],
+    variations: [
+      "Headline steps across four breakpoints",
+      "Hero action pills sit at h-11 rather than the standard pill height",
+    ],
     responsive: "Stacks at lg; the panel centres rather than right-aligning below md.",
     screens: ["/"],
     ownership: "Web / Marketing",
@@ -48,7 +51,10 @@ export const EXPERIENCE_PATTERNS: ExperiencePatternSpec[] = [
     patternId: "pat.filter-results",
     purpose: "Let a shopper narrow plans without leaving the results.",
     composition: "Compact header, w-64 filter rail, single-column results grid.",
-    variations: ["Exchange filters deliberately show no selection ring", "Filter chips reuse the listing badge treatments"],
+    variations: [
+      "Exchange filters deliberately show no selection ring",
+      "Filter chips reuse the listing badge treatments",
+    ],
     responsive: "Rail becomes a dialog below lg.",
     screens: ["/plans"],
     ownership: "Shopping / Commerce",

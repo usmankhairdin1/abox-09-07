@@ -19,7 +19,8 @@ export const ACCESSIBILITY_TRACES: A11yTrace[] = [
     chain: "Foundation status tone → status indicator → StatusBadge → data row → dashboard screen",
     requirement: "Status must be readable without colour.",
     currentImplementation: "StatusBadge renders words beside the tone across 89 files.",
-    observedGap: "None found in the badge itself; the tone vocabulary overlaps with Alert and toast.",
+    observedGap:
+      "None found in the badge itself; the tone vocabulary overlaps with Alert and toast.",
     futureGovernance: "One semantic tone vocabulary, still always paired with text.",
     status: "CURRENT IMPLEMENTATION",
   },
@@ -58,7 +59,8 @@ export const ACCESSIBILITY_TRACES: A11yTrace[] = [
   {
     chain: "Filter control → selected state → plans screen",
     requirement: "Selection must be perceivable by assistive technology.",
-    currentImplementation: "Exchange filters expose selection through aria-pressed with no visible ring.",
+    currentImplementation:
+      "Exchange filters expose selection through aria-pressed with no visible ring.",
     observedGap: "None. The absence of the ring was a deliberate request.",
     futureGovernance: "Recorded as an intentional choice, not a defect to normalize.",
     status: "OBSERVED VARIATION",

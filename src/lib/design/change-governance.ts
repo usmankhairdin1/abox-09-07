@@ -10,9 +10,11 @@ export const CHANGE_GOVERNANCE: GovernanceLayerRule[] = [
   {
     layer: "Foundation",
     owner: "design-system",
-    evidenceRequired: "The current value, every semantic role bound to it, and the Phase 9 reach of those roles.",
+    evidenceRequired:
+      "The current value, every semantic role bound to it, and the Phase 9 reach of those roles.",
     mayChangeIndependently: "Nothing. A foundation value reaches the whole application.",
-    consumersToCheck: "All semantic roles bound to the value, then every component consuming those roles.",
+    consumersToCheck:
+      "All semantic roles bound to the value, then every component consuming those roles.",
     visualRegression: true,
     accessibilityReview: true,
     responsiveReview: false,
@@ -23,8 +25,10 @@ export const CHANGE_GOVERNANCE: GovernanceLayerRule[] = [
   {
     layer: "Semantic role",
     owner: "design-system",
-    evidenceRequired: "Which foundation value the role points at and which components read the role.",
-    mayChangeIndependently: "A role may be added without touching existing ones. Repointing an existing role is not independent.",
+    evidenceRequired:
+      "Which foundation value the role points at and which components read the role.",
+    mayChangeIndependently:
+      "A role may be added without touching existing ones. Repointing an existing role is not independent.",
     consumersToCheck: "Every component reading the role, across all four experiences.",
     visualRegression: true,
     accessibilityReview: true,
@@ -36,9 +40,12 @@ export const CHANGE_GOVERNANCE: GovernanceLayerRule[] = [
   {
     layer: "Core component",
     owner: "design-system",
-    evidenceRequired: "The component's measured consumer count and its anatomy, variants and states.",
-    mayChangeIndependently: "A new variant or size, when existing consumers keep their current rendering.",
-    consumersToCheck: "Direct consumers from the Phase 9 graph, plus compounds and patterns above it.",
+    evidenceRequired:
+      "The component's measured consumer count and its anatomy, variants and states.",
+    mayChangeIndependently:
+      "A new variant or size, when existing consumers keep their current rendering.",
+    consumersToCheck:
+      "Direct consumers from the Phase 9 graph, plus compounds and patterns above it.",
     visualRegression: true,
     accessibilityReview: true,
     responsiveReview: true,
@@ -50,7 +57,8 @@ export const CHANGE_GOVERNANCE: GovernanceLayerRule[] = [
     layer: "Compound",
     owner: "design-system",
     evidenceRequired: "The components it composes and the patterns that use it.",
-    mayChangeIndependently: "Internal arrangement, provided the public props and rendered output are unchanged.",
+    mayChangeIndependently:
+      "Internal arrangement, provided the public props and rendered output are unchanged.",
     consumersToCheck: "Patterns and screens that render the compound.",
     visualRegression: true,
     accessibilityReview: false,
@@ -62,9 +70,12 @@ export const CHANGE_GOVERNANCE: GovernanceLayerRule[] = [
   {
     layer: "Pattern",
     owner: "design-system",
-    evidenceRequired: "Anatomy, states, responsive behaviour and density from the Phase 10 records, plus the screens using it.",
-    mayChangeIndependently: "Documentation of the pattern. The rendered arrangement is not independent.",
-    consumersToCheck: "Every experience pattern derived from it and every screen listed against it.",
+    evidenceRequired:
+      "Anatomy, states, responsive behaviour and density from the Phase 10 records, plus the screens using it.",
+    mayChangeIndependently:
+      "Documentation of the pattern. The rendered arrangement is not independent.",
+    consumersToCheck:
+      "Every experience pattern derived from it and every screen listed against it.",
     visualRegression: true,
     accessibilityReview: true,
     responsiveReview: true,
@@ -75,7 +86,8 @@ export const CHANGE_GOVERNANCE: GovernanceLayerRule[] = [
   {
     layer: "Experience pattern",
     owner: "business",
-    evidenceRequired: "The core pattern anatomy plus the specific composition, density or wording this experience applies.",
+    evidenceRequired:
+      "The core pattern anatomy plus the specific composition, density or wording this experience applies.",
     mayChangeIndependently: "Composition, density and wording inside the core anatomy.",
     consumersToCheck: "Screens in that experience only.",
     visualRegression: true,
@@ -88,7 +100,8 @@ export const CHANGE_GOVERNANCE: GovernanceLayerRule[] = [
   {
     layer: "Screen",
     owner: "business",
-    evidenceRequired: "The patterns the screen composes and any controlled identifiers the screen carries.",
+    evidenceRequired:
+      "The patterns the screen composes and any controlled identifiers the screen carries.",
     mayChangeIndependently: "Content and arrangement within the patterns it uses.",
     consumersToCheck: "Nothing downstream. A screen is a leaf.",
     visualRegression: false,

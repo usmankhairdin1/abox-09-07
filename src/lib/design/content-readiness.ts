@@ -14,7 +14,8 @@ export const CONTENT_READINESS: ContentReadinessRecord[] = [
     emptyContent: "Not applicable — a header always has a title.",
     errorContent: "Not applicable.",
     loadingContent: "Not specified.",
-    numericContent: "Counts appear in compact headers, for example the exact phrase Plan available.",
+    numericContent:
+      "Counts appear in compact headers, for example the exact phrase Plan available.",
     bilingualNote: "Titles are translated; the compact count phrasing is fixed wording.",
     readiness: "READY FOR FUTURE DECISION",
     status: "CURRENT IMPLEMENTATION",
@@ -49,7 +50,8 @@ export const CONTENT_READINESS: ContentReadinessRecord[] = [
     subject: "DataTable",
     requiredContent: "Column headers and rows.",
     optionalContent: "Empty message.",
-    longTextBehavior: "Minimum width 640px with horizontal scroll; cells do not wrap into a card layout.",
+    longTextBehavior:
+      "Minimum width 640px with horizontal scroll; cells do not wrap into a card layout.",
     emptyContent: "Handled by the component.",
     errorContent: "Not covered.",
     loadingContent: "Not covered.",
@@ -79,7 +81,8 @@ export const CONTENT_READINESS: ContentReadinessRecord[] = [
     emptyContent: "Empty cart treatment exists.",
     errorContent: "Not covered.",
     loadingContent: "Not covered.",
-    numericContent: "Total uses the same premium formatting; the word Illustrative was removed from it.",
+    numericContent:
+      "Total uses the same premium formatting; the word Illustrative was removed from it.",
     bilingualNote: "Cart and Cart · N are fixed label forms.",
     readiness: "READY FOR FUTURE DECISION",
     status: "CURRENT IMPLEMENTATION",
@@ -127,7 +130,8 @@ export const CONTENT_READINESS: ContentReadinessRecord[] = [
     subject: "Marketing sections",
     requiredContent: "Heading and body.",
     optionalContent: "Icon, cards, entry pills.",
-    longTextBehavior: "Headline sizes were deliberately reduced across pages in earlier approved work.",
+    longTextBehavior:
+      "Headline sizes were deliberately reduced across pages in earlier approved work.",
     emptyContent: "Not applicable.",
     errorContent: "Not applicable.",
     loadingContent: "Not applicable.",

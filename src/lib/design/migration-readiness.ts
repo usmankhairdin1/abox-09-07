@@ -16,7 +16,7 @@ export const MIGRATION_STAGES: MigrationStage[] = [
     exitCondition: "Every implementation is named with real consumers.",
     approval: "none required",
     status: "CURRENT IMPLEMENTATION",
-    },
+  },
   {
     order: 2,
     stage: "Decision",
@@ -30,7 +30,8 @@ export const MIGRATION_STAGES: MigrationStage[] = [
   {
     order: 3,
     stage: "Canonical specification",
-    purpose: "Write the chosen implementation's anatomy, props, variants, states, responsive behaviour and content model.",
+    purpose:
+      "Write the chosen implementation's anatomy, props, variants, states, responsive behaviour and content model.",
     entryCondition: "A decision exists.",
     evidenceProduced: "A specification precise enough to build against.",
     exitCondition: "The specification covers every behaviour the current consumers rely on.",
@@ -40,7 +41,8 @@ export const MIGRATION_STAGES: MigrationStage[] = [
   {
     order: 4,
     stage: "Compatibility design",
-    purpose: "Decide how existing consumers keep rendering identically while the canonical version arrives.",
+    purpose:
+      "Decide how existing consumers keep rendering identically while the canonical version arrives.",
     entryCondition: "A specification exists.",
     evidenceProduced: "A compatibility approach and the list of behaviours it must preserve.",
     exitCondition: "Every current rendering is reproducible.",

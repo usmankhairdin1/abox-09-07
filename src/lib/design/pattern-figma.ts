@@ -14,12 +14,20 @@ export const PATTERN_FIGMA_MAPPINGS: PatternFigmaMapping[] = [
     responsiveVariants: "Breakpoint: Mobile | Desktop, matching the md type step.",
     densityVariants: "Carried by the Variant property rather than a separate axis.",
     contentModel: "Eyebrow, Title, Description, Icon, Actions as component properties.",
-    componentProperties: ["Eyebrow (text, optional)", "Title (text)", "Description (text, optional)", "Icon (instance swap, optional)", "Actions (instance swap, optional)", "Show hairline (boolean)"],
+    componentProperties: [
+      "Eyebrow (text, optional)",
+      "Title (text)",
+      "Description (text, optional)",
+      "Icon (instance swap, optional)",
+      "Actions (instance swap, optional)",
+      "Show hairline (boolean)",
+    ],
     status: "FUTURE OPPORTUNITY",
   },
   {
     patternId: "pat.filter-results",
-    figmaStructure: "Pattern frame combining a filter rail component, the compact header and a results list.",
+    figmaStructure:
+      "Pattern frame combining a filter rail component, the compact header and a results list.",
     variantProperties: ["Layout: Rail | Dialog"],
     stateProperties: ["State: Default | Empty"],
     responsiveVariants: "Rail above lg, Dialog below lg.",
@@ -36,7 +44,13 @@ export const PATTERN_FIGMA_MAPPINGS: PatternFigmaMapping[] = [
     responsiveVariants: "Grid column count only.",
     densityVariants: "Single density at p-6.",
     contentModel: "Label, value, delta, hint, icon.",
-    componentProperties: ["Label (text)", "Value (text)", "Delta (text, optional)", "Hint (text, optional)", "Icon (instance swap, optional)"],
+    componentProperties: [
+      "Label (text)",
+      "Value (text)",
+      "Delta (text, optional)",
+      "Hint (text, optional)",
+      "Icon (instance swap, optional)",
+    ],
     status: "FUTURE OPPORTUNITY",
   },
   {
@@ -85,10 +99,12 @@ export const PATTERN_FIGMA_MAPPINGS: PatternFigmaMapping[] = [
   },
   {
     patternId: "pat.navigation",
-    figmaStructure: "Three separate pattern frames, one per shell, because the code shares no navigation implementation.",
+    figmaStructure:
+      "Three separate pattern frames, one per shell, because the code shares no navigation implementation.",
     variantProperties: ["Shell: Internal | Marketplace | Member"],
     stateProperties: ["State: Expanded | Collapsed"],
-    responsiveVariants: "Each shell collapses at its own breakpoint; the blueprint keeps them separate.",
+    responsiveVariants:
+      "Each shell collapses at its own breakpoint; the blueprint keeps them separate.",
     densityVariants: "Three observed densities, kept apart.",
     contentModel: "Brand, destinations, account, context actions.",
     componentProperties: ["Destinations (nested instances)", "Account name (text)"],
@@ -96,13 +112,18 @@ export const PATTERN_FIGMA_MAPPINGS: PatternFigmaMapping[] = [
   },
   {
     patternId: "pat.empty-loading-error",
-    figmaStructure: "Component 'Pattern / Empty state' only. Loading and error have no production owner to model.",
+    figmaStructure:
+      "Component 'Pattern / Empty state' only. Loading and error have no production owner to model.",
     variantProperties: [],
     stateProperties: ["State: Empty"],
     responsiveVariants: "None.",
     densityVariants: "None.",
     contentModel: "Icon, title, body, action.",
-    componentProperties: ["Title (text)", "Body (text, optional)", "Action (instance swap, optional)"],
+    componentProperties: [
+      "Title (text)",
+      "Body (text, optional)",
+      "Action (instance swap, optional)",
+    ],
     status: "UNOWNED AREA",
   },
 ];

@@ -76,10 +76,19 @@ import {
   FIGMA_LIMITS,
 } from "@/lib/design/spec-figma-library";
 import { SPEC_GOVERNANCE_RULES, OPEN_DECISIONS } from "@/lib/design/spec-governance";
-import { GRAPH_LAYERS, GRAPH_SUMMARY, TRACED_CHAINS, IMPACT_MODEL } from "@/lib/design/graph-registry";
+import {
+  GRAPH_LAYERS,
+  GRAPH_SUMMARY,
+  TRACED_CHAINS,
+  IMPACT_MODEL,
+} from "@/lib/design/graph-registry";
 import { SCREEN_TRACEABILITY } from "@/lib/design/graph-screens";
 import { OWNERSHIP_MODEL } from "@/lib/design/graph-brand-boundary";
-import { PROPAGATION_RULES, MIGRATION_STAGES, MIGRATION_BOUNDARY } from "@/lib/design/graph-governance";
+import {
+  PROPAGATION_RULES,
+  MIGRATION_STAGES,
+  MIGRATION_BOUNDARY,
+} from "@/lib/design/graph-governance";
 import { DUPLICATE_MAPPINGS } from "@/lib/design/graph-duplicates";
 import { PATTERN_SUMMARY, PATTERN_TAXONOMY } from "@/lib/design/pattern-registry";
 import { PATTERN_DUPLICATES } from "@/lib/design/pattern-duplicates";
@@ -1608,7 +1617,6 @@ function DesignGuidePage() {
           />
         </RefSection>
 
-
         <RefSection
           id="fit-together"
           eyebrow="How it fits"
@@ -1619,10 +1627,22 @@ function DesignGuidePage() {
           <div className="mt-4">
             <DefinitionRows
               rows={[
-                { term: "Connections recorded", detail: `${GRAPH_SUMMARY.edges} relationships between ${GRAPH_SUMMARY.nodes} pieces of the system.` },
-                { term: "Real today", detail: `${GRAPH_SUMMARY.currentEdges} of them exist in the product now.` },
-                { term: "Proposals only", detail: `${GRAPH_SUMMARY.futureEdges} describe a possible future and do not exist.` },
-                { term: "Left unanswered", detail: `${GRAPH_SUMMARY.openDecisionEdges} could not be established from the code, so they were not guessed.` },
+                {
+                  term: "Connections recorded",
+                  detail: `${GRAPH_SUMMARY.edges} relationships between ${GRAPH_SUMMARY.nodes} pieces of the system.`,
+                },
+                {
+                  term: "Real today",
+                  detail: `${GRAPH_SUMMARY.currentEdges} of them exist in the product now.`,
+                },
+                {
+                  term: "Proposals only",
+                  detail: `${GRAPH_SUMMARY.futureEdges} describe a possible future and do not exist.`,
+                },
+                {
+                  term: "Left unanswered",
+                  detail: `${GRAPH_SUMMARY.openDecisionEdges} could not be established from the code, so they were not guessed.`,
+                },
               ]}
             />
           </div>
@@ -1716,13 +1736,15 @@ function DesignGuidePage() {
           intro="Nothing has been tidied up. If it ever is, this is the order it would happen in, and every step would be checked against the live product first."
         >
           <DefinitionRows
-            rows={MIGRATION_STAGES.map((m) => ({ term: `${m.stage}. ${m.name}`, detail: m.meaning }))}
+            rows={MIGRATION_STAGES.map((m) => ({
+              term: `${m.stage}. ${m.name}`,
+              detail: m.meaning,
+            }))}
           />
           <div className="mt-4">
             <RuleList items={MIGRATION_BOUNDARY} tone="warning" />
           </div>
         </RefSection>
-
 
         <RefSection
           id="pat-what"
@@ -1732,12 +1754,28 @@ function DesignGuidePage() {
         >
           <DefinitionRows
             rows={[
-              { term: "Patterns recorded", detail: `${PATTERN_SUMMARY.patterns} arrangements, grouped into ${PATTERN_SUMMARY.categories} kinds of work.` },
+              {
+                term: "Patterns recorded",
+                detail: `${PATTERN_SUMMARY.patterns} arrangements, grouped into ${PATTERN_SUMMARY.categories} kinds of work.`,
+              },
               { term: "Working as intended today", detail: `${PATTERN_SUMMARY.current} of them.` },
-              { term: "Built more than one way", detail: `${PATTERN_SUMMARY.variationsOrDuplicates} of them, all kept as they are.` },
-              { term: "Nobody currently responsible", detail: `${PATTERN_SUMMARY.unowned} of them.` },
-              { term: "Not decided", detail: `${PATTERN_SUMMARY.open} left open because the code does not answer the question.` },
-              { term: "Important", detail: "Looking alike is not enough. Two things only count as the same pattern when the code shows they are." },
+              {
+                term: "Built more than one way",
+                detail: `${PATTERN_SUMMARY.variationsOrDuplicates} of them, all kept as they are.`,
+              },
+              {
+                term: "Nobody currently responsible",
+                detail: `${PATTERN_SUMMARY.unowned} of them.`,
+              },
+              {
+                term: "Not decided",
+                detail: `${PATTERN_SUMMARY.open} left open because the code does not answer the question.`,
+              },
+              {
+                term: "Important",
+                detail:
+                  "Looking alike is not enough. Two things only count as the same pattern when the code shows they are.",
+              },
             ]}
           />
           {PATTERN_TAXONOMY.filter((g) => g.patterns.length > 0).map((group) => (
@@ -1755,7 +1793,9 @@ function DesignGuidePage() {
           title="Component, pattern, experience pattern"
           intro="Three different things, often confused. Getting the level right decides who is allowed to change something."
         >
-          <DefinitionRows rows={PATTERN_DEFINITION_RULES.map((r) => ({ term: r.question, detail: r.rule }))} />
+          <DefinitionRows
+            rows={PATTERN_DEFINITION_RULES.map((r) => ({ term: r.question, detail: r.rule }))}
+          />
         </RefSection>
 
         <RefSection
@@ -1764,7 +1804,9 @@ function DesignGuidePage() {
           title="Who owns a pattern"
           intro="Ownership decides who can approve a change. Brand settings and marketplace artwork stay outside the design system entirely."
         >
-          <DefinitionRows rows={PATTERN_OWNERSHIP_RULES.map((r) => ({ term: r.question, detail: r.rule }))} />
+          <DefinitionRows
+            rows={PATTERN_OWNERSHIP_RULES.map((r) => ({ term: r.question, detail: r.rule }))}
+          />
         </RefSection>
 
         <RefSection
@@ -1832,7 +1874,6 @@ function DesignGuidePage() {
           <RuleList items={FIGMA_PATTERN_RULES} tone="warning" />
         </RefSection>
 
-
         <RefSection
           id="rd-canonical"
           eyebrow="Readiness"
@@ -1841,12 +1882,31 @@ function DesignGuidePage() {
         >
           <DefinitionRows
             rows={[
-              { term: "Areas assessed", detail: `${READINESS_SUMMARY.subjects} parts of the product looked at in detail.` },
-              { term: "Areas that could be settled", detail: `${READINESS_SUMMARY.candidates} listed as open for a decision.` },
-              { term: "Decisions actually taken", detail: `${READINESS_SUMMARY.decisionsSelected}. None.` },
-              { term: "Changes made to the product", detail: `${READINESS_SUMMARY.migrationsPerformed}. None.` },
-              { term: "Things created in Figma", detail: `${READINESS_SUMMARY.figmaAssetsCreated}. None.` },
-              { term: "Why this matters", detail: "Every one of these decisions changes something customers see. That is why a person takes them, not the documentation." },
+              {
+                term: "Areas assessed",
+                detail: `${READINESS_SUMMARY.subjects} parts of the product looked at in detail.`,
+              },
+              {
+                term: "Areas that could be settled",
+                detail: `${READINESS_SUMMARY.candidates} listed as open for a decision.`,
+              },
+              {
+                term: "Decisions actually taken",
+                detail: `${READINESS_SUMMARY.decisionsSelected}. None.`,
+              },
+              {
+                term: "Changes made to the product",
+                detail: `${READINESS_SUMMARY.migrationsPerformed}. None.`,
+              },
+              {
+                term: "Things created in Figma",
+                detail: `${READINESS_SUMMARY.figmaAssetsCreated}. None.`,
+              },
+              {
+                term: "Why this matters",
+                detail:
+                  "Every one of these decisions changes something customers see. That is why a person takes them, not the documentation.",
+              },
             ]}
           />
         </RefSection>
@@ -1908,13 +1968,16 @@ function DesignGuidePage() {
             rows={CHANGE_GOVERNANCE.map((g) => ({
               term: g.layer,
               detail: `Must check: ${g.consumersToCheck}`,
-              meta: [
-                g.visualRegression ? "before-and-after images" : null,
-                g.accessibilityReview ? "accessibility review" : null,
-                g.responsiveReview ? "screen-size review" : null,
-                g.productApproval ? "product approval" : null,
-                g.migrationApproval ? "approval to change the live product" : null,
-              ].filter(Boolean).join(" · ") || "no extra review",
+              meta:
+                [
+                  g.visualRegression ? "before-and-after images" : null,
+                  g.accessibilityReview ? "accessibility review" : null,
+                  g.responsiveReview ? "screen-size review" : null,
+                  g.productApproval ? "product approval" : null,
+                  g.migrationApproval ? "approval to change the live product" : null,
+                ]
+                  .filter(Boolean)
+                  .join(" · ") || "no extra review",
             }))}
           />
         </RefSection>
@@ -1926,7 +1989,9 @@ function DesignGuidePage() {
           intro="Several things are built more than one way. Picking one is not a tidy-up: it changes real screens, so it waits for a decision."
         >
           <DefinitionRows
-            rows={CANONICAL_CANDIDATES.filter((c) => c.blocker === "duplicate implementation" || c.blocker === "no owner").map((c) => ({
+            rows={CANONICAL_CANDIDATES.filter(
+              (c) => c.blocker === "duplicate implementation" || c.blocker === "no owner",
+            ).map((c) => ({
               term: c.area,
               detail: c.requiredDecision,
               meta: `Used by: ${c.consumers}`,
@@ -1953,10 +2018,19 @@ function DesignGuidePage() {
           <DefinitionRows
             rows={[
               { term: "Pages checked", detail: REGRESSION_COVERAGE.routes.join(", ") },
-              { term: "Screen sizes", detail: REGRESSION_COVERAGE.viewports.map((v) => v.name).join(", ") },
+              {
+                term: "Screen sizes",
+                detail: REGRESSION_COVERAGE.viewports.map((v) => v.name).join(", "),
+              },
               { term: "Languages", detail: REGRESSION_COVERAGE.languages.join(" and ") },
-              { term: "What must not change", detail: REGRESSION_CONTRACT.map((c) => c.dimension.toLowerCase()).join(", ") },
-              { term: "If something differs", detail: "It is treated as a failure, even when it looks like an improvement." },
+              {
+                term: "What must not change",
+                detail: REGRESSION_CONTRACT.map((c) => c.dimension.toLowerCase()).join(", "),
+              },
+              {
+                term: "If something differs",
+                detail: "It is treated as a failure, even when it looks like an improvement.",
+              },
             ]}
           />
         </RefSection>
@@ -1974,7 +2048,10 @@ function DesignGuidePage() {
                 { term: "Ready now", detail: `${READINESS_SUMMARY.figmaReady} areas.` },
                 { term: "Partly ready", detail: `${READINESS_SUMMARY.figmaPartial} areas.` },
                 { term: "Held up", detail: `${READINESS_SUMMARY.figmaBlocked} areas.` },
-                { term: "Decisions in the way", detail: `${READINESS_SUMMARY.decisionsBlockingFigma} of ${READINESS_SUMMARY.openDecisions}.` },
+                {
+                  term: "Decisions in the way",
+                  detail: `${READINESS_SUMMARY.decisionsBlockingFigma} of ${READINESS_SUMMARY.openDecisions}.`,
+                },
               ]}
             />
           </div>

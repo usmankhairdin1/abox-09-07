@@ -58,7 +58,8 @@ export const SPACING_TRACES: SpacingTrace[] = [
     component: "Shells and route containers",
     pattern: "Every web-experience page",
     screen: "Landing, plans, cart, member settings",
-    variation: "Headers run full width while content is constrained; dashboards use their own widths.",
+    variation:
+      "Headers run full width while content is constrained; dashboards use their own widths.",
     status: "CURRENT IMPLEMENTATION",
   },
   {
@@ -67,7 +68,8 @@ export const SPACING_TRACES: SpacingTrace[] = [
     component: "InternalShell, MarketplaceShell, MemberShell",
     pattern: "Every shell-hosted screen",
     screen: "All shell screens",
-    variation: "Member settings added extra top spacing so content does not sit against the header.",
+    variation:
+      "Member settings added extra top spacing so content does not sit against the header.",
     status: "OBSERVED VARIATION",
   },
   {

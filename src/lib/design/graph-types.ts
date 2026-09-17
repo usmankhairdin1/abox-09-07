@@ -26,13 +26,41 @@ export type GraphLayer =
   | "screen";
 
 export const GRAPH_LAYERS: { layer: GraphLayer; title: string; meaning: string }[] = [
-  { layer: "foundation", title: "Foundation", meaning: "A raw decision: a token, a scale step, a breakpoint." },
-  { layer: "semantic-role", title: "Semantic role", meaning: "What a foundation value means, independent of where it is used." },
-  { layer: "component-role", title: "Component role", meaning: "The slot inside a component that consumes a semantic role." },
-  { layer: "core-component", title: "Core component", meaning: "A component with no domain knowledge." },
-  { layer: "compound", title: "Compound component", meaning: "A fixed composition of core components." },
-  { layer: "pattern", title: "Pattern", meaning: "A recurring arrangement that solves one screen problem." },
-  { layer: "experience-pattern", title: "Experience pattern", meaning: "A pattern specialised for one experience." },
+  {
+    layer: "foundation",
+    title: "Foundation",
+    meaning: "A raw decision: a token, a scale step, a breakpoint.",
+  },
+  {
+    layer: "semantic-role",
+    title: "Semantic role",
+    meaning: "What a foundation value means, independent of where it is used.",
+  },
+  {
+    layer: "component-role",
+    title: "Component role",
+    meaning: "The slot inside a component that consumes a semantic role.",
+  },
+  {
+    layer: "core-component",
+    title: "Core component",
+    meaning: "A component with no domain knowledge.",
+  },
+  {
+    layer: "compound",
+    title: "Compound component",
+    meaning: "A fixed composition of core components.",
+  },
+  {
+    layer: "pattern",
+    title: "Pattern",
+    meaning: "A recurring arrangement that solves one screen problem.",
+  },
+  {
+    layer: "experience-pattern",
+    title: "Experience pattern",
+    meaning: "A pattern specialised for one experience.",
+  },
   { layer: "screen", title: "Screen", meaning: "A real route the user opens." },
 ];
 

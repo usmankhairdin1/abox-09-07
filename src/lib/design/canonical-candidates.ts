@@ -12,10 +12,13 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
   {
     id: "cand.action-pill",
     area: "Action pills",
-    currentImplementation: "ACTION_PILL class string centralised in src/components/abox/action-pill.ts.",
+    currentImplementation:
+      "ACTION_PILL class string centralised in src/components/abox/action-pill.ts.",
     observedVariation: "Hero pills render at h-11 while the shared pill height is used elsewhere.",
-    potentialCanonicalTarget: "A single pill component with the height difference expressed as a variant, if approved.",
-    requiredDecision: "Whether the hero height is a variant of the shared pill or a marketing-only treatment.",
+    potentialCanonicalTarget:
+      "A single pill component with the height difference expressed as a variant, if approved.",
+    requiredDecision:
+      "Whether the hero height is a variant of the shared pill or a marketing-only treatment.",
     evidence: "35 files, 82 references; hero classes in src/routes/index.tsx.",
     consumers: "35 files",
     blocker: "no blocker",
@@ -39,10 +42,13 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
     id: "cand.page-header",
     area: "Page headers",
     currentImplementation: "PageHeader with default and compact variants.",
-    observedVariation: "Marketing section headings and the internal shell masthead both open a screen without using PageHeader.",
+    observedVariation:
+      "Marketing section headings and the internal shell masthead both open a screen without using PageHeader.",
     potentialCanonicalTarget: "One screen-opening pattern covering all three placements.",
-    requiredDecision: "Whether marketing headings and the shell masthead should be the same thing as PageHeader.",
-    evidence: "PageHeader in 25 files; landing headings in src/routes/index.tsx; internal-shell.tsx lines 114-119.",
+    requiredDecision:
+      "Whether marketing headings and the shell masthead should be the same thing as PageHeader.",
+    evidence:
+      "PageHeader in 25 files; landing headings in src/routes/index.tsx; internal-shell.tsx lines 114-119.",
     consumers: "25 files plus two unowned placements",
     blocker: "duplicate implementation",
     readiness: "BLOCKED BY DUPLICATE",
@@ -64,7 +70,8 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
   {
     id: "cand.surface",
     area: "Cards and surfaces",
-    currentImplementation: "Card primitive plus rounded-2xl border-hairline bg-card written directly in many places.",
+    currentImplementation:
+      "Card primitive plus rounded-2xl border-hairline bg-card written directly in many places.",
     observedVariation: "Card padding is p-5 in some surfaces and p-6 in others.",
     potentialCanonicalTarget: "A surface role with a settled padding scale.",
     requiredDecision: "Whether p-5 and p-6 are two densities or one unintended split.",
@@ -77,8 +84,10 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
   {
     id: "cand.form-field",
     area: "Form fields",
-    currentImplementation: "Input, Label and Select primitives, plus independent field compositions in the M06 and M08 kits.",
-    observedVariation: "Label placement, help and error text and validation wiring differ between the three.",
+    currentImplementation:
+      "Input, Label and Select primitives, plus independent field compositions in the M06 and M08 kits.",
+    observedVariation:
+      "Label placement, help and error text and validation wiring differ between the three.",
     potentialCanonicalTarget: "One field composition covering label, control, help and error.",
     requiredDecision: "Whether the governed module kits adopt a shared field or stay independent.",
     evidence: "Input 7 consumers, Select 7, Label 5; M06 and M08 kits written per module.",
@@ -90,7 +99,8 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
   {
     id: "cand.status-badge",
     area: "Status badges and tone vocabulary",
-    currentImplementation: "StatusBadge with tone tokens; MetalBadge with per-tier tokens and accessible foreground selection.",
+    currentImplementation:
+      "StatusBadge with tone tokens; MetalBadge with per-tier tokens and accessible foreground selection.",
     observedVariation: "None material — filter chips reuse the same badge treatments as listings.",
     potentialCanonicalTarget: "Status and tier badges as one component set with a kind property.",
     requiredDecision: "Whether tier is a variant of status or a separate component.",
@@ -103,11 +113,14 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
   {
     id: "cand.table",
     area: "Tables and data presentation",
-    currentImplementation: "DataTable, the table primitive and route-local tables all render records.",
+    currentImplementation:
+      "DataTable, the table primitive and route-local tables all render records.",
     observedVariation: "Cell padding, minimum width, empty-row handling and aria labelling differ.",
     potentialCanonicalTarget: "One table pattern with density as a property.",
-    requiredDecision: "Which of the three implementations future screens should use, and what happens to the others.",
-    evidence: "DataTable in 20 files at min-w-[640px] px-5 py-4; primitive and route-local tables elsewhere.",
+    requiredDecision:
+      "Which of the three implementations future screens should use, and what happens to the others.",
+    evidence:
+      "DataTable in 20 files at min-w-[640px] px-5 py-4; primitive and route-local tables elsewhere.",
     consumers: "20 files plus route-local",
     blocker: "duplicate implementation",
     readiness: "BLOCKED BY DUPLICATE",
@@ -129,10 +142,14 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
   {
     id: "cand.navigation",
     area: "Navigation",
-    currentImplementation: "Three independent shells: InternalShell, MarketplaceShell, MemberShell.",
-    observedVariation: "Rail versus floating header, different collapse breakpoints, different account controls.",
-    potentialCanonicalTarget: "Shared navigation primitives beneath three deliberately different shells.",
-    requiredDecision: "Whether the shells are intentionally separate products or should share a base.",
+    currentImplementation:
+      "Three independent shells: InternalShell, MarketplaceShell, MemberShell.",
+    observedVariation:
+      "Rail versus floating header, different collapse breakpoints, different account controls.",
+    potentialCanonicalTarget:
+      "Shared navigation primitives beneath three deliberately different shells.",
+    requiredDecision:
+      "Whether the shells are intentionally separate products or should share a base.",
     evidence: "89, 30 and member-route consumers respectively.",
     consumers: "three shells",
     blocker: "experience variation",
@@ -142,7 +159,8 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
   {
     id: "cand.overlay",
     area: "Dialogs and drawers",
-    currentImplementation: "Dialog primitive, plus a route-local filter overlay on the plans route.",
+    currentImplementation:
+      "Dialog primitive, plus a route-local filter overlay on the plans route.",
     observedVariation: "Focus trapping, close affordance and animation differ.",
     potentialCanonicalTarget: "One overlay surface with dialog and drawer variants.",
     requiredDecision: "Whether the plans filter overlay adopts the primitive.",
@@ -181,7 +199,8 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
   {
     id: "cand.plan-presentation",
     area: "Plan and product presentation",
-    currentImplementation: "PlanCard with the metal badge, exchange status, plan id, premium formatting and carrier mark.",
+    currentImplementation:
+      "PlanCard with the metal badge, exchange status, plan id, premium formatting and carrier mark.",
     observedVariation: "Two tile variants exist, both carrying the same required facts.",
     potentialCanonicalTarget: "One plan tile with a layout variant.",
     requiredDecision: "Whether the two variants are one component or two.",
@@ -220,10 +239,13 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
   {
     id: "cand.typography-roles",
     area: "Typography roles",
-    currentImplementation: "Heading, body, description, eyebrow and serial treatments expressed largely through literal classes.",
-    observedVariation: "Several heading sizes and five uppercase tracking values; .story-link used 89 times with no definition.",
+    currentImplementation:
+      "Heading, body, description, eyebrow and serial treatments expressed largely through literal classes.",
+    observedVariation:
+      "Several heading sizes and five uppercase tracking values; .story-link used 89 times with no definition.",
     potentialCanonicalTarget: "Named type roles bound to the existing values.",
-    requiredDecision: "Whether the existing sizes collapse into fewer roles, which would change rendered output.",
+    requiredDecision:
+      "Whether the existing sizes collapse into fewer roles, which would change rendered output.",
     evidence: "text-sm 779 uses, font-medium 406; Phase 3 measurements.",
     consumers: "application-wide",
     blocker: "insufficient evidence",
@@ -237,7 +259,8 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
     observedVariation: "gap-1.5 and gap-2 both appear in equivalent positions.",
     potentialCanonicalTarget: "Named spacing roles mapped to the measured values.",
     requiredDecision: "Whether near-identical gaps are unified, which changes pixels.",
-    evidence: "gap-2 316, px-3 238, gap-1 232, p-5 187, gap-3 173, px-4 154, gap-4 133, max-w-[88rem] 23.",
+    evidence:
+      "gap-2 316, px-3 238, gap-1 232, p-5 187, gap-3 173, px-4 154, gap-4 133, max-w-[88rem] 23.",
     consumers: "application-wide",
     blocker: "insufficient evidence",
     readiness: "NEEDS DESIGN DECISION",
@@ -249,7 +272,8 @@ export const CANONICAL_CANDIDATES: CanonicalCandidate[] = [
     currentImplementation: "36px and 40px controls coexist by surface.",
     observedVariation: "The same kind of control differs in height between shells and marketing.",
     potentialCanonicalTarget: "A control size scale with a documented default.",
-    requiredDecision: "Which height is the default, knowing either answer changes existing screens.",
+    requiredDecision:
+      "Which height is the default, knowing either answer changes existing screens.",
     evidence: "Phase 2 and Phase 7 measurements; density records in Phase 10.",
     consumers: "application-wide",
     blocker: "insufficient evidence",
