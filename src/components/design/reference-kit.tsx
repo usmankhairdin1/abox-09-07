@@ -14,13 +14,31 @@ export function RefPage({ children }: { children: React.ReactNode }) {
   return <div className="min-h-svh bg-background text-foreground">{children}</div>;
 }
 
-export function RefContainer({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("mx-auto w-full max-w-[88rem] px-4 md:px-8", className)}>{children}</div>;
+export function RefContainer({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("mx-auto w-full max-w-[88rem] px-4 md:px-8", className)}>{children}</div>
+  );
 }
 
 export function RefSection({
-  id, eyebrow, title, intro, children,
-}: { id: string; eyebrow?: string; title: string; intro?: string; children: React.ReactNode }) {
+  id,
+  eyebrow,
+  title,
+  intro,
+  children,
+}: {
+  id: string;
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  children: React.ReactNode;
+}) {
   return (
     <section id={id} className="scroll-mt-24 border-t border-hairline py-12 first:border-t-0">
       {eyebrow && <p className="text-eyebrow mb-3">{eyebrow}</p>}
@@ -31,7 +49,15 @@ export function RefSection({
   );
 }
 
-export function RefBlock({ title, note, children }: { title: string; note?: string; children: React.ReactNode }) {
+export function RefBlock({
+  title,
+  note,
+  children,
+}: {
+  title: string;
+  note?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="mb-10 last:mb-0">
       <h3 className="text-base font-semibold">{title}</h3>
@@ -42,9 +68,20 @@ export function RefBlock({ title, note, children }: { title: string; note?: stri
 }
 
 /** Neutral stage for rendering live production components. */
-export function RefStage({ children, className }: { children: React.ReactNode; className?: string }) {
+export function RefStage({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className={cn("flex flex-wrap items-center gap-3 rounded-2xl border border-hairline bg-card p-5", className)}>
+    <div
+      className={cn(
+        "flex flex-wrap items-center gap-3 rounded-2xl border border-hairline bg-card p-5",
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -57,21 +94,35 @@ export function useTokenValue(name: string): string {
     const read = () => setValue(readToken(name));
     read();
     const observer = new MutationObserver(read);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style"] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "style"],
+    });
     return () => observer.disconnect();
   }, [name]);
   return value;
 }
 
 export function Swatch({
-  name, label, usage, foreground,
-}: { name: string; label: string; usage?: string; foreground?: string }) {
+  name,
+  label,
+  usage,
+  foreground,
+}: {
+  name: string;
+  label: string;
+  usage?: string;
+  foreground?: string;
+}) {
   const value = useTokenValue(name);
   return (
     <figure className="overflow-hidden rounded-xl border border-hairline bg-card">
       <div
         className="flex h-20 items-end justify-between px-3 pb-2"
-        style={{ background: `var(--${name})`, color: foreground ? `var(--${foreground})` : undefined }}
+        style={{
+          background: `var(--${name})`,
+          color: foreground ? `var(--${foreground})` : undefined,
+        }}
       >
         {foreground && <span className="text-[11px] font-medium">Aa</span>}
       </div>
@@ -79,7 +130,9 @@ export function Swatch({
         <p className="text-sm font-medium">{label}</p>
         {usage && <p className="mt-0.5 text-xs text-muted-foreground">{usage}</p>}
         <p className="text-serial mt-2 break-all">--{name}</p>
-        <p className="mt-0.5 break-all text-[11px] tabular-nums text-muted-foreground">{value || "—"}</p>
+        <p className="mt-0.5 break-all text-[11px] tabular-nums text-muted-foreground">
+          {value || "—"}
+        </p>
       </figcaption>
     </figure>
   );
@@ -97,7 +150,10 @@ export function RefToc({ items }: { items: { id: string; label: string }[] }) {
       <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
         {items.map((i) => (
           <li key={i.id}>
-            <a href={`#${i.id}`} className="relative ember-underline text-muted-foreground hover:text-foreground">
+            <a
+              href={`#${i.id}`}
+              className="relative ember-underline text-muted-foreground hover:text-foreground"
+            >
               {i.label}
             </a>
           </li>

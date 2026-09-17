@@ -34,11 +34,31 @@ export const COLOR_GROUPS: TokenGroup[] = [
     intro: "The layered backgrounds every screen is built on, from the page canvas up to popovers.",
     tokens: [
       { name: "background", label: "Background", usage: "Page canvas", foreground: "foreground" },
-      { name: "surface", label: "Surface", usage: "Recessed sections and rails", foreground: "surface-foreground" },
+      {
+        name: "surface",
+        label: "Surface",
+        usage: "Recessed sections and rails",
+        foreground: "surface-foreground",
+      },
       { name: "panel", label: "Panel", usage: "Deeper panels inside a surface" },
-      { name: "card", label: "Card", usage: "Cards, tiles and plates", foreground: "card-foreground" },
-      { name: "popover", label: "Popover", usage: "Menus, dropdowns, tooltips", foreground: "popover-foreground" },
-      { name: "sidebar", label: "Sidebar", usage: "Internal workspace navigation rail", foreground: "sidebar-foreground" },
+      {
+        name: "card",
+        label: "Card",
+        usage: "Cards, tiles and plates",
+        foreground: "card-foreground",
+      },
+      {
+        name: "popover",
+        label: "Popover",
+        usage: "Menus, dropdowns, tooltips",
+        foreground: "popover-foreground",
+      },
+      {
+        name: "sidebar",
+        label: "Sidebar",
+        usage: "Internal workspace navigation rail",
+        foreground: "sidebar-foreground",
+      },
     ],
   },
   {
@@ -46,24 +66,69 @@ export const COLOR_GROUPS: TokenGroup[] = [
     title: "Brand",
     intro: "Meridian Navy. Primary carries action and active state; sage is the supporting accent.",
     tokens: [
-      { name: "primary", label: "Primary", usage: "Primary action, active state, links", foreground: "primary-foreground" },
-      { name: "primary-soft", label: "Primary soft", usage: "Tinted primary surfaces and highlights" },
-      { name: "sage", label: "Sage", usage: "Supporting accent, positive emphasis", foreground: "sage-foreground" },
+      {
+        name: "primary",
+        label: "Primary",
+        usage: "Primary action, active state, links",
+        foreground: "primary-foreground",
+      },
+      {
+        name: "primary-soft",
+        label: "Primary soft",
+        usage: "Tinted primary surfaces and highlights",
+      },
+      {
+        name: "sage",
+        label: "Sage",
+        usage: "Supporting accent, positive emphasis",
+        foreground: "sage-foreground",
+      },
       { name: "sage-soft", label: "Sage soft", usage: "Tinted sage surfaces" },
-      { name: "secondary", label: "Secondary", usage: "Quiet panels and secondary controls", foreground: "secondary-foreground" },
-      { name: "accent", label: "Accent", usage: "Hover wash on neutral controls", foreground: "accent-foreground" },
+      {
+        name: "secondary",
+        label: "Secondary",
+        usage: "Quiet panels and secondary controls",
+        foreground: "secondary-foreground",
+      },
+      {
+        name: "accent",
+        label: "Accent",
+        usage: "Hover wash on neutral controls",
+        foreground: "accent-foreground",
+      },
       { name: "ai", label: "AI", usage: "PlanAI-assisted content", foreground: "ai-foreground" },
     ],
   },
   {
     id: "semantic",
     title: "Semantic status",
-    intro: "Color is semantic, never decorative. One meaning per token, used consistently across every workspace.",
+    intro:
+      "Color is semantic, never decorative. One meaning per token, used consistently across every workspace.",
     tokens: [
-      { name: "success", label: "Success", usage: "Complete, verified", foreground: "success-foreground" },
-      { name: "warning", label: "Warning", usage: "Needs attention or review", foreground: "warning-foreground" },
-      { name: "destructive", label: "Destructive", usage: "Blocked, failed, destructive action", foreground: "destructive-foreground" },
-      { name: "info", label: "Info", usage: "Informational state, on-exchange marker", foreground: "info-foreground" },
+      {
+        name: "success",
+        label: "Success",
+        usage: "Complete, verified",
+        foreground: "success-foreground",
+      },
+      {
+        name: "warning",
+        label: "Warning",
+        usage: "Needs attention or review",
+        foreground: "warning-foreground",
+      },
+      {
+        name: "destructive",
+        label: "Destructive",
+        usage: "Blocked, failed, destructive action",
+        foreground: "destructive-foreground",
+      },
+      {
+        name: "info",
+        label: "Info",
+        usage: "Informational state, on-exchange marker",
+        foreground: "info-foreground",
+      },
       { name: "muted", label: "Muted", usage: "Neutral chrome", foreground: "muted-foreground" },
     ],
   },
@@ -95,12 +160,37 @@ export const COLOR_GROUPS: TokenGroup[] = [
 
 /** Metal tiers, in plan-ladder order. Foregrounds are paired for contrast. */
 export const METAL_TOKENS: TokenRef[] = [
-  { name: "metal-bronze", label: "Bronze", usage: "Lowest actuarial value tier", foreground: "metal-bronze-fg" },
-  { name: "metal-expanded-bronze", label: "Expanded Bronze", usage: "Expanded Bronze tier", foreground: "metal-expanded-bronze-fg" },
-  { name: "metal-silver", label: "Silver", usage: "Silver tier, cost-sharing reductions", foreground: "metal-silver-fg" },
+  {
+    name: "metal-bronze",
+    label: "Bronze",
+    usage: "Lowest actuarial value tier",
+    foreground: "metal-bronze-fg",
+  },
+  {
+    name: "metal-expanded-bronze",
+    label: "Expanded Bronze",
+    usage: "Expanded Bronze tier",
+    foreground: "metal-expanded-bronze-fg",
+  },
+  {
+    name: "metal-silver",
+    label: "Silver",
+    usage: "Silver tier, cost-sharing reductions",
+    foreground: "metal-silver-fg",
+  },
   { name: "metal-gold", label: "Gold", usage: "Gold tier", foreground: "metal-gold-fg" },
-  { name: "metal-platinum", label: "Platinum", usage: "Highest actuarial value tier", foreground: "metal-platinum-fg" },
-  { name: "metal-catastrophic", label: "Catastrophic", usage: "Catastrophic tier, eligibility limited", foreground: "metal-catastrophic-fg" },
+  {
+    name: "metal-platinum",
+    label: "Platinum",
+    usage: "Highest actuarial value tier",
+    foreground: "metal-platinum-fg",
+  },
+  {
+    name: "metal-catastrophic",
+    label: "Catastrophic",
+    usage: "Catastrophic tier, eligibility limited",
+    foreground: "metal-catastrophic-fg",
+  },
 ];
 
 export const RADIUS_TOKENS = [
@@ -134,17 +224,83 @@ export const SPACING_STEPS = [
 ] as const;
 
 export const TYPOGRAPHY_SPECIMENS = [
-  { id: "display", label: "Display", className: "text-display text-4xl", usage: "Page titles and hero headlines", sample: "Insurance, turns to you." },
-  { id: "h1", label: "Heading 1", className: "text-display text-3xl", usage: "Primary page heading", sample: "Plan available" },
-  { id: "h2", label: "Heading 2", className: "text-display text-xl", usage: "Section heading", sample: "Profile completeness" },
-  { id: "h3", label: "Heading 3", className: "text-base font-semibold", usage: "Card and panel heading", sample: "Recent changes" },
-  { id: "body", label: "Body", className: "text-sm", usage: "Default reading text", sample: "Compare plans side by side, then hand the selection to your agent." },
-  { id: "body-muted", label: "Supporting body", className: "text-sm text-muted-foreground", usage: "Secondary explanation", sample: "Estimates are illustrative until the carrier confirms eligibility." },
-  { id: "label", label: "Label", className: "text-xs font-medium", usage: "Form labels and controls", sample: "Effective date" },
-  { id: "caption", label: "Caption", className: "text-xs text-muted-foreground", usage: "Helper and footnote text", sample: "Licensed in 50 states." },
-  { id: "eyebrow", label: "Eyebrow", className: "text-eyebrow", usage: "Context label above a title", sample: "Organization · M05" },
-  { id: "serial", label: "Serial", className: "text-serial", usage: "Identifiers and carrier marks", sample: "ORG-1001" },
-  { id: "numeric", label: "Numeric / data", className: "text-2xl font-semibold tabular-nums", usage: "Premiums, KPI values, table figures", sample: "$1,248.00" },
+  {
+    id: "display",
+    label: "Display",
+    className: "text-display text-4xl",
+    usage: "Page titles and hero headlines",
+    sample: "Insurance, turns to you.",
+  },
+  {
+    id: "h1",
+    label: "Heading 1",
+    className: "text-display text-3xl",
+    usage: "Primary page heading",
+    sample: "Plan available",
+  },
+  {
+    id: "h2",
+    label: "Heading 2",
+    className: "text-display text-xl",
+    usage: "Section heading",
+    sample: "Profile completeness",
+  },
+  {
+    id: "h3",
+    label: "Heading 3",
+    className: "text-base font-semibold",
+    usage: "Card and panel heading",
+    sample: "Recent changes",
+  },
+  {
+    id: "body",
+    label: "Body",
+    className: "text-sm",
+    usage: "Default reading text",
+    sample: "Compare plans side by side, then hand the selection to your agent.",
+  },
+  {
+    id: "body-muted",
+    label: "Supporting body",
+    className: "text-sm text-muted-foreground",
+    usage: "Secondary explanation",
+    sample: "Estimates are illustrative until the carrier confirms eligibility.",
+  },
+  {
+    id: "label",
+    label: "Label",
+    className: "text-xs font-medium",
+    usage: "Form labels and controls",
+    sample: "Effective date",
+  },
+  {
+    id: "caption",
+    label: "Caption",
+    className: "text-xs text-muted-foreground",
+    usage: "Helper and footnote text",
+    sample: "Licensed in 50 states.",
+  },
+  {
+    id: "eyebrow",
+    label: "Eyebrow",
+    className: "text-eyebrow",
+    usage: "Context label above a title",
+    sample: "Organization · M05",
+  },
+  {
+    id: "serial",
+    label: "Serial",
+    className: "text-serial",
+    usage: "Identifiers and carrier marks",
+    sample: "ORG-1001",
+  },
+  {
+    id: "numeric",
+    label: "Numeric / data",
+    className: "text-2xl font-semibold tabular-nums",
+    usage: "Premiums, KPI values, table figures",
+    sample: "$1,248.00",
+  },
 ] as const;
 
 /** Reads a live CSS custom property from the document root. */
