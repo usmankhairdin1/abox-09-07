@@ -107,7 +107,34 @@ import {
   RuleList,
   IconTable,
   AssetTable,
+  ComponentTable,
+  AnatomyList,
+  VariantTable,
+  ComponentStateTable,
 } from "@/components/design/reference-kit";
+import {
+  COMPONENT_TAXONOMY,
+  COMPONENT_GROUPS,
+  CONSUMER_MAP,
+  COMPONENT_ANATOMY,
+  COMPOSITION_CLASSIFICATION,
+  DUPLICATION_FINDINGS,
+  UNUSED_FINDINGS,
+  COMPONENT_MATURITY,
+} from "@/lib/design/components";
+import { COMPONENT_VARIANTS, COMPONENT_SIZES } from "@/lib/design/component-variants";
+import {
+  COMPONENT_STATES,
+  COMPONENT_RESPONSIVE,
+  COMPONENT_ACCESSIBILITY,
+} from "@/lib/design/component-states";
+import {
+  COMPONENT_COMPOSITION,
+  COMPONENT_TYPOGRAPHY_CROSSREF,
+  COMPONENT_SPACING_CROSSREF,
+  COMPONENT_ICON_CROSSREF,
+  COMPONENT_EXPERIENCE_SPLIT,
+} from "@/lib/design/component-relationships";
 import { FOUNDATION } from "@/lib/design/foundation";
 import { SPACING_RELATIONSHIPS, TYPOGRAPHY_RELATIONSHIPS } from "@/lib/design/relationships";
 import { COMPONENT_INVENTORY, PATTERN_INVENTORY, STATE_INVENTORY } from "@/lib/design/inventory";
