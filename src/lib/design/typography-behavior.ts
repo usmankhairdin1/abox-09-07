@@ -36,7 +36,8 @@ export const RESPONSIVE_TYPOGRAPHY: ResponsivePattern[] = [
     mobile: "text-base or text-sm depending on surface",
     source: "page-header.tsx and marketing sections",
     consumers: "md:text-lg 5 uses",
-    variations: "OBSERVED VARIATION — the compact header drops the subtitle to text-xs with no responsive step.",
+    variations:
+      "OBSERVED VARIATION — the compact header drops the subtitle to text-xs with no responsive step.",
   },
   {
     name: "Input font size",
@@ -46,7 +47,8 @@ export const RESPONSIVE_TYPOGRAPHY: ResponsivePattern[] = [
     mobile: "text-base (16px) — prevents iOS zoom on focus",
     source: "components/ui/input.tsx",
     consumers: "All inputs",
-    variations: "CURRENT IMPLEMENTATION — the only place the app uses a larger size on mobile than desktop, and it is deliberate.",
+    variations:
+      "CURRENT IMPLEMENTATION — the only place the app uses a larger size on mobile than desktop, and it is deliberate.",
   },
   {
     name: "Body and control text",
@@ -96,7 +98,8 @@ export const RESPONSIVE_TYPOGRAPHY: ResponsivePattern[] = [
     mobile: "Caps exceed the viewport, so text fills the column",
     source: "page-header.tsx, empty-state.tsx, marketing sections",
     consumers: "max-w-3xl 15 uses, max-w-2xl 14, max-w-md 11",
-    variations: "No prose or ch-based measure is used except two max-w-[10ch]/[16ch] truncation caps.",
+    variations:
+      "No prose or ch-based measure is used except two max-w-[10ch]/[16ch] truncation caps.",
   },
 ];
 
@@ -134,13 +137,15 @@ export const TYPOGRAPHY_STATES: RelationshipGroup = {
     },
     {
       pair: "Active / selected",
-      observed: "text-primary or a filled background with the paired foreground token; aria-pressed carries state for ring-less chips",
+      observed:
+        "text-primary or a filled background with the paired foreground token; aria-pressed carries state for ring-less chips",
       source: "nav links, filter chips",
       consistency: "varies",
     },
     {
       pair: "Disabled",
-      observed: "disabled:opacity-50 with disabled:pointer-events-none and disabled:cursor-not-allowed",
+      observed:
+        "disabled:opacity-50 with disabled:pointer-events-none and disabled:cursor-not-allowed",
       source: "components/ui/button.tsx, input.tsx",
       consistency: "consistent",
       note: "Opacity, not a separate muted text colour.",
@@ -178,7 +183,8 @@ export const TYPOGRAPHY_STATES: RelationshipGroup = {
     },
     {
       pair: "Muted",
-      observed: "text-muted-foreground — 803 uses, the single most common text colour after the default",
+      observed:
+        "text-muted-foreground — 803 uses, the single most common text colour after the default",
       source: "everywhere",
       consistency: "consistent",
     },
@@ -188,8 +194,7 @@ export const TYPOGRAPHY_STATES: RelationshipGroup = {
         ".ember-underline draws a 2px primary bar on hover/focus (4 uses); .story-link is referenced 89 times but has no definition",
       source: "src/styles.css, call sites",
       consistency: "varies",
-      note:
-        "OBSERVED VARIATION — the dominant inline-link class does nothing. Those links rely on text-primary and hover colour for affordance.",
+      note: "OBSERVED VARIATION — the dominant inline-link class does nothing. Those links rely on text-primary and hover colour for affordance.",
     },
     {
       pair: "Visited links",
@@ -208,7 +213,8 @@ export const TEXT_BEHAVIOR: RelationshipGroup = {
   entries: [
     {
       pair: "Long plan / carrier names",
-      observed: "OverflowText — truncates with ellipsis and reveals the full value in a tooltip on hover and keyboard focus, re-measuring via ResizeObserver",
+      observed:
+        "OverflowText — truncates with ellipsis and reveals the full value in a tooltip on hover and keyboard focus, re-measuring via ResizeObserver",
       source: "components/abox/overflow-text.tsx",
       consistency: "consistent",
       note: "The only component-owned overflow treatment; no tooltip is produced when the text fits.",
@@ -221,7 +227,8 @@ export const TEXT_BEHAVIOR: RelationshipGroup = {
     },
     {
       pair: "Long navigation labels",
-      observed: "truncate inside a min-w-0 flex child; username capped at max-w-[10ch] / sm:max-w-[16ch]",
+      observed:
+        "truncate inside a min-w-0 flex child; username capped at max-w-[10ch] / sm:max-w-[16ch]",
       source: "marketplace-shell.tsx, internal-shell.tsx",
       consistency: "consistent",
     },
@@ -233,7 +240,8 @@ export const TEXT_BEHAVIOR: RelationshipGroup = {
     },
     {
       pair: "Long descriptions",
-      observed: "line-clamp-1 (3 uses) and line-clamp-2 (2 uses) in dense cards; break-words (4 uses) elsewhere",
+      observed:
+        "line-clamp-1 (3 uses) and line-clamp-2 (2 uses) in dense cards; break-words (4 uses) elsewhere",
       source: "card markup",
       consistency: "varies",
     },
@@ -263,7 +271,8 @@ export const TEXT_BEHAVIOR: RelationshipGroup = {
     },
     {
       pair: "Container height",
-      observed: "Text containers are content-driven almost everywhere; the only fixed heights are control heights and viewport-capped panels",
+      observed:
+        "Text containers are content-driven almost everywhere; the only fixed heights are control heights and viewport-capped panels",
       source: "across the app",
       consistency: "consistent",
       note: "CURRENT IMPLEMENTATION — longer text grows its container rather than clipping, which is why truncation is opt-in per element.",
@@ -286,7 +295,8 @@ export const READABILITY_CONVENTIONS: DensityEntry[] = [
     controlHeight: "n/a",
     padding: "n/a",
     gap: "n/a",
-    typography: "10px is the standard micro size; text-[9px] appears once — the smallest text shipped",
+    typography:
+      "10px is the standard micro size; text-[9px] appears once — the smallest text shipped",
     iconSize: "12–16px alongside",
     source: "status-badge.tsx, metal-badge.tsx, .text-serial, one local chip",
     note: "FUTURE OPPORTUNITY — raising the 9px and 10px floors would improve legibility but would change badge sizing everywhere.",
@@ -308,7 +318,8 @@ export const READABILITY_CONVENTIONS: DensityEntry[] = [
     controlHeight: "n/a",
     padding: "n/a",
     gap: "n/a",
-    typography: "text-muted-foreground, 803 uses — never used for the only copy of critical information",
+    typography:
+      "text-muted-foreground, 803 uses — never used for the only copy of critical information",
     iconSize: "n/a",
     source: "everywhere",
   },
@@ -427,13 +438,15 @@ export const COMPONENT_TYPOGRAPHY: RelationshipGroup = {
     },
     {
       pair: "Navigation (marketplace)",
-      observed: "text-sm font-medium pills; brand wordmark text-display text-base with a .text-serial tagline",
+      observed:
+        "text-sm font-medium pills; brand wordmark text-display text-base with a .text-serial tagline",
       source: "components/abox/marketplace-shell.tsx",
       consistency: "consistent",
     },
     {
       pair: "Sidebar (admin rail)",
-      observed: "text-sm items; text-display text-lg brand; text-xs muted workspace name; section labels use .text-eyebrow",
+      observed:
+        "text-sm items; text-display text-lg brand; text-xs muted workspace name; section labels use .text-eyebrow",
       source: "components/abox/internal-shell.tsx",
       consistency: "consistent",
     },
@@ -445,7 +458,8 @@ export const COMPONENT_TYPOGRAPHY: RelationshipGroup = {
     },
     {
       pair: "Table",
-      observed: "shadcn head h-10 font-medium text-muted-foreground; ABox DataTable head text-[10px] uppercase tracking-[0.18em]",
+      observed:
+        "shadcn head h-10 font-medium text-muted-foreground; ABox DataTable head text-[10px] uppercase tracking-[0.18em]",
       source: "components/ui/table.tsx, components/abox/data-table.tsx",
       consistency: "varies",
     },
@@ -457,7 +471,8 @@ export const COMPONENT_TYPOGRAPHY: RelationshipGroup = {
     },
     {
       pair: "Dialog",
-      observed: "Title font-semibold; description text-sm text-muted-foreground; header text-center sm:text-left",
+      observed:
+        "Title font-semibold; description text-sm text-muted-foreground; header text-center sm:text-left",
       source: "components/ui/dialog.tsx",
       consistency: "consistent",
     },
@@ -494,7 +509,8 @@ export const COMPONENT_TYPOGRAPHY: RelationshipGroup = {
     },
     {
       pair: "KpiCard",
-      observed: ".text-eyebrow label; text-display text-5xl tabular-nums leading-none value; text-xs delta chip",
+      observed:
+        ".text-eyebrow label; text-display text-5xl tabular-nums leading-none value; text-xs delta chip",
       source: "components/abox/kpi-card.tsx",
       consistency: "consistent",
     },
@@ -525,7 +541,8 @@ export const COMPONENT_TYPOGRAPHY: RelationshipGroup = {
     },
     {
       pair: "Breadcrumb / Pagination / Avatar",
-      observed: "Primitives exist in components/ui but no screen consumes them — no typography in use",
+      observed:
+        "Primitives exist in components/ui but no screen consumes them — no typography in use",
       source: "components/ui/*",
       consistency: "consistent",
       note: "Installed but unused; govern when a feature needs them.",

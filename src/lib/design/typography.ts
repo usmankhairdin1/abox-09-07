@@ -24,7 +24,7 @@ export const FONT_FAMILIES: FoundationEntry[] = [
     ownership: "foundation",
     shared: "source-of-truth",
     maturity: "current",
-    note: "body sets font-feature-settings: \"ss01\", \"cv11\".",
+    note: 'body sets font-feature-settings: "ss01", "cv11".',
   },
   {
     name: "--font-display (headings)",
@@ -54,8 +54,7 @@ export const FONT_FAMILIES: FoundationEntry[] = [
     ownership: "foundation",
     shared: "source-of-truth",
     maturity: "current",
-    note:
-      "OBSERVED VARIATION — eyebrow and serial text read as 'mono' semantically but render in Inter Tight. Monospacing is achieved through uppercase, tracking and font-variant-numeric, not a mono face.",
+    note: "OBSERVED VARIATION — eyebrow and serial text read as 'mono' semantically but render in Inter Tight. Monospacing is achieved through uppercase, tracking and font-variant-numeric, not a mono face.",
   },
   {
     name: "JetBrains Mono (loaded, unused)",
@@ -66,15 +65,15 @@ export const FONT_FAMILIES: FoundationEntry[] = [
     ownership: "foundation",
     shared: "one-off",
     maturity: "opportunity",
-    note:
-      "FUTURE OPPORTUNITY — either bind it to --font-mono (would change the look of every eyebrow and serial) or drop it from the font request (a network-only change). Neither was applied.",
+    note: "FUTURE OPPORTUNITY — either bind it to --font-mono (would change the look of every eyebrow and serial) or drop it from the font request (a network-only change). Neither was applied.",
   },
 ];
 
 export const FONT_WEIGHTS: FoundationEntry[] = [
   {
     name: "400 — Regular",
-    value: "Loaded for both families. Used explicitly via font-normal (10 uses) and as the body default.",
+    value:
+      "Loaded for both families. Used explicitly via font-normal (10 uses) and as the body default.",
     source: "Font link + browser default",
     consumers: "Body copy, paragraph text, most muted descriptions.",
     ownership: "foundation",
@@ -401,21 +400,21 @@ export const TYPOGRAPHY_UTILITIES: FoundationEntry[] = [
   {
     name: ".text-display",
     value:
-      "font-family var(--font-display); font-weight 600; letter-spacing -0.032em; line-height 1.02; font-variation-settings \"wdth\" 102, \"opsz\" 48. Size is NOT declared — each call site adds its own.",
+      'font-family var(--font-display); font-weight 600; letter-spacing -0.032em; line-height 1.02; font-variation-settings "wdth" 102, "opsz" 48. Size is NOT declared — each call site adds its own.',
     source: "src/styles.css @utility",
     consumers: "194 uses — page titles, mastheads, KPI values, empty-state titles, plan prices.",
     ownership: "foundation",
     shared: "source-of-truth",
     maturity: "current",
-    note:
-      "OBSERVED VARIATION — because size is unbound, the same utility appears at text-lg through text-7xl.",
+    note: "OBSERVED VARIATION — because size is unbound, the same utility appears at text-lg through text-7xl.",
   },
   {
     name: ".text-eyebrow",
     value:
       "font-family var(--font-mono); font-size 0.6875rem (11px); font-weight 500; letter-spacing 0; text-transform uppercase; color var(--muted-foreground).",
     source: "src/styles.css @utility",
-    consumers: "229 uses — the most-used typography utility. Section labels, KPI labels, SCR context lines.",
+    consumers:
+      "229 uses — the most-used typography utility. Section labels, KPI labels, SCR context lines.",
     ownership: "foundation",
     shared: "source-of-truth",
     maturity: "current",
@@ -450,8 +449,7 @@ export const TYPOGRAPHY_UTILITIES: FoundationEntry[] = [
     ownership: "pattern",
     shared: "one-off",
     maturity: "opportunity",
-    note:
-      "OBSERVED VARIATION — a dead class name. It renders nothing today, so those links rely on their sibling utilities (text-primary, hover states) for affordance. FUTURE OPPORTUNITY: either define it or remove it; defining it would change how 89 links look.",
+    note: "OBSERVED VARIATION — a dead class name. It renders nothing today, so those links rely on their sibling utilities (text-primary, hover states) for affordance. FUTURE OPPORTUNITY: either define it or remove it; defining it would change how 89 links look.",
   },
   {
     name: ".sr-only",
@@ -668,7 +666,8 @@ export const NUMERIC_TYPOGRAPHY: RelationshipGroup = {
     },
     {
       pair: "Cart count in header",
-      observed: "tabular-nums inline span — '· N' and '· $X/mo', the monthly figure hidden below sm",
+      observed:
+        "tabular-nums inline span — '· N' and '· $X/mo', the monthly figure hidden below sm",
       source: "components/abox/marketplace-shell.tsx",
       consistency: "consistent",
     },

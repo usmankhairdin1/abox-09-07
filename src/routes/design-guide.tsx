@@ -930,10 +930,12 @@ function DesignGuidePage() {
           intro="When the design library is built in Figma, it will mirror this implementation one-to-one rather than being drawn from scratch. Nothing has been converted yet — this is the agreed mapping."
         >
           <DefinitionRows
-            rows={[...FIGMA_MAPPING, ...FIGMA_LAYOUT_MAPPING, ...FIGMA_TYPOGRAPHY_MAPPING].map((m) => ({
-              term: m.implementation,
-              detail: `→ ${m.figma}. ${m.note}`,
-            }))}
+            rows={[...FIGMA_MAPPING, ...FIGMA_LAYOUT_MAPPING, ...FIGMA_TYPOGRAPHY_MAPPING].map(
+              (m) => ({
+                term: m.implementation,
+                detail: `→ ${m.figma}. ${m.note}`,
+              }),
+            )}
           />
         </RefSection>
 
