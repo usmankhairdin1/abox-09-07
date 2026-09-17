@@ -13,7 +13,7 @@ import {
   orgStore, useOrgState, ROOT_ORGANIZATION_ID, TENANT_ID, getOrganization,
   ORG_TYPE_LABEL, type Organization, type ReferenceOrganizationRequest,
 } from "@/lib/org-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/platform/organizations/")({
   head: () => ({ meta: [{ title: "JET Tenant and Organization Operations — ABox" }, { name: "description", content: "JET tenant and organization oversight and controlled actions." }] }),
@@ -40,7 +40,7 @@ function Page() {
     { key: "override", header: "Actions", align: "right", cell: (r) => (
       <Link
         to="/platform/organizations/$organizationId/override" params={{ organizationId: r.organization_id }}
-        className={ACTION_PILL.outlineXs}
+        className={actionPillClass("outlineXs")}
       >
         <ShieldAlert className="h-3.5 w-3.5" aria-hidden /> Override
       </Link>

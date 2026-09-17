@@ -8,7 +8,7 @@ import { ShieldCheck, RotateCw } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { marketplaceStore, useMarketplaceState, getReadiness } from "@/lib/marketplace-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/marketplace/admin/readiness")({
   head: () => ({ meta: [{ title: "Marketplace Readiness — ABox" }, { name: "description", content: "Fixed readiness controls, canonical owner and next action." }] }),
@@ -24,7 +24,7 @@ function Page() {
   return (
     <InternalShell
       workspace="agency" pageTitle="Marketplace readiness" eyebrow="Marketplace Readiness · SCR-M04-016"
-      actions={<button onClick={() => marketplaceStore.recalculateReadiness()} className={ACTION_PILL.primaryMd}><RotateCw className="h-4 w-4" aria-hidden /> Recalculate</button>}
+      actions={<ActionPill variant="primaryMd" onClick={() => marketplaceStore.recalculateReadiness()}><RotateCw className="h-4 w-4" aria-hidden /> Recalculate</ActionPill>}
     >
       {readiness ? (
         <section className="rounded-2xl border border-border bg-card p-5">
