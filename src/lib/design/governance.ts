@@ -436,3 +436,215 @@ export const FIGMA_LAYOUT_MAPPING = [
     note: "Interior p-6 with gap-4 regions.",
   },
 ];
+
+/* -----------------------------------------------------------------
+ * Phase 3 — typography governance.
+ * Documentation only; consumed by /design-system and /design-guide.
+ * ----------------------------------------------------------------- */
+
+export const TYPOGRAPHY_GOVERNANCE_RULES = [
+  "GOVERNANCE RULE — The existing typography is the source of truth. A shipping size, weight, line height or tracking wins over a tidier alternative.",
+  "GOVERNANCE RULE — Reuse an established typography role before introducing a new one; the semantic role table is the lookup.",
+  "GOVERNANCE RULE — Do not silently normalize existing variation. Section heading sizes, card description sizes and uppercase tracking values differ on purpose or by history; both are recorded, neither is corrected.",
+  "GOVERNANCE RULE — Typography changes are high visual risk. text-sm alone appears 779 times; a change to it re-types the entire product.",
+  "GOVERNANCE RULE — One Core Typography System. Experience guidance explains usage context; it never defines a competing type scale.",
+  "GOVERNANCE RULE — Text colour is always a token. Muted text is never the only carrier of critical information, and status is always words plus colour.",
+  "GOVERNANCE RULE — .text-display sets family, weight, tracking and line height but not size; the call site always supplies the size.",
+  "GOVERNANCE RULE — Figma text styles must eventually map to these governed implementation values, not to an idealised scale.",
+];
+
+export const TYPOGRAPHY_MATURITY = [
+  {
+    item: ".text-eyebrow, .text-serial",
+    maturity: "established / shared",
+    detail: "Fully bound utilities — family, size, weight, transform and colour. 229 and 46 uses.",
+  },
+  {
+    item: ".text-display",
+    maturity: "established / contextual",
+    detail: "Owns family, weight, tracking and line height; size is always supplied by the call site.",
+  },
+  {
+    item: "Badge typography (10px semibold uppercase 0.12em)",
+    maturity: "established / shared",
+    detail: "The most tightly governed role — identical in StatusBadge and MetalBadge.",
+  },
+  {
+    item: "Page title and subtitle",
+    maturity: "established / shared",
+    detail: "Owned by PageHeader, including the compact variant.",
+  },
+  {
+    item: "Body and secondary body",
+    maturity: "established / contextual",
+    detail: "text-sm and text-sm text-muted-foreground, consistent but unowned by any component.",
+  },
+  {
+    item: "Section headings",
+    maturity: "recurring but inconsistent",
+    detail: "text-base, text-xl and text-2xl all serve the same role across routes.",
+  },
+  {
+    item: "Card titles and descriptions",
+    maturity: "recurring but inconsistent",
+    detail: "text-sm/text-base titles; text-xs/text-sm descriptions depending on whether the shadcn Card is used.",
+  },
+  {
+    item: "Uppercase tracking",
+    maturity: "recurring but inconsistent",
+    detail: "0.08em, 0.12em, 0.14em, 0.18em and tracking-widest all in use.",
+  },
+  {
+    item: "Sub-scale literals (10px, 11px, 10.5px, 0.8rem, 9px)",
+    maturity: "local / one-off",
+    detail: "10px and 11px are genuinely recurring; the other three are single optical adjustments.",
+  },
+  {
+    item: ".story-link",
+    maturity: "local / one-off",
+    detail: "89 references with no CSS definition — a dead class that renders nothing.",
+  },
+  {
+    item: "JetBrains Mono",
+    maturity: "installed but unused",
+    detail: "Requested in the font link at weights 400 and 500; referenced nowhere.",
+  },
+  {
+    item: "--font-serif",
+    maturity: "installed but unused",
+    detail: "Aliases the display stack; no consumer found.",
+  },
+  {
+    item: "font-bold (700)",
+    maturity: "installed but unused",
+    detail: "Loaded for both families; used once, in the 404 numeral.",
+  },
+  {
+    item: "Breadcrumb / Pagination / Avatar typography",
+    maturity: "installed but unused",
+    detail: "Primitives exist; no screen consumes them.",
+  },
+];
+
+export const TYPOGRAPHY_UNOWNED_AREAS = [
+  "Section heading typography — three sizes, no SectionHeading component.",
+  "Card title and description typography — varies with whether the shadcn Card is used.",
+  "Body and secondary body text — consistent in practice but owned by no component or token.",
+  "Helper and error text pairing — consistent in shape, unowned.",
+  "Uppercase micro-label tracking — five values, no single owner.",
+  "Date and time typography — no dedicated numeric treatment.",
+  "Inline link affordance — .story-link is undefined, so 89 links have no shared treatment.",
+];
+
+export const TYPOGRAPHY_DEFERRED_OPPORTUNITIES = [
+  {
+    item: "Bind or remove JetBrains Mono",
+    detail:
+      "Binding it to --font-mono would restyle every eyebrow and serial; removing it from the font link is network-only but leaves the 'mono' naming misleading.",
+    risk: "High if bound, none if only removed from the request",
+  },
+  {
+    item: "Define or remove .story-link",
+    detail: "Defining it would change the appearance of 89 inline links; removing it is a no-op visually.",
+    risk: "High if defined",
+  },
+  {
+    item: "SectionHeading component",
+    detail: "Would settle text-base / text-xl / text-2xl into one role.",
+    risk: "High — would re-type many screens",
+  },
+  {
+    item: "Uppercase tracking convergence",
+    detail: "Five tracking values serve uppercase micro labels.",
+    risk: "Medium — visible on badges and table headers",
+  },
+  {
+    item: "Sub-scale size tokens",
+    detail: "10px and 11px recur enough to justify named steps.",
+    risk: "Low if values are preserved exactly",
+  },
+  {
+    item: "Raise the micro-type floor",
+    detail: "text-[9px] and the 10px badge size are below common legibility guidance.",
+    risk: "High — would resize badges and table headers across the product",
+  },
+  {
+    item: "Success token convergence",
+    detail: "text-sage (44) and text-success (3) both express success.",
+    risk: "Medium — changes status colour on some surfaces",
+  },
+  {
+    item: "Tabular figures for dates",
+    detail: "Dates in column layouts do not use tabular-nums.",
+    risk: "Low — subtle alignment shift",
+  },
+  {
+    item: "Typography text-style export for Figma",
+    detail: "Text styles could be generated from the governed values once a token layer exists.",
+    risk: "None — additive tooling",
+  },
+];
+
+export const FIGMA_TYPOGRAPHY_MAPPING = [
+  {
+    implementation: '--font-sans "Inter Tight" / --font-display "Bricolage Grotesque"',
+    figma: "Two font families in the library",
+    note: "Serif and mono aliases do not become separate Figma families — they resolve to these two.",
+  },
+  {
+    implementation: "Weights 400 / 500 / 600 (700 used once)",
+    figma: "Text-style weight",
+    note: "Three working weights; 700 documented as a single exception, not a style.",
+  },
+  {
+    implementation: 'font-variation-settings "wdth" 102, "opsz" 32 / 48',
+    figma: "Variable font axis values on the display text styles",
+    note: "opsz 32 for h1–h3, opsz 48 for .text-display.",
+  },
+  {
+    implementation: "Observed size + line height + tracking triple",
+    figma: "One text style per observed combination",
+    note: "Derived from the measured scale, not from an idealised ratio.",
+  },
+  {
+    implementation: "Semantic role (page title, section heading, body, label, caption, badge, serial)",
+    figma: "Named text style",
+    note: "Roles with observed variation become multiple styles, not one averaged style.",
+  },
+  {
+    implementation: ".text-display / .text-eyebrow / .text-serial",
+    figma: "Text-style usage rule",
+    note: ".text-display is a partial style — size stays a per-instance override.",
+  },
+  {
+    implementation: "Responsive step (text-3xl md:text-4xl, text-base md:text-sm)",
+    figma: "Desktop and mobile variants of the same text style",
+    note: "The input's larger mobile size is documented as intentional, not an error.",
+  },
+  {
+    implementation: "tabular-nums and font-variant-numeric",
+    figma: "Data text style with tabular figures enabled",
+    note: "Prices, KPI values and identifiers.",
+  },
+  {
+    implementation: "Component typography (Button, Card, Badge, Table, Dialog)",
+    figma: "Text-style property on the component",
+    note: "Cross-referenced against the component inventory.",
+  },
+  {
+    implementation: "State typography (muted, error, success, warning, disabled)",
+    figma: "Colour property on the component state",
+    note: "States change colour and opacity only — never size or weight.",
+  },
+  {
+    implementation: "Experience typography guidance",
+    figma: "Page or section in the library file",
+    note: "Usage context only; all experiences share one type system.",
+  },
+  {
+    implementation: "Naming guidance",
+    figma: "Style names derived from the implementation",
+    note:
+      "Use the role names already in the code — display, eyebrow, serial, body, caption, badge — rather than inventing an h1/h2/h3 ladder the product does not use.",
+  },
+];

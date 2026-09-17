@@ -356,3 +356,179 @@ export const READABILITY_CONVENTIONS: DensityEntry[] = [
     source: "src/styles.css @media (prefers-reduced-motion: reduce)",
   },
 ];
+
+/* ------------------------------------------------------------------
+ * Component typography cross-reference.
+ * Which typography each existing component applies, as implemented.
+ * ------------------------------------------------------------------ */
+
+export const COMPONENT_TYPOGRAPHY: RelationshipGroup = {
+  id: "component-typography",
+  title: "Component typography cross-reference",
+  summary:
+    "Typography as applied by each shipping component. No component was altered; this is an inventory.",
+  entries: [
+    {
+      pair: "Button",
+      observed: "text-sm font-medium; sm size drops to text-xs; gap-2 to a 16px icon",
+      source: "components/ui/button.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Action pill",
+      observed: "text-sm font-semibold — heavier than the Button primitive",
+      source: "components/abox/action-pill.ts",
+      consistency: "consistent",
+      note: "OBSERVED VARIATION — deliberate marketing weight beside font-medium primitives.",
+    },
+    {
+      pair: "Input / Textarea",
+      observed: "text-base md:text-sm with placeholder:text-muted-foreground",
+      source: "components/ui/input.tsx, textarea.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Label",
+      observed: "text-sm font-medium",
+      source: "components/ui/label.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Select / DropdownMenu",
+      observed: "text-sm items; muted section labels",
+      source: "components/ui/select.tsx, dropdown-menu.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Tabs",
+      observed: "text-sm font-medium triggers; active trigger takes the foreground colour",
+      source: "components/ui/tabs.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Card",
+      observed: "Title font-semibold; CardDescription text-sm text-muted-foreground",
+      source: "components/ui/card.tsx",
+      consistency: "consistent",
+      note: "OBSERVED VARIATION — hand-rolled ABox cards use text-xs descriptions instead.",
+    },
+    {
+      pair: "Badge",
+      observed: "text-xs font-semibold in the shadcn primitive",
+      source: "components/ui/badge.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "StatusBadge / MetalBadge",
+      observed: "text-[10px] font-semibold uppercase tracking-[0.12em]",
+      source: "components/abox/status-badge.tsx, metal-badge.tsx",
+      consistency: "consistent",
+      note: "OBSERVED VARIATION — 10px semibold uppercase here vs text-xs in the shadcn Badge.",
+    },
+    {
+      pair: "Navigation (marketplace)",
+      observed: "text-sm font-medium pills; brand wordmark text-display text-base with a .text-serial tagline",
+      source: "components/abox/marketplace-shell.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Sidebar (admin rail)",
+      observed: "text-sm items; text-display text-lg brand; text-xs muted workspace name; section labels use .text-eyebrow",
+      source: "components/abox/internal-shell.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Search",
+      observed: "text-sm with placeholder:text-muted-foreground/70 and a 10px ⌘K keycap",
+      source: "components/abox/internal-shell.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Table",
+      observed: "shadcn head h-10 font-medium text-muted-foreground; ABox DataTable head text-[10px] uppercase tracking-[0.18em]",
+      source: "components/ui/table.tsx, components/abox/data-table.tsx",
+      consistency: "varies",
+    },
+    {
+      pair: "Tooltip / Popover",
+      observed: "text-xs tooltip content; text-sm popover body",
+      source: "components/ui/tooltip.tsx, popover.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Dialog",
+      observed: "Title font-semibold; description text-sm text-muted-foreground; header text-center sm:text-left",
+      source: "components/ui/dialog.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Sheet / drawer",
+      observed: "Same title/description treatment as Dialog",
+      source: "components/ui/sheet.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Alert",
+      observed: "Title font-medium with tracking-tight; description text-sm",
+      source: "components/ui/alert.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Toast (sonner)",
+      observed: "text-sm title with a muted description, themed from the same tokens",
+      source: "components/ui/sonner.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Filters",
+      observed: "text-sm chip labels reusing the exact badge treatments from the results list",
+      source: "routes/plans.index.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "PlanCard",
+      observed:
+        "text-display plan name with leading-tight; text-xs / text-[11px] meta; text-2xl tabular-nums price; .text-serial plan ID; badges at 10px",
+      source: "components/abox/plan-card.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "KpiCard",
+      observed: ".text-eyebrow label; text-display text-5xl tabular-nums leading-none value; text-xs delta chip",
+      source: "components/abox/kpi-card.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "EmptyState",
+      observed: "text-display text-2xl title; max-w-md text-sm muted body",
+      source: "components/abox/empty-state.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "PageHeader",
+      observed:
+        "eyebrow/SCR line via .text-eyebrow; text-display text-3xl md:text-4xl title (compact text-xl md:text-2xl); text-lg muted description",
+      source: "components/abox/page-header.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Wizard stepper",
+      observed: "text-sm step labels with .text-eyebrow step numbers",
+      source: "components/abox/downline-wizard-stepper.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Cart",
+      observed: "text-sm line items, text-xs meta, text-display tabular-nums totals",
+      source: "routes/cart.tsx",
+      consistency: "consistent",
+    },
+    {
+      pair: "Breadcrumb / Pagination / Avatar",
+      observed: "Primitives exist in components/ui but no screen consumes them — no typography in use",
+      source: "components/ui/*",
+      consistency: "consistent",
+      note: "Installed but unused; govern when a feature needs them.",
+    },
+  ],
+};
