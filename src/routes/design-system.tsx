@@ -132,6 +132,9 @@ import {
   ComponentSpecCard,
   SpecMatrixTable,
   DuplicateRegisterTable,
+  DependencyChainList,
+  TraceabilityCard,
+  ImpactTable,
 } from "@/components/design/reference-kit";
 
 import { SPEC_REGISTRY, SPEC_SUMMARY, SPEC_LABEL_COUNTS } from "@/lib/design/spec-registry";
@@ -167,6 +170,34 @@ import {
   SPEC_GOVERNANCE_RULES,
   OPEN_DECISIONS,
 } from "@/lib/design/spec-governance";
+
+import {
+  GRAPH_LAYERS,
+  GRAPH_NODES,
+  GRAPH_EDGES,
+  GRAPH_SUMMARY,
+  EDGE_STATUS_COUNTS,
+  STATUS_LEGEND,
+  TRACED_CHAINS,
+  IMPACT_MODEL,
+  nodeName,
+} from "@/lib/design/graph-registry";
+import { CONSUMER_GRAPH } from "@/lib/design/graph-components";
+import { SCREEN_TRACEABILITY } from "@/lib/design/graph-screens";
+import { DUPLICATE_MAPPINGS, DUPLICATE_GRAPH_RULES } from "@/lib/design/graph-duplicates";
+import { KIT_ARCHITECTURE_RULES } from "@/lib/design/graph-kits";
+import { BRAND_BOUNDARY, OWNERSHIP_MODEL } from "@/lib/design/graph-brand-boundary";
+import { ACCESSIBILITY_TRACES } from "@/lib/design/graph-accessibility";
+import { RESPONSIVE_OWNERSHIP, RESPONSIVE_TRACES } from "@/lib/design/graph-responsive";
+import { TYPOGRAPHY_TRACES } from "@/lib/design/graph-typography";
+import { SPACING_TRACES } from "@/lib/design/graph-spacing";
+import { FIGMA_TRACES, FIGMA_GRAPH_RULES } from "@/lib/design/graph-figma";
+import {
+  PROPAGATION_RULES,
+  MIGRATION_STAGES,
+  MIGRATION_BOUNDARY,
+} from "@/lib/design/graph-governance";
+import { SHARED_VERSUS_SPECIFIC } from "@/lib/design/graph-experiences";
 
 import { FOUNDATION_MODEL, FOUNDATION_CURRENT_STATE } from "@/lib/design/foundation-model";
 import { COLOR_FOUNDATION, COLOR_TOKEN_COUNT } from "@/lib/design/color-foundation";
@@ -495,6 +526,28 @@ const TOC = [
   { id: "spec-naming", label: "Naming governance" },
   { id: "spec-template", label: "Documentation template" },
   { id: "spec-governance", label: "Governance & maturity" },
+  { id: "graph-model", label: "Integrated model" },
+  { id: "graph-layers", label: "Dependency hierarchy" },
+  { id: "graph-foundation", label: "Foundation to roles" },
+  { id: "graph-roles", label: "Roles to components" },
+  { id: "graph-compounds", label: "Components to compounds" },
+  { id: "graph-patterns", label: "Compounds to patterns" },
+  { id: "graph-experiences", label: "Patterns to experiences" },
+  { id: "graph-screens", label: "Experiences to screens" },
+  { id: "graph-chains", label: "Traced chains" },
+  { id: "graph-traceability", label: "Screen traceability" },
+  { id: "graph-consumers", label: "Consumer graph" },
+  { id: "graph-duplicates", label: "Duplicates in the graph" },
+  { id: "graph-kits", label: "Kits & shells" },
+  { id: "graph-brand", label: "Brand & asset boundary" },
+  { id: "graph-a11y", label: "Accessibility traceability" },
+  { id: "graph-responsive", label: "Responsive traceability" },
+  { id: "graph-type", label: "Typography traceability" },
+  { id: "graph-space", label: "Spacing traceability" },
+  { id: "graph-figma", label: "Figma traceability" },
+  { id: "graph-impact", label: "Change impact" },
+  { id: "graph-governance", label: "Change propagation" },
+  { id: "graph-migration", label: "Migration boundary" },
 ];
 
 function DesignSystemPage() {
@@ -2941,6 +2994,323 @@ function DesignSystemPage() {
               )}
               tone="warning"
             />
+          </div>
+        </RefSection>
+
+        {/* ---------------- Phase 9 — integrated dependency graph ---------------- */}
+
+        <RefSection
+          id="graph-model"
+          eyebrow="Phase 9 integration"
+          title="Integrated dependency model"
+          intro="One graph connecting the layers that Phases 1 to 8 described separately. Every edge carries its own status, so a proposed relationship can never be read as current architecture. An edge exists only where the code shows one — visual similarity never creates an edge."
+        >
+          <DefinitionRows
+            rows={[
+              { term: "Layers", detail: `${GRAPH_SUMMARY.layers} layers from foundation to screen` },
+              { term: "Nodes", detail: `${GRAPH_SUMMARY.nodes} nodes`, meta: "tokens, roles, components, compounds, patterns, experiences, kits, shells, screens" },
+              { term: "Edges", detail: `${GRAPH_SUMMARY.edges} relationships`, meta: `${GRAPH_SUMMARY.currentEdges} current, ${GRAPH_SUMMARY.futureEdges} future` },
+              { term: "Recorded duplication", detail: `${GRAPH_SUMMARY.duplicateEdges} edges marked as duplicate or overlap`, meta: "several implementations into one role; no winner chosen" },
+              { term: "Unowned relationships", detail: `${GRAPH_SUMMARY.unownedEdges} edges with no component owner` },
+              { term: "Left open", detail: `${GRAPH_SUMMARY.openDecisionEdges} edges marked FUTURE DECISION`, meta: "not established from code evidence" },
+            ]}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Status", "Edges"]}
+              rows={EDGE_STATUS_COUNTS.map((e) => ({ key: e.label, cells: [e.label, String(e.count)], label: e.label }))}
+            />
+          </div>
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Status", "Meaning", "Read as"]}
+              rows={STATUS_LEGEND.map((s) => ({ key: s.status, cells: [s.status, s.meaning, s.readAs], label: s.status }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="graph-layers"
+          eyebrow="Phase 9 integration"
+          title="Dependency hierarchy"
+          intro="The eight layers, in dependency order. Dependencies point one way: a lower layer never depends on a higher one."
+        >
+          <DefinitionRows
+            rows={GRAPH_LAYERS.map((l) => ({
+              term: l.title,
+              detail: l.meaning,
+              meta: `${GRAPH_NODES.filter((n) => n.layer === l.layer).length} nodes`,
+            }))}
+          />
+        </RefSection>
+
+        {[
+          { id: "graph-foundation", title: "Foundation → semantic role", layers: ["foundation"], intro: "Which foundation value defines which meaning. Links to the Phase 7 records rather than repeating the token inventory." },
+          { id: "graph-roles", title: "Semantic role → component role → component", layers: ["semantic-role", "component-role"], intro: "Where a meaning is consumed, and by which shipping implementation. Where two implementations fill one role, both edges are drawn." },
+          { id: "graph-compounds", title: "Component → compound", layers: ["core-component"], intro: "Fixed compositions supported by Phase 8 evidence. Unsupported structures are marked FUTURE DECISION." },
+          { id: "graph-patterns", title: "Compound → pattern", layers: ["compound"], intro: "Recurring arrangements that solve one screen problem. Repeated markup alone does not qualify." },
+          { id: "graph-experiences", title: "Pattern → experience", layers: ["pattern"], intro: "Which experience uses which pattern, and where a difference is intentional." },
+          { id: "graph-screens", title: "Experience → screen", layers: ["experience-pattern"], intro: "How experience guidance reaches real routes. No route is modified." },
+        ].map((group) => (
+          <RefSection
+            key={group.id}
+            id={group.id}
+            eyebrow="Phase 9 integration"
+            title={group.title}
+            intro={group.intro}
+          >
+            <SpecMatrixTable
+              columns={["From", "Relation", "To", "Evidence", "Ownership"]}
+              rows={GRAPH_EDGES.filter((e) => group.layers.includes(GRAPH_NODES.find((n) => n.id === e.from)?.layer ?? "")).map((e, i) => ({
+                key: `${e.from}-${e.to}-${i}`,
+                cells: [nodeName(e.from), e.relation, nodeName(e.to), e.evidence, e.ownership],
+                label: e.status,
+                note: e.note,
+              }))}
+            />
+          </RefSection>
+        ))}
+
+        <RefSection
+          id="graph-chains"
+          eyebrow="Phase 9 integration"
+          title="Traced chains"
+          intro="Complete walks through the graph, assembled from the same edges shown above so they cannot drift apart from the model."
+        >
+          <DependencyChainList chains={TRACED_CHAINS} />
+        </RefSection>
+
+        <RefSection
+          id="graph-traceability"
+          eyebrow="Phase 9 integration"
+          title="Screen traceability"
+          intro="Representative surfaces from every experience, each with the patterns, components and foundation values it depends on, its known variations and its ownership boundary."
+        >
+          <TraceabilityCard records={SCREEN_TRACEABILITY} />
+        </RefSection>
+
+        <RefSection
+          id="graph-consumers"
+          eyebrow="Phase 9 integration"
+          title="Consumer graph"
+          intro="Measured consumers from the Phase 5 audit. Direct, indirect, route-local and reference-only usage are kept apart, and reference-page usage is never counted as production consumption."
+        >
+          <SpecMatrixTable
+            columns={["Component", "Source", "Kind", "Measured"]}
+            rows={CONSUMER_GRAPH.map((c, i) => ({
+              key: `${c.component}-${c.kind}-${i}`,
+              cells: [c.component, c.source, c.kind, c.measured],
+              label: c.status,
+              note: c.note,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="graph-duplicates"
+          eyebrow="Phase 9 integration"
+          title="Duplicates inside the graph"
+          intro="Several implementations may map to one future conceptual role. The graph draws all of them. It carries no ordering, score or preference, and implies no migration."
+        >
+          <DuplicateRegisterTable
+            entries={DUPLICATE_MAPPINGS.map((d) => ({
+              area: d.conceptualRole,
+              implementations: d.implementations.map((i) => ({ name: i.name, source: i.source, scope: i.measured })),
+              overlap: d.graphEffect,
+              future: d.futureRole,
+              label: d.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={DUPLICATE_GRAPH_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="graph-kits"
+          eyebrow="Phase 9 integration"
+          title="Route-local kits & shells"
+          intro="Where the module kits and the three shells sit in the model. Nothing is merged, moved or rewritten."
+        >
+          <SpecMatrixTable
+            columns={["From", "Relation", "To", "Evidence", "Ownership"]}
+            rows={GRAPH_EDGES.filter((e) => e.from.startsWith("kit.") || e.from.startsWith("shell.") || e.to.startsWith("kit.") || e.to.startsWith("shell.")).map((e, i) => ({
+              key: `kit-${e.from}-${e.to}-${i}`,
+              cells: [nodeName(e.from), e.relation, nodeName(e.to), e.evidence, e.ownership],
+              label: e.status,
+              note: e.note,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={KIT_ARCHITECTURE_RULES.map((r) => `${r.status} — ${r.rule}`)} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="graph-brand"
+          eyebrow="Phase 9 integration"
+          title="Brand & asset boundary"
+          intro="The direction of dependency between the design-system foundation and the runtime features. A tenant value fills a role; it never becomes a token."
+        >
+          <SpecMatrixTable
+            columns={["From", "To", "Direction", "Rule"]}
+            rows={BRAND_BOUNDARY.map((b, i) => ({
+              key: `${b.from}-${i}`,
+              cells: [b.from, b.to, b.direction, b.rule],
+              label: b.status,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Layer", "Owned by", "Changes require", "Outside the system"]}
+              rows={OWNERSHIP_MODEL.map((o) => ({
+                key: o.layer,
+                cells: [o.layer, o.ownedBy, o.changesRequire, o.outsideTheSystem],
+                label: o.status,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="graph-a11y"
+          eyebrow="Phase 9 integration"
+          title="Accessibility traceability"
+          intro="Accessibility followed through the chain, with current behavior, observed gaps and future governance kept apart."
+        >
+          <SpecMatrixTable
+            columns={["Chain", "Requirement", "Current implementation", "Observed gap", "Future governance"]}
+            rows={ACCESSIBILITY_TRACES.map((a) => ({
+              key: a.chain,
+              cells: [a.chain, a.requirement, a.currentImplementation, a.observedGap, a.futureGovernance],
+              label: a.status,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="graph-responsive"
+          eyebrow="Phase 9 integration"
+          title="Responsive traceability"
+          intro="Which layer owns which responsive decision, using the existing breakpoint evidence. No breakpoint is introduced and no behavior changes."
+        >
+          <SpecMatrixTable
+            columns={["Layer", "Belongs here", "Does not belong here", "Current evidence"]}
+            rows={RESPONSIVE_OWNERSHIP.map((r) => ({
+              key: r.layer,
+              cells: [r.layer, r.belongsHere, r.doesNotBelongHere, r.currentEvidence],
+              label: r.status,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Chain", "Behavior"]}
+              rows={RESPONSIVE_TRACES.map((r) => ({ key: r.chain, cells: [r.chain, r.behavior], label: r.status }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="graph-type"
+          eyebrow="Phase 9 integration"
+          title="Typography traceability"
+          intro="Each type role followed to the components, patterns and screens that use it. Existing variation is preserved, not normalized."
+        >
+          <SpecMatrixTable
+            columns={["Role", "Foundation", "Component", "Pattern", "Screen", "Variation"]}
+            rows={TYPOGRAPHY_TRACES.map((t) => ({
+              key: t.role,
+              cells: [t.role, t.foundation, t.component, t.pattern, t.screen, t.variation],
+              label: t.status,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="graph-space"
+          eyebrow="Phase 9 integration"
+          title="Spacing traceability"
+          intro="Each spacing relationship followed through the layers, with the measured occurrence counts from the Phase 2 audit."
+        >
+          <SpecMatrixTable
+            columns={["Relationship", "Foundation", "Component", "Pattern", "Screen", "Variation"]}
+            rows={SPACING_TRACES.map((t) => ({
+              key: t.relationship,
+              cells: [t.relationship, t.foundation, t.component, t.pattern, t.screen, t.variation],
+              label: t.status,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="graph-figma"
+          eyebrow="Phase 9 integration"
+          title="Figma traceability"
+          intro="The same chain expressed against the design-file blueprint, including what each layer loses in translation. Nothing exists in Figma."
+        >
+          <SpecMatrixTable
+            columns={["Layer", "In code", "In a design file", "Translation loss"]}
+            rows={FIGMA_TRACES.map((f) => ({
+              key: f.layer,
+              cells: [f.layer, f.codeSide, f.figmaSide, f.translationLoss],
+              label: f.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={FIGMA_GRAPH_RULES} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="graph-impact"
+          eyebrow="Phase 9 integration"
+          title="Change impact"
+          intro="What each change could reach, computed by walking the edges rather than written by hand. Where the graph cannot answer safely it says so instead of guessing."
+        >
+          <ImpactTable records={IMPACT_MODEL} />
+        </RefSection>
+
+        <RefSection
+          id="graph-governance"
+          eyebrow="Phase 9 integration"
+          title="Change propagation & ownership"
+          intro="How a change at one layer spreads, where it should be reviewed, and who owns the decision."
+        >
+          <SpecMatrixTable
+            columns={["Change at", "Propagates to", "Review point", "Owner"]}
+            rows={PROPAGATION_RULES.map((p) => ({
+              key: p.changeAt,
+              cells: [p.changeAt, p.propagatesTo, p.reviewPoint, p.owner],
+              label: p.status,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Pattern", "Shared across", "Specific to", "Boundary"]}
+              rows={SHARED_VERSUS_SPECIFIC.map((s) => ({
+                key: s.pattern,
+                cells: [s.pattern, s.sharedAcross, s.specificTo, s.boundary],
+                label: s.status,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="graph-migration"
+          eyebrow="Phase 9 integration"
+          title="Migration boundary"
+          intro="Conceptual stages only. None has been started, no component is named as first, and nothing is ranked."
+        >
+          <DefinitionRows
+            rows={MIGRATION_STAGES.map((m) => ({
+              term: `${m.stage}. ${m.name}`,
+              detail: m.meaning,
+              meta: m.status,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={MIGRATION_BOUNDARY} tone="warning" />
           </div>
         </RefSection>
       </RefContainer>
