@@ -14,6 +14,7 @@ import {
   useOrgState, getDirectDownlines, getReadiness, ROOT_ORGANIZATION_ID,
   ORG_TYPE_LABEL, type Organization,
 } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/organization-admin")({
   head: () => ({ meta: [{ title: "Root Agency Administration — ABox" }, { name: "description", content: "Operational summary and root quick actions." }] }),
@@ -49,7 +50,7 @@ function Page() {
     <InternalShell
       workspace="agency" pageTitle="Root Agency Administration" eyebrow="Organization · M05"
       actions={
-        <Link to="/agency/downlines/new/identity" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+        <Link to="/agency/downlines/new/identity" className={ACTION_PILL.primaryMd}>
           <Plus className="h-4 w-4" aria-hidden /> Create downline agency
         </Link>
       }
@@ -57,16 +58,16 @@ function Page() {
       <DownlineContextBanner />
 
       <div className="mb-6 flex flex-wrap gap-2">
-        <Link to="/agency/organization-structure" className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-card px-3 text-sm font-medium hover:bg-accent">
+        <Link to="/agency/organization-structure" className={ACTION_PILL.outlineSmCard}>
           <GitBranch className="h-3.5 w-3.5" aria-hidden /> Structure
         </Link>
-        <Link to="/agency/organization-imports" className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-card px-3 text-sm font-medium hover:bg-accent">
+        <Link to="/agency/organization-imports" className={ACTION_PILL.outlineSmCard}>
           <Upload className="h-3.5 w-3.5" aria-hidden /> Import CSV
         </Link>
-        <Link to="/agency/organization-defaults/apply" className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-card px-3 text-sm font-medium hover:bg-accent">
+        <Link to="/agency/organization-defaults/apply" className={ACTION_PILL.outlineSmCard}>
           <Settings2 className="h-3.5 w-3.5" aria-hidden /> Apply root defaults
         </Link>
-        <Link to="/agency/organization-work" className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-card px-3 text-sm font-medium hover:bg-accent">
+        <Link to="/agency/organization-work" className={ACTION_PILL.outlineSmCard}>
           <ListTodo className="h-3.5 w-3.5" aria-hidden /> Tasks &amp; exceptions
         </Link>
       </div>

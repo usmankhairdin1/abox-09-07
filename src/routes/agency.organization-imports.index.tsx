@@ -9,6 +9,7 @@ import { Download, Upload, FileWarning } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { orgStore, useOrgState, type ImportRow } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/organization-imports/")({
   head: () => ({ meta: [{ title: "Organization Imports — ABox" }, { name: "description", content: "Template, upload, validation, preview and commit." }] }),
@@ -80,7 +81,7 @@ function Page() {
         <section className="rounded-2xl border border-border bg-card p-5">
           <h2 className="text-display mb-3 text-xl">1. Download the fixed template</h2>
           <p className="mb-4 text-sm text-muted-foreground">One fixed column layout: display_name, legal_name, contact_name, contact_email, city, state_code.</p>
-          <button onClick={downloadTemplate} className="inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm font-medium hover:bg-accent">
+          <button onClick={downloadTemplate} className={ACTION_PILL.outlineMd}>
             <Download className="h-4 w-4" aria-hidden /> Download CSV template
           </button>
         </section>
@@ -88,7 +89,7 @@ function Page() {
         <section className="rounded-2xl border border-border bg-card p-5">
           <h2 className="text-display mb-3 text-xl">2. Upload and validate</h2>
           <input ref={fileRef} type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} />
-          <button onClick={() => fileRef.current?.click()} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+          <button onClick={() => fileRef.current?.click()} className={ACTION_PILL.primaryMd}>
             <Upload className="h-4 w-4" aria-hidden /> Choose CSV file
           </button>
           {filename && <p className="mt-2 text-xs text-muted-foreground">{filename}</p>}

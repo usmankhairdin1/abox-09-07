@@ -13,6 +13,7 @@ import { loadWizardState, clearWizardState } from "@/lib/downline-wizard-store";
 import {
   orgStore, TENANT_ID, ROOT_ORGANIZATION_ID, type Organization,
 } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/downlines/new/activate")({
   head: () => ({ meta: [{ title: "Create Downline Agency — Activation — ABox" }] }),
@@ -110,11 +111,11 @@ function Page() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/agency/organizations/$organizationId" params={{ organizationId: activated.organization_id }}
-              className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+              className={ACTION_PILL.primaryMd}
             >
               View organization profile
             </Link>
-            <Link to="/agency/organization-admin" className="inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm font-medium hover:bg-accent">
+            <Link to="/agency/organization-admin" className={ACTION_PILL.outlineMd}>
               Back to admin home
             </Link>
           </div>
@@ -136,13 +137,13 @@ function Page() {
         <div className="flex justify-between pt-2">
           <button
             onClick={() => navigate({ to: "/agency/downlines/new/readiness" })}
-            className="inline-flex h-11 items-center gap-1.5 rounded-full border border-border px-5 text-sm font-medium hover:bg-accent"
+            className={ACTION_PILL.outlineLg}
           >
             <ArrowLeft className="h-4 w-4" /> Back
           </button>
           <button
             onClick={onActivate}
-            className="inline-flex h-11 items-center gap-1.5 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            className={ACTION_PILL.primaryLg}
           >
             Activate downline agency
           </button>

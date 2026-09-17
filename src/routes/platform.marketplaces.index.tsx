@@ -15,6 +15,7 @@ import {
   useMarketplaceState, getMarketplace, getReadiness, getOpenTaskCount, getPrimaryDomain,
   type Marketplace,
 } from "@/lib/marketplace-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/platform/marketplaces/")({
   head: () => ({ meta: [{ title: "JET Marketplace Operations — ABox" }, { name: "description", content: "JET cross-tenant marketplace operational overview and explicit-context actions." }] }),
@@ -44,7 +45,7 @@ function Page() {
     { key: "lifecycle", header: "Lifecycle", cell: (r) => <StatusBadge tone={LIFECYCLE_TONE[r.lifecycle_status]}>{r.lifecycle_status}</StatusBadge> },
     { key: "readiness", header: "Readiness", cell: () => readiness ? <StatusBadge tone={readiness.status === "READY" ? "sage" : readiness.status === "BLOCKED" ? "destructive" : "warning"}>{readiness.status.replaceAll("_", " ")}</StatusBadge> : <span className="text-muted-foreground">—</span> },
     { key: "actions", header: "Actions", align: "right", cell: (r) => (
-      <Link to="/platform/marketplaces/$marketplaceId/override" params={{ marketplaceId: r.marketplace_id }} className="inline-flex h-8 items-center gap-1 rounded-full border border-border px-3 text-xs font-medium hover:bg-accent">
+      <Link to="/platform/marketplaces/$marketplaceId/override" params={{ marketplaceId: r.marketplace_id }} className={ACTION_PILL.outlineXs}>
         <ShieldAlert className="h-3.5 w-3.5" aria-hidden /> Override
       </Link>
     ) },

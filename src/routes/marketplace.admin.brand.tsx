@@ -10,6 +10,7 @@ import { Palette, Plus } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { marketplaceStore, useMarketplaceState, getActiveBrand, getDraftBrand, type Brand } from "@/lib/marketplace-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/marketplace/admin/brand")({
   head: () => ({ meta: [{ title: "Marketplace Brand — ABox" }, { name: "description", content: "Display identity, fixed assets, colors and accessible validation." }] }),
@@ -47,7 +48,7 @@ function Page() {
   return (
     <InternalShell
       workspace="agency" pageTitle="Identity and brand" eyebrow="Marketplace Identity and Brand · SCR-M04-004"
-      actions={!draft && <button onClick={startDraft} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"><Plus className="h-4 w-4" aria-hidden /> Start draft</button>}
+      actions={!draft && <button onClick={startDraft} className={ACTION_PILL.primaryMd}><Plus className="h-4 w-4" aria-hidden /> Start draft</button>}
     >
       {!draft && <p className="mb-4 text-sm text-muted-foreground">Viewing the active brand. Start a draft to make changes — publishing happens from Publication Review.</p>}
       {draft && <p className="mb-4 rounded-xl border border-warning/40 bg-warning/5 p-3 text-sm">Editing draft v{draft.version}. <Link to="/marketplace/admin/releases/compare" className="story-link text-primary">Compare with active</Link> or <Link to="/marketplace/admin/releases/review" className="story-link text-primary">review and publish</Link>.</p>}

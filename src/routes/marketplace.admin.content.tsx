@@ -11,6 +11,7 @@ import {
   marketplaceStore, useMarketplaceState, getActiveContent, getDraftContent,
   type MarketplaceContent, CHANNEL_LABEL, type MarketplaceChannel,
 } from "@/lib/marketplace-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/marketplace/admin/content")({
   head: () => ({ meta: [{ title: "Marketplace Content — ABox" }, { name: "description", content: "English and Spanish general and channel content and controlled legal assignments." }] }),
@@ -37,7 +38,7 @@ function Page() {
   return (
     <InternalShell
       workspace="agency" pageTitle="Content and language" eyebrow="Marketplace Content and Language · SCR-M04-005"
-      actions={!draft && <button onClick={startDraft} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"><Plus className="h-4 w-4" aria-hidden /> Start draft</button>}
+      actions={!draft && <button onClick={startDraft} className={ACTION_PILL.primaryMd}><Plus className="h-4 w-4" aria-hidden /> Start draft</button>}
     >
       {!draft && <p className="mb-4 text-sm text-muted-foreground">Viewing active content. Start a draft to make changes.</p>}
       {draft && <p className="mb-4 rounded-xl border border-warning/40 bg-warning/5 p-3 text-sm">Editing draft. <Link to="/marketplace/admin/releases/review" className="story-link text-primary">Review and publish</Link> when ready.</p>}

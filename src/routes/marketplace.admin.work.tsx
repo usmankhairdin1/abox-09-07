@@ -9,6 +9,7 @@ import { AlertTriangle, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { marketplaceStore, useMarketplaceState, MKT_TASK_LABEL, type TaskStatus } from "@/lib/marketplace-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/marketplace/admin/work")({
   head: () => ({ meta: [{ title: "Marketplace Tasks and Exceptions — ABox" }, { name: "description", content: "Fixed M04 tasks, exceptions, owner module and escalation." }] }),
@@ -55,8 +56,8 @@ function Page() {
                 </div>
                 {t.status === "OPEN" && (
                   <div className="flex shrink-0 items-center gap-2">
-                    <button onClick={() => marketplaceStore.escalateTask(t.task_id)} className="inline-flex h-8 items-center gap-1 rounded-full border border-border px-3 text-xs font-medium hover:bg-accent"><ArrowUpRight className="h-3.5 w-3.5" aria-hidden /> Escalate to JET</button>
-                    <button onClick={() => setResolvingId(resolvingId === t.task_id ? null : t.task_id)} className="inline-flex h-8 items-center gap-1 rounded-full bg-primary px-3 text-xs font-medium text-primary-foreground hover:bg-primary/90"><CheckCircle2 className="h-3.5 w-3.5" aria-hidden /> Resolve</button>
+                    <button onClick={() => marketplaceStore.escalateTask(t.task_id)} className={ACTION_PILL.outlineXs}><ArrowUpRight className="h-3.5 w-3.5" aria-hidden /> Escalate to JET</button>
+                    <button onClick={() => setResolvingId(resolvingId === t.task_id ? null : t.task_id)} className={ACTION_PILL.primaryXs}><CheckCircle2 className="h-3.5 w-3.5" aria-hidden /> Resolve</button>
                   </div>
                 )}
               </div>

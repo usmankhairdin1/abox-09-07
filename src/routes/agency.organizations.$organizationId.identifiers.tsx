@@ -8,6 +8,7 @@ import { ArrowLeft, Fingerprint, Plus, CheckCircle2, XCircle } from "lucide-reac
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { orgStore, useOrgState, getOrganization, getIdentifiers, type IdentifierType } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/organizations/$organizationId/identifiers")({
   loader: ({ params }) => ({ organizationId: params.organizationId }),
@@ -57,7 +58,7 @@ function Page() {
     <InternalShell
       workspace="agency" pageTitle={`External identifiers — ${record.display_name}`} eyebrow="External Identifiers · SCR-M05-019"
       actions={
-        <button onClick={() => setShowForm((v) => !v)} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+        <button onClick={() => setShowForm((v) => !v)} className={ACTION_PILL.primaryMd}>
           <Plus className="h-4 w-4" aria-hidden /> Add identifier
         </button>
       }
@@ -100,10 +101,10 @@ function Page() {
               <p className="text-xs text-muted-foreground">Source: {i.source}</p>
               {i.verification_status === "PENDING_VERIFICATION" && (
                 <div className="mt-2 flex gap-2">
-                  <button onClick={() => verify(i.identifier_id, true)} className="inline-flex h-8 items-center gap-1 rounded-full border border-border px-3 text-xs font-medium hover:bg-accent">
+                  <button onClick={() => verify(i.identifier_id, true)} className={ACTION_PILL.outlineXs}>
                     <CheckCircle2 className="h-3.5 w-3.5 text-sage" aria-hidden /> Mark verified
                   </button>
-                  <button onClick={() => verify(i.identifier_id, false)} className="inline-flex h-8 items-center gap-1 rounded-full border border-border px-3 text-xs font-medium hover:bg-accent">
+                  <button onClick={() => verify(i.identifier_id, false)} className={ACTION_PILL.outlineXs}>
                     <XCircle className="h-3.5 w-3.5 text-destructive" aria-hidden /> Reject
                   </button>
                 </div>
