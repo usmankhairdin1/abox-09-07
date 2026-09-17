@@ -66,6 +66,7 @@ import {
   SwatchGrid,
   DefinitionRows,
   MaturityCallout,
+  RuleList,
 } from "@/components/design/reference-kit";
 import {
   OWNERSHIP_HIERARCHY,
@@ -74,6 +75,9 @@ import {
   DEFERRED_OPPORTUNITIES,
   EXPERIENCES,
   FIGMA_MAPPING,
+  FIGMA_LAYOUT_MAPPING,
+  LAYOUT_GOVERNANCE_RULES,
+  LAYOUT_UNOWNED_AREAS,
 } from "@/lib/design/governance";
 
 export const Route = createFileRoute("/design-guide")({
