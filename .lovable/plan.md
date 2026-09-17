@@ -42,6 +42,12 @@ Existing pages, layouts, spacing, colors, typography, icons, dimensions, respons
 
 Priority order: preserve the existing application > safe centralization > documentation > new reference pages.
 
+## Execution and final report
+
+Implementation runs autonomously with no further planning questions. Where a decision is ambiguous, the lowest-risk option is chosen; where centralization conflicts with preserving rendered output, preservation wins. Scope stays exactly as described above.
+
+The closing report will list: files changed, patterns centralized, call sites updated, opportunities intentionally left untouched, the two new URLs (`/design-system`, `/design-guide`), validation results, and confirmation of the before/after visual comparison.
+
 ## Technical notes
 
 - New files: `src/components/abox/action-pill.ts`, `src/routes/design-system.tsx`, `src/routes/design-guide.tsx`; rewritten `.lovable/design-system.md`.
