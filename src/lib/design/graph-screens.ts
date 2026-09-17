@@ -1,0 +1,130 @@
+/**
+ * Phase 9 — experience → screen edges and screen traceability records.
+ * DOCUMENTATION ONLY. No route is modified and no screen is redesigned.
+ */
+import type { DependencyEdge, DependencyNode, TraceabilityRecord } from "./graph-types";
+
+export const SCREEN_NODES: DependencyNode[] = [
+  { id: "scr.landing", layer: "screen", name: "Landing", source: "src/routes/index.tsx", ownership: "local", status: "CURRENT IMPLEMENTATION", evidence: "Public route" },
+  { id: "scr.plans", layer: "screen", name: "Plan results", source: "src/routes/plans.tsx", ownership: "local", status: "CURRENT IMPLEMENTATION", evidence: "Marketplace route" },
+  { id: "scr.cart", layer: "screen", name: "Cart", source: "src/routes/cart.tsx", ownership: "local", status: "CURRENT IMPLEMENTATION", evidence: "Marketplace route" },
+  { id: "scr.org", layer: "screen", name: "My organization", source: "src/routes/agency.my-organization.tsx", ownership: "local", status: "CURRENT IMPLEMENTATION", evidence: "Internal route" },
+  { id: "scr.branding", layer: "screen", name: "Branding & White-Label", source: "src/routes/app.jet.branding.tsx", ownership: "runtime", status: "CURRENT IMPLEMENTATION", evidence: "Runtime configuration screen" },
+  { id: "scr.assets", layer: "screen", name: "Marketplace asset management", source: "src/routes/marketplace.admin.assets.tsx", ownership: "runtime", status: "CURRENT IMPLEMENTATION", evidence: "Runtime asset screen" },
+  { id: "scr.settings", layer: "screen", name: "Member settings", source: "src/routes/member.settings.tsx", ownership: "local", status: "CURRENT IMPLEMENTATION", evidence: "Member route" },
+];
+
+export const SCREEN_EDGES: DependencyEdge[] = [
+  { from: "exp.web", to: "scr.landing", relation: "renders", status: "CURRENT IMPLEMENTATION", evidence: "index route", ownership: "Web" },
+  { from: "exp.shop", to: "scr.plans", relation: "renders", status: "CURRENT IMPLEMENTATION", evidence: "MarketplaceShell", ownership: "Shopping" },
+  { from: "exp.shop", to: "scr.cart", relation: "renders", status: "CURRENT IMPLEMENTATION", evidence: "MarketplaceShell", ownership: "Shopping" },
+  { from: "exp.dash", to: "scr.org", relation: "renders", status: "CURRENT IMPLEMENTATION", evidence: "InternalShell", ownership: "Dashboard" },
+  { from: "exp.dash", to: "scr.branding", relation: "renders", status: "CURRENT IMPLEMENTATION", evidence: "InternalShell", ownership: "Dashboard shell, runtime feature", note: "The shell is design-system territory; the brand values on the screen are not." },
+  { from: "exp.shop", to: "scr.assets", relation: "renders", status: "CURRENT IMPLEMENTATION", evidence: "Marketplace administration", ownership: "Marketplace shell, runtime feature" },
+  { from: "exp.member", to: "scr.settings", relation: "renders", status: "CURRENT IMPLEMENTATION", evidence: "MemberShell", ownership: "Member" },
+];
+
+export const SCREEN_TRACEABILITY: TraceabilityRecord[] = [
+  {
+    screen: "Landing",
+    route: "/",
+    experience: "Web / Marketing",
+    patterns: ["Marketing hero", "Product entry chips", "Feature cards", "Header navigation"],
+    components: ["ACTION_PILL", "Card", "Lucide icons", "AboxMark"],
+    foundation: ["88rem container", "Display heading roles", "Action surface", "Card surface"],
+    variations: [
+      "Hero uses a viewport-aware minimum height rather than a fixed one.",
+      "Heading sizes were reduced across pages; the hero keeps the largest role.",
+      "Product entry chips are composed in the route, not by a component.",
+    ],
+    ownershipBoundary: "Route owns layout; foundation owns type and colour; no runtime brand asset appears here beyond the mark.",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    screen: "Plan results",
+    route: "/plans",
+    experience: "Shopping / Commerce",
+    patterns: ["Filter and results layout", "Results toolbar", "Empty state"],
+    components: ["PlanCard", "MetalBadge", "StatusBadge", "CarrierMark", "ACTION_PILL", "PageHeader (compact)"],
+    foundation: ["Tier tokens", "Status tones", "88rem container", "Card surface", "text-sm type role"],
+    variations: [
+      "Filter chips reuse the listing badge treatments so both read identically.",
+      "Exchange filters deliberately show no visible selection ring; selection is exposed through aria-pressed.",
+      "Carrier marks appear in listings but not in carrier filters.",
+      "The shop header is deferred pending an approved design direction.",
+    ],
+    ownershipBoundary: "Route owns filtering and ranking; components own presentation; foundation owns tone and tier colour.",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    screen: "Cart",
+    route: "/cart",
+    experience: "Shopping / Commerce",
+    patterns: ["Cart and quote summary", "Add-ons section", "Edit quote panel"],
+    components: ["Card", "StatusBadge", "MetalBadge", "OverflowText", "ACTION_PILL", "CarrierMark"],
+    foundation: ["Card surface", "Numeric type", "88rem container", "Status tones"],
+    variations: [
+      "One item is kept per product type, so health plus dental, vision and life coexist.",
+      "Add-ons are visually strengthened within the existing section rather than restructured.",
+      "Long plan names, carriers and identifiers truncate with a reveal.",
+    ],
+    ownershipBoundary: "Cart state is business logic; the design system owns only presentation.",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    screen: "My organization",
+    route: "/agency/my-organization",
+    experience: "Dashboard / Admin",
+    patterns: ["List and table screen", "KPI grouping", "Detail page layout"],
+    components: ["InternalShell", "PageHeader", "DataTable", "KpiCard", "StatusBadge", "Button"],
+    foundation: ["Dense spacing steps", "Table surface", "Status tones", "text-sm type role"],
+    variations: [
+      "Two table systems coexist across dashboard screens.",
+      "Row actions use both Button and ACTION_PILL depending on the screen.",
+    ],
+    ownershipBoundary: "Shell owns navigation and offsets; ABox components own presentation; data comes from business logic.",
+    status: "CURRENT IMPLEMENTATION",
+  },
+  {
+    screen: "Branding & White-Label",
+    route: "/app/jet/branding",
+    experience: "Dashboard / Admin",
+    patterns: ["Form layout", "Settings section", "Detail page layout"],
+    components: ["InternalShell", "PageHeader", "Card", "Input", "Button"],
+    foundation: ["Form control height", "Card surface", "Foundation colour roles"],
+    variations: [
+      "The screen configures brand values at runtime; those values are not design-system tokens.",
+    ],
+    ownershipBoundary:
+      "The design system owns the screen's components. The brand values the screen manages are owned by the runtime feature and are never described here as tokens.",
+    status: "GOVERNANCE RULE",
+  },
+  {
+    screen: "Marketplace asset management",
+    route: "/marketplace/admin/assets",
+    experience: "Shopping / Commerce administration",
+    patterns: ["List and table screen", "Form layout"],
+    components: ["MarketplaceShell", "PageHeader", "DataTable", "Button"],
+    foundation: ["Table surface", "Comfortable spacing", "text-sm type role"],
+    variations: [
+      "Asset storage and upload belong to this screen, not to the design system.",
+    ],
+    ownershipBoundary:
+      "Runtime asset management owns the assets. The design system describes only the components the screen is built from.",
+    status: "GOVERNANCE RULE",
+  },
+  {
+    screen: "Member settings",
+    route: "/member/settings",
+    experience: "Member / Account",
+    patterns: ["Settings section", "Form layout"],
+    components: ["MemberShell", "Card", "Input", "Switch", "Label"],
+    foundation: ["88rem container", "Form control height", "Card surface"],
+    variations: [
+      "Side navigation uses 36px icon circles joined by a centred arc.",
+      "Extra top spacing separates content from the header.",
+    ],
+    ownershipBoundary: "Shell owns navigation and width; primitives own the controls.",
+    status: "CURRENT IMPLEMENTATION",
+  },
+];
