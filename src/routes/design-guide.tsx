@@ -875,7 +875,7 @@ function DesignGuidePage() {
               </p>
             </MaturityCallout>
           </div>
-          <RefBlock title="The rules" className="mt-6">
+          <RefBlock title="The rules">
             <RuleList items={TYPOGRAPHY_GOVERNANCE_RULES} />
           </RefBlock>
           <RefBlock
