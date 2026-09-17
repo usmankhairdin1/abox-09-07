@@ -68,7 +68,7 @@ import { CarrierMark } from "@/components/abox/carrier-mark";
 import { PlanCard } from "@/components/abox/plan-card";
 import { EmptyState } from "@/components/abox/empty-state";
 import { DataTable } from "@/components/abox/data-table";
-import { AboxMark } from "@/components/abox/logo";
+import { AboxMark, AboxWordmark } from "@/components/abox/logo";
 import { OverflowText } from "@/components/abox/overflow-text";
 import { ACTION_PILL } from "@/components/abox/action-pill";
 
@@ -105,6 +105,8 @@ import {
   DimensionTable,
   LayoutPatternList,
   RuleList,
+  IconTable,
+  AssetTable,
 } from "@/components/design/reference-kit";
 import { FOUNDATION } from "@/lib/design/foundation";
 import { SPACING_RELATIONSHIPS, TYPOGRAPHY_RELATIONSHIPS } from "@/lib/design/relationships";
@@ -130,6 +132,29 @@ import {
   SEMANTIC_TYPOGRAPHY,
   NUMERIC_TYPOGRAPHY,
 } from "@/lib/design/typography";
+import {
+  ICON_SOURCES,
+  ICON_CATEGORIES,
+  ICON_SIZES,
+  ICON_TREATMENT,
+} from "@/lib/design/iconography";
+import {
+  ICON_ACCESSIBILITY,
+  ICON_STATES,
+  ICON_RELATIONSHIPS,
+  ICON_EXPERIENCES,
+} from "@/lib/design/iconography-behavior";
+import {
+  BRAND_ASSETS,
+  MEDIA_ASSETS,
+  ASSET_ORGANIZATION,
+  ASSET_BEHAVIOR,
+  ASSET_UNUSED_FINDINGS,
+  ASSET_OWNERSHIP,
+  ICON_ASSET_MATURITY,
+  ICON_ASSET_DEFERRED,
+  FIGMA_ICON_ASSET_MAPPING,
+} from "@/lib/design/assets";
 import {
   RESPONSIVE_TYPOGRAPHY,
   TYPOGRAPHY_STATES,
@@ -214,6 +239,19 @@ const TOC = [
   { id: "type-data", label: "Numeric & data type" },
   { id: "type-readability", label: "Readability" },
   { id: "type-governance", label: "Type governance" },
+  { id: "icon-sources", label: "Icon sources" },
+  { id: "icon-inventory", label: "Icon inventory" },
+  { id: "icon-sizes", label: "Icon sizes" },
+  { id: "icon-treatment", label: "Icon treatment" },
+  { id: "icon-a11y", label: "Icon accessibility" },
+  { id: "icon-states", label: "Icon states" },
+  { id: "icon-relationships", label: "Icon relationships" },
+  { id: "brand-assets", label: "Logos & marks" },
+  { id: "media-assets", label: "Imagery & media" },
+  { id: "asset-organization", label: "Asset organization" },
+  { id: "asset-behavior", label: "Asset behaviour" },
+  { id: "icon-experiences", label: "Icon by experience" },
+  { id: "asset-governance", label: "Asset governance" },
   { id: "experiences", label: "Experiences" },
   { id: "figma", label: "Figma mapping" },
 ];
@@ -1012,6 +1050,195 @@ function DesignSystemPage() {
           </RefBlock>
         </RefSection>
 
+        <RefSection
+          id="icon-sources"
+          eyebrow="Phase 4 audit"
+          title="Iconography sources"
+          intro="Three icon packages are installed and one carries the product. Everything else visual is inline SVG authored in components so it can read design tokens."
+        >
+          <FoundationTable entries={ICON_SOURCES.entries} />
+        </RefSection>
+
+        <RefSection
+          id="icon-inventory"
+          eyebrow="Phase 4 audit"
+          title="Icon inventory by semantic category"
+          intro="149 distinct icons ship across 144 files. Representative records per category rather than every occurrence — exceptions and dual-purpose glyphs are kept visible rather than summarised away. Counts are import sites, not render counts."
+        >
+          {ICON_CATEGORIES.map((c) => (
+            <RefBlock key={c.id} title={c.title} note={c.summary}>
+              <IconTable entries={c.entries} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="icon-sizes"
+          eyebrow="Phase 4 audit"
+          title="Icon size audit"
+          intro="h-4 w-4 accounts for 281 of the measured occurrences — more than four times the next size. Wrapper dimensions are recorded separately from glyph dimensions."
+        >
+          <SpacingTable entries={ICON_SIZES.entries} />
+        </RefSection>
+
+        <RefSection
+          id="icon-treatment"
+          eyebrow="Phase 4 audit"
+          title="Stroke, fill & colour treatment"
+          intro="The strongest convention in the product: stroke width is never overridden on an icon, and no icon carries a literal colour."
+        >
+          <FoundationTable entries={ICON_TREATMENT.entries} />
+        </RefSection>
+
+        <RefSection
+          id="icon-a11y"
+          eyebrow="Phase 4 audit"
+          title="Interaction & accessibility"
+          intro="aria-hidden appears 257 times across 99 files. Icon-only controls carry an aria-label (90) or an sr-only label (28); that labelling is applied per call site rather than enforced by a component."
+        >
+          <RelationshipTable entries={ICON_ACCESSIBILITY.entries} />
+        </RefSection>
+
+        <RefSection
+          id="icon-states"
+          eyebrow="Phase 4 audit"
+          title="Icon states"
+          intro="State is colour, and sometimes the wrapper. No icon changes size or stroke between states, and no glyph is swapped to express one."
+        >
+          <RelationshipTable entries={ICON_STATES.entries} />
+        </RefSection>
+
+        <RefSection
+          id="icon-relationships"
+          eyebrow="Phase 4 audit"
+          title="Icon, mark & artwork relationships"
+          intro="Measured pairings between an icon or mark and the element beside it."
+        >
+          <RelationshipTable entries={ICON_RELATIONSHIPS.entries} />
+        </RefSection>
+
+        <RefSection
+          id="brand-assets"
+          eyebrow="Phase 4 audit"
+          title="Logos & brand marks"
+          intro="Every mark is drawn in code from CSS variables. That is why the product needs no dark-mode logo file and why white-labelling re-themes the mark without a new asset."
+        >
+          <AssetTable entries={BRAND_ASSETS.entries} />
+          <RefBlock
+            title="Live marks"
+            note="Rendered from the production components — the same code the application ships."
+          >
+            <RefStage>
+              <div className="flex flex-wrap items-center gap-6">
+                <div className="flex items-center gap-3">
+                  <AboxMark />
+                  <AboxWordmark />
+                </div>
+                <AboxMark tone="sage" />
+                <AboxMark tone="foreground" />
+                <CarrierMark carrier="Cedar Grove Health" />
+                <CarrierMark carrier="Northwind Mutual" />
+                <CarrierMark carrier="—" />
+              </div>
+            </RefStage>
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="media-assets"
+          eyebrow="Phase 4 audit"
+          title="Imagery & media"
+          intro="The defining finding of this phase: the product ships no imagery at all. No raster file, no committed SVG file, no img element, no assets directory. Visual identity is tokens, type, icons and code-drawn SVG."
+        >
+          <AssetTable entries={MEDIA_ASSETS.entries} />
+        </RefSection>
+
+        <RefSection
+          id="asset-organization"
+          eyebrow="Phase 4 audit"
+          title="Asset naming & organization"
+          intro="Assets are components, so naming follows React conventions rather than a file taxonomy. Variants are props, never filename suffixes."
+        >
+          <FoundationTable entries={ASSET_ORGANIZATION.entries} />
+        </RefSection>
+
+        <RefSection
+          id="asset-behavior"
+          eyebrow="Phase 4 audit"
+          title="Asset behaviour & fallbacks"
+          intro="Cropping and object-fit conventions do not exist because no bitmap renders. Scaling, layering and fallback behaviour do."
+        >
+          <RelationshipTable entries={ASSET_BEHAVIOR.entries} />
+        </RefSection>
+
+        <RefSection
+          id="icon-experiences"
+          eyebrow="Phase 4 audit"
+          title="Iconography by experience"
+          intro="One shared icon system. These records document context of use only — no experience has its own icon library, stroke convention or brand mark."
+        >
+          <DensityTable entries={ICON_EXPERIENCES} />
+        </RefSection>
+
+        <RefSection
+          id="asset-governance"
+          eyebrow="Phase 4 governance"
+          title="Iconography & asset governance"
+          intro="Ownership per asset category, maturity in descriptive terms, unused findings, the Figma blueprint, and the changes deliberately not made."
+        >
+          <RefBlock
+            title="Ownership"
+            note="Branding & White-Label and Marketplace Asset Management are existing runtime systems. The design system documents them; it never duplicates them."
+          >
+            <DefinitionRows
+              rows={ASSET_OWNERSHIP.map((o) => ({
+                term: o.category,
+                detail: `Source of truth: ${o.sourceOfTruth}. Owner: ${o.owner}. Safe to change: ${o.safeToChange}. Needs review: ${o.needsReview}. Centralized: ${o.centralized}.`,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock title="Maturity" note="Descriptive categories only — no scores, no rankings.">
+            <DefinitionRows
+              rows={ICON_ASSET_MATURITY.map((m) => ({
+                term: m.item,
+                detail: m.detail,
+                meta: m.maturity,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock
+            title="Installed but unused, possibly unused & duplicates"
+            note="Recorded from measurable evidence. Nothing was deleted or uninstalled."
+          >
+            <RuleList items={ASSET_UNUSED_FINDINGS} tone="warning" />
+          </RefBlock>
+          <RefBlock
+            title="Figma icon & asset mapping"
+            note="A mapping specification only. Nothing was converted and no Figma component was generated."
+          >
+            <DefinitionRows
+              rows={FIGMA_ICON_ASSET_MAPPING.map((m) => ({
+                term: m.implementation,
+                detail: `→ ${m.figma}. ${m.note}`,
+              }))}
+            />
+          </RefBlock>
+          <RefBlock title="Deferred opportunities">
+            <MaturityCallout
+              kind="opportunity"
+              title="Not applied — would change production code or rendered output"
+            >
+              <ul className="mt-2 space-y-2">
+                {ICON_ASSET_DEFERRED.map((o) => (
+                  <li key={o.item}>
+                    <span className="font-medium text-foreground">{o.item}</span> — {o.detail}{" "}
+                    <MetaChip tone="warning">{o.risk}</MetaChip>
+                  </li>
+                ))}
+              </ul>
+            </MaturityCallout>
+          </RefBlock>
+        </RefSection>
         <RefSection
           id="experiences"
           eyebrow="Governance"

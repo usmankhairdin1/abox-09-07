@@ -179,3 +179,65 @@ export interface LayoutPattern {
   maturity: Maturity;
   opportunity?: string;
 }
+
+/* -----------------------------------------------------------------
+ * Phase 4 — iconography & asset audit types.
+ * Documentation only. Consumed by `/design-system` and `/design-guide`.
+ * ----------------------------------------------------------------- */
+
+/** One icon as it is actually used, grouped under a semantic category. */
+export interface IconEntry {
+  /** Exported icon name as imported in production code. */
+  name: string;
+  /** Library or file it comes from. */
+  library: string;
+  /** What it means in this product. */
+  role: string;
+  /** Approximate import sites across src/routes + src/components. */
+  usage: number;
+  /** Representative consumers. */
+  where: string;
+  /** Most common rendered size. */
+  size: string;
+  /** Usual foreground treatment. */
+  treatment: string;
+  /** Whether the icon itself is an interaction target. */
+  interactive: "interactive" | "static" | "both";
+  /** Decorative (aria-hidden) vs. meaning-carrying (labelled). */
+  semantics: "decorative" | "meaningful" | "both";
+  /** Experiences it appears in. */
+  experience: string;
+  note?: string;
+}
+
+export interface IconCategory {
+  id: string;
+  title: string;
+  summary: string;
+  entries: IconEntry[];
+}
+
+/** A logo, brand mark, image or other visual asset. */
+export interface AssetEntry {
+  name: string;
+  /** Asset kind — inline SVG component, binary file, runtime upload, etc. */
+  kind: string;
+  /** File, path or import as it exists today. */
+  source: string;
+  consumers: string;
+  variants: string;
+  dimensions: string;
+  /** Alt / aria treatment as implemented. */
+  accessibility: string;
+  /** Which system owns changes to it. */
+  owner: string;
+  status: "in-use" | "available-unused" | "runtime-managed" | "possibly-unused";
+  note?: string;
+}
+
+export interface AssetGroup {
+  id: string;
+  title: string;
+  summary: string;
+  entries: AssetEntry[];
+}
