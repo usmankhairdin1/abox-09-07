@@ -245,11 +245,12 @@ interface MktState {
 
 export const MARKETPLACE_ID = "mkt-cedar-grove";
 
+// Deterministic sequence — the edge runtime forbids generating random values
+// in module global scope, and seed() runs at import time during SSR.
+let ridSeq = 0;
 function rid(prefix: string): string {
-  const rand = typeof crypto !== "undefined" && "randomUUID" in crypto
-    ? crypto.randomUUID().slice(0, 8)
-    : Math.random().toString(36).slice(2, 10);
-  return `${prefix}-${rand}`;
+  ridSeq += 1;
+  return `${prefix}-${ridSeq.toString(36).padStart(6, "0")}`;
 }
 
 function seed(): MktState {
