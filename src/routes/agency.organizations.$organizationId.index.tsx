@@ -13,6 +13,7 @@ import {
   getSettings, getReadiness, getHistory, getRelationship, ROOT_ORGANIZATION_ID,
   ORG_TYPE_LABEL, COUNTRY_NAME,
 } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/organizations/$organizationId/")({
   loader: ({ params }) => {
@@ -60,7 +61,7 @@ function Page() {
         !isRoot && (
           <button
             onClick={() => orgStore.setContext(inContext ? null : organizationId)}
-            className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            className={ACTION_PILL.primaryMd}
           >
             {inContext ? "Exit downline context" : "Act as this downline"}
           </button>
@@ -266,13 +267,13 @@ function Page() {
       {!isRoot && (
         <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-card p-5">
           <span className="text-sm font-medium text-muted-foreground">Lifecycle &amp; oversight:</span>
-          <Link to="/agency/organizations/$organizationId/lifecycle" params={{ organizationId }} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-sm font-medium hover:bg-accent">
+          <Link to="/agency/organizations/$organizationId/lifecycle" params={{ organizationId }} className={ACTION_PILL.outlineSm}>
             <PauseCircle className="h-4 w-4" aria-hidden /> Suspend / reactivate
           </Link>
-          <Link to="/agency/organizations/$organizationId/ending" params={{ organizationId }} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-sm font-medium hover:bg-accent">
+          <Link to="/agency/organizations/$organizationId/ending" params={{ organizationId }} className={ACTION_PILL.outlineSm}>
             <XCircle className="h-4 w-4" aria-hidden /> End &amp; offboard
           </Link>
-          <Link to="/platform/organizations/$organizationId/override" params={{ organizationId }} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-sm font-medium hover:bg-accent">
+          <Link to="/platform/organizations/$organizationId/override" params={{ organizationId }} className={ACTION_PILL.outlineSm}>
             <ShieldAlert className="h-4 w-4" aria-hidden /> JET override
           </Link>
         </div>

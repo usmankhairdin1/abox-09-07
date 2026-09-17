@@ -11,6 +11,7 @@ import { StatusBadge } from "@/components/abox/status-badge";
 import {
   marketplaceStore, useMarketplaceState, getMarketplace, getOverrides, getTasks, getActiveBrand,
 } from "@/lib/marketplace-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/platform/marketplaces/$marketplaceId/override")({
   loader: ({ params }) => ({ marketplaceId: params.marketplaceId }),
@@ -93,7 +94,7 @@ function Page() {
               <label className="mb-1 block text-eyebrow">Explanation</label>
               <textarea value={reason} onChange={(e) => setReason(e.target.value)} required rows={3} className="w-full rounded-lg border border-border bg-background p-3" />
             </div>
-            <button type="submit" className="inline-flex h-11 items-center gap-1.5 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+            <button type="submit" className={ACTION_PILL.primaryLg}>
               Apply override
             </button>
           </form>

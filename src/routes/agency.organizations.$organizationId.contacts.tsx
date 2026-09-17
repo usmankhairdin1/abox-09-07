@@ -8,6 +8,7 @@ import { ArrowLeft, Mail, Phone, Plus } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { orgStore, useOrgState, getOrganization, getContacts, type ContactRole, type Language } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/organizations/$organizationId/contacts")({
   loader: ({ params }) => ({ organizationId: params.organizationId }),
@@ -51,7 +52,7 @@ function Page() {
     <InternalShell
       workspace="agency" pageTitle={`Contacts — ${record.display_name}`} eyebrow="Organization Contacts · SCR-M05-017"
       actions={
-        <button onClick={() => setShowForm((v) => !v)} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+        <button onClick={() => setShowForm((v) => !v)} className={ACTION_PILL.primaryMd}>
           <Plus className="h-4 w-4" aria-hidden /> Add contact
         </button>
       }

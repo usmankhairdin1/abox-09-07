@@ -12,6 +12,7 @@ import { useOrgState } from "@/lib/org-store";
 import {
   step7IdentitySchema, loadWizardState, saveWizardState,
 } from "@/lib/downline-wizard-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/downlines/new/identity")({
   head: () => ({ meta: [{ title: "Create Downline Agency — Identity — ABox" }] }),
@@ -113,7 +114,7 @@ function Page() {
         <div className="flex justify-end pt-2">
           <button
             onClick={onNext}
-            className="inline-flex h-11 items-center gap-1.5 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            className={ACTION_PILL.primaryLg}
           >
             Continue <ArrowRight className="h-4 w-4" />
           </button>

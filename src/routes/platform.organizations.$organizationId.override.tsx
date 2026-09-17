@@ -10,6 +10,7 @@ import { StatusBadge } from "@/components/abox/status-badge";
 import {
   orgStore, useOrgState, getOrganization, getOverrides, getTasks,
 } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/platform/organizations/$organizationId/override")({
   loader: ({ params }) => ({ organizationId: params.organizationId }),
@@ -106,7 +107,7 @@ function Page() {
               <label className="mb-1 block text-eyebrow">Effective date</label>
               <input type="date" value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} required className="h-10 w-full rounded-lg border border-border bg-background px-3" />
             </div>
-            <button type="submit" className="inline-flex h-11 items-center gap-1.5 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+            <button type="submit" className={ACTION_PILL.primaryLg}>
               Apply override
             </button>
           </form>

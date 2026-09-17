@@ -9,6 +9,7 @@ import { ArrowLeft, MapPin, Plus } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { orgStore, useOrgState, getOrganization, getAddresses, COUNTRY_NAME, type LocationType } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/organizations/$organizationId/locations")({
   loader: ({ params }) => ({ organizationId: params.organizationId }),
@@ -51,7 +52,7 @@ function Page() {
     <InternalShell
       workspace="agency" pageTitle={`Addresses — ${record.display_name}`} eyebrow="Addresses and Offices · SCR-M05-018"
       actions={
-        <button onClick={() => setShowForm((v) => !v)} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+        <button onClick={() => setShowForm((v) => !v)} className={ACTION_PILL.primaryMd}>
           <Plus className="h-4 w-4" aria-hidden /> Add address
         </button>
       }

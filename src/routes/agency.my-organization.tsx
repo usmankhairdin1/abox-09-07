@@ -17,6 +17,7 @@ import {
   getReadiness, getHistory, getRelationship, getOverrides, getOpenTaskCount,
   ROOT_ORGANIZATION_ID, ORG_TYPE_LABEL,
 } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/my-organization")({
   head: () => ({ meta: [{ title: "Downline Administration Home — ABox" }, { name: "description", content: "Own-organization readiness, profile and next actions." }] }),
@@ -50,7 +51,7 @@ function Page() {
     <InternalShell
       workspace="agency" pageTitle={record.display_name} eyebrow={`My organization · ${record.reference_code}`}
       actions={
-        <Link to="/agency/organizations/$organizationId" params={{ organizationId: orgId }} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+        <Link to="/agency/organizations/$organizationId" params={{ organizationId: orgId }} className={ACTION_PILL.primaryMd}>
           Open full profile <ArrowRight className="h-4 w-4" aria-hidden />
         </Link>
       }

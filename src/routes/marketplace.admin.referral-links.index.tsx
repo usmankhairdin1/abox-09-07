@@ -14,6 +14,7 @@ import {
   marketplaceStore, useMarketplaceState, getReferralLinks, getParticipants, MARKETPLACE_ID,
   CHANNEL_LABEL, type ReferralLink, type ReferralLinkType, type MarketplaceChannel,
 } from "@/lib/marketplace-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/marketplace/admin/referral-links/")({
   head: () => ({ meta: [{ title: "Referral Links — ABox" }, { name: "description", content: "View, create, copy, revoke and replace organization and agent links." }] }),
@@ -59,8 +60,8 @@ function Page() {
     { key: "uses", header: "Uses", align: "right", cell: (r) => r.use_count },
     { key: "actions", header: "Actions", align: "right", cell: (r) => (
       <div className="flex justify-end gap-2">
-        <button onClick={() => navigator.clipboard?.writeText(`https://cedargrove.abox.app/r/${r.token}`)} className="inline-flex h-8 items-center gap-1 rounded-full border border-border px-3 text-xs font-medium hover:bg-accent"><Copy className="h-3.5 w-3.5" aria-hidden /> Copy</button>
-        {r.status === "ACTIVE" && <button onClick={() => revoke(r)} className="inline-flex h-8 items-center gap-1 rounded-full border border-border px-3 text-xs font-medium hover:bg-accent"><Ban className="h-3.5 w-3.5" aria-hidden /> Revoke</button>}
+        <button onClick={() => navigator.clipboard?.writeText(`https://cedargrove.abox.app/r/${r.token}`)} className={ACTION_PILL.outlineXs}><Copy className="h-3.5 w-3.5" aria-hidden /> Copy</button>
+        {r.status === "ACTIVE" && <button onClick={() => revoke(r)} className={ACTION_PILL.outlineXs}><Ban className="h-3.5 w-3.5" aria-hidden /> Revoke</button>}
       </div>
     ) },
   ];
@@ -68,7 +69,7 @@ function Page() {
   return (
     <InternalShell
       workspace="agency" pageTitle="Referral links" eyebrow="Referral Links · SCR-M04-013"
-      actions={<button onClick={() => setShowForm((v) => !v)} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"><Plus className="h-4 w-4" aria-hidden /> Create link</button>}
+      actions={<button onClick={() => setShowForm((v) => !v)} className={ACTION_PILL.primaryMd}><Plus className="h-4 w-4" aria-hidden /> Create link</button>}
     >
       {showForm && (
         <form onSubmit={create} className="mb-6 grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">

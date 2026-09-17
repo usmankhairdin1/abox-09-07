@@ -9,6 +9,7 @@ import { StatusBadge } from "@/components/abox/status-badge";
 import {
   orgStore, useOrgState, getOrganization, getReadiness,
 } from "@/lib/org-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/agency/organizations/$organizationId/readiness")({
   loader: ({ params }) => ({ organizationId: params.organizationId }),
@@ -38,7 +39,7 @@ function Page() {
       actions={
         <button
           onClick={() => orgStore.recalculateReadiness(organizationId)}
-          className="inline-flex h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          className={ACTION_PILL.primaryMd}
         >
           <RotateCw className="h-4 w-4" aria-hidden /> Recalculate
         </button>
@@ -72,7 +73,7 @@ function Page() {
                   {item.control_code === "ADMINISTRATOR_ASSIGNED" && item.result !== "PASS" && (
                     <button
                       onClick={() => orgStore.markAdministratorActive(organizationId, "Elena Alvarez")}
-                      className="inline-flex h-8 items-center gap-1 rounded-full border border-border px-3 text-xs font-medium hover:bg-accent"
+                      className={ACTION_PILL.outlineXs}
                     >
                       <UserCheck className="h-3.5 w-3.5" aria-hidden /> Mark administrator active
                     </button>

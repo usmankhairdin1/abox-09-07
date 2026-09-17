@@ -9,6 +9,7 @@ import { Image, Upload, Trash2 } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { marketplaceStore, useMarketplaceState, getAssets, type AssetType } from "@/lib/marketplace-store";
+import { ACTION_PILL } from "@/components/abox/action-pill";
 
 export const Route = createFileRoute("/marketplace/admin/assets")({
   head: () => ({ meta: [{ title: "Marketplace Assets — ABox" }, { name: "description", content: "Upload, scan, validate, preview and retire fixed asset types." }] }),
@@ -43,7 +44,7 @@ function Page() {
               <header className="mb-2 flex items-center gap-2"><Image className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-lg">{t.label}</h2></header>
               <p className="mb-3 text-xs text-muted-foreground">{t.hint}</p>
               <input ref={(el) => { fileRefs.current[t.type] = el; }} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && onUpload(t.type, e.target.files[0])} />
-              <button onClick={() => fileRefs.current[t.type]?.click()} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-sm font-medium hover:bg-accent">
+              <button onClick={() => fileRefs.current[t.type]?.click()} className={ACTION_PILL.outlineSm}>
                 <Upload className="h-3.5 w-3.5" aria-hidden /> Upload
               </button>
               {existing.length === 0 ? (
