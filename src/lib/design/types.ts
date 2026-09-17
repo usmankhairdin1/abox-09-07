@@ -53,7 +53,7 @@ export interface RelationshipEntry {
    * `Consistency` scale; the renderer still treats anything other than
    * "consistent" as varying, so no previously written row changes appearance.
    */
-  consistency: Consistency;
+  consistency: Consistency | "varies";
   note?: string;
 }
 
