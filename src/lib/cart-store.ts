@@ -72,7 +72,7 @@ export const cartStore = {
     if (replaced && typeof window !== "undefined") {
       void import("sonner").then(({ toast }) =>
         toast("Cart updated", {
-          description: `One plan at a time — ${replaced.displayName} was replaced with ${item.displayName}.`,
+          description: `One ${PRODUCT_LABEL[item.productType]} plan at a time — ${replaced.displayName} was replaced with ${item.displayName}.`,
         }),
       );
     }
