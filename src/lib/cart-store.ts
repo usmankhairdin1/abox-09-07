@@ -61,13 +61,18 @@ export const cartStore = {
   subscribe(l: () => void) { listeners.add(l); return () => listeners.delete(l); },
   add(item: CartItem) {
     if (state.items.some((i) => i.id === item.id)) return;
-    // Single-plan cart: a new selection replaces the current one (max 1 item).
-    const replaced = state.items.length > 0 ? state.items[0] : null;
-    state = { ...state, items: [item] }; save(state); notify();
+    // One plan per product type: a new medical plan replaces the current
+    // medical plan, but add-ons (dental, vision, life…) stack alongside it.
+    const replaced = state.items.find((i) => i.productType === item.productType) ?? null;
+    state = {
+      ...state,
+      items: [...state.items.filter((i) => i.productType !== item.productType), item],
+    };
+    save(state); notify();
     if (replaced && typeof window !== "undefined") {
       void import("sonner").then(({ toast }) =>
         toast("Cart updated", {
-          description: `One plan at a time — ${replaced.displayName} was replaced with ${item.displayName}.`,
+          description: `One ${PRODUCT_LABEL[item.productType]} plan at a time — ${replaced.displayName} was replaced with ${item.displayName}.`,
         }),
       );
     }
