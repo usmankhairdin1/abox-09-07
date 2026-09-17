@@ -29,9 +29,22 @@ Neither page is added to any navigation; both are reachable by direct link only.
 
 Existing pages, layouts, spacing, colors, typography, icons, dimensions, responsive behaviour, navigation, routes, permissions, business logic, branding configuration, white-label behaviour, asset management, dashboards. No new libraries, no new fonts, no redesign.
 
+## Safety rules for this task
+
+- **Baseline first:** before any code change, capture screenshots of `/`, `/plans`, `/cart` and one internal admin page at desktop, tablet and mobile widths.
+- **Compare after:** re-shoot the same pages at the same widths and diff against the baselines. Any visual or structural difference is corrected before the task is called done.
+- Only two new routes: `/design-system` and `/design-guide`. No existing route is added, renamed, moved or removed.
+- Neither new page is linked from any nav, sidebar, header, menu, breadcrumb or existing page — direct URL only.
+- The pill refactor replaces **exact duplicate class strings only**. No change to element type, props, DOM structure, accessibility attributes, sizing, spacing, typography or hover/focus behaviour. Any uncertainty → call site left untouched.
+- The new pages consume existing production tokens, assets and components; no duplicate or demo-only variants.
+- Existing pages are never adjusted to suit the new reference pages — the reference pages adapt to the app.
+- Any refactor that could possibly alter rendered output is not performed; it is documented as an opportunity instead.
+
+Priority order: preserve the existing application > safe centralization > documentation > new reference pages.
+
 ## Technical notes
 
 - New files: `src/components/abox/action-pill.ts`, `src/routes/design-system.tsx`, `src/routes/design-guide.tsx`; rewritten `.lovable/design-system.md`.
-- Both routes get their own `head()` metadata and are excluded from nav config.
+- Both routes get their own `head()` metadata and stay out of `src/lib/nav-config.ts`.
 - Token swatches resolve values via `getComputedStyle` on the document root at runtime, so light/dark and any future token edit flow through automatically.
-- Validation: `bunx tsgo`, lint, build, plus Playwright screenshots of the two new pages and of `/`, `/plans`, `/cart`, and one internal admin page compared against current rendering to confirm nothing shifted.
+- Validation: `bunx tsgo`, lint, build, plus the before/after Playwright screenshot comparison described above and a render check of the two new pages.
