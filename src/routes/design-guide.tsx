@@ -68,6 +68,14 @@ import {
   MaturityCallout,
   RuleList,
 } from "@/components/design/reference-kit";
+
+import { SPEC_SUMMARY } from "@/lib/design/spec-registry";
+import { EXPERIENCE_BOUNDARIES } from "@/lib/design/spec-experience";
+import {
+  FIGMA_LIBRARY_BLUEPRINT as SPEC_FIGMA_LIBRARY,
+  FIGMA_LIMITS,
+} from "@/lib/design/spec-figma-library";
+import { SPEC_GOVERNANCE_RULES, OPEN_DECISIONS } from "@/lib/design/spec-governance";
 import {
   OWNERSHIP_HIERARCHY,
   SAFE_CHANGE_RULES,
@@ -173,6 +181,13 @@ const TOC = [
   { id: "foundation-figma", label: "What Figma can hold" },
   { id: "foundation-maturity", label: "Foundation readiness" },
   { id: "foundation-rules", label: "Rules for changing the system" },
+  { id: "core-what", label: "What ABox Core is" },
+  { id: "core-current-future", label: "Current versus future" },
+  { id: "core-governance", label: "When to add, when to reuse" },
+  { id: "core-experiences", label: "How the experiences relate" },
+  { id: "core-figma", label: "How a design file relates" },
+  { id: "core-migration", label: "How a clean-up would work" },
+  { id: "core-open", label: "Open questions" },
 ];
 
 const PRINCIPLES = [
@@ -1417,6 +1432,133 @@ function DesignGuidePage() {
           intro="Proposed process for a future controlled phase. None of it is enforced today."
         >
           <RuleList items={FOUNDATION_GOVERNANCE_RULES.map((r) => `${r.item}: ${r.future}`)} />
+        </RefSection>
+
+        <RefSection
+          id="core-what"
+          eyebrow="ABox Core"
+          title="What ABox Core is"
+          intro="A written description of the building blocks the product is made from — buttons, fields, cards, tables, badges, dialogs — and how they should behave. It is a description and a proposal, not a new library. Nothing in the live product changed to produce it."
+        >
+          <DefinitionRows
+            rows={[
+              {
+                term: "What we described",
+                detail: `${SPEC_SUMMARY.components} building blocks across ${SPEC_SUMMARY.categories} groups, each recorded with what it does today and what a tidier future version would look like.`,
+              },
+              {
+                term: "Based on evidence",
+                detail: `${SPEC_SUMMARY.withCurrentImplementation} of them exist in the product today. ${SPEC_SUMMARY.withoutEvidence} appear only as ideas, and are marked as open questions rather than invented.`,
+              },
+              {
+                term: "Left open on purpose",
+                detail: `${SPEC_SUMMARY.openDecisions} questions need a human decision. We did not quietly pick an answer.`,
+              },
+              {
+                term: "Not owned here",
+                detail:
+                  "Brand settings and marketplace artwork stay in the screens that already manage them.",
+              },
+            ]}
+          />
+        </RefSection>
+
+        <RefSection
+          id="core-current-future"
+          eyebrow="ABox Core"
+          title="Current versus future"
+          intro="Every entry says two separate things, and they are never mixed."
+        >
+          <DefinitionRows
+            rows={[
+              {
+                term: "What exists today",
+                detail:
+                  "Where the building block lives, how it behaves and how many screens rely on it. This is the source of truth.",
+              },
+              {
+                term: "What a future version could be",
+                detail:
+                  "A proposal only. Nothing has been built, renamed or replaced, and no screen was touched.",
+              },
+              {
+                term: "Where the product disagrees with itself",
+                detail: `${SPEC_SUMMARY.duplicatesOrOverlaps} places where the same idea is built more than once. We wrote them down side by side and deliberately did not pick a winner.`,
+              },
+              {
+                term: "Where nothing owns the pattern",
+                detail: `${SPEC_SUMMARY.unownedAreas} recurring patterns have no shared owner today — they are assembled screen by screen.`,
+              },
+            ]}
+          />
+        </RefSection>
+
+        <RefSection
+          id="core-governance"
+          eyebrow="ABox Core"
+          title="When to add, and when to reuse"
+          intro="The test a new building block would have to pass, so the collection stays small enough to be useful."
+        >
+          <RuleList items={SPEC_GOVERNANCE_RULES.map((r) => `${r.rule} Why: ${r.rationale}`)} />
+        </RefSection>
+
+        <RefSection
+          id="core-experiences"
+          eyebrow="ABox Core"
+          title="How the three experiences relate"
+          intro="The public site, the shopping journey and the internal dashboards deliberately look different. What they share is meaning, not appearance."
+        >
+          <DefinitionRows
+            rows={EXPERIENCE_BOUNDARIES.map((e) => ({
+              term: e.experience,
+              detail: `Shares: ${e.sharedFromCore} Extends with: ${e.legitimateExtensions} Never differs on: ${e.mustNotDiverge}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="core-figma"
+          eyebrow="ABox Core"
+          title="How a design file would relate to the product"
+          intro="If a design library is ever built, the product stays the original and the design file is the mirror — never the other way round."
+        >
+          <DefinitionRows
+            rows={SPEC_FIGMA_LIBRARY.map((f) => ({ term: f.page, detail: f.contains }))}
+          />
+          <div className="mt-4">
+            <RuleList items={FIGMA_LIMITS} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="core-migration"
+          eyebrow="ABox Core"
+          title="How a future clean-up would work"
+          intro="No clean-up has started. If one is ever approved, this is the shape it would take."
+        >
+          <RuleList
+            items={[
+              "Approve the open questions first, one at a time, so nothing is decided by accident.",
+              "Change one building block at a time, with before and after screenshots of every screen it touches.",
+              "Screens that look identical afterwards are the goal; a visible difference is a defect unless it was explicitly approved.",
+              "Areas built more than once stay as they are until someone chooses, deliberately, which one to keep.",
+              "Brand settings and marketplace artwork are never part of a clean-up; they belong to their own screens.",
+            ]}
+          />
+        </RefSection>
+
+        <RefSection
+          id="core-open"
+          eyebrow="ABox Core"
+          title="Open questions"
+          intro="Each one needs a decision from a person. None of them has been answered here."
+        >
+          <DefinitionRows
+            rows={OPEN_DECISIONS.map((d) => ({
+              term: d.decision,
+              detail: `Held up by: ${d.blockedBy}`,
+            }))}
+          />
         </RefSection>
 
         <footer className="border-t border-hairline py-10 text-xs text-muted-foreground">

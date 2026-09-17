@@ -129,7 +129,44 @@ import {
   ComponentRoleList,
   FoundationA11yTable,
   FoundationMaturityTable,
+  ComponentSpecCard,
+  SpecMatrixTable,
+  DuplicateRegisterTable,
 } from "@/components/design/reference-kit";
+
+import { SPEC_REGISTRY, SPEC_SUMMARY, SPEC_LABEL_COUNTS } from "@/lib/design/spec-registry";
+import { ANATOMY_VOCABULARY, ANATOMY_RULES } from "@/lib/design/spec-anatomy";
+import { PROPERTY_CLASSES, PROPERTY_RULES } from "@/lib/design/spec-properties";
+import { VARIANT_KINDS, VARIANT_GOVERNANCE } from "@/lib/design/spec-variants";
+import { STATE_VOCABULARY, STATE_GOVERNANCE } from "@/lib/design/spec-states";
+import {
+  CONTROL_SIZE_EVIDENCE,
+  DENSITY_MODES as SPEC_DENSITY_MODES,
+  SIZING_GOVERNANCE,
+} from "@/lib/design/spec-sizing";
+import { ICON_BEHAVIOR, ICON_GOVERNANCE } from "@/lib/design/spec-icons";
+import { COMPOSITION_RULES, RELATIONSHIP_RULES } from "@/lib/design/spec-composition";
+import { DEPENDENCY_CHAINS, DEPENDENCY_GOVERNANCE } from "@/lib/design/spec-dependencies";
+import { DUPLICATE_REGISTER } from "@/lib/design/spec-duplicates";
+import { ROUTE_KITS, KIT_ARCHITECTURE } from "@/lib/design/spec-route-kits";
+import { EXPERIENCE_BOUNDARIES, EXPERIENCE_RULES } from "@/lib/design/spec-experience";
+import { CATEGORY_ACCESSIBILITY, A11Y_CROSS_RULES } from "@/lib/design/spec-accessibility";
+import { CONTENT_RULES } from "@/lib/design/spec-content";
+import {
+  FIGMA_LIBRARY_BLUEPRINT as SPEC_FIGMA_LIBRARY,
+  FIGMA_LIMITS,
+} from "@/lib/design/spec-figma-library";
+import { FIGMA_COMPONENT_MAPPINGS, FIGMA_MAPPING_RULES } from "@/lib/design/spec-figma-mapping";
+import {
+  NAMING_CONVENTIONS as SPEC_NAMING_CONVENTIONS,
+  NAMING_RULES_NOTES,
+} from "@/lib/design/spec-naming";
+import {
+  MATURITY_CATEGORIES,
+  DOCUMENTATION_TEMPLATE,
+  SPEC_GOVERNANCE_RULES,
+  OPEN_DECISIONS,
+} from "@/lib/design/spec-governance";
 
 import { FOUNDATION_MODEL, FOUNDATION_CURRENT_STATE } from "@/lib/design/foundation-model";
 import { COLOR_FOUNDATION, COLOR_TOKEN_COUNT } from "@/lib/design/color-foundation";
@@ -428,6 +465,36 @@ const TOC = [
   { id: "fnd-experience", label: "Experience expression" },
   { id: "fnd-maturity", label: "Foundation maturity" },
   { id: "fnd-governance", label: "Foundation governance" },
+  { id: "spec-overview", label: "ABox Core specification" },
+  { id: "spec-anatomy", label: "Anatomy vocabulary" },
+  { id: "spec-properties", label: "Property model" },
+  { id: "spec-variants", label: "Variant governance" },
+  { id: "spec-states", label: "State vocabulary" },
+  { id: "spec-sizing", label: "Size & density" },
+  { id: "spec-icons", label: "Icon behavior" },
+  { id: "spec-actions", label: "Spec: Actions" },
+  { id: "spec-forms", label: "Spec: Forms" },
+  { id: "spec-display", label: "Spec: Display" },
+  { id: "spec-containers", label: "Spec: Containers" },
+  { id: "spec-data", label: "Spec: Data" },
+  { id: "spec-navigation", label: "Spec: Navigation" },
+  { id: "spec-overlays", label: "Spec: Overlays" },
+  { id: "spec-feedback", label: "Spec: Feedback" },
+  { id: "spec-brand", label: "Spec: Brand" },
+  { id: "spec-commerce", label: "Spec: Commerce" },
+  { id: "spec-shell", label: "Spec: Shells" },
+  { id: "spec-composition", label: "Composition & relationships" },
+  { id: "spec-dependencies", label: "Dependency chains" },
+  { id: "spec-duplicates", label: "Duplicate register" },
+  { id: "spec-kits", label: "Route-local kits" },
+  { id: "spec-experience", label: "Experience boundaries" },
+  { id: "spec-a11y", label: "Accessibility by category" },
+  { id: "spec-content", label: "Content & text behavior" },
+  { id: "spec-figma-library", label: "Figma library blueprint" },
+  { id: "spec-figma-mapping", label: "Figma property mapping" },
+  { id: "spec-naming", label: "Naming governance" },
+  { id: "spec-template", label: "Documentation template" },
+  { id: "spec-governance", label: "Governance & maturity" },
 ];
 
 function DesignSystemPage() {
@@ -2347,6 +2414,534 @@ function DesignSystemPage() {
           intro="How tokens would be added, changed, deprecated and approved in a future controlled system."
         >
           <BlueprintTable rows={FOUNDATION_GOVERNANCE_RULES} />
+        </RefSection>
+
+        {/* ---------------- Phase 8 — canonical component specification ---------------- */}
+
+        <RefSection
+          id="spec-overview"
+          eyebrow="Phase 8 specification"
+          title="ABox Core specification"
+          intro="A structured specification of what a future ABox Core library would define, written from the current codebase. Each entry states what exists today and, separately, what a future canonical version would look like. Nothing here has been built, renamed or migrated."
+        >
+          <DefinitionRows
+            rows={[
+              {
+                term: "Categories",
+                detail: `${SPEC_SUMMARY.categories} specification categories`,
+                meta: "actions, forms, display, containers, data, navigation, overlays, feedback, brand, commerce, shell",
+              },
+              {
+                term: "Components specified",
+                detail: `${SPEC_SUMMARY.components} entries`,
+                meta: `${SPEC_SUMMARY.withCurrentImplementation} with a production implementation, ${SPEC_SUMMARY.withoutEvidence} without evidence`,
+              },
+              {
+                term: "Open decisions",
+                detail: `${SPEC_SUMMARY.openDecisions} entries marked FUTURE DECISION`,
+                meta: "no value was chosen silently",
+              },
+              {
+                term: "Unowned areas",
+                detail: `${SPEC_SUMMARY.unownedAreas} patterns with no component owner today`,
+                meta: "recorded, not created",
+              },
+              {
+                term: "Duplicates and overlaps",
+                detail: `${SPEC_SUMMARY.duplicatesOrOverlaps} entries`,
+                meta: "recorded side by side with no winner",
+              },
+              {
+                term: "Experience extensions",
+                detail: `${SPEC_SUMMARY.experienceExtensions} entries live outside the shared core`,
+                meta: "commerce and dashboard domain meaning",
+              },
+            ]}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Controlled label", "Entries"]}
+              rows={SPEC_LABEL_COUNTS.map((l) => ({
+                key: l.label,
+                cells: [l.label, String(l.count)],
+                label: l.label,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-anatomy"
+          eyebrow="Phase 8 specification"
+          title="Anatomy vocabulary"
+          intro="One shared set of named slots, used by every specification below. Parts are never forced onto a component that does not have them."
+        >
+          <SpecMatrixTable
+            columns={["Part", "Definition", "Applies to", "Never forced onto", "Current evidence"]}
+            rows={ANATOMY_VOCABULARY.map((a) => ({
+              key: a.part,
+              cells: [a.part, a.definition, a.appliesTo, a.neverForce, a.currentEvidence],
+              label: a.label,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={ANATOMY_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-properties"
+          eyebrow="Phase 8 specification"
+          title="Property model"
+          intro="How a future component would express what a consumer can set, and which of those concepts a designer could manipulate in Figma."
+        >
+          <SpecMatrixTable
+            columns={["Class", "Definition", "Examples", "Figma"]}
+            rows={PROPERTY_CLASSES.map((p) => ({
+              key: p.propertyClass,
+              cells: [p.propertyClass, p.definition, p.examples, p.figma],
+              label: p.label,
+              note: p.note,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Topic", "Current implementation", "Future rule"]}
+              rows={PROPERTY_RULES.map((r) => ({
+                key: r.topic,
+                cells: [r.topic, r.current, r.future],
+                label: r.label,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-variants"
+          eyebrow="Phase 8 specification"
+          title="Variant governance"
+          intro="Five kinds of variant, and the test a production variation must pass before it could ever become a canonical one."
+        >
+          <SpecMatrixTable
+            columns={["Kind", "Definition", "Current evidence", "Future rule"]}
+            rows={VARIANT_KINDS.map((v) => ({
+              key: v.kind,
+              cells: [v.kind, v.definition, v.currentEvidence, v.futureRule],
+              label: v.label,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Topic", "Current implementation", "Future rule"]}
+              rows={VARIANT_GOVERNANCE.map((r) => ({
+                key: r.topic,
+                cells: [r.topic, r.current, r.future],
+                label: r.label,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-states"
+          eyebrow="Phase 8 specification"
+          title="State vocabulary"
+          intro="The states a future component may declare, what each may affect, and how each is communicated to assistive technology."
+        >
+          <SpecMatrixTable
+            columns={["State", "Definition", "May affect", "Accessibility", "Current evidence"]}
+            rows={STATE_VOCABULARY.map((s) => ({
+              key: s.state,
+              cells: [s.state, s.definition, s.mayAffect, s.accessibility, s.currentEvidence],
+              label: s.label,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Topic", "Current implementation", "Future rule"]}
+              rows={STATE_GOVERNANCE.map((r) => ({
+                key: r.topic,
+                cells: [r.topic, r.current, r.future],
+                label: r.label,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-sizing"
+          eyebrow="Phase 8 specification"
+          title="Size & density"
+          intro="Every control height that ships today, recorded as measured. The differences are deliberate and are preserved; whether a single ladder could ever absorb them is left open."
+        >
+          <SpecMatrixTable
+            columns={["Step", "Height", "Padding", "Typography", "Used by", "Source"]}
+            rows={CONTROL_SIZE_EVIDENCE.map((s) => ({
+              key: s.step,
+              cells: [s.step, s.height, s.padding, s.typography, s.usedBy, s.source],
+              label: s.label,
+              note: s.note,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Density mode", "Scale", "Padding", "Typography", "Used by", "Source"]}
+              rows={SPEC_DENSITY_MODES.map((s) => ({
+                key: s.step,
+                cells: [s.step, s.height, s.padding, s.typography, s.usedBy, s.source],
+                label: s.label,
+              }))}
+            />
+          </div>
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Topic", "Current implementation", "Future position"]}
+              rows={SIZING_GOVERNANCE.map((r) => ({
+                key: r.topic,
+                cells: [r.topic, r.current, r.future],
+                label: r.label,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-icons"
+          eyebrow="Phase 8 specification"
+          title="Icon behavior"
+          intro="Icon rules for a future library, measured against what the codebase actually imports and renders today."
+        >
+          <SpecMatrixTable
+            columns={["Topic", "Current implementation", "Future rule", "Evidence"]}
+            rows={ICON_BEHAVIOR.map((i) => ({
+              key: i.topic,
+              cells: [i.topic, i.current, i.future, i.evidence],
+              label: i.label,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Topic", "Current implementation", "Future rule"]}
+              rows={ICON_GOVERNANCE.map((r) => ({
+                key: r.topic,
+                cells: [r.topic, r.current, r.future],
+                label: r.label,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        {SPEC_REGISTRY.map((group) => (
+          <RefSection
+            key={group.id}
+            id={group.id}
+            eyebrow="Phase 8 specification"
+            title={group.title}
+            intro={group.summary}
+          >
+            <div className="space-y-4">
+              {group.specs.map((spec) => (
+                <ComponentSpecCard key={spec.name} spec={spec} />
+              ))}
+            </div>
+          </RefSection>
+        ))}
+
+        <RefSection
+          id="spec-composition"
+          eyebrow="Phase 8 specification"
+          title="Composition & relationships"
+          intro="How components would nest, and the recurring spatial relationships each rule depends on. An observed composition is not automatically canonical."
+        >
+          <SpecMatrixTable
+            columns={["Parent", "Child", "Future rule", "Current implementation"]}
+            rows={COMPOSITION_RULES.map((c) => ({
+              key: `${c.parent}-${c.child}`,
+              cells: [c.parent, c.child, c.rule, c.current],
+              label: c.label,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Relationship", "Observed", "Future target"]}
+              rows={RELATIONSHIP_RULES.map((r) => ({
+                key: r.relationship,
+                cells: [r.relationship, r.observed, r.future],
+                label: r.label,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-dependencies"
+          eyebrow="Phase 8 specification"
+          title="Foundation dependency chains"
+          intro="Foundation → semantic role → component role → component → compound → pattern → experience pattern → screen, per component."
+        >
+          <SpecMatrixTable
+            columns={[
+              "Component",
+              "Foundation",
+              "Semantic role",
+              "Component role",
+              "Compound",
+              "Pattern",
+              "Experience",
+              "Screen",
+            ]}
+            rows={DEPENDENCY_CHAINS.map((d) => ({
+              key: d.component,
+              cells: [
+                d.component,
+                d.foundation,
+                d.semanticRole,
+                d.componentRole,
+                d.compound,
+                d.pattern,
+                d.experiencePattern,
+                d.screen,
+              ],
+              label: d.label,
+            }))}
+          />
+          <div className="mt-4">
+            <SpecMatrixTable
+              columns={["Topic", "Current implementation", "Future rule"]}
+              rows={DEPENDENCY_GOVERNANCE.map((r) => ({
+                key: r.topic,
+                cells: [r.topic, r.current, r.future],
+                label: r.label,
+              }))}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-duplicates"
+          eyebrow="Phase 8 specification"
+          title="Duplicate & overlap register"
+          intro="Parallel implementations recorded side by side, in no meaningful order. Nothing here is ranked, preferred, deprecated or consolidated."
+        >
+          <DuplicateRegisterTable entries={DUPLICATE_REGISTER} />
+        </RefSection>
+
+        <RefSection
+          id="spec-kits"
+          eyebrow="Phase 8 specification"
+          title="Route-local kits"
+          intro="How the existing module kits would relate to a future core. No kit is modified, merged or retired."
+        >
+          <SpecMatrixTable
+            columns={["Kit", "Source", "Scope", "Overlaps with", "Future relationship"]}
+            rows={ROUTE_KITS.map((k) => ({
+              key: k.kit,
+              cells: [k.kit, k.source, k.scope, k.overlapsWith, k.futureRelationship],
+              label: k.label,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={KIT_ARCHITECTURE} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-experience"
+          eyebrow="Phase 8 specification"
+          title="Experience extension boundaries"
+          intro="What each experience shares from the core, what it may legitimately extend, and what must never diverge."
+        >
+          <SpecMatrixTable
+            columns={[
+              "Experience",
+              "Shell",
+              "Shared from core",
+              "Legitimate extensions",
+              "Must not diverge",
+            ]}
+            rows={EXPERIENCE_BOUNDARIES.map((e) => ({
+              key: e.experience,
+              cells: [
+                e.experience,
+                e.shell,
+                e.sharedFromCore,
+                e.legitimateExtensions,
+                e.mustNotDiverge,
+              ],
+              label: e.label,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={EXPERIENCE_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-a11y"
+          eyebrow="Phase 8 specification"
+          title="Accessibility by category"
+          intro="Current behavior and future governance stated separately for every component category."
+        >
+          <SpecMatrixTable
+            columns={[
+              "Category",
+              "Keyboard",
+              "Semantics",
+              "Naming",
+              "State communication",
+              "Current behavior",
+              "Future governance",
+            ]}
+            rows={CATEGORY_ACCESSIBILITY.map((a) => ({
+              key: a.category,
+              cells: [
+                a.category,
+                a.keyboard,
+                a.semantics,
+                a.naming,
+                a.stateCommunication,
+                a.currentBehavior,
+                a.futureGovernance,
+              ],
+              label: a.label,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={A11Y_CROSS_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-content"
+          eyebrow="Phase 8 specification"
+          title="Content & text behavior"
+          intro="Long labels, truncation, localization, numbers, and the difference between empty, missing, loading and failed content. No production copy is altered."
+        >
+          <SpecMatrixTable
+            columns={["Topic", "Current implementation", "Future rule", "Applies to"]}
+            rows={CONTENT_RULES.map((c) => ({
+              key: c.topic,
+              cells: [c.topic, c.current, c.future, c.appliesTo],
+              label: c.label,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="spec-figma-library"
+          eyebrow="Phase 8 specification"
+          title="Figma library blueprint"
+          intro="How a future library would be organised, and what it honestly cannot hold. Nothing has been created in Figma."
+        >
+          <SpecMatrixTable
+            columns={["Page", "Contains", "Organisation", "Source of truth"]}
+            rows={SPEC_FIGMA_LIBRARY.map((f) => ({
+              key: f.page,
+              cells: [f.page, f.contains, f.organisation, f.sourceOfTruth],
+              label: f.label,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={FIGMA_LIMITS} tone="warning" />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-figma-mapping"
+          eyebrow="Phase 8 specification"
+          title="Figma property mapping"
+          intro="Per component family: what becomes a Figma property, and what must stay code-only."
+        >
+          <SpecMatrixTable
+            columns={[
+              "Component",
+              "Component properties",
+              "Variant properties",
+              "Boolean",
+              "Instance swap",
+              "Text",
+              "Variables & modes",
+              "Code-only",
+            ]}
+            rows={FIGMA_COMPONENT_MAPPINGS.map((f) => ({
+              key: f.component,
+              cells: [
+                f.component,
+                f.componentProperties,
+                f.variantProperties,
+                f.booleanProperties,
+                f.instanceSwap,
+                f.textProperties,
+                f.variablesAndModes,
+                f.codeOnly,
+              ],
+              label: f.label,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={FIGMA_MAPPING_RULES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-naming"
+          eyebrow="Phase 8 specification"
+          title="Naming governance"
+          intro="Naming conventions for a future library, in code and in Figma. No production name is changed."
+        >
+          <SpecMatrixTable
+            columns={["Subject", "Convention", "Example", "Avoid"]}
+            rows={SPEC_NAMING_CONVENTIONS.map((n) => ({
+              key: n.subject,
+              cells: [n.subject, n.convention, n.example, n.avoid],
+              label: n.label,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={NAMING_RULES_NOTES} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="spec-template"
+          eyebrow="Phase 8 specification"
+          title="Documentation template"
+          intro="The eighteen questions every future component page answers, in order, each bound to a field of the structured specification."
+        >
+          <DefinitionRows
+            rows={DOCUMENTATION_TEMPLATE.map((t) => ({
+              term: `${t.order}. ${t.heading}`,
+              detail: t.question,
+              meta: `field: ${t.source}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="spec-governance"
+          eyebrow="Phase 8 specification"
+          title="Governance & maturity"
+          intro="Descriptive maturity categories, the rules for adding or reusing a component, and the decisions still open. No scores, no ranking, no winners."
+        >
+          <SpecMatrixTable
+            columns={["Status", "Meaning", "What it implies", "What it does not imply"]}
+            rows={MATURITY_CATEGORIES.map((m) => ({
+              key: m.status,
+              cells: [m.status, m.meaning, m.whatItImplies, m.whatItDoesNotImply],
+              label: "GOVERNANCE RULE",
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={SPEC_GOVERNANCE_RULES.map((r) => `${r.rule} — ${r.rationale}`)} />
+          </div>
+          <div className="mt-4">
+            <RuleList
+              items={OPEN_DECISIONS.map(
+                (d) => `FUTURE DECISION — ${d.decision} Blocked by: ${d.blockedBy}`,
+              )}
+              tone="warning"
+            />
+          </div>
         </RefSection>
       </RefContainer>
     </RefPage>

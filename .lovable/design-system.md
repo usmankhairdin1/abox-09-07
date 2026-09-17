@@ -862,3 +862,61 @@ touched.
 plus Phase 7 types in `types.ts` and five display tables in `reference-kit.tsx`.
 
 Consumed only by `/design-system` and `/design-guide`, both still unlisted.
+
+## Phase 8 — ABox Core canonical component library specification
+
+Reference layer only. No production file was created, edited, renamed, deleted or
+refactored. The application is pixel-, behavior-, route-, responsive-, branding- and
+asset-identical to before this phase.
+
+### CURRENT IMPLEMENTATION
+
+The specification records, per component: where it lives, what it renders, its measured
+consumers, its variants, states, sizes, dependencies, composition and accessibility as
+they actually ship. Counts reused from Phase 5 include StatusBadge and InternalShell at
+89 files, ACTION_PILL at 35 files and 82 references, MarketplaceShell 30, PageHeader 25,
+Button 22, DataTable 20, KpiCard 18, EmptyState 10, Input and Select 7 each, Card 6,
+PlanCard 6, Label 5, Skeleton and Dialog 4 each.
+
+### OBSERVED DUPLICATE / OBSERVED OVERLAP
+
+Ten parallel areas are recorded side by side in `spec-duplicates.ts` with no ordering,
+ranking, preference or winner: tables, page headers, empty states, form fields, action
+paths, assistants, the Sheet naming collision, the status and tone vocabularies, tabs,
+and shells versus the sidebar primitive.
+
+### UNOWNED AREA
+
+Layout primitives, table toolbars, filter bars, results summaries, lists, list items,
+data rows, search fields, loading states, error states, product cards, comparison layouts
+and amount formatting have no component owner today; they are composed per screen.
+
+### FUTURE DECISION
+
+Nine questions are left explicitly open rather than answered: one size ladder or two,
+canonical card padding, one focus treatment, token-based disabled state, disambiguating
+the Sheet name, whether ai-elements becomes the shared assistant layer, retiring the
+unused icon dependency and compatibility aliases, a media and image contract, and date
+presentation rules. SplitButton, Notification and Image/Media are specified as FUTURE
+DECISION because the codebase contains no evidence for them.
+
+### FUTURE CANONICAL TARGET
+
+Proposals only: one action surface absorbing the pill appearance, one field contract, one
+semantic tone vocabulary, one data family, one header contract with standard and compact
+forms, named layout primitives, a shell contract, and a commerce extension layer above
+the core. None of these exists and nothing has moved towards them.
+
+### Reference-layer files added in Phase 8
+
+`src/lib/design/component-spec-types.ts`, `spec-anatomy.ts`, `spec-properties.ts`,
+`spec-variants.ts`, `spec-states.ts`, `spec-sizing.ts`, `spec-icons.ts`,
+`spec-components-{actions,forms,display,containers,data,navigation,overlays,feedback,brand,commerce,shell}.ts`,
+`spec-registry.ts`, `spec-composition.ts`, `spec-dependencies.ts`, `spec-duplicates.ts`,
+`spec-route-kits.ts`, `spec-experience.ts`, `spec-accessibility.ts`, `spec-content.ts`,
+`spec-figma-library.ts`, `spec-figma-mapping.ts`, `spec-naming.ts`, `spec-governance.ts`,
+plus three display helpers in `reference-kit.tsx` (`ComponentSpecCard`,
+`SpecMatrixTable`, `DuplicateRegisterTable`).
+
+`spec-registry.ts` is the single assembly point; both reference pages render from it and
+no specification is restated inline. Both routes remain unlisted and direct-URL only.

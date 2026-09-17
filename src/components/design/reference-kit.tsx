@@ -2153,3 +2153,272 @@ export function FoundationMaturityTable({
     </RefTable>
   );
 }
+
+/* -----------------------------------------------------------------
+ * Phase 8 — canonical component specification helpers.
+ * Documentation-only rendering. Every value comes from the structured
+ * specification under `src/lib/design/spec-*`; nothing is restated here.
+ * ----------------------------------------------------------------- */
+
+/** One full canonical component specification. */
+export function ComponentSpecCard({
+  spec,
+}: {
+  spec: {
+    name: string;
+    purpose: string;
+    anatomy: { part: string; requirement: string; role: string; note?: string }[];
+    contentModel: string[];
+    properties: {
+      name: string;
+      propertyClass: string;
+      values: string;
+      figma: string;
+      label: string;
+    }[];
+    variants: { kind: string; name: string; values: string; label: string; note?: string }[];
+    states: { state: string; affects: string; accessibility: string; label: string }[];
+    sizes: string;
+    density: string;
+    dependencies: {
+      typography: string;
+      spacing: string;
+      color: string;
+      shape: string;
+      icon: string;
+    };
+    responsive: string;
+    accessibility: string;
+    interaction: string;
+    composition: { allowedChildren: string; prohibited: string; parentPatterns: string };
+    experienceExtensions: string;
+    currentImplementation: { file: string; exportName: string; consumers: string; note?: string }[];
+    observedVariations: string[];
+    futureCanonicalTarget: string;
+    figmaMapping: string;
+    migrationNotes: string;
+    governanceStatus: string;
+    label: string;
+  };
+}) {
+  return (
+    <div className="rounded-2xl border border-hairline bg-card p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="font-medium">{spec.name}</p>
+        <ArchLabelChip label={spec.label} />
+        <MetaChip tone="muted">{spec.governanceStatus}</MetaChip>
+      </div>
+      <p className="mt-2 text-sm text-muted-foreground">{spec.purpose}</p>
+
+      {spec.anatomy.length > 0 && (
+        <div className="mt-4">
+          <p className="text-eyebrow">Anatomy</p>
+          <ul className="mt-2 grid gap-2 sm:grid-cols-2">
+            {spec.anatomy.map((a) => (
+              <li key={a.part} className="rounded-xl border border-hairline p-3">
+                <p className="text-sm font-medium">
+                  {a.part} <span className="text-serial">{a.requirement}</span>
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">{a.role}</p>
+                {a.note && <p className="mt-1 text-xs text-warning">{a.note}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {spec.properties.length > 0 && (
+        <div className="mt-4">
+          <p className="text-eyebrow">Properties</p>
+          <ul className="mt-2 space-y-2">
+            {spec.properties.map((p) => (
+              <li key={p.name} className="rounded-xl border border-hairline p-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="text-sm font-medium">{p.name}</p>
+                  <MetaChip tone="muted">{p.propertyClass}</MetaChip>
+                  <ArchLabelChip label={p.label} />
+                </div>
+                <p className="mt-1 text-sm text-muted-foreground">{p.values}</p>
+                <p className="text-serial mt-1">figma: {p.figma}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {(spec.variants.length > 0 || spec.states.length > 0) && (
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {spec.variants.length > 0 && (
+            <div>
+              <p className="text-eyebrow">Variants</p>
+              <ul className="mt-2 space-y-2">
+                {spec.variants.map((v) => (
+                  <li key={`${v.kind}-${v.name}`} className="rounded-xl border border-hairline p-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-sm font-medium">{v.name}</p>
+                      <MetaChip tone="muted">{v.kind}</MetaChip>
+                      <ArchLabelChip label={v.label} />
+                    </div>
+                    <p className="mt-1 text-sm text-muted-foreground">{v.values}</p>
+                    {v.note && <p className="mt-1 text-xs text-warning">{v.note}</p>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {spec.states.length > 0 && (
+            <div>
+              <p className="text-eyebrow">States</p>
+              <ul className="mt-2 space-y-2">
+                {spec.states.map((s) => (
+                  <li key={s.state} className="rounded-xl border border-hairline p-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-sm font-medium">{s.state}</p>
+                      <ArchLabelChip label={s.label} />
+                    </div>
+                    <p className="mt-1 text-sm text-muted-foreground">{s.affects}</p>
+                    <p className="text-serial mt-1">{s.accessibility}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      <dl className="mt-4 grid gap-2 sm:grid-cols-2">
+        {[
+          ["Sizes", spec.sizes],
+          ["Density", spec.density],
+          ["Typography", spec.dependencies.typography],
+          ["Spacing", spec.dependencies.spacing],
+          ["Color", spec.dependencies.color],
+          ["Shape", spec.dependencies.shape],
+          ["Icon", spec.dependencies.icon],
+          ["Responsive", spec.responsive],
+          ["Accessibility", spec.accessibility],
+          ["Interaction", spec.interaction],
+          ["Allowed children", spec.composition.allowedChildren],
+          ["Prohibited", spec.composition.prohibited],
+          ["Parent patterns", spec.composition.parentPatterns],
+          ["Experience extensions", spec.experienceExtensions],
+        ].map(([term, detail]) => (
+          <div key={term} className="rounded-xl border border-hairline p-3">
+            <dt className="text-eyebrow">{term}</dt>
+            <dd className="mt-1 text-sm text-muted-foreground">{detail}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <div className="rounded-xl border border-sage/30 bg-sage-soft/40 p-4">
+          <MetaChip tone="sage">Current implementation</MetaChip>
+          {spec.currentImplementation.length === 0 ? (
+            <p className="mt-2 text-sm text-muted-foreground">
+              No production implementation found.
+            </p>
+          ) : (
+            <ul className="mt-2 space-y-2">
+              {spec.currentImplementation.map((c) => (
+                <li key={`${c.file}-${c.exportName}`}>
+                  <p className="text-sm font-medium">{c.exportName}</p>
+                  <p className="text-serial">{c.file}</p>
+                  <p className="text-sm text-muted-foreground">{c.consumers}</p>
+                  {c.note && <p className="mt-1 text-xs text-warning">{c.note}</p>}
+                </li>
+              ))}
+            </ul>
+          )}
+          {spec.observedVariations.length > 0 && (
+            <ul className="mt-3 space-y-1">
+              {spec.observedVariations.map((v) => (
+                <li key={v} className="text-xs text-warning">
+                  {v}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="rounded-xl border border-warning/40 bg-warning/5 p-4">
+          <MetaChip tone="warning">Future canonical target</MetaChip>
+          <p className="mt-2 text-sm text-muted-foreground">{spec.futureCanonicalTarget}</p>
+          <p className="text-serial mt-2">Figma: {spec.figmaMapping}</p>
+          <p className="text-serial mt-1">Migration: {spec.migrationNotes}</p>
+        </div>
+      </div>
+
+      {spec.contentModel.length > 0 && (
+        <p className="text-serial mt-3">Content model: {spec.contentModel.join(" ")}</p>
+      )}
+    </div>
+  );
+}
+
+/** Generic labelled current-versus-future matrix used by the Phase 8 modules. */
+export function SpecMatrixTable({
+  rows,
+  columns,
+}: {
+  rows: { key: string; cells: string[]; label: string; note?: string }[];
+  columns: string[];
+}) {
+  return (
+    <RefTable minWidth="1000px" head={[...columns, "Label"]}>
+      {rows.map((r) => (
+        <tr key={r.key} className={ROW}>
+          {r.cells.map((cell, i) => (
+            <td
+              key={`${r.key}-${i}`}
+              className={cn("px-5 py-4", i === 0 ? "font-medium" : "text-muted-foreground")}
+            >
+              {cell}
+              {i === r.cells.length - 1 && r.note && (
+                <span className="mt-1 block text-xs text-warning">{r.note}</span>
+              )}
+            </td>
+          ))}
+          <td className="px-5 py-4">
+            <ArchLabelChip label={r.label} />
+          </td>
+        </tr>
+      ))}
+    </RefTable>
+  );
+}
+
+/** Parallel implementations recorded side by side. No ordering is implied. */
+export function DuplicateRegisterTable({
+  entries,
+}: {
+  entries: {
+    area: string;
+    implementations: { name: string; source: string; scope: string }[];
+    overlap: string;
+    future: string;
+    label: string;
+  }[];
+}) {
+  return (
+    <div className="space-y-4">
+      {entries.map((e) => (
+        <div key={e.area} className="rounded-2xl border border-hairline bg-card p-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-medium">{e.area}</p>
+            <ArchLabelChip label={e.label} />
+          </div>
+          <div className="mt-3 grid gap-2 md:grid-cols-3">
+            {e.implementations.map((i) => (
+              <div key={i.name} className="rounded-xl border border-hairline p-3">
+                <p className="text-sm font-medium">{i.name}</p>
+                <p className="text-serial mt-1">{i.source}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{i.scope}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-sm text-muted-foreground">{e.overlap}</p>
+          <p className="mt-1 text-xs text-warning">{e.future}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
