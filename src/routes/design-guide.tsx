@@ -76,6 +76,11 @@ import {
   FIGMA_LIMITS,
 } from "@/lib/design/spec-figma-library";
 import { SPEC_GOVERNANCE_RULES, OPEN_DECISIONS } from "@/lib/design/spec-governance";
+import { GRAPH_LAYERS, GRAPH_SUMMARY, TRACED_CHAINS, IMPACT_MODEL } from "@/lib/design/graph-registry";
+import { SCREEN_TRACEABILITY } from "@/lib/design/graph-screens";
+import { OWNERSHIP_MODEL } from "@/lib/design/graph-brand-boundary";
+import { PROPAGATION_RULES, MIGRATION_STAGES, MIGRATION_BOUNDARY } from "@/lib/design/graph-governance";
+import { DUPLICATE_MAPPINGS } from "@/lib/design/graph-duplicates";
 import {
   OWNERSHIP_HIERARCHY,
   SAFE_CHANGE_RULES,
@@ -188,6 +193,13 @@ const TOC = [
   { id: "core-figma", label: "How a design file relates" },
   { id: "core-migration", label: "How a clean-up would work" },
   { id: "core-open", label: "Open questions" },
+  { id: "fit-together", label: "How it all fits together" },
+  { id: "fit-trace", label: "Tracing a decision" },
+  { id: "fit-screens", label: "What a screen is made of" },
+  { id: "fit-duplicates", label: "Built more than once" },
+  { id: "fit-change", label: "How a change spreads" },
+  { id: "fit-owners", label: "Who owns what" },
+  { id: "fit-migration", label: "Why change needs approval" },
 ];
 
 const PRINCIPLES = [
@@ -1559,6 +1571,121 @@ function DesignGuidePage() {
               detail: `Held up by: ${d.blockedBy}`,
             }))}
           />
+        </RefSection>
+
+
+        <RefSection
+          id="fit-together"
+          eyebrow="How it fits"
+          title="How it all fits together"
+          intro="The product is built in layers. Each one depends on the one beneath it, and nothing depends upward. This section maps those connections; it changed nothing in the live product."
+        >
+          <DefinitionRows rows={GRAPH_LAYERS.map((l) => ({ term: l.title, detail: l.meaning }))} />
+          <div className="mt-4">
+            <DefinitionRows
+              rows={[
+                { term: "Connections recorded", detail: `${GRAPH_SUMMARY.edges} relationships between ${GRAPH_SUMMARY.nodes} pieces of the system.` },
+                { term: "Real today", detail: `${GRAPH_SUMMARY.currentEdges} of them exist in the product now.` },
+                { term: "Proposals only", detail: `${GRAPH_SUMMARY.futureEdges} describe a possible future and do not exist.` },
+                { term: "Left unanswered", detail: `${GRAPH_SUMMARY.openDecisionEdges} could not be established from the code, so they were not guessed.` },
+              ]}
+            />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="fit-trace"
+          eyebrow="How it fits"
+          title="Tracing a decision"
+          intro="A question like 'why is a plan tier that colour?' can now be followed from the page the customer sees all the way down to the single value that decides it — and back again."
+        >
+          <DefinitionRows
+            rows={TRACED_CHAINS.map((c) => ({
+              term: c.title,
+              detail: c.steps.map((s) => s.label).join(" → "),
+              meta: c.question,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="fit-screens"
+          eyebrow="How it fits"
+          title="What a screen is made of"
+          intro="For a handful of representative pages, everything they rely on is written down — including where the page deliberately differs from the rest."
+        >
+          <DefinitionRows
+            rows={SCREEN_TRACEABILITY.map((r) => ({
+              term: `${r.screen} (${r.route})`,
+              detail: `Built from: ${r.components.join(", ")}. ${r.ownershipBoundary}`,
+              meta: r.experience,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="fit-duplicates"
+          eyebrow="How it fits"
+          title="Where the product builds the same thing twice"
+          intro="Some ideas are built more than once. They are written down side by side, with no ranking and no favourite, because choosing between them is a separate decision for a person to make."
+        >
+          <DefinitionRows
+            rows={DUPLICATE_MAPPINGS.map((d) => ({
+              term: d.conceptualRole,
+              detail: `${d.implementations.length} parallel builds: ${d.implementations.map((i) => i.name).join(", ")}.`,
+              meta: d.status,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="fit-change"
+          eyebrow="How it fits"
+          title="How a change spreads"
+          intro="The value of the map is knowing, before anything is touched, how far a change could reach."
+        >
+          <DefinitionRows
+            rows={IMPACT_MODEL.slice(0, 8).map((i) => ({
+              term: i.change,
+              detail:
+                i.confidence === "not-determinable"
+                  ? "Cannot be answered from the code, so no promise is made."
+                  : `Could reach ${i.reachableComponents.length} building blocks and ${i.reachableScreens.length} of the mapped pages.`,
+              meta: i.note,
+            }))}
+          />
+          <div className="mt-4">
+            <RuleList items={PROPAGATION_RULES.map((p) => `${p.changeAt}: ${p.reviewPoint}`)} />
+          </div>
+        </RefSection>
+
+        <RefSection
+          id="fit-owners"
+          eyebrow="How it fits"
+          title="Who owns what"
+          intro="Each layer has an owner, and two things stay firmly outside the design system: brand settings and marketplace artwork."
+        >
+          <DefinitionRows
+            rows={OWNERSHIP_MODEL.map((o) => ({
+              term: o.layer,
+              detail: `Owned by ${o.ownedBy}. Changing it requires: ${o.changesRequire}.`,
+              meta: `Outside it: ${o.outsideTheSystem}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="fit-migration"
+          eyebrow="How it fits"
+          title="Why any tidy-up needs its own approval"
+          intro="Nothing has been tidied up. If it ever is, this is the order it would happen in, and every step would be checked against the live product first."
+        >
+          <DefinitionRows
+            rows={MIGRATION_STAGES.map((m) => ({ term: `${m.stage}. ${m.name}`, detail: m.meaning }))}
+          />
+          <div className="mt-4">
+            <RuleList items={MIGRATION_BOUNDARY} tone="warning" />
+          </div>
         </RefSection>
 
         <footer className="border-t border-hairline py-10 text-xs text-muted-foreground">
