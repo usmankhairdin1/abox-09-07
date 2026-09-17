@@ -1541,6 +1541,233 @@ function DesignSystemPage() {
             </MaturityCallout>
           </RefBlock>
         </RefSection>
+        <RefSection
+          id="component-taxonomy"
+          eyebrow="Phase 5 audit"
+          title="Component taxonomy"
+          intro="Fifteen categories, one per component. Where the category is genuinely arguable the record says so rather than forcing a choice."
+        >
+          <FoundationTable entries={COMPONENT_TAXONOMY.entries} />
+        </RefSection>
+
+        <RefSection
+          id="component-source-inventory"
+          eyebrow="Phase 5 audit"
+          title="Complete component source inventory"
+          intro="Every reusable component discovered in the codebase: ABox business components, shadcn primitives, shells, the one icon component, the module kits and the reference-only layer. Consumer counts were measured by import path with each component's own folder and both reference pages excluded."
+        >
+          {COMPONENT_GROUPS.map((group) => (
+            <RefBlock key={group.id} title={group.title} note={group.summary}>
+              <ComponentTable entries={[...group.entries]} />
+            </RefBlock>
+          ))}
+        </RefSection>
+
+        <RefSection
+          id="component-consumers"
+          eyebrow="Phase 5 audit"
+          title="Consumer map"
+          intro="Direct means the file imports the component. Indirect means it renders through another component — a distinction that matters for motion, OverflowText and ToothIcon, whose direct counts understate their reach."
+        >
+          <RelationshipTable entries={CONSUMER_MAP.entries} />
+        </RefSection>
+
+        <RefSection
+          id="component-experience"
+          eyebrow="Phase 5 audit"
+          title="Shared vs experience-specific"
+          intro="Derived from actual consumers, not from naming. One core system; the experience sections below are contextual usage guidance only."
+        >
+          <DefinitionRows
+            rows={COMPONENT_EXPERIENCE_SPLIT.map((e) => ({
+              term: e.experience,
+              detail: e.guidance,
+              meta: e.components,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="component-anatomy"
+          eyebrow="Phase 5 audit"
+          title="Component anatomy"
+          intro="The parts that actually exist, in render order. Missing parts — a table toolbar, a pagination row, a loading part on Button — are recorded as absent rather than invented."
+        >
+          <AnatomyList entries={COMPONENT_ANATOMY} />
+        </RefSection>
+
+        <RefSection
+          id="component-variants"
+          eyebrow="Phase 5 audit"
+          title="Variant inventory"
+          intro="Variant names are recorded exactly as written in code. Nothing was renamed, normalized or consolidated."
+        >
+          <VariantTable entries={[...COMPONENT_VARIANTS]} />
+        </RefSection>
+
+        <RefSection
+          id="component-sizes"
+          eyebrow="Phase 5 audit"
+          title="Size inventory"
+          intro="Actual control heights, padding, gaps and icon dimensions. Cross-references the Phase 2 spacing ladder and the Phase 4 icon sizes."
+        >
+          <DimensionTable entries={[...COMPONENT_SIZES]} />
+        </RefSection>
+
+        <RefSection
+          id="component-state-audit"
+          eyebrow="Phase 5 audit"
+          title="Component state inventory"
+          intro="Only the states that exist today. No missing state was added, and gaps are recorded as future opportunities."
+        >
+          <ComponentStateTable entries={[...COMPONENT_STATES]} />
+        </RefSection>
+
+        <RefSection
+          id="component-responsive"
+          eyebrow="Phase 5 audit"
+          title="Responsive component behaviour"
+          intro="Measured behaviour only. Cross-references the Phase 2 responsive audit; no breakpoint was changed."
+        >
+          <RelationshipTable entries={COMPONENT_RESPONSIVE.entries} />
+        </RefSection>
+
+        <RefSection
+          id="component-composition"
+          eyebrow="Phase 5 audit"
+          title="Component relationships"
+          intro="Recurring parent to child relationships, each marked shared, experience-specific, or repeated without an owning component."
+        >
+          <RelationshipTable entries={COMPONENT_COMPOSITION.entries} />
+        </RefSection>
+
+        <RefSection
+          id="component-classification"
+          eyebrow="Phase 5 audit"
+          title="Composition vs component"
+          intro="Not everything reusable should become a Figma component, and not everything repeated should become a production component. This classification is the input to that decision."
+        >
+          <RelationshipTable entries={COMPOSITION_CLASSIFICATION.entries} />
+        </RefSection>
+
+        <RefSection
+          id="component-duplication"
+          eyebrow="Phase 5 audit"
+          title="Duplication and overlap findings"
+          intro="Recorded only. No component was consolidated, renamed or removed, and no winner was chosen."
+        >
+          <RuleList items={DUPLICATION_FINDINGS} tone="warning" />
+        </RefSection>
+
+        <RefSection
+          id="component-unused"
+          eyebrow="Phase 5 audit"
+          title="Installed but unused"
+          intro="Components, variants and states that exist and have no located consumer. Confidence is stated per finding; nothing was deleted or uninstalled."
+        >
+          <RuleList items={UNUSED_FINDINGS} tone="warning" />
+        </RefSection>
+
+        <RefSection
+          id="component-a11y"
+          eyebrow="Phase 5 audit"
+          title="Component accessibility inventory"
+          intro="What the components actually do. Cross-references the Phase 4 icon accessibility findings; nothing was repaired in this phase."
+        >
+          <RelationshipTable entries={COMPONENT_ACCESSIBILITY.entries} />
+        </RefSection>
+
+        <RefSection
+          id="component-crossref"
+          eyebrow="Phase 5 audit"
+          title="Typography, spacing and iconography cross-reference"
+          intro="How representative components consume the Phase 2, 3 and 4 findings. Values are recorded as implemented."
+        >
+          <RefBlock title="Typography" note="Cross-reference to the Phase 3 type audit.">
+            <RelationshipTable entries={COMPONENT_TYPOGRAPHY_CROSSREF.entries} />
+          </RefBlock>
+          <RefBlock title="Spacing" note="Cross-reference to the Phase 2 spacing audit.">
+            <RelationshipTable entries={COMPONENT_SPACING_CROSSREF.entries} />
+          </RefBlock>
+          <RefBlock title="Iconography" note="Cross-reference to the Phase 4 icon audit.">
+            <RelationshipTable entries={COMPONENT_ICON_CROSSREF.entries} />
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="component-maturity"
+          eyebrow="Phase 5 audit"
+          title="Component maturity"
+          intro="Descriptive categories only — no scores, rankings or overall grades."
+        >
+          <DefinitionRows
+            rows={COMPONENT_MATURITY.map((m) => ({
+              term: m.area,
+              detail: m.detail,
+              meta: m.state,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="component-governance"
+          eyebrow="Phase 5 audit"
+          title="Component governance"
+          intro="Rules that describe how the component layer is kept coherent. Documentation, not a runtime mechanism."
+        >
+          <RefBlock title="Governance rules">
+            <RuleList items={COMPONENT_GOVERNANCE_RULES} />
+          </RefBlock>
+          <RefBlock title="Unowned areas">
+            <RuleList items={COMPONENT_UNOWNED_AREAS} tone="warning" />
+          </RefBlock>
+          <RefBlock title="Deferred opportunities">
+            <MaturityCallout
+              kind="opportunity"
+              title="Not applied — every item would change rendered screens"
+            >
+              <ul className="mt-2 space-y-2">
+                {COMPONENT_DEFERRED_OPPORTUNITIES.map((o) => (
+                  <li key={o.title}>
+                    <span className="font-medium text-foreground">{o.title}</span> — {o.detail}{" "}
+                    <MetaChip tone="warning">{o.risk}</MetaChip>
+                  </li>
+                ))}
+              </ul>
+            </MaturityCallout>
+          </RefBlock>
+        </RefSection>
+
+        <RefSection
+          id="component-figma"
+          eyebrow="Phase 5 audit"
+          title="Figma component mapping"
+          intro="A mapping specification only. Nothing has been converted, no Figma component exists, and no DOM-to-Figma conversion is implied."
+        >
+          <DefinitionRows
+            rows={FIGMA_COMPONENT_MAPPING.map((m) => ({
+              term: m.production,
+              detail: `→ ${m.figma}. ${m.note}`,
+            }))}
+          />
+        </RefSection>
+
+        <RefSection
+          id="future-figma-library"
+          eyebrow="Future Figma organization"
+          title="Core component library blueprint"
+          intro="A proposed organization for a future Figma library, derived strictly from the discovered production inventory. This hierarchy does not exist in production today."
+        >
+          <MaturityCallout kind="opportunity" title="Future Figma organization — not yet built">
+            <p>
+              One core library plus contextual experience guidance. No experience gets its own
+              competing system.
+            </p>
+          </MaturityCallout>
+          <DefinitionRows
+            rows={FUTURE_FIGMA_ORGANIZATION.map((f) => ({ term: f.level, detail: f.detail }))}
+          />
+        </RefSection>
       </RefContainer>
     </RefPage>
   );
