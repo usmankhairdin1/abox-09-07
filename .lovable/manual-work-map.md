@@ -591,3 +591,21 @@ Deferred, not implemented: two competing label shapes (`block text-sm` + inner `
 **Validation evidence.** No production source touched; `git diff --check` clean; working tree shows only this governance file. Harness build OK. Import-boundary scans, consumer counts and class-cluster counts recorded above are fresh measurements from this phase.
 
 **Rollback.** Production rollback surface is empty. Roll back Phase 44 by deleting only this documentation block; Phases 1–43 are unaffected.
+
+## Phase 45 — Governance Enforcement Batch A: static import & ownership boundaries (IMPLEMENTED)
+
+**Outcome.** Configuration-only. The single changed source file is `eslint.config.js`; zero `src/` files, routes, components, styles, assets, branding or business logic changed. Full lint total is unchanged at the 16,783 pre-existing baseline and `no-restricted-imports` reports zero findings — the three rules freeze an already-compliant repository rather than change it.
+
+**E1 — reference/design layers are documentation-only.** Production code may not import `@/lib/design`, `@/lib/design/*`, `@/lib/design-tokens`, `@/components/design` or `@/components/design/*`. Severity `error`, global. Documented exceptions enumerated file-by-file: `src/routes/design-system.tsx`, `src/routes/design-guide.tsx`, `src/components/design/**`, `src/lib/design/**`, `src/lib/design-tokens.ts`. The exception list is explicit, so no new production file inherits it. The reverse direction (design importing production) is not restricted by this rule; Phase 44 found no violation there.
+
+**E2 — one table source, no pagination system.** No file may import `@/components/ui/table` or `@/components/ui/pagination`. Severity `error`, applied everywhere including the reference surfaces. `src/components/abox/data-table.tsx` remains the only ABox table source; the two shadcn files remain in the tree, unmodified and unconsumed. Adopting them requires an explicitly approved phase.
+
+**E4 — the three shells stay independent.** Per-file restrictions on `internal-shell.tsx`, `marketplace-shell.tsx` and `member-shell.tsx`: each may not import either sibling shell, by relative or `@/components/abox/...` path. Severity `error`, scoped to those three files only, so routes continue importing whichever single shell they render. Only the merge direction is forbidden; no universal shell exists or is permitted.
+
+**Config shape.** The pre-existing `server-only` `no-restricted-imports` path entry is preserved in every block. E1/E2 patterns and the shell restriction are defined once as shared constants at the top of `eslint.config.js` and reused across the main block, the reference override and the three shell overrides, so per-file overrides cannot silently drop a boundary.
+
+**Validation evidence.** Baseline lint 16,783 findings before; 16,783 after, `no-restricted-imports` findings 0. Negative controls via `eslint --stdin` confirmed: a `@/components/ui/table` import is blocked in a production route and in a reference route; a `@/lib/design/*` import is blocked in a production route and allowed in `design-system.tsx`; a sibling-shell import is blocked inside `internal-shell.tsx` and allowed in a route; the `server-only` restriction still fires. Typecheck clean; harness build OK; `git diff --check` clean; all twenty-one locked SHA-256 hashes (canonical ABox sources, three shells, `marketplace-store.ts`, `logo.tsx`, `ui/table.tsx`, `ui/pagination.tsx`, `styles.css`, `__root.tsx`) unchanged. Import counts unchanged: reference-layer importers 3 (both reference routes plus `reference-kit.tsx`), `ui/table` 0, `ui/pagination` 0, shell-to-shell 0.
+
+**Not included.** E3 (ban `@/lib/marketplace-store` imports inside design/reference layers), E5 (raw hex/oklch scan), E6 (consumer-count report), E7 (duplicate-export scan) are not implemented. No script, scanner, report generator or registry was created.
+
+**Rollback.** Deterministic and single-file: restore `eslint.config.js` to its prior form (one `no-restricted-imports` `paths` entry for `server-only`, no patterns, no overrides) and delete this governance block. No production source rollback is required because none changed. Then rerun typecheck, build and full lint, and confirm the locked hashes. Phases 1–44 are unaffected.
