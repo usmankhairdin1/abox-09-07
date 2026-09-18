@@ -73,7 +73,7 @@ function Page() {
               <button
                 onClick={() => cartStore.toggleCompare(plan.id)}
                 aria-pressed={cart.compareIds.includes(plan.id)}
-                className="inline-flex h-10 items-center rounded-full border border-border px-4 text-sm hover:bg-accent"
+                className={actionPillClass("outlineMdPlain")}
               >
                 {cart.compareIds.includes(plan.id) ? "In compare" : "Add to compare"}
               </button>
