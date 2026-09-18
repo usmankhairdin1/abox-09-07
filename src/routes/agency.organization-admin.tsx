@@ -14,7 +14,7 @@ import {
   useOrgState, getDirectDownlines, getReadiness, ROOT_ORGANIZATION_ID,
   ORG_TYPE_LABEL, type Organization,
 } from "@/lib/org-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/organization-admin")({
   head: () => ({ meta: [{ title: "Root Agency Administration — ABox" }, { name: "description", content: "Operational summary and root quick actions." }] }),
@@ -50,7 +50,7 @@ function Page() {
     <InternalShell
       workspace="agency" pageTitle="Root Agency Administration" eyebrow="Organization · M05"
       actions={
-        <Link to="/agency/downlines/new/identity" className={ACTION_PILL.primaryMd}>
+        <Link to="/agency/downlines/new/identity" className={actionPillClass("primaryMd")}>
           <Plus className="h-4 w-4" aria-hidden /> Create downline agency
         </Link>
       }
@@ -58,16 +58,16 @@ function Page() {
       <DownlineContextBanner />
 
       <div className="mb-6 flex flex-wrap gap-2">
-        <Link to="/agency/organization-structure" className={ACTION_PILL.outlineSmCard}>
+        <Link to="/agency/organization-structure" className={actionPillClass("outlineSmCard")}>
           <GitBranch className="h-3.5 w-3.5" aria-hidden /> Structure
         </Link>
-        <Link to="/agency/organization-imports" className={ACTION_PILL.outlineSmCard}>
+        <Link to="/agency/organization-imports" className={actionPillClass("outlineSmCard")}>
           <Upload className="h-3.5 w-3.5" aria-hidden /> Import CSV
         </Link>
-        <Link to="/agency/organization-defaults/apply" className={ACTION_PILL.outlineSmCard}>
+        <Link to="/agency/organization-defaults/apply" className={actionPillClass("outlineSmCard")}>
           <Settings2 className="h-3.5 w-3.5" aria-hidden /> Apply root defaults
         </Link>
-        <Link to="/agency/organization-work" className={ACTION_PILL.outlineSmCard}>
+        <Link to="/agency/organization-work" className={actionPillClass("outlineSmCard")}>
           <ListTodo className="h-3.5 w-3.5" aria-hidden /> Tasks &amp; exceptions
         </Link>
       </div>

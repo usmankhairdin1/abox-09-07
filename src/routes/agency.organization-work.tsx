@@ -8,7 +8,7 @@ import { AlertTriangle, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { orgStore, useOrgState, getOrganization, TASK_TYPE_LABEL, type TaskStatus } from "@/lib/org-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/organization-work")({
   head: () => ({ meta: [{ title: "Organization Tasks and Exceptions — ABox" }, { name: "description", content: "Fixed M05 work types and escalation." }] }),
@@ -71,18 +71,18 @@ function Page() {
                   </div>
                   {t.status === "OPEN" && (
                     <div className="flex shrink-0 items-center gap-2">
-                      <button
+                      <ActionPill
                         onClick={() => orgStore.escalateTask(t.task_id)}
-                        className={ACTION_PILL.outlineXs}
+                        variant="outlineXs"
                       >
                         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden /> Escalate to JET
-                      </button>
-                      <button
+                      </ActionPill>
+                      <ActionPill
                         onClick={() => setResolvingId(resolvingId === t.task_id ? null : t.task_id)}
-                        className={ACTION_PILL.primaryXs}
+                        variant="primaryXs"
                       >
                         <CheckCircle2 className="h-3.5 w-3.5" aria-hidden /> Resolve
-                      </button>
+                      </ActionPill>
                     </div>
                   )}
                 </div>
