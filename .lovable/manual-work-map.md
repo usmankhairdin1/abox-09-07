@@ -320,6 +320,22 @@ Left literal, with reason:
 - `src/routes/plans.$planId.tsx:218` — dashed-border placeholder link, no `bg-card`.
 - `src/components/abox/plan-card.tsx:44`, `kpi-card.tsx`, Lucie, Lucie-app, M06, M08, shells, overlays — excluded systems, untouched.
 
+## Phase 33 — Form control surface (2026-09-18)
+
+New canonical class source: `src/components/abox/control.tsx` (`controlClass({ height, focusRing })`, md5 `1c6efd5cf752b69d16458b6af82b5d4f`). Class-level only: consumers keep their own native element, props, value, handlers, label association and accessibility attributes. Emission order height -> base -> focusRing. `src/components/abox/surface.tsx` unchanged (`51b51b31bee3283794f6a05af03f2878`).
+
+Migrated (measured byte-identical parity at 1440/834/390 — rest, hover, focus, filled; class string, DOM, attributes, required/disabled/validity, label rect, geometry, overflow, zero console errors):
+- `src/routes/auth.tsx:210` email, `:195` full name, `:244` mobile phone — `cn("mt-1", controlClass({ height: "lg", focusRing: true }))`.
+- `src/routes/schedule.tsx:86,92,97` name, phone, topic select — same usage.
+
+Left literal, with reason:
+- `src/routes/auth.tsx:226` (password, `pl-9 pr-3` icon padding) and `:257` (OTP, `tracking-widest tabular-nums`, only rendered after a code is sent) — not the canonical control string / not reachable for measurement.
+- All `h-10`/`h-11` controls in `member.settings`, `app.*`, `agency.*`, `platform.*`, `marketplace.admin.*` — routes redirect to `/auth` or render blank without a session, so parity evidence is NOT CAPTURED. Re-audit once a session is available.
+- `src/routes/quote.tsx` control kit (`bg-surface`, `py-2.5`, `focus-visible:ring-2`), `src/routes/apply.tsx:319` `Field` (`py-2`, `focus:border-primary`), `app.off-exchange.tsx:113`, `app.jet.module1.tsx:97` — route-local kits on different vocabularies.
+- `src/components/ui/*` (shadcn `h-9 rounded-md border-input`), `m06/kit.tsx`, `lucie-app/ui.tsx`, M08, ai-elements — separate systems, untouched; no competing source created for them.
+
+Foundation gaps recorded, not fixed: `h-10` vs `h-11` control heights; `focus:ring-2 focus:ring-ring` vs `focus-visible:ring-1` vs `focus:border-primary`; `border-border` vs `border-input`; `bg-background` vs `bg-surface`.
+
 ---
 
 *Audit only. No file under `src/` or `public/` was created, modified or deleted while producing this map.*

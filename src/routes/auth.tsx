@@ -3,6 +3,7 @@
  * Design and behaviour aligned to the ABox reference marketplace auth screen:
  * email+password or phone OTP, with light consent capture on registration.
  */
+import { controlClass } from "@/components/abox/control";
 import { surfaceClass } from "@/components/abox/surface";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -191,7 +192,7 @@ function Page() {
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="mt-1 h-11 w-full rounded-lg border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-ring"
+                    className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))}
                     placeholder="Jordan Rivera"
                   />
                 </label>
@@ -206,7 +207,7 @@ function Page() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="mt-1 h-11 w-full rounded-lg border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-ring"
+                      className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))}
                       placeholder="you@example.com"
                     />
                   </label>
@@ -240,7 +241,7 @@ function Page() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       inputMode="tel"
-                      className="mt-1 h-11 w-full rounded-lg border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-ring"
+                      className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))}
                       placeholder="+1 (555) 123-4567"
                     />
                   </label>

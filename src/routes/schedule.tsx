@@ -1,6 +1,7 @@
 /**
  * UX-022 — Schedule Time / Request Call
  */
+import { controlClass } from "@/components/abox/control";
 import { surfaceClass } from "@/components/abox/surface";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -82,18 +83,18 @@ function Page() {
               <span className="text-eyebrow">Your name</span>
               <input required autoComplete="name" value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                className="mt-1 h-11 w-full rounded-lg border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-ring" />
+                className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))} />
             </label>
             <label className="block text-sm">
               <span className="text-eyebrow">Best phone</span>
               <input required inputMode="tel" autoComplete="tel" value={form.phone}
                 onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                className="mt-1 h-11 w-full rounded-lg border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-ring" />
+                className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))} />
             </label>
             <label className="block text-sm">
               <span className="text-eyebrow">What's the call about?</span>
               <select value={form.topic} onChange={(e) => setForm((f) => ({ ...f, topic: e.target.value }))}
-                className="mt-1 h-11 w-full rounded-lg border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-ring">
+                className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))}>
                 <option>General questions</option>
                 <option>Compare specific plans</option>
                 <option>Subsidy questions</option>
