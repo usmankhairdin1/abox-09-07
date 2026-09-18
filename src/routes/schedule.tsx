@@ -2,6 +2,7 @@
  * UX-022 — Schedule Time / Request Call
  */
 import { controlClass } from "@/components/abox/control";
+import { LabeledField } from "@/components/abox/field";
 import { surfaceClass } from "@/components/abox/surface";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -79,20 +80,17 @@ function Page() {
               <Calendar className="h-4 w-4 text-primary" aria-hidden />
               <span>{slot.day} at <span className="font-medium">{slot.when}</span> with {slot.producer}</span>
             </div>
-            <label className="block text-sm">
-              <span className="text-eyebrow">Your name</span>
+            <LabeledField label="Your name">
               <input required autoComplete="name" value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))} />
-            </label>
-            <label className="block text-sm">
-              <span className="text-eyebrow">Best phone</span>
+            </LabeledField>
+            <LabeledField label="Best phone">
               <input required inputMode="tel" autoComplete="tel" value={form.phone}
                 onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
                 className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))} />
-            </label>
-            <label className="block text-sm">
-              <span className="text-eyebrow">What's the call about?</span>
+            </LabeledField>
+            <LabeledField label="What's the call about?">
               <select value={form.topic} onChange={(e) => setForm((f) => ({ ...f, topic: e.target.value }))}
                 className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))}>
                 <option>General questions</option>
@@ -101,7 +99,7 @@ function Page() {
                 <option>Employer ICHRA</option>
                 <option>Ready to enroll</option>
               </select>
-            </label>
+            </LabeledField>
             <div className="flex items-center justify-between">
               <button type="button" onClick={() => setStep("pick")} className="text-sm text-muted-foreground hover:text-foreground">
                 ← Pick a different slot

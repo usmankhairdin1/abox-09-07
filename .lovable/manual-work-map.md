@@ -336,6 +336,23 @@ Left literal, with reason:
 
 Foundation gaps recorded, not fixed: `h-10` vs `h-11` control heights; `focus:ring-2 focus:ring-ring` vs `focus-visible:ring-1` vs `focus:border-primary`; `border-border` vs `border-input`; `bg-background` vs `bg-surface`.
 
+## Phase 34 — Wrapping-label field composition (2026-09-18)
+
+New canonical composition: `src/components/abox/field.tsx` — `LabeledField({ label, className, children })`, md5 `f35b23647e16f71451ce95a584a9951e`. Renders exactly `<label className="block text-sm"><span className="text-eyebrow">{label}</span>{children}</label>`. Control element, props, value, handlers, validation, required semantics and classes stay consumer-owned as children. Label association stays implicit through the wrapping label; no htmlFor/id pairing, no generated ids, no ARIA added. `control.tsx` (`1c6efd5cf752b69d16458b6af82b5d4f`) and `surface.tsx` (`51b51b31bee3283794f6a05af03f2878`) unchanged.
+
+Migrated (6 consumers, byte-identical `outerHTML`, full element tree, computed styles, geometry, control state — required/validity/value/labels/tabIndex — and zero console errors at 1440/834/390 in rest, focus and filled states):
+- Batch 1: `src/routes/schedule.tsx` Your name.
+- Batch 2: `src/routes/schedule.tsx` Best phone, What's the call about? (select).
+- Batch 3: `src/routes/auth.tsx` Full name (register), Email, Password (keeps its `relative mt-1` wrapper and icon as children), Mobile phone (phone-OTP method).
+
+Left literal, with reason:
+- `src/routes/auth.tsx:246` Verification code — only rendered after an OTP is sent, not reachable for measurement; also carries a trailing help `<p>` inside the label. NOT CAPTURED.
+- `<label className="mb-1 block text-eyebrow">` family (~52 across `marketplace.admin.*`, `platform.*`, `agency.organizations.*`) and remaining `block text-sm` labels in `agency.downlines.new.*`, `app.*` — different composition and/or auth-gated routes that redirect to `/auth` or render blank without a session. NOT CAPTURED; no migration attempted.
+- Route-local helpers left untouched on their own vocabularies: `quote.tsx` `Field` (htmlFor pairing, `mt-1.5` slot, `role="alert"` error / hint with generated `-error`/`-hint` ids and aria-describedby), `apply.tsx` `Field`, `app.off-exchange.tsx`, `app.jet.module1.tsx`.
+- `src/components/ui/form.tsx` has no production consumers (reference layer only) — recorded as unused, not canonical; no competing ABox FormField created and its DOM/classes differ from every route composition.
+
+Deferred, not implemented: two competing label shapes (`block text-sm` + inner `text-eyebrow` span vs `mb-1 block text-eyebrow` label), `mt-1` vs `mt-1.5` label/control gaps, control-height and focus-ring vocabulary normalization, help/error message spacing, aria-describedby coverage outside `quote.tsx`.
+
 ---
 
 *Audit only. No file under `src/` or `public/` was created, modified or deleted while producing this map.*

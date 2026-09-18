@@ -3,6 +3,7 @@
  * Design and behaviour aligned to the ABox reference marketplace auth screen:
  * email+password or phone OTP, with light consent capture on registration.
  */
+import { LabeledField } from "@/components/abox/field";
 import { controlClass } from "@/components/abox/control";
 import { surfaceClass } from "@/components/abox/surface";
 import { cn } from "@/lib/utils";
@@ -184,8 +185,7 @@ function Page() {
 
             <form onSubmit={submit} className="space-y-3" noValidate>
               {mode === "register" && (
-                <label className="block text-sm">
-                  <span className="text-eyebrow">Full name</span>
+                <LabeledField label="Full name">
                   <input
                     type="text"
                     autoComplete="name"
@@ -195,12 +195,11 @@ function Page() {
                     className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))}
                     placeholder="Jordan Rivera"
                   />
-                </label>
+                </LabeledField>
               )}
               {method === "email" ? (
                 <>
-                  <label className="block text-sm">
-                    <span className="text-eyebrow">Email</span>
+                  <LabeledField label="Email">
                     <input
                       type="email"
                       autoComplete="email"
@@ -210,9 +209,8 @@ function Page() {
                       className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))}
                       placeholder="you@example.com"
                     />
-                  </label>
-                  <label className="block text-sm">
-                    <span className="text-eyebrow">Password</span>
+                  </LabeledField>
+                  <LabeledField label="Password">
                     <div className="relative mt-1">
                       <Lock
                         className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
@@ -228,12 +226,11 @@ function Page() {
                         placeholder={mode === "register" ? "At least 8 characters" : "••••••••"}
                       />
                     </div>
-                  </label>
+                  </LabeledField>
                 </>
               ) : (
                 <>
-                  <label className="block text-sm">
-                    <span className="text-eyebrow">Mobile phone</span>
+                  <LabeledField label="Mobile phone">
                     <input
                       type="tel"
                       autoComplete="tel"
@@ -244,7 +241,7 @@ function Page() {
                       className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))}
                       placeholder="+1 (555) 123-4567"
                     />
-                  </label>
+                  </LabeledField>
                   {otpSent && (
                     <label className="block text-sm">
                       <span className="text-eyebrow">Verification code</span>
