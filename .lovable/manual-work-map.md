@@ -535,3 +535,35 @@ Deferred, not implemented: two competing label shapes (`block text-sm` + inner `
 **Governance rules established.** No second canonical table source may be introduced. `src/components/ui/table.tsx` and `src/components/ui/pagination.tsx` remain unconsumed and may not be adopted without an explicit approved phase. No table abstraction may alter DOM semantics. Pagination may never be centralized from visual similarity alone. Responsive variants must remain behaviorally equivalent. Business-coupled data displays stay independently owned. Every future migration requires exact parity evidence at 1440/834/390 covering DOM, class output, computed styles, geometry, wrapping, overflow, interaction states, keyboard behaviour, accessibility tree and business behaviour. Zero migration remains a valid outcome.
 
 **Rollback.** No production change, so production rollback is empty. Roll back Phase 42 by deleting only this documentation block; Phases 29–41 are unaffected.
+
+---
+
+## Phase 43 — Production Branding / White-Label Propagation & Asset Ownership Audit
+
+**Outcome: ZERO production migrations.** No production file, asset, logo, colour, route, content or runtime ownership changed. This documentation block is the only change.
+
+**Canonical runtime White-Label owner.** The versioned `Brand` record in `src/lib/marketplace-store.ts` (`display_name`, `tagline_en/es`, `headline_en/es`, `intro_en/es`, `primary_color`, `accent_color`, `logo_asset_id`, `favicon_asset_id`, `status`, `version`), read through `getActiveBrand` / `getDraftBrand` and published through Publication Review. Seeded active brand `brand-active-001` (`ABox`, `Agency in a Box`, `#c05a2e`, `#2e6b5e`). Runtime-owned; never a design token.
+
+**Canonical brand-mark source.** `src/components/abox/logo.tsx` (`AboxMark`, `AboxWordmark`), code-drawn inline SVG with nine production consumers: marketplace-shell, internal-shell, member-shell, placeholder-screen, planai-assistant, plan-o-assistant, `routes/index.tsx`, `routes/quote.tsx`, `routes/app.jet.branding.tsx`. No logo image file ships; `public/favicon.ico` is the only brand-adjacent image asset. All 26 other `AboxMark` references live in `src/lib/design/**`, `/design-system` and `/design-guide` and are documentation only.
+
+**Marketplace Asset Management boundary.** Asset lifecycle (upload, scan, validate, retire) and `logo_asset_id` / `favicon_asset_id` belong to `marketplace.admin.assets.tsx` plus the store's asset collection. Assets may never be copied, mirrored or re-owned by the design/reference layer.
+
+**Shell-specific branding presentation.** `marketplace-shell.tsx` consumes `getActiveBrand` and owns presentation plus its own `?? "ABox"` / `?? "Agency in a Box"` fallbacks. `internal-shell.tsx` and `member-shell.tsx` render literal `ABox` and do not read the brand record. The three shells remain intentionally independent; no merge, no universal shell, no shared branding wrapper.
+
+**Duplicate-source register (documented, not fixed).** D1 — 37 literal `ABox` / `Agency in a Box` occurrences in production source while a runtime `display_name` exists (both non-marketplace shells and all route `head()` titles bypass the runtime owner). D2 — fallback strings duplicated inside marketplace-shell. D3 — foundation oklch values re-typed as literals in the JET branding swatch list. D4 — brand `primary_color` / `accent_color` reach no rendered style outside the admin live-preview blocks. D5 — design/reference layer documents brand components but no production file imports it; boundary intact.
+
+**Candidates, all rejected for now.** C1 wire shells to `display_name` — both shells auth-gated, behaviour would change on tenant rename. C2 move marketplace-shell fallbacks to the store — no output change and no defect fixed. C3 route `head()` titles — static prerendered metadata; runtime brand unavailable at head time. C4 `favicon_asset_id` → static favicon — crosses the Marketplace Asset Management boundary. C5 brand colours → theme — no application path; would repaint the app. C6 `AboxMark` — already single-sourced. C7 JET branding swatch literals — route-specific display copy.
+
+**Prohibited duplication.** Runtime branding and White-Label values may never be duplicated into `src/lib/design/**`, `src/components/design/**`, `/design-system` or `/design-guide`. Design tokens may define semantic roles such as "brand primary" but must never replace tenant values. No asset may be consolidated, renamed, moved or deleted on visual similarity.
+
+**Runtime mutation mechanism.** A non-destructive path exists for a future proof: `marketplace.admin.brand.tsx` creates a DRAFT brand and `marketplace.admin.preview.tsx` renders it, so a tenant value can be varied without publishing. Both are auth-gated, so it was not exercised in this phase; no temporary branding code or test-only branch was created.
+
+**Measurable public evidence.** `/`, `/plans`, `/compare`, `/cart`, `/review`, `/handoff`, `/quote?step=1`, `/select`, `/faq` at 1440/834/390. Every route exposed the marketplace-shell home link with accessible name `ABox home`, header text `ABox | AGENCY IN A BOX` at 1440 and 834 and visually hidden at 390 (responsive, link and accessible name preserved), the footer brand block `ABox / AGENCY IN A BOX`, a 34px header mark and a 40px footer mark on every route (plus a 30px in-page mark on `/quote?step=1`). Zero console errors at all three viewports.
+
+**NOT CAPTURED (auth-gated).** `/app/*` including `app.jet.branding`, `/agency/*`, `/platform/*`, `/marketplace/admin/*` (brand, preview, compare, releases, assets), `/member/*`. Source inspected only; no runtime parity inferred, no session or tenant state fabricated.
+
+**Future migration parity requirements.** Any approved branding migration must prove identical runtime source, asset identity/path, rendered text, mark geometry, DOM tree, class output, attributes, computed styles, responsive behaviour at 1440/834/390, fallback behaviour when the brand record is absent, loading behaviour, accessibility tree and accessible names, keyboard behaviour where relevant, navigation behaviour, unchanged tenant/organization coupling, an uncrossed Marketplace Asset Management boundary, clean console, `tsgo`, build, lint against the existing baseline, locked hashes and `git diff`.
+
+**Locked sources (Phase 43 baseline).** logo.tsx `957837a6…`; marketplace-shell.tsx `126ceb89…`; internal-shell.tsx `287a3715…`; member-shell.tsx `24e0660c…`; marketplace-store.ts `7af80f80…`; marketplace.admin.brand.tsx `cb4c78ce…`; app.jet.branding.tsx `a9be565b…`; marketplace.admin.assets.tsx `9c27ea99…`; styles.css `c88dbdab…`; __root.tsx `3d65167f…`.
+
+**Zero-migration validity and rollback.** Zero migration is a valid and recorded outcome. Production rollback surface is empty; roll back Phase 43 by deleting only this documentation block. Phases 29–42 are unaffected.
