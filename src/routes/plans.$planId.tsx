@@ -194,7 +194,7 @@ function Page() {
           {/* Right — sticky summary */}
           <aside className="space-y-4">
             <div className="sticky top-24 space-y-4">
-              <div className="rounded-2xl border border-border bg-card p-5">
+              <Surface>
                 <p className="text-eyebrow">Estimated cost</p>
                 <div className="mt-2 flex items-baseline gap-1">
                   <span className="text-display text-4xl tabular-nums">${subsidizedPrice ?? plan.monthlyPremium}</span>
