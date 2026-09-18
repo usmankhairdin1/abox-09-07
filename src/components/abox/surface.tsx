@@ -51,7 +51,14 @@ export function surfaceClass(opts: SurfaceClassOptions = {}): string {
 export type SurfaceProps = React.HTMLAttributes<HTMLDivElement> & SurfaceClassOptions;
 
 export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(function Surface(
-  { padding = "md", elevated = false, interactiveHover = false, decor = false, className, ...divProps },
+  {
+    padding = "md",
+    elevated = false,
+    interactiveHover = false,
+    decor = false,
+    className,
+    ...divProps
+  },
   ref,
 ) {
   return (
