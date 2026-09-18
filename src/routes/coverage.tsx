@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft, Plus, Check } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 import { SAMPLE_ANCILLARY, type SampleAncillary } from "@/lib/sample-data";
 import { cartStore, useCart, type ProductType } from "@/lib/cart-store";
 import { loadQuoteState } from "@/lib/quote-store";
@@ -37,7 +38,7 @@ function Page() {
           title="Add-on coverage"
           description="Ancillary and supplemental products you can bundle with your health plan or purchase alone."
           actions={
-            <Link to="/plans" className="inline-flex h-10 items-center rounded-full border border-border px-4 text-sm hover:bg-accent">
+            <Link to="/plans" className={actionPillClass("outlineMdPlain")}>
               Shop plans
             </Link>
           }

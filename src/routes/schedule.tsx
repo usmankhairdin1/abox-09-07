@@ -1,6 +1,7 @@
 /**
  * UX-022 — Schedule Time / Request Call
  */
+import { actionPillClass } from "@/components/abox/action-pill-component";
 import { controlClass } from "@/components/abox/control";
 import { LabeledField } from "@/components/abox/field";
 import { surfaceClass } from "@/components/abox/surface";
@@ -63,7 +64,7 @@ function Page() {
               <button
                 onClick={() => slot && setStep("form")}
                 disabled={!slot}
-                className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground disabled:opacity-60"
+                className={actionPillClass("primaryLgPlain", "disabled:opacity-60")}
               >
                 Continue
               </button>

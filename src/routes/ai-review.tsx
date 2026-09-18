@@ -8,6 +8,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Check, Pencil, ShieldAlert } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { SCREENS } from "@/lib/screens";
 
@@ -127,7 +128,7 @@ function Page() {
             <button
               onClick={() => setSubmitted(true)}
               disabled={!allConfirmed || !strictAgree}
-              className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground disabled:opacity-60"
+              className={actionPillClass("primaryLgPlain", "disabled:opacity-60")}
             >
               Confirm and continue
             </button>

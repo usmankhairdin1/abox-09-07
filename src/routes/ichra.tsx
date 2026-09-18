@@ -7,6 +7,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, Check, ArrowRight, Users, DollarSign, ShieldCheck } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/ichra")({
   head: () => ({
@@ -74,7 +75,7 @@ function Page() {
                 Upload a simple census, tell us the allowance, and see illustrative costs by class.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
-                <Link to="/app/employer/ichra" className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground">
+                <Link to="/app/employer/ichra" className={actionPillClass("primaryLgPlain")}>
                   Start a group quote
                 </Link>
                 <Link to="/schedule" className="inline-flex h-11 items-center rounded-full border border-border bg-card px-5 text-sm font-medium">

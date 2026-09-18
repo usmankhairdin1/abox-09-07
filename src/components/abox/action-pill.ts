@@ -38,6 +38,18 @@ export const ACTION_PILL = {
   /** h-11 bordered pill — prominent secondary action. */
   outlineLg:
     "inline-flex h-11 items-center gap-1.5 rounded-full border border-border px-5 text-sm font-medium hover:bg-accent",
+
+  /**
+   * Phase 37 additive variants. Byte-identical copies of literals already in
+   * production; they are deliberately NOT merged with the variants above —
+   * these carry no `gap-*` (no icon slot) and differ in weight/padding/hover.
+   */
+  /** h-10 bordered pill, no icon gap, regular weight — text-only secondary action. */
+  outlineMdPlain:
+    "inline-flex h-10 items-center rounded-full border border-border px-4 text-sm hover:bg-accent",
+  /** h-11 filled pill, no icon gap, no hover rule — text-only primary submit/continue. */
+  primaryLgPlain:
+    "inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground",
 } as const;
 
 export type ActionPillVariant = keyof typeof ACTION_PILL;

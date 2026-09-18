@@ -397,3 +397,33 @@ Deferred, not implemented: two competing label shapes (`block text-sm` + inner `
 **Rollback.** Nothing to roll back; no diff was produced. Phases 29-35 untouched.
 
 **Validation.** `git status` clean before and after apart from this map entry; latest build log reports `build OK`; no source edits, therefore no lint or typecheck delta. Locked hashes re-verified: styles.css 534cd653…, page-header 5be9e6ea…, kpi-card 9279cd20…, empty-state 6cfba448…, field f35b2364…, control 1c6efd5c…, surface 51b51b31…, notice-page 81ee6c0f….
+
+## Phase 37 — Control sizing & icon sizing source of truth (executed)
+
+**Canonical control-sizing owners (unchanged in ownership).** `abox/action-pill.ts` + `action-pill-component.tsx` own the rounded-full action pill treatment; `abox/control.tsx` owns the form-control surface (height, width, radius, border, background, px, opt-in focus ring) and its API was deliberately NOT expanded; shadcn `ui/button.tsx` (default h-9, sm h-8, lg h-10 px-8, icon h-9 w-9, icon-sm h-8 w-8), `ui/input.tsx` h-9, `ui/checkbox.tsx` h-4 w-4, `ui/switch.tsx` h-5 w-9, `ui/tabs.tsx` h-9 own their own primitives — the ABox pill system stays a separate system and was not merged into Button. PageHeader, KpiCard, EmptyState, field, NoticePage, StatusBadge keep component-intrinsic sizing.
+
+**Canonical icon-sizing owner: none, deliberately.** Inventory: `h-4 w-4` 146, `h-3.5 w-3.5` 44, `h-3 w-3` 29, `h-5 w-5` 14, `h-8 w-8` 6, `h-6 w-6` 1, `size-5` 1, `size-3.5` 1. `h-4 w-4` spans leading control icons, nav icons, table action icons, status icons and decorative icons — identical dimensions, different semantic roles. A token would emit the identical string while conflating roles and inviting wrapper/gap geometry to drift into an icon abstraction. No icon token, no icon registry, no `size-*` normalization, no icon replacement. The two stray `size-*` uses are recorded as fragmentation only.
+
+**Source change (additive only).** `action-pill.ts` gained two variants copied byte-for-byte from existing production literals; all eight pre-existing variants are untouched. New hash a5bc83a678aacb67c1209f3bd2bcb405 (was 64024bf5f0ed7f4c1b714a9d3939e9fe).
+- `outlineMdPlain` = `inline-flex h-10 items-center rounded-full border border-border px-4 text-sm hover:bg-accent` (distinct from `outlineMd`: no `gap-1.5`, no `font-medium`).
+- `primaryLgPlain` = `inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground` (distinct from `primaryLg`: no gap, `px-5` not `px-6`, no hover rule).
+
+**Legitimate consumers (migrated, each independently gated and measured identical at 1440/834/390 — DOM, attributes, byte-identical class string, computed box/padding/border/radius/typography, bounding rect, hover and focus geometry, scroll dimensions, zero page overflow change, zero console errors):**
+- `coverage.tsx:41` Link — `actionPillClass("outlineMdPlain")` (Batch 1 proof consumer)
+- `plans.$planId.tsx:77` button — `actionPillClass("outlineMdPlain")`
+- `schedule.tsx:67` button — `actionPillClass("primaryLgPlain", "disabled:opacity-60")` (extra class appended last by `cn()`, preserving original order)
+- `ai-review.tsx:132` button — `actionPillClass("primaryLgPlain", "disabled:opacity-60")`
+- `ichra.tsx:79` Link — `actionPillClass("primaryLgPlain")`
+
+**Intentionally literal / NOT CAPTURED.**
+- `compare.tsx:72` "Clear comparison" — renders only when the compare list is non-empty; not present on load, so no before/after could be measured.
+- `schedule.tsx:108` "Confirm call" — only exists at the form step; in this environment the slot buttons do not register a click (pre-existing, no console error), so the form step is unreachable. Migrated briefly, then reverted to the literal string under the unmeasurable rule.
+- All repeated pill literals on `/app/*`, `/agency/*`, `/platform/*`, `/marketplace/admin/*`, `/member/*` — the 7x `h-10 px-5 hover` group, the 6x and 5x `h-10 px-4` groups, the 3x `h-8` outline group and the long tail. `LOVABLE_BROWSER_AUTH_STATUS=signed_out`; blank without a session. NOT CAPTURED, left literal. Prerequisite for future migration: an authenticated session.
+
+**Fragmentation register (documented, not repaired).** Six near-miss pill strings differing from canonical variants only by a missing `gap-*`, a missing `font-medium`, a missing hover rule or px-4/px-5/px-6; one-off destructive, sage and ghost pills; square icon-control wrappers at h-7/h-8/h-9/h-10/h-11; `size-*` vs `h-N w-N` icon vocabulary; shadcn Button heights (h-9/h-8/h-10) coexisting with the ABox pill heights (h-8/h-9/h-10/h-11).
+
+**Rules.** New text-only secondary/primary pills use the two new variants; no third pill source may be created; a new variant requires >=2 independently measurable consumers and must be a byte-for-byte copy of an existing literal. Icon sizing stays at the call site. `control.tsx` is not extended to cover buttons.
+
+**Rollback.** Per consumer: restore the literal class string and drop the `actionPillClass` import. Per source: delete the two additive keys. Independent per consumer; Phases 29-36 unaffected.
+
+**Validation.** `npx tsgo --noEmit` clean; build OK; `action-pill.ts` lints clean; route lint output is the pre-existing prettier backlog on untouched lines (coverage 17, plans.$planId 22, ichra 12, ai-review 13, schedule 78 — all formatting, none on a migrated line). Locked hashes unchanged: action-pill-component 4c9fb916…, control 1c6efd5c…, ui/button f7a5102d…, page-header 5be9e6ea…, surface 51b51b31…, field f35b2364…, notice-page 81ee6c0f…, styles.css 534cd653….
