@@ -7,6 +7,7 @@ import { Check, ArrowLeft, ShoppingBag, Star, Sparkles, Stethoscope, Pill } from
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { PageHeader } from "@/components/abox/page-header";
+import { Surface } from "@/components/abox/surface";
 import { SAMPLE_PLANS, planMatchScore, type PlanMatchInputs } from "@/lib/sample-data";
 import { SAMPLE_PROVIDERS, SAMPLE_DRUGS } from "@/lib/sample-data-ext";
 import { cartStore, useCart } from "@/lib/cart-store";
@@ -213,7 +214,7 @@ function Page() {
                   <Row label="Metal" value={plan.metalTier} />
                   <Row label="On-exchange" value={plan.onExchange ? "Yes" : "No"} />
                 </div>
-              </div>
+              </Surface>
               <Link to="/coverage" className="block rounded-2xl border border-dashed border-border-strong p-4 text-center text-sm hover:bg-accent">
                 Explore add-on coverage
               </Link>
