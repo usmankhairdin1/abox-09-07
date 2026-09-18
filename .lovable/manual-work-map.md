@@ -858,3 +858,135 @@ Lint total 16,783 · `no-restricted-imports` 0 (unchanged). `tsgo --noEmit` clea
 ### S. Rollback
 
 Delete this block. No production rollback is possible or necessary. Any future migration requires its own separately approved plan-only phase with exact parity evidence at 1440/834/390.
+
+---
+
+## Phase 50 — Figma-native ABox design system & library generation blueprint (plan/extraction only; no `src/` change, no Figma mutation)
+
+Blueprint for converting the completed production architecture (Phases 1–49) into a native Figma library. Nothing is implemented here. Phase 49 decisions are respected and not reopened.
+
+### 1. Executive scope
+
+Target chain: ABox canonical production sources → Figma variables/styles → Figma component sets with real variants and properties → patterns → shell assets → representative screens. Not screenshots, not flattened images, not a hand-rebuilt catalogue. The production implementation is the source of truth for what exists; nothing is redesigned, renamed, merged or normalised on the way into Figma.
+
+**Tooling prerequisite.** Lovable has no cloud Figma connector. A future write phase needs the Lovable Desktop app + Figma Desktop in Dev Mode with the local MCP server enabled; that connector is **read-only**, so Figma *writes* must run through a supported plugin/Make path. Batch 0 cannot start until that path is confirmed.
+
+### 2. Exact source inventory (extraction sources; consumer counts = Phase 49 importer-file scan)
+
+`src/styles.css` — 198 custom properties, two `@theme inline` blocks, `@custom-variant dark`, 13 `@utility` rules, 6 `abox-*` keyframes, `@layer base` typography/reduced-motion/selection rules.
+Components: `action-pill.ts` (`ACTION_PILL` 10 keys, `ActionPillVariant`; 2) · `action-pill-component.tsx` (`ActionPill`, `actionPillClass`; 38) · `status-badge.tsx` (89) · `kpi-card.tsx` (18) · `page-header.tsx` (25) · `data-table.tsx` (`DataTable`, `Column`; 20) · `empty-state.tsx` (10) · `surface.tsx` (`Surface`, `surfaceClass`, `SurfacePadding`; 82) · `control.tsx` (`controlClass`; 2) · `field.tsx` (2) · `notice-page.tsx` (`NoticePage`, `NoticeTone`; 4) · `marketplace-page-layout.ts` (10) · `logo.tsx` (`AboxMark`, `AboxWordmark`; 5) · `motion.tsx` (`FadeRise`, `Stagger`, `StaggerItem`, `CountUp`; 1) · `plan-card.tsx` (6) · `metal-badge.tsx` (25) · `internal-shell.tsx` / `marketplace-shell.tsx` / `member-shell.tsx` · `src/lib/marketplace-store.ts` (Brand record, `getActiveBrand`, `getDraftBrand`) · consumed shadcn/Radix primitives only. No additional canonical ABox component is invented.
+
+### 3. Foundation mapping (disposition per item)
+
+**Colour → Figma variable.** Light `:root` and `.dark` give exactly two modes. Semantic roles: background, foreground, surface/-foreground, panel, ink, card/-foreground, popover/-foreground, primary/-foreground/-soft, secondary/-foreground, sage/-foreground/-soft, muted/-foreground, accent/-foreground, destructive, warning, info, success (+ foregrounds). Status/tier: six `--metal-*` plus six `--metal-*-fg`. Line/field: border, border-strong, hairline, input, ring. Data-vis: `--chart-1..5`. Sidebar: eight `--sidebar-*`. All values are `oklch()`; Figma stores resolved sRGB, so the oklch source string is carried in the variable description (limitation R-3).
+**Runtime-only (never a variable):** Brand `primary_color`, `accent_color`, `logo_asset_id`, `favicon_asset_id`, `display_name`, taglines/headlines/intros.
+**Typography → Figma text style** for the centrally owned roles only: `text-display`, `text-eyebrow`, `text-serial`, plus the `@layer base` `h1,h2,h3/.font-display` role. Families: `--font-sans`/`--font-mono` "Inter Tight", `--font-display`/`--font-serif` "Bricolage Grotesque". `font-variation-settings` (`wdth 102`, `opsz 32/48`) and `font-feature-settings` (`ss01`, `cv11`) are recorded as style descriptions — Figma cannot bind them as variables (R-3). All other typography stays **code-only** (Phase 33).
+**Spacing → Figma variable** only for proven owners: `MARKETPLACE_PAGE_LAYOUT.wide` (`max-w-[88rem]`, px-4/md:px-8, pt-4/md:pt-6, pb-8/md:pb-10) and `.narrow` (`max-w-4xl`, px-4/md:px-8, pt-4/md:pt-6, pb-10/md:pb-14); `ACTION_PILL` geometry (h-8/9/10/11, px-3/4/5/6, gap-1/1.5); `controlClass` heights (h-10/h-11) and `px-3`; Surface padding none/p-4/p-5/p-6. The 139 one-off arbitrary values stay **code-only** (Phase 49 deferral, not reopened).
+**Shape → variable + effect style.** Radius variables `--radius-sm 6 / md 10 / lg 14 / xl 18 / 2xl 22 / 3xl 28 / 4xl 36` and `--radius 0.875rem`. Borders: border / border-strong / hairline / input. Effect styles: `--shadow-card`, `--shadow-elevated`, `--shadow-drawer`, `--shadow-plate`, `--shadow-glow` (each a two-layer oklch stack — representable as two Figma drop shadows).
+**Decoration vocabulary:** `card-brackets`, `edge-sheen`, `ember-underline`, `ring-pill`, `divider-warm` → component/effect representation where exact; `glass`, `noise-field`, `contour`, `aurora` → **documentation-only** (R-3).
+**Layout.** Frame widths 1440 / 834 / 390; `md:` (768px) is the only breakpoint the wrappers use; the `max-width: 640px` base rule enforcing 44px minimum tap targets on `button, a` is documented as an accessibility intent, not a variable. Breakpoints themselves are **library-owned** (Tailwind).
+**Iconography.** lucide-react is the single family; sizes observed h-5 w-5 (EmptyState glyph), icon tiles h-9/h-12/md:h-14 (PageHeader). Decorative icons carry `aria-hidden`; functional ones carry a label. Icons become **instance-swap properties**, never duplicated sets.
+**Motion.** `abox-fade-rise`, `abox-orbit`, `abox-pulse-ring`, `abox-hairline-draw`, `abox-drift`, `abox-shimmer` plus the `prefers-reduced-motion` block → **documentation-only** with optional prototype notes; never components.
+
+### 4. Variable collection blueprint
+
+Collections: `Color/Primitive`, `Color/Semantic`, `Color/Status`, `Color/Sidebar`, `Color/Chart`, `Spacing`, `Radius`, `Border`, `Elevation`, `Layout`, `Control`. Modes: **Light / Dark only**. Record per variable: collection · name (token name verbatim, `/`-scoped) · type · value per mode · code source (file + line) · semantic purpose · scope (global / component-scoped / runtime-owned) · designer-exposed yes/no. Tenant branding excluded by rule.
+
+### 5. Typography mapping
+
+`Display` (Bricolage Grotesque 600, ls −0.032em, lh 1.02), `Heading h1–h3` (Bricolage 600, ls −0.028em), `Eyebrow` (mono 0.6875rem/500, uppercase, muted-foreground), `Serial` (mono, per `text-serial`), `Body` (Inter Tight, base). Everything else component-owned.
+
+### 6. Component mapping (Figma dispositions)
+
+| Source | Export | Importers | Figma disposition |
+| --- | --- | --- | --- |
+| action-pill-component.tsx | `ActionPill` | 38 | component set |
+| action-pill.ts | `ACTION_PILL` | 2 | variables + documentation (not a component) |
+| status-badge.tsx | `StatusBadge` | 89 | component set |
+| kpi-card.tsx | `KpiCard` | 18 | component set |
+| page-header.tsx | `PageHeader` | 25 | component set |
+| data-table.tsx | `DataTable`/`Column` | 20 | component + nested row/cell parts |
+| empty-state.tsx | `EmptyState` | 10 | component |
+| surface.tsx | `Surface`/`surfaceClass` | 82 | component set (class entry point = documentation) |
+| control.tsx | `controlClass` | 2 | variables + documentation |
+| field.tsx | `Field` | 2 | component |
+| notice-page.tsx | `NoticePage` | 4 | component set (tone axis) |
+| marketplace-page-layout.ts | `MARKETPLACE_PAGE_LAYOUT` | 10 | layout variables + frame templates |
+| logo.tsx | `AboxMark` | 5 | component set (tone axis) |
+| logo.tsx | `AboxWordmark` | 5 | component set (compact boolean) |
+| motion.tsx | `FadeRise`/`Stagger`/`StaggerItem`/`CountUp` | 1 | documentation-only |
+| plan-card.tsx | `PlanCard` | 6 | component (marketplace pattern) |
+| metal-badge.tsx | `MetalBadge` | 25 | component set (6 tiers) — intentionally separate from StatusBadge |
+
+Each entry additionally carries anatomy, props, states, responsive and accessibility notes, composition relationships and a traceability id in the Batch-2 worksheet.
+
+### 7. Component-property / variant blueprint
+
+- **ActionPill** — variant axis with the exact 10 production keys (`primaryXs`, `primaryMd`, `primaryLg`, `primaryLgPlain`, `outlineXs`, `outlineSm`, `outlineSmCard`, `outlineMd`, `outlineMdPlain`, `outlineLg`) plus a Hover state axis and a boolean+instance-swap icon slot. The `*Plain` keys keep no icon gap — the icon boolean must be unavailable on them (impossible combination). No new sizes are synthesised.
+- **StatusBadge** — tone axis `sage | primary | warning | muted | destructive | info`; the leading dot is structural, not optional; label is a text property. Colours derive from `color-mix(var(--tone) 88/12/34%)` — recorded as three resolved fills per tone (R-3).
+- **Surface** — padding `none | sm | md | lg` × booleans `elevated`, `interactiveHover`, `decor`; content is a slot. Interactive hover is a state, never a separate component.
+- **KpiCard** — tone `default | primary | sage | warning`; booleans delta / hint / icon; text properties label, value, delta label. `CountUp` is behaviour, not a variant.
+- **PageHeader** — variant `default | compact`; booleans eyebrow, description, icon, actions.
+- **DataTable** — column count and alignment as nested row/cell components; hover state; boolean caption; empty slot pointing at EmptyState. No pagination, sorting or selection is added — none exists in production.
+- **EmptyState** — booleans icon, body, action.
+- **Field** — label text property, control instance swap.
+- **NoticePage** — tone `muted | destructive | warning | primary`.
+- **AboxMark** — tone `primary | sage | sidebar | foreground`; size is a numeric prop → Figma sizes documented at the real call sites (34px header, 40px footer, default 36). **AboxWordmark** — boolean `compact` (20px vs 24px + "Agency in a Box" line).
+Business data never becomes a variant; code props with no design representation stay code-only.
+
+### 8. Pattern mapping
+
+Foundation → Component → Compound (KPI row; Field group; DataTable + EmptyState; PageHeader + actions) → Pattern (marketplace wide/narrow page wrapper; notice screen) → Experience (quote/shopping flow, admin brand workspace) → Screen. No new pattern is invented.
+
+### 9. Shell mapping
+
+Three independent shell families, never merged: **MarketplaceShell** (public header with `AboxMark` 34px + "ABox | AGENCY IN A BOX", dropdown nav, footer mark 40px), **InternalShell** (navy sidebar rail using the `--sidebar-*` collection, sheet nav at small widths, product switcher), **MemberShell**. Each documents shell-owned navigation, layout, responsive behaviour, the shared ABox components it consumes, and the deliberately independent elements. Shared components are represented once in `01 Components` and instanced per shell.
+
+### 10. Branding boundary
+
+Documented relationship only: Brand record → `getActiveBrand` → marketplace shell/landing; `getDraftBrand` → admin brand / preview / compare / releases. Figma holds the **static ABox mark** and design-time foundation colours. Tenant colours, runtime asset references and favicon stay runtime-owned. Figma must never become the runtime branding source, and the admin brand/preview `#fff` contrast literals stay runtime-owned exceptions.
+
+### 11. Screen inventory and evidence levels
+
+**Runtime-captured (public, measurable):** `/`, `/faq`, `/select`, `/quote?step=1`, `/plans`, `/compare`, `/cart`, `/review`, `/handoff` — frames at 1440 / 834 / 390. (`/quote?step=1` carries the recorded 390px overflow; it is reproduced as-is, never "fixed" in Figma.)
+**Source-inspected / structurally represented (NOT CAPTURED):** `/app/*`, `/agency/*`, `/platform/*`, `/marketplace/admin/*`, `/member/*` — including the five route-local tables and the admin brand/preview screens. No visual capture is claimed for these.
+Per screen record: route · shell · state · viewport · evidence level · components demonstrated · Figma frame candidate · responsive frames needed · exactness confidence.
+
+### 12. Automation map
+
+**A. Fully automatable** — variable collections and values; text styles; effect styles; component-set scaffolds with variant axes and properties; Auto Layout from extracted geometry; naming; library page structure; traceability records.
+**B. Automatable with review** — component anatomy fidelity; decoration utilities; icon mapping; pattern compositions; representative screen assembly.
+**C. Manual Figma judgment** — canvas organisation; documentation annotations; prototype/motion notes; limitation write-ups where Figma cannot express a CSS treatment.
+**D. Must stay code/runtime-owned** — runtime branding, live data, business logic, routing, governance enforcement and E5/E6/E7 state, Marketplace Asset Management.
+
+### 13. Manual-work map
+
+Only the C-list above. No canonical component may be hand-rebuilt when its variants and geometry are derivable from source.
+
+### 14. Code ↔ Figma traceability
+
+Stable id `abox/<export-name>` (e.g. `abox/ActionPill`, `abox/Surface`). Record per id: source file · export name · canonical phase decision · content hash (cksum baseline: logo 1815638579 · marketplace-shell 117403653 · internal-shell 3748215771 · member-shell 3790977838 · marketplace-store 1939291487 · styles.css 2128787410 · data-table 3115368089) · Figma target key once created. The register lives under `.lovable/`; **production source is not modified to carry Figma metadata**.
+
+### 15. Library / file architecture and naming
+
+Pages `00 Foundations` · `01 Components` · `02 Patterns` · `03 Shells` · `04 Experiences` · `05 Screens` · `06 Documentation`. Naming uses production terminology verbatim: variables mirror token names (`Color/Semantic/primary-soft`), text styles mirror utility names (`Eyebrow` ← `text-eyebrow`), component sets use export names (`ActionPill`), variant values use production keys (`primaryLgPlain`), screens use route paths, shells use shell export names.
+
+### 16. Exactness / validation model (for the future build, not now)
+
+Compare geometry, spacing, typography, colour, radius, border, elevation, states, responsive behaviour at 1440/834/390, accessibility intent, shell boundaries, branding boundaries and ownership. Screenshots alone never establish parity. Pre-implementation baselines: production source fingerprints; canonical source inventory; Figma variable and component inventories; naming and property validation; traceability check; shell- and branding-boundary checks; `git diff --stat -- src/` empty.
+
+### 17. Risks and limitations
+
+R-1 no cloud Figma connector; desktop MCP read-only, writes need a plugin/Make path. R-2 auth-gated screens cannot be runtime-captured. R-3 Figma cannot express oklch source notation, variable font axes, `color-mix()`, `noise-field`, `contour`, `aurora`, `glass`, `edge-sheen`, or keyframe motion exactly — each is recorded as a limitation and never used to justify changing production. R-4 Tailwind responsive utilities have no variable equivalent; frames encode them. R-5 library drift once production changes — mitigated by the hash-based traceability register.
+
+### 18. Future implementation batches (each needs its own approved plan; none executed)
+
+Batch 0 library/file foundation (blocked on R-1) · Batch 1 variables, text styles, effect styles · Batch 2 canonical component sets · Batch 3 patterns and shell assets · Batch 4 representative screens · Batch 5 traceability register · Batch 6 exactness and responsive validation · Batch 7 library governance and handoff.
+
+### 19. Must NOT be automated or moved into Figma
+
+Runtime branding values and assets; Marketplace Asset Management; live data; business logic; routing; governance enforcement and E5/E6/E7 state; Lucie; M06; M08; AI-elements; shadcn/Radix internals treated as ABox-owned; shell merging; route-local/business-coupled components as generic Figma components; the unused `planai-assistant.tsx`; the deferred one-off spacing values.
+
+### 20. Changed files, validation and rollback
+
+Changed: `.lovable/manual-work-map.md` (this block) only. No `src/` change, no Figma mutation, no runtime/asset/branding/route/token/behaviour change; canonical hashes above unchanged. Rollback: delete this block.
