@@ -8,6 +8,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, AlertTriangle, ArrowRight } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { MARKETPLACE_PAGE_LAYOUT } from "@/components/abox/marketplace-page-layout";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { useCart, PRODUCT_LABEL, type ProductType } from "@/lib/cart-store";
@@ -34,7 +35,7 @@ function Page() {
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-[88rem] px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
+      <div className={MARKETPLACE_PAGE_LAYOUT.wide}>
         <PageHeader
           scrId="UX-014" eyebrow="Almost there"
           title="Review before you enroll"

@@ -7,6 +7,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Trash2, ArrowRight, ShoppingBag, ShoppingCart, FileText, Sparkles } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { MARKETPLACE_PAGE_LAYOUT } from "@/components/abox/marketplace-page-layout";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { CarrierMark } from "@/components/abox/carrier-mark";
@@ -34,7 +35,7 @@ function Page() {
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-[88rem] px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
+      <div className={MARKETPLACE_PAGE_LAYOUT.wide}>
         <PageHeader
           scrId="UX-013" eyebrow="Your selections"
           title="Cart"

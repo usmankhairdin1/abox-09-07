@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft, Plus, Check } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { MARKETPLACE_PAGE_LAYOUT } from "@/components/abox/marketplace-page-layout";
 import { actionPillClass } from "@/components/abox/action-pill-component";
 import { SAMPLE_ANCILLARY, type SampleAncillary } from "@/lib/sample-data";
 import { cartStore, useCart, type ProductType } from "@/lib/cart-store";
@@ -29,7 +30,7 @@ function Page() {
   const quote = typeof window === "undefined" ? null : loadQuoteState();
   return (
     <MarketplaceShell product="dental">
-      <div className="mx-auto max-w-[88rem] px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
+      <div className={MARKETPLACE_PAGE_LAYOUT.wide}>
         <Link to="/plans" className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to health plans
         </Link>

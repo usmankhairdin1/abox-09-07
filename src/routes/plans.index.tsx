@@ -10,6 +10,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Filter, Sparkles, X } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { MARKETPLACE_PAGE_LAYOUT } from "@/components/abox/marketplace-page-layout";
 import { PlanCard } from "@/components/abox/plan-card";
 import { ShoppingPathBar } from "@/components/abox/shopping-path-bar";
 import { EmptyState } from "@/components/abox/empty-state";
@@ -208,7 +209,7 @@ function Page() {
 
   return (
     <MarketplaceShell product="ifp">
-      <div className="mx-auto max-w-[88rem] px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
+      <div className={MARKETPLACE_PAGE_LAYOUT.wide}>
         <PageHeader
           variant="compact"
           title="Plan available"

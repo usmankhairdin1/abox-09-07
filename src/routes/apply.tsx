@@ -13,6 +13,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, FileText, Send, ShieldCheck } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { MARKETPLACE_PAGE_LAYOUT } from "@/components/abox/marketplace-page-layout";
 import { EmptyState } from "@/components/abox/empty-state";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { useCart, PRODUCT_LABEL } from "@/lib/cart-store";
@@ -88,7 +89,7 @@ function Page() {
   if (items.length === 0) {
     return (
       <MarketplaceShell showAssistant={false}>
-        <div className="mx-auto max-w-4xl px-4 pb-10 pt-4 md:px-8 md:pb-14 md:pt-6">
+        <div className={MARKETPLACE_PAGE_LAYOUT.narrow}>
           <PageHeader scrId="SCR_OFFEX_APPLICATION" eyebrow="Off-exchange" title="No off-exchange coverage to apply for"
             description="Off-exchange health, dental and vision plans in your cart continue through a licensed application here." />
           <EmptyState title="Nothing to apply for" body="On-exchange plans finish through the exchange handoff instead."
