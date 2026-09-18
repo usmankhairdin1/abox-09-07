@@ -609,3 +609,25 @@ Deferred, not implemented: two competing label shapes (`block text-sm` + inner `
 **Not included.** E3 (ban `@/lib/marketplace-store` imports inside design/reference layers), E5 (raw hex/oklch scan), E6 (consumer-count report), E7 (duplicate-export scan) are not implemented. No script, scanner, report generator or registry was created.
 
 **Rollback.** Deterministic and single-file: restore `eslint.config.js` to its prior form (one `no-restricted-imports` `paths` entry for `server-only`, no patterns, no overrides) and delete this governance block. No production source rollback is required because none changed. Then rerun typecheck, build and full lint, and confirm the locked hashes. Phases 1–44 are unaffected.
+
+## Phase 46 — Governance Enforcement Batch B: E3 runtime branding / reference boundary (IMPLEMENTED)
+
+**Invariant.** Reference/design material is documentation-only and must not depend on runtime branding ownership. Files under `src/routes/design-system.tsx`, `src/routes/design-guide.tsx`, `src/components/design/**`, `src/lib/design/**` and `src/lib/design-tokens.ts` may not import `@/lib/marketplace-store`, `@/routes/marketplace.admin.*`, or their relative equivalents (`**/lib/marketplace-store`, `**/marketplace.admin.*`). Severity `error`, scoped to exactly that file set.
+
+**Restricted runtime ownership paths.** `src/lib/marketplace-store.ts` is the canonical White-Label owner (`Brand`, `marketplaceStore`, `useMarketplaceState`, `getActiveBrand`, `getDraftBrand`, `getActiveContent`, `getDraftContent`) and also owns Marketplace Asset Management (`AssetType`, `MarketplaceAsset`, `getAssets`); there is no separate asset module, so one pattern covers both boundaries. The branding/asset admin routes (`marketplace.admin.brand`, `.preview`, `.compare`, `.releases*`, `.assets`) are restricted alongside it.
+
+**Documented exception.** `src/components/abox/logo.tsx` is NOT restricted. The ABox mark/wordmark is a static presentation source, not runtime White-Label state, and both reference routes legitimately render it as a documented example.
+
+**Audit result.** Current E3 importer count: 0. `src/lib/design/**` (118 files) imports only relative sibling reference modules plus `lucide-react`; `reference-kit.tsx` imports `react`, `@/lib/utils`, `@/lib/design-tokens`; `design-tokens.ts` imports nothing; the two reference routes import shadcn primitives, canonical ABox presentation components and `@/lib/sample-data` / `@/lib/products` only. No barrel export bypasses the boundary. Brand strings, colour literals and file-path strings inside reference data are documentation content, not imports, and are outside the rule's target.
+
+**Accepted false negatives.** `@/lib/cart-store`, `@/lib/auth-session` and `@/integrations/supabase/*` are runtime state but fall outside the named E3 scope; they are deliberately not restricted in this batch rather than broadening the pattern. Any future reference route added outside the enumerated paths must be added to both the E1 exception list and the E3 scope in the same change.
+
+**Interaction with Phase 45.** E1 (production → reference) and E3 (reference → runtime branding) run in opposite directions and share no path; no cycle or contradiction exists. The reference override retains the `server-only` path entry and the E2 patterns verbatim and now appends E3. The main production block and the three shell overrides were not edited.
+
+**Validation evidence.** Full lint total 16,783 before and after, `no-restricted-imports` findings 0. `eslint --stdin` probes confirmed: `@/lib/marketplace-store` blocked in `design-system.tsx`, `../../lib/marketplace-store` blocked in `src/lib/design/**`, reference-to-reference (`./types`, `@/lib/design-tokens`) allowed, the same store import still allowed in production (`src/routes/plans.tsx`), and E1, E2, E4 and the `server-only` restriction all still firing. Typecheck clean; harness build OK; `git diff --check` clean; no `src/` file changed; all Phase 45 locked hashes unchanged, and `marketplace-store.ts`, `logo.tsx`, the three shells, `styles.css`, the reference sources and the branding/asset admin routes unchanged.
+
+**Changed files.** `eslint.config.js` (E3 constant plus its addition to the reference override) and this governance block. No script, registry or production source.
+
+**Deferred.** E5 (raw hex/oklch scan), E6 (consumer-count report), E7 (duplicate-definition scan) remain unimplemented.
+
+**Rollback.** Delete the `RUNTIME_BRANDING_PATTERNS` constant and its spread in the reference override (returning that block to `server-only` + E2), and delete this governance block. Phase 45 E1/E2/E4 remain intact and are re-probed after rollback; no production source rollback is required.
