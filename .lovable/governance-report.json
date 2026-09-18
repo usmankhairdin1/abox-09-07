@@ -259,7 +259,7 @@
     "type": "canonical-consumer-count",
     "canonicalOwner": "@/components/abox/kpi-card",
     "exception": null,
-    "reason": "symbol=KpiCard; importerFiles=16; usageSites=58; typeOnlyImporters=0; referenceImporters=2; reExports=0; independentSystems=none. importerFiles and usageSites are distinct counting units; neither corrects the other.",
+    "reason": "symbol=KpiCard; importerFiles=16; usageSites=58; typeOnlyImporters=0; referenceImporters=2; reExports=0; independentSystems=M06 governed subtree. importerFiles and usageSites are distinct counting units; neither corrects the other.",
     "futureAction": "no-action",
     "category": "inventory"
   },
@@ -369,7 +369,7 @@
     "type": "canonical-consumer-count",
     "canonicalOwner": "@/components/abox/status-badge",
     "exception": null,
-    "reason": "symbol=StatusBadge; importerFiles=87; usageSites=314; typeOnlyImporters=0; referenceImporters=2; reExports=0; independentSystems=Lucie subtree. importerFiles and usageSites are distinct counting units; neither corrects the other.",
+    "reason": "symbol=StatusBadge; importerFiles=87; usageSites=314; typeOnlyImporters=0; referenceImporters=2; reExports=0; independentSystems=Lucie subtree, M06 governed subtree. importerFiles and usageSites are distinct counting units; neither corrects the other.",
     "futureAction": "no-action",
     "category": "inventory"
   },
@@ -500,10 +500,10 @@
     "line": 98,
     "type": "duplicate-export-name:Field",
     "canonicalOwner": null,
-    "exception": null,
-    "reason": "Definition shares a canonical export name; human review required. Not a violation. Detection is exact-name based only; no similarity heuristic was used.",
-    "futureAction": "review-required",
-    "category": "review-required"
+    "exception": "documented-exception",
+    "reason": "Intentionally independent system: M06 governed subtree. Detection is exact-name based only; no similarity heuristic was used.",
+    "futureAction": "no-action",
+    "category": "documented-exception"
   },
   {
     "rule": "E7",
@@ -511,10 +511,10 @@
     "line": 322,
     "type": "duplicate-export-name:LoadingRows",
     "canonicalOwner": null,
-    "exception": null,
-    "reason": "Definition shares a canonical export name; human review required. Not a violation. Detection is exact-name based only; no similarity heuristic was used.",
-    "futureAction": "review-required",
-    "category": "review-required"
+    "exception": "documented-exception",
+    "reason": "Intentionally independent system: M08 governed subtree. Detection is exact-name based only; no similarity heuristic was used.",
+    "futureAction": "no-action",
+    "category": "documented-exception"
   },
   {
     "rule": "E7",
