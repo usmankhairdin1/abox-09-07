@@ -4,6 +4,7 @@
  * CARRIER/VENDOR references are JET-controlled and go through a request
  * queue to prevent competing identities (REQ-M05-PRF-015/016/017).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Clock } from "lucide-react";
@@ -56,7 +57,7 @@ function Page() {
       {result && <p className="mb-4 flex items-center gap-2 rounded-xl border border-sage/40 bg-sage-soft/40 p-3 text-sm"><CheckCircle2 className="h-4 w-4 text-sage" aria-hidden /> {result}</p>}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">Request a reference organization</h2>
           <form onSubmit={onSubmit} className="space-y-4 text-sm">
             <div>
@@ -82,7 +83,7 @@ function Page() {
 
         <div className="space-y-6">
           {myRequests.length > 0 && (
-            <section className="rounded-2xl border border-border bg-card p-5">
+            <section className={surfaceClass()}>
               <h2 className="text-display mb-3 text-xl">Your carrier/vendor requests</h2>
               <ul className="space-y-2 text-sm">
                 {myRequests.map((r) => (
@@ -95,7 +96,7 @@ function Page() {
             </section>
           )}
 
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <h2 className="text-display mb-3 text-xl">Existing reference organizations</h2>
             {referenceOrgs.length === 0 ? (
               <p className="text-sm text-muted-foreground">No reference organizations yet.</p>

@@ -2,6 +2,7 @@
  * SCR-M04-014 — Referral Link Detail.
  * Link status, participant, channel, product, use history and readiness.
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, LinkIcon, Ban } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -51,7 +52,7 @@ function Page() {
         <ArrowLeft className="h-4 w-4" /> Back to links
       </Link>
 
-      <section className="rounded-2xl border border-border bg-card p-5">
+      <section className={surfaceClass()}>
         <header className="mb-4 flex items-center gap-2"><LinkIcon className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Link details</h2></header>
         <dl className="grid gap-3 sm:grid-cols-2 text-sm">
           <div><dt className="text-eyebrow">Type</dt><dd>{link.link_type === "ORGANIZATION" ? "Downline organization" : "Agent"}</dd></div>

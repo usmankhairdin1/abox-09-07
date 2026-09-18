@@ -1,12 +1,13 @@
 /**
  * SCR_APP_OFF_EXCHANGE — Intake + application scaffolding
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/off-exchange")({
   head: () => ({ meta: [{ title: `${SCREENS.SCR_APP_OFF_EXCHANGE.name} — ABox` }, { name: "description", content: SCREENS.SCR_APP_OFF_EXCHANGE.purpose }] }),
@@ -34,7 +35,7 @@ function Page() {
         ))}
       </ol>
 
-      <div className="rounded-2xl border border-border bg-card p-6">
+      <div className={surfaceClass({ padding: "lg" })}>
         {step === 0 && (
           <FormGrid>
             <TextField label="Legal first name" />

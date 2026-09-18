@@ -1,6 +1,7 @@
 /**
  * SCR_JET_INTEGRATIONS
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute } from "@tanstack/react-router";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
@@ -24,7 +25,7 @@ function Page() {
             <p className="text-eyebrow mb-2">{cat}</p>
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               {list.map((i) => (
-                <article key={i.id} className="rounded-2xl border border-border bg-card p-4">
+                <article key={i.id} className={surfaceClass({ padding: "sm" })}>
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-medium">{i.name}</p>
                     <StatusBadge tone={i.status === "connected" ? "sage" : i.status === "degraded" ? "warning" : "destructive"}>{i.status}</StatusBadge>

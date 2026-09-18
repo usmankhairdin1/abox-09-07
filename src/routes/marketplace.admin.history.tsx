@@ -3,6 +3,7 @@
  * Immutable release, domain, participant, link, routing and JET override
  * history (REQ-M04-ADM-023).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { History } from "lucide-react";
@@ -30,7 +31,7 @@ function Page() {
           {actors.map((a) => <option key={a} value={a}>{a}</option>)}
         </select>
       </div>
-      <section className="rounded-2xl border border-border bg-card p-5">
+      <section className={surfaceClass()}>
         <header className="mb-3 flex items-center gap-2"><History className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">History</h2></header>
         {filtered.length === 0 ? (
           <p className="text-sm text-muted-foreground">No history matches this filter.</p>

@@ -3,6 +3,8 @@
  * Fixed profile sections and history for JET_PLATFORM_ADMIN,
  * AGENCY_ADMIN_ROOT and AGENCY_ADMIN_DOWNLINE.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Mail, Phone, MapPin, Fingerprint, Settings2, History, ShieldCheck, GitBranch, PauseCircle, XCircle, ShieldAlert } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -68,7 +70,7 @@ function Page() {
         )
       }
     >
-      <aside className="mb-6 rounded-2xl border border-border bg-card p-5">
+      <aside className={cn("mb-6", surfaceClass())}>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="contents text-sm">
           <div>
@@ -113,7 +115,7 @@ function Page() {
       </Link>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center justify-between gap-2">
             <span className="flex items-center gap-2"><Mail className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Contacts</h2></span>
             <Link to="/agency/organizations/$organizationId/contacts" params={{ organizationId }} className="story-link text-sm text-primary">Manage</Link>
@@ -137,7 +139,7 @@ function Page() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center justify-between gap-2">
             <span className="flex items-center gap-2"><MapPin className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Addresses &amp; offices</h2></span>
             <Link to="/agency/organizations/$organizationId/locations" params={{ organizationId }} className="story-link text-sm text-primary">Manage</Link>
@@ -161,7 +163,7 @@ function Page() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center justify-between gap-2">
             <span className="flex items-center gap-2"><Fingerprint className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">External identifiers</h2></span>
             <Link to="/agency/organizations/$organizationId/identifiers" params={{ organizationId }} className="story-link text-sm text-primary">Manage</Link>
@@ -185,7 +187,7 @@ function Page() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center justify-between gap-2">
             <span className="flex items-center gap-2"><Settings2 className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Settings</h2></span>
             <Link to="/agency/organizations/$organizationId/settings" params={{ organizationId }} className="story-link text-sm text-primary">Manage</Link>
@@ -208,7 +210,7 @@ function Page() {
         </section>
 
         {readiness && (
-          <section className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
+          <section className={cn(surfaceClass(), "lg:col-span-2")}>
             <header className="mb-3 flex items-center justify-between gap-2">
               <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Readiness</h2></span>
               <Link to="/agency/organizations/$organizationId/readiness" params={{ organizationId }} className="story-link text-sm text-primary">Manage</Link>
@@ -231,7 +233,7 @@ function Page() {
         )}
 
         {!isRoot && (
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <header className="mb-3 flex items-center justify-between gap-2">
               <span className="flex items-center gap-2"><GitBranch className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Relationships</h2></span>
               <Link to="/agency/organizations/$organizationId/relationships" params={{ organizationId }} className="story-link text-sm text-primary">View all</Link>
@@ -265,7 +267,7 @@ function Page() {
       </div>
 
       {!isRoot && (
-        <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-card p-5">
+        <div className={cn("mt-6 flex flex-wrap items-center gap-3", surfaceClass())}>
           <span className="text-sm font-medium text-muted-foreground">Lifecycle &amp; oversight:</span>
           <Link to="/agency/organizations/$organizationId/lifecycle" params={{ organizationId }} className={actionPillClass("outlineSm")}>
             <PauseCircle className="h-4 w-4" aria-hidden /> Suspend / reactivate

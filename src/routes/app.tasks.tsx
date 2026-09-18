@@ -3,6 +3,8 @@
  * Working task board: create, complete and reopen tasks against live
  * component state (seeded from the workspace sample set).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckSquare, Plus, RotateCcw } from "lucide-react";
@@ -94,7 +96,7 @@ function Page() {
       }
     >
       {composing && (
-        <form onSubmit={createTask} className="mb-4 grid gap-2 rounded-2xl border border-border bg-card p-4 md:grid-cols-[2fr_1fr_1fr_auto]">
+        <form onSubmit={createTask} className={cn("mb-4 grid gap-2", surfaceClass({ padding: "sm" }), "md:grid-cols-[2fr_1fr_1fr_auto]")}>
           <input
             autoFocus
             value={title}

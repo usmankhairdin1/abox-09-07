@@ -3,6 +3,8 @@
  * Fixed domain ownership, verification, preview and JET submission flow
  * (REQ-M04-ADM-015).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { ArrowLeft, Globe } from "lucide-react";
@@ -43,7 +45,7 @@ function Page() {
         ))}
       </div>
 
-      <div className="max-w-xl rounded-2xl border border-border bg-card p-6">
+      <div className={cn("max-w-xl", surfaceClass({ padding: "lg" }))}>
         {step === 0 && (
           <div className="space-y-4 text-sm">
             <header className="flex items-center gap-2"><Globe className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Proposed domain</h2></header>

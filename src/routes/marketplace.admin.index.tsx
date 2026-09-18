@@ -3,6 +3,8 @@
  * Root operational summary, release status, blockers and quick actions
  * (JET_PLATFORM_ADMIN, AGENCY_ADMIN_ROOT).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Store, ShieldCheck, AlertTriangle, Users, Palette, FileText, Image,
@@ -92,7 +94,7 @@ function Page() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">Active release</h2>
           <dl className="space-y-2 text-sm">
             <div className="flex items-center justify-between"><dt className="text-muted-foreground">Owner</dt><dd>{owner?.display_name}</dd></div>
@@ -118,7 +120,7 @@ function Page() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">Recent changes</h2>
           {recentHistory.length === 0 ? (
             <p className="text-sm text-muted-foreground">No history yet.</p>
@@ -135,7 +137,7 @@ function Page() {
         </section>
       </div>
 
-      <section className="mt-6 rounded-2xl border border-border bg-card p-5">
+      <section className={cn("mt-6", surfaceClass())}>
         <h2 className="text-display mb-3 text-xl">Participants</h2>
         <ul className="grid gap-2 sm:grid-cols-3">
           {participants.map((p) => {

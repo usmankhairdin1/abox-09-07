@@ -3,6 +3,7 @@
  * Per-product review and validation. Explains the next step per product
  * (on-exchange handoff vs off-exchange enrollment).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, AlertTriangle, ArrowRight } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -59,7 +60,7 @@ function Page() {
               />
 
               {(Object.keys(grouped) as ProductType[]).map((type) => (
-                <section key={type} className="rounded-2xl border border-border bg-card p-5">
+                <section key={type} className={surfaceClass()}>
                   <div className="flex items-baseline justify-between gap-3">
                     <h2 className="text-display text-2xl">{PRODUCT_LABEL[type]}</h2>
                     <span className="text-xs text-muted-foreground">{grouped[type].length} item(s)</span>
@@ -102,7 +103,7 @@ function Page() {
 
             <aside className="space-y-4">
               <div className="sticky top-24 space-y-4">
-                <div className="rounded-2xl border border-border bg-card p-5">
+                <div className={surfaceClass()}>
                   <p className="text-eyebrow">Total (illustrative)</p>
                   <p className="text-display mt-2 text-3xl tabular-nums">
                     ${cart.items.reduce((s, i) => s + i.monthly, 0)}<span className="text-sm text-muted-foreground">/mo</span>

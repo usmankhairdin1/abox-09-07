@@ -3,6 +3,7 @@
  * Fixed M04 tasks, exceptions, owner module and escalation
  * (REQ-M04-ADM-020/021).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AlertTriangle, ArrowUpRight, CheckCircle2 } from "lucide-react";
@@ -42,7 +43,7 @@ function Page() {
       ) : (
         <ul className="space-y-3">
           {tasks.map((t) => (
-            <li key={t.task_id} className="rounded-2xl border border-border bg-card p-4">
+            <li key={t.task_id} className={surfaceClass({ padding: "sm" })}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">

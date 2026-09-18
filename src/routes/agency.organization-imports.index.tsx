@@ -3,6 +3,8 @@
  * Fixed M05 template, upload, all-or-nothing row validation, preview and
  * commit (REQ-M05-OPS-007/008/009).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { Download, Upload, FileWarning } from "lucide-react";
@@ -78,7 +80,7 @@ function Page() {
   return (
     <InternalShell workspace="agency" pageTitle="Organization imports" eyebrow="Organization Imports · SCR-M05-023">
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">1. Download the fixed template</h2>
           <p className="mb-4 text-sm text-muted-foreground">One fixed column layout: display_name, legal_name, contact_name, contact_email, city, state_code.</p>
           <ActionPill onClick={downloadTemplate} variant="outlineMd">
@@ -86,7 +88,7 @@ function Page() {
           </ActionPill>
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">2. Upload and validate</h2>
           <input ref={fileRef} type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} />
           <ActionPill onClick={() => fileRef.current?.click()} variant="primaryMd">
@@ -97,7 +99,7 @@ function Page() {
       </div>
 
       {rows && (
-        <section className="mt-6 rounded-2xl border border-border bg-card p-5">
+        <section className={cn("mt-6", surfaceClass())}>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-display text-xl">Row validation ({rows.length} rows)</h2>
             {hasErrors && (

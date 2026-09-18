@@ -3,6 +3,7 @@
  * Submit first production release to JET and review status
  * (REQ-M04-MKT-012 / REQ-M04-ADM-011).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute } from "@tanstack/react-router";
 import { Send, CheckCircle2, Clock } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -33,7 +34,7 @@ function Page() {
 
   return (
     <InternalShell workspace="agency" pageTitle="Initial activation submission" eyebrow="Initial Activation Submission · SCR-M04-020">
-      <section className="rounded-2xl border border-border bg-card p-5">
+      <section className={surfaceClass()}>
         <h2 className="text-display mb-3 text-xl">Submit for JET review</h2>
         <p className="text-sm text-muted-foreground">
           JET activates only after confirming readiness, commercial entitlement, route, bilingual and legal content, product and geography readiness, support ownership, security and required M00/M05/M01 delta disposition.

@@ -1,6 +1,7 @@
 /**
  * UX-022 (internal side) — Agent schedule
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute } from "@tanstack/react-router";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
@@ -20,7 +21,7 @@ function Page() {
     <InternalShell workspace="agent" pageTitle="Schedule" eyebrow="Relationships">
       <div className="grid gap-4 md:grid-cols-2">
         {Object.entries(byDay).map(([day, slots]) => (
-          <section key={day} className="rounded-2xl border border-border bg-card p-5">
+          <section key={day} className={surfaceClass()}>
             <div className="flex items-baseline justify-between">
               <h2 className="text-display text-2xl">{day}</h2>
               <span className="text-xs text-muted-foreground">{slots.filter((s) => !s.available).length} booked</span>

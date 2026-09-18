@@ -2,6 +2,8 @@
  * SCR-M05-019 — Organization External Identifiers.
  * Masked identifier and verification history (REQ-M05-PRF-012/013).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Fingerprint, Plus, CheckCircle2, XCircle } from "lucide-react";
@@ -68,7 +70,7 @@ function Page() {
       </Link>
 
       {showForm && (
-        <form onSubmit={onSubmit} className="mb-6 grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">
+        <form onSubmit={onSubmit} className={cn("mb-6 grid gap-4", surfaceClass(), "sm:grid-cols-2")}>
           <div>
             <label className="mb-1 block text-eyebrow">Identifier type</label>
             <select value={form.identifier_type} onChange={(e) => setForm({ ...form, identifier_type: e.target.value as IdentifierType })} className="h-10 w-full rounded-lg border border-border bg-background px-3">

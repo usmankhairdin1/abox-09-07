@@ -1,6 +1,7 @@
 /**
  * /privacy — Consumer privacy notice.
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute } from "@tanstack/react-router";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
@@ -36,7 +37,7 @@ function Page() {
 
         <div className="mt-8 space-y-6">
           {SECTIONS.map((s) => (
-            <section key={s.h} className="rounded-2xl border border-border bg-card p-5">
+            <section key={s.h} className={surfaceClass()}>
               <h2 className="text-display text-xl">{s.h}</h2>
               <p className="mt-2 text-sm text-muted-foreground">{s.body}</p>
             </section>

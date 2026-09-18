@@ -2,6 +2,8 @@
  * SCR-M05-007 — Create Downline Agency: Identity.
  * Draft identity and duplicate preview (FLOW-M05-001 step 1, FLOW-M05-006).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, AlertTriangle } from "lucide-react";
@@ -65,7 +67,7 @@ function Page() {
     <InternalShell workspace="agency" pageTitle="Create downline agency" eyebrow="Identity · SCR-M05-007">
       <DownlineWizardStepper />
 
-      <div className="mt-8 max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-6">
+      <div className={cn("mt-8 max-w-2xl space-y-5", surfaceClass({ padding: "lg" }))}>
         <label className="block text-sm">
           <span className="text-eyebrow">Legal business name</span>
           <input

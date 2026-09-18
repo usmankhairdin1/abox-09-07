@@ -1,6 +1,8 @@
 /**
  * UX-022 — Schedule Time / Request Call
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, Calendar } from "lucide-react";
@@ -8,7 +10,6 @@ import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
 import { SAMPLE_SLOTS } from "@/lib/sample-data-ext";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/schedule")({
   head: () => ({ meta: [{ title: `${SCREENS["UX-022"].name} — ABox` }, { name: "description", content: SCREENS["UX-022"].purpose }] }),
@@ -71,7 +72,7 @@ function Page() {
         {step === "form" && slot && (
           <form
             onSubmit={(e) => { e.preventDefault(); setStep("done"); }}
-            className="space-y-4 rounded-2xl border border-border bg-card p-5"
+            className={cn("space-y-4", surfaceClass())}
           >
             <div className="flex items-center gap-2 text-sm">
               <Calendar className="h-4 w-4 text-primary" aria-hidden />

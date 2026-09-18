@@ -3,6 +3,8 @@
  * Current release, route, content, product, participant, propagation and
  * delta health (REQ-M04-ADM-019).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Activity } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -34,7 +36,7 @@ function Page() {
         {health.map((h) => {
           const link = AREA_OWNER_LINK[h.area];
           return (
-            <li key={h.health_id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4">
+            <li key={h.health_id} className={cn("flex flex-wrap items-center justify-between gap-3", surfaceClass({ padding: "sm" }))}>
               <div className="flex items-center gap-3">
                 <Activity className="h-4 w-4 text-muted-foreground" />
                 <div>

@@ -1,6 +1,8 @@
 /**
  * UX-019 — Agent Send Quote
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Send, Mail, MessageSquare, Link as LinkIcon, Calendar, Check } from "lucide-react";
@@ -9,7 +11,6 @@ import { StatusBadge } from "@/components/abox/status-badge";
 import { SAMPLE_PLANS } from "@/lib/sample-data";
 import { generateShareToken, saveSharedQuote } from "@/lib/shared-quote-store";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/send-quote")({
   head: () => ({ meta: [{ title: `${SCREENS["UX-019"].name} — ABox` }, { name: "description", content: SCREENS["UX-019"].purpose }] }),
@@ -63,7 +64,7 @@ function Page() {
           className="grid gap-6 lg:grid-cols-[1fr_360px]"
         >
           <div className="space-y-6">
-            <section className="rounded-2xl border border-border bg-card p-5">
+            <section className={surfaceClass()}>
               <p className="text-eyebrow">Recipient</p>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <label className="block text-sm">
@@ -92,7 +93,7 @@ function Page() {
               </div>
             </section>
 
-            <section className="rounded-2xl border border-border bg-card p-5">
+            <section className={surfaceClass()}>
               <div className="flex items-baseline justify-between">
                 <p className="text-eyebrow">Plans in this quote</p>
                 <span className="text-xs text-muted-foreground">{selected.size} selected</span>
@@ -118,7 +119,7 @@ function Page() {
               </ul>
             </section>
 
-            <section className="rounded-2xl border border-border bg-card p-5">
+            <section className={surfaceClass()}>
               <p className="text-eyebrow">Message template</p>
               <textarea
                 defaultValue={"Hi Renata,\n\nBased on what we talked about — keeping your PCP and prescription coverage — I put together three plans I'd focus on first. Take a look and let me know what you think.\n\nElena"}
@@ -134,7 +135,7 @@ function Page() {
 
           <aside className="space-y-4">
             <div className="sticky top-24 space-y-4">
-              <div className="rounded-2xl border border-border bg-card p-5">
+              <div className={surfaceClass()}>
                 <p className="text-eyebrow">Options</p>
                 <label className="mt-3 block text-sm">
                   <span className="text-xs text-muted-foreground inline-flex items-center gap-1"><Calendar className="h-3 w-3" /> Expires in</span>

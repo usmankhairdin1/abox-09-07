@@ -3,6 +3,7 @@
  * Immutable actor and context before-and-after history, filterable
  * (REQ-M05-PRF-021 / REQ-M05-OPS-020).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, History } from "lucide-react";
@@ -47,7 +48,7 @@ function Page() {
         </select>
       </div>
 
-      <section className="rounded-2xl border border-border bg-card p-5">
+      <section className={surfaceClass()}>
         <header className="mb-3 flex items-center gap-2">
           <History className="h-4 w-4 text-muted-foreground" />
           <h2 className="text-display text-xl">History</h2>

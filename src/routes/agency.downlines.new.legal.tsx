@@ -1,6 +1,8 @@
 /**
  * SCR-M05-008 — Create Downline Agency: Legal and Identifiers.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -48,7 +50,7 @@ function Page() {
     <InternalShell workspace="agency" pageTitle="Create downline agency" eyebrow="Legal & identifiers · SCR-M05-008">
       <DownlineWizardStepper />
 
-      <div className="mt-8 max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-6">
+      <div className={cn("mt-8 max-w-2xl space-y-5", surfaceClass({ padding: "lg" }))}>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block text-sm">
             <span className="text-eyebrow">Identifier type</span>

@@ -3,6 +3,7 @@
  * Enable, suspend, end and review one participant without altering M05
  * lifecycle (REQ-M04-RTE-033).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Users, PlayCircle, PauseCircle, XCircle } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -63,7 +64,7 @@ function Page() {
       </Link>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center gap-2"><Users className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Participation</h2></header>
           <StatusBadge tone={participant.participation_state === "ENABLED" ? "sage" : participant.participation_state === "SUSPENDED" ? "destructive" : "warning"}>{participant.participation_state.replaceAll("_", " ")}</StatusBadge>
 
@@ -102,7 +103,7 @@ function Page() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3"><h2 className="text-display text-xl">Referral links</h2></header>
           {links.length === 0 ? (
             <p className="text-sm text-muted-foreground">No referral links for this participant.</p>

@@ -1,6 +1,8 @@
 /**
  * SCR_PARTNER_HOME
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { KpiCard } from "@/components/abox/kpi-card";
@@ -31,7 +33,7 @@ function Page() {
         <KpiCard label="Reward per enrollment" value="$50" icon={Handshake} tone="primary" />
       </div>
 
-      <section className="mt-6 rounded-2xl border border-border bg-card p-5">
+      <section className={cn("mt-6", surfaceClass())}>
         <div className="flex items-baseline justify-between">
           <h2 className="text-display text-2xl">Send a referral</h2>
           <StatusBadge tone="muted">Ridgeline Referral Co.</StatusBadge>

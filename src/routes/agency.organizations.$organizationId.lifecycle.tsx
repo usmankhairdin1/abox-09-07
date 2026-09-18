@@ -2,6 +2,7 @@
  * SCR-M05-027 — Organization Suspension and Reactivation.
  * Impact review and governed lifecycle command (REQ-M05-OPS-024).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, PauseCircle, PlayCircle } from "lucide-react";
@@ -50,7 +51,7 @@ function Page() {
 
       {done && <p className="mb-4 rounded-xl border border-sage/40 bg-sage-soft/40 p-3 text-sm">Lifecycle change recorded — see activity history.</p>}
 
-      <section className="rounded-2xl border border-border bg-card p-5">
+      <section className={surfaceClass()}>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-display text-xl">Current lifecycle</h2>
           <StatusBadge tone={record.lifecycle_status === "ACTIVE" ? "sage" : record.lifecycle_status === "SUSPENDED" ? "warning" : record.lifecycle_status === "ENDED" ? "destructive" : "muted"}>{record.lifecycle_status}</StatusBadge>

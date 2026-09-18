@@ -1,6 +1,8 @@
 /**
  * UX-021 — Lead Timeline & Milestones (Lead detail)
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Sparkles, Send, Phone, FileText, CheckCircle2 } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -54,7 +56,7 @@ function Page() {
         </div>
       }
     >
-      <aside className="mb-6 rounded-2xl border border-border bg-card p-5">
+      <aside className={cn("mb-6", surfaceClass())}>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="contents text-sm">
           <div>
@@ -160,7 +162,7 @@ function Page() {
             </ul>
           </section>
 
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <header className="mb-2 flex items-center justify-between">
               <h2 className="text-display text-xl">Documents</h2>
               <FileText className="h-4 w-4 text-muted-foreground" />

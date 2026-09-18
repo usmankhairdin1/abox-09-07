@@ -3,6 +3,7 @@
  * Reason-coded JET override, route intervention and propagation
  * reconciliation (JET_PLATFORM_ADMIN).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ShieldAlert, RotateCw } from "lucide-react";
@@ -63,7 +64,7 @@ function Page() {
       </Link>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center gap-2">
             <ShieldAlert className="h-4 w-4 text-muted-foreground" />
             <h2 className="text-display text-xl">Issue a reason-coded override</h2>
@@ -101,7 +102,7 @@ function Page() {
         </section>
 
         <div className="space-y-6">
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <header className="mb-3 flex items-center gap-2">
               <RotateCw className="h-4 w-4 text-muted-foreground" />
               <h2 className="text-display text-xl">Propagation reconciliation</h2>
@@ -127,7 +128,7 @@ function Page() {
             )}
           </section>
 
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <header className="mb-3"><h2 className="text-display text-xl">Override history</h2></header>
             {overrides.length === 0 ? (
               <p className="text-sm text-muted-foreground">No overrides recorded.</p>

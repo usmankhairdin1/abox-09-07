@@ -4,6 +4,7 @@
  * (REQ-M04-BRD-001..008). Editing creates a DRAFT version; publishing
  * happens from Publication Review (SCR-M04-019).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Palette, Plus } from "lucide-react";
@@ -54,7 +55,7 @@ function Page() {
       {draft && <p className="mb-4 rounded-xl border border-warning/40 bg-warning/5 p-3 text-sm">Editing draft v{draft.version}. <Link to="/marketplace/admin/releases/compare" className="story-link text-primary">Compare with active</Link> or <Link to="/marketplace/admin/releases/review" className="story-link text-primary">review and publish</Link>.</p>}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center gap-2"><Palette className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Display identity</h2></header>
           <div className="space-y-4 text-sm">
             <div>
@@ -94,7 +95,7 @@ function Page() {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3"><h2 className="text-display text-xl">Colors</h2></header>
           <div className="space-y-4 text-sm">
             <div className="flex items-center justify-between">

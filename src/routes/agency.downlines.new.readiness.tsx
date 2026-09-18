@@ -2,6 +2,8 @@
  * SCR-M05-013 — Create Downline Agency: Readiness Review.
  * Fixed control outcomes and blockers, computed from the wizard state.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -41,7 +43,7 @@ function Page() {
     <InternalShell workspace="agency" pageTitle="Create downline agency" eyebrow="Readiness review · SCR-M05-013">
       <DownlineWizardStepper />
 
-      <div className="mt-8 max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-6">
+      <div className={cn("mt-8 max-w-2xl space-y-5", surfaceClass({ padding: "lg" }))}>
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium">Overall readiness</p>
           <StatusBadge tone={overall === "READY" ? "sage" : overall === "READY_WITH_WARNINGS" ? "warning" : "destructive"}>

@@ -3,6 +3,8 @@
  * Headquarters address — required. Mailing/office addresses are part of
  * the broader profile (SCR-M05-018) and not required to activate.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -44,7 +46,7 @@ function Page() {
     <InternalShell workspace="agency" pageTitle="Create downline agency" eyebrow="Addresses & offices · SCR-M05-010">
       <DownlineWizardStepper />
 
-      <div className="mt-8 max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-6">
+      <div className={cn("mt-8 max-w-2xl space-y-5", surfaceClass({ padding: "lg" }))}>
         <p className="text-sm text-muted-foreground">Headquarters address.</p>
 
         <label className="block text-sm">

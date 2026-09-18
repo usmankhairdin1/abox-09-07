@@ -1,6 +1,7 @@
 /**
  * SCR_JET_AI_GOV
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute } from "@tanstack/react-router";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
@@ -20,7 +21,7 @@ function Page() {
       </p>
       <div className="grid gap-3 md:grid-cols-2">
         {SAMPLE_AI_RULES.map((r) => (
-          <article key={r.id} className="rounded-2xl border border-border bg-card p-5">
+          <article key={r.id} className={surfaceClass()}>
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="text-eyebrow">{r.scope} · {r.id}</p>

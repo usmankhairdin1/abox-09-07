@@ -1,6 +1,8 @@
 /**
  * SCR_APP_DASHBOARD — performance & funnel
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { TrendingUp, Users, Send, DollarSign } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -33,7 +35,7 @@ function Page() {
         <KpiCard label="Projected earnings" value="$15,200" icon={DollarSign} hint="Booked $12,480" tone="primary" />
       </div>
 
-      <section className="mt-8 rounded-2xl border border-border bg-card p-5">
+      <section className={cn("mt-8", surfaceClass())}>
         <h2 className="text-display text-2xl">Funnel</h2>
         <p className="text-sm text-muted-foreground">Marketplace visits to enrolled policies · last 30 days.</p>
         <ul className="mt-5 space-y-2">
@@ -58,7 +60,7 @@ function Page() {
         </ul>
       </section>
 
-      <section className="mt-6 rounded-2xl border border-border bg-card p-5">
+      <section className={cn("mt-6", surfaceClass())}>
         <h2 className="text-display text-2xl">Commissions trend</h2>
         <div className="mt-4 flex items-end gap-3">
           {SAMPLE_STATEMENTS.slice().reverse().map((s) => {

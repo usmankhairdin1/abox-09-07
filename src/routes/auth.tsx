@@ -3,13 +3,14 @@
  * Design and behaviour aligned to the ABox reference marketplace auth screen:
  * email+password or phone OTP, with light consent capture on registration.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Mail, Phone, Lock, ArrowRight, ShieldCheck } from "lucide-react";
 
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
-import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 
 const TITLE = "Sign in or register | ABox";
@@ -124,7 +125,7 @@ function Page() {
             title={mode === "signin" ? "Sign in" : "Start your account"}
             description="ABox keeps your quotes, cart, and messages together across every product."
           />
-          <div className="rounded-2xl border border-border bg-card p-5">
+          <div className={surfaceClass()}>
             <div className="mb-4 grid grid-cols-2 gap-1 rounded-full bg-surface p-1 text-sm">
               <button
                 type="button"

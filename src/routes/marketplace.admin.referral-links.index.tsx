@@ -3,6 +3,8 @@
  * View, create, copy, revoke and replace organization and agent links
  * (REQ-M04-RTE-008/009/010).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LinkIcon, Plus, Copy, Ban } from "lucide-react";
@@ -72,7 +74,7 @@ function Page() {
       actions={<ActionPill onClick={() => setShowForm((v) => !v)} variant="primaryMd"><Plus className="h-4 w-4" aria-hidden /> Create link</ActionPill>}
     >
       {showForm && (
-        <form onSubmit={create} className="mb-6 grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">
+        <form onSubmit={create} className={cn("mb-6 grid gap-4", surfaceClass(), "sm:grid-cols-2")}>
           <div>
             <label className="mb-1 block text-eyebrow">Link type</label>
             <select value={linkType} onChange={(e) => setLinkType(e.target.value as ReferralLinkType)} className="h-10 w-full rounded-lg border border-border bg-background px-3">

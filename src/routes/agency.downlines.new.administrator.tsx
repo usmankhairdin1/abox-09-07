@@ -5,6 +5,8 @@
  * invitation intent so readiness/activation are meaningful, but no
  * email is actually sent.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Mail } from "lucide-react";
@@ -44,7 +46,7 @@ function Page() {
     <InternalShell workspace="agency" pageTitle="Create downline agency" eyebrow="Initial administrator · SCR-M05-012">
       <DownlineWizardStepper />
 
-      <div className="mt-8 max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-6">
+      <div className={cn("mt-8 max-w-2xl space-y-5", surfaceClass({ padding: "lg" }))}>
         <div className="flex items-start gap-2 rounded-xl border border-hairline bg-surface/60 p-3 text-xs text-muted-foreground">
           <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
           This environment doesn't have a real identity/invitation backend yet (M00 platform foundation is still a specification —
