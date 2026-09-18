@@ -107,7 +107,7 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
-  // Documented reference surfaces: E1 does not apply (E2 still does).
+  // Documented reference surfaces: E1 does not apply (E2 still does); E3 applies here only.
   {
     files: [
       "src/routes/design-system.tsx",
