@@ -496,7 +496,7 @@ function SidePanel({ state, step }: { state: QuoteState; step: number }) {
     6: "This is an estimate for education — the exchange makes the final call.",
   };
   return (
-    <aside className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
+    <aside className={surfaceClass({ elevated: true })}>
       <div className="flex items-center gap-2.5">
         <AboxMark size={30} tone="primary" />
         <div>
