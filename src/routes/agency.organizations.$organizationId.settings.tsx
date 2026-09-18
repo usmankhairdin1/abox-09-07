@@ -8,7 +8,7 @@ import { ArrowLeft, Settings2, Plus } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { orgStore, useOrgState, getOrganization, getSettings, ROOT_ORGANIZATION_ID } from "@/lib/org-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/organizations/$organizationId/settings")({
   loader: ({ params }) => ({ organizationId: params.organizationId }),
@@ -57,9 +57,9 @@ function Page() {
     <InternalShell
       workspace="agency" pageTitle={`Settings — ${record.display_name}`} eyebrow="Organization Settings · SCR-M05-020"
       actions={
-        <button onClick={() => setShowForm((v) => !v)} className={ACTION_PILL.primaryMd}>
+        <ActionPill onClick={() => setShowForm((v) => !v)} variant="primaryMd">
           <Plus className="h-4 w-4" aria-hidden /> Add setting
-        </button>
+        </ActionPill>
       }
     >
       <Link to="/agency/organizations/$organizationId" params={{ organizationId }} className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">

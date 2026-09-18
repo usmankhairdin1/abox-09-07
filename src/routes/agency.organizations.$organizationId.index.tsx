@@ -13,7 +13,7 @@ import {
   getSettings, getReadiness, getHistory, getRelationship, ROOT_ORGANIZATION_ID,
   ORG_TYPE_LABEL, COUNTRY_NAME,
 } from "@/lib/org-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill, actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/organizations/$organizationId/")({
   loader: ({ params }) => {
@@ -59,12 +59,12 @@ function Page() {
       workspace="agency" eyebrow={`Organization · ${record.reference_code}`} pageTitle={record.display_name}
       actions={
         !isRoot && (
-          <button
+          <ActionPill
             onClick={() => orgStore.setContext(inContext ? null : organizationId)}
-            className={ACTION_PILL.primaryMd}
+            variant="primaryMd"
           >
             {inContext ? "Exit downline context" : "Act as this downline"}
-          </button>
+          </ActionPill>
         )
       }
     >
@@ -267,13 +267,13 @@ function Page() {
       {!isRoot && (
         <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-card p-5">
           <span className="text-sm font-medium text-muted-foreground">Lifecycle &amp; oversight:</span>
-          <Link to="/agency/organizations/$organizationId/lifecycle" params={{ organizationId }} className={ACTION_PILL.outlineSm}>
+          <Link to="/agency/organizations/$organizationId/lifecycle" params={{ organizationId }} className={actionPillClass("outlineSm")}>
             <PauseCircle className="h-4 w-4" aria-hidden /> Suspend / reactivate
           </Link>
-          <Link to="/agency/organizations/$organizationId/ending" params={{ organizationId }} className={ACTION_PILL.outlineSm}>
+          <Link to="/agency/organizations/$organizationId/ending" params={{ organizationId }} className={actionPillClass("outlineSm")}>
             <XCircle className="h-4 w-4" aria-hidden /> End &amp; offboard
           </Link>
-          <Link to="/platform/organizations/$organizationId/override" params={{ organizationId }} className={ACTION_PILL.outlineSm}>
+          <Link to="/platform/organizations/$organizationId/override" params={{ organizationId }} className={actionPillClass("outlineSm")}>
             <ShieldAlert className="h-4 w-4" aria-hidden /> JET override
           </Link>
         </div>
