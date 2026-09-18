@@ -13,7 +13,7 @@ import { loadWizardState, clearWizardState } from "@/lib/downline-wizard-store";
 import {
   orgStore, TENANT_ID, ROOT_ORGANIZATION_ID, type Organization,
 } from "@/lib/org-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill, actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/downlines/new/activate")({
   head: () => ({ meta: [{ title: "Create Downline Agency — Activation — ABox" }] }),
@@ -111,11 +111,11 @@ function Page() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/agency/organizations/$organizationId" params={{ organizationId: activated.organization_id }}
-              className={ACTION_PILL.primaryMd}
+              className={actionPillClass("primaryMd")}
             >
               View organization profile
             </Link>
-            <Link to="/agency/organization-admin" className={ACTION_PILL.outlineMd}>
+            <Link to="/agency/organization-admin" className={actionPillClass("outlineMd")}>
               Back to admin home
             </Link>
           </div>
@@ -137,16 +137,16 @@ function Page() {
         <div className="flex justify-between pt-2">
           <button
             onClick={() => navigate({ to: "/agency/downlines/new/readiness" })}
-            className={ACTION_PILL.outlineLg}
+            className={actionPillClass("outlineLg")}
           >
             <ArrowLeft className="h-4 w-4" /> Back
           </button>
-          <button
+          <ActionPill
             onClick={onActivate}
-            className={ACTION_PILL.primaryLg}
+            variant="primaryLg"
           >
             Activate downline agency
-          </button>
+          </ActionPill>
         </div>
       </div>
     </InternalShell>
