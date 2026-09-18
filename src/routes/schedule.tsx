@@ -105,7 +105,7 @@ function Page() {
               <button type="button" onClick={() => setStep("pick")} className="text-sm text-muted-foreground hover:text-foreground">
                 ← Pick a different slot
               </button>
-              <button type="submit" className={actionPillClass("primaryLgPlain")}>
+              <button type="submit" className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground">
                 Confirm call
               </button>
             </div>
