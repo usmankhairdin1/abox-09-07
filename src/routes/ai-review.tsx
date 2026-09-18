@@ -8,6 +8,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Check, Pencil, ShieldAlert } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { MARKETPLACE_PAGE_LAYOUT } from "@/components/abox/marketplace-page-layout";
 import { actionPillClass } from "@/components/abox/action-pill-component";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { SCREENS } from "@/lib/screens";
@@ -45,7 +46,7 @@ function Page() {
 
   return (
     <MarketplaceShell>
-      <div className="mx-auto max-w-4xl px-4 pb-10 pt-4 md:px-8 md:pb-14 md:pt-6">
+      <div className={MARKETPLACE_PAGE_LAYOUT.narrow}>
         <PageHeader
           scrId="UX-026" eyebrow="AI review"
           title="Review what we prefilled"

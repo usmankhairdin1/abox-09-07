@@ -11,6 +11,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, Calendar } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { MARKETPLACE_PAGE_LAYOUT } from "@/components/abox/marketplace-page-layout";
 import { SAMPLE_SLOTS } from "@/lib/sample-data-ext";
 import { SCREENS } from "@/lib/screens";
 
@@ -27,7 +28,7 @@ function Page() {
 
   return (
     <MarketplaceShell showAssistant={false}>
-      <div className="mx-auto max-w-4xl px-4 pb-10 pt-4 md:px-8 md:pb-14 md:pt-6">
+      <div className={MARKETPLACE_PAGE_LAYOUT.narrow}>
         <PageHeader
           scrId="UX-022" eyebrow="Talk to an agent"
           title={step === "done" ? "You're on the calendar" : "Schedule a call"}

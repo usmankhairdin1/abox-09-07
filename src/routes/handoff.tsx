@@ -6,6 +6,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ExternalLink, Check, PackageCheck } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { MARKETPLACE_PAGE_LAYOUT } from "@/components/abox/marketplace-page-layout";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { EmptyState } from "@/components/abox/empty-state";
 import { useCart, PRODUCT_LABEL, type ProductType } from "@/lib/cart-store";
@@ -25,7 +26,7 @@ function Page() {
 
   return (
     <MarketplaceShell showAssistant={false}>
-      <div className="mx-auto max-w-4xl px-4 pb-10 pt-4 md:px-8 md:pb-14 md:pt-6">
+      <div className={MARKETPLACE_PAGE_LAYOUT.narrow}>
         <PageHeader
           scrId="UX-023" eyebrow="Handoff ready"
           title="Your handoff packet is prepared"

@@ -7,6 +7,7 @@ import { Check, ArrowLeft, ShoppingBag, Star, Sparkles, Stethoscope, Pill } from
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { PageHeader } from "@/components/abox/page-header";
+import { MARKETPLACE_PAGE_LAYOUT } from "@/components/abox/marketplace-page-layout";
 import { actionPillClass } from "@/components/abox/action-pill-component";
 import { Surface, surfaceClass } from "@/components/abox/surface";
 import { SAMPLE_PLANS, planMatchScore, type PlanMatchInputs } from "@/lib/sample-data";
@@ -59,7 +60,7 @@ function Page() {
 
   return (
     <MarketplaceShell product="ifp">
-      <div className="mx-auto max-w-[88rem] px-4 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
+      <div className={MARKETPLACE_PAGE_LAYOUT.wide}>
         <Link to="/plans" className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to results
         </Link>
