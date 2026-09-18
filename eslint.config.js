@@ -121,7 +121,7 @@ export default tseslint.config(
         "error",
         {
           paths: SERVER_ONLY_PATHS,
-          patterns: [...UNCONSUMED_PRIMITIVE_PATTERNS],
+          patterns: [...UNCONSUMED_PRIMITIVE_PATTERNS, ...RUNTIME_BRANDING_PATTERNS],
         },
       ],
     },
