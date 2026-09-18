@@ -135,12 +135,12 @@ function Page() {
         </div>
 
         <div className="flex justify-between pt-2">
-          <button
+          <ActionPill
             onClick={() => navigate({ to: "/agency/downlines/new/readiness" })}
-            className={actionPillClass("outlineLg")}
+            variant="outlineLg"
           >
             <ArrowLeft className="h-4 w-4" /> Back
-          </button>
+          </ActionPill>
           <ActionPill
             onClick={onActivate}
             variant="primaryLg"

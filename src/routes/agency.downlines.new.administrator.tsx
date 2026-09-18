@@ -11,7 +11,7 @@ import { ArrowLeft, ArrowRight, Mail } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { DownlineWizardStepper } from "@/components/abox/downline-wizard-stepper";
 import { step12AdministratorSchema, loadWizardState, saveWizardState } from "@/lib/downline-wizard-store";
-import { ActionPill, actionPillClass } from "@/components/abox/action-pill-component";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/downlines/new/administrator")({
   head: () => ({ meta: [{ title: "Create Downline Agency — Initial Administrator — ABox" }] }),
@@ -69,12 +69,12 @@ function Page() {
         </label>
 
         <div className="flex justify-between pt-2">
-          <button
+          <ActionPill
             onClick={() => navigate({ to: "/agency/downlines/new/settings" })}
-            className={actionPillClass("outlineLg")}
+            variant="outlineLg"
           >
             <ArrowLeft className="h-4 w-4" /> Back
-          </button>
+          </ActionPill>
           <ActionPill
             onClick={onNext}
             variant="primaryLg"

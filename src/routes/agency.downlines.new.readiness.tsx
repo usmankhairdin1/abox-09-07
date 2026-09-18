@@ -9,7 +9,7 @@ import { DownlineWizardStepper } from "@/components/abox/downline-wizard-stepper
 import { StatusBadge } from "@/components/abox/status-badge";
 import { loadWizardState } from "@/lib/downline-wizard-store";
 import type { ReadinessResult } from "@/lib/org-store";
-import { actionPillClass } from "@/components/abox/action-pill-component";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/downlines/new/readiness")({
   head: () => ({ meta: [{ title: "Create Downline Agency — Readiness Review — ABox" }] }),
@@ -69,12 +69,12 @@ function Page() {
         )}
 
         <div className="flex justify-between pt-2">
-          <button
+          <ActionPill
             onClick={() => navigate({ to: "/agency/downlines/new/administrator" })}
-            className={actionPillClass("outlineLg")}
+            variant="outlineLg"
           >
             <ArrowLeft className="h-4 w-4" /> Back
-          </button>
+          </ActionPill>
           <button
             onClick={() => navigate({ to: "/agency/downlines/new/activate" })}
             disabled={hasBlocking}

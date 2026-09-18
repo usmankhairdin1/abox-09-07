@@ -9,7 +9,7 @@ import { InternalShell } from "@/components/abox/internal-shell";
 import { DownlineWizardStepper } from "@/components/abox/downline-wizard-stepper";
 import { loadWizardState, saveWizardState } from "@/lib/downline-wizard-store";
 import { useOrgState, getSettings, ROOT_ORGANIZATION_ID } from "@/lib/org-store";
-import { ActionPill, actionPillClass } from "@/components/abox/action-pill-component";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/downlines/new/settings")({
   head: () => ({ meta: [{ title: "Create Downline Agency — Settings — ABox" }] }),
@@ -62,12 +62,12 @@ function Page() {
         </label>
 
         <div className="flex justify-between pt-2">
-          <button
+          <ActionPill
             onClick={() => navigate({ to: "/agency/downlines/new/locations" })}
-            className={actionPillClass("outlineLg")}
+            variant="outlineLg"
           >
             <ArrowLeft className="h-4 w-4" /> Back
-          </button>
+          </ActionPill>
           <ActionPill
             onClick={onNext}
             variant="primaryLg"

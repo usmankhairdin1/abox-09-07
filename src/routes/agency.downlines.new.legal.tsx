@@ -8,7 +8,7 @@ import { InternalShell } from "@/components/abox/internal-shell";
 import { DownlineWizardStepper } from "@/components/abox/downline-wizard-stepper";
 import { step8LegalSchema, loadWizardState, saveWizardState, TIME_ZONES } from "@/lib/downline-wizard-store";
 import type { IdentifierType } from "@/lib/org-store";
-import { ActionPill, actionPillClass } from "@/components/abox/action-pill-component";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/downlines/new/legal")({
   head: () => ({ meta: [{ title: "Create Downline Agency — Legal & Identifiers — ABox" }] }),
@@ -98,12 +98,12 @@ function Page() {
         </p>
 
         <div className="flex justify-between pt-2">
-          <button
+          <ActionPill
             onClick={() => navigate({ to: "/agency/downlines/new/identity" })}
-            className={actionPillClass("outlineLg")}
+            variant="outlineLg"
           >
             <ArrowLeft className="h-4 w-4" /> Back
-          </button>
+          </ActionPill>
           <ActionPill
             onClick={onNext}
             variant="primaryLg"
