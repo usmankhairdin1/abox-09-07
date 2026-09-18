@@ -762,3 +762,99 @@ Full lint 16,783 findings, `no-restricted-imports` 0 — unchanged. `tsgo` typec
 ### N. Rollback
 
 Documentation only: delete this block and restore the previous `roadmap.md` heading. No production rollback is possible or necessary. Phases 45–47 enforcement and diagnostics remain intact by construction.
+
+---
+
+## Phase 49 — Final production design-system gap audit & closure (audit only; no `src/` change)
+
+Fresh production-side audit after Phases 1–48. Evidence gathered at this tree state; nothing migrated, normalised, created or enforced. Dispositions are unranked and unscored.
+
+### A. Canonical component completeness
+
+One canonical source, one owner, measured production consumers (importer files, ripgrep import scan at this tree state — a distinct counting unit from the AST `usageSites` in the Phase 47 report, which is preserved separately and is not corrected by this number):
+
+ActionPill component 38 · `action-pill.ts` tokens 2 · StatusBadge 89 · KpiCard 18 · PageHeader 25 · DataTable 20 · EmptyState 10 · Surface 82 · controlClass 2 · Field 2 · NoticePage 4 · MARKETPLACE_PAGE_LAYOUT 10 · motion helpers 1 · logo 5 · PlanCard 6.
+
+Exactly one exported definition of each canonical name exists inside `src/components/abox/**`. The only same-name exports elsewhere are the Lucie subtree (`PageHeader`, `DataTable`, `EmptyState`, `Field`) and M06 (`Field`) — documented independent systems, unchanged. **COMPLETE / canonical**, with the Lucie and M06 collisions **COMPLETE / intentional exception**.
+
+### B. Remaining production fragmentation
+
+No new family with two production implementations was found. Items examined and classified:
+
+- `planai-assistant.tsx` — zero production importers; all three shells import `plan-o-assistant.tsx`. The two files are not duplicates (different imports, different DOM, ai-elements based vs. native pill/panel). Not a duplicate canonical source and not a migration candidate. **DOCUMENTATION GAP** — recorded here as an unconsumed production component; removal is not proposed and is not authorised by this audit.
+- Route-local `<table>` — 5 files (`agency.organization-defaults.apply`, `agency.organization-imports.$importJobId`, `agency.organization-imports.index`, `app.employer.ichra`, `marketplace.admin.releases.compare`), unchanged from Phase 44, all auth-gated and therefore NOT CAPTURED for parity evidence. **COMPLETE / intentional exception**.
+- `metal-badge.tsx` (25 importers) vs `status-badge.tsx` (89) — different semantic role (metal tier vs status tone), different token sets. **COMPLETE / intentional variant**.
+- `getHistory` / `getTasks` / `getReadiness` / `getOpenTaskCount` / `getOverrides` exported by both `org-store.ts` and `marketplace-store.ts` — different state types, different signatures, different domains; not design-system surfaces. **COMPLETE / intentional exception (business-coupled)**.
+- Exported `Route` in every route module. **COMPLETE / framework convention**.
+
+Zero FUTURE MIGRATION CANDIDATEs survive the evidence bar (two independently measurable consumers, same semantic role, same element semantics, same relevant DOM, same or provably equivalent class output, same responsive behaviour, same accessibility behaviour, no business coupling, no shell ownership, no library conflict).
+
+### C. Foundation ownership
+
+`src/styles.css` holds 198 custom-property declarations and is the canonical foundation for colours, semantic roles, radius, elevation, motion keyframes and the reduced-motion block — **COMPLETE / canonical**. Typography, spacing, layout widths, control sizing, icon sizing, border and density remain Tailwind-utility expressed at the call site with narrow owners where proven (`controlClass`, `MARKETPLACE_PAGE_LAYOUT`, `action-pill.ts`) — **COMPLETE / intentionally decentralised**, as adjudicated in Phases 33–37; repetition alone was not treated as a gap. Responsive breakpoints are Tailwind-owned — **COMPLETE / library-owned**. Interaction states remain per-component — **COMPLETE / intentional exception** (Phase 41).
+
+### D. Token drift
+
+Zero arbitrary colour literals (`[#rrggbb]`) in production outside the design/reference layers. 139 arbitrary numeric Tailwind values across `src/routes` + `src/components` — per-site one-offs with no repeated identical cluster that meets the migration bar; **FUTURE AUDIT REQUIRED** only if a later phase can show identical output across two independent consumers. Local CSS variables outside `styles.css` are all `[--tone:var(--token)]` style channels in `status-badge.tsx` and `metal-badge.tsx` (canonical owners feeding foundation tokens) plus vendored `ui/calendar.tsx` and `ai-elements/shimmer.tsx` — **COMPLETE / canonical** and **COMPLETE / library-owned**. E5 remains 15 findings, unchanged from Phase 47; no stale finding. No token was renamed, merged or replaced.
+
+### E. Component API / ownership drift
+
+No canonical component has a second source, a conflicting owner or an undocumented API divergence. `asChild` appears only on Radix triggers (`DropdownMenuTrigger`, `SheetTrigger`, `PopoverTrigger`, `TooltipTrigger`, `Button asChild` in `plan-card.tsx`) — library-required composition, not ABox polymorphism; `surface.tsx` still documents and enforces no `as`, no Slot, no polymorphism. **COMPLETE / canonical**.
+
+### F. Production vs reference boundary
+
+Only `src/routes/design-system.tsx` and `src/routes/design-guide.tsx` import the design/reference layers — the two recorded reference-route exceptions. No reference module imports runtime branding/marketplace ownership. E1/E2/E3/E4 and the server-only restriction all fire in negative controls (see L). **COMPLETE / canonical**.
+
+### G. Branding / White-Label
+
+The Brand record in `src/lib/marketplace-store.ts` remains the sole runtime White-Label owner; `logo.tsx` remains the distinct static brand-mark source with 5 importers; Marketplace Asset Management remains separate; no design/reference duplication; no production component has become a hidden branding owner. The 37 literal brand strings recorded in Phase 43 remain as recorded (auth-gated shells and static titles) — **COMPLETE / intentional exception**, unchanged.
+
+### H. Shell architecture
+
+`internal-shell.tsx`, `marketplace-shell.tsx`, `member-shell.tsx` contain zero imports of one another. E4 negative control fires. **COMPLETE / canonical**. No merge proposed.
+
+### I. Table / data display
+
+`data-table.tsx` remains the sole ABox table source (20 importer files). `src/components/ui/table.tsx` and `src/components/ui/pagination.tsx` remain at zero importers and E2-protected. No second table system exists outside the five documented route-local tables and the independent Lucie subtrees. **COMPLETE / canonical**.
+
+### J. Forms / controls
+
+`controlClass` (2), `field.tsx` (2), ActionPill (38) own their families. shadcn/Radix boundaries intact; 20 `ui/*` primitives remain at zero importers (the principal hazard, already E2-guarded for `table` and `pagination`). No exact duplicate control implementation found; similar-looking controls were not centralised. **COMPLETE / canonical** with **COMPLETE / library-owned** primitives.
+
+### K. Surface / card system
+
+`surface.tsx` (82 importers) remains the canonical Group A base; Group B/C variants, KpiCard, PlanCard, Lucie, M06 and M08 remain separately owned and documented. No second canonical Surface definition exists. **COMPLETE / canonical** + **COMPLETE / intentional exception**.
+
+### L. Navigation / page composition
+
+`page-header.tsx` (25) remains the canonical title/header source, `notice-page.tsx` (4) the canonical notice surface; shell navigation stays independent and route-local navigation stays documented. No universal navigation abstraction is implied or proposed. **COMPLETE / canonical**.
+
+### M. Governance completeness
+
+`.lovable/manual-work-map.md` remains the single human governance source. The Phase 47 report re-runs byte-identical (JSON `854bb6a3…`, Markdown `e1588e1a…`) with the same 201 findings and same schema; no stale finding, no contradictory record. The one counting-unit divergence for DataTable (Phase 42: 20 importer files · Phase 44: 23 call sites · Phase 47: 19 importer files / 26 usage sites · Phase 49: 20 importer files) is preserved side by side with its tooling named and is deliberately not reconciled. Generated reports remain diagnostic only. **COMPLETE / canonical**, with the Phase 48 report-only candidate (a distinct `framework-convention` finding type for `Route`) still recorded and still unauthorised.
+
+### N. Final gap classification summary
+
+COMPLETE/canonical: A, C (styles.css), E, F, G, H, I, J, K, L, M. COMPLETE/intentional exception: route-local tables, metal vs status badge, store selector names, Phase 43 brand strings, Group B/C Surface, interaction states. COMPLETE/library-owned: Tailwind breakpoints, unconsumed shadcn primitives, vendored CSS vars. COMPLETE/framework convention: exported `Route`. DOCUMENTATION GAP: unconsumed `planai-assistant.tsx` (recorded only). FUTURE AUDIT REQUIRED: arbitrary numeric Tailwind values (139 sites) — only if exact-equivalence evidence ever appears. FUTURE MIGRATION CANDIDATE: **none**. REVIEW-REQUIRED: **none**.
+
+### O. Production completion checklist (evidence-based)
+
+1. Every canonical family has exactly one ABox source with a named owner — met. 2. Each canonical source has measured production consumers — met. 3. Every non-adopting consumer is a documented exception — met. 4. Foundation ownership is recorded as canonical / decentralised / library-owned per dimension — met. 5. Runtime branding ownership is single and distinct from the static mark — met. 6. The three shells import none of each other — met. 7. Production imports no reference layer outside the two reference routes; reference imports no runtime ownership — met. 8. E1–E4 enforced with passing negative controls — met. 9. E5/E6/E7 drift detection deterministic and report-only — met. 10. Exact-preservation verified (no `src/` diff, locked hashes unchanged) — met. 11. No unexplained duplicate canonical definition — met. 12. No unresolved ownership ambiguity — met.
+
+On this evidence the production-side architecture is effectively complete: outcome **B** — no further controlled migration phase is required for closure, and only documentation and periodic verification remain. Completion is recorded as an evidence state, not a claim of perfection.
+
+### P. Future work boundaries
+
+1. Required before production-side completion: nothing. 2. Optional / intentionally deferred: the Phase 48 report-only `framework-convention` finding type; a decision on the unconsumed `planai-assistant.tsx`; the 139-site arbitrary-value audit; the pre-existing lint backlog (16,783) and the `/quote?step=1` 390px overflow, both still unrepaired by design. 3. Figma: out of scope here and never a production migration — any Figma work is a separate track on top of the frozen production system.
+
+### Q. Validation
+
+Lint total 16,783 · `no-restricted-imports` 0 (unchanged). `tsgo --noEmit` clean. Build OK. Negative controls: E1 (`@/lib/design-tokens` from a production route) and E2 (`@/components/ui/table`) both blocked; E3 (`@/lib/marketplace-store` from `src/lib/design/**`) blocked; E4 (`./internal-shell` from `member-shell.tsx`) blocked; all temporary control files removed and `git status -- src/` clean afterwards. Report determinism: two consecutive runs byte-identical. Locked hashes (cksum) unchanged: logo 1815638579 · marketplace-shell 117403653 · internal-shell 3748215771 · member-shell 3790977838 · marketplace-store 1939291487 · styles.css 2128787410 · data-table 3115368089 · ui/table 905065594 · ui/pagination 2648877993 · eslint.config.js 4117328763. `git diff --stat -- src/` empty. No runtime asset, branding, route, token or behaviour change.
+
+### R. Changed files
+
+`.lovable/manual-work-map.md` (this block) only. No `src/` change.
+
+### S. Rollback
+
+Delete this block. No production rollback is possible or necessary. Any future migration requires its own separately approved plan-only phase with exact parity evidence at 1440/834/390.
