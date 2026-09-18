@@ -990,3 +990,96 @@ Runtime branding values and assets; Marketplace Asset Management; live data; bus
 ### 20. Changed files, validation and rollback
 
 Changed: `.lovable/manual-work-map.md` (this block) only. No `src/` change, no Figma mutation, no runtime/asset/branding/route/token/behaviour change; canonical hashes above unchanged. Rollback: delete this block.
+
+## Phase 51 — Figma Write-Path & Automation Environment Validation (audit only, zero migrations)
+
+Audit-only. No Figma file, component, variable, style or library was created, changed or published. No plugin installed. No production code, UI, behaviour, route, asset, branding, token or governance-enforcement change. Batch 0 of Phase 50 not started. Phases 1–50 stand unchanged.
+
+### 1. Executive finding
+
+**NOT READY — USER/ENVIRONMENT SETUP REQUIRED.**
+
+No write-capable Figma path is verified in the current environment. Verified facts: (a) the workspace connector catalogue returns no Figma app MCP and Lovable has no cloud Figma connector; (b) no desktop MCP session is active; (c) the documented Lovable Desktop + Figma Desktop Dev Mode local MCP connection is read-only and cannot create Figma objects; (d) the only Figma-related code in the repository is reference/blueprint data under `src/lib/design/` (`figma-variables.ts`, `figma-library.ts`, `figma-readiness.ts`, `figma-library-readiness.ts`), which is documentation, not a write mechanism. A write path therefore requires either code executing inside Figma (a plugin) or an authorised Figma API / Make workflow, and neither can be verified from this environment.
+
+### 2. Candidate workflows and classification
+
+| # | Workflow | Class | Verification status |
+|---|---|---|---|
+| W1 | Lovable cloud Figma connector | NOT AVAILABLE IN CURRENT ENVIRONMENT | Verified absent (catalogue query returned no Figma MCP) |
+| W2 | Lovable Desktop + Figma Desktop Dev Mode local MCP | VERIFIED READ-ONLY | Verified read-only by platform contract; no active session |
+| W3 | Figma plugin executed by the user inside Figma | AVAILABLE BUT REQUIRES USER SETUP | UNVERIFIED — no plugin exists, none identified, none installed |
+| W4 | Figma REST API with a user personal access token | AVAILABLE BUT REQUIRES USER SETUP | UNVERIFIED — no token present; REST variable/component write coverage unverified here |
+| W5 | Figma Make | UNVERIFIED | No access from this environment; capabilities not observable |
+| W6 | Manual construction in Figma by a designer | AVAILABLE BUT REQUIRES USER SETUP | Verified possible; UNSUITABLE as the primary path for deterministic native library generation at this scale |
+
+### 3. Read vs write capability matrix (only what is observable)
+
+| Capability | W1 | W2 | W3 | W4 | W5 | W6 |
+|---|---|---|---|---|---|---|
+| Read Figma file structure | n/a | yes | unverified | unverified | unverified | yes |
+| Create variables | n/a | no | unverified | unverified | unverified | yes |
+| Create text/effect styles | n/a | no | unverified | unverified | unverified | yes |
+| Create components | n/a | no | unverified | unverified | unverified | yes |
+| Create component sets, variants, properties | n/a | no | unverified | unverified | unverified | yes |
+| Auto Layout | n/a | no | unverified | unverified | unverified | yes |
+| Instances | n/a | no | unverified | unverified | unverified | yes |
+| Pages / sections | n/a | no | unverified | unverified | unverified | yes |
+| Update existing objects in place | n/a | no | unverified | unverified | unverified | yes |
+| Publish library | n/a | no | unverified | unverified | unverified | yes (with permission) |
+| Deterministic batch execution | n/a | n/a | unverified | unverified | unverified | no |
+
+"unverified" is a status, not a capability claim. No entry in this table may be upgraded without direct evidence from the environment in a later phase.
+
+### 4. Required desktop applications and permissions (per workflow, not yet required of the user)
+
+W2: Lovable Desktop app, Figma Desktop in Dev Mode with the local MCP server enabled, connected under Settings → Connectors → Local MCP servers. Grants read access only. W3: Figma Desktop or web, edit access to the target file, plugin run permission; a plugin must exist first — none does. W4: a Figma account with file edit access and a personal access token held outside the repository. W5/W6: Figma account with edit access; publishing additionally requires library-publish permission on the target team/file.
+
+### 5. MCP boundary
+
+The desktop local MCP connection is an inspection channel. It is explicitly NOT a write path and must never be described as one. Plugin execution and Make execution are separate mechanisms with separate permission models, neither connected nor verified.
+
+### 6. User-action prerequisite checklist
+
+Mandatory before any Phase 52 write attempt: (M1) decide and confirm the write mechanism — plugin (W3) or REST token (W4); (M2) provide or create a dedicated scratch Figma file and confirm edit access on it; (M3) confirm whether library publishing permission exists on the target team.
+Conditional: (C1) install Lovable Desktop and enable the Figma Dev Mode local MCP — required only if read-back inspection is used for validation; (C2) install/enable a plugin — only if W3 is chosen; (C3) supply a Figma token into the local environment — only if W4 is chosen, and never into source.
+Not required: nothing else. No setup is requested for workflows that are not chosen.
+
+### 7. Native-object validation strategy (for a future phase only)
+
+Each generated object type is proven native by structural inspection, never by screenshot: variables (exist in a named collection with typed values and modes, and are bound to consuming nodes); text styles and effect styles (exist as named styles, applied by reference); components (`COMPONENT` node type, not `FRAME` or `RECTANGLE` with an image fill); component sets (`COMPONENT_SET` with declared variant axes); variants and component properties (property definitions readable with their allowed values); instances (`INSTANCE` nodes resolving to the master); Auto Layout (layout mode, padding, gap and sizing set, not absolute positions); editable text (`TEXT` nodes with readable characters); editable vector/icon layers (`VECTOR`/`BOOLEAN_OPERATION`, not images); page/section hierarchy (named pages and sections at the expected depth). Failure condition: any `IMAGE` fill or flattened node standing in for a component, style, icon or text anywhere in the target file fails the whole validation run.
+
+### 8. Determinism strategy
+
+Required of whichever path is chosen: stable collection/variable names, stable component and component-set names, stable variant and property names, stable page/section hierarchy, and `abox/<export-name>` traceability identity carried in naming or plugin data. Re-running generation must not duplicate components; update-in-place is preferred. If the chosen path cannot guarantee deterministic update-in-place, that limitation is recorded before Batch 0 and the batch is re-scoped rather than worked around.
+
+### 9. Rollback strategy
+
+All generation targets a dedicated scratch file. Nothing is published into a shared or production-facing library until validation passes. Existing Figma libraries and unrelated files are never written to. Production code, runtime branding and ABox architecture are outside the write surface entirely, so no rollback touches them. Failed run rollback: discard or delete the scratch file.
+
+### 10. Security model
+
+Authentication happens in the user's Figma session (plugin path) or via a personal token held in the local environment (REST path). No credential, token, plugin ID or file key is stored in ABox source or committed. No secret is required for this phase. Generated reports must be screened for file keys and tokens before being written, and must not embed them.
+
+### 11. Traceability readiness
+
+The Phase 50 scheme `abox/<export-name>` can be preserved through any of W3, W4 or W6 via Figma object naming, with optional plugin data on the plugin path. No production source needs Figma metadata, and none is added. Traceability is not implemented in this phase.
+
+### 12. Batch 0 readiness criteria
+
+All mandatory, all currently unmet unless noted: verified write-capable path (NOT MET); authenticated user on that path (NOT MET); correct Figma permissions (NOT MET); target file available (NOT MET); native variable creation proven (NOT MET); native component creation proven (NOT MET); native component-property/variant creation proven (NOT MET); native Auto Layout proven (NOT MET); re-run/update behaviour understood (NOT MET); rollback understood (MET — scratch-file model defined); no production mutation (MET); no runtime branding transfer (MET); no flattened screenshot workflow (MET, by rule). Status: **NOT READY**.
+
+### 13. Exact blockers
+
+B-1 no verified write-capable mechanism (W1 absent, W2 read-only, W3/W4/W5 unverified). B-2 no chosen mechanism. B-3 no target Figma file with confirmed edit access. B-4 no proof of native variable/component/variant/Auto Layout creation. B-5 update-in-place behaviour unknown. B-6 library publishing permission unknown.
+
+### 14. Recommended future sequence (each step needs its own approved plan)
+
+S1 choose the write mechanism with the user and record the decision. S2 confirm the target scratch file and permissions. S3 minimal capability probe — create one variable, one text style, one component with one variant property and Auto Layout in the scratch file, then validate natively per §7. S4 determine re-run/update-in-place behaviour. S5 re-evaluate Batch 0 readiness against §12. Only then does Phase 52 / Batch 0 begin.
+
+### 15. Runtime boundaries preserved
+
+The future Figma workflow never takes ownership of tenant runtime branding, Marketplace Asset Management, live data, business logic, routing, authentication, production governance, E5/E6/E7 enforcement, shell merging, or route-local/business-coupled production ownership. Production remains the canonical design-system source; Figma is a generated representation.
+
+### 16. Changed files, validation and rollback
+
+Changed: `.lovable/manual-work-map.md` (this block) only. No `src/` diff, no Figma mutation, no asset/branding/route/token/behaviour change; Phase 49 canonical hashes unchanged. Rollback: delete this block.
