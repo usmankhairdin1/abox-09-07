@@ -17,7 +17,7 @@ import {
   useMarketplaceState, getMarketplace, getActiveRelease, getScheduledRelease, getReadiness,
   getOpenTaskCount, getParticipants, getAvailability, getPrimaryDomain, getActiveBrand, getHistory,
 } from "@/lib/marketplace-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/marketplace/admin/")({
   head: () => ({ meta: [{ title: "Marketplace Administration — ABox" }, { name: "description", content: "Root operational summary, release status, blockers and quick actions." }] }),
@@ -66,11 +66,11 @@ function Page() {
       workspace="agency" pageTitle="Marketplace administration" eyebrow={`Marketplace · ${marketplace.internal_code}`}
       actions={
         marketplace.lifecycle_status === "DRAFT" ? (
-          <Link to="/marketplace/admin/activation" className={ACTION_PILL.primaryMd}>
+          <Link to="/marketplace/admin/activation" className={actionPillClass("primaryMd")}>
             Submit for activation
           </Link>
         ) : (
-          <Link to="/marketplace/admin/releases/review" className={ACTION_PILL.primaryMd}>
+          <Link to="/marketplace/admin/releases/review" className={actionPillClass("primaryMd")}>
             Publish a release
           </Link>
         )
@@ -78,7 +78,7 @@ function Page() {
     >
       <div className="mb-6 flex flex-wrap gap-2">
         {QUICK_ACTIONS.map((a) => (
-          <Link key={a.to} to={a.to} className={ACTION_PILL.outlineSmCard}>
+          <Link key={a.to} to={a.to} className={actionPillClass("outlineSmCard")}>
             <a.icon className="h-3.5 w-3.5" aria-hidden /> {a.label}
           </Link>
         ))}

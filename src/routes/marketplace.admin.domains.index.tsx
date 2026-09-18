@@ -8,7 +8,7 @@ import { Globe, Plus, CheckCircle2, Star } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { marketplaceStore, useMarketplaceState, getDomains, MARKETPLACE_ID, type DomainStatus } from "@/lib/marketplace-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill, actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/marketplace/admin/domains/")({
   head: () => ({ meta: [{ title: "Marketplace Domains — ABox" }, { name: "description", content: "JET subdomain, custom-domain request, verification, activation and route continuity." }] }),
@@ -37,7 +37,7 @@ function Page() {
   return (
     <InternalShell
       workspace="agency" pageTitle="Domains and public routes" eyebrow="Domains and Public Routes · SCR-M04-007"
-      actions={<Link to="/marketplace/admin/domains/request" className={ACTION_PILL.primaryMd}><Plus className="h-4 w-4" aria-hidden /> Request custom domain</Link>}
+      actions={<Link to="/marketplace/admin/domains/request" className={actionPillClass("primaryMd")}><Plus className="h-4 w-4" aria-hidden /> Request custom domain</Link>}
     >
       <ul className="space-y-3">
         {domains.map((d) => (
@@ -51,13 +51,13 @@ function Page() {
               <div className="flex items-center gap-2">
                 <StatusBadge tone={STATUS_TONE[d.status]}>{d.status.replaceAll("_", " ")}</StatusBadge>
                 {d.status === "REQUESTED" || d.status === "ACTION_REQUIRED" ? (
-                  <button onClick={() => verify(d.domain_id)} className={ACTION_PILL.outlineXs}>
+                  <ActionPill onClick={() => verify(d.domain_id)} variant="outlineXs">
                     <CheckCircle2 className="h-3.5 w-3.5" aria-hidden /> Mark verified
-                  </button>
+                  </ActionPill>
                 ) : d.status === "VERIFIED" ? (
-                  <button onClick={() => activate(d.domain_id)} className={ACTION_PILL.primaryXs}>
+                  <ActionPill onClick={() => activate(d.domain_id)} variant="primaryXs">
                     JET: Activate
-                  </button>
+                  </ActionPill>
                 ) : null}
               </div>
             </div>
