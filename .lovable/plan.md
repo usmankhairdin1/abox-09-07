@@ -78,14 +78,17 @@ Recommendation to decide at execution gate: Candidate 1 for Group A/B, with Cand
 ## 8. Candidate canonical API (proposal, not built)
 
 ```
-Surface({ padding, elevated, interactiveHover, decor, as?, className, children, ...divProps })
+Surface({ padding, elevated, interactiveHover, decor, className, children, ...divProps })
 padding:          "none" | "sm"(p-4) | "md"(p-5) | "lg"(p-6)   default "md"
 elevated:         boolean  -> inline style boxShadow var(--shadow-card)
 interactiveHover: boolean  -> transition/translate/border-primary set
 decor:            boolean  -> card-brackets edge-sheen
 ```
 
-Plus `surfaceClass(opts)` exported for `<button>`/`<Link>` consumers — no Slot/asChild, matching the ActionPill precedent.
+`Surface` renders a native `div` only. No `as` prop, no Slot, no `asChild`, no polymorphic element switching, no automatic element substitution — so it cannot alter DOM semantics, accessibility, keyboard, link or button behavior during migration.
+
+Plus `surfaceClass(opts)` exported for `<button>`/`<Link>` consumers, matching the ActionPill precedent. Interactive consumers keep their existing native element, href, handlers, focus and keyboard behavior and consume classes only; an existing Link/button card is never converted into a `Surface` wrapper.
+
 
 ## 9. Variant/state model
 
