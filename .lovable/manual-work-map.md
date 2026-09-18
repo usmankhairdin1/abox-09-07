@@ -370,3 +370,30 @@ Deferred, not implemented: two competing label shapes (`block text-sm` + inner `
 **Rules.** Future standalone notice screens use `NoticePage`; no second notice/header component may be created. Any new tone requires two consumers. Actions stay consumer-owned as children. Rollback point: restore the literal `section`/`span`/`h1`/`p` markup in the four routes and delete `notice-page.tsx`; nothing in Phases 29–34 is affected.
 
 **Validation.** tsgo clean; build OK; `notice-page.tsx` lints clean; remaining lint on the four routes is the pre-existing prettier backlog on untouched `Link` lines. Locked source hashes unchanged: page-header, surface, control, field, module-tabs, nav-config, all three shells.
+
+## Phase 36 — Typography roles & text-style source of truth (executed: zero migrations)
+
+**Outcome: zero migrations.** No production file was created, modified, deleted or reformatted. Every locked source hash is unchanged. Zero migrations was an approved valid outcome and is the correct result of the exact-parity gate.
+
+**Canonical typography ownership map.**
+- `src/styles.css` (md5 534cd653f5aae3c9a8e042345d53d852) owns the font families (`--font-sans`/`--font-mono` Inter Tight, `--font-display`/`--font-serif` Bricolage Grotesque) and the only three semantic text aliases: `@utility text-display` (display family, weight 600, tracking -0.032em, line-height 1.02), `@utility text-eyebrow` (mono, 0.6875rem, weight 500, uppercase, muted), `@utility text-serial` (mono, 0.625rem, uppercase, muted, tabular-nums). Size and weight are always composed at the call site with raw Tailwind utilities — this is the existing contract, not a defect to repair here.
+- Role typography owned by completed components, ownership left intact: `page-header.tsx` 5be9e6ea… (context eyebrow + page title), `kpi-card.tsx` 9279cd20… (KPI eyebrow + `text-display … text-5xl tabular-nums` value), `empty-state.tsx` 6cfba448… (`text-display text-2xl` title), `field.tsx` f35b2364… (field label caption), `notice-page.tsx` 81ee6c0f… (notice title/description), `control.tsx` 1c6efd5c… and `surface.tsx` 51b51b31… (no typography role).
+- `src/lib/design/**` (incl. `graph-typography.ts`) and `src/components/design/**` are reference documentation, not production owners. `src/components/ui/*` typography carries no independent production ownership.
+
+**Measured inventory (production `src/routes` + `src/components/abox`).** `text-sm` 983, `text-xs` 571, `text-eyebrow` 267, `text-display` 246, `font-semibold` 194, `uppercase` 93, `text-2xl` 86, `tracking-tight` 12. Eyebrow shapes: bare `text-eyebrow` 125, `mb-1 block text-eyebrow` 52, remainder one-off spacing/layout variants. Muted body: `text-sm text-muted-foreground` 64, `text-xs text-muted-foreground` 116.
+
+**Why no candidate cleared the gate.**
+- `text-display text-xl` (55 occurrences) is not one semantic role. Opened in source it renders at least four different roles on different elements: true section headings `<h2>` (`privacy.tsx:41`, `terms.tsx:40`, both inside a `.map()` — one call site per file), card titles `<p>` after an icon medallion (`ichra.tsx:44`, `shared.$token.tsx:113`), panel labels `<p>` (`plans.index.tsx:379`, `faq.tsx:77`, `accessibility.tsx:93`), and numeric price values `<p className="text-display text-xl tabular-nums">` (`index.tsx:136/146/156`). Identical class string, different semantic roles — the semantic-role rule forbids conflating them. The only exactly-matching pair (privacy/terms `<h2>`) is two single call sites; a shared source there is abstraction without benefit, and the other 53 occurrences are auth-gated.
+- `mb-1 block text-eyebrow` (52) occurs exclusively on auth-gated routes (`marketplace.admin.*`, `platform.*`, `agency.organizations.*`); with `LOVABLE_BROWSER_AUTH_STATUS=signed_out` no parity can be measured. NOT CAPTURED — left literal, no migration from source similarity.
+- Bare `text-eyebrow` (125) is already the canonical alias applied directly; there is nothing to centralize and a wrapper would only add DOM.
+- `text-sm text-muted-foreground` / `text-xs text-muted-foreground` are inline colour+size compositions on heterogeneous elements (`p`, `span`, `td`, `div`) with different ancestry, wrapping and truncation behaviour; no shared semantic contract.
+- Pricing/quote values, plan names, organization names and status text are geometry- and business-coupled (tabular-nums width, wrapping) — excluded by rule.
+- Shells, Lucie, Lucie-app, M06, M08, ai-elements, Branding & White-Label runtime, Marketplace Asset Management runtime and the reference layers were not inspected for centralization and not touched.
+
+**Rules going forward.** `src/styles.css` remains the single owner of typography aliases; no duplicate alias and no universal `Typography`/`Text` component may be created. Component-intrinsic typography stays inside its component. A new shared text role requires >=2 measurable consumers with identical semantic role, element, class string and no business coupling.
+
+**Fragmentation register (documented, deliberately not repaired).** Section-heading size drift (`text-display text-xl` / `text-2xl` / `text-lg` / `mb-3 text-xl`); the same class serving heading, card title, panel label and numeric value; caption vocabulary split across `text-eyebrow`, `text-xs text-muted-foreground`, `text-serial`; redundant `font-semibold` layered on `text-display` (already weight 600); `<h2>` vs `<p>` used for visually equivalent headings (heading hierarchy issue — never fixed by a typography change alone).
+
+**Rollback.** Nothing to roll back; no diff was produced. Phases 29-35 untouched.
+
+**Validation.** `git status` clean before and after apart from this map entry; latest build log reports `build OK`; no source edits, therefore no lint or typecheck delta. Locked hashes re-verified: styles.css 534cd653…, page-header 5be9e6ea…, kpi-card 9279cd20…, empty-state 6cfba448…, field f35b2364…, control 1c6efd5c…, surface 51b51b31…, notice-page 81ee6c0f….
