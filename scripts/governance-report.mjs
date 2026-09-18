@@ -37,6 +37,8 @@ const INDEPENDENT_SYSTEMS = [
   { prefix: "src/components/abox/marketplace-shell.tsx", label: "independent shell" },
   { prefix: "src/components/abox/member-shell.tsx", label: "independent shell" },
   { prefix: "src/components/lucie", label: "Lucie subtree" },
+  { prefix: "src/components/m06", label: "M06 governed subtree" },
+  { prefix: "src/components/m08", label: "M08 governed subtree" },
   { prefix: "src/components/ai-elements", label: "AI elements (vendored)" },
   { prefix: "src/components/ui/", label: "shadcn/Radix primitive" },
 ];
