@@ -51,7 +51,12 @@ Documentation, reference and governance only. No application file was modified.
 - OBSERVED VARIATION — two table densities (DataTable px-5 py-4, shadcn head h-10 px-2).
 - GOVERNANCE RULE — none of the above was normalized; the shipping implementation wins.
 
-## Phase 3 — deferred (not started, each recorded as FUTURE OPPORTUNITY)
+## Deferred items carried forward (not started, each recorded as FUTURE OPPORTUNITY)
+
+<!-- Phase 48 governance correction: this heading previously read "Phase 3 — deferred",
+     colliding with the completed "Phase 3 — Typography audit & governance" section below.
+     The list contents are unchanged. -->
+
 
 - [ ] Near-miss pill class strings (needs per-site visual verification)
 - [ ] SurfaceCard / SectionHeading components (would change rendered output)
