@@ -7,6 +7,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, Check, ArrowRight, Users, DollarSign, ShieldCheck } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/ichra")({
   head: () => ({

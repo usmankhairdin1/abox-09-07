@@ -8,6 +8,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Check, Pencil, ShieldAlert } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { SCREENS } from "@/lib/screens";
 

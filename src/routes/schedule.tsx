@@ -1,6 +1,7 @@
 /**
  * UX-022 — Schedule Time / Request Call
  */
+import { actionPillClass } from "@/components/abox/action-pill-component";
 import { controlClass } from "@/components/abox/control";
 import { LabeledField } from "@/components/abox/field";
 import { surfaceClass } from "@/components/abox/surface";
