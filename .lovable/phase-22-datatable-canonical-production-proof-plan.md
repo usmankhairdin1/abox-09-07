@@ -324,3 +324,139 @@ This phase cannot establish:
 - any migration order, canonical winner, or Figma library structure.
 
 Possible conclusions for the proof phase are descriptive only: *reusable for the verified current consumers*, *reusable with specific unresolved variants*, *specialized in some areas*, or *evidence insufficient*.
+
+---
+
+# PHASE 23 — EXECUTION EVIDENCE (proof run, zero production changes)
+
+## 23.1 Source integrity
+
+| Check | Result |
+| --- | --- |
+| md5 before proof | `63c1e60eed38407aa9d6e6301b362637` — matches approved hash |
+| md5 after proof | `63c1e60eed38407aa9d6e6301b362637` — unchanged |
+| `git status` before | clean |
+| Importer re-count | 20 files including `design-system.tsx` → **19 production** |
+| Call-site re-count | 27 including the reference route → **26 production** |
+| Production files changed | **0** |
+
+Session: an authenticated session was required (all gates except `/app/tasks` redirect to `/auth?redirect=…` when signed out). A session was minted for the existing test account `dana_1789563948@example.com` and restored into `localStorage` by the proof scripts. No application code or data was modified to obtain access.
+
+## 23.2 Proof-gate routes reached
+
+All seven reached: `/app/tasks`, `/app/customers`, `/app/commissions`, `/app/jet/platform`, `/platform/organizations`, `/marketplace/admin/participants`, `/agency/organization-admin`. No substitutions.
+
+Two observations affecting capture (recorded, not fixed):
+- `/app/tasks` needs ~3.5 s before its table is present; a 1.5 s probe saw an empty body. With the longer wait the table renders normally. Two dev-only request failures are logged on that route (`virtual:lovable-preview-execute-client`, a `?t=` HMR entry) and are pre-existing dev-server artifacts.
+- `/app/jet/platform` mounts one DataTable at a time because it uses Radix `Tabs`; each tab was clicked individually to reach all seven instances.
+
+## 23.3 DOM findings
+
+Every observed instance matches the approved structure exactly:
+
+```
+div.overflow-hidden.rounded-lg.border.border-hairline.bg-card
+ └ div.overflow-x-auto
+   └ table.w-full.min-w-[640px].text-sm  [aria-label]
+     ├ thead.border-b.border-hairline…  > tr > th[scope="col"]
+     └ tbody > tr.group… > td.px-5.py-4.relative
+```
+
+`caption` was absent everywhere (no production consumer). `th[scope="col"]` on all headers. Empty state renders as a real `TR > TD[colspan]` inside `tbody`. Consumer-rendered `A`/`BUTTON` controls appear inside cells (e.g. participants rows contain one link each; commissions rows contain an "Export" control).
+
+## 23.4 Class findings (verbatim, unmodified)
+
+- wrapper `overflow-hidden rounded-lg border border-hairline bg-card`
+- scroll container `overflow-x-auto`
+- table `w-full min-w-[640px] text-sm`
+- thead `border-b border-hairline text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground`
+- th `px-5 py-4 font-semibold` (+ `text-right` on aligned columns)
+- tr `group border-b border-hairline/60 transition-colors last:border-0 hover:bg-panel/40 relative`
+- td `px-5 py-4 relative` (+ `text-right tabular-nums`)
+- empty cell `px-5 py-10 text-center text-muted-foreground`
+- accent bar `absolute left-0 top-0 bottom-0 w-[2px] origin-top scale-y-0 bg-primary transition-transform duration-200 group-hover:scale-y-100`
+
+Identical strings observed on all seven routes and all seven JET tabs.
+
+## 23.5 Computed-style findings (1440 px, `/app/commissions` representative)
+
+wrapper: radius `14px`, border `1px oklch(0.3 0.04 265 / 0.11)`, background `oklch(1 0 0)`, overflow `hidden`, **box-shadow `none`**. Scroller: `overflow-x: auto`. Table: `min-width 640px`, `font-size 14px`, family `Inter Tight`. Header: `10px / 600 / letter-spacing 1.8px / uppercase / padding 16px 20px`, colour `oklch(0.5 0.018 265)`. Row: border-bottom `1px oklab(0.3 … / 0.066)`; last row `0px`. Cell: padding `16px 20px`, `14px / 20px`, `position: relative`. Right-aligned cells report `font-variant-numeric: tabular-nums`; default cells `normal`. Values are recorded as rendered; nothing was compared against or adjusted toward an idealized token.
+
+## 23.6 Geometry (table width / scrollWidth / container / overflow / first row heights)
+
+| Route | 1440 | 834 | 390 |
+| --- | --- | --- | --- |
+| /app/tasks | 1082 / 1082 / 1082 / no / 69 | 802.8 / 803 / 768 / **yes** / 145 | 802.8 / 803 / 356 / **yes** / 145 |
+| /app/customers | 1082 / 1082 / 1082 / no / 69 | 768 / 768 / 768 / no / 89 | 640 / 640 / 356 / **yes** / 93 |
+| /app/commissions | 1082 / 1082 / 1082 / no / 65 | 825.6 / 826 / 768 / **yes** / 73 | 825.6 / 826 / 356 / **yes** / 77 |
+| /app/jet/platform | 1082 / 1082 / 1082 / no / 73 | 768 / 768 / 768 / no / 93 | 640 / 640 / 356 / **yes** / 133 |
+| /platform/organizations | 1080 / 1080 / 1080 / no / 69 | 766 / 766 / 766 / no / 69 | 640 / 640 / 354 / **yes** / 77 |
+| /marketplace/admin/participants | 1082 / 1082 / 1082 / no / 55.1 | 768 / 768 / 768 / no / 73 | 642.8 / 643 / 356 / **yes** / 73 |
+| /agency/organization-admin | 1080 / 1080 / 1080 / no / 55.1 | 766 / 766 / 766 / no / 55.1 | 640 / 640 / 354 / **yes** / 55.1 |
+
+Header row height 46.8 px at 1440. `document.scrollWidth == clientWidth` at every viewport on every route: horizontal scrolling stays inside `overflow-x-auto` and never reaches the page. The 640 px floor holds at 390 px on all seven routes; two tables (`/app/commissions`, `/app/tasks`) exceed 640 px on content and already scroll at 834 px.
+
+## 23.7 Hover / interaction findings
+
+`/app/commissions` first row: background `rgba(0,0,0,0)` → `oklab(0.945 … / 0.4)` on hover. The accent bar animates through the CSS `scale` property (Tailwind v4), not `transform`: `scale: "1 0"` → `"1"` → back to `"1 0"` on unhover, measured height `0px` → `64px` → `0px`, width constant `2px`, `transition-duration: 0.2s`, `transform-origin: 1px 0px`. Row `y` and `height` identical before and after hover — no layout shift. Consumer controls: the participants in-cell link `/marketplace/admin/participants/ptp-000008` navigated correctly on click; `/agency/organization-admin` rows contain a consumer link ("Northwind Health Group"). All such controls are consumer-rendered, not DataTable behaviour.
+
+## 23.8 Empty-state findings
+
+`/app/customers`: driven purely by the existing "Search by name or ID…" input (page input index 1; index 0 is the shell's global search). Typing a non-matching string collapsed 8 rows to a single row containing `TD[colspan="6"]` (column count 6), class `px-5 py-10 text-center text-muted-foreground`, inner HTML `<span>No leads match those filters.</span>`, rect 1082 × 100.5. Clearing the input restored 8 rows. No data injected, no fixture created.
+
+`/agency/organization-admin`: 2 rows present in the current state; the explicit string empty state (`"No direct downlines yet. Create one to get started."`) was **not naturally reachable** and is recorded as unexercised rather than forced.
+
+`/app/tasks`: no `empty` prop; rows always present, so the `"No results."` fallback is **unexercised**.
+
+## 23.9 API / prop coverage across the gates
+
+| Prop / feature | Exercised | Where |
+| --- | --- | --- |
+| `columns`, `rows`, `getRowId` | yes | all gates |
+| `ariaLabel` | yes | all gates — e.g. "Tasks", "Leads and customers", "Commission statements", "Marketplace participants", "Direct downlines", plus all 7 JET labels |
+| `empty` (absent) | yes | `/app/tasks`, `/app/commissions`, `/app/jet/platform`, `/marketplace/admin/participants`, `/platform/organizations` |
+| `empty` (JSX) | yes | `/app/customers` |
+| `empty` (string) | partially — prop present, state not reachable | `/agency/organization-admin` |
+| `Column.align="right"` | yes | `/app/commissions` — Booked, Projected, Carriers, Policies |
+| `Column.align="center"` | **not observed** on any gate | — |
+| default/left alignment | yes | all gates |
+| `Column.className` | yes | within column definitions on commissions/jet gates |
+| custom cell renderers | yes | badges, codes, links, money, Export controls |
+| consumer-owned filtering | yes | `/app/customers` |
+| `caption` | zero consumers — no proof manufactured | — |
+| `onRowClick` | zero ABox consumers — no proof manufactured | — |
+
+## 23.10 Multi-instance findings
+
+`/app/jet/platform`: all **seven** instances reached by clicking each tab, each distinguishable by `aria-label` and headers — "M00 change and clarification records" (6 cols, 3 rows), "Environment separation" (4/4), "Launch gates" (6/9), "Risk register" (6/4), "Open item register" (5/2), "Governed screen register" (5/3), "M00 governance versus Lucie business surface classification" (4/13). Wrapper and table class strings identical across all seven; no cross-instance style or state leakage observed (only one instance mounted at a time by Radix Tabs).
+
+`/platform/organizations`: **one** table rendered in the current state ("All organizations", 3 rows). The conditional pending-reference-requests table did not render because no pending requests exist — existing conditional behaviour, recorded as unexercised.
+
+## 23.11 Accessibility findings
+
+`/marketplace/admin/participants` representative: `aria-label="Marketplace participants"`, `table.tabIndex === -1` (not focusable), no `role` override, all 5 headers `scope="col"`, every `tbody tr` `tabIndex === -1`, first-cell accent spans `aria-hidden="true"` (non-first-cell spans are consumer content). Focusables inside the table are only consumer links. Tab order from page load runs Skip to content → shell brand → shell controls → sidebar navigation, i.e. the table contributes nothing to focus order beyond its consumer controls. No `aria-sort` present anywhere; none added. Empty-state semantics valid (`tbody > tr > td[colspan]`).
+
+## 23.12 Shell / context findings
+
+InternalShell (`/app/*`, `/agency/*`, `/platform/*`) and MarketplaceShell (`/marketplace/admin/*`) render unchanged around every table; sidebar, header and skip link behave normally, in-table navigation resolves to the expected detail route, and no shell spacing or navigation change is attributable to DataTable.
+
+## 23.13 Console / typecheck / build / lint
+
+- Console: zero errors on `/app/customers`, `/app/commissions`, `/app/jet/platform`, `/platform/organizations`, `/marketplace/admin/participants`, `/agency/organization-admin` across all three viewports. One error on `/app/tasks`: "Can't perform a React state update on a component that hasn't mounted yet…" — the known pre-existing warning reproduced on untouched code, not attributable to this phase and not fixed.
+- Typecheck: `tsgo --noEmit` clean.
+- Build: build log reports `build OK`.
+- ESLint on `data-table.tsx`: **2 pre-existing `prettier/prettier` formatting errors** (lines 25 and 52). Recorded, not fixed. No new findings.
+
+## 23.14 Alternate table systems
+
+Untouched and unmodified: `src/components/lucie/ui.tsx Table`, `src/components/lucie-app/ui.tsx DataTable`, `src/components/ui/table.tsx`, and the five route-local raw tables. No comparison, ranking or convergence performed.
+
+## 23.15 Final integrity
+
+Hash unchanged (`63c1e60eed38407aa9d6e6301b362637`); zero production, route, style, foundation, dependency, branding or marketplace-asset files changed; the only modified file in the repository is this documentation artifact; no second DataTable created anywhere.
+
+## 23.16 Conclusion
+
+**Current implementation is reusable with specific unresolved variants.**
+
+Evidence supports reuse without modification for the verified consumers: identical DOM, identical class strings, identical computed styles and consistent geometry across seven routes, thirteen distinct table instances and three viewports, with hover, empty-state, accessibility, navigation and shell behaviour intact and zero production change. The variants that remain unresolved and unexercised by this proof are: the string `empty` state on `/agency/organization-admin`, the default `"No results."` fallback, the conditional second table on `/platform/organizations`, and `Column.align="center"` — none of which were reachable through existing state without altering production. All Phase 22 open decisions (dormant `caption`/`onRowClick`, absent sorting/pagination/selection/loading APIs, coexisting table systems, no mobile representation, `tabular-nums` coupled to right alignment, no `aria-sort`) remain unresolved. No ranking against any alternate implementation is expressed or implied.
