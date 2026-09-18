@@ -13,7 +13,7 @@ import {
   orgStore, useOrgState, getOrganization, getDirectDownlines, getReadiness, getRelationship,
   ROOT_ORGANIZATION_ID,
 } from "@/lib/org-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill, actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/organization-structure")({
   head: () => ({ meta: [{ title: "Organization Structure — ABox" }, { name: "description", content: "Root and direct-downline hierarchy with actions." }] }),
@@ -46,7 +46,7 @@ function Page() {
               <p className="text-xs text-muted-foreground">Tenant-owning root · {root.reference_code}</p>
             </div>
           </div>
-          <Link to="/agency/organizations/$organizationId" params={{ organizationId: root.organization_id }} className={ACTION_PILL.outlineSmCard}>
+          <Link to="/agency/organizations/$organizationId" params={{ organizationId: root.organization_id }} className={actionPillClass("outlineSmCard")}>
             <Eye className="h-4 w-4" aria-hidden /> View profile
           </Link>
         </div>
@@ -68,13 +68,13 @@ function Page() {
                 </div>
                 <div className="flex items-center gap-2">
                   {readiness && <StatusBadge tone={READINESS_TONE[readiness.status]}>{readiness.status.replaceAll("_", " ")}</StatusBadge>}
-                  <button
+                  <ActionPill
                     onClick={() => orgStore.setContext(inContext ? null : d.organization_id)}
-                    className={ACTION_PILL.outlineSm}
+                    variant="outlineSm"
                   >
                     {inContext ? "Exit context" : "Enter context"} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                  </button>
-                  <Link to="/agency/organizations/$organizationId" params={{ organizationId: d.organization_id }} className={ACTION_PILL.outlineSm}>
+                  </ActionPill>
+                  <Link to="/agency/organizations/$organizationId" params={{ organizationId: d.organization_id }} className={actionPillClass("outlineSm")}>
                     <Eye className="h-4 w-4" aria-hidden /> Profile
                   </Link>
                 </div>

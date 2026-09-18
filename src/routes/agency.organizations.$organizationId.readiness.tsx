@@ -9,7 +9,7 @@ import { StatusBadge } from "@/components/abox/status-badge";
 import {
   orgStore, useOrgState, getOrganization, getReadiness,
 } from "@/lib/org-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/organizations/$organizationId/readiness")({
   loader: ({ params }) => ({ organizationId: params.organizationId }),
@@ -37,12 +37,12 @@ function Page() {
     <InternalShell
       workspace="agency" pageTitle={`Readiness — ${record.display_name}`} eyebrow="Organization Readiness · SCR-M05-016"
       actions={
-        <button
+        <ActionPill
           onClick={() => orgStore.recalculateReadiness(organizationId)}
-          className={ACTION_PILL.primaryMd}
+          variant="primaryMd"
         >
           <RotateCw className="h-4 w-4" aria-hidden /> Recalculate
-        </button>
+        </ActionPill>
       }
     >
       <Link to="/agency/organizations/$organizationId" params={{ organizationId }} className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
@@ -71,12 +71,12 @@ function Page() {
                   <span className="text-xs text-muted-foreground">{item.owner_module}</span>
                   <StatusBadge tone={RESULT_TONE[item.result]}>{item.result}</StatusBadge>
                   {item.control_code === "ADMINISTRATOR_ASSIGNED" && item.result !== "PASS" && (
-                    <button
+                    <ActionPill
                       onClick={() => orgStore.markAdministratorActive(organizationId, "Elena Alvarez")}
-                      className={ACTION_PILL.outlineXs}
+                      variant="outlineXs"
                     >
                       <UserCheck className="h-3.5 w-3.5" aria-hidden /> Mark administrator active
-                    </button>
+                    </ActionPill>
                   )}
                 </div>
               </li>

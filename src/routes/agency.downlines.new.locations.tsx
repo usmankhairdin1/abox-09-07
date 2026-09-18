@@ -9,7 +9,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { DownlineWizardStepper } from "@/components/abox/downline-wizard-stepper";
 import { step10LocationSchema, loadWizardState, saveWizardState } from "@/lib/downline-wizard-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/downlines/new/locations")({
   head: () => ({ meta: [{ title: "Create Downline Agency — Addresses & Offices — ABox" }] }),
@@ -95,18 +95,18 @@ function Page() {
         </div>
 
         <div className="flex justify-between pt-2">
-          <button
+          <ActionPill
             onClick={() => navigate({ to: "/agency/downlines/new/contacts" })}
-            className={ACTION_PILL.outlineLg}
+            variant="outlineLg"
           >
             <ArrowLeft className="h-4 w-4" /> Back
-          </button>
-          <button
+          </ActionPill>
+          <ActionPill
             onClick={onNext}
-            className={ACTION_PILL.primaryLg}
+            variant="primaryLg"
           >
             Continue <ArrowRight className="h-4 w-4" />
-          </button>
+          </ActionPill>
         </div>
       </div>
     </InternalShell>

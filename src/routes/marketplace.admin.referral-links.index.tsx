@@ -14,7 +14,7 @@ import {
   marketplaceStore, useMarketplaceState, getReferralLinks, getParticipants, MARKETPLACE_ID,
   CHANNEL_LABEL, type ReferralLink, type ReferralLinkType, type MarketplaceChannel,
 } from "@/lib/marketplace-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/marketplace/admin/referral-links/")({
   head: () => ({ meta: [{ title: "Referral Links — ABox" }, { name: "description", content: "View, create, copy, revoke and replace organization and agent links." }] }),
@@ -60,8 +60,8 @@ function Page() {
     { key: "uses", header: "Uses", align: "right", cell: (r) => r.use_count },
     { key: "actions", header: "Actions", align: "right", cell: (r) => (
       <div className="flex justify-end gap-2">
-        <button onClick={() => navigator.clipboard?.writeText(`https://cedargrove.abox.app/r/${r.token}`)} className={ACTION_PILL.outlineXs}><Copy className="h-3.5 w-3.5" aria-hidden /> Copy</button>
-        {r.status === "ACTIVE" && <button onClick={() => revoke(r)} className={ACTION_PILL.outlineXs}><Ban className="h-3.5 w-3.5" aria-hidden /> Revoke</button>}
+        <ActionPill onClick={() => navigator.clipboard?.writeText(`https://cedargrove.abox.app/r/${r.token}`)} variant="outlineXs"><Copy className="h-3.5 w-3.5" aria-hidden /> Copy</ActionPill>
+        {r.status === "ACTIVE" && <ActionPill onClick={() => revoke(r)} variant="outlineXs"><Ban className="h-3.5 w-3.5" aria-hidden /> Revoke</ActionPill>}
       </div>
     ) },
   ];
@@ -69,7 +69,7 @@ function Page() {
   return (
     <InternalShell
       workspace="agency" pageTitle="Referral links" eyebrow="Referral Links · SCR-M04-013"
-      actions={<button onClick={() => setShowForm((v) => !v)} className={ACTION_PILL.primaryMd}><Plus className="h-4 w-4" aria-hidden /> Create link</button>}
+      actions={<ActionPill onClick={() => setShowForm((v) => !v)} variant="primaryMd"><Plus className="h-4 w-4" aria-hidden /> Create link</ActionPill>}
     >
       {showForm && (
         <form onSubmit={create} className="mb-6 grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">

@@ -7,7 +7,7 @@ import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { orgStore, useOrgState, getImportJob } from "@/lib/org-store";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { ActionPill } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/agency/organization-imports/$importJobId")({
   loader: ({ params }) => ({ importJobId: params.importJobId }),
@@ -35,12 +35,12 @@ function Page() {
       workspace="agency" pageTitle={`Import result — ${job.filename}`} eyebrow="Organization Import Result · SCR-M05-024"
       actions={
         job.status === "VALIDATED" ? (
-          <button
+          <ActionPill
             onClick={() => orgStore.commitImportJob(job.import_job_id, "Elena Alvarez")}
-            className={ACTION_PILL.primaryMd}
+            variant="primaryMd"
           >
             Commit import ({validCount} organizations, DRAFT)
-          </button>
+          </ActionPill>
         ) : undefined
       }
     >

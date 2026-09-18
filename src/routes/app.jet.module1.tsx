@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { SCREENS } from "@/lib/screens";
 import { cn } from "@/lib/utils";
-import { ACTION_PILL } from "@/components/abox/action-pill";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/app/jet/module1")({
   head: () => ({ meta: [{ title: `${SCREENS["UX-024"].name} — ABox` }, { name: "description", content: SCREENS["UX-024"].purpose }] }),
@@ -38,13 +38,13 @@ function Page() {
             changes and drive the live consumer marketplace — editing here would no longer do anything.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
-            <Link to="/marketplace/admin/brand" className={ACTION_PILL.primaryMd}>
+            <Link to="/marketplace/admin/brand" className={actionPillClass("primaryMd")}>
               Identity &amp; brand <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
-            <Link to="/marketplace/admin/availability" className={ACTION_PILL.outlineMd}>
+            <Link to="/marketplace/admin/availability" className={actionPillClass("outlineMd")}>
               Product availability &amp; ranking <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
-            <Link to="/marketplace/admin/content" className={ACTION_PILL.outlineMd}>
+            <Link to="/marketplace/admin/content" className={actionPillClass("outlineMd")}>
               Content &amp; disclosures <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
