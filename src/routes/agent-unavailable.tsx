@@ -6,6 +6,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { UserX } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
+import { NoticePage } from "@/components/abox/notice-page";
 import { surfaceClass } from "@/components/abox/surface";
 import { cn } from "@/lib/utils";
 
