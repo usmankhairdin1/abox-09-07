@@ -89,7 +89,7 @@ function Page() {
               <span className="text-eyebrow">Best phone</span>
               <input required inputMode="tel" autoComplete="tel" value={form.phone}
                 onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                className="mt-1 h-11 w-full rounded-lg border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-ring" />
+                className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))} />
             </label>
             <label className="block text-sm">
               <span className="text-eyebrow">What's the call about?</span>
