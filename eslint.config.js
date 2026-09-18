@@ -41,6 +41,20 @@ const UNCONSUMED_PRIMITIVE_PATTERNS = [
   },
 ];
 
+// E3 — reference/design material must not depend on runtime branding ownership.
+const RUNTIME_BRANDING_PATTERNS = [
+  {
+    group: [
+      "@/lib/marketplace-store",
+      "@/routes/marketplace.admin.*",
+      "**/lib/marketplace-store",
+      "**/marketplace.admin.*",
+    ],
+    message:
+      "Reference/design material is documentation-only. Runtime branding (the Brand record, getActiveBrand/getDraftBrand) and Marketplace Asset Management are production-owned and must not be imported here.",
+  },
+];
+
 // E4 — the three shells are intentionally independent and must never merge.
 const shellRestriction = (siblings) => [
   {
