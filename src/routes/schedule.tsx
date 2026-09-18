@@ -63,7 +63,7 @@ function Page() {
               <button
                 onClick={() => slot && setStep("form")}
                 disabled={!slot}
-                className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground disabled:opacity-60"
+                className={actionPillClass("primaryLgPlain", "disabled:opacity-60")}
               >
                 Continue
               </button>
@@ -104,7 +104,7 @@ function Page() {
               <button type="button" onClick={() => setStep("pick")} className="text-sm text-muted-foreground hover:text-foreground">
                 ← Pick a different slot
               </button>
-              <button type="submit" className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground">
+              <button type="submit" className={actionPillClass("primaryLgPlain")}>
                 Confirm call
               </button>
             </div>
