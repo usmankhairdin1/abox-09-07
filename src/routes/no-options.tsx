@@ -6,6 +6,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SearchX } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
+import { NoticePage } from "@/components/abox/notice-page";
 
 export const Route = createFileRoute("/no-options")({
   head: () => ({ meta: [{ title: "No plans available yet — ABox" }] }),
