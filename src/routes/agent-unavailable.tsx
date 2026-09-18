@@ -29,7 +29,7 @@ function Page() {
           <Link to="/select" className={cn(surfaceClass({ padding: "sm" }), "hover:bg-accent")}><p className="font-semibold">Shop on my own</p><p className="text-sm text-muted-foreground">Continue self-service where available.</p></Link>
           <Link to="/" className={cn(surfaceClass({ padding: "sm" }), "hover:bg-accent")}><p className="font-semibold">Marketplace home</p></Link>
         </div>
-      </section>
+      </NoticePage>
     </MarketplaceShell>
   );
 }
