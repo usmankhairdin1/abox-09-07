@@ -37,7 +37,7 @@ function Page() {
           title="Add-on coverage"
           description="Ancillary and supplemental products you can bundle with your health plan or purchase alone."
           actions={
-            <Link to="/plans" className="inline-flex h-10 items-center rounded-full border border-border px-4 text-sm hover:bg-accent">
+            <Link to="/plans" className={actionPillClass("outlineMdPlain")}>
               Shop plans
             </Link>
           }
