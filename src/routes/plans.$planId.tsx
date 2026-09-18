@@ -7,6 +7,7 @@ import { Check, ArrowLeft, ShoppingBag, Star, Sparkles, Stethoscope, Pill } from
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { PageHeader } from "@/components/abox/page-header";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 import { Surface, surfaceClass } from "@/components/abox/surface";
 import { SAMPLE_PLANS, planMatchScore, type PlanMatchInputs } from "@/lib/sample-data";
 import { SAMPLE_PROVIDERS, SAMPLE_DRUGS } from "@/lib/sample-data-ext";
