@@ -83,7 +83,7 @@ function Page() {
               <span className="text-eyebrow">Your name</span>
               <input required autoComplete="name" value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                className="mt-1 h-11 w-full rounded-lg border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-ring" />
+                className={cn("mt-1", controlClass({ height: "lg", focusRing: true }))} />
             </label>
             <label className="block text-sm">
               <span className="text-eyebrow">Best phone</span>
