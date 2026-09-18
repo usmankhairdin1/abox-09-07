@@ -348,16 +348,27 @@ function seed(): OrgState {
 }
 
 const STORAGE_KEY = "abox_org_v1";
+const SEQ_KEY = "abox_org_v1_seq";
 
 function persist(s: OrgState) {
   if (typeof window === "undefined") return;
-  try { window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch { /* noop */ }
+  try {
+    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+    // The id sequence is part of the persisted state: without it the counter
+    // restarts at 0 on every full-page load and reissues ids that records
+    // already stored in this session own.
+    window.sessionStorage.setItem(SEQ_KEY, String(ridSeq));
+  } catch { /* noop */ }
 }
 function load(): OrgState {
   if (typeof window === "undefined") return seed();
   try {
     const raw = window.sessionStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw) as OrgState;
+    if (raw) {
+      const storedSeq = Number(window.sessionStorage.getItem(SEQ_KEY));
+      if (Number.isFinite(storedSeq) && storedSeq > ridSeq) ridSeq = storedSeq;
+      return JSON.parse(raw) as OrgState;
+    }
   } catch {
     // fall through to reseed
   }
