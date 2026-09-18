@@ -89,7 +89,10 @@ const CANONICAL_SOURCES = [
   { module: "@/components/abox/field", symbols: ["LabeledField"] },
   { module: "@/components/abox/notice-page", symbols: ["NoticePage"] },
   { module: "@/components/abox/marketplace-page-layout", symbols: ["MARKETPLACE_PAGE_LAYOUT"] },
-  { module: "@/components/abox/motion", symbols: ["FadeRise", "Stagger", "StaggerItem", "CountUp"] },
+  {
+    module: "@/components/abox/motion",
+    symbols: ["FadeRise", "Stagger", "StaggerItem", "CountUp"],
+  },
   { module: "@/components/abox/logo", symbols: ["AboxMark", "AboxWordmark"] },
 ];
 
@@ -106,7 +109,9 @@ function walk(dir) {
   const abs = path.join(ROOT, dir);
   if (!fs.existsSync(abs)) return [];
   const out = [];
-  for (const entry of fs.readdirSync(abs, { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : 1))) {
+  for (const entry of fs
+    .readdirSync(abs, { withFileTypes: true })
+    .sort((a, b) => (a.name < b.name ? -1 : 1))) {
     const rel = path.posix.join(dir, entry.name);
     if (entry.isDirectory()) out.push(...walk(rel));
     else if (/\.(ts|tsx)$/.test(entry.name)) out.push(rel);
@@ -115,7 +120,8 @@ function walk(dir) {
 }
 
 const isReference = (file) => REFERENCE_PATHS.some((p) => file === p || file.startsWith(p));
-const independentSystem = (file) => INDEPENDENT_SYSTEMS.find((s) => file.startsWith(s.prefix))?.label ?? null;
+const independentSystem = (file) =>
+  INDEPENDENT_SYSTEMS.find((s) => file.startsWith(s.prefix))?.label ?? null;
 
 function lineOf(text, index) {
   return text.slice(0, index).split("\n").length;
@@ -151,7 +157,11 @@ function analyzeE5(files) {
       const line = lineOf(text, m.index);
       const lineText = text.split("\n")[line - 1] ?? "";
       const literal = m[0];
-      let type, reason, exception = null, futureAction = "monitor", category = "classified";
+      let type,
+        reason,
+        exception = null,
+        futureAction = "monitor",
+        category = "classified";
 
       const allow = E5_ALLOWLIST.find((a) => a.file === file && lineText.includes(a.match));
       if (isReference(file)) {
@@ -177,12 +187,24 @@ function analyzeE5(files) {
         futureAction = "no-action";
       } else {
         type = "review-required";
-        reason = "Unclassified colour literal outside styles.css; human review required. Not a violation.";
+        reason =
+          "Unclassified colour literal outside styles.css; human review required. Not a violation.";
         futureAction = "review-required";
         category = "candidate-drift";
       }
 
-      out.push(finding({ rule: "E5", file, line, type, exception, reason, futureAction, category: `${category}:${literal}` }));
+      out.push(
+        finding({
+          rule: "E5",
+          file,
+          line,
+          type,
+          exception,
+          reason,
+          futureAction,
+          category: `${category}:${literal}`,
+        }),
+      );
     }
   }
   return out;
@@ -212,7 +234,10 @@ function analyzeE6(files) {
     const text = fs.readFileSync(path.join(ROOT, file), "utf8");
     const sf = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     for (const stmt of sf.statements) {
-      const spec = ts.isImportDeclaration(stmt) || ts.isExportDeclaration(stmt) ? stmt.moduleSpecifier : undefined;
+      const spec =
+        ts.isImportDeclaration(stmt) || ts.isExportDeclaration(stmt)
+          ? stmt.moduleSpecifier
+          : undefined;
       if (!spec || !ts.isStringLiteral(spec)) continue;
       const src = CANONICAL_SOURCES.find((c) => c.module === spec.text);
       if (!src) continue;
@@ -242,8 +267,12 @@ function analyzeE6(files) {
   }
 
   const out = [];
-  for (const rec of [...table.values()].sort((a, b) => (a.module + a.symbol < b.module + b.symbol ? -1 : 1))) {
-    const sys = INDEPENDENT_SYSTEMS.filter((s) => rec.importerFiles.some((f) => f.startsWith(s.prefix))).map((s) => s.label);
+  for (const rec of [...table.values()].sort((a, b) =>
+    a.module + a.symbol < b.module + b.symbol ? -1 : 1,
+  )) {
+    const sys = INDEPENDENT_SYSTEMS.filter((s) =>
+      rec.importerFiles.some((f) => f.startsWith(s.prefix)),
+    ).map((s) => s.label);
     out.push(
       finding({
         rule: "E6",
@@ -276,13 +305,19 @@ function exportedNames(file, text) {
     return null;
   }
   for (const stmt of sf.statements) {
-    const mods = ts.canHaveModifiers(stmt) ? ts.getModifiers(stmt) ?? [] : [];
+    const mods = ts.canHaveModifiers(stmt) ? (ts.getModifiers(stmt) ?? []) : [];
     if (!mods.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)) continue;
-    if (ts.isFunctionDeclaration(stmt) || ts.isClassDeclaration(stmt) || ts.isInterfaceDeclaration(stmt) || ts.isTypeAliasDeclaration(stmt)) {
+    if (
+      ts.isFunctionDeclaration(stmt) ||
+      ts.isClassDeclaration(stmt) ||
+      ts.isInterfaceDeclaration(stmt) ||
+      ts.isTypeAliasDeclaration(stmt)
+    ) {
       if (stmt.name) names.push({ name: stmt.name.text, line: lineOf(text, stmt.getStart(sf)) });
     } else if (ts.isVariableStatement(stmt)) {
       for (const d of stmt.declarationList.declarations) {
-        if (ts.isIdentifier(d.name)) names.push({ name: d.name.text, line: lineOf(text, d.getStart(sf)) });
+        if (ts.isIdentifier(d.name))
+          names.push({ name: d.name.text, line: lineOf(text, d.getStart(sf)) });
       }
     }
   }
@@ -290,11 +325,17 @@ function exportedNames(file, text) {
 }
 
 function classifyDefinition(file) {
-  if (isReference(file)) return { type: "documented-exception", reason: "Reference/design layer definition." };
+  if (isReference(file))
+    return { type: "documented-exception", reason: "Reference/design layer definition." };
   const sys = independentSystem(file);
-  if (sys) return { type: "documented-exception", reason: `Intentionally independent system: ${sys}.` };
-  if (file.startsWith("src/routes/")) return { type: "route-local-implementation", reason: "Declared inside a route module." };
-  return { type: "review-required", reason: "Definition shares a canonical export name; human review required. Not a violation." };
+  if (sys)
+    return { type: "documented-exception", reason: `Intentionally independent system: ${sys}.` };
+  if (file.startsWith("src/routes/"))
+    return { type: "route-local-implementation", reason: "Declared inside a route module." };
+  return {
+    type: "review-required",
+    reason: "Definition shares a canonical export name; human review required. Not a violation.",
+  };
 }
 
 function analyzeE7(files) {
@@ -304,7 +345,16 @@ function analyzeE7(files) {
     const text = fs.readFileSync(path.join(ROOT, file), "utf8");
     const names = exportedNames(file, text);
     if (names === null) {
-      out.push(finding({ rule: "E7", file, type: "parse-skipped", reason: "File could not be parsed; reported rather than guessed at.", futureAction: "review-required", category: "parse" }));
+      out.push(
+        finding({
+          rule: "E7",
+          file,
+          type: "parse-skipped",
+          reason: "File could not be parsed; reported rather than guessed at.",
+          futureAction: "review-required",
+          category: "parse",
+        }),
+      );
       continue;
     }
     for (const n of names) {
@@ -316,10 +366,14 @@ function analyzeE7(files) {
   for (const [name, sites] of [...byName.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1))) {
     const canonicalOwner = CANONICAL_NAMES.get(name) ?? null;
     const duplicate = sites.length > 1;
-    const shadowsCanonical = canonicalOwner && sites.some((s) => !canonicalOwner.endsWith(path.basename(s.file).replace(/\.(ts|tsx)$/, "")));
+    const shadowsCanonical =
+      canonicalOwner &&
+      sites.some((s) => !canonicalOwner.endsWith(path.basename(s.file).replace(/\.(ts|tsx)$/, "")));
     if (!duplicate && !shadowsCanonical) continue;
     for (const site of sites.sort((a, b) => (a.file < b.file ? -1 : 1))) {
-      const owns = canonicalOwner && canonicalOwner.endsWith(path.basename(site.file).replace(/\.(ts|tsx)$/, ""));
+      const owns =
+        canonicalOwner &&
+        canonicalOwner.endsWith(path.basename(site.file).replace(/\.(ts|tsx)$/, ""));
       if (owns) continue;
       const c = classifyDefinition(site.file);
       out.push(
@@ -327,7 +381,9 @@ function analyzeE7(files) {
           rule: "E7",
           file: site.file,
           line: site.line,
-          type: canonicalOwner ? `canonical-name-collision:${name}` : `duplicate-export-name:${name}`,
+          type: canonicalOwner
+            ? `canonical-name-collision:${name}`
+            : `duplicate-export-name:${name}`,
           canonicalOwner,
           exception: c.type === "documented-exception" ? "documented-exception" : null,
           reason: `${c.reason} Detection is exact-name based only; no similarity heuristic was used.`,
@@ -356,13 +412,21 @@ fs.writeFileSync(path.join(ROOT, OUT_JSON), JSON.stringify(findings, null, 2) + 
 const md = [];
 md.push("# Governance report (Phase 47, Batch C — REPORT ONLY)");
 md.push("");
-md.push("Generated by `scripts/governance-report.mjs`. Deterministic: identical repository state produces byte-identical output.");
-md.push("No finding in this report authorises a migration, an import change, a component replacement, or any enforcement.");
+md.push(
+  "Generated by `scripts/governance-report.mjs`. Deterministic: identical repository state produces byte-identical output.",
+);
+md.push(
+  "No finding in this report authorises a migration, an import change, a component replacement, or any enforcement.",
+);
 md.push("No numeric score or ranking is assigned.");
 md.push("");
 for (const rule of ["E5", "E6", "E7"]) {
   const group = findings.filter((f) => f.rule === rule);
-  const title = { E5: "E5 — raw colour literal classification", E6: "E6 — canonical consumer counts (two counting units)", E7: "E7 — duplicate / colliding canonical definitions" }[rule];
+  const title = {
+    E5: "E5 — raw colour literal classification",
+    E6: "E6 — canonical consumer counts (two counting units)",
+    E7: "E7 — duplicate / colliding canonical definitions",
+  }[rule];
   md.push(`## ${title}`);
   md.push("");
   md.push(`Findings: ${group.length}`);
@@ -370,7 +434,9 @@ for (const rule of ["E5", "E6", "E7"]) {
   md.push("| File | Line | Type | Canonical owner | Exception | Future action | Reason |");
   md.push("| --- | --- | --- | --- | --- | --- | --- |");
   for (const f of group) {
-    md.push(`| ${f.file} | ${f.line ?? ""} | ${f.type} | ${f.canonicalOwner ?? ""} | ${f.exception ?? ""} | ${f.futureAction} | ${f.reason} |`);
+    md.push(
+      `| ${f.file} | ${f.line ?? ""} | ${f.type} | ${f.canonicalOwner ?? ""} | ${f.exception ?? ""} | ${f.futureAction} | ${f.reason} |`,
+    );
   }
   md.push("");
 }
