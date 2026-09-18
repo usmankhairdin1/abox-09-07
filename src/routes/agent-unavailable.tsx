@@ -6,6 +6,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { UserX } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/agent-unavailable")({
   head: () => ({ meta: [{ title: "Agent unavailable — ABox" }] }),
@@ -21,8 +23,8 @@ function Page() {
         <p className="mt-3 text-sm text-muted-foreground">We never substitute another agent silently. Choose how you'd like to continue.</p>
         <div className="mt-8 grid gap-3 text-left">
           <Link to="/schedule" className="rounded-2xl border border-primary/40 bg-primary/5 p-4 hover:bg-primary/10"><p className="font-semibold">Same agency, no specific agent</p><p className="text-sm text-muted-foreground">We'll route you to the next available person there.</p></Link>
-          <Link to="/select" className="rounded-2xl border border-border bg-card p-4 hover:bg-accent"><p className="font-semibold">Shop on my own</p><p className="text-sm text-muted-foreground">Continue self-service where available.</p></Link>
-          <Link to="/" className="rounded-2xl border border-border bg-card p-4 hover:bg-accent"><p className="font-semibold">Marketplace home</p></Link>
+          <Link to="/select" className={cn(surfaceClass({ padding: "sm" }), "hover:bg-accent")}><p className="font-semibold">Shop on my own</p><p className="text-sm text-muted-foreground">Continue self-service where available.</p></Link>
+          <Link to="/" className={cn(surfaceClass({ padding: "sm" }), "hover:bg-accent")}><p className="font-semibold">Marketplace home</p></Link>
         </div>
       </section>
     </MarketplaceShell>

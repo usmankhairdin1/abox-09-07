@@ -5,7 +5,9 @@
  */
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
+import { surfaceClass } from "@/components/abox/surface";
 import { clearQuoteState, getLastSavedAt } from "@/lib/quote-store";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/journey-choice")({
   head: () => ({ meta: [{ title: "Continue or start new — ABox" }] }),
@@ -31,7 +33,7 @@ function Page() {
             <p className="font-semibold">Resume my original journey</p>
             <p className="mt-1 text-sm text-muted-foreground">Keep your existing responsible organization and progress.</p>
           </button>
-          <button onClick={startNew} className="w-full rounded-2xl border border-border bg-card p-5 text-left hover:bg-accent">
+          <button onClick={startNew} className={cn("w-full", surfaceClass(), "text-left hover:bg-accent")}>
             <p className="font-semibold">Start a separate new journey</p>
             <p className="mt-1 text-sm text-muted-foreground">Begin fresh under the new referral context. Your original journey isn't deleted.</p>
           </button>

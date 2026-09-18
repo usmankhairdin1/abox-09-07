@@ -303,6 +303,23 @@ Left literal, with reason:
 - `src/routes/index.tsx:188`, `src/routes/app.index.tsx:101,133,167,190` — `border-hairline` / `shadow-card` vocabulary and/or interactive card semantics; not the canonical Surface base string.
 - `src/components/abox/kpi-card.tsx`, `plan-card.tsx`, `src/components/lucie/ui.tsx`, `src/components/m08/*`, `src/components/m06/*` — excluded component systems.
 
+## Phase 32 — Group C interactive card surfaces (2026-09-18)
+
+Canonical source unchanged (`src/components/abox/surface.tsx`, md5 `51b51b31bee3283794f6a05af03f2878`); no API extension was justified. Interactive consumers keep their own native element and compose `surfaceClass()` via `cn()`; the canonical source never owns interaction, state or accessibility.
+
+Migrated (measured byte-identical parity at 1440/834/390, rest + hover + focus):
+- `src/routes/agent-unavailable.tsx:26` — `<Link to="/select">`, `cn(surfaceClass({ padding: "sm" }), "hover:bg-accent")`.
+- `src/routes/agent-unavailable.tsx:27` — `<Link to="/">`, same usage.
+- `src/routes/journey-choice.tsx:36` — `<button onClick={startNew}>`, `cn("w-full", surfaceClass(), "text-left hover:bg-accent")`.
+
+Left literal, with reason:
+- `src/routes/app.agency.index.tsx:28,33,38,42` — four `Link` cards whose string is reproducible, but `/app/agency` renders nothing without a session, so exact-preservation evidence is NOT CAPTURED. Re-audit once a session is available.
+- `src/routes/agent-unavailable.tsx:25`, `src/routes/journey-choice.tsx:32` — `border-primary/40 bg-primary/5` emphasis variants, not the canonical base string.
+- `src/routes/quote.tsx:896,959,1142` — `label` selection cards on `bg-surface` / `bg-sage-soft/40`; not the canonical base.
+- `src/routes/app.index.tsx:190`, `src/routes/index.tsx:188` — `border-hairline` / `shadow-card` vocabulary with translate/border hover.
+- `src/routes/plans.$planId.tsx:218` — dashed-border placeholder link, no `bg-card`.
+- `src/components/abox/plan-card.tsx:44`, `kpi-card.tsx`, Lucie, Lucie-app, M06, M08, shells, overlays — excluded systems, untouched.
+
 ---
 
 *Audit only. No file under `src/` or `public/` was created, modified or deleted while producing this map.*
