@@ -27,7 +27,7 @@ function Page() {
           <Link to="/schedule" className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium hover:bg-accent">Talk to an agent</Link>
           <Link to="/" className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium hover:bg-accent">Marketplace home</Link>
         </div>
-      </section>
+      </NoticePage>
     </MarketplaceShell>
   );
 }
