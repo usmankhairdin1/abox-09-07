@@ -3,6 +3,8 @@
  * Dental, vision, life, critical illness, accident, hospital indemnity.
  */
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { ArrowLeft, Plus, Check } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
@@ -44,7 +46,7 @@ function Page() {
           {SAMPLE_ANCILLARY.map((a) => {
             const inCart = cart.items.some((i) => i.id === a.id);
             return (
-              <article key={a.id} className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
+              <article key={a.id} className={cn("flex flex-col", surfaceClass({ elevated: true }))}>
                 <p className="text-eyebrow">{a.type}</p>
                 <h3 className="text-display mt-1 text-xl">{a.name}</h3>
                 <p className="text-sm text-muted-foreground">{a.carrier}</p>
