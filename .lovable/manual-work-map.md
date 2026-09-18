@@ -661,3 +661,104 @@ Deferred, not implemented: two competing label shapes (`block text-sm` + inner `
 **Changed files.** `scripts/governance-report.mjs` (new), `package.json` (one additive `governance:report` script), `.lovable/governance-report.json` and `.lovable/governance-report.md` (generated artifacts), and this governance block.
 
 **Rollback.** Delete `scripts/governance-report.mjs`, both generated reports, the `governance:report` package script, and this governance block; then rerun typecheck, build and full lint, verify `git diff --check` and the locked hashes. `eslint.config.js` is not edited in this batch, so Phase 45/46 enforcement is untouched by construction. No production source rollback is required.
+
+---
+
+## Phase 48 — Governance reconciliation & audit-trail model
+
+**Outcome.** Documentation only. Zero production changes, zero `src/` diff, zero ESLint changes, zero report-schema changes. E5/E6/E7 remain report-only; E1/E2/E3/E4 and the `server-only` restriction remain enforced. This block is the reconciliation record between `.lovable/manual-work-map.md` (the single human governance source) and the Phase 47 generated reports. **The generated reports are diagnostics and are never a definition of ownership.**
+
+### A. Governance inventory (measured at this tree state)
+
+`.lovable/` holds: `manual-work-map.md` (this file, Phases 1–48), `design-system.md`, `project.json`, nine archived phase plan documents, the `plan/` archive, and the two Phase 47 artifacts `governance-report.json` / `governance-report.md`. Phase 47 report: 201 findings; schema fields `rule, file, line, type, canonicalOwner, exception, reason, futureAction, category`.
+
+| Rule | Type | Count |
+| --- | --- | --- |
+| E5 | documented-exception | 10 |
+| E5 | library-owned | 5 |
+| E6 | canonical-consumer-count | 21 |
+| E7 | canonical-name-collision | 5 |
+| E7 | duplicate-export-name | 160 |
+
+**Reconciliation discrepancy found and recorded (not repaired in code).** Of the 160 E7 `duplicate-export-name` findings, **154 are the exported `Route` constant** that TanStack file-based routing requires in every route module. The Phase 47 analyzer buckets them as `route-local-implementation`. They are a framework convention, not duplicate definitions, and carry `futureAction: no-action`. The remaining 6 are `Section` (2: `lucie-app/ui.tsx`, `lucie/ui.tsx`), `LoadingRows` (2: `lucie-app/ui.tsx`, `m08/kit.tsx`) and `Field` (2: `lucie-app/ui.tsx`, `m06/kit.tsx`) — all inside documented independent subtrees. The report's real E7 signal is therefore 6 entries, all accepted. Refining the analyzer to emit a `framework-convention` type is recorded below as a report-only future candidate; it is **not** authorised by this phase. No other discrepancy exists between this governance record and the generated reports.
+
+### B. Finding reconciliation record structure
+
+```text
+rule            E5 | E6 | E7
+file            repository-relative path
+site            line or symbol, where applicable
+findingType     report `type` value, verbatim
+classification  one of the Section C classes
+owner           canonical source, runtime owner, shell, subtree, or library
+canonicalSource path, when a canonical owner exists
+exceptionReason prose reason, only for accepted exceptions
+evidence        what was read to reach the disposition
+disposition     accepted | review-required | stale | false-positive
+reviewStatus    reviewed | not-reviewed
+phaseMarker     phase number only — no timestamps, no machine paths
+blockingEligible  no | conditional (with the exact condition)
+```
+
+No decision is invented. A finding without an evidence-backed disposition is recorded `review-required` / `not-reviewed`, never silently resolved. `phaseMarker` replaces dates so records stay deterministic.
+
+### C. Classification vocabulary (unordered; no ranking, scoring or prioritisation)
+
+accepted/documented exception · canonical usage · intentional one-off · route or business-coupled · shell-specific · reference/runtime boundary · review-required · stale/false-positive.
+
+Plus one descriptive E7-only class, **framework convention** — an export the framework requires in every module of a kind (the 154 `Route` exports). Descriptive only; grants no migration authority.
+
+### D. Dispositions for the 201 Phase 47 findings (phaseMarker: Phase 48)
+
+- **E5, 10 findings, `documented-exception`** — classification: accepted/documented exception or intentional one-off. Owners: `carrier-mark.tsx` (computed per-carrier hue), `app.jet.branding.tsx` (token values as display copy), `plan-o-assistant.tsx` (shadow alongside `var(--shadow-glow)`), `marketplace.admin.brand.tsx` and `marketplace.admin.preview.tsx` (`#fff` contrast over a tenant-supplied background — runtime branding owner). Disposition accepted, reviewed. blockingEligible: no.
+- **E5, 5 findings, `library-owned`** — `src/components/ui/chart.tsx` recharts selector strings (`[stroke='#ccc']`, `[stroke='#fff']`), not colours we apply. Accepted, reviewed. blockingEligible: no.
+- **E6, 21 findings, `canonical-consumer-count`** — classification: canonical usage. Inventory only; a count is not an invariant. Accepted, reviewed. blockingEligible: no.
+- **E7, 5 findings, `canonical-name-collision`** — `DataTable`, `Field`, `LoadingRows` in the Lucie subtree, `Field` in M06, `LoadingRows` in M08. Classification: accepted/documented exception (intentionally independent systems). Accepted, reviewed. blockingEligible: no.
+- **E7, 154 findings, exported `Route`** — classification: framework convention (TanStack file-based routing). Accepted, reviewed. blockingEligible: no.
+- **E7, 6 remaining `duplicate-export-name`** — `Section`/`LoadingRows`/`Field` across Lucie, M06, M08. Classification: accepted/documented exception. Accepted, reviewed. blockingEligible: no.
+
+**Review-required after reconciliation: zero.** No finding was silently resolved; each class above names the evidence (the current source at the cited file) behind its disposition. No finding authorises a migration, deletion, wrapper, import change, token normalisation or DOM change.
+
+### E. Exception governance
+
+All existing exceptions remain intact and unmerged: three independent shells; Lucie; M06; M08; AI elements; shadcn/Radix primitives; the five route-local tables; business-coupled UI; Group B/C Surface cases; documented control variants; runtime branding; Marketplace Asset Management; reference content; the static ABox logo distinction from runtime White-Label. Report detection of similar code is never grounds to remove or merge an exception. Exceptions change only through a separately approved phase carrying exact parity evidence at 1440/834/390.
+
+### F. E5 review model
+
+Review classifies; it never edits. No colour change, no literal-to-token replacement, no runtime branding change, no library/visualisation change. The frozen allowlist is preserved as recorded in Phase 47. All 15 current E5 findings are classified and none is `review-required`, so the allowlist is evidenced complete at this tree state. A future unclassified literal is recorded `review-required` — never allowlisted retroactively, never normalised.
+
+### G. E6 counting model
+
+`importerFiles` and `usageSites` remain two separate, separately labelled numbers for all 21 canonical symbols, alongside `typeOnlyImporters`, `referenceImporters`, `reExports` and `independentSystems`. **Neither is a correction of the other and no combined "consumer count" may be emitted.** The divergent DataTable measurements are preserved side by side with their tooling named: Phase 42 — 20 importer files (ripgrep import scan); Phase 44 — 23 call sites (call-site count); Phase 47 — 19 importer files / 26 usage sites (TypeScript AST run).
+
+### H. E7 duplicate-definition model
+
+Exact exported-name detection only: no JSX, class-string, utility, prop-shape or visual heuristic; no automatic winner selection; no deletion or merge. An apparent duplicate becomes an **accepted intentional duplicate** when inside a documented exception or a framework convention; **review-required** when an exact canonical export name is declared outside its canonical owner with no documented exception; a **confirmed canonical adoption opportunity** only after a separate phase supplies exact parity evidence at 1440/834/390 and names two measurable consumers. Phase 48 produced zero adoption opportunities.
+
+### I. Staleness / drift model
+
+A recorded finding is stale when the current source no longer contains the cited construct at the cited file, or the file no longer exists. Detection is a re-run of the deterministic report plus a diff of finding identity tuples `(rule, file, findingType)` against the recorded set — no timestamps, machine paths, network or randomness. Stale findings are marked `stale` here; production code is never touched to make a finding stale or non-stale.
+
+### J. Future blocking eligibility (nothing implemented; nothing authorised)
+
+- **E5** — blocking only for a precisely enumerated literal form in a precisely enumerated directory, with the frozen allowlist proven complete across at least one further phase and zero findings at enable time. Repetition is never evidence.
+- **E6** — inherently non-blocking; an inventory is not an invariant. No blocking form proposed.
+- **E7** — blocking only for exact canonical export names redeclared outside their canonical owner, after the framework-convention class and every documented exception are encoded and a full run shows zero unexplained findings.
+
+Each would require its own approved plan, negative controls and independent rollback.
+
+### K. Report-only future candidates (recorded, not authorised)
+
+1. Emit a distinct `framework-convention` type for the exported `Route` constant so genuine E7 signal is not buried among 154 conventional entries. Report-only, no severity, no production effect.
+
+### L. Validation
+
+Full lint 16,783 findings, `no-restricted-imports` 0 — unchanged. `tsgo` typecheck clean. Build OK. E1/E2/E3/E4 and `server-only` negative controls all still fire. Phase 47 report re-run twice: byte-identical JSON and Markdown (SHA-256 compared); schema field set unchanged. `git diff --stat -- src/` empty; all locked canonical-source hashes unchanged. No generated runtime asset. `manual-work-map.md` remains the sole human governance source; no generated report is cited as a definition of ownership.
+
+### M. Changed files
+
+`.lovable/manual-work-map.md` (this block) and `roadmap.md` (heading-only correction: the deferred backlog section previously titled "Phase 3 — deferred" collided with the completed "Phase 3 — Typography audit & governance" section; the heading now reads "Deferred items carried forward" and the list contents are unchanged). No `src/` change.
+
+### N. Rollback
+
+Documentation only: delete this block and restore the previous `roadmap.md` heading. No production rollback is possible or necessary. Phases 45–47 enforcement and diagnostics remain intact by construction.
