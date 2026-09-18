@@ -356,3 +356,17 @@ Deferred, not implemented: two competing label shapes (`block text-sm` + inner `
 ---
 
 *Audit only. No file under `src/` or `public/` was created, modified or deleted while producing this map.*
+
+## Phase 35 — Navigation & page-level composition (executed)
+
+**Audit result.** Navigation is intentionally fragmented and stays that way. Three shell families (`internal-shell.tsx`, `marketplace-shell.tsx`, `member-shell.tsx`) each render their own presentation of destinations from `src/lib/nav-config.ts`; none were merged. `ModuleTabs` (consumers: `m06/workforce-page.tsx:46`, `lucie-app/frames.tsx:21`) and `ui/tabs.tsx` (consumer: `app.jet.platform.tsx:128`) are separate tab systems in excluded/gated systems — untouched. Four distinct step/progress bars (`quote.tsx:388` button+ol wizard, `apply.tsx:112` pill ol, `app.off-exchange.tsx:23` pill ol, `downline-wizard-stepper.tsx` Link-based route stepper) differ in element semantics, class strings (`mb-6`, active-class ordering) and state models — left literal. `ui/breadcrumb.tsx`, `ui/pagination.tsx`, `ui/sidebar.tsx`, `ui/navigation-menu.tsx`, `ui/menubar.tsx` have zero production consumers: recorded as unused, not canonical. `text-eyebrow` is a single CSS utility, not a composition.
+
+**New canonical source.** `src/components/abox/notice-page.tsx` — `NoticePage({ tone, icon, title, description, children })`. Owns only the centred standalone-notice opening: `section.mx-auto.max-w-lg.px-4.py-32.text-center` > medallion `span` (tone map: muted / destructive / warning / primary) > `h1.text-display.mt-6.text-2xl` > `p.mt-3.text-sm.text-muted-foreground` > consumer-owned children. It is NOT a second PageHeader: PageHeader owns the in-shell workspace header (eyebrow, left-aligned title, actions, hairline). PageHeader source unchanged (md5 5be9e6ea…).
+
+**Legitimate consumers (migrated, byte-identical HTML/DOM/geometry at 1440/834/390, zero console output, no overflow):** `no-options.tsx` (proof consumer, tone muted), `unavailable.pathway.tsx` (muted), `unavailable.unresolved.tsx` (destructive), `agent-unavailable.tsx` (warning).
+
+**Excluded consumers.** `support.tsx` — different padding (`py-24`), runtime-content title and conditional description; left literal. All auth-gated navigation (`/app/*`, `/agency/*`, `/platform/*`, `/marketplace/admin/*`, `/member/*`) — NOT CAPTURED, left literal.
+
+**Rules.** Future standalone notice screens use `NoticePage`; no second notice/header component may be created. Any new tone requires two consumers. Actions stay consumer-owned as children. Rollback point: restore the literal `section`/`span`/`h1`/`p` markup in the four routes and delete `notice-page.tsx`; nothing in Phases 29–34 is affected.
+
+**Validation.** tsgo clean; build OK; `notice-page.tsx` lints clean; remaining lint on the four routes is the pre-existing prettier backlog on untouched `Link` lines. Locked source hashes unchanged: page-header, surface, control, field, module-tabs, nav-config, all three shells.
