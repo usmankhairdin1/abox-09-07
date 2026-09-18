@@ -2,6 +2,8 @@
  * SCR-M05-011 — Create Downline Agency: Settings.
  * Copied root defaults with editable override (FLOW-M05-005 precedent).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -35,7 +37,7 @@ function Page() {
     <InternalShell workspace="agency" pageTitle="Create downline agency" eyebrow="Settings · SCR-M05-011">
       <DownlineWizardStepper />
 
-      <div className="mt-8 max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-6">
+      <div className={cn("mt-8 max-w-2xl space-y-5", surfaceClass({ padding: "lg" }))}>
         <label className="flex items-center justify-between gap-3 rounded-xl border border-border p-3 text-sm">
           <div>
             <p className="font-medium">Copy root defaults</p>

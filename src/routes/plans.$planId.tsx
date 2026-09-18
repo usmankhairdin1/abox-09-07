@@ -7,7 +7,7 @@ import { Check, ArrowLeft, ShoppingBag, Star, Sparkles, Stethoscope, Pill } from
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { PageHeader } from "@/components/abox/page-header";
-import { Surface } from "@/components/abox/surface";
+import { Surface, surfaceClass } from "@/components/abox/surface";
 import { SAMPLE_PLANS, planMatchScore, type PlanMatchInputs } from "@/lib/sample-data";
 import { SAMPLE_PROVIDERS, SAMPLE_DRUGS } from "@/lib/sample-data-ext";
 import { cartStore, useCart } from "@/lib/cart-store";
@@ -108,7 +108,7 @@ function Page() {
             </div>
 
             {/* Benefits & costs */}
-            <section className="rounded-2xl border border-border bg-card p-5">
+            <section className={surfaceClass()}>
               <h2 className="text-display text-2xl">What you'd pay</h2>
               <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
                 <Stat label="Monthly premium" value={`$${plan.monthlyPremium}`} large />
@@ -123,7 +123,7 @@ function Page() {
             </section>
 
             {/* Highlights */}
-            <section className="rounded-2xl border border-border bg-card p-5">
+            <section className={surfaceClass()}>
               <h2 className="text-display text-2xl">Highlights</h2>
               <ul className="mt-3 grid gap-2 md:grid-cols-2">
                 {plan.highlights.map((h: string) => (
@@ -142,7 +142,7 @@ function Page() {
             </section>
 
             {/* Network & Rx */}
-            <section className="rounded-2xl border border-border bg-card p-5">
+            <section className={surfaceClass()}>
               <div className="flex items-baseline justify-between">
                 <h2 className="text-display text-2xl">Network & prescriptions</h2>
                 <span className="text-xs text-muted-foreground">Educational — check the carrier's directory for enrollment.</span>

@@ -2,6 +2,7 @@
  * SCR-M05-026 — Organization Tasks and Exceptions.
  * Fixed M05 work types and escalation (REQ-M05-OPS-014/015/016).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AlertTriangle, ArrowUpRight, CheckCircle2 } from "lucide-react";
@@ -52,7 +53,7 @@ function Page() {
           {tasks.map((t) => {
             const targetOrg = getOrganization(org, t.organization_id);
             return (
-              <li key={t.task_id} className="rounded-2xl border border-border bg-card p-4">
+              <li key={t.task_id} className={surfaceClass({ padding: "sm" })}>
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">

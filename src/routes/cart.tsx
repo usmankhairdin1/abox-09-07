@@ -1,6 +1,8 @@
 /**
  * UX-013 — Cart Drawer (rendered as a full page + grouped by product type)
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Trash2, ArrowRight, ShoppingBag, ShoppingCart, FileText, Sparkles } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -164,7 +166,7 @@ function Page() {
             </div>
 
             <aside className="space-y-4">
-              <div className="sticky top-24 rounded-2xl border border-border bg-card p-5">
+              <div className={cn("sticky top-24", surfaceClass())}>
                 <p className="text-eyebrow">Total</p>
                 <p className="text-display mt-2 text-3xl tabular-nums">${totals.monthly}<span className="text-sm text-muted-foreground">/mo</span></p>
                 <p className="mt-1 text-xs text-muted-foreground">Before subsidies, if eligible.</p>

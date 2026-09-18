@@ -3,6 +3,8 @@
  * Filter, sort, save, compare, add to cart. Recommendations first,
  * with clear on/off-exchange labels and PlanAI explanation.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Filter, Sparkles, X } from "lucide-react";
@@ -20,7 +22,6 @@ import { QuoteEditPanel } from "@/components/abox/quote-edit-panel";
 import { SCREENS } from "@/lib/screens";
 import { browseStore, useBrowseState } from "@/lib/browse-store";
 import { formatUSD } from "@/lib/format";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/plans/")({
   head: () => ({
@@ -259,7 +260,7 @@ function Page() {
               hasSubsidyCheck={!!quote && !quote.skipSubsidy && quote.income != null}
             />
 
-            <div className="mt-5 rounded-2xl border border-border bg-card p-4">
+            <div className={cn("mt-5", surfaceClass({ padding: "sm" }))}>
               <p className="text-eyebrow">Add-ons available</p>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {[PRODUCT_LABEL.dental, PRODUCT_LABEL.vision, PRODUCT_LABEL.life].map((l) => (
@@ -470,7 +471,7 @@ function FilterRail(p: FilterProps) {
     </fieldset>
   );
   return (
-    <div className="space-y-6 rounded-2xl border border-border bg-card p-4">
+    <div className={cn("space-y-6", surfaceClass({ padding: "sm" }))}>
       <div className="flex items-center justify-between">
         <p className="text-display text-lg">Filters</p>
         {p.activeFilterCount > 0 && (

@@ -2,6 +2,8 @@
  * SCR-M05-017 — Organization Contacts.
  * Fixed contact roles and visibility (REQ-M05-PRF-006/007).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Mail, Phone, Plus } from "lucide-react";
@@ -62,7 +64,7 @@ function Page() {
       </Link>
 
       {showForm && (
-        <form onSubmit={onSubmit} className="mb-6 grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">
+        <form onSubmit={onSubmit} className={cn("mb-6 grid gap-4", surfaceClass(), "sm:grid-cols-2")}>
           <div>
             <label className="mb-1 block text-eyebrow">Role</label>
             <select value={form.contact_role} onChange={(e) => setForm({ ...form, contact_role: e.target.value as ContactRole })} className="h-10 w-full rounded-lg border border-border bg-background px-3">

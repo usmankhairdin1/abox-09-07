@@ -4,6 +4,8 @@
  * OrganizationRelationship (PARENT_OF), Contact, Address, Identifier,
  * Setting and Readiness records into the M05 mock store.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, CheckCircle2, PartyPopper } from "lucide-react";
@@ -128,7 +130,7 @@ function Page() {
     <InternalShell workspace="agency" pageTitle="Create downline agency" eyebrow="Activation · SCR-M05-014">
       <DownlineWizardStepper />
 
-      <div className="mt-8 max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-6">
+      <div className={cn("mt-8 max-w-2xl space-y-5", surfaceClass({ padding: "lg" }))}>
         <div className="flex items-start gap-2 rounded-xl border border-hairline bg-surface/60 p-3 text-sm">
           <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-sage" aria-hidden />
           <p>All required readiness controls pass. Activating will create the organization, its relationship to Cedar Grove Insurance, and its profile records.</p>

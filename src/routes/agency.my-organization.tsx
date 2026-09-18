@@ -5,6 +5,7 @@
  * organization currently in context (root sees its own home when not
  * acting inside a downline).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { Link } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
 import { Building2, ShieldCheck, AlertTriangle, History, ArrowRight } from "lucide-react";
@@ -66,7 +67,7 @@ function Page() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">Profile completeness</h2>
           <ul className="space-y-2 text-sm">
             <li className="flex items-center justify-between"><span>Type</span><span>{ORG_TYPE_LABEL[record.organization_type]}</span></li>
@@ -84,7 +85,7 @@ function Page() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">Recent changes</h2>
           {history.length === 0 ? (
             <p className="text-sm text-muted-foreground">No history yet.</p>

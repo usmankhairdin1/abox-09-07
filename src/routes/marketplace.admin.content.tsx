@@ -3,6 +3,8 @@
  * English and Spanish general and channel content and controlled legal
  * assignments (REQ-M04-BRD-013..016).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, Plus, ShieldCheck } from "lucide-react";
@@ -44,7 +46,7 @@ function Page() {
       {draft && <p className="mb-4 rounded-xl border border-warning/40 bg-warning/5 p-3 text-sm">Editing draft. <Link to="/marketplace/admin/releases/review" className="story-link text-primary">Review and publish</Link> when ready.</p>}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center gap-2"><FileText className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Support introduction</h2></header>
           <div className="space-y-3 text-sm">
             <div>
@@ -58,7 +60,7 @@ function Page() {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Legal and regulated content</h2></header>
           <p className="text-sm text-muted-foreground">
             JET controls legal, privacy, consent, eligibility and PlanAI content through an approved bilingual library (REQ-M04-BRD-016).
@@ -71,7 +73,7 @@ function Page() {
           </ul>
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
+        <section className={cn(surfaceClass(), "lg:col-span-2")}>
           <header className="mb-3"><h2 className="text-display text-xl">Channel introductions</h2></header>
           <div className="grid gap-4 sm:grid-cols-3">
             {CHANNELS.map((ch) => (
@@ -90,7 +92,7 @@ function Page() {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
+        <section className={cn(surfaceClass(), "lg:col-span-2")}>
           <header className="mb-3"><h2 className="text-display text-xl">Support identity</h2></header>
           <div className="grid gap-3 sm:grid-cols-2">
             <div>

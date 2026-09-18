@@ -1,12 +1,13 @@
 /**
  * UX-024 & UX-025 — Module 1 Config
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 import { actionPillClass } from "@/components/abox/action-pill-component";
 
 export const Route = createFileRoute("/app/jet/module1")({
@@ -30,7 +31,7 @@ function Page() {
       </div>
 
       {tab === "branding" ? (
-        <div className="rounded-2xl border border-border bg-card p-6">
+        <div className={surfaceClass({ padding: "lg" })}>
           <p className="text-eyebrow">Superseded by Marketplace Management</p>
           <h2 className="text-display mt-2 text-2xl">Marketplace branding now lives in Marketplace Management</h2>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
@@ -51,7 +52,7 @@ function Page() {
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-2">
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <p className="text-eyebrow">Lead routing</p>
             <div className="mt-3 space-y-3 text-sm">
               <Toggle label="Round robin (default)" defaultChecked />
@@ -61,7 +62,7 @@ function Page() {
               <Field label="Fallback owner" defaultValue="Elena Alvarez" />
             </div>
           </section>
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <p className="text-eyebrow">Notifications</p>
             <div className="mt-3 space-y-3 text-sm">
               <Toggle label="Send shared quote — 48h expiry nudge" defaultChecked />
@@ -70,7 +71,7 @@ function Page() {
               <Toggle label="PlanAI abandoned nudge" />
             </div>
           </section>
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <p className="text-eyebrow">Scheduling availability</p>
             <div className="mt-3 grid grid-cols-7 gap-1 text-center text-xs">
               {["M","T","W","T","F","S","S"].map((d, i) => (
@@ -81,7 +82,7 @@ function Page() {
               ))}
             </div>
           </section>
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <p className="text-eyebrow">PlanAI</p>
             <Toggle label="PlanAI on marketplace" defaultChecked />
             <Toggle label="PlanAI on agent quick quote" defaultChecked />

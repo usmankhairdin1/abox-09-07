@@ -1,6 +1,8 @@
 /**
  * /accessibility — WCAG statement & keyboard reference.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { Accessibility, Keyboard, Ear, Eye, Hand } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -42,7 +44,7 @@ function Page() {
 
         <section className="mt-10 grid gap-4 md:grid-cols-2">
           {PILLARS.map(({ icon: Icon, title, body }) => (
-            <article key={title} className="rounded-2xl border border-border bg-card p-5">
+            <article key={title} className={surfaceClass()}>
               <div className="flex items-center gap-2">
                 <Icon className="h-4 w-4 text-primary" aria-hidden />
                 <p className="font-medium">{title}</p>
@@ -52,7 +54,7 @@ function Page() {
           ))}
         </section>
 
-        <section className="mt-10 rounded-2xl border border-border bg-card p-6">
+        <section className={cn("mt-10", surfaceClass({ padding: "lg" }))}>
           <div className="flex items-center gap-2">
             <Keyboard className="h-4 w-4 text-primary" aria-hidden />
             <h2 className="text-display text-2xl">Keyboard shortcuts</h2>
@@ -68,7 +70,7 @@ function Page() {
         </section>
 
         <section className="mt-10 grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-6">
+          <div className={surfaceClass({ padding: "lg" })}>
             <p className="text-eyebrow">Supported assistive tech</p>
             <ul className="mt-2 space-y-1 text-sm">
               <li>· NVDA & JAWS on Windows</li>
@@ -78,7 +80,7 @@ function Page() {
               <li>· 200% zoom and system font scaling</li>
             </ul>
           </div>
-          <div className="rounded-2xl border border-border bg-card p-6">
+          <div className={surfaceClass({ padding: "lg" })}>
             <p className="text-eyebrow">Known gaps</p>
             <ul className="mt-2 space-y-1 text-sm">
               <li>· PDF plan summaries follow carrier accessibility — request an alternate format via an agent.</li>

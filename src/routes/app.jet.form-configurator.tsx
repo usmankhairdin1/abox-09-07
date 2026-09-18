@@ -3,6 +3,7 @@
  * Working configurator surface: create drafts, edit form metadata,
  * publish/unpublish and preview the rendered field summary.
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { FileCog, Eye, Pencil, Check, X } from "lucide-react";
@@ -76,7 +77,7 @@ function Page() {
     >
       <div className="grid gap-4 md:grid-cols-2">
         {forms.map((f) => (
-          <article key={f.id} className="rounded-2xl border border-border bg-card p-5">
+          <article key={f.id} className={surfaceClass()}>
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-eyebrow">{f.id} · {f.version}</p>

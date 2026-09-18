@@ -1,6 +1,8 @@
 /**
  * SCR_APP_CUSTOMERS — Customers & Leads
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState, useMemo } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Search, Plus } from "lucide-react";
@@ -10,7 +12,6 @@ import { StatusBadge } from "@/components/abox/status-badge";
 import { type SampleLead } from "@/lib/sample-data";
 import { leadStore, useLeadState, getLeads, nextLeadId } from "@/lib/lead-store";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/customers/")({
   head: () => ({ meta: [{ title: `${SCREENS.SCR_APP_CUSTOMERS.name} — ABox` }, { name: "description", content: SCREENS.SCR_APP_CUSTOMERS.purpose }] }),
@@ -80,7 +81,7 @@ function Page() {
       }
     >
       {showForm && (
-        <form onSubmit={createLead} className="mb-6 flex flex-wrap items-end gap-3 rounded-2xl border border-border bg-card p-4">
+        <form onSubmit={createLead} className={cn("mb-6 flex flex-wrap items-end gap-3", surfaceClass({ padding: "sm" }))}>
           <label className="block text-sm">
             <span className="text-xs text-muted-foreground">Full name</span>
             <input

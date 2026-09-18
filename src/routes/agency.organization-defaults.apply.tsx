@@ -5,6 +5,8 @@
  * a one-time, reviewed copy, matching the spec's explicit exclusion of
  * automatic synchronization.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2 } from "lucide-react";
@@ -55,7 +57,7 @@ function Page() {
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">1. Select root settings</h2>
           {rootSettings.length === 0 ? (
             <p className="text-sm text-muted-foreground">The root organization has no settings to propagate yet.</p>
@@ -74,7 +76,7 @@ function Page() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">2. Select target downlines</h2>
           {downlines.length === 0 ? (
             <p className="text-sm text-muted-foreground">No direct downlines yet.</p>
@@ -95,7 +97,7 @@ function Page() {
       </div>
 
       {preview.length > 0 && (
-        <section className="mt-6 rounded-2xl border border-border bg-card p-5">
+        <section className={cn("mt-6", surfaceClass())}>
           <h2 className="text-display mb-3 text-xl">3. Review current vs. proposed</h2>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">

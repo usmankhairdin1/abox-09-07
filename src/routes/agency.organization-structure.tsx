@@ -4,6 +4,7 @@
  * Lean, fixed one-level hierarchy — no configurable graph builder
  * (REQ-M05-REL-003 lean hierarchy depth).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, ArrowRight, Eye } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -37,7 +38,7 @@ function Page() {
         One tenant-owning root with direct downlines — Lucie supports a single hierarchy level; downlines cannot create children.
       </p>
 
-      <div className="rounded-2xl border border-border bg-card p-5">
+      <div className={surfaceClass()}>
         <div className="flex items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary-soft/30 p-4">
           <div className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground"><Building2 className="h-5 w-5" /></span>

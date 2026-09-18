@@ -1,3 +1,5 @@
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { MemberShell } from "@/components/abox/member-shell";
@@ -37,7 +39,7 @@ function Page() {
     <MemberShell>
       <PageHeader eyebrow="Preferences" title="Settings" />
       <div className="grid gap-6 md:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display text-2xl">Profile</h2>
           <div className="mt-4 space-y-3 text-sm">
             <label className="block">
@@ -70,7 +72,7 @@ function Page() {
             {saved && <p className="text-xs text-sage">Saved.</p>}
           </div>
         </section>
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display text-2xl">Notifications</h2>
           <div className="mt-4 space-y-3 text-sm">
             <Toggle label="Email — quote updates" defaultChecked />
@@ -79,7 +81,7 @@ function Page() {
             <Toggle label="Marketing — new products & tips" />
           </div>
         </section>
-        <section className="rounded-2xl border border-border bg-card p-5 md:col-span-2">
+        <section className={cn(surfaceClass(), "md:col-span-2")}>
           <h2 className="text-display text-2xl">Privacy & security</h2>
           <div className="mt-3 space-y-2 text-sm text-muted-foreground">
             <p>Two-factor authentication: <span className="text-foreground">Off</span> — <span className="text-muted-foreground/70">Coming soon</span></p>

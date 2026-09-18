@@ -1,6 +1,8 @@
 /**
  * UX-016 — Consumer Dashboard (Member workspace)
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, ShoppingBag, MessageSquare, CheckCircle2, Sparkles, ArrowRight } from "lucide-react";
 import { MemberShell } from "@/components/abox/member-shell";
@@ -36,7 +38,7 @@ function Page() {
       </div>
 
       <section className="mt-8 grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-card p-5">
+        <div className={surfaceClass()}>
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
             <p className="font-medium">Pick up where you left off</p>
@@ -65,7 +67,7 @@ function Page() {
           )}
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-5">
+        <div className={surfaceClass()}>
           <p className="font-medium">Your cart</p>
           {cart.items.length === 0 ? (
             <p className="mt-2 text-sm text-muted-foreground">Nothing in your cart yet.</p>
@@ -86,7 +88,7 @@ function Page() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-2xl border border-border bg-card p-5">
+      <section className={cn("mt-8", surfaceClass())}>
         <div className="flex items-baseline justify-between">
           <h2 className="text-display text-2xl">Tasks</h2>
           <span className="text-xs text-muted-foreground">3 open</span>

@@ -3,6 +3,8 @@
  * Start anonymous prospect quote or find existing lead. Compact input
  * with results panel, PlanAI assist, and send/add/request-follow-up.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Search, Sparkles, ArrowRight, Send, Plus, UserSearch, Phone } from "lucide-react";
@@ -14,7 +16,6 @@ import { useLeadState, getLeads } from "@/lib/lead-store";
 import { cartStore, useCart } from "@/lib/cart-store";
 import type { PriorityKey } from "@/lib/quote-store";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 
 const PRIORITY_OPTIONS = ["Keep my doctor", "Low premium", "Low deductible", "Prescription coverage", "Broad network", "HSA eligibility"] as const;
 const PRIORITY_TO_KEY: Record<(typeof PRIORITY_OPTIONS)[number], PriorityKey> = {
@@ -108,7 +109,7 @@ function Page() {
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
-          <section aria-label="Quote inputs" className="rounded-2xl border border-border bg-card p-5">
+          <section aria-label="Quote inputs" className={surfaceClass()}>
             <p className="text-eyebrow">Quote inputs</p>
             <div className="mt-3 space-y-3">
               <label className="block text-sm">

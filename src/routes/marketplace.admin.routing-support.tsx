@@ -3,6 +3,8 @@
  * Fixed routing posture, root fallback and contextual support
  * (REQ-M04-RTE-016/026/027).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Headset, GitBranch } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -32,7 +34,7 @@ function Page() {
   return (
     <InternalShell workspace="agency" pageTitle="Routing and support identity" eyebrow="Routing and Support Identity · SCR-M04-015">
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center gap-2"><GitBranch className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Fixed routing sequence</h2></header>
           <ol className="list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
             {ROUTING_SEQUENCE.map((s) => <li key={s}>{s}</li>)}
@@ -40,7 +42,7 @@ function Page() {
           <p className="mt-3 text-xs text-muted-foreground">No round-robin, weighted or AI-scored routing in this release (REQ-M04-RTE-017).</p>
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <header className="mb-3 flex items-center gap-2"><Headset className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Root support identity (fallback)</h2></header>
           {content ? (
             <dl className="space-y-2 text-sm">
@@ -53,7 +55,7 @@ function Page() {
           <Link to="/marketplace/admin/content" className="story-link mt-3 inline-block text-sm text-primary">Edit in Content</Link>
         </section>
 
-        <section className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
+        <section className={cn(surfaceClass(), "lg:col-span-2")}>
           <header className="mb-3"><h2 className="text-display text-xl">Participant support identity</h2></header>
           <ul className="grid gap-2 sm:grid-cols-2">
             {participants.map((p) => {

@@ -3,6 +3,7 @@
  * Fixed readiness controls, canonical owner and next action
  * (REQ-M04-MKT-011).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ShieldCheck, RotateCw } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -27,7 +28,7 @@ function Page() {
       actions={<ActionPill variant="primaryMd" onClick={() => marketplaceStore.recalculateReadiness()}><RotateCw className="h-4 w-4" aria-hidden /> Recalculate</ActionPill>}
     >
       {readiness ? (
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <div className="mb-4 flex items-center justify-between">
             <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Overall status</h2></span>
             <StatusBadge tone={readiness.status === "READY" ? "sage" : readiness.status === "READY_WITH_WARNINGS" ? "warning" : readiness.status === "BLOCKED" ? "destructive" : "muted"}>{readiness.status.replaceAll("_", " ")}</StatusBadge>

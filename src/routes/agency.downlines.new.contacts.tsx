@@ -2,6 +2,8 @@
  * SCR-M05-009 — Create Downline Agency: Contacts.
  * Required contact roles — Lucie MVP requires the primary business contact.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -41,7 +43,7 @@ function Page() {
     <InternalShell workspace="agency" pageTitle="Create downline agency" eyebrow="Contacts · SCR-M05-009">
       <DownlineWizardStepper />
 
-      <div className="mt-8 max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-6">
+      <div className={cn("mt-8 max-w-2xl space-y-5", surfaceClass({ padding: "lg" }))}>
         <p className="text-sm text-muted-foreground">Primary business contact — required for every organization.</p>
 
         <div className="grid gap-4 sm:grid-cols-2">

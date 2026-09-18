@@ -3,6 +3,7 @@
  * Explain entitlement, product, carrier, geography, participant and
  * integration readiness (REQ-M04-AVL-001).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ListTree } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -46,7 +47,7 @@ function Page() {
         <ArrowLeft className="h-4 w-4" /> Back to matrix
       </Link>
 
-      <section className="rounded-2xl border border-border bg-card p-5">
+      <section className={surfaceClass()}>
         <header className="mb-4 flex items-center justify-between">
           <span className="flex items-center gap-2"><ListTree className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Entitlement and readiness</h2></span>
           <StatusBadge tone={blocked ? "warning" : entry.status === "ENABLED" ? "sage" : "muted"}>{blocked ? "BLOCKED" : entry.status}</StatusBadge>

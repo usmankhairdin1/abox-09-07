@@ -2,6 +2,8 @@
  * SCR-M05-020 — Organization Settings.
  * Downline-owned values and root overrides (REQ-M05-PRF-003/004/005).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Settings2, Plus } from "lucide-react";
@@ -67,7 +69,7 @@ function Page() {
       </Link>
 
       {showForm && (
-        <form onSubmit={addSetting} className="mb-6 grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">
+        <form onSubmit={addSetting} className={cn("mb-6 grid gap-4", surfaceClass(), "sm:grid-cols-2")}>
           <div>
             <label className="mb-1 block text-eyebrow">Setting key</label>
             <input required value={newKey} onChange={(e) => setNewKey(e.target.value)} className="h-10 w-full rounded-lg border border-border bg-background px-3" placeholder="e.g. quote_expiration_days" />
@@ -82,7 +84,7 @@ function Page() {
         </form>
       )}
 
-      <section className="rounded-2xl border border-border bg-card p-5">
+      <section className={surfaceClass()}>
         <header className="mb-3 flex items-center gap-2">
           <Settings2 className="h-4 w-4 text-muted-foreground" />
           <h2 className="text-display text-xl">Settings</h2>

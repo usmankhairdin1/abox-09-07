@@ -1,6 +1,8 @@
 /**
  * SCR_APP_COMMUNICATIONS — Unified inbox
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Mail, MessageSquare, Bell, Send } from "lucide-react";
@@ -8,7 +10,6 @@ import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
 import { SAMPLE_MESSAGES } from "@/lib/sample-data-ext";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/communications")({
   head: () => ({ meta: [{ title: `${SCREENS.SCR_APP_COMMUNICATIONS.name} — ABox` }, { name: "description", content: SCREENS.SCR_APP_COMMUNICATIONS.purpose }] }),
@@ -60,7 +61,7 @@ function Page() {
           </ul>
         </aside>
 
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           {current ? (
             <>
               <header className="flex items-baseline justify-between">

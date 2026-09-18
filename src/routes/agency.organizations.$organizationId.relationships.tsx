@@ -2,6 +2,7 @@
  * SCR-M05-021 — Organization Relationship History.
  * Effective relationship evidence (REQ-M05-REL-006/009).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, GitBranch } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -35,7 +36,7 @@ function Page() {
         <ArrowLeft className="h-4 w-4" /> Back to profile
       </Link>
 
-      <section className="rounded-2xl border border-border bg-card p-5">
+      <section className={surfaceClass()}>
         <header className="mb-3 flex items-center gap-2">
           <GitBranch className="h-4 w-4 text-muted-foreground" />
           <h2 className="text-display text-xl">PARENT_OF relationship evidence</h2>

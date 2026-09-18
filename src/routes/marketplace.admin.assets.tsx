@@ -3,6 +3,7 @@
  * Upload, scan, validate, preview and retire fixed asset types
  * (REQ-M04-BRD-004: one logo, one mark, one favicon, one optional hero).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Image, Upload, Trash2 } from "lucide-react";
@@ -40,7 +41,7 @@ function Page() {
         {TYPES.map((t) => {
           const existing = assets.filter((a) => a.asset_type === t.type);
           return (
-            <section key={t.type} className="rounded-2xl border border-border bg-card p-5">
+            <section key={t.type} className={surfaceClass()}>
               <header className="mb-2 flex items-center gap-2"><Image className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-lg">{t.label}</h2></header>
               <p className="mb-3 text-xs text-muted-foreground">{t.hint}</p>
               <input ref={(el) => { fileRefs.current[t.type] = el; }} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && onUpload(t.type, e.target.files[0])} />

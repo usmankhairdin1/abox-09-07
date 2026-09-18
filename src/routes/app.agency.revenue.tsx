@@ -1,3 +1,4 @@
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute } from "@tanstack/react-router";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
@@ -19,7 +20,7 @@ function Page() {
     <InternalShell workspace="agency" pageTitle="Revenue splits & referrals" eyebrow="Money">
       <div className="grid gap-4 md:grid-cols-2">
         {rules.map((r) => (
-          <div key={r.id} className="rounded-2xl border border-border bg-card p-5">
+          <div key={r.id} className={surfaceClass()}>
             <div className="flex items-start justify-between">
               <p className="text-display text-xl">{r.name}</p>
               {r.override && <StatusBadge tone="primary">Override</StatusBadge>}

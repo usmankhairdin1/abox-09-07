@@ -3,6 +3,7 @@
  * One future effective publication with readiness revalidation
  * (REQ-M04-BRD-019 / REQ-M04-ADM-013).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Calendar, XCircle } from "lucide-react";
@@ -37,7 +38,7 @@ function Page() {
   return (
     <InternalShell workspace="agency" pageTitle="Scheduled publication" eyebrow="Scheduled Publication · SCR-M04-021">
       {scheduled ? (
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">Scheduled release</h2>
           <StatusBadge tone="warning">
             <Calendar className="h-3 w-3" /> Effective {new Date(scheduled.effective_from!).toLocaleString()}
@@ -52,7 +53,7 @@ function Page() {
           No draft to schedule. Start one from <Link to="/marketplace/admin/brand" className="story-link text-primary">Brand</Link> or <Link to="/marketplace/admin/content" className="story-link text-primary">Content</Link>.
         </p>
       ) : (
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <h2 className="text-display mb-3 text-xl">Schedule this draft</h2>
           <label className="mb-1 block text-eyebrow">Effective date and time</label>
           <input type="datetime-local" value={datetime} onChange={(e) => setDatetime(e.target.value)} className="h-10 w-full max-w-xs rounded-lg border border-border bg-background px-3 text-sm" />

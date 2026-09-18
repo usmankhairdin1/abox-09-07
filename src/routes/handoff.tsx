@@ -1,6 +1,7 @@
 /**
  * UX-023 — JET Handoff Confirmation
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ExternalLink, Check, PackageCheck } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -37,7 +38,7 @@ function Page() {
           } />
         ) : (
           <div className="space-y-6">
-            <div className="rounded-2xl border border-border bg-card p-5">
+            <div className={surfaceClass()}>
               <div className="flex items-start gap-3">
                 <PackageCheck className="mt-0.5 h-5 w-5 text-sage" aria-hidden />
                 <div className="flex-1">
@@ -54,7 +55,7 @@ function Page() {
             </div>
 
             {onExchange.length > 0 && (
-              <section className="rounded-2xl border border-border bg-card p-5">
+              <section className={surfaceClass()}>
                 <div className="flex items-baseline justify-between">
                   <h2 className="text-display text-2xl">On-exchange (QHP)</h2>
                   <StatusBadge tone="info">{onExchange.length} plan(s)</StatusBadge>
@@ -80,7 +81,7 @@ function Page() {
             )}
 
             {offExchange.length > 0 && (
-              <section className="rounded-2xl border border-border bg-card p-5">
+              <section className={surfaceClass()}>
                 <div className="flex items-baseline justify-between">
                   <h2 className="text-display text-2xl">Continue inside ABox</h2>
                   <StatusBadge tone="primary">{offExchange.length} item(s)</StatusBadge>

@@ -3,6 +3,7 @@
  * JET subdomain, custom-domain request, verification, activation and
  * route continuity (REQ-M04-BRD-021..025).
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Globe, Plus, CheckCircle2, Star } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -41,7 +42,7 @@ function Page() {
     >
       <ul className="space-y-3">
         {domains.map((d) => (
-          <li key={d.domain_id} className="rounded-2xl border border-border bg-card p-4">
+          <li key={d.domain_id} className={surfaceClass({ padding: "sm" })}>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4 text-muted-foreground" />

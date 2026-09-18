@@ -3,6 +3,8 @@
  * One headquarters, one mailing (defaults to HQ), optional offices —
  * United States only (REQ-M05-PRF-008/009).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, MapPin, Plus } from "lucide-react";
@@ -62,7 +64,7 @@ function Page() {
       </Link>
 
       {showForm && (
-        <form onSubmit={onSubmit} className="mb-6 grid gap-4 rounded-2xl border border-border bg-card p-5 sm:grid-cols-2">
+        <form onSubmit={onSubmit} className={cn("mb-6 grid gap-4", surfaceClass(), "sm:grid-cols-2")}>
           <div>
             <label className="mb-1 block text-eyebrow">Location type</label>
             <select value={form.location_type} onChange={(e) => setForm({ ...form, location_type: e.target.value as LocationType })} className="h-10 w-full rounded-lg border border-border bg-background px-3">

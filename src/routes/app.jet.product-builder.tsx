@@ -1,6 +1,7 @@
 /**
  * SCR_JET_PRODUCT_BUILDER — schema, availability, versioning
  */
+import { surfaceClass } from "@/components/abox/surface";
 import { createFileRoute } from "@tanstack/react-router";
 import { InternalShell } from "@/components/abox/internal-shell";
 import { StatusBadge } from "@/components/abox/status-badge";
@@ -25,7 +26,7 @@ function Page() {
   return (
     <InternalShell workspace="jet" pageTitle="Product builder" eyebrow="Catalog">
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-        <section className="rounded-2xl border border-border bg-card p-5">
+        <section className={surfaceClass()}>
           <div className="flex items-baseline justify-between">
             <h2 className="text-display text-2xl">IFP — Individual & Family (v1.4)</h2>
             <StatusBadge tone="sage">Live</StatusBadge>
@@ -45,7 +46,7 @@ function Page() {
           </ul>
         </section>
         <aside className="space-y-4">
-          <div className="rounded-2xl border border-border bg-card p-5">
+          <div className={surfaceClass()}>
             <p className="text-eyebrow">Availability rules</p>
             <ul className="mt-2 space-y-1 text-sm">
               <li>· States: 32</li>
@@ -54,7 +55,7 @@ function Page() {
               <li>· ICHRA allowance compatible: yes</li>
             </ul>
           </div>
-          <div className="rounded-2xl border border-border bg-card p-5">
+          <div className={surfaceClass()}>
             <p className="text-eyebrow">Version history</p>
             <ul className="mt-2 space-y-1 text-sm">
               <li>v1.4 · Live — Jul 2026</li>

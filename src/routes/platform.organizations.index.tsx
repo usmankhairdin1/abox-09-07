@@ -3,6 +3,8 @@
  * JET tenant and organization oversight and controlled actions
  * (JET_PLATFORM_ADMIN only).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Landmark, Building2, ShieldAlert, GitPullRequestArrow } from "lucide-react";
 import { InternalShell } from "@/components/abox/internal-shell";
@@ -87,7 +89,7 @@ function Page() {
         <KpiCard label="Open JET exceptions" value={openOverrideTargets.length} icon={ShieldAlert} />
       </div>
 
-      <section className="mt-6 rounded-2xl border border-border bg-card p-5">
+      <section className={cn("mt-6", surfaceClass())}>
         <header className="mb-3 flex items-center gap-2">
           <Landmark className="h-4 w-4 text-muted-foreground" />
           <h2 className="text-display text-xl">Tenant record</h2>

@@ -9,6 +9,8 @@
  * unqualified compliance claims on a pre-production prototype is a real
  * legal/regulatory risk, not just a copy nit.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { AlertTriangle, ShieldCheck, Lock, Scale, ScrollText } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -65,7 +67,7 @@ function Page() {
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           {PROGRAMS.map(({ icon: Icon, title, status, tone, body }) => (
-            <article key={title} className="rounded-2xl border border-border bg-card p-5">
+            <article key={title} className={surfaceClass()}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Icon className="h-4 w-4 text-primary" aria-hidden />
@@ -78,7 +80,7 @@ function Page() {
           ))}
         </div>
 
-        <section className="mt-10 rounded-2xl border border-border bg-card p-6">
+        <section className={cn("mt-10", surfaceClass({ padding: "lg" }))}>
           <h2 className="text-display text-2xl">Data retention & subject rights</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Target: retention following carrier and regulator requirements, with shopper-initiated access/correction/
@@ -88,7 +90,7 @@ function Page() {
           </p>
         </section>
 
-        <section className="mt-6 rounded-2xl border border-border bg-card p-6">
+        <section className={cn("mt-6", surfaceClass({ padding: "lg" }))}>
           <h2 className="text-display text-2xl">Responsible disclosure</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Report a security concern to{" "}

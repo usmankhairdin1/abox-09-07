@@ -1,6 +1,8 @@
 /**
  * Employer ICHRA landing — for the /ichra marketplace path.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, Check, ArrowRight, Users, DollarSign, ShieldCheck } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -37,7 +39,7 @@ function Page() {
               { icon: <Users className="h-5 w-5" />, title: "Real choice", body: "Employees shop the individual marketplace — PlanAI helps." },
               { icon: <ShieldCheck className="h-5 w-5" />, title: "Compliant", body: "ACA-compliant reimbursement model, class-based rules supported." },
             ].map((c) => (
-              <div key={c.title} className="rounded-2xl border border-border bg-card p-5">
+              <div key={c.title} className={surfaceClass()}>
                 <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary-soft text-primary">{c.icon}</div>
                 <p className="mt-3 text-display text-xl">{c.title}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{c.body}</p>
@@ -56,7 +58,7 @@ function Page() {
             "You reimburse premiums (and optionally out-of-pocket) up to the allowance.",
             "ABox handles the enrollment paperwork and provides your admin dashboard.",
            ].map((s) => (
-            <li key={s} className="flex items-start gap-3 rounded-2xl border border-border bg-card p-4">
+            <li key={s} className={cn("flex items-start gap-3", surfaceClass({ padding: "sm" }))}>
               <Check className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
               <span className="text-sm">{s}</span>
             </li>

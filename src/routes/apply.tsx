@@ -6,6 +6,8 @@
  * in the UI: readiness, signature, output generation and external
  * outcome are shown as distinct states and never collapsed.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, FileText, Send, ShieldCheck } from "lucide-react";
@@ -17,7 +19,6 @@ import { useCart, PRODUCT_LABEL } from "@/lib/cart-store";
 import { loadQuoteState } from "@/lib/quote-store";
 import { resolvePathway, READINESS_LABEL, type ReadinessKey } from "@/lib/lucie-release";
 import { SCREENS } from "@/lib/screens";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/apply")({
   head: () => ({
@@ -123,7 +124,7 @@ function Page() {
               ))}
             </ol>
 
-            <div className="rounded-2xl border border-border bg-card p-6">
+            <div className={surfaceClass({ padding: "lg" })}>
               {step === 0 && (
                 <Grid>
                   <Field label="Legal first name" required value={a.firstName} onChange={(v) => set("firstName", v)} />
@@ -251,7 +252,7 @@ function Page() {
 
           <aside>
             <div className="sticky top-24 space-y-4">
-              <div className="rounded-2xl border border-border bg-card p-5">
+              <div className={surfaceClass()}>
                 <p className="text-eyebrow">Application readiness</p>
                 <ul className="mt-3 space-y-2">
                   {(Object.keys(READINESS_LABEL) as ReadinessKey[]).map((k) => (
@@ -270,7 +271,7 @@ function Page() {
               </div>
 
               {pathway && (
-                <div className="rounded-2xl border border-border bg-card p-5">
+                <div className={surfaceClass()}>
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4 text-primary" aria-hidden />
                     <p className="text-sm font-medium">Carrier pathway</p>

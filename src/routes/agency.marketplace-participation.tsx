@@ -3,6 +3,8 @@
  * Own participation, support, referral links, readiness and correction
  * requests (REQ-M04-MKT-006 downline administration posture).
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Store, LinkIcon, ShieldCheck, Send } from "lucide-react";
@@ -52,7 +54,7 @@ function Page() {
         </p>
       ) : (
         <div className="grid gap-6 lg:grid-cols-2">
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <header className="mb-3 flex items-center gap-2"><Store className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">My participation</h2></header>
             <dl className="space-y-2 text-sm">
               <div className="flex items-center justify-between"><dt className="text-muted-foreground">State</dt><dd><StatusBadge tone={participant.participation_state === "ENABLED" ? "sage" : participant.participation_state === "SUSPENDED" ? "destructive" : "warning"}>{participant.participation_state.replaceAll("_", " ")}</StatusBadge></dd></div>
@@ -62,7 +64,7 @@ function Page() {
             </dl>
           </section>
 
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className={surfaceClass()}>
             <header className="mb-3 flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Marketplace readiness</h2></header>
             {readiness ? (
               <StatusBadge tone={readiness.status === "READY" ? "sage" : readiness.status === "BLOCKED" ? "destructive" : "warning"}>{readiness.status.replaceAll("_", " ")}</StatusBadge>
@@ -71,7 +73,7 @@ function Page() {
             <Link to="/agency/organizations/$organizationId/readiness" params={{ organizationId: orgId }} className="story-link mt-2 inline-block text-sm text-primary">Open my organization readiness</Link>
           </section>
 
-          <section className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
+          <section className={cn(surfaceClass(), "lg:col-span-2")}>
             <header className="mb-3 flex items-center gap-2"><LinkIcon className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">My referral links</h2></header>
             {links.length === 0 ? (
               <p className="text-sm text-muted-foreground">No referral links yet. Ask the root to create one for your organization.</p>
@@ -87,7 +89,7 @@ function Page() {
             )}
           </section>
 
-          <section className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
+          <section className={cn(surfaceClass(), "lg:col-span-2")}>
             <header className="mb-3 flex items-center gap-2"><Send className="h-4 w-4 text-muted-foreground" /><h2 className="text-display text-xl">Request a correction</h2></header>
             {sent && <p className="mb-3 rounded-xl border border-sage/40 bg-sage-soft/40 p-3 text-sm">Sent to the root for review.</p>}
             <form onSubmit={submitCorrection} className="flex gap-2">

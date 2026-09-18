@@ -1,6 +1,8 @@
 /**
  * UX-020 — Shared Quote (read-only, tokenized)
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Phone, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
@@ -106,7 +108,7 @@ function Page() {
 
 function ActionCard({ title, body, icon, href, cta }: { title: string; body: string; icon: React.ReactNode; href: string; cta: string }) {
   return (
-    <div className="flex flex-col rounded-2xl border border-border bg-card p-5">
+    <div className={cn("flex flex-col", surfaceClass())}>
       <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary-soft text-primary">{icon}</div>
       <p className="mt-3 text-display text-xl">{title}</p>
       <p className="mt-1 flex-1 text-sm text-muted-foreground">{body}</p>

@@ -19,6 +19,8 @@
  *    move between completed steps; the stepper items themselves are buttons.
  *  - Radio/checkbox groups use role="radiogroup"/"group" with labelled fieldsets.
  */
+import { surfaceClass } from "@/components/abox/surface";
+import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   createFileRoute,
@@ -47,7 +49,6 @@ import { AboxMark } from "@/components/abox/logo";
 import { SaveContinueButton } from "@/components/abox/save-continue-button";
 import { ShoppingPathBar } from "@/components/abox/shopping-path-bar";
 import { shoppingModeStore } from "@/lib/shopping-mode";
-import { cn } from "@/lib/utils";
 import {
   PRIORITIES,
   RELATIONSHIPS,
@@ -971,7 +972,7 @@ function Step4({
       </label>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-card p-5">
+        <div className={surfaceClass()}>
           <div className="mb-3 flex items-center gap-2">
             <Stethoscope className="h-4 w-4 text-primary" aria-hidden />
             <h2 className="font-medium">Doctors & providers</h2>
@@ -1029,7 +1030,7 @@ function Step4({
           </ul>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-5">
+        <div className={surfaceClass()}>
           <div className="mb-3 flex items-center gap-2">
             <Pill className="h-4 w-4 text-primary" aria-hidden />
             <h2 className="font-medium">Prescriptions</h2>
@@ -1318,7 +1319,7 @@ function Step6({ state }: { state: QuoteState }) {
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-2xl border border-border bg-card p-5">
+          <div className={surfaceClass()}>
             <p className="text-eyebrow flex items-center gap-1.5">
               <Sparkles className="h-3 w-3" aria-hidden /> PlanAI will focus on
             </p>
