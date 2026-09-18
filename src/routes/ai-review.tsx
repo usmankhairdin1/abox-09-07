@@ -128,7 +128,7 @@ function Page() {
             <button
               onClick={() => setSubmitted(true)}
               disabled={!allConfirmed || !strictAgree}
-              className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground disabled:opacity-60"
+              className={actionPillClass("primaryLgPlain", "disabled:opacity-60")}
             >
               Confirm and continue
             </button>
