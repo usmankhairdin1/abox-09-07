@@ -294,6 +294,15 @@ Start here, by intent:
 
 Nothing in `src/lib/design/`, `src/components/design/`, `/design-system`, `/design-guide`, `.lovable/design-system.md` or `roadmap.md` affects the running product.
 
+## Phase 31 — Group B surface exceptions (2026-09-18)
+
+Canonical source: `src/components/abox/surface.tsx` (`surfaceClass`). Migrated Group B consumers: `src/routes/quote.tsx:499` (elevated), `src/routes/coverage.tsx:49` (elevated + consumer layout classes).
+
+Left literal, with reason:
+- `src/routes/app.employer.ichra.tsx:39,60` — decorated panels (`card-brackets edge-sheen`, one with an inline `boxShadow`); route is sign-in gated and no test session could be minted, so exact-preservation evidence is NOT CAPTURED. Re-audit once a session is available.
+- `src/routes/index.tsx:188`, `src/routes/app.index.tsx:101,133,167,190` — `border-hairline` / `shadow-card` vocabulary and/or interactive card semantics; not the canonical Surface base string.
+- `src/components/abox/kpi-card.tsx`, `plan-card.tsx`, `src/components/lucie/ui.tsx`, `src/components/m08/*`, `src/components/m06/*` — excluded component systems.
+
 ---
 
 *Audit only. No file under `src/` or `public/` was created, modified or deleted while producing this map.*
