@@ -78,14 +78,17 @@ Recommendation to decide at execution gate: Candidate 1 for Group A/B, with Cand
 ## 8. Candidate canonical API (proposal, not built)
 
 ```
-Surface({ padding, elevated, interactiveHover, decor, as?, className, children, ...divProps })
+Surface({ padding, elevated, interactiveHover, decor, className, children, ...divProps })
 padding:          "none" | "sm"(p-4) | "md"(p-5) | "lg"(p-6)   default "md"
 elevated:         boolean  -> inline style boxShadow var(--shadow-card)
 interactiveHover: boolean  -> transition/translate/border-primary set
 decor:            boolean  -> card-brackets edge-sheen
 ```
 
-Plus `surfaceClass(opts)` exported for `<button>`/`<Link>` consumers — no Slot/asChild, matching the ActionPill precedent.
+`Surface` renders a native `div` only. No `as` prop, no Slot, no `asChild`, no polymorphic element switching, no automatic element substitution — so it cannot alter DOM semantics, accessibility, keyboard, link or button behavior during migration.
+
+Plus `surfaceClass(opts)` exported for `<button>`/`<Link>` consumers, matching the ActionPill precedent. Interactive consumers keep their existing native element, href, handlers, focus and keyboard behavior and consume classes only; an existing Link/button card is never converted into a `Surface` wrapper.
+
 
 ## 9. Variant/state model
 
@@ -171,7 +174,7 @@ One batch per commit-sized unit; each batch is independently revertible to the l
 
 ## 25. Proposed execution sequence
 
-1. Phase 29 — build the canonical source + class module, zero consumers migrated; prove it renders byte-identical markup in isolation.
+1. Phase 29 — define and prove the native-`div` Surface plus `surfaceClass` against ONE representative existing Group A production panel; no batch migration.
 2. Phase 30 — batch-migrate Group A plain panels in sub-batches, full proof per sub-batch.
 3. Phase 31 — Group B elevated/decor panels.
 4. Phase 32 — resolve section 16 investigations; Group C decided per site.
@@ -180,3 +183,70 @@ One batch per commit-sized unit; each batch is independently revertible to the l
 ## 26. Authorization statement
 
 NO production implementation is authorized in this phase. No production file, route, style, token, branding or marketplace asset is modified. No consumer is migrated. No component is created, renamed, merged or deleted. This document is a plan only.
+
+---
+
+# Phase 29 — Canonical Surface Definition and Single-Consumer Proof (PLAN ONLY, corrected)
+
+Scope target: one canonical source for genuinely shared ABox plain/elevated surface behavior. It is NOT an instruction to make every card-like surface use one generic component. `KpiCard`, `PlanCard`, `EmptyState`, Lucie/M06/M08 structures, shells and overlays remain independently owned unless a later explicit decision proves otherwise.
+
+### 1. Exact canonical Surface API
+
+`src/components/abox/surface.tsx` (proposed location):
+
+```
+Surface(props: React.HTMLAttributes<HTMLDivElement> & {
+  padding?: "none" | "sm" | "md" | "lg";   // default "md" -> p-5
+  elevated?: boolean;
+  interactiveHover?: boolean;
+  decor?: boolean;
+})
+```
+
+Renders `<div>` only. No `as`, no Slot, no `asChild`, no polymorphism, no element substitution. Ref forwarded to the div. All other props spread unchanged.
+
+### 2. Exact class ownership
+
+- Surface owns and emits only: base surface set (`rounded-2xl border border-border bg-card`), the padding token for the chosen variant, and the opt-in `elevated` / `interactiveHover` / `decor` sets.
+- Everything else — layout, grid/flex, responsive padding overrides, text classes, colspan — stays in the consumer's `className`, merged last via `cn`.
+- `surfaceClass(opts)` returns the identical string for `<Link>`/`<button>` consumers; the component and the helper share one internal definition so a single edit propagates to both.
+
+### 3. Representative proof consumer
+
+One real existing Group A plain panel using the exact dominant string `rounded-2xl border border-border bg-card p-5`, no hover, no shadow, no decor, no interactivity, on a naturally reachable public or existing-session route. The exact file:line and route are selected and recorded at execution start from the Group A table; no synthetic or invented design is used.
+
+### 4. Pre/post DOM preservation protocol
+
+Capture before migration and after, at each viewport: element tag, full DOM hierarchy of the panel and its children, attribute set, verbatim `class` attribute, inline `style`. Requirements: identical element type, identical child structure, identical attributes. Computed-style equality alone is NOT sufficient if DOM or behavior changes.
+
+### 5. Class / computed-style / geometry comparison protocol
+
+- Verbatim class attribute compared byte-for-byte; any class-order or class-string difference is investigated and blocks the migration until explained.
+- Computed styles: padding, margin, gap, border width/style/color, radius, background, box-shadow, overflow, alignment, text-align, min-height, transition, font family/size/weight/line-height/color for contained text.
+- Geometry: bounding rectangles for the panel and each direct child.
+- Content placement and text content compared verbatim.
+
+### 6. Responsive proof
+
+1440, 834 and 390 measured independently with no inference between viewports; per viewport: geometry, wrapping, spacing, responsive padding behavior, and `documentElement.scrollWidth` vs `clientWidth` (zero overflow difference required).
+
+### 7. Accessibility and interaction preservation
+
+Panel remains a plain `div` with no role, no ARIA, not focusable. Tab order, focusable elements inside the panel, links/routes and handlers unchanged. No interactive consumer is touched in Phase 29.
+
+### 8. Typecheck / build / ESLint
+
+`npx tsgo --noEmit`, production build, ESLint on the new file and the single migrated consumer. Pre-existing findings recorded separately and left unfixed; any new finding blocks the phase.
+
+### 9. Git / source-hash integrity
+
+Record `git status` and md5 of the proof consumer before and after. Expected changed files in Phase 29 execution: the new `surface.tsx` and the single proof consumer only. No other production file, style, token, branding or marketplace asset changes.
+
+### 10. Rollback / no-op strategy
+
+The single consumer reverts to its literal class string in one edit; the new component can be left unimported or removed with no effect on any other file. Zero parity ⇒ no migration: if exact parity cannot be established, the consumer is reverted and classified as an exception.
+
+### 11. Authorization
+
+No production implementation occurs in Phase 29 until this Phase 29 plan is separately approved. Nothing in this document authorizes creating the component, editing the proof consumer, or migrating any other consumer.
+
