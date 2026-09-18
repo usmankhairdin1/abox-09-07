@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft, Plus, Check } from "lucide-react";
 import { MarketplaceShell } from "@/components/abox/marketplace-shell";
 import { PageHeader } from "@/components/abox/page-header";
+import { actionPillClass } from "@/components/abox/action-pill-component";
 import { SAMPLE_ANCILLARY, type SampleAncillary } from "@/lib/sample-data";
 import { cartStore, useCart, type ProductType } from "@/lib/cart-store";
 import { loadQuoteState } from "@/lib/quote-store";
