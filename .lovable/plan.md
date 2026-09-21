@@ -117,7 +117,7 @@ Names must be unique within a component; repetition across components is fine.
 | `ABox/Surface/Surface` | B4 axes only | none |
 | `ABox/Control/Control` | B4 axes only | none |
 | `ABox/Card/KpiCard` | variant `tone`, variant `deltaSign`, bool `hasIcon`, `hasDelta`, `hasHint`, text `label`, `value` | resolved (`delta` → `hasDelta` + `deltaSign`) |
-| `ABox/Header/PageHeader` | variant `variant`, bool `hasEyebrow`, `hasIcon`, `hasDescription`, `hasActions`, text `title`, `eyebrow`, `description` | resolved (Booleans renamed `has…`) |
+| `ABox/Header/PageHeader` | variant `variant`, bool `hasEyebrow`, `hasIcon`, `hasDescription`, `hasActions`, text `title`, `eyebrow`, `description`, swap `actions` | resolved (Booleans renamed `has…`; `actions` kept as the content slot) |
 | `ABox/Nav/ModuleTab` | variant `state`, text `label` | none |
 | `ABox/Nav/WizardStep` | variant `state`, text `label` | none |
 | `ABox/Brand/AboxMark` | variant `tone` | none |
