@@ -339,7 +339,9 @@ function requireFile(expectedName) {
   }
 }
 
-function ensureLibraryPages() {
+async function ensureLibraryPages() {
+  // dynamic-page document access: page.children requires explicit page loading.
+  await figma.loadAllPagesAsync();
   const names = T.library.pages;
   const pages = figma.root.children;
 
@@ -389,6 +391,8 @@ function ensureLibraryPages() {
 }
 
 async function verifyLibraryPages() {
+  // dynamic-page document access: load every page once before any children access.
+  await figma.loadAllPagesAsync();
   const names = T.library.pages;
   const checks = [];
   const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
