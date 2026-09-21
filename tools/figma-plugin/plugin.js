@@ -5237,7 +5237,60 @@ async function verifyB10() {
   return passed;
 }
 
+/* ---------- B4 orphan cleanup (guarded, opt-in) ---------- */
+
+/**
+ * Removes only debris left behind on the seven B0 library pages by an aborted
+ * build: top-level nodes that are not components, not batch-owned assets, and not
+ * approved B8/B9/B10 frames. It never touches B0 pages themselves, B1/B2/B3 data,
+ * or any B4 component object.
+ */
+async function b4CleanupOrphans() {
+  await figma.loadAllPagesAsync();
+  const libraryPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells",
+    "04 Experiences", "05 Screens", "06 Documentation"];
+  const approved = {};
+  for (const list of [b8ApprovedNames(), b9ApprovedNames(), b10ApprovedNames()]) {
+    for (const name of list || []) approved[name] = true;
+  }
+  const owned = (name) =>
+    approved[name] === true ||
+    name.indexOf("ABox/Pattern/") === 0 ||
+    name.indexOf("ABox/Shell/") === 0 ||
+    name.indexOf("ABox/Screen/") === 0 ||
+    name.indexOf("ABox/ScreenState/") === 0 ||
+    name.indexOf("ABox/Doc/") === 0;
+
+  const doomed = [];
+  for (const page of figma.root.children) {
+    if (libraryPages.indexOf(page.name) === -1) continue;
+    for (const node of page.children) {
+      if (node.type === "COMPONENT" || node.type === "COMPONENT_SET") continue;
+      if (owned(node.name)) continue;
+      doomed.push({ page: page.name, node: node });
+    }
+  }
+
+  say("B4 ORPHAN CLEANUP");
+  if (!doomed.length) {
+    say("  nothing to remove — every library page holds only components and batch-owned assets.");
+  }
+  for (const entry of doomed) {
+    say("  remove : " + entry.page + " › " + entry.node.name + " (" + entry.node.type + ")  id=" + entry.node.id);
+    entry.node.remove();
+  }
+  say("");
+  say("  page contents after cleanup");
+  for (const page of figma.root.children) {
+    say("    " + page.name + " : " + page.children.length + " node(s)");
+  }
+  say("");
+  say("  removed this run: " + doomed.length);
+  return doomed.length;
+}
+
 /* ---------- entry ---------- */
+
 
 figma.showUI(__html__, { width: 420, height: 640 });
 
