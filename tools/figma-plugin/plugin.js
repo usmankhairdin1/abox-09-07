@@ -1961,49 +1961,63 @@ function b5Bodies(owner) {
 }
 
 /** Characters B4 authored for a given body, from the generated spec. */
-function b5ExpectedChars(ownerName, body, textIndex) {
-  const set = ABOX_B4.sets.find((s) => s.name === ownerName);
-  if (set) {
-    const value = set.values.filter(function (v) {
-      const vname = b4VariantName(set, v);
-      const pairs = vname.split(",").map((s) => s.trim());
-      const have = body.name.split(",").map((s) => s.trim());
-      return pairs.every((p) => have.indexOf(p) !== -1);
-    })[0];
-    if (!value) return null;
+function b5SpecChars(ownerName, bodyName) {
+  const collect = (node) => {
     const list = [];
     (function walk(n) {
       if (n.type === "TEXT") list.push(n.characters);
       for (const c of n.children || []) walk(c);
-    })(value.node);
-    return list[textIndex];
+    })(node);
+    return list;
+  };
+  const set = ABOX_B4.sets.find((s) => s.name === ownerName);
+  if (set) {
+    const value = set.values.filter(function (v) {
+      const pairs = b4VariantName(set, v).split(",").map((s) => s.trim());
+      const have = String(bodyName).split(",").map((s) => s.trim());
+      return pairs.every((p) => have.indexOf(p) !== -1);
+    })[0];
+    return { body: value ? collect(value.node) : null, canonical: collect(set.values[0].node) };
   }
   const cmp = ABOX_B4.components.find((c) => c.name === ownerName);
-  if (!cmp) return null;
-  const list = [];
-  (function walk(n) {
-    if (n.type === "TEXT") list.push(n.characters);
-    for (const c of n.children || []) walk(c);
-  })(cmp.node);
-  return list[textIndex];
+  if (!cmp) return { body: null, canonical: null };
+  const list = collect(cmp.node);
+  return { body: list, canonical: list };
+}
+
+/**
+ * Resolve the TEXT index of a binding inside one body. Variants that omit the
+ * role entirely (PageHeader compact suppresses the eyebrow, page-header.tsx:29)
+ * return null: the property is not attached there and the omission is reported,
+ * never approximated by index drift.
+ */
+function b5IndexIn(ownerName, bodyName, binding) {
+  const spec = b5SpecChars(ownerName, bodyName);
+  if (!spec.body || !spec.canonical) return binding.target.textIndex;
+  if (spec.body.length === spec.canonical.length) return binding.target.textIndex;
+  const canonical = spec.canonical[binding.target.textIndex];
+  const idx = spec.body.indexOf(canonical);
+  return idx === -1 ? null : idx;
 }
 
 /** Resolve the exact target layer, structurally. Missing or ambiguous => STOP. */
 function b5Target(ownerName, body, binding) {
-  const texts = b5Texts(body);
-  const node = texts[binding.target.textIndex];
+  const index = b5IndexIn(ownerName, body.name, binding);
+  if (index === null) return null;
+  const node = b5Texts(body)[index];
   if (!node) {
     throw new Error(
       "STOP: TARGET LAYER MISSING — " + ownerName + " / " + body.name +
-        " has no TEXT descendant at index " + binding.target.textIndex +
+        " has no TEXT descendant at index " + index +
         " for property " + binding.property + ".",
     );
   }
-  const expect = b5ExpectedChars(ownerName, body, binding.target.textIndex);
+  const spec = b5SpecChars(ownerName, body.name);
+  const expect = spec.body ? spec.body[index] : null;
   if (expect !== null && expect !== undefined && node.characters !== expect) {
     throw new Error(
       "STOP: TARGET LAYER MISMATCH — " + ownerName + " / " + body.name +
-        " TEXT[" + binding.target.textIndex + '] is "' + node.characters +
+        " TEXT[" + index + '] is "' + node.characters +
         '", expected the B4 construction text "' + expect + '".',
     );
   }
@@ -2131,6 +2145,10 @@ async function b5Properties() {
     const prop = b5EnsureProperty(owner, binding.property, binding.type, defaultValue);
     for (const body of b5Bodies(owner)) {
       const node = b5Target(binding.component, body, binding);
+      if (!node) {
+        say("  skipped : " + binding.component + " / " + body.name + " omits the " + binding.property + " layer in production");
+        continue;
+      }
       node.name = binding.target.name;
       b5Bind(owner, body, node, binding.reference, prop.id, binding.property);
     }
@@ -2264,7 +2282,13 @@ async function verifyB5() {
     if (b.type === "TEXT") { textCount += 1; if (defs[key].defaultValue !== b.value) defaultOk = false; }
     else { boolCount += 1; if (defs[key].defaultValue !== true) defaultOk = false; }
     for (const body of b5Bodies(owner)) {
-      const node = b5Texts(body)[b.target.textIndex];
+      const idx = b5IndexIn(b.component, body.name, b);
+      if (idx === null) {
+        inventory.push("  " + b.component + " . " + b.property + "  [" + b.type + "]  id=" + key +
+          "  -> " + body.name + " : layer absent in this variant (production omits it) — not attached");
+        continue;
+      }
+      const node = b5Texts(body)[idx];
       const refs = (node && node.componentPropertyReferences) || {};
       const ok = !!node && refs[b.reference] === key && node.name === b.target.name;
       if (!ok) bindOk = false;
