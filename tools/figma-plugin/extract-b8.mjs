@@ -67,7 +67,7 @@ mustContain("src/components/abox/downline-wizard-stepper.tsx", ["DOWNLINE_WIZARD
 
 mustContain("src/routes/agency.downlines.new.contacts.tsx", ["<InternalShell", "<DownlineWizardStepper", "Primary business contact", "Continue"]);
 mustContain("src/routes/agency.downlines.new.readiness.tsx", ["Readiness review", "StatusBadge", "Create downline"]);
-mustContain("src/routes/agency.downlines.new.activate.tsx", ["Activation", "Downline activated", "View organization profile"]);
+mustContain("src/routes/agency.downlines.new.activate.tsx", ["Activation", "is active", "View organization profile"]);
 mustContain("src/routes/marketplace.admin.index.tsx", ["Marketplace administration", "Submit for activation", "Participants", "Recent changes"]);
 mustContain("src/routes/marketplace.admin.readiness.tsx", ["Marketplace readiness", "Recalculate", "Overall status"]);
 mustContain("src/routes/marketplace.admin.activation.tsx", ["Initial activation", "Submit to JET", "pending JET review"]);
