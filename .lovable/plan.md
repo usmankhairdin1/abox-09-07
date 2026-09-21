@@ -159,7 +159,15 @@ no-invented-interaction and bookkeeping checks stay. Added:
    `fills` empty).
 10. No responsive breakpoint state or responsive variant was created.
 11. `strokesIncludedInLayout` matches the signature value.
-12. Run 2 creates zero B6 nodes and reports identical set, variant and component ids.
+12. `ABox/Pattern/WizardStepper` contains exactly 8 child instances — no shortened 5-step build.
+13. Child order matches `DOWNLINE_WIZARD_STEPS` exactly, position by position.
+14. Every child resolves to the live B4/B5 `ABox/Nav/WizardStep` main component.
+15. Every child `state` is one of the existing B4 values only (`current`, `done`, `upcoming`,
+    `unreachable`) and matches the selected production configuration exactly — no state is
+    manufactured for coverage and no states are combined across routes.
+16. Every child `label` matches the selected production configuration.
+17. No duplicate `ABox/Pattern/WizardStepper` exists on any page.
+18. Run 2 creates zero B6 nodes and reports identical set, variant and component ids.
 
 Any failed check prints `RESULT: B6 FAILED — do not proceed to B7.`
 
