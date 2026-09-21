@@ -44783,7 +44783,8 @@ function b6RootParts(root) {
     "counterSizing=" + (root.counterSizing || "AUTO"),
     "pb=" + (root.paddingBottom || 0),
     "stroke=" + (root.strokeBottomStyle || "none"),
-    "strokeWeights=" + (root.strokeBottomStyle ? "0/0/0/1" : "0/0/0/0"),
+    // Per-side weights only mean something when the approved definition declares a stroke.
+    "strokeWeights=" + (root.strokeBottomStyle ? "0/0/0/1" : "n/a"),
     "strokesInLayout=" + (root.strokeBottomStyle ? String(root.strokesIncludedInLayout === true) : "n/a"),
   ];
 }
@@ -44807,8 +44808,12 @@ async function b6LiveSignature(node, root, children) {
     "counterSizing=" + node.counterAxisSizingMode,
     "pb=" + node.paddingBottom,
     "stroke=" + (styled ? root.strokeBottomStyle : "none"),
+    // An unstroked root is proven by strokes.length === 0; its default per-side weights
+    // carry no design meaning. Any live stroke paint still reports its real weights.
     "strokeWeights=" +
-      [node.strokeTopWeight || 0, node.strokeRightWeight || 0, node.strokeLeftWeight || 0, node.strokeBottomWeight || 0].join("/"),
+      (!root.strokeBottomStyle && (node.strokes || []).length === 0
+        ? "n/a"
+        : [node.strokeTopWeight || 0, node.strokeRightWeight || 0, node.strokeLeftWeight || 0, node.strokeBottomWeight || 0].join("/")),
     "strokesInLayout=" + (root.strokeBottomStyle ? String(node.strokesIncludedInLayout === true) : "n/a"),
   ];
   parts.push("children=" + node.children.length);
