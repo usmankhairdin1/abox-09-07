@@ -2665,36 +2665,104 @@ function b6FindOnPage(page, name) {
   return found[0] || null;
 }
 
+/** The set's single variant axis, read from the live node. */
+function b6SetAxis(set) {
+  const defs = set.componentPropertyDefinitions || {};
+  const names = Object.keys(defs).filter((k) => defs[k].type === "VARIANT");
+  return { names: names, name: names[0], values: names.length === 1 ? (defs[names[0]].variantOptions || []).slice().sort() : [] };
+}
+
+function b6AssertAxis(set, spec) {
+  const axis = b6SetAxis(set);
+  const want = spec.values.slice().sort();
+  if (set.name !== spec.name) {
+    throw new Error('STOP: PATTERN SET NAME MISMATCH — expected "' + spec.name + '", live "' + set.name + '".');
+  }
+  if (axis.names.length !== 1 || axis.name !== spec.property) {
+    throw new Error(
+      "STOP: PATTERN SET AXIS MISMATCH — " + spec.name + " must expose exactly one VARIANT property named \"" +
+        spec.property + '"; live axes: ' + JSON.stringify(axis.names) + ".",
+    );
+  }
+  if (axis.values.join(",") !== want.join(",")) {
+    throw new Error(
+      "STOP: PATTERN SET VALUES MISMATCH — " + spec.name + " expected " + JSON.stringify(want) +
+        ", live " + JSON.stringify(axis.values) + ".",
+    );
+  }
+  if (set.children.length !== spec.variants.length) {
+    throw new Error(
+      "STOP: PATTERN SET SHAPE MISMATCH — " + spec.name + " expected " + spec.variants.length +
+        " variant nodes, live " + set.children.length + ".",
+    );
+  }
+  const seen = {};
+  for (const child of set.children) {
+    if (seen[child.name]) throw new Error("STOP: DUPLICATE VARIANT MATRIX — " + spec.name + " / " + child.name + ".");
+    seen[child.name] = true;
+  }
+}
+
 async function b6EnsurePattern(spec, index, page) {
   if (spec.kind === "SET") {
+    // 1. resolve the live B4/B5 main components every nested instance needs, before any write
+    const needed = {};
+    for (const v of spec.variants) for (const c of v.children) needed[c.of] = true;
+    for (const name of Object.keys(needed).sort()) {
+      const main = b6Main(name);
+      say("  primitive resolved: " + name + "  id=" + main.id);
+    }
+
+    // 2. read the live 02 Patterns inventory and detect the set by deterministic identity
     let set = b4FindSet(spec.name);
     if (set && set.parent !== page) {
       throw new Error('STOP: PATTERN OUTSIDE SCOPE — "' + spec.name + '" lives on "' + (set.parent && set.parent.name) + '".');
     }
+    if (!set) {
+      for (const child of page.children) {
+        if (child.type === "COMPONENT_SET" && child.name === spec.name) {
+          throw new Error("STOP: CONFLICTING PATTERN SET — " + spec.name + ".");
+        }
+      }
+    }
+
+    if (set) {
+      // 3a. present — verify the axis, then resolve each variant by its exact matrix. Never create.
+      b6AssertAxis(set, spec);
+      for (const v of spec.variants) {
+        const vname = spec.property + "=" + v.value;
+        const matches = set.children.filter((c) => c.name === vname);
+        if (matches.length !== 1) {
+          throw new Error(
+            "STOP: VARIANT MATRIX NOT RESOLVABLE — " + spec.name + " / " + vname + " matched " + matches.length + " nodes.",
+          );
+        }
+        b6Check(matches[0], v.root, v.children, spec.name + " / " + vname);
+        b6Say("variant  ", spec.name + " / " + vname, false);
+      }
+      say("  set      reused  : " + spec.name + "  id=" + set.id);
+      set.description = spec.source;
+      return set;
+    }
+
+    // 3b. absent — create exactly one ComponentNode per declared matrix, then combine only those.
     const fresh = [];
     for (const v of spec.variants) {
       const vname = spec.property + "=" + v.value;
-      const existing = set ? set.children.filter((c) => c.name === vname)[0] : b6FindOnPage(page, vname);
-      if (existing) {
-        b6Check(existing, v.root, v.children, spec.name + " / " + vname);
-        b6Say("variant  ", spec.name + " / " + vname, false);
-        continue;
-      }
+      const stray = b6FindOnPage(page, vname);
+      if (stray) throw new Error("STOP: ORPHAN VARIANT NODE ON " + B6_PAGE + " — " + vname + ".");
       const node = b6BuildNode(vname, v.root, v.children, index, page);
       node.description = spec.source;
       b6Say("variant  ", spec.name + " / " + vname, true);
-      if (set) set.appendChild(node);
-      else fresh.push(node);
+      fresh.push(node);
     }
-    if (!set) {
-      set = figma.combineAsVariants(fresh, page);
-      set.name = spec.name;
-      set.fills = [];
-      b6Created += 1;
-      say("  set      created : " + spec.name);
-    } else {
-      say("  set      reused  : " + spec.name);
-    }
+    // combineAsVariants is the only supported mechanism — no addComponentProperty, no second axis.
+    set = figma.combineAsVariants(fresh, page);
+    set.name = spec.name;
+    set.fills = [];
+    b6Created += 1;
+    b6AssertAxis(set, spec);
+    say("  set      created : " + spec.name + "  id=" + set.id);
     set.description = spec.source;
     return set;
   }
