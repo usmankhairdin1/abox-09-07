@@ -183,7 +183,7 @@ Names must be unique within a component; repetition across components is fine.
 
 | Component | All Figma properties after B5 | Collision |
 | --- | --- | --- |
-| `ABox/Action/ActionPill` | variant `action`, text `label` | none |
+| `ABox/Action/ActionPill` | variant `variant`, text `label` | none — no `action` variant axis exists (§3g-ter) |
 | `ABox/Action/Button` | variant `variant`, variant `size`, text `label` | none |
 | `ABox/Status/StatusBadge` | variant `tone`, text `label` | none |
 | `ABox/Status/MetalBadge` | variant `tier`, text `label` | none |
@@ -220,7 +220,7 @@ Names must be unique within a component; repetition across components is fine.
 | SLOT properties created | **0** (documented target 1) | EmptyState has no action region to convert; capability still detected read-only and printed — see §3e-ter, §3i |
 | Non-variant properties created | **19** | 4 + 15 + 0 + 0 = 19 |
 | Exposed nested instances flagged | 1 | `LabeledField` → existing nested `ABox/Control/Control` named `control`; not a property, so not part of the 19 |
-| Blocked properties, deferred to a B4 amendment | 11 | 7 Boolean + 1 Text + 1 Instance Swap + 1 SLOT, itemised in §3i; none created, each recorded verbatim |
+| Blocked properties, deferred to a B4 amendment | **10** | 7 Boolean + 1 Text + 1 Instance Swap + 1 SLOT = 10, itemised in §3i; none created, each recorded verbatim. Created 19 + deferred 10 = 29, the documented production-faithful non-variant target |
 | Total B5 object additions/updates | 20 changes + 4 new Variant ComponentNodes | 19 properties + 1 exposed instance flag; variants 52 → 56 |
 | Properties reused in place (already real in Figma) | 0 Boolean / 0 Text / 0 Swap | proven by §2 audit; re-proven at run time against the live inventory |
 
