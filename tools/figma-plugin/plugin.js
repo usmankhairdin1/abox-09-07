@@ -1750,13 +1750,16 @@ async function b4EnsureSet(set, index, page) {
     node = figma.combineAsVariants(variants, page);
     node.name = set.name;
     node.fills = []; // set container chrome, not a production surface
+    node.strokes = [];
     b4Created += 1;
     say("  set     created : " + set.name);
   } else {
     for (const v of variants) if (v.parent !== node) node.appendChild(v);
     node.fills = [];
+    node.strokes = [];
     say("  set     updated : " + set.name);
   }
+
   await b4Describe(
     node,
     set.source +
