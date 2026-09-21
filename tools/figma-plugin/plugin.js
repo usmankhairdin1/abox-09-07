@@ -1730,9 +1730,11 @@ async function verifyB4() {
   const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
 
   const page = b4Page();
-  const sets = b4AllNodes(["COMPONENT_SET"]).filter((n) => n.name.indexOf("ABox/") === 0);
+  // B6 pattern assets ("ABox/Pattern/…") live on 02 Patterns and are not B4/B5 primitives.
+  const b4Own = (n) => n.name.indexOf("ABox/") === 0 && n.name.indexOf("ABox/Pattern/") !== 0;
+  const sets = b4AllNodes(["COMPONENT_SET"]).filter(b4Own);
   const standalone = b4AllNodes(["COMPONENT"]).filter(
-    (n) => n.name.indexOf("ABox/") === 0 && (!n.parent || n.parent.type !== "COMPONENT_SET"),
+    (n) => b4Own(n) && (!n.parent || n.parent.type !== "COMPONENT_SET"),
   );
   const variants = sets.reduce((n, s) => n + s.children.length, 0);
   const C = ABOX_B4.counts;
