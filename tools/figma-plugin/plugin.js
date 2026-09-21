@@ -439,6 +439,8 @@ async function verifyLibraryPages() {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const textStyles = await figma.getLocalTextStylesAsync();
   const effectStyles = await figma.getLocalEffectStylesAsync();
+  const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const unexpectedCollections = collections.filter((c) => b1Names.indexOf(c.name) === -1);
   say(
     "  local objects: collections=" +
       collections.length +
@@ -448,8 +450,8 @@ async function verifyLibraryPages() {
       effectStyles.length,
   );
   add(
-    collections.length === 0 && textStyles.length === 0 && effectStyles.length === 0,
-    "batch B0 created no variables, text styles or effect styles",
+    unexpectedCollections.length === 0 && textStyles.length === 0 && effectStyles.length === 0,
+    "no variables outside the approved B1 collections, and no text or effect styles",
   );
 
   let nodeCount = 0;
@@ -476,12 +478,332 @@ async function verifyLibraryPages() {
   return passed;
 }
 
+/* ---------- Phase 52 / Batch B1 — foundation variables ---------- */
+const oklchCss = (v) =>
+  "oklch(" + v.L + " " + v.C + " " + v.h + (v.a !== 1 ? " / " + v.a : "") + ")";
+const oklchToRgba = (v) => {
+  const rgb = oklchToRgb(v.L, v.C, v.h);
+  return { r: rgb.r, g: rgb.g, b: rgb.b, a: v.a !== undefined ? v.a : 1 };
+};
+const round = (n) => Math.round(n * 100000) / 100000;
+const rgbaEq = (a, b) =>
+  round(a.r) === round(b.r) &&
+  round(a.g) === round(b.g) &&
+  round(a.b) === round(b.b) &&
+  round(a.a !== undefined ? a.a : 1) === round(b.a !== undefined ? b.a : 1);
+
+async function b1Collections() {
+  const existing = await figma.variables.getLocalVariableCollectionsAsync();
+  return B1.collections.map((spec) => {
+    const found = existing.filter((c) => c.name === spec.name);
+    if (found.length > 1) {
+      throw new Error(
+        'STOP: DUPLICATE COLLECTION — ' + found.length + ' collections named "' + spec.name + '".',
+      );
+    }
+    return { spec, collection: found[0] || null };
+  });
+}
+
+async function ensureB1Collection(entry) {
+  let collection = entry.collection;
+  if (!collection) {
+    collection = figma.variables.createVariableCollection(entry.spec.name);
+    say("collection created : " + entry.spec.name);
+  } else {
+    say("collection reused  : " + entry.spec.name);
+  }
+  // Reuse modes by name; create missing ones. Never re-create on rerun.
+  const modeNames = collection.modes.map((m) => m.name);
+  for (let i = 0; i < entry.spec.modes.length; i++) {
+    const wanted = entry.spec.modes[i];
+    if (modeNames.indexOf(wanted) === -1) {
+      if (i === 0 && collection.modes.length === 1 && modeNames[0] === "Mode 1") {
+        collection.renameMode(collection.modes[0].modeId, wanted);
+      } else {
+        collection.addMode(wanted);
+      }
+    }
+  }
+  const modeId = {};
+  for (const m of collection.modes) modeId[m.name] = m.modeId;
+  return { collection, modeId };
+}
+
+async function ensureB1Variable(ctx, name, resolvedType, valuesByMode, description) {
+  const vars = await ctx.collection.variableIds;
+  const all = [];
+  for (const id of vars) {
+    const v = await figma.variables.getVariableByIdAsync(id);
+    if (v) all.push(v);
+  }
+  const matches = all.filter((v) => v.name === name);
+  if (matches.length > 1) {
+    throw new Error('STOP: DUPLICATE VARIABLE — "' + name + '" exists ' + matches.length + " times in " + ctx.collection.name + ".");
+  }
+  let variable = matches[0] || null;
+  if (variable && variable.resolvedType !== resolvedType) {
+    throw new Error(
+      'STOP: TYPE MISMATCH — "' + name + '" is ' + variable.resolvedType + ", expected " + resolvedType + ". Not deleting; resolve manually.",
+    );
+  }
+  if (!variable) {
+    variable = figma.variables.createVariable(name, ctx.collection, resolvedType);
+    say("  variable created : " + ctx.collection.name + " / " + name);
+  } else {
+    say("  variable updated : " + ctx.collection.name + " / " + name);
+  }
+  variable.description = description || "";
+  for (const modeName of Object.keys(valuesByMode)) {
+    variable.setValueForMode(ctx.modeId[modeName], valuesByMode[modeName]);
+  }
+  return variable;
+}
+
+async function ensureB1Variables() {
+  await figma.loadAllPagesAsync();
+  const entries = await b1Collections();
+  const byName = {};
+  for (const entry of entries) byName[entry.spec.name] = await ensureB1Collection(entry);
+
+  const primId = {}; // role path -> variable id (for aliases)
+
+  // 1) Primitives — one variable per role path, Light + Dark mode values.
+  const prim = byName["ABox/Color/Primitive"];
+  for (const p of ABOX_B1.primitives) {
+    const desc =
+      "source: src/styles.css --" + p.role +
+      " — light " + p.source.light + "; dark " + p.source.dark +
+      " (oklch converted to sRGB; recorded Figma limitation)";
+    const v = await ensureB1Variable(prim, p.name, "COLOR", {
+      Light: oklchToRgba(p.light),
+      Dark: oklchToRgba(p.dark),
+    }, desc);
+    primId[p.role] = v.id;
+  }
+
+  // 2) Semantic roles — aliases to the primitive of the same path.
+  const sem = byName["ABox/Color/Semantic"];
+  for (const s of ABOX_B1.semantics) {
+    const aliasId = primId[slashToRole(s.alias)];
+    if (!aliasId) throw new Error('STOP: alias target missing — primitive "' + s.alias + '".');
+    const v = await ensureB1Variable(sem, s.name, "COLOR", {
+      Light: { type: "VARIABLE_ALIAS", id: aliasId },
+      Dark: { type: "VARIABLE_ALIAS", id: aliasId },
+    }, "alias of " + "ABox/Color/Primitive/" + s.alias + " (source: " + s.css + ")");
+    primId["semantic:" + s.name] = v.id;
+  }
+
+  // 3) Status — tones alias semantic roles; metal tiers alias primitives.
+  const status = byName["ABox/Status"];
+  const semVars = await variablesByName(sem.collection);
+  for (const t of ABOX_B1.tones) {
+    const target = semVars[t.alias];
+    if (!target) throw new Error('STOP: alias target missing — semantic "' + t.alias + '".');
+    await ensureB1Variable(status, t.name, "COLOR", {
+      Light: { type: "VARIABLE_ALIAS", id: target.id },
+      Dark: { type: "VARIABLE_ALIAS", id: target.id },
+    }, "StatusBadge tone; alias of semantic " + t.alias + " (src/components/abox/status-badge.tsx)");
+  }
+  const primVars = await variablesByName(prim.collection);
+  for (const mt of ABOX_B1.metalAliases) {
+    const target = primVars[mt.alias];
+    if (!target) throw new Error('STOP: alias target missing — primitive "' + mt.alias + '".');
+    await ensureB1Variable(status, mt.name, "COLOR", {
+      Light: { type: "VARIABLE_ALIAS", id: target.id },
+      Dark: { type: "VARIABLE_ALIAS", id: target.id },
+    }, "metal tier; alias of primitive " + mt.alias + " (src/styles.css)");
+  }
+
+  // 4-9) Float collections.
+  const floatGroups = [
+    ["ABox/Spacing", ABOX_B1.spacing, "Surface padding (src/components/abox/surface.tsx)"],
+    ["ABox/Radius", ABOX_B1.radius, "@theme inline --radius-* (src/styles.css)"],
+    ["ABox/Border", ABOX_B1.border, "border / focus:ring-2 widths"],
+    ["ABox/Layout", ABOX_B1.layout, "container max-widths (shells, marketplace-page-layout)"],
+    ["ABox/Control sizing", ABOX_B1.control, "controlClass heights/padding (src/components/abox/control.tsx)"],
+  ];
+  for (const [collectionName, values, desc] of floatGroups) {
+    for (const name of Object.keys(values)) {
+      await ensureB1Variable(byName[collectionName], name, "FLOAT", { Default: values[name] }, desc);
+    }
+  }
+
+  // Elevation — numeric layer parts (FLOAT) and tint colours (COLOR).
+  // Composite box-shadows are NOT a Figma variable type; full shadows become
+  // Effect Styles in a later batch. Recorded as a deferred representation.
+  const elev = byName["ABox/Elevation"];
+  for (const shadowName of Object.keys(ABOX_B1.shadows)) {
+    ABOX_B1.shadows[shadowName].forEach((layer, i) => {
+      layer._index = i + 1;
+    });
+    for (const layer of ABOX_B1.shadows[shadowName]) {
+      const prefix = "shadow-" + shadowName + "/" + layer._index + "/";
+      for (const part of ["x", "y", "blur", "spread"]) {
+        await ensureB1Variable(elev, prefix + part, "FLOAT", {
+          Light: layer[part],
+          Dark: layer[part], // no .dark override in production — recorded
+        }, "--shadow-" + shadowName + " layer " + layer._index + " " + part + " (src/styles.css)");
+      }
+      await ensureB1Variable(elev, prefix + "tint", "COLOR", {
+        Light: oklchToRgba(layer.tint),
+        Dark: oklchToRgba(layer.tint),
+      }, "--shadow-" + shadowName + " layer " + layer._index + " tint " + oklchCss(layer.tint) + " (oklch converted to sRGB; recorded limitation)");
+    }
+  }
+}
+
+function slashToRole(name) {
+  return name.replace(/\//g, "-");
+}
+
+async function variablesByName(collection) {
+  const out = {};
+  for (const id of collection.variableIds) {
+    const v = await figma.variables.getVariableByIdAsync(id);
+    if (v) out[v.name] = v;
+  }
+  return out;
+}
+
+async function verifyB1() {
+  await figma.loadAllPagesAsync();
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  for (const spec of ABOX_B1.collections) {
+    const found = collections.filter((c) => c.name === spec.name);
+    add(found.length === 1, 'collection "' + spec.name + '" exists exactly once');
+    if (found.length === 1) {
+      const modeNames = found[0].modes.map((m) => m.name).sort().join(",");
+      add(
+        modeNames === spec.modes.slice().sort().join(","),
+        'collection "' + spec.name + '" modes = ' + spec.modes.join(", "),
+      );
+    }
+  }
+  const byName = {};
+  for (const spec of ABOX_B1.collections) {
+    const c = collections.find((x) => x.name === spec.name);
+    if (c) byName[spec.name] = { collection: c, vars: await variablesByName(c) };
+  }
+
+  const expectFloat = (collectionName, inventory) => {
+    const entry = byName[collectionName];
+    if (!entry) { add(false, collectionName + " present"); return; }
+    for (const name of Object.keys(inventory)) {
+      const v = entry.vars[name];
+      add(!!v && v.resolvedType === "FLOAT", collectionName + " / " + name + " exists as FLOAT");
+      if (v && v.resolvedType === "FLOAT") {
+        const got = v.valuesByMode[entry.collection.modes[0].modeId];
+        add(got === inventory[name], collectionName + " / " + name + " = " + inventory[name]);
+      }
+    }
+    const extras = Object.keys(entry.vars).filter((n) => !(n in inventory));
+    add(extras.length === 0, collectionName + " has no extra variables" + (extras.length ? " (extra: " + extras.join(", ") + ")" : ""));
+  };
+
+  expectFloat("ABox/Spacing", ABOX_B1.spacing);
+  expectFloat("ABox/Radius", ABOX_B1.radius);
+  expectFloat("ABox/Border", ABOX_B1.border);
+  expectFloat("ABox/Layout", ABOX_B1.layout);
+  expectFloat("ABox/Control sizing", ABOX_B1.control);
+
+  // Colour value checks against converted production source, per mode.
+  const prim = byName["ABox/Color/Primitive"];
+  if (prim) {
+    const lightId = prim.collection.modes.find((m) => m.name === "Light").modeId;
+    const darkId = prim.collection.modes.find((m) => m.name === "Dark").modeId;
+    let ok = true;
+    for (const p of ABOX_B1.primitives) {
+      const v = prim.vars[p.name];
+      if (!v || v.resolvedType !== "COLOR") { ok = false; continue; }
+      if (!rgbaEq(v.valuesByMode[lightId], oklchToRgba(p.light))) ok = false;
+      if (!rgbaEq(v.valuesByMode[darkId], oklchToRgba(p.dark))) ok = false;
+    }
+    add(ok, "all " + ABOX_B1.primitives.length + " primitives match production Light/Dark values");
+    const extraP = Object.keys(prim.vars).filter(
+      (n) => !ABOX_B1.primitives.some((p) => p.name === n),
+    );
+    add(extraP.length === 0, "no extra or duplicated primitive variables");
+  }
+
+  const aliasCheck = (collectionName, items, resolveTarget) => {
+    const entry = byName[collectionName];
+    if (!entry) { add(false, collectionName + " present"); return; }
+    let ok = true;
+    for (const item of items) {
+      const v = entry.vars[item.name];
+      if (!v) { ok = false; continue; }
+      for (const mode of entry.collection.modes) {
+        const val = v.valuesByMode[mode.modeId];
+        if (!val || val.type !== "VARIABLE_ALIAS" || val.id !== resolveTarget(item)) ok = false;
+      }
+    }
+    add(ok, collectionName + " aliases point at the correct production targets");
+  };
+  aliasCheck("ABox/Color/Semantic", ABOX_B1.semantics, (item) =>
+    prim.vars[item.alias] ? prim.vars[item.alias].id : null,
+  );
+  aliasCheck("ABox/Status", ABOX_B1.tones, (item) =>
+    byName["ABox/Color/Semantic"] && byName["ABox/Color/Semantic"].vars[item.alias]
+      ? byName["ABox/Color/Semantic"].vars[item.alias].id
+      : null,
+  );
+  aliasCheck("ABox/Status", ABOX_B1.metalAliases, (item) =>
+    prim && prim.vars[item.alias] ? prim.vars[item.alias].id : null,
+  );
+
+  // No runtime branding leaked in.
+  const brandingTerms = /primary_color|accent_color|white.?label|tenant|brand[_-]?record/i;
+  let brandingLeak = false;
+  for (const spec of ABOX_B1.collections) {
+    const entry = byName[spec.name];
+    if (!entry) continue;
+    for (const n of Object.keys(entry.vars)) {
+      if (brandingTerms.test(n) || brandingTerms.test(entry.vars[n].description || "")) brandingLeak = true;
+    }
+  }
+  add(!brandingLeak, "no runtime/white-label branding values imported");
+
+  // B1 must not create styles, components or page content.
+  const textStyles = await figma.getLocalTextStylesAsync();
+  const effectStyles = await figma.getLocalEffectStylesAsync();
+  add(textStyles.length === 0, "B1 created no text styles");
+  add(effectStyles.length === 0, "B1 created no effect styles");
+  let components = 0;
+  let nodes = 0;
+  for (const page of figma.root.children) {
+    nodes += page.children.length;
+    components += page.findAll((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET").length;
+  }
+  add(components === 0, "B1 created no components or variants");
+  add(nodes === 0, "the seven library pages remain empty");
+  add(
+    T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
+    "the seven pages remain at indices 0..6 in order",
+  );
+
+  say("");
+  say("B1 STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say(passed ? "RESULT: B1 PASSED" : "RESULT: B1 FAILED — do not proceed to B2.");
+  say("Recorded limitations: oklch stored as sRGB (source notation kept in descriptions);");
+  say("color-mix() badge tints are runtime-computed (later batch); composite shadows become");
+  say("Effect Styles in a later batch. No runtime branding imported. No publishing performed.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
-figma.showUI(__html__, { width: 420, height: 520 });
+figma.showUI(__html__, { width: 420, height: 560 });
 
 figma.ui.onmessage = async (msg) => {
   lines.length = 0;
   const b0 = msg.type === "b0-run" || msg.type === "b0-verify";
+  const b1 = msg.type === "b1-run" || msg.type === "b1-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
@@ -512,6 +834,19 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyLibraryPages();
+    } else if (msg.type === "b1-run") {
+      say("ABox Phase 52 / Batch B1 — foundation variables");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await ensureB1Variables();
+      await verifyB1();
+    } else if (msg.type === "b1-verify") {
+      say("ABox Phase 52 / Batch B1 — verify only");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await verifyB1();
     }
   } catch (e) {
     say("");
@@ -519,7 +854,9 @@ figma.ui.onmessage = async (msg) => {
     say(
       b0
         ? "RESULT: B0 FAILED — do not proceed to B1."
-        : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
+        : b1
+          ? "RESULT: B1 FAILED — do not proceed to B2."
+          : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
     );
   }
   report();
