@@ -169,7 +169,7 @@ Names must be unique within a component; repetition across components is fine.
 | `ABox/Status/MetalBadge` | variant `tier`, text `label` | none |
 | `ABox/Surface/Surface` | B4 axes only | none |
 | `ABox/Control/Control` | B4 axes only | none |
-| `ABox/Card/KpiCard` | variant `tone`, variant `deltaSign`, bool `hasIcon`, `hasDelta`, `hasHint`, text `label`, `value` | resolved (`delta` → `hasDelta` + `deltaSign`) |
+| `ABox/Card/KpiCard` | variant `tone`, variant `deltaSign`, bool `hasIcon`, `hasDelta`, `hasDeltaLabel`, `hasHint`, text `label`, `value`, `deltaLabel` | resolved (`delta` → `hasDelta` + `deltaSign`; `delta.label` → `hasDeltaLabel` + `deltaLabel`, §3d-bis); all nine names unique within the component |
 | `ABox/Header/PageHeader` | variant `variant`, bool `hasEyebrow`, `hasIcon`, `hasDescription`, `hasActions`, text `title`, `eyebrow`, `description`, swap `actions` | resolved (Booleans renamed `has…`; `actions` kept as the content slot) |
 | `ABox/Nav/ModuleTab` | variant `state`, text `label` | none |
 | `ABox/Nav/WizardStep` | variant `state`, text `label` | none |
@@ -190,11 +190,11 @@ Names must be unique within a component; repetition across components is fine.
 | Variant properties existing after B4 | 13 axes | ActionPill 1, Button 2, StatusBadge 1, MetalBadge 1, Surface n, Control 2, KpiCard 1, PageHeader 1, ModuleTab 1, WizardStep 1, AboxMark 1 — printed and asserted at run time |
 | Variant properties created by B5 | 1 | `KpiCard.deltaSign` |
 | Variant properties reused unchanged | all B4 axes | none renamed, none removed |
-| Boolean properties created | 10 | 4 (PageHeader) + 3 (KpiCard) + 3 (EmptyState) |
-| Text properties created | 15 | 1+1+1+1+2+3+1+1+2+1+1 |
+| Boolean properties created | 11 | 4 (PageHeader) + 4 (KpiCard) + 3 (EmptyState) |
+| Text properties created | 16 | 1+1+1+1+3+3+1+1+2+1+1 |
 | Instance Swap properties created | 1 | PageHeader `actions`, default `ABox/Action/ActionPill` variant `action=primaryMd` |
 | SLOT properties created | 1, or 0 if unsupported | EmptyState `action`, per the §3e-ter runtime gate |
-| Non-variant properties created | 27, or 26 if SLOT is unsupported | 10 + 15 + 1 + 1 = 27; 10 + 15 + 1 + 0 = 26 |
+| Non-variant properties created | 29, or 28 if SLOT is unsupported | 11 + 16 + 1 + 1 = 29; 11 + 16 + 1 + 0 = 28 |
 | Exposed nested instances flagged | 1 | `LabeledField` → nested `ABox/Control/Control` named `control`; not a property, so not part of the 27 |
 | Total B5 object additions/updates | 28 (or 27) changes + 4 new variants | 27 (or 26) properties + 1 exposed instance flag; variants 52 → 56 |
 | Properties reused in place (already real in Figma) | 0 Boolean / 0 Text / 0 Swap | proven by §2 audit; re-proven at run time against the live inventory |
