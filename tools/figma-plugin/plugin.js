@@ -1113,6 +1113,10 @@ async function verifyB2() {
           "  Dark=" + (typeof v.valuesByMode[dark] === "object" ? "same alias" : JSON.stringify(v.valuesByMode[dark])));
     }
     say("  totals: STRING " + strings.length + " + FLOAT " + floatsFound.length + " = " + names.length);
+    say("");
+    say("B2 NUMERIC EVIDENCE (expected vs stored, full precision; tolerance 1e-9)");
+    floatEvidence.forEach((l) => say(l));
+
   } else {
     say("  " + spec.name + " : MISSING");
   }
