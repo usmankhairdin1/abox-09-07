@@ -298,3 +298,32 @@ target layer for them: KpiCard `hasIcon`, `hasHint`, `hasDeltaLabel`, `deltaLabe
 check is read-only and the structural target is absent, so SLOT creation is 0 on every run.
 `PageHeader` compact omits the eyebrow in production, so the eyebrow properties are not attached
 to that variant. B5 publishes nothing.
+
+## Phase 53 / Batch B6 — patterns & interactions
+
+Buttons: **Create patterns** (`b6-run`) and **Verify patterns** (`b6-verify`). Source data is
+extracted by `extract-b6.mjs` into `tokens-b6.js`; `code.js` is regenerated only by `build.mjs`.
+
+B6 composes existing B4/B5 components as instances on the `02 Patterns` page. It creates no
+primitive, no new component set on `01 Components`, no new state axis, and no B4/B5 mutation.
+
+Created objects (3 patterns / 4 ComponentNodes):
+
+- `ABox/Pattern/KpiRow` — Component Set, axis `columns = 3 | 4`; 15 non-reference routes render
+  the same `grid gap-4` KPI row (`src/routes/app.dashboard.tsx:31`). Nested `ABox/Card/KpiCard`
+  instances only;
+- `ABox/Pattern/ModuleTabBar` — Component; `src/components/abox/module-tabs.tsx` owns the
+  composition, 3 hosts consume it. Nested `ABox/Nav/ModuleTab` instances, one `state=active`;
+  the hairline uses the live B3 `ABox/Semantic/hairline` style;
+- `ABox/Pattern/WizardStepper` — Component; `src/components/abox/downline-wizard-stepper.tsx`
+  owns the composition. Nested `ABox/Nav/WizardStep` instances covering all four real states.
+
+0 Figma prototype connections: every represented interaction is an existing B4 variant consumed
+by a pattern instance. Tab and wizard-step navigation is router-driven and its destinations are
+B8 scope, so no connection is created. 9 candidates are deferred and 3 rejected — all printed by
+`b6-verify` with their production source. 7 limitations are recorded verbatim, including the
+preserved B5 KpiCard positive-delta deviation, which B6 displays but does not correct.
+
+`verifyB6` asserts B1 (9 collections / 200 variables), B2 (19 variables), B3 (79 styles), B4/B5
+architecture and every component and property id, page scope, per-pattern structural signatures,
+zero duplicated foundation values, and zero creations on run 2.
