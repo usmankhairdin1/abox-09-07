@@ -67,6 +67,22 @@ const ABOX_TOKENS = {
     // The proof resolves the mixes numerically and records the limitation.
     mix: { text: 0.88, background: 0.12, border: 0.34 },
   },
+
+  // Phase 52 / Batch B0 — library foundation structure.
+  // Page creation only: no variables, styles, components or publishing.
+  library: {
+    targetFileName: "ABox Design System — Library",
+    proofFileName: "ABox Proof — Scratch",
+    pages: [
+      "00 Foundations",
+      "01 Components",
+      "02 Patterns",
+      "03 Shells",
+      "04 Experiences",
+      "05 Screens",
+      "06 Documentation",
+    ],
+  },
 };
 
 if (typeof module !== "undefined") module.exports = { ABOX_TOKENS };
