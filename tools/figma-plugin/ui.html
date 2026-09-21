@@ -63,6 +63,13 @@
     </p>
     <button id="b1run">Create foundation variables</button>
     <button id="b1verify" class="secondary">Verify foundation variables</button>
+    <p>
+      <strong>Batch B2 — typography foundation</strong><br />
+      Run inside <code>ABox Design System — Library</code>. Creates/updates the single
+      <code>ABox/Typography</code> collection (19 variables). No text styles, components or publishing.
+    </p>
+    <button id="b2run">Create typography variables</button>
+    <button id="b2verify" class="secondary">Verify typography variables</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -89,6 +96,14 @@
       document.getElementById("b1verify").onclick = () => {
         log.textContent = "Verifying foundation variables…";
         parent.postMessage({ pluginMessage: { type: "b1-verify" } }, "*");
+      };
+      document.getElementById("b2run").onclick = () => {
+        log.textContent = "Creating typography variables…";
+        parent.postMessage({ pluginMessage: { type: "b2-run" } }, "*");
+      };
+      document.getElementById("b2verify").onclick = () => {
+        log.textContent = "Verifying typography variables…";
+        parent.postMessage({ pluginMessage: { type: "b2-verify" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
