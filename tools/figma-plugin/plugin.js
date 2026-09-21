@@ -439,6 +439,8 @@ async function verifyLibraryPages() {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const textStyles = await figma.getLocalTextStylesAsync();
   const effectStyles = await figma.getLocalEffectStylesAsync();
+  const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const unexpectedCollections = collections.filter((c) => b1Names.indexOf(c.name) === -1);
   say(
     "  local objects: collections=" +
       collections.length +
@@ -448,8 +450,8 @@ async function verifyLibraryPages() {
       effectStyles.length,
   );
   add(
-    collections.length === 0 && textStyles.length === 0 && effectStyles.length === 0,
-    "batch B0 created no variables, text styles or effect styles",
+    unexpectedCollections.length === 0 && textStyles.length === 0 && effectStyles.length === 0,
+    "no variables outside the approved B1 collections, and no text or effect styles",
   );
 
   let nodeCount = 0;
