@@ -4923,7 +4923,7 @@ async function ensureB10Documentation() {
   const index = await b10PrepareReferenceIndexes();
 
   for (const existing of page.children) {
-    if (existing.name.indexOf("ABox/Documentation/") === 0 && b10ApprovedNames().indexOf(existing.name) === -1) {
+    if (b10ApprovedNames().indexOf(existing.name) === -1) {
       throw new Error('STOP: UNAPPROVED OBJECT ON 06 DOCUMENTATION — "' + existing.name + '". B10 will not overwrite or delete it.');
     }
   }
