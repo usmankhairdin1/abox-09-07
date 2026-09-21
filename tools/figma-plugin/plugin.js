@@ -3866,7 +3866,7 @@ async function b7Text(name, characters, opts, index) {
       await figma.loadFontAsync(style.fontName);
       node.fontName = style.fontName;
     }
-    node.textStyleId = style.id;
+    await node.setTextStyleIdAsync(style.id);
   } else {
     const font = await b4Font(opts.weight || 400);
     node.fontName = font;
@@ -3874,12 +3874,12 @@ async function b7Text(name, characters, opts, index) {
     if (opts.letterSpacingPercent != null) node.letterSpacing = { unit: "PERCENT", value: opts.letterSpacingPercent };
   }
   node.characters = characters;
-  if (opts.colorStyle) node.fillStyleId = b4Style(index, "paint", opts.colorStyle).id;
+  if (opts.colorStyle) await node.setFillStyleIdAsync(b4Style(index, "paint", opts.colorStyle).id);
   return node;
 }
 
 async function b7Pill(name, label, index, opts) {
-  const frame = b7Frame(name, {
+  const frame = await b7Frame(name, {
     layout: "HORIZONTAL", align: "CENTER", gap: 6, px: 12, py: 8, radius: 9999,
     fillStyle: opts && opts.fillStyle ? opts.fillStyle : null,
     strokeStyle: opts && opts.strokeStyle ? opts.strokeStyle : null,
