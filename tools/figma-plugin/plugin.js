@@ -2374,10 +2374,12 @@ async function verifyB5() {
     "B3 unchanged: 72 colour + 2 text + 5 effect styles (found " + paints.length + " / " + tstyles.length + " / " + effects.length + ")",
   );
   const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  // B6 populates "02 Patterns"; every other non-component page must stay empty.
+  const writable = [B4_PAGE, "02 Patterns"];
   add(
     figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|") &&
-      figma.root.children.filter((p) => p.name !== B4_PAGE).every((p) => p.children.length === 0),
-    "B0 pages unchanged: exactly 7, in order, only 01 Components populated",
+      figma.root.children.filter((p) => writable.indexOf(p.name) === -1).every((p) => p.children.length === 0),
+    "B0 pages unchanged: exactly 7, in order, only 01 Components and 02 Patterns populated",
   );
 
   /* ---------- inventory ---------- */
