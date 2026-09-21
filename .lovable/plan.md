@@ -199,6 +199,37 @@ Names must be unique within a component; repetition across components is fine.
 | Total B5 object additions/updates | 30 (or 29) changes + 4 new variants | 29 (or 28) properties + 1 exposed instance flag; variants 52 → 56 |
 | Properties reused in place (already real in Figma) | 0 Boolean / 0 Text / 0 Swap | proven by §2 audit; re-proven at run time against the live inventory |
 
+### 3g-bis. B4 variant-axis audit — corrected
+
+The earlier figure "13 axes" was prose, and it was wrong: it counted `Surface` as one axis and omitted the multi-axis structure. The table below is read directly from the authoritative B4 definition in `tools/figma-plugin/tokens-b4.js` — the same data the plugin feeds to `combineAsVariants` — and is re-read from the live `componentPropertyDefinitions` of every set at run time before any B5 change, with the live output printed in the report.
+
+| Component Set | Axis count | Axis names | Variant values | Variant count |
+| --- | --- | --- | --- | --- |
+| `ABox/Action/ActionPill` | 1 | `variant` | primaryXs, primaryMd, primaryLg, outlineXs, outlineSm, outlineSmCard, outlineMd, outlineLg, outlineMdPlain, primaryLgPlain | 10 |
+| `ABox/Action/Button` | 2 | `variant`, `size` | default/default, default/sm, ghost/default, ghost/icon, ghost/icon-sm, ghost/sm, outline/default, outline/icon, outline/sm | 9 |
+| `ABox/Status/StatusBadge` | 1 | `tone` | sage, primary, warning, muted, destructive, info | 6 |
+| `ABox/Status/MetalBadge` | 1 | `tier` | Bronze, Expanded Bronze, Silver, Gold, Platinum, Catastrophic | 6 |
+| `ABox/Surface/Surface` | **4** | `padding`, `elevated`, `interactiveHover`, `decor` | padding=lg/false/false/false, padding=md/false/false/false, padding=md/true/false/false, padding=sm/false/false/false | 4 |
+| `ABox/Control/Control` | 2 | `height`, `focusRing` | height=lg, focusRing=true | 1 |
+| `ABox/Card/KpiCard` | 1 → 2 after B5 | `tone` (+ `deltaSign`) | default, primary, sage, warning | 4 → 8 |
+| `ABox/Header/PageHeader` | 1 | `variant` | default, compact | 2 |
+| `ABox/Nav/ModuleTab` | 1 | `state` | default, active | 2 |
+| `ABox/Nav/WizardStep` | 1 | `state` | current, done, upcoming, unreachable | 4 |
+| `ABox/Brand/AboxMark` | 1 | `tone` | primary, sage, sidebar, foreground | 4 |
+
+`ABox/Surface/Surface` is confirmed: four real variant axes, four enumerated variants — the sparse set of combinations actually present at production call sites, not the 4-axis Cartesian product. `ABox/Control/Control` likewise has two axes with a single enumerated combination.
+
+Arithmetic:
+
+- Live B4 axes: `1 + 2 + 1 + 1 + 4 + 2 + 1 + 1 + 1 + 1 + 1 = 16`.
+- Live B4 variants: `10 + 9 + 6 + 6 + 4 + 1 + 4 + 2 + 2 + 4 + 4 = 52`. Confirms the locked B4 baseline.
+- B5 new axes: `1` (`KpiCard.deltaSign`) → `16 + 1 = 17` after B5.
+- B5 new variants: KpiCard `4 → tone(4) × deltaSign(2) = 8`, `+4` → `52 + 4 = 56`.
+- Recomputed total after B5: `10 + 9 + 6 + 6 + 4 + 1 + 8 + 2 + 2 + 4 + 4 = 56`. Both routes agree.
+
+This is a count correction to the plan text only. No B4 component, set, variant, axis or property is recreated, renamed, reordered or re-architected; Surface and Control are read and left exactly as they are.
+
+
 ### 3h. Combinations that must NOT be created
 
 No Button `state` axis and no Button variant added. PageHeader `hasEyebrow = true` together with `compact` (`page-header.tsx:33` suppresses it) is not a supported combination. MetalBadge, AboxMark, ActionPill, Surface, Control gain no second axis. No Boolean or Text property is expanded into a variant, and no property is converted into a variant to avoid a name clash. No Cartesian expansion beyond the schema-complete KpiCard matrix required by the Figma Component Set model.
