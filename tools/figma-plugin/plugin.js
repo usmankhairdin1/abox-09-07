@@ -5753,7 +5753,7 @@ figma.ui.onmessage = async (msg) => {
     msg.type === "b4-cleanup-stale-variants";
   const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify" || msg.type === "b6-inspect" ||
-    msg.type === "b6-cleanup-stale-variants";
+    msg.type === "b6-cleanup-stale-variants" || msg.type === "b6-cleanup-incomplete-patterns";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
@@ -5891,6 +5891,12 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b6StaleVariants();
+    } else if (msg.type === "b6-cleanup-incomplete-patterns") {
+      say("ABox Phase 53 / Batch B6 — remove incomplete pattern components");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b6CleanupIncompletePatterns();
     } else if (msg.type === "b7-run") {
       say("ABox Phase 54 / Batch B7 — shells");
       say("file: " + figma.root.name);
