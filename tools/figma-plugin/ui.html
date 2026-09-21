@@ -85,6 +85,8 @@
     </p>
     <button id="b4run">Create components</button>
     <button id="b4verify" class="secondary">Verify components</button>
+    <button id="b5run">Create component states</button>
+    <button id="b5verify" class="secondary">Verify component states</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -129,11 +131,11 @@
         parent.postMessage({ pluginMessage: { type: "b3-verify" } }, "*");
       };
       document.getElementById("b4run").onclick = () => {
-        log.textContent = "Creating foundational styles…";
+        log.textContent = "Creating components…";
         parent.postMessage({ pluginMessage: { type: "b4-run" } }, "*");
       };
       document.getElementById("b4verify").onclick = () => {
-        log.textContent = "Verifying foundational styles…";
+        log.textContent = "Verifying components…";
         parent.postMessage({ pluginMessage: { type: "b4-verify" } }, "*");
       };
       document.getElementById("b5run").onclick = () => {
