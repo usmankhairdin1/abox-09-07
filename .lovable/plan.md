@@ -1,6 +1,8 @@
 # Phase 52 / Batch B5 — Component variants & states (PLAN ONLY)
 
-Plugin layer only. Nothing under `src/**` changes. B1 (9 collections / 200 variables), B2 (`ABox/Typography`, 19 variables), B3 (79 styles) and the B4 architecture (11 sets + 3 components, 52 variants) are protected; B5 extends existing B4 objects in place and creates no new component or set.
+Plugin layer only. Nothing under `src/**` changes. B1 (9 collections / 200 variables), B2 (`ABox/Typography`, 19 variables), B3 (79 styles) and the B4 architecture (11 Component Sets + 3 standalone Components, 52 Variant ComponentNodes) are protected; B5 extends existing B4 objects in place.
+
+Scope language, stated precisely (see §3b-bis): B5 creates **no new standalone Component** and **no new Component Set**, but it does create **4 new Variant ComponentNodes** inside the existing `ABox/Card/KpiCard` Component Set. Those 4 nodes are real new component nodes and are never described as "no new components".
 
 ## 1. Source findings
 
@@ -136,7 +138,7 @@ KpiCard property count: 2 variant + 4 Boolean + 3 Text = **9** (variants of the 
 
 The manifest pins `"api": "1.0.0"`, and SLOT is a newer property type than the rest of this plugin uses, so support is verified at run time rather than assumed:
 
-- Before creating it, the plugin feature-detects SLOT support (attempt `addComponentProperty("action", "SLOT", "")` inside a guarded try, or the equivalent capability check the runtime exposes).
+- The capability check is **non-mutating**. The plugin inspects the runtime surface only — presence of the slot APIs (`typeof figma.createSlot === "function"`, and the SLOT entry in the runtime's component-property type surface) — before any write. It never calls `addComponentProperty()` to discover support, never creates a probe property, and never creates-then-deletes anything. No temporary property may exist in the document at any point.
 - Supported → the SLOT named `action` is created; `hasAction` stays the separate presence guard from `{action && …}`-equivalent rendering at `empty-state.tsx:24`; no default content is authored.
 - Not supported → the plugin creates **no** content property for `EmptyState.action`, keeps only the Boolean `hasAction`, and records the limitation verbatim, citing `empty-state.tsx:9,24` and every call site above. It does **not** fall back to INSTANCE_SWAP with an invented default.
 - Whichever branch runs is printed in the report and asserted by `b5-verify`, and it is the same on Run 1 and Run 2.
