@@ -178,8 +178,13 @@ for (const family of shadowFamilies) {
   const m = css.match(new RegExp("--shadow-" + family + ":\\s*([^;]+);"));
   if (!m) throw new Error("STOP: --shadow-" + family + " not found in src/styles.css");
   const layers = [];
-  const re =
-    /(-?[\d.]+)px\s+(-?[\d.]+)px\s+([\d.]+)px(?:\s+(-?[\d.]+)px)?\s+oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/g;
+  // px is optional in production (`0 1px 0 0 oklch(...)`), spread may be absent.
+  const num = "(-?[\\d.]+)(?:px)?";
+  const re = new RegExp(
+    num + "\\s+" + num + "\\s+" + num + "(?:\\s+" + num + ")?" +
+      "\\s+oklch\\(([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)(?:\\s*\\/\\s*([\\d.]+))?\\)",
+    "g",
+  );
   let lm;
   while ((lm = re.exec(m[1])) !== null) {
     const tint = {
