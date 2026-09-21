@@ -5389,6 +5389,13 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB4();
+    } else if (msg.type === "b4-cleanup-orphans") {
+      say("ABox Phase 52 / Batch B4 — remove orphan debris");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b4CleanupOrphans();
+
     } else if (msg.type === "b5-run") {
       say("ABox Phase 52 / Batch B5 — component variants & states");
       say("file: " + figma.root.name);
