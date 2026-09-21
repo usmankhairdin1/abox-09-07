@@ -43545,7 +43545,13 @@ async function b4Build(spec, index) {
     const target = b4FindSet(spec.of) || b4FindComponent(spec.of);
     if (!target) throw new Error("STOP: nested component not found — " + spec.of);
     const source = target.type === "COMPONENT_SET" ? target.defaultVariant || target.children[0] : target;
-    return source.createInstance();
+    const instance = source.createInstance();
+    // The main component's root is a chrome wrapper (fills cleared in b4EnsureSet /
+    // b4EnsureComponent). Clear the instance root the same way, but only when it is
+    // not style-bound — a style-bound root is a production surface and stays as is.
+    if (!instance.fillStyleId && instance.fills && instance.fills.length) instance.fills = [];
+    if (!instance.strokeStyleId && instance.strokes && instance.strokes.length) instance.strokes = [];
+    return instance;
   }
   if (spec.type === "MARK") {
     const svg =
@@ -43561,23 +43567,58 @@ async function b4Build(spec, index) {
     node.name = "AboxMark";
     node.fills = []; // wrapper frame only; every painted vector below is style-bound
     node.strokes = [];
-    const kids = node.children;
+    // Bind by painted-shape identity in document order rather than by direct child
+    // index: figma.createNodeFromSvg may nest the six shapes inside groups, in which
+    // case index-based binding silently leaves vectors unbound.
+    const painted = [];
+    const collect = (n) => {
+      const isPainted = (n.fills && n.fills.length) || (n.strokes && n.strokes.length);
+      if (n !== node && isPainted && (!n.children || !n.children.length)) painted.push(n);
+      for (const child of n.children || []) {
+        collect(child);
+      }
+
+      // Group / wrapper frames introduced by the SVG importer are chrome, never a
+      // production surface: clear their own paint so nothing is left hard-coded.
+      if (n !== node && n.children && n.children.length) {
+        if (!n.fillStyleId && n.fills && n.fills.length) n.fills = [];
+        if (!n.strokeStyleId && n.strokes && n.strokes.length) n.strokes = [];
+      }
+    };
+    collect(node);
     const bind = [
-      [0, spec.bgStyle, spec.hairlineStyle],
-      [1, null, spec.ringStyle],
-      [2, null, spec.ringStyle],
-      [3, spec.dotStyle, null],
-      [4, null, spec.fgStyle],
-      [5, null, spec.fgStyle],
+      [spec.bgStyle, spec.hairlineStyle],
+      [null, spec.ringStyle],
+      [null, spec.ringStyle],
+      [spec.dotStyle, null],
+      [null, spec.fgStyle],
+      [null, spec.fgStyle],
     ];
-    for (const [i, fill, stroke] of bind) {
-      const kid = kids[i];
-      if (!kid) continue;
+    if (painted.length !== bind.length) {
+      throw new Error(
+        "STOP: MARK SHAPE COUNT — expected " + bind.length + " painted vectors, found " + painted.length + ".",
+      );
+    }
+    for (let i = 0; i < bind.length; i += 1) {
+      const kid = painted[i];
+      const fill = bind[i][0];
+      const stroke = bind[i][1];
       if (fill) await kid.setFillStyleIdAsync(b4Style(index, "paint", fill).id);
+      else if (kid.fills && kid.fills.length) kid.fills = [];
       if (stroke) await kid.setStrokeStyleIdAsync(b4Style(index, "paint", stroke).id);
+      else if (kid.strokes && kid.strokes.length) kid.strokes = [];
+    }
+    for (const kid of painted) {
+      if (kid.fills && kid.fills.length && !kid.fillStyleId) {
+        throw new Error('STOP: UNBOUND MARK VECTOR — "' + kid.name + '" keeps a hard-coded fill.');
+      }
+      if (kid.strokes && kid.strokes.length && !kid.strokeStyleId) {
+        throw new Error('STOP: UNBOUND MARK VECTOR — "' + kid.name + '" keeps a hard-coded stroke.');
+      }
     }
     return node;
   }
+
   // FRAME
   const frame = figma.createFrame();
   frame.layoutMode = spec.layout || "NONE";
@@ -43691,7 +43732,12 @@ async function b4EnsureSet(set, index, page) {
     component.layoutMode = "HORIZONTAL";
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "AUTO";
+    // Variant wrapper chrome, not a production surface: the built child frame below
+    // carries every style-bound foundation paint.
+    component.fills = [];
+    component.strokes = [];
     component.appendChild(content);
+
     await b4Describe(component, value.source);
     b4Say("variant  ", set.name + " / " + vname, isNew);
     variants.push(component);
@@ -43701,13 +43747,16 @@ async function b4EnsureSet(set, index, page) {
     node = figma.combineAsVariants(variants, page);
     node.name = set.name;
     node.fills = []; // set container chrome, not a production surface
+    node.strokes = [];
     b4Created += 1;
     say("  set     created : " + set.name);
   } else {
     for (const v of variants) if (v.parent !== node) node.appendChild(v);
     node.fills = [];
+    node.strokes = [];
     say("  set     updated : " + set.name);
   }
+
   await b4Describe(
     node,
     set.source +
@@ -43731,7 +43780,11 @@ async function b4EnsureComponent(spec, index, page) {
   node.layoutMode = "HORIZONTAL";
   node.primaryAxisSizingMode = "AUTO";
   node.counterAxisSizingMode = "AUTO";
+  // Component wrapper chrome, not a production surface.
+  node.fills = [];
+  node.strokes = [];
   node.appendChild(await b4Build(spec.node, index));
+
   await b4Describe(
     node,
     spec.source +
@@ -43744,16 +43797,45 @@ async function b4EnsureComponent(spec, index, page) {
   return node;
 }
 
+/**
+ * Run one build step and, when it throws, remove the transient nodes it left on the
+ * current page. figma.createFrame/createText/createNodeFromSvg append to
+ * figma.currentPage at creation time and are only reparented afterwards, so an
+ * aborted build otherwise leaves orphan debris behind on a library page.
+ */
+async function b4Guarded(label, fn) {
+  const before = {};
+  for (const n of figma.currentPage.children) before[n.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const n of figma.currentPage.children.slice()) {
+      if (before[n.id]) continue;
+      if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+      n.remove();
+      removed += 1;
+    }
+    if (removed) say("  cleanup : removed " + removed + " transient node(s) left by " + label);
+    throw err;
+  }
+}
+
 async function ensureB4Components() {
   await figma.loadAllPagesAsync();
   b4Created = 0;
   const page = b4Page();
   const index = await b4StyleIndex();
-  for (const set of ABOX_B4.sets) await b4EnsureSet(set, index, page);
-  for (const spec of ABOX_B4.components) await b4EnsureComponent(spec, index, page);
+  for (const set of ABOX_B4.sets) {
+    await b4Guarded(set.name, () => b4EnsureSet(set, index, page));
+  }
+  for (const spec of ABOX_B4.components) {
+    await b4Guarded(spec.name, () => b4EnsureComponent(spec, index, page));
+  }
   say("");
   say("  objects created this run: " + b4Created);
 }
+
 
 async function verifyB4() {
   await figma.loadAllPagesAsync();
@@ -43848,18 +43930,26 @@ async function verifyB4() {
   for (const s of await figma.getLocalEffectStylesAsync()) effectNames[s.id] = s.name;
   let boundOk = true;
   let rawFill = 0;
-  const walk = (node) => {
+  const rawEvidence = [];
+  const noteRaw = (node, root, kind) => {
+    rawFill += 1;
+    if (rawEvidence.length < 40) {
+      rawEvidence.push("  " + root.name + " › " + node.name + " (" + node.type + ") " + kind + "  id=" + node.id);
+    }
+  };
+  const walk = (node, root) => {
     if (node.type !== "COMPONENT" && node.type !== "COMPONENT_SET" && node.type !== "FRAME" && node.type !== "TEXT" &&
         node.type !== "ELLIPSE" && node.type !== "VECTOR" && node.type !== "INSTANCE") return;
-    if (node.fills && node.fills.length && !node.fillStyleId) rawFill += 1;
-    if (node.strokes && node.strokes.length && !node.strokeStyleId) rawFill += 1;
+    if (node.fills && node.fills.length && !node.fillStyleId) noteRaw(node, root, "fill");
+    if (node.strokes && node.strokes.length && !node.strokeStyleId) noteRaw(node, root, "stroke");
     if (node.fillStyleId && !paintNames[node.fillStyleId]) boundOk = false;
     if (node.effectStyleId && !effectNames[node.effectStyleId]) boundOk = false;
-    for (const child of node.children || []) walk(child);
+    for (const child of node.children || []) walk(child, root);
   };
-  for (const node of sets.concat(standalone)) walk(node);
+  for (const node of sets.concat(standalone)) walk(node, node);
   add(boundOk, "every colour/elevation reference resolves to an existing B3 style");
   add(rawFill === 0, "no hard-coded foundation fill or stroke (found " + rawFill + ")");
+
 
   // 12-14 — no invented variants, no equality-derived relationships, no file-only primitives.
   add(
@@ -43901,15 +43991,43 @@ async function verifyB4() {
   );
   // "02 Patterns" is B6's page; every other non-component page must stay empty.
   const others = figma.root.children.filter((p) => p.name !== B4_PAGE && p.name !== "02 Patterns");
+  const pageEvidence = [];
+  for (const p of others) {
+    for (const child of p.children) {
+      pageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
+    }
+  }
   add(others.every((p) => p.children.length === 0), "pages 00, 03, 04, 05, 06 remain empty (02 Patterns is B6-owned)");
+  const expectedOnPage = sets.concat(standalone).filter((n) => n.parent && n.parent.id === page.id);
+  const extras = page.children.filter((n) => !expectedOnPage.some((e) => e.id === n.id));
+  const missing = sets.concat(standalone).filter((n) => !n.parent || n.parent.id !== page.id);
   add(
-    page.children.length === sets.length + standalone.length,
-    'page "01 Components" holds exactly the ' + (sets.length + standalone.length) + " B4 objects (Figma requires component nodes to live on a page)",
+    expectedOnPage.length === sets.length + standalone.length && extras.length === 0,
+    'page "01 Components" holds exactly the ' + (sets.length + standalone.length) +
+      " B4 component objects and nothing else (found " + expectedOnPage.length + " B4 objects, " + extras.length + " extra node(s))",
   );
+  for (const n of extras) {
+    pageEvidence.push("  " + B4_PAGE + " › EXTRA " + n.name + " (" + n.type + ")  id=" + n.id);
+  }
+  for (const n of missing) {
+    pageEvidence.push("  " + B4_PAGE + " › MISSING FROM PAGE " + n.name + " (" + n.type + ")  id=" + n.id);
+  }
   add(
     page.children.every((n) => n.type === "COMPONENT_SET" || n.type === "COMPONENT"),
     "no patterns, shells, screens or documentation content created",
   );
+
+  if (rawEvidence.length) {
+    say("");
+    say("B4 RAW FILL EVIDENCE (first " + rawEvidence.length + " of " + rawFill + ")");
+    for (const line of rawEvidence) say(line);
+  }
+  if (pageEvidence.length) {
+    say("");
+    say("B4 PAGE EVIDENCE");
+    for (const line of pageEvidence) say(line);
+  }
+
 
   /* ---------- inventory ---------- */
   say("");
@@ -47116,7 +47234,60 @@ async function verifyB10() {
   return passed;
 }
 
+/* ---------- B4 orphan cleanup (guarded, opt-in) ---------- */
+
+/**
+ * Removes only debris left behind on the seven B0 library pages by an aborted
+ * build: top-level nodes that are not components, not batch-owned assets, and not
+ * approved B8/B9/B10 frames. It never touches B0 pages themselves, B1/B2/B3 data,
+ * or any B4 component object.
+ */
+async function b4CleanupOrphans() {
+  await figma.loadAllPagesAsync();
+  const libraryPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells",
+    "04 Experiences", "05 Screens", "06 Documentation"];
+  const approved = {};
+  for (const list of [b8ApprovedNames(), b9ApprovedNames(), b10ApprovedNames()]) {
+    for (const name of list || []) approved[name] = true;
+  }
+  const owned = (name) =>
+    approved[name] === true ||
+    name.indexOf("ABox/Pattern/") === 0 ||
+    name.indexOf("ABox/Shell/") === 0 ||
+    name.indexOf("ABox/Screen/") === 0 ||
+    name.indexOf("ABox/ScreenState/") === 0 ||
+    name.indexOf("ABox/Doc/") === 0;
+
+  const doomed = [];
+  for (const page of figma.root.children) {
+    if (libraryPages.indexOf(page.name) === -1) continue;
+    for (const node of page.children) {
+      if (node.type === "COMPONENT" || node.type === "COMPONENT_SET") continue;
+      if (owned(node.name)) continue;
+      doomed.push({ page: page.name, node: node });
+    }
+  }
+
+  say("B4 ORPHAN CLEANUP");
+  if (!doomed.length) {
+    say("  nothing to remove — every library page holds only components and batch-owned assets.");
+  }
+  for (const entry of doomed) {
+    say("  remove : " + entry.page + " › " + entry.node.name + " (" + entry.node.type + ")  id=" + entry.node.id);
+    entry.node.remove();
+  }
+  say("");
+  say("  page contents after cleanup");
+  for (const page of figma.root.children) {
+    say("    " + page.name + " : " + page.children.length + " node(s)");
+  }
+  say("");
+  say("  removed this run: " + doomed.length);
+  return doomed.length;
+}
+
 /* ---------- entry ---------- */
+
 
 figma.showUI(__html__, { width: 420, height: 640 });
 
@@ -47126,7 +47297,7 @@ figma.ui.onmessage = async (msg) => {
   const b1 = msg.type === "b1-run" || msg.type === "b1-verify";
   const b2 = msg.type === "b2-run" || msg.type === "b2-verify";
   const b3 = msg.type === "b3-run" || msg.type === "b3-verify";
-  const b4 = msg.type === "b4-run" || msg.type === "b4-verify";
+  const b4 = msg.type === "b4-run" || msg.type === "b4-verify" || msg.type === "b4-cleanup-orphans";
   const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
@@ -47215,6 +47386,13 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB4();
+    } else if (msg.type === "b4-cleanup-orphans") {
+      say("ABox Phase 52 / Batch B4 — remove orphan debris");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b4CleanupOrphans();
+
     } else if (msg.type === "b5-run") {
       say("ABox Phase 52 / Batch B5 — component variants & states");
       say("file: " + figma.root.name);

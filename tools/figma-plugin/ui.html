@@ -85,6 +85,8 @@
     </p>
     <button id="b4run">Create components</button>
     <button id="b4verify" class="secondary">Verify components</button>
+    <button id="b4cleanup" class="secondary">Remove B4 orphan debris</button>
+
     <button id="b5run">Create component states</button>
     <button id="b5verify" class="secondary">Verify component states</button>
     <p>
@@ -178,6 +180,11 @@
         log.textContent = "Verifying components…";
         parent.postMessage({ pluginMessage: { type: "b4-verify" } }, "*");
       };
+      document.getElementById("b4cleanup").onclick = () => {
+        log.textContent = "Removing B4 orphan debris…";
+        parent.postMessage({ pluginMessage: { type: "b4-cleanup-orphans" } }, "*");
+      };
+
       document.getElementById("b5run").onclick = () => {
         log.textContent = "Creating component states…";
         parent.postMessage({ pluginMessage: { type: "b5-run" } }, "*");

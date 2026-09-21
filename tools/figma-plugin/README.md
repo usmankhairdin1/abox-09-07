@@ -93,6 +93,30 @@ the B5-B10 builders (`b5KpiVariants`, `b6ApplyRoot`, `b7Frame`, `b7Text`, `b7Bui
 `b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`) and must be converted in those batches
 before they are run.
 
+B4 component and variant wrappers are Figma packaging, not production surfaces:
+`b4EnsureSet` and `b4EnsureComponent` clear the wrapper's `fills` and `strokes` (the
+component-set container already did this), and `b4Build` clears the SVG importer's
+group chrome on `ABox/Brand/AboxMark`. The painted mark vectors are bound by painted
+shape identity in document order — not by direct child index — and an unbound vector
+STOPs the run. Without this, `figma.createComponent()`'s default opaque white fill made
+the verifier's "no hard-coded foundation fill or stroke" check report 60 raw paints.
+
+`verifyB4` prints `B4 RAW FILL EVIDENCE` (offending node, type, id, fill/stroke) and
+`B4 PAGE EVIDENCE` (every unexpected page child, plus extras or missing objects on
+`01 Components`) whenever those checks fail. The assertions themselves are unchanged:
+the 14 B4 objects must live on `01 Components` with nothing else there, and pages 00,
+03, 04, 05 and 06 must stay empty (`02 Patterns` is B6-owned).
+
+The `Remove B4 orphan debris` button (`b4-cleanup-orphans`) exists for debris left on a
+library page by an aborted build — `createFrame` / `createText` / `createNodeFromSvg`
+append to the current page before being reparented. It removes only top-level nodes on
+the seven B0 pages that are not `COMPONENT` / `COMPONENT_SET` and not batch-owned
+(`ABox/Pattern/`, `ABox/Shell/`, `ABox/Screen/`, `ABox/ScreenState/`, `ABox/Doc/`, and
+the approved B8/B9/B10 frame names). It prints every removal and the resulting per-page
+counts, and never touches B0 pages, B1/B2/B3 data, or any B4 component. `ensureB4Components`
+additionally removes its own transient nodes when a build step throws.
+
+
 ## Library publishing check
 
 In the scratch file, open the Assets panel and look for the publish/library control.
