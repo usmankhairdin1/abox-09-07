@@ -889,7 +889,9 @@ const limitations = [
   "src/components/abox/logo.tsx — size is a free numeric prop with no finite production set: the AboxMark set is built at the production default size = 36 and resizing stays an instance concern.",
   "src/components/abox/carrier-mark.tsx — deterministic hash-derived hue and initials: no finite variant set; excluded, not approximated.",
   "src/components/ui/button.tsx — shadow/shadow-sm utilities on the default/destructive/outline/secondary variants are Tailwind defaults, not production --shadow-* families; no Effect Style is attached rather than binding an unrelated elevation style.",
-  "No B0 page is populated: components are created off-page and no page content is added in B4.",
+  "Figma requires every component node to belong to a page: the 14 B4 objects are placed on the existing B0 page \"01 Components\", which B0 created for this purpose. No page is created, renamed or reordered, and pages 00, 02, 03, 04, 05 and 06 stay empty. This is a deviation from the plan wording \"no B0 page gains content\", forced by the Figma API and recorded rather than worked around.",
+  "src/components/abox/module-tabs.tsx — activeProps bg-primary/10 and border-primary/30 are alpha-modified tokens: a bound Figma Colour Style carries no per-instance alpha, so the full-strength primary style is bound and the /10 and /30 modifiers are recorded here rather than approximated with a hard-coded translucent fill.",
+  "src/components/abox/empty-state.tsx — bg-surface/60 is an alpha-modified token with the same Figma limitation; the surface style is bound and the /60 modifier recorded.",
 ];
 for (const d of dynamicNotes) limitations.push(d);
 
