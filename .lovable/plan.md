@@ -116,7 +116,7 @@ Identical to B1: exact-name matching; existing collection reused in place; exist
 1. Exactly one B2 collection, named `ABox/Typography`, appearing once.
 2. Its modes are exactly `Light` and `Dark`; no `Default` mode.
 3. Exactly 19 variables, names matching the inventory exactly — no missing, no extras.
-4. Types correct: 4 + 5 family variables STRING, the 10 numeric variables FLOAT.
+4. Type totals asserted numerically: exactly 9 STRING (4 `family/*` + 5 `role/*/family`) and exactly 10 FLOAT, and the check `STRING + FLOAT === 19 === total variables` must hold, with all three numbers printed in the report. Each individual variable's type is also asserted against the inventory table.
 5. Every literal value matches its production source, per mode.
 6. Light and Dark values identical for every variable (the intentional-parity check).
 7. Every alias resolves to the family variable named by the production `var(--font-X)` declaration, per mode.
