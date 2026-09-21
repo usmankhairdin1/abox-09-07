@@ -129,10 +129,16 @@ value · root layout mode · `layoutWrap` · `itemSpacing` · `counterAxisSpacin
 `primaryAxisSizingMode` / `counterAxisSizingMode` · child count and order · nested KpiCard
 main-component ids (and owning set id) · nested KpiCard property values.
 
-**ModuleTabBar / WizardStepper:** component id · layout mode · `layoutWrap` · `itemSpacing` ·
-`counterAxisSpacing` · both sizing modes · padding · individual stroke weights, stroke style id and
-`strokesIncludedInLayout` where applicable · nested child order · nested component identity and
-live id · nested component property values · source file/line evidence.
+**ModuleTabBar:** component id · layout mode · `layoutWrap` · `itemSpacing` · `counterAxisSpacing` ·
+both sizing modes · padding · the four individual stroke weights, the live stroke style id and
+`strokesIncludedInLayout` · nested child order · nested component identity and live id · nested
+component property values · source file/line evidence.
+
+**WizardStepper:** component id · layout mode · `layoutWrap` · `itemSpacing` · `counterAxisSpacing` ·
+both sizing modes · padding · exactly 8 child nodes · exact child order 1–8 · each nested
+WizardStep main-component id · each nested `state` · each nested `label` · the source route and
+current-step evidence (`/agency/downlines/new/contacts`, step 3 of 8) · source file/line evidence
+(`downline-wizard-stepper.tsx:18-27`, `:36-45`).
 
 ## 5. Verification (`b6-verify`) — added checks
 
