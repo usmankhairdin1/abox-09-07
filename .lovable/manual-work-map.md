@@ -1083,3 +1083,72 @@ The future Figma workflow never takes ownership of tenant runtime branding, Mark
 ### 16. Changed files, validation and rollback
 
 Changed: `.lovable/manual-work-map.md` (this block) only. No `src/` diff, no Figma mutation, no asset/branding/route/token/behaviour change; Phase 49 canonical hashes unchanged. Rollback: delete this block.
+
+## Pre-Phase-52 Final Verification & Regression Gate (audit only; no `src/` change, no Figma mutation)
+
+**Verdict: CLEAR FOR PHASE 52.** Zero B0. Zero B1. Six B2 records, all documentation/measurement-unit only.
+
+### 1. Integrity baseline
+
+`git status --porcelain` empty; `git diff --stat -- src/ public/ eslint.config.js package.json` empty. All ten Phase 49 locked `cksum` values recomputed and identical: logo 1815638579 · marketplace-shell 117403653 · internal-shell 3748215771 · member-shell 3790977838 · marketplace-store 1939291487 · styles.css 2128787410 · data-table 3115368089 · ui/table 905065594 · ui/pagination 2648877993 · eslint.config.js 4117328763.
+
+### 2. Static health
+
+Typecheck clean (no diagnostics). Lint total 16,783 — byte-identical to the recorded baseline; `no-restricted-imports` findings 0. Harness build log newest entry `build OK`.
+
+### 3. Enforcement gate (five negative controls, all fired)
+
+Exercised with `eslint --stdin --stdin-filename`, writing nothing to disk; working tree confirmed clean afterwards.
+E1 reference-layer import from `src/routes/**` — blocked. E2 `@/components/ui/table` — blocked. E3 `@/lib/marketplace-store` from `src/lib/design/**` — blocked. E4 shell-to-shell (`member-shell` from `internal-shell.tsx`) — blocked. `server-only` package import — blocked. All four rule groups plus `SERVER_ONLY_PATHS` present in `eslint.config.js` at severity `error`; the reference-surface override still relaxes E1 only and still applies E2 + E3.
+
+### 4. Canonical ownership sweep (re-measured, not copied)
+
+All 21 canonical files present at their recorded paths. Importer-file counts outside `src/components/abox/`, re-measured this gate: action-pill 2 · action-pill-component 38 · status-badge 89 · kpi-card 18 · page-header 25 · data-table 20 · empty-state 10 · surface 82 · control 2 · field 2 · notice-page 4 · marketplace-page-layout 10 · plan-card 6 · motion 1. Every figure matches the Phase 49/50 record under the same measurement method. `src/components/ui/table.tsx` and `ui/pagination.tsx` remain at zero importers.
+
+Foundation re-measured: `src/styles.css` 198 custom-property declarations, two `@theme inline` blocks, one `@custom-variant dark`, 6 `abox-*` keyframes — all matching. `<table>` elements: 1 canonical (`data-table.tsx`) + 5 auth-gated route-local + 1 unconsumed shadcn primitive + Lucie/reference occurrences, unchanged.
+
+### 5. Boundary sweep
+
+**Reference → production:** zero files under `src/routes/**` or `src/components/**` (excluding the two reference routes and `src/components/design/**`) import `@/lib/design/**`, `@/lib/design-tokens` or `@/components/design/**`. Reference modules that mention canonical component paths do so as documentation strings, not imports.
+**Branding:** `Brand`, `getActiveBrand` (line 569) and `getDraftBrand` (line 572) remain solely in `src/lib/marketplace-store.ts`. No brand field, colour or asset id appears anywhere under `src/lib/design/**`, `src/components/design/**` or `src/lib/design-tokens.ts`. Marketplace Asset Management remains runtime-owned and undocumented into the reference layer.
+**Shells:** no shell file imports another shell. Three independent families intact.
+
+### 6. Zero-migration phases
+
+Phases 35–42 and 44 remain zero-migration: no new centralizing abstraction exists for navigation, typography, control/icon sizing, spacing, radius/elevation, motion, accessibility or tables. No canonical component has been forked or duplicated.
+
+### 7. Governance artifacts
+
+`bun run governance:report` run twice; `.lovable/governance-report.json` and `.md` byte-identical across runs, and `git diff --stat -- src/` still empty afterwards. 201 findings: E5 15 · E6 21 · E7 165. Types: documented-exception 10 · library-owned 5 · canonical-consumer-count 21 · duplicate-export-name `Route` 154 · remaining name collisions 11. Review-required 0. E5/E6/E7 remain report-only.
+
+### 8. Intentional exceptions re-tested
+
+Each was re-tested against the migration-eligibility criteria, not assumed. All fail at least one criterion and remain verified-still-valid exceptions: three shells (shell conflict), Lucie / M06 / M08 / AI-elements (independent systems, same-name exports only), Branding/White-Label runtime and Marketplace Asset Management (runtime ownership, business coupling), five auth-gated route-local tables (NOT CAPTURED — no measurable parity evidence obtainable while signed out; never fabricated), metal vs status badge (different semantic role; `MetalBadge` used at 5 sites, tier semantics not status tone), store selector naming, Surface groups B and C (distinct decoration/interaction output), interaction states, Tailwind breakpoints and the 22 unconsumed shadcn primitives (library-owned), exported `Route` (framework convention). Zero exception was reclassified.
+
+### 9. Runtime verification
+
+Nine public routes loaded headless at 1440×900, 834×1112 and 390×844: `/`, `/faq`, `/select`, `/quote?step=1`, `/plans`, `/compare`, `/cart`, `/review`, `/handoff`. All HTTP 200, zero console errors, zero page errors at all three viewports. Document scroll width equals viewport width everywhere except the already-recorded `/quote?step=1` mobile overflow (scrollWidth 666 at 390 — unchanged pre-existing item, B2, not repaired in this gate). Auth-gated areas were not entered and no session was fabricated.
+
+### 10. Phase 50 and Phase 51 consistency
+
+Every file, export and token named in the Phase 50 blueprint still exists with that name; the section-2 inventory counts reconcile with this gate's re-measurement under their stated method. Phase 51 remains a readiness conclusion only: the repository contains no Figma file reference, plugin, manifest, token or generated library artifact. The only Figma-named modules are reference documentation data under `src/lib/design/` (figma-library, figma-variables, figma-readiness, graph-figma, pattern-figma, spec-figma-*), which no production file imports. Phase 51's NOT READY write-path status is therefore not represented anywhere as a completed build.
+
+### 11. Findings
+
+**B0 (blockers): none.**
+**B1 (required corrections): none.**
+**B2 (recorded, non-blocking):**
+1. Phase 46 validation prose names `src/routes/plans.tsx` as an allowed-import probe filename; the real route file is `src/routes/plans.index.tsx`. Probe filename in a past narrative only; no rule or code affected.
+2. Phase 50 records 13 `@utility` rules in `src/styles.css`; the current file contains 12 (`text-display`, `text-eyebrow`, `text-serial`, `noise-field`, `contour`, `aurora`, `glass`, `ember-underline`, `ring-pill`, `divider-warm`, `card-brackets`, `edge-sheen`). Count discrepancy in documentation; the file hash is unchanged since Phase 49, so no rule was removed.
+3. `metal-badge` is recorded at 25 in the Phase 50 inventory, which counts all files mentioning the path including reference-layer documentation strings; production importer files are 4 and `<MetalBadge` usage sites are 5 across 5 files. Measurement-unit divergence, same class as the existing DataTable 19/20/23/26 note; deliberately not reconciled.
+4. `logo.tsx` recorded at 5 counts `planai-assistant.tsx` (itself inside `src/components/abox/`); the outside-abox importer count is 4. Same measurement-unit class.
+5. `planai-assistant.tsx` remains a zero-importer production file — unchanged DOCUMENTATION GAP from Phase 49, not a defect.
+6. Pre-existing lint backlog (16,783) and the `/quote?step=1` 390px overflow remain unrepaired by standing instruction.
+
+### 12. Completion criteria
+
+All twelve gate criteria met with evidence: clean tree, matching hashes, clean typecheck, `build OK`, `no-restricted-imports` 0, five enforcement controls firing, deterministic report, every canonical family single-sourced with re-measured consumers, reference layer with zero production importers, branding and Marketplace Asset Management runtime-owned only, three shells independent, Phase 50 blueprint internally consistent, Phase 51 correctly represented, every finding classified with zero B0 outstanding.
+
+### 13. Changed files, validation and rollback
+
+Changed: `.lovable/manual-work-map.md` (this block) only. No `src/` diff, no Figma mutation, no asset/branding/route/token/behaviour/responsive change; all Phase 49 locked hashes unchanged. Rollback: delete this block.
