@@ -119,6 +119,14 @@
     </p>
     <button id="b9run">Create All Screens</button>
     <button id="b9verify" class="secondary">Verify All Screens</button>
+    <p>
+      <strong>Batch B10 — documentation</strong><br />
+      Run inside <code>ABox Design System — Library</code>. Creates exactly 10
+      editable documentation frames on <code>06 Documentation</code> only. No new
+      foundations, components, patterns, screens, publishing or app changes.
+    </p>
+    <button id="b10run">Create documentation</button>
+    <button id="b10verify" class="secondary">Verify documentation</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -209,6 +217,14 @@
       document.getElementById("b9verify").onclick = () => {
         log.textContent = "Verifying all screens…";
         parent.postMessage({ pluginMessage: { type: "b9-verify" } }, "*");
+      };
+      document.getElementById("b10run").onclick = () => {
+        log.textContent = "Creating documentation…";
+        parent.postMessage({ pluginMessage: { type: "b10-run" } }, "*");
+      };
+      document.getElementById("b10verify").onclick = () => {
+        log.textContent = "Verifying documentation…";
+        parent.postMessage({ pluginMessage: { type: "b10-verify" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;

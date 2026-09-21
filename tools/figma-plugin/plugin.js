@@ -4570,7 +4570,9 @@ async function verifyB9() {
 
   const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
   add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
-  add(figma.root.children.filter((p) => ["00 Foundations", "06 Documentation"].indexOf(p.name) !== -1).every((p) => p.children.length === 0), "00 Foundations and 06 Documentation remain empty during B9");
+  const docsPageForB9 = figma.root.children.filter((p) => p.name === "06 Documentation")[0];
+  const b9DocsOk = docsPageForB9 && (docsPageForB9.children.length === 0 || docsPageForB9.children.map((n) => n.name).join("|") === b10ApprovedNames().join("|"));
+  add(figma.root.children.filter((p) => p.name === "00 Foundations").every((p) => p.children.length === 0) && b9DocsOk, "00 Foundations remains empty and 06 Documentation is empty or contains only approved B10 documentation during B9");
 
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const b1Names = ABOX_B1.collections.map((c) => c.name);
@@ -4688,6 +4690,401 @@ async function verifyB9() {
   return passed;
 }
 
+
+/* =====================  Phase 57 / Batch B10 — documentation  ===================== */
+/*
+ * B10 creates the final source-backed documentation layer on 06 Documentation
+ * only. It creates native editable FRAME/TEXT/table nodes and records links to
+ * existing B1-B9 references through plugin data. It never creates variables,
+ * styles, components, component sets, patterns, shells, experiences or screens.
+ */
+
+const B10_PAGE = "06 Documentation";
+var b10Created = 0;
+
+function b10Page() {
+  const page = figma.root.children.filter((p) => p.name === B10_PAGE);
+  if (page.length !== 1) {
+    throw new Error('STOP: B0 page "' + B10_PAGE + '" must exist exactly once (found ' + page.length + ").");
+  }
+  return page[0];
+}
+
+function b10ApprovedNames() {
+  if (typeof ABOX_B10 === "undefined" || !ABOX_B10.documents) return [];
+  return ABOX_B10.documents.map((d) => d.name);
+}
+
+function b10FindFrame(page, spec) {
+  const found = page.children.filter((n) => n.name === spec.name);
+  if (found.length > 1) throw new Error('STOP: DUPLICATE B10 DOCUMENTATION FRAME — "' + spec.name + '" exists ' + found.length + ' times on ' + B10_PAGE + ".");
+  return found[0] || null;
+}
+
+function b10PluginSignature(frame) {
+  return {
+    batch: frame.getPluginData("aboxBatch"),
+    kind: frame.getPluginData("aboxKind"),
+    name: frame.getPluginData("aboxName"),
+    key: frame.getPluginData("aboxKey"),
+    signature: frame.getPluginData("aboxSignature"),
+    sources: frame.getPluginData("aboxSources"),
+  };
+}
+
+function b10SetPluginData(frame, spec) {
+  frame.setPluginData("aboxBatch", "B10");
+  frame.setPluginData("aboxKind", "documentation");
+  frame.setPluginData("aboxName", spec.name);
+  frame.setPluginData("aboxKey", spec.key);
+  frame.setPluginData("aboxSignature", spec.signature);
+  frame.setPluginData("aboxSources", spec.sources.slice().sort().join("|"));
+}
+
+function b10ExpectedRegions() {
+  return ["metadata/source-and-purpose", "reference-links", "documentation-sections", "evidence-and-boundaries"];
+}
+
+function b10HasRegions(frame) {
+  const names = frame.children.map((c) => c.name);
+  return b10ExpectedRegions().every((name, i) => names[i] === name);
+}
+
+function b10AllText(root) {
+  const chunks = [];
+  b8Walk(root, (n) => {
+    if (n.type === "TEXT") chunks.push(n.characters || "");
+  });
+  return chunks.join("\n");
+}
+
+function b10ReferenceKey(ref) {
+  return ref.kind + ":" + ref.name;
+}
+
+function b10ReferenceTarget(ref) {
+  if (!ref || !ref.kind) return null;
+  if (ref.kind === "source" || ref.kind === "batch") return { id: ref.name, type: ref.kind, name: ref.name };
+  if (ref.kind === "page") return figma.root.children.filter((p) => p.name === ref.name)[0] || null;
+  if (ref.kind === "component" || ref.kind === "pattern" || ref.kind === "shell") return b4FindSet(ref.name) || b4FindComponent(ref.name);
+  if (ref.kind === "experience") {
+    const page = figma.root.children.filter((p) => p.name === B8_PAGE)[0];
+    return page ? page.children.filter((n) => n.name === ref.name)[0] || null : null;
+  }
+  if (ref.kind === "screen") {
+    const page = figma.root.children.filter((p) => p.name === B9_PAGE)[0];
+    return page ? page.children.filter((n) => n.name === ref.name)[0] || null : null;
+  }
+  if (ref.kind === "paintStyle") {
+    return b10StyleIndex.paint[ref.name] || null;
+  }
+  if (ref.kind === "textStyle") {
+    return b10StyleIndex.text[ref.name] || null;
+  }
+  if (ref.kind === "effectStyle") {
+    return b10StyleIndex.effect[ref.name] || null;
+  }
+  if (ref.kind === "collection") {
+    return b10CollectionIndex[ref.name] || null;
+  }
+  return null;
+}
+
+var b10StyleIndex = { paint: {}, text: {}, effect: {} };
+var b10CollectionIndex = {};
+
+async function b10PrepareReferenceIndexes() {
+  b10StyleIndex = await b4StyleIndex();
+  b10CollectionIndex = {};
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  for (const c of collections) b10CollectionIndex[c.name] = c;
+  return b10StyleIndex;
+}
+
+function b10RequireReference(ref) {
+  const target = b10ReferenceTarget(ref);
+  if (!target) throw new Error('STOP: B10 REFERENCE UNRESOLVED — "' + b10ReferenceKey(ref) + '". Run the required prior batch first; B10 will not create substitutes.');
+  return target;
+}
+
+async function b10Text(name, text, opts, index) {
+  const node = await b7Text(name, text, opts || {}, index);
+  if (opts && opts.w) {
+    node.resize(opts.w, node.height);
+    node.textAutoResize = "HEIGHT";
+  }
+  return node;
+}
+
+async function b10MetaRegion(spec, index) {
+  const region = b7Frame("metadata/source-and-purpose", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b10Text("doc-title", spec.title, { size: 24, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
+  region.appendChild(await b10Text("doc-purpose", spec.purpose, { size: 13, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
+  region.appendChild(await b10Text("source-list", spec.sources.join("\n"), { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
+  return region;
+}
+
+async function b10ReferenceRegion(spec, index) {
+  const region = b7Frame("reference-links", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b10Text("region-label", "Native reference links", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
+  const refs = b7Frame("reference-grid", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
+  const seen = {};
+  for (const ref of spec.references || []) {
+    const key = b10ReferenceKey(ref);
+    if (seen[key]) continue;
+    seen[key] = true;
+    const target = b10RequireReference(ref);
+    const chip = b7Frame("reference/" + ref.kind + "/" + String(ref.name).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 10, py: 8, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+    chip.setPluginData("aboxB10ReferenceKind", ref.kind);
+    chip.setPluginData("aboxB10ReferenceName", ref.name);
+    chip.setPluginData("aboxB10ReferenceId", target.id || ref.name);
+    chip.appendChild(await b10Text("reference-label", ref.name, { size: 10, weight: 500, colorStyle: "ABox/Semantic/foreground", w: 260 }, index));
+    chip.appendChild(await b10Text("reference-meta", ref.kind + " · id=" + (target.id || ref.name), { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", w: 260 }, index));
+    refs.appendChild(chip);
+  }
+  region.appendChild(refs);
+  return region;
+}
+
+async function b10RowNode(row, index) {
+  const item = b7Frame("row/" + String(row.label).slice(0, 64).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 12, py: 10, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  item.setPluginData("aboxB10RowLabel", row.label);
+  item.appendChild(await b10Text("label", row.label, { size: 11, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
+  item.appendChild(await b10Text("value", row.value, { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
+  if ((row.refs || []).length) {
+    item.setPluginData("aboxB10RowRefs", row.refs.map(b10ReferenceKey).join("|"));
+  }
+  return item;
+}
+
+async function b10SectionNode(section, index) {
+  const wrapper = b7Frame("section/" + section.key, { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 16, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  wrapper.setPluginData("aboxB10SectionKey", section.key);
+  wrapper.appendChild(await b10Text("section-title", section.title, { size: 15, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
+  for (const r of section.rows) wrapper.appendChild(await b10RowNode(r, index));
+  return wrapper;
+}
+
+async function b10SectionsRegion(spec, index) {
+  const region = b7Frame("documentation-sections", { layout: "VERTICAL", gap: 12, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  for (const section of spec.sections) region.appendChild(await b10SectionNode(section, index));
+  return region;
+}
+
+async function b10EvidenceRegion(spec, index) {
+  const region = b7Frame("evidence-and-boundaries", { layout: "VERTICAL", gap: 8, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b10Text("region-label", "Evidence and boundaries", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
+  region.appendChild(await b10Text("evidence", ABOX_B10.evidenceStatus.map((e) => e.phase + ": " + e.status + " · " + e.realFigma).join("\n"), { size: 11, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
+  region.appendChild(await b10Text("signature", "B10 signature " + spec.signature + " · no screenshots/HTML/flattening · no production app changes · no permanent sync", { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
+  return region;
+}
+
+async function b10BuildFrame(spec, placement, index, page) {
+  const root = figma.createFrame();
+  root.name = spec.name;
+  root.layoutMode = "VERTICAL";
+  root.primaryAxisSizingMode = "AUTO";
+  root.counterAxisSizingMode = "FIXED";
+  root.primaryAxisAlignItems = "MIN";
+  root.counterAxisAlignItems = "MIN";
+  root.itemSpacing = 18;
+  root.paddingLeft = root.paddingRight = root.paddingTop = root.paddingBottom = 24;
+  root.resize(ABOX_B10.layout.frameWidth, 1000);
+  root.x = placement.x;
+  root.y = placement.y;
+  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
+  root.strokeStyleId = b4Style(index, "paint", "ABox/Semantic/hairline").id;
+  root.strokeWeight = 1;
+  root.cornerRadius = 24;
+  b10SetPluginData(root, spec);
+  root.appendChild(await b10MetaRegion(spec, index));
+  root.appendChild(await b10ReferenceRegion(spec, index));
+  root.appendChild(await b10SectionsRegion(spec, index));
+  root.appendChild(await b10EvidenceRegion(spec, index));
+  page.appendChild(root);
+  b10Created += 1;
+  return root;
+}
+
+function b10AssertReusable(frame, spec) {
+  if (frame.type !== "FRAME") throw new Error('STOP: B10 DOCUMENTATION TYPE MISMATCH — "' + spec.name + '" is ' + frame.type + ', expected FRAME.');
+  const pd = b10PluginSignature(frame);
+  const wantSources = spec.sources.slice().sort().join("|");
+  if (pd.batch !== "B10" || pd.kind !== "documentation" || pd.name !== spec.name || pd.key !== spec.key || pd.signature !== spec.signature || pd.sources !== wantSources) {
+    throw new Error('STOP: LIVE B10 DOCUMENTATION DIFFERS FROM APPROVED SIGNATURE — "' + spec.name + '". Nothing was overwritten or deleted.');
+  }
+  if (!b10HasRegions(frame)) throw new Error('STOP: LIVE B10 DOCUMENTATION STRUCTURE DIFFERS FROM APPROVED REGIONS — "' + spec.name + '". Nothing was overwritten or deleted.');
+}
+
+async function ensureB10Documentation() {
+  await figma.loadAllPagesAsync();
+  b10Created = 0;
+  const page = b10Page();
+  const index = await b10PrepareReferenceIndexes();
+
+  for (const existing of page.children) {
+    if (b10ApprovedNames().indexOf(existing.name) === -1) {
+      throw new Error('STOP: UNAPPROVED OBJECT ON 06 DOCUMENTATION — "' + existing.name + '". B10 will not overwrite or delete it.');
+    }
+  }
+
+  for (const doc of ABOX_B10.documents) {
+    for (const ref of doc.references || []) b10RequireReference(ref);
+  }
+
+  for (let i = 0; i < ABOX_B10.documents.length; i += 1) {
+    const spec = ABOX_B10.documents[i];
+    const placement = ABOX_B10.placement.filter((p) => p.name === spec.name)[0];
+    if (!placement) throw new Error('STOP: B10 placement missing for "' + spec.name + '".');
+    const existing = b10FindFrame(page, spec);
+    if (existing) {
+      b10AssertReusable(existing, spec);
+      say("  frame    reused  : " + spec.name + "  id=" + existing.id);
+    } else {
+      const frame = await b10BuildFrame(spec, placement, index, page);
+      say("  frame    created : " + spec.name + "  id=" + frame.id);
+    }
+  }
+  say("");
+  say("  B10 documentation frames created this run: " + b10Created);
+}
+
+function b10HasImageFill(root) {
+  let bad = false;
+  b8Walk(root, (n) => { for (const fill of n.fills || []) if (fill.type === "IMAGE") bad = true; });
+  return bad;
+}
+
+function b10HasPrototype(root) {
+  let bad = false;
+  b8Walk(root, (n) => { if ((n.reactions || []).length) bad = true; });
+  return bad;
+}
+
+function b10HasComponentNodes(root) {
+  let bad = false;
+  b8Walk(root, (n) => { if (n.type === "COMPONENT" || n.type === "COMPONENT_SET" || n.type === "INSTANCE") bad = true; });
+  return bad;
+}
+
+async function verifyB10() {
+  await figma.loadAllPagesAsync();
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+  const C = ABOX_B10.counts;
+  const page = b10Page();
+  await b10PrepareReferenceIndexes();
+
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  add(figma.root.children.length === C.b0Pages && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
+  const foundationsPage = figma.root.children.filter((p) => p.name === "00 Foundations")[0];
+  add(foundationsPage && foundationsPage.children.length === 0, "00 Foundations remains empty");
+
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const b1Cols = collections.filter((c) => b1Names.indexOf(c.name) !== -1);
+  let b1Vars = 0;
+  for (const c of b1Cols) b1Vars += c.variableIds.length;
+  const typo = collections.filter((c) => c.name === "ABox/Typography");
+  add(b1Cols.length === C.b1Collections && b1Vars === C.b1Variables, "B1 unchanged: 9 collections / 200 variables (found " + b1Cols.length + " / " + b1Vars + ")");
+  add(typo.length === 1 && typo[0].variableIds.length === C.b2Variables, "B2 unchanged: ABox/Typography with 19 variables");
+  const owned = (list) => list.filter((s) => s.name.indexOf("ABox/") === 0);
+  const paints = owned(await figma.getLocalPaintStylesAsync());
+  const texts = owned(await figma.getLocalTextStylesAsync());
+  const effects = owned(await figma.getLocalEffectStylesAsync());
+  add(paints.length + texts.length + effects.length === C.b3Styles, "B3 unchanged: 79 styles — found " + (paints.length + texts.length + effects.length));
+
+  const componentsPage = figma.root.children.filter((p) => p.name === B4_PAGE)[0];
+  const primSets = componentsPage ? componentsPage.children.filter((n) => n.type === "COMPONENT_SET") : [];
+  const primStandalone = componentsPage ? componentsPage.children.filter((n) => n.type === "COMPONENT") : [];
+  const primVariants = primSets.reduce((n, s) => n + s.children.length, 0);
+  add(primSets.length === C.b4Sets, "B4 unchanged: 11 component sets on 01 Components (found " + primSets.length + ")");
+  add(primStandalone.length === C.b4Standalone && primVariants === C.b5Variants && primVariants + primStandalone.length === C.b5Physical, "B5 unchanged: 3 standalone, 56 variant nodes, 59 physical nodes");
+  const b5Props = ABOX_B5.bindings.filter((b) => !!b7PropKey(b5Owner(b.component), b.property, b.type)).length;
+  add(b5Props === C.b5NonVariant, "B5 non-variant component properties preserved (" + b5Props + " / " + C.b5NonVariant + ")");
+  const patternPage = figma.root.children.filter((p) => p.name === B6_PAGE)[0];
+  const patternNodes = patternPage ? b6PatternNodes(patternPage) : [];
+  add(patternPage && patternPage.children.length === C.b6TopLevel && patternNodes.length === C.b6PhysicalNodes, "B6 unchanged: 3 top-level pattern objects / 4 physical ComponentNodes");
+  const shellPage = figma.root.children.filter((p) => p.name === B7_PAGE)[0];
+  const shellNodes = shellPage ? b7Nodes(shellPage) : { physical: 0 };
+  add(shellPage && shellPage.children.length === C.b7TopLevel && shellNodes.physical === C.b7PhysicalNodes, "B7 unchanged: 3 shell assets / 4 physical ComponentNodes");
+  const expPage = figma.root.children.filter((p) => p.name === B8_PAGE)[0];
+  add(expPage && expPage.children.length === C.b8TopLevelFrames, "B8 unchanged: 5 experience frames on 04 Experiences");
+  const screenPage = figma.root.children.filter((p) => p.name === B9_PAGE)[0];
+  const b9Frames = screenPage ? screenPage.children.filter((n) => n.name.indexOf("ABox/Screen/") === 0 || n.name.indexOf("ABox/ScreenState/") === 0) : [];
+  add(screenPage && screenPage.children.length === C.b9TopLevelFrames && b9Frames.length === C.b9TopLevelFrames, "B9 unchanged: 179 top-level screen/state frames on 05 Screens");
+
+  const docs = page.children.filter((n) => n.name.indexOf("ABox/Documentation/") === 0);
+  const names = docs.map((n) => n.name);
+  add(page.children.length === C.documentationFrames, "only 06 Documentation receives B10 content: exactly 10 top-level frames (found " + page.children.length + ")");
+  add(names.join("|") === b10ApprovedNames().join("|"), "06 Documentation contains exactly the approved B10 frame names in deterministic order");
+  add(docs.every((n) => n.type === "FRAME"), "every B10 top-level object is a FRAME, not Component or Component Set");
+
+  let signaturesOk = true, placementOk = true, regionsOk = true, imageOk = true, protoOk = true, componentOk = true, referencesOk = true, evidenceOk = true, coverageOk = true;
+  const inventory = [];
+  const requiredSnippets = ["No permanent Lovable-to-Figma synchronization", "REAL FIGMA NOT VERIFIED", "Create All Screens", "runtime", "B1", "B9"];
+  for (let i = 0; i < ABOX_B10.documents.length; i += 1) {
+    const spec = ABOX_B10.documents[i];
+    const frame = docs.filter((n) => n.name === spec.name)[0];
+    const placement = ABOX_B10.placement.filter((p) => p.name === spec.name)[0];
+    if (!frame) { signaturesOk = false; placementOk = false; regionsOk = false; referencesOk = false; continue; }
+    const pd = b10PluginSignature(frame);
+    if (pd.batch !== "B10" || pd.kind !== "documentation" || pd.name !== spec.name || pd.key !== spec.key || pd.signature !== spec.signature || pd.sources !== spec.sources.slice().sort().join("|")) signaturesOk = false;
+    if (!placement || frame.x !== placement.x || frame.y !== placement.y || Math.round(frame.width) !== ABOX_B10.layout.frameWidth) placementOk = false;
+    if (!b10HasRegions(frame)) regionsOk = false;
+    if (b10HasImageFill(frame)) imageOk = false;
+    if (b10HasPrototype(frame)) protoOk = false;
+    if (b10HasComponentNodes(frame)) componentOk = false;
+    for (const ref of spec.references || []) if (!b10ReferenceTarget(ref)) referencesOk = false;
+    const text = b10AllText(frame);
+    if (!requiredSnippets.some((snippet) => text.indexOf(snippet) !== -1)) coverageOk = false;
+    if (text.indexOf("REAL FIGMA VERIFIED") !== -1 && text.indexOf("REAL FIGMA NOT VERIFIED") === -1) evidenceOk = false;
+    inventory.push("  " + spec.name + "  id=" + frame.id + "  x=" + frame.x + " y=" + frame.y + "  signature=" + pd.signature);
+  }
+  add(signaturesOk, "every B10 frame has matching B10 plugin data, deterministic signature and sorted source list");
+  add(placementOk, "every B10 frame uses deterministic x/y placement and 1440px documentation width");
+  add(regionsOk, "every B10 frame contains the four approved documentation regions in order");
+  add(imageOk, "B10 uses no screenshots, flattened images, HTML embeds or external image substitutions");
+  add(protoOk, "B10 creates no prototype reactions");
+  add(componentOk, "B10 creates no component/component-set/instance content; documentation is native editable frames and text");
+  add(referencesOk, "B10 references resolve to existing B1-B9 pages, collections, styles, components, patterns, shells, experiences and screens where applicable");
+  add(evidenceOk, "B10 does not claim unverified real-Figma evidence");
+  add(coverageOk, "B10 documentation covers source, bulk import, limitations, evidence, runtime boundaries and B1-B9 coverage");
+  add(C.newVariables === 0 && C.newStyles === 0 && C.newComponents === 0 && C.newComponentSets === 0 && C.newPatterns === 0 && C.newShells === 0 && C.newExperiences === 0 && C.newScreens === 0, "B10 token contract declares zero new foundations/assets outside documentation frames");
+  add(ABOX_B10.documents.length === 10 && ABOX_B10.counts.documentationFrames === 10, "B10 approved inventory is exactly 10 documentation frames");
+  add(ABOX_B10.verificationChecklist.length === 25, "B10 verification checklist contains 25 checks");
+  add(b10Created === 0 || b10Created === C.documentationFrames, "run bookkeeping: B10 documentation frames created this run = " + b10Created + " (run 2 must be 0)");
+
+  say("");
+  say("ID PROVENANCE: ids below are REAL FIGMA ids only when this run executed inside Figma Desktop.");
+  say("  An offline/mock harness prints OFFLINE MOCK ids and they are never evidence of a real write.");
+  say("  runtime: " + (typeof figma.getFileThumbnailNodeAsync === "function" ? "figma plugin API" : "figma plugin API (host-reported)"));
+  say("");
+  say("B10 DOCUMENTATION INVENTORY");
+  for (const line of inventory) say(line);
+  say("");
+  say("B10 COUNTS");
+  say("  documentation frames " + C.documentationFrames + " | new variables/styles/components/component sets/patterns/shells/experiences/screens = 0");
+  say("  protected unchanged: B1 " + C.b1Variables + " vars, B2 " + C.b2Variables + " vars, B3 " + C.b3Styles + " styles, B4/B5 " + C.b5Physical + " physical nodes, B6 " + C.b6PhysicalNodes + " nodes, B7 " + C.b7PhysicalNodes + " nodes, B8 " + C.b8TopLevelFrames + " frames, B9 " + C.b9TopLevelFrames + " frames");
+  say("");
+  say("B10 EVIDENCE STATUS");
+  for (const e of ABOX_B10.evidenceStatus) say("  - " + e.phase + ": " + e.status + " / " + e.realFigma);
+  say("");
+  say("B10 LIMITATION CATEGORIES");
+  for (const c of ABOX_B10.limitationCategories) say("  - " + c);
+  say("");
+  say("REAL-FIGMA DOCUMENTATION CHECK REQUIRED");
+  say("  Run Create documentation → Verify documentation → Create documentation → Verify documentation in Figma Desktop; confirm real ids and zero new frames on run 2.");
+  say("");
+  say("B10 STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  say("  NOTE  src/** unchanged — asserted outside Figma with `git diff --stat -- src/`; the plugin sandbox cannot read the repository.");
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say(passed ? "RESULT: B10 PASSED" : "RESULT: B10 FAILED — do not use generated documentation evidence.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
 
 figma.showUI(__html__, { width: 420, height: 640 });
@@ -4704,6 +5101,7 @@ figma.ui.onmessage = async (msg) => {
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
+  const b10 = msg.type === "b10-run" || msg.type === "b10-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
@@ -4851,6 +5249,19 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB9();
+    } else if (msg.type === "b10-run") {
+      say("ABox Phase 57 / Batch B10 — documentation / final reference layer");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await ensureB10Documentation();
+      await verifyB10();
+    } else if (msg.type === "b10-verify") {
+      say("ABox Phase 57 / Batch B10 — verify only");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await verifyB10();
     }
   } catch (e) {
     say("");
@@ -4876,7 +5287,9 @@ figma.ui.onmessage = async (msg) => {
                         ? "RESULT: B8 FAILED — do not proceed to B9."
                         : b9
                           ? "RESULT: B9 FAILED — do not use generated screen/prototype evidence."
-                          : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
+                          : b10
+                            ? "RESULT: B10 FAILED — do not use generated documentation evidence."
+                            : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
     );
   }
   report();

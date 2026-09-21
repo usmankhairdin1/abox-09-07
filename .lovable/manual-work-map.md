@@ -1437,3 +1437,41 @@ B9 recreates the application's design and prototype representation. It does not 
 ### Verification
 
 Offline checks can verify extractor determinism, generated token structure and plugin syntax, but they are not native write/read evidence. Real proof requires Figma Desktop execution: **Create All Screens**, **Verify All Screens**, repeat **Create All Screens**, repeat verification, confirm zero duplicate frames and zero duplicate reactions on the second run, then open representative Internal, Marketplace and Member flows in Presentation/Prototype mode and verify mapped navigation/state behavior and runtime-only limitation reporting.
+
+
+---
+
+## Phase 57 / Batch B10 — Documentation / final reference layer (reference-layer implementation)
+
+B10 is implemented only in the Figma/plugin reference layer. It does not change `src/**`, backend data, migrations, runtime behavior, publishing, or ownership boundaries. It populates only `06 Documentation` and does not touch `ABox Proof — Scratch`.
+
+### Approved documentation inventory
+
+B10 creates exactly 10 top-level editable FRAME documentation assets:
+
+1. `ABox/Documentation/00 Library Overview`
+2. `ABox/Documentation/01 Foundations Tokens Typography Styles`
+3. `ABox/Documentation/02 Components States Properties`
+4. `ABox/Documentation/03 Patterns Shells`
+5. `ABox/Documentation/04 Experiences`
+6. `ABox/Documentation/05 Screens Route Inventory`
+7. `ABox/Documentation/06 Prototype Interaction Mapping`
+8. `ABox/Documentation/07 Governance Source Of Truth`
+9. `ABox/Documentation/08 Import Reimport Workflow`
+10. `ABox/Documentation/09 Limitations Evidence Register`
+
+### Source-backed documentation rule
+
+The B10 extractor reads B1-B9 generated token outputs and the existing plugin/reference documentation. It documents only the established architecture: seven B0 pages, B1 foundations, B2 typography, B3 styles, B4/B5 components and states, B6 patterns, B7 shells, B8 experiences, and B9 screen/prototype mappings. It does not create new foundation assets, component variants, patterns, shells, experiences or screens.
+
+### Native Figma output
+
+B10 outputs native editable Figma FRAME and TEXT nodes on `06 Documentation`. It stores source references, deterministic signatures and reference metadata in plugin data. Reference chips resolve to existing B1-B9 assets where Figma exposes an id; source-file and batch references remain metadata. No screenshots, HTML embeds, flattened imports or external image substitutes are used.
+
+### Evidence and limitations
+
+B10 preserves the evidence distinction used by prior batches: offline extractor/build/syntax checks are not native Figma proof. Real proof requires Figma Desktop execution of **Create documentation**, **Verify documentation**, a second **Create documentation**, and a second verification with identical ids and zero new B10 frames on run 2. Until then, report `REAL FIGMA NOT VERIFIED`.
+
+### Re-import and ownership boundary
+
+Re-import is explicit and user-triggered through the plugin. There is no permanent Lovable-to-Figma sync. Production source remains the authority for runtime behavior, routing, data, auth, pricing, subsidy, uploads and governed business logic; the Figma file remains a standalone documentation and prototype reference artifact.
