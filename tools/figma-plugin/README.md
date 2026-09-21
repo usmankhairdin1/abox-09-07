@@ -89,10 +89,11 @@ bindings must be written with `setFillStyleIdAsync`, `setStrokeStyleIdAsync`,
 `in set_fillStyleId: Cannot call with documentAccess: dynamic-page`. Reading
 `fillStyleId` / `strokeStyleId` / `effectStyleId` in the verifiers remains valid and is
 unchanged. `b4Build`, `b5KpiVariants` and `b6ApplyRoot` (its single stroke binding, via
-`setStrokeStyleIdAsync`; `b6BuildNode` awaits it) use the async setters. The same
-synchronous pattern still exists in the B7-B10 builders (`b7Frame`, `b7Text`,
-`b7Build*`, `b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`) and must be converted in
-those batches before they are run.
+`setStrokeStyleIdAsync`; `b6BuildNode` awaits it) use the async setters. B7 carries the
+same correction: `b7Frame`, `b7Pill`, `b7Text` and `b7Build*` are async and await the
+style setters. The synchronous copy `b7FrameLegacy` remains only for the B8/B9/B10
+builders (`b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`), which still use the
+synchronous pattern and must be converted in their own batches before they are run.
 
 The same mode also forbids the synchronous `instance.mainComponent` getter
 (`in get_mainComponent: Cannot call with documentAccess: dynamic-page`). B6 reads the main
