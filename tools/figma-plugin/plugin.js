@@ -2335,13 +2335,22 @@ async function b5KpiVariants(index) {
       node.name = vname;
       set.appendChild(node);
     }
-    // (10)-(12) the only mutation: the delta chip's text and colour foundation.
-    const chip = b5Texts(node)[2];
-    if (!chip) throw new Error("STOP: KPICARD DELTA LAYER MISSING on " + vname + ".");
-    chip.name = "delta";
-    if (chip.characters !== A.negative.characters) chip.characters = A.negative.characters;
-    if (chip.fillStyleId !== destructive.id) chip.fillStyleId = destructive.id;
-    node.description = A.negative.source;
+    try {
+      // (10)-(12) the only mutation: the delta chip's text and colour foundation.
+      const chip = b5Texts(node)[2];
+      if (!chip) throw new Error("STOP: KPICARD DELTA LAYER MISSING on " + vname + ".");
+      chip.name = "delta";
+      if (chip.characters !== A.negative.characters) {
+        await b5LoadTextFonts(chip);
+        chip.characters = A.negative.characters;
+      }
+      if (chip.fillStyleId !== destructive.id) await chip.setFillStyleIdAsync(destructive.id);
+      node.description = A.negative.source;
+    } catch (e) {
+      // A partial run must not leave a half-built duplicate behind.
+      if (isNew && node && !node.removed) node.remove();
+      throw e;
+    }
     b5Say("variant ", A.set + " / " + vname, isNew);
   }
 
