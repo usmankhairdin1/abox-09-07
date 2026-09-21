@@ -2739,15 +2739,15 @@ function b6CreateInstance(spec) {
 }
 
 /** Name of the live main component (the set, when the instance is a variant). */
-function b6MainName(inst) {
-  const main = inst.mainComponent;
+async function b6MainName(inst) {
+  const main = await inst.getMainComponentAsync(); // async: documentAccess dynamic-page
   if (!main) return "MISSING";
   if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.name;
   return main.name;
 }
 
-function b6MainId(inst) {
-  const main = inst.mainComponent;
+async function b6MainId(inst) {
+  const main = await inst.getMainComponentAsync(); // async: documentAccess dynamic-page
   if (!main) return "-";
   if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.id;
   return main.id;
