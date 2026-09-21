@@ -428,7 +428,9 @@ function requireFile(expectedName) {
   }
 }
 
-function ensureLibraryPages() {
+async function ensureLibraryPages() {
+  // dynamic-page document access: page.children requires explicit page loading.
+  await figma.loadAllPagesAsync();
   const names = T.library.pages;
   const pages = figma.root.children;
 
@@ -478,6 +480,8 @@ function ensureLibraryPages() {
 }
 
 async function verifyLibraryPages() {
+  // dynamic-page document access: load every page once before any children access.
+  await figma.loadAllPagesAsync();
   const names = T.library.pages;
   const checks = [];
   const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
@@ -525,7 +529,6 @@ async function verifyLibraryPages() {
   let imageFills = 0;
   let components = 0;
   for (const page of children) {
-    await page.loadAsync();
     nodeCount += page.children.length;
     components += page.findAll((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET").length;
     imageFills += page.findAll(
@@ -574,7 +577,7 @@ figma.ui.onmessage = async (msg) => {
       say("file: " + figma.root.name);
       requireFile(T.library.targetFileName);
       say("");
-      ensureLibraryPages();
+      await ensureLibraryPages();
       await verifyLibraryPages();
     } else if (msg.type === "b0-verify") {
       say("ABox Phase 52 / Batch B0 — verify only");

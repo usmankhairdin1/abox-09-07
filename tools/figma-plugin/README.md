@@ -78,6 +78,11 @@ B0 creates no variables, text styles, effect styles, components or variants, and
 never publishes the library. The report ends with `RESULT: B0 PASSED` or
 `RESULT: B0 FAILED`.
 
+Note: the manifest uses `"documentAccess": "dynamic-page"`, so the plugin loads all
+pages with `figma.loadAllPagesAsync()` before reading any page's children (both in
+page creation and in verification). Re-import the plugin from `manifest.json` after
+pulling plugin changes so Figma Desktop picks up the rebuilt `code.js`.
+
 ## Library publishing check
 
 In the scratch file, open the Assets panel and look for the publish/library control.
