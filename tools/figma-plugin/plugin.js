@@ -897,6 +897,210 @@ async function verifyB1() {
   return passed;
 }
 
+/* ---------- Phase 52 / Batch B2 — typography foundation ---------- */
+// One collection, Light + Dark, values intentionally identical in both modes:
+// production declares no .dark typography override.
+
+async function b2Collection() {
+  const existing = await figma.variables.getLocalVariableCollectionsAsync();
+  const spec = ABOX_B2.collection;
+  const found = existing.filter((c) => c.name === spec.name);
+  if (found.length > 1) {
+    throw new Error(
+      'STOP: DUPLICATE COLLECTION — ' + found.length + ' collections named "' + spec.name + '".',
+    );
+  }
+  return await ensureB1Collection({ spec, collection: found[0] || null });
+}
+
+function b2Inventory() {
+  return ABOX_B2.families
+    .map((f) => f.name)
+    .concat(ABOX_B2.roleFamilies.map((r) => r.name))
+    .concat(ABOX_B2.floats.map((f) => f.name));
+}
+
+async function ensureB2Variables() {
+  await figma.loadAllPagesAsync();
+  const ctx = await b2Collection();
+
+  // 1) Font families — STRING, the production stack verbatim.
+  for (const fam of ABOX_B2.families) {
+    await ensureB1Variable(ctx, fam.name, "STRING", { Light: fam.value, Dark: fam.value }, fam.source);
+  }
+
+  // 2) Role families — alias, resolved only from the production var(--font-X) reference.
+  const famVars = await variablesByName(ctx.collection);
+  for (const role of ABOX_B2.roleFamilies) {
+    const target = famVars[role.alias];
+    if (!target) {
+      throw new Error('STOP: MISSING ALIAS TARGET — "' + role.alias + '" for ' + role.name + ".");
+    }
+    const alias = { type: "VARIABLE_ALIAS", id: target.id };
+    await ensureB1Variable(ctx, role.name, "STRING", { Light: alias, Dark: alias },
+      role.source + " -> alias " + role.alias);
+  }
+
+  // 3) Numeric role properties — FLOAT, identical in both modes.
+  for (const f of ABOX_B2.floats) {
+    await ensureB1Variable(ctx, f.name, "FLOAT", { Light: f.value, Dark: f.value }, f.source);
+  }
+}
+
+async function verifyB2() {
+  await figma.loadAllPagesAsync();
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+
+  const spec = ABOX_B2.collection;
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const found = collections.filter((c) => c.name === spec.name);
+  add(found.length === 1, 'collection "' + spec.name + '" exists exactly once');
+  const collection = found[0];
+  let vars = {};
+  let light;
+  let dark;
+  if (collection) {
+    const modeNames = collection.modes.map((m) => m.name);
+    add(
+      modeNames.length === 2 && modeNames.indexOf("Light") !== -1 && modeNames.indexOf("Dark") !== -1,
+      'collection "' + spec.name + '" has exactly the modes Light, Dark (no Default)',
+    );
+    vars = await variablesByName(collection);
+    light = (collection.modes.find((m) => m.name === "Light") || {}).modeId;
+    dark = (collection.modes.find((m) => m.name === "Dark") || {}).modeId;
+  }
+
+  // Exact inventory.
+  const inventory = b2Inventory();
+  const names = Object.keys(vars).sort();
+  const missing = inventory.filter((n) => !vars[n]);
+  const extras = names.filter((n) => inventory.indexOf(n) === -1);
+  add(names.length === 19, "variable count = 19 (found " + names.length + ")");
+  add(missing.length === 0,
+    "contains all 19 approved variables" + (missing.length ? " (missing: " + missing.join(", ") + ")" : ""));
+  add(extras.length === 0,
+    "no extra variables" + (extras.length ? " (extra: " + extras.join(", ") + ")" : ""));
+
+  // Type totals: STRING + FLOAT === 19.
+  const stringNames = ABOX_B2.families.map((f) => f.name).concat(ABOX_B2.roleFamilies.map((r) => r.name));
+  const floatNames = ABOX_B2.floats.map((f) => f.name);
+  const strings = names.filter((n) => vars[n].resolvedType === "STRING");
+  const floatsFound = names.filter((n) => vars[n].resolvedType === "FLOAT");
+  add(stringNames.every((n) => vars[n] && vars[n].resolvedType === "STRING"),
+    "every family / role-family variable is STRING");
+  add(floatNames.every((n) => vars[n] && vars[n].resolvedType === "FLOAT"),
+    "every numeric role variable is FLOAT");
+  add(strings.length === 9, "STRING count = 9 (4 family/* + 5 role/*/family) — found " + strings.length);
+  add(floatsFound.length === 10, "FLOAT count = 10 — found " + floatsFound.length);
+  add(strings.length + floatsFound.length === names.length && names.length === 19,
+    "type arithmetic: STRING " + strings.length + " + FLOAT " + floatsFound.length + " = " +
+      (strings.length + floatsFound.length) + " = total variables " + names.length + " = 19");
+
+  // Values per mode, plus the intentional Light/Dark parity.
+  let famOk = true;
+  for (const fam of ABOX_B2.families) {
+    const v = vars[fam.name];
+    if (!v || v.valuesByMode[light] !== fam.value || v.valuesByMode[dark] !== fam.value) famOk = false;
+  }
+  add(famOk, "font-family stacks match src/styles.css verbatim in both modes");
+
+  let floatOk = true;
+  for (const f of ABOX_B2.floats) {
+    const v = vars[f.name];
+    if (!v || v.valuesByMode[light] !== f.value || v.valuesByMode[dark] !== f.value) floatOk = false;
+  }
+  add(floatOk, "numeric values match production in both modes");
+
+  let aliasOk = true;
+  for (const role of ABOX_B2.roleFamilies) {
+    const v = vars[role.name];
+    const target = vars[role.alias];
+    if (!v || !target) { aliasOk = false; continue; }
+    for (const modeId of [light, dark]) {
+      const val = v.valuesByMode[modeId];
+      if (!val || val.type !== "VARIABLE_ALIAS" || val.id !== target.id) aliasOk = false;
+    }
+  }
+  add(aliasOk, "every role family aliases the family variable named by its production var(--font-*) reference, per mode");
+
+  let parityOk = true;
+  for (const n of names) {
+    const v = vars[n];
+    const a = v.valuesByMode[light];
+    const b = v.valuesByMode[dark];
+    const same = a && typeof a === "object" && b && typeof b === "object" ? a.id === b.id : a === b;
+    if (!same) parityOk = false;
+  }
+  add(parityOk, "Light and Dark values identical for all 19 variables (production declares no .dark typography override)");
+
+  add(names.every((n) => vars[n].description && vars[n].description.indexOf("src/styles.css") !== -1),
+    "every variable description carries its src/styles.css source line");
+
+  // B1 must be untouched.
+  let b1Total = 0;
+  let b1Ok = true;
+  for (const b1spec of ABOX_B1.collections) {
+    const c = collections.filter((x) => x.name === b1spec.name);
+    if (c.length !== 1) { b1Ok = false; continue; }
+    b1Total += c[0].variableIds.length;
+  }
+  add(b1Ok && ABOX_B1.collections.length === 9, "the nine B1 collections still exist exactly once each");
+  add(b1Total === 200, "B1 still holds 200 variables (found " + b1Total + ")");
+
+  // Nothing else created.
+  const textStyles = await figma.getLocalTextStylesAsync();
+  const effectStyles = await figma.getLocalEffectStylesAsync();
+  add(textStyles.length === 0, "B2 created no text styles");
+  add(effectStyles.length === 0, "B2 created no effect styles");
+  let components = 0;
+  let componentSets = 0;
+  let nodes = 0;
+  for (const page of figma.root.children) {
+    nodes += page.children.length;
+    components += page.findAll((n) => n.type === "COMPONENT").length;
+    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
+  }
+  add(components === 0, "B2 created no components or variants");
+  add(componentSets === 0, "B2 created no component sets");
+  add(nodes === 0, "the seven library pages remain empty");
+  add(
+    T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
+    "the seven B0 pages remain at indices 0..6 in order",
+  );
+
+  // Inventory evidence for the FINAL REPORT.
+  say("");
+  say("B2 INVENTORY");
+  if (collection) {
+    say("  " + spec.name + " id=" + collection.id + " variables=" + names.length);
+    for (const n of names) {
+      const v = vars[n];
+      const val = v.valuesByMode[light];
+      const shown = val && typeof val === "object" && val.type === "VARIABLE_ALIAS"
+        ? "alias -> " + (Object.keys(vars).find((k) => vars[k].id === val.id) || val.id)
+        : JSON.stringify(val);
+      say("      " + n + "  type=" + v.resolvedType + "  id=" + v.id + "  Light=" + shown +
+          "  Dark=" + (typeof v.valuesByMode[dark] === "object" ? "same alias" : JSON.stringify(v.valuesByMode[dark])));
+    }
+    say("  totals: STRING " + strings.length + " + FLOAT " + floatsFound.length + " = " + names.length);
+  } else {
+    say("  " + spec.name + " : MISSING");
+  }
+
+  say("");
+  say("B2 STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say("RECORDED LIMITATIONS / EXCEPTIONS");
+  for (const l of ABOX_B2.limitations) say("  - " + l);
+  say("  - No publishing performed; library publishing is a separate step.");
+  say("");
+  say(passed ? "RESULT: B2 PASSED" : "RESULT: B2 FAILED — do not proceed to B3.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
 figma.showUI(__html__, { width: 420, height: 560 });
 
