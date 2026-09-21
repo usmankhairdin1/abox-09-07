@@ -4314,21 +4314,32 @@ function b7PropKey(owner, name, type) {
   return keys[0];
 }
 
-function b7MainName(inst) {
-  const main = inst.mainComponent;
+// documentAccess: dynamic-page forbids instance.mainComponent — read it asynchronously.
+async function b7MainName(inst) {
+  const main = await inst.getMainComponentAsync();
   if (!main) return "MISSING";
   if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.name;
   return main.name;
 }
 
-function b7NestedComponentIds(root) {
-  const ids = [];
+function b7Instances(root) {
+  const out = [];
   (function walk(n) {
     for (const c of n.children || []) {
-      if (c.type === "INSTANCE") ids.push(b7MainName(c) + " id=" + (c.mainComponent ? (c.mainComponent.parent && c.mainComponent.parent.type === "COMPONENT_SET" ? c.mainComponent.parent.id : c.mainComponent.id) : "MISSING"));
+      if (c.type === "INSTANCE") out.push(c);
       walk(c);
     }
   })(root);
+  return out;
+}
+
+async function b7NestedComponentIds(root) {
+  const ids = [];
+  for (const c of b7Instances(root)) {
+    const main = await c.getMainComponentAsync();
+    const id = main ? (main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.id : main.id) : "MISSING";
+    ids.push((await b7MainName(c)) + " id=" + id);
+  }
   return ids;
 }
 
