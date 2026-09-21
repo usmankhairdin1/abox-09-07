@@ -148,7 +148,7 @@ const ABOX_B8 = {
         "tools/figma-plugin/tokens-b6.js:241-381",
       ],
       sequence: [
-        { title: "Identity", body: "Legal name, NPN, parent assignment, duplicate warning", source: lineOf("src/routes/agency.downlines.new.identity.tsx", "Duplicate check") },
+        { title: "Identity", body: "Legal name, NPN, parent assignment, duplicate warning", source: lineOf("src/routes/agency.downlines.new.identity.tsx", "Possible existing match") },
         { title: "Contacts", body: "Primary business contact, email, telephone, preferred language", source: lineOf("src/routes/agency.downlines.new.contacts.tsx", "Primary business contact") },
         { title: "Readiness review", body: "PASS / WARNING / FAIL controls before activation", source: lineOf("src/routes/agency.downlines.new.readiness.tsx", "StatusBadge") },
         { title: "Activation", body: "Activation result and organization profile handoff", source: lineOf("src/routes/agency.downlines.new.activate.tsx", "View organization profile") },
