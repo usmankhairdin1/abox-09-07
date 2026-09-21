@@ -136,6 +136,34 @@ Names must be unique within a component; repetition across components is fine.
 
 No Button `state` axis and no Button variant added. PageHeader `hasEyebrow = true` together with `compact` (`page-header.tsx:33` suppresses it) is not a supported combination. MetalBadge, AboxMark, ActionPill, Surface, Control gain no second axis. No Boolean or Text property is expanded into a variant, and no property is converted into a variant to avoid a name clash. No Cartesian expansion beyond the schema-complete KpiCard matrix required by the Figma Component Set model.
 
+## 4. Excluded states, with reasons
+
+| Candidate | Reason |
+| --- | --- |
+| Button `disabled` as a variant or property | `ui/button.tsx:8` styles the native HTML attribute; production names no non-disabled counterpart, so a set-wide axis would require an invented value (§3a). Documentation-only. |
+| hover, group-hover, focus-visible, focus, active/pressed | CSS pseudo-classes; production treats them as interaction behaviour, not reusable design-system states. Documentation-only. |
+| Input `disabled` | `ui/input.tsx:11` declares it, no production call site uses it; adding it would convert the standalone `ABox/Form/Input` into a set and change B4 architecture. |
+| Control `disabled` | `control.tsx:11-12` explicitly leaves it consumer-owned; no canonical definition exists. |
+| error / validation / `aria-invalid` | Only reference routes. |
+| loading, checked, open/closed, expanded/collapsed, success | No production definition on any B4 object. |
+| dialog, sheet, popover, tooltip, dropdown-menu, tabs states | Behavioural primitives — B6. |
+| responsive `md:`/`xl:` branches (`page-header.tsx:37,44,46`, `kpi-card.tsx`, `ui/input.tsx:11`) | Layout composition, not component-level states — B7/B8. |
+| motion: `CountUp`, `FadeRise`, `animate-hairline`, `transition-all`, `group-hover` rotate/scale | Motion; no reusable resting state beyond what already exists. |
+
+## 5. Foundation bindings
+
+Every B5 state reuses the existing foundations, taken from the production declaration and never from value equality: KpiCard `deltaSign=positive` binds the B3 colour style backed by `ABox/Semantic/sage`, `deltaSign=negative` the one backed by `ABox/Semantic/destructive` (`kpi-card.tsx:78`); all other colour, elevation and typography references stay on the B3 styles and B1/B2 variables already attached in B4. Boolean, Text and Instance Swap properties change no fill, stroke, effect or type binding. No hard-coded foundation value is introduced, and B1/B2/B3 are read-only throughout.
+
+## 6. Idempotency
+
+The live property inventory of each B4 object is read before any write. Exact-name matching on set, variant, property and value. Existing variant or property = reuse and update in place, id preserved. Duplicate property or value = STOP. Property-type mismatch (Boolean vs Text vs Instance Swap vs Variant) = STOP. Attempting to create a set or component that B4 already owns = STOP. Nothing is deleted. Run 2 creates zero B5 objects and reports ids identical to Run 1, including every pre-existing B4 id.
+
+## 7. `b5-verify` — 25 checks
+
+1. B4 existing property inventory is read and printed first. 2. No existing B4 property is recreated; every pre-existing property id is preserved. 3. No B4 component, set or variant is renamed, deleted or re-architected. 4. Exactly one new variant property exists: `KpiCard.deltaSign` with values `positive`, `negative`. 5. Component Set schema consistency: every variant of every set carries a value for every variant property of that set — asserted for all 11 sets, KpiCard included at `tone` × `deltaSign` = 8. 6. `ABox/Action/Button` still has exactly the axes `variant` × `size` and exactly 9 variants; no `state` property exists on it. 7. Per component, every property name is unique and no name is used for two property types — asserted against the §3f table. 8. Boolean = 9, Text = 15, Instance Swap = 1, non-variant total = 25, with arithmetic printed. 9. Exact property names per component match §3c–§3e. 10. Per-state production source mapping printed for every B5 property and value. 11. B1/B2/B3 bindings resolve to existing objects. 12. No hard-coded duplicate foundation value. 13. No value-equality-derived state. 14. No invented state and no invented variant value. 15. No property converted into a variant to avoid a name clash. 16. No pseudo-class rendered as a variant. 17. Responsive only where justified (zero); motion only where justified (zero). 18. B1 = 9 collections / 200 variables. 19. B2 = 1 collection / 19 variables. 20. B3 = 79 styles. 21. Objects = 11 sets + 3 components, `11 + 3 = 14`; variants `52 + 4 = 56` printed. 22. Pages unchanged: 7, in order, only `01 Components` populated; no patterns, shells, screens or documentation content. 23. `git diff --stat -- src/` empty. 24. `code.js` regenerated only by `node build.mjs`. 25. Offline Run 1 passes and Run 2 creates zero objects with identical ids; offline mock execution is explicitly distinguished from real Figma Desktop execution and mock ids are never presented as Figma ids.
+
+Final line: `RESULT: B5 PASSED` or `RESULT: B5 FAILED — do not proceed to B6.`
+
 ## 8. Run procedure
 
 Offline: `node tools/figma-plugin/extract-b5.mjs` → `node tools/figma-plugin/build.mjs` → mock harness runs B1, B2, B3, B4, then B5 twice; assert zero creations and identical ids on Run 2. Real: in Figma Desktop, inside `ABox Design System — Library`, **Create component states** → **Verify component states** → **Create component states** again; both outputs, with real ids, form the B5 final report. Mock ids are never presented as Figma ids.
