@@ -4262,6 +4262,79 @@ async function b7EnsureStandalone(index, page, shell) {
   return node;
 }
 
+/** The approved region list for every node B7 is allowed to own on 03 Shells. */
+function b7ExpectedRegions(name) {
+  if (name === "ABox/Shell/Internal") {
+    return ["desktop-rail", "top-bar", "page-header", "content-region — shell placeholder", "assistant-launcher-region"];
+  }
+  if (name === "ABox/Shell/Member") {
+    return ["header-pill", "member-body", "member-nav", "content-region — shell placeholder", "assistant-launcher-region"];
+  }
+  if (name === "variant=flow") {
+    return ["header-pill", "product-switcher-region", "content-region — shell placeholder", "footer-plate", "assistant-launcher-region"];
+  }
+  if (name === "variant=landing") {
+    return ["header-pill", "content-region — shell placeholder", "footer-plate", "assistant-launcher-region"];
+  }
+  return null;
+}
+
+/**
+ * Removes only nodes this run created and only when their name is an approved B7 shell
+ * or approved variant node. Pre-existing nodes and Component Sets are never touched.
+ */
+async function b7Guarded(page, label, fn) {
+  const before = {};
+  for (const child of page.children) before[child.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const child of page.children.slice()) {
+      if (before[child.id]) continue;
+      if (child.type === "COMPONENT_SET") continue;
+      if (!b7ExpectedRegions(child.name)) continue;
+      say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
+      child.remove();
+      removed += 1;
+    }
+    if (!removed) say("  (" + label + " left no new node on " + B7_PAGE + ")");
+    throw err;
+  }
+}
+
+/** Guarded removal of provably incomplete B7 shell debris. Never deletes a complete shell. */
+async function b7CleanupIncompleteShells() {
+  await figma.loadAllPagesAsync();
+  const page = b7Page();
+  say("B7 INCOMPLETE-SHELL CLEANUP — " + B7_PAGE);
+  let removed = 0;
+  for (const child of page.children.slice()) {
+    const expected = b7ExpectedRegions(child.name);
+    const live = b7NodePaths(child).map((p) => p.split(":")[1].split("|")[0]);
+    if (child.parent !== page) { say("  KEPT — " + child.name + " is not a direct child of the page."); continue; }
+    if (child.type === "COMPONENT_SET") { say("  KEPT — " + child.name + " id=" + child.id + " is a Component Set."); continue; }
+    if (child.type !== "COMPONENT") { say("  KEPT — " + child.name + " id=" + child.id + " is a " + child.type + ", not a B7 component."); continue; }
+    if (!expected) { say("  KEPT — " + child.name + " id=" + child.id + " is not an approved B7 shell or variant name."); continue; }
+    if (b7HasRequiredShape(child, expected)) {
+      say("  KEPT — " + child.name + " id=" + child.id + " is complete; expected regions all present: " + expected.join(", "));
+      continue;
+    }
+    const instances = await child.getInstancesAsync();
+    if (instances.length) {
+      say("  KEPT — " + child.name + " id=" + child.id + " has " + instances.length + " live instance(s).");
+      continue;
+    }
+    say("  removed incomplete — " + child.name + "  id=" + child.id);
+    say("      expected regions: " + expected.join(", "));
+    say("      live layer names : " + (live.join(", ") || "none"));
+    child.remove();
+    removed += 1;
+  }
+  say("");
+  say("  nodes removed: " + removed + "; nothing else was created, modified or deleted.");
+}
+
 async function ensureB7Shells() {
   await figma.loadAllPagesAsync();
   b7CreatedPhysical = 0;
