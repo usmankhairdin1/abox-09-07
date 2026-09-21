@@ -27,7 +27,7 @@ mustContain("src/components/abox/marketplace-shell.tsx", [
   "showAssistant?: boolean",
   "showProducts?: boolean",
   'const withProducts = showProducts ?? variant === "flow"',
-  "{withProducts && <ProductSwitcher activeProduct={product} />}",
+  "{withProducts && <ProductSwitcher",
 ]);
 mustContain("src/components/abox/member-shell.tsx", [
   "MemberShell",
@@ -36,7 +36,7 @@ mustContain("src/components/abox/member-shell.tsx", [
 ]);
 mustContain("src/components/abox/product-switcher.tsx", [
   "SHOP_PRODUCTS",
-  "activeProduct",
+  "active",
 ]);
 mustContain("src/lib/products.ts", [
   'key: "ifp"',
