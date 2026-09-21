@@ -148,3 +148,40 @@ Recorded limitations: oklch is stored as sRGB (source notation in variable descr
 `color-mix()` StatusBadge tints stay runtime-computed and get no static variable; composite
 shadows become Effect Styles later; decorative utilities, motion keyframes and responsive
 breakpoints are not variables.
+
+## Phase 52 / Batch B2 — typography foundation
+
+`tokens-b2.js` is GENERATED from `src/styles.css` by `node tools/figma-plugin/extract-b2.mjs`
+(run from the project root). Never edit it by hand. Rebuild with `node build.mjs`.
+
+In Figma Desktop, inside `ABox Design System — Library`: click **Create typography variables**,
+then run a second time — it must report `RESULT: B2 PASSED` with zero created and identical ids.
+**Verify typography variables** runs the checks alone.
+
+One collection, `ABox/Typography`, modes `Light` and `Dark` only (no `Default`). Production
+declares no `.dark` typography override, so both modes intentionally carry identical values.
+
+| Group | Type | Count |
+| --- | --- | --- |
+| `family/sans`, `family/display`, `family/serif`, `family/mono` | STRING | 4 |
+| `role/{base,heading,display,eyebrow,serial}/family` (alias) | STRING | 5 |
+| `role/heading/{weight,letter-spacing}` | FLOAT | 2 |
+| `role/display/{weight,letter-spacing,line-height}` | FLOAT | 3 |
+| `role/eyebrow/{size,weight,letter-spacing}` | FLOAT | 3 |
+| `role/serial/{size,letter-spacing}` | FLOAT | 2 |
+
+STRING 9 + FLOAT 10 = 19 variables. `--font-serif` and `--font-display` hold identical stacks,
+as do `--font-mono` and `--font-sans`; they stay four distinct variables because production
+declares four roles and value equality is never alias evidence. A role family aliases a family
+variable only because production writes `font-family: var(--font-X)` in that rule.
+
+Conversions: `rem` → px at the 16px root; `em` letter-spacing → Figma percentage
+(`-0.028em` → `-2.8`); line-height stays the unitless production number. Every variable
+description carries its `src/styles.css:<line>` source declaration.
+
+Not represented as variables, recorded verbatim instead: `font-variation-settings`
+(`wdth`/`opsz` axes), `font-feature-settings`, `font-variant-numeric`, `text-transform`,
+and the eyebrow/serial `color` (already a B1 semantic variable). Font stacks are stored whole
+even though Figma has no fallback concept. JetBrains Mono is loaded in the document head but
+referenced by no token, so it gets no variable. Tailwind's built-in size/leading/tracking
+utilities are library-owned defaults and are not imported. B2 creates no text styles.
