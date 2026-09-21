@@ -1994,15 +1994,43 @@ async function verifyB4() {
   );
   // "02 Patterns" is B6's page; every other non-component page must stay empty.
   const others = figma.root.children.filter((p) => p.name !== B4_PAGE && p.name !== "02 Patterns");
+  const pageEvidence = [];
+  for (const p of others) {
+    for (const child of p.children) {
+      pageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
+    }
+  }
   add(others.every((p) => p.children.length === 0), "pages 00, 03, 04, 05, 06 remain empty (02 Patterns is B6-owned)");
+  const expectedOnPage = sets.concat(standalone).filter((n) => n.parent && n.parent.id === page.id);
+  const extras = page.children.filter((n) => !expectedOnPage.some((e) => e.id === n.id));
+  const missing = sets.concat(standalone).filter((n) => !n.parent || n.parent.id !== page.id);
   add(
-    page.children.length === sets.length + standalone.length,
-    'page "01 Components" holds exactly the ' + (sets.length + standalone.length) + " B4 objects (Figma requires component nodes to live on a page)",
+    expectedOnPage.length === sets.length + standalone.length && extras.length === 0,
+    'page "01 Components" holds exactly the ' + (sets.length + standalone.length) +
+      " B4 component objects and nothing else (found " + expectedOnPage.length + " B4 objects, " + extras.length + " extra node(s))",
   );
+  for (const n of extras) {
+    pageEvidence.push("  " + B4_PAGE + " › EXTRA " + n.name + " (" + n.type + ")  id=" + n.id);
+  }
+  for (const n of missing) {
+    pageEvidence.push("  " + B4_PAGE + " › MISSING FROM PAGE " + n.name + " (" + n.type + ")  id=" + n.id);
+  }
   add(
     page.children.every((n) => n.type === "COMPONENT_SET" || n.type === "COMPONENT"),
     "no patterns, shells, screens or documentation content created",
   );
+
+  if (rawEvidence.length) {
+    say("");
+    say("B4 RAW FILL EVIDENCE (first " + rawEvidence.length + " of " + rawFill + ")");
+    for (const line of rawEvidence) say(line);
+  }
+  if (pageEvidence.length) {
+    say("");
+    say("B4 PAGE EVIDENCE");
+    for (const line of pageEvidence) say(line);
+  }
+
 
   /* ---------- inventory ---------- */
   say("");
