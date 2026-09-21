@@ -100,7 +100,7 @@ Two production props are caller-supplied `React.ReactNode` content slots, and ea
 | PageHeader `icon` | `ComponentType<{className?: string}>` | `page-header.tsx:15,30-35` | Boolean only | `hasIcon` | visibility-only | no — B4 created no icon Component; non-swappable, limitation preserved |
 | KpiCard `icon` | `ComponentType<{className?: string}>` | `kpi-card.tsx:20,60` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
 | EmptyState `icon` | `ComponentType<{className?: string}>` | `empty-state.tsx:6,18-22` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
-| LabeledField `control` | children | `field.tsx` | exposed nested instance (not a property) | `control` | content, already exposed in B4 | existing `ABox/Control/Control` instance |
+| LabeledField control slot | `children: React.ReactNode` | `field.tsx:16-30` — `<label>…<span>{label}</span>{children}</label>`, control explicitly consumer-owned (`field.tsx:11-14`) | exposed nested instance (a node flag, **not** a component property) | nested instance layer named `control` | content slot | yes — B4 already nests a real `ABox/Control/Control` instance (asserted `plugin.js:1814`), but B4 never exposed it (see §3e-bis) |
 
 Instance Swap properties: **2** (`PageHeader.actions`, `EmptyState.action`). No other production prop is a content slot: every remaining optional prop is a string or a `ComponentType` icon.
 
