@@ -31,7 +31,7 @@ Conclusion, now evidence-backed: after B4 the file contains VARIANT properties o
 
 | Component | Real Figma properties existing after B4 | Recorded-but-not-created in `tokens-b4.js` |
 | --- | --- | --- |
-| `ABox/Action/ActionPill` | variant `action` (10) | text `label` |
+| `ABox/Action/ActionPill` | variant `variant` (10) — authoritative name, see §3g-ter | text `label` |
 | `ABox/Action/Button` | variant `variant`, variant `size` (9 combos) | text `label` |
 | `ABox/Status/StatusBadge` | variant `tone` (6) | text `label` |
 | `ABox/Status/MetalBadge` | variant `tier` (6) | text `label` |
@@ -50,7 +50,7 @@ B5 rule: read the live inventory; existing property = reuse in place with its id
 
 ## 2b. B4 / B5 boundary
 
-Already in B4, not duplicated by B5: ActionPill `action` (10), Button `variant` × `size`, StatusBadge `tone` (6), MetalBadge `tier` (6), Surface enumerated combinations, Control `height`/`focusRing`, KpiCard `tone` (4), PageHeader `default`/`compact`, ModuleTab `default`/`active`, WizardStep `current`/`done`/`upcoming`/`unreachable`, AboxMark `tone` (4). B5 renames nothing, recreates nothing and re-architects nothing.
+Already in B4, not duplicated by B5: ActionPill `variant` (10), Button `variant` × `size`, StatusBadge `tone` (6), MetalBadge `tier` (6), Surface enumerated combinations, Control `height`/`focusRing`, KpiCard `tone` (4), PageHeader `default`/`compact`, ModuleTab `default`/`active`, WizardStep `current`/`done`/`upcoming`/`unreachable`, AboxMark `tone` (4). B5 renames nothing, recreates nothing and re-architects nothing.
 
 ## 3. Included B5 states
 
