@@ -1723,10 +1723,20 @@ async function b4EnsureSet(set, index, page) {
     let component = b4MatchVariant(children, vname);
     const isNew = !component;
     if (isNew) {
+      // Debris guard: a variant left on the page by an aborted run is never silently
+      // adopted or deleted here — the operator clears it with the stale-variant cleanup.
+      const stray = page.children.filter((n) => n.type === "COMPONENT" && n.name === vname);
+      if (stray.length) {
+        throw new Error(
+          'STOP: STALE TOP-LEVEL VARIANT — "' + vname + '" (id=' + stray[0].id + ") sits on " +
+            B4_PAGE + ' outside its set. Run "Remove stale B4 variant components" first.',
+        );
+      }
       component = figma.createComponent();
       component.name = vname;
       // Figma requires component nodes to live on a page before they can be combined.
       page.appendChild(component);
+
     } else {
 
       for (const child of component.children.slice()) child.remove();
@@ -5289,6 +5299,94 @@ async function b4CleanupOrphans() {
   return doomed.length;
 }
 
+/**
+ * Remove stale B4 variant components stranded on "01 Components" by an aborted run.
+ * A node is removed ONLY when every identity condition below holds; anything failing a
+ * single condition is reported and kept. Valid B4 objects can never qualify.
+ */
+async function b4StaleVariants() {
+  await figma.loadAllPagesAsync();
+  const page = b4Page();
+
+  const approved = {};
+  for (const list of [b8ApprovedNames(), b9ApprovedNames(), b10ApprovedNames()]) {
+    for (const name of list || []) approved[name] = true;
+  }
+  for (const spec of ABOX_B4.components) approved[spec.name] = true;
+  const batchOwned = (name) =>
+    approved[name] === true ||
+    name.indexOf("ABox/Pattern/") === 0 ||
+    name.indexOf("ABox/Shell/") === 0 ||
+    name.indexOf("ABox/Screen/") === 0 ||
+    name.indexOf("ABox/ScreenState/") === 0 ||
+    name.indexOf("ABox/Doc/") === 0;
+
+  // condition 4: map every approved B4 variant name to its owning set spec
+  const variantOwner = {};
+  for (const set of ABOX_B4.sets) {
+    for (const value of set.values) variantOwner[b4VariantName(set, value)] = set;
+  }
+
+  say("B4 STALE VARIANT CLEANUP");
+  say("");
+
+  const doomed = [];
+  const kept = [];
+  for (const node of page.children) {
+    if (node.type !== "COMPONENT") continue; // conditions 1 + 2
+    if (!node.parent || node.parent.id !== page.id) continue;
+    if (batchOwned(node.name)) {
+      kept.push("  KEPT — batch-owned name : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const owner = variantOwner[node.name];
+    if (!owner) {
+      kept.push("  KEPT — not a B4 variant name : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const set = b4FindSet(owner.name); // condition 5
+    if (!set) {
+      kept.push("  KEPT — owning set missing : " + node.name + " (" + owner.name + ")  id=" + node.id);
+      continue;
+    }
+    const live = b4MatchVariant(set.children.slice(), node.name);
+    if (!live || live.id === node.id) {
+      kept.push("  KEPT — no surviving variant in " + owner.name + " : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const instances = await node.getInstancesAsync(); // condition 6 (async: dynamic-page)
+    if (instances.length) {
+      kept.push("  KEPT — has " + instances.length + " live instance(s) : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    doomed.push({ node: node, owner: owner.name, live: live.id });
+  }
+
+  for (const line of kept) say(line);
+  if (kept.length) say("");
+
+  if (!doomed.length) {
+    say("  nothing to remove — no stale B4 variant component on " + B4_PAGE + ".");
+  }
+  for (const entry of doomed) {
+    say(
+      "  remove : " + entry.node.name + "  id=" + entry.node.id +
+        "  (belongs in " + entry.owner + "; surviving variant id=" + entry.live + ")",
+    );
+    entry.node.remove();
+  }
+
+  say("");
+  say("  page contents after cleanup");
+  for (const p of figma.root.children) {
+    say("    " + p.name + " : " + p.children.length + " node(s)");
+  }
+  say("");
+  say("  removed this run: " + doomed.length);
+  return doomed.length;
+}
+
+
 /* ---------- entry ---------- */
 
 
@@ -5300,7 +5398,8 @@ figma.ui.onmessage = async (msg) => {
   const b1 = msg.type === "b1-run" || msg.type === "b1-verify";
   const b2 = msg.type === "b2-run" || msg.type === "b2-verify";
   const b3 = msg.type === "b3-run" || msg.type === "b3-verify";
-  const b4 = msg.type === "b4-run" || msg.type === "b4-verify" || msg.type === "b4-cleanup-orphans";
+  const b4 = msg.type === "b4-run" || msg.type === "b4-verify" || msg.type === "b4-cleanup-orphans" ||
+    msg.type === "b4-cleanup-stale-variants";
   const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
@@ -5395,6 +5494,12 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b4CleanupOrphans();
+    } else if (msg.type === "b4-cleanup-stale-variants") {
+      say("ABox Phase 52 / Batch B4 — remove stale variant components");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b4StaleVariants();
 
     } else if (msg.type === "b5-run") {
       say("ABox Phase 52 / Batch B5 — component variants & states");
