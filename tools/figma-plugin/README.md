@@ -373,3 +373,31 @@ B7 creates no screens, no responsive variants, no prototype links, no publishing
 files. Real evidence requires running **Create shells** → **Verify shells** → **Create shells** in
 Figma Desktop and comparing identical ids with zero creations on the second run.
 
+## Phase 55 / Batch B8 — experiences
+
+Buttons: **Create experiences** (`b8-run`) and **Verify experiences** (`b8-verify`). Source data is
+extracted by `extract-b8.mjs` into `tokens-b8.js`; `code.js` is regenerated only by `build.mjs`.
+
+B8 creates exactly five editable top-level FRAME reference compositions on `04 Experiences` only:
+
+- `ABox/Experience/Internal/DownlineAgencyCreation`;
+- `ABox/Experience/Internal/MarketplaceActivationGovernance`;
+- `ABox/Experience/Marketplace/PlanAIShoppingPath`;
+- `ABox/Experience/Marketplace/EnrollmentReviewAndSubmission`;
+- `ABox/Experience/Member/ContinuationWorkspace`.
+
+Each frame consumes existing live B7 shell instances, B6 pattern instances where the production
+journey uses those foundations, and existing B4/B5 component instances. B8 creates no variables,
+styles, components, component sets, patterns, component properties, responsive variants, prototype
+links, screenshots, HTML embeds or flattened substitutes. Route-local structures such as PlanCard,
+ShoppingPathBar, application steppers, tables, checklists, overlays, field groups and message rows
+remain documented editable route composition and are not promoted to foundations.
+
+Idempotency is strict: an existing B8 frame is reused only when its B8 plugin data, source list,
+structural signature and four approved child regions match exactly. Any mismatch, duplicate name,
+wrong type or missing B7/B6/B4 dependency stops without overwriting or deleting the live object. Run 1
+creates five frames; Run 2 must create zero frames with identical ids.
+
+Offline/static validation is not native Figma evidence. Real evidence requires running **Create
+experiences** → **Verify experiences** → **Create experiences** in Figma Desktop and confirming real ids
+with zero creations on the second run. No publishing is performed.

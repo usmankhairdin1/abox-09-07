@@ -3892,8 +3892,20 @@ function b8SetInstanceProps(inst, props) {
   if (Object.keys(out).length) inst.setProperties(out);
 }
 
+function b8VariantChild(main, props) {
+  if (main.type !== "COMPONENT_SET") return main;
+  const entries = Object.keys(props || {}).filter((k) => k !== "product" && typeof props[k] === "string");
+  for (const key of entries) {
+    const wanted = key + "=" + props[key];
+    const match = main.children.filter((c) => c.name.split(",").map((s) => s.trim()).indexOf(wanted) !== -1);
+    if (match.length === 1) return match[0];
+    if (match.length > 1) throw new Error('STOP: AMBIGUOUS B8 VARIANT — "' + main.name + '" / "' + wanted + '" matched ' + match.length + " variants.");
+  }
+  return main.defaultVariant || main.children[0];
+}
+
 function b8CreateInstance(main, props, name) {
-  const source = main.type === "COMPONENT_SET" ? main.defaultVariant || main.children[0] : main;
+  const source = b8VariantChild(main, props || {});
   const inst = source.createInstance();
   b8SetInstanceProps(inst, props || {});
   inst.name = name || main.name.split("/").pop();
@@ -3925,7 +3937,7 @@ function b8ComponentInstance(comp) {
 }
 
 async function b8Card(title, body, source, index) {
-  const card = b7Frame("state-card", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const card = b7Frame("state-card", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", w: 300, primarySizing: "FIXED" }, index);
   card.appendChild(await b7Text("state-title", title, { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   card.appendChild(await b7Text("state-body", body, { size: 13, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   card.appendChild(await b7Text("state-source", source, { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
@@ -3949,9 +3961,11 @@ async function b8ShellRegion(spec, index) {
 }
 
 async function b8SequenceRegion(spec, index) {
-  const region = b7Frame("journey-sequence", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7Frame("journey-sequence", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Journey states", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  for (const item of spec.sequence) region.appendChild(await b8Card(item.title, item.body, item.source, index));
+  const row = b7Frame("state-cards", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
+  for (const item of spec.sequence) row.appendChild(await b8Card(item.title, item.body, item.source, index));
+  region.appendChild(row);
   return region;
 }
 
@@ -4171,7 +4185,9 @@ async function verifyB8() {
   add(propOk, "B8 creates no top-level component properties, generic children/content property or synthetic state property");
   add(protoOk, "B8 creates no prototype reactions or simulated navigation links");
   add(imageOk, "B8 uses no screenshots, HTML embeds, flattened images or external image substitutions");
+  add(C.newVariables === 0 && C.newStyles === 0 && C.newComponents === 0 && C.newComponentSets === 0 && C.newPatterns === 0 && C.newProperties === 0 && C.prototypes === 0, "B8 token contract declares zero new foundations, properties and prototypes");
   add(!page.children.some((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET"), "B8 creates no components, component sets, patterns, variables or styles");
+  add(ABOX_B8.experiences.every((e) => e.sources.length >= 4 && e.sequence.length >= 3), "every B8 experience has source traceability and multi-state journey evidence");
   add(ABOX_B8.limitations.length >= 6, "dynamic, unsupported and deferred areas are documented as B8 limitations");
   add(b8Created === 0 || b8Created === C.topLevelFrames, "run bookkeeping: B8 top-level frames created this run = " + b8Created + " (run 2 must be 0)");
 
