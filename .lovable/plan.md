@@ -50,7 +50,7 @@ Member route files: `member.index.tsx`, `member.messages.tsx`, `member.quotes.ts
 | Marketplace | `variant` | prop type `marketplace-shell.tsx:28`, default `:35`, header branch `:57`, nav branch `:68-70`, product default `:38` | union prop `"landing" | "flow"` | Structure and positioning | CREATE as a real shell-level Component Set `ABox/Shell/Marketplace` with exactly one VARIANT axis `variant` and exactly two values: `flow`, `landing`. `flow` includes the default flow product switcher region; `landing` uses top offset `top-6`, includes the `Shop plans` nav item, and has product rail hidden by default through `showProducts=false` construction. | `ABox/Shell/Marketplace` Component Set; variant nodes `variant=flow`, `variant=landing` | Default construction for flow: `flow`; landing construction: `landing` | Source explicitly declares two authored values and they produce reusable structural differences. No Boolean substitute and no third value. |
 | Marketplace | `showAssistant` | prop `marketplace-shell.tsx:29`, default `:35`, render `:188` | optional boolean prop | Visibility | BOOLEAN component property `showAssistant` attached to exact assistant launcher region `visible` in each Marketplace variant, if the target launcher node resolves unambiguously. | `assistant-launcher-region.visible` on `variant=flow` and `variant=landing` | `true` | Source default is `true`; call sites pass false on auth/apply/handoff/schedule/shared/unavailable variants. Open/closed assistant behavior remains metadata. |
 | Marketplace | `product` | prop `marketplace-shell.tsx:31`, pass-through `:140`; ProductSwitcher active comparison `product-switcher.tsx:29`, labels `:51`, products `src/lib/products.ts:28-37` | optional string prop; observed product keys from catalogue include `ifp`, `dental`, `vision`, `life`, `critical`, `accident`, `hospital`, `ichra` | Selected product state, navigation, content labels inside product rail | Do not create a shell variant axis. If the product rail exists, set one static source-backed selected product sample and record the rest as dynamic metadata. Do not create TEXT property unless an exact shell-owned product text layer exists; ProductSwitcher owns labels, not the shell. | `product-switcher-region/product-item[active-sample]` metadata | `ifp` for flow construction when product sample is required | Runtime/consumer data controls active state and links in a child composition. The shell does not declare a finite structural product-mode API suitable for shell variants. |
-| Marketplace | `showProducts` | prop `marketplace-shell.tsx:32`, derived `:38`, render `:140` | optional boolean prop | Visibility and region existence | BOOLEAN component property `showProducts` attached to exact product switcher region `visible` in each Marketplace variant. Flow construction value is `true` because `showProducts ?? variant === "flow"`; landing construction value is `false` because `showProducts` is absent and `variant === "landing"`. | `product-switcher-region.visible` on `variant=flow` and `variant=landing` | `true` for flow, `false` for landing | Real Boolean prop controls the region. Do not create a second shell component for products/no-products. If target region cannot resolve, STOP and record limitation instead of detached property. |
+| Marketplace | `showProducts` | prop `marketplace-shell.tsx:32`, derived `:38`, render `:140` | optional boolean prop | Visibility and region existence | BOOLEAN only where the product-switcher region exists. Resolve the product-switcher region independently inside each Marketplace variant. `variant=flow`: create/reuse B7 Boolean property `showProducts` and attach that property id to the exact product-switcher region using `visible`. `variant=landing`: do not create a product-switcher region merely to support the Boolean; do not fabricate `componentPropertyReferences.visible` against a nonexistent layer. The same shared component-set property definition may remain if Figma supports it safely, but it is not claimed to be attached to a nonexistent landing sublayer. | `variant=flow` product-switcher region → `visible`; `variant=landing` no target because the region does not exist | flow = `true`; landing = source-derived absence | Asymmetric variant-local binding; no synthetic landing target. Do not create `hasProducts`; do not create a separate Marketplace shell; do not add a hidden placeholder frame. If Figma requires a Boolean reference in every variant or cannot support this asymmetric structure safely, STOP for `showProducts`, create no detached property, record the exact API/structural limitation, and do not alter either variant. |
 | Marketplace | session/auth branch | session read `marketplace-shell.tsx:39`, branch `:96-137` | runtime auth state | Visibility/content/interaction | Static signed-out construction by default; signed-in account branch documented as dynamic metadata. No shell variant. | `marketplace-nav/auth-region` metadata | Signed-out sign-in button sample | Auth state is not exposed as shell prop and is not a reusable finite shell mode. |
 | Marketplace | cart branch | cart read `marketplace-shell.tsx:36-38`, branch `:73-95` | runtime cart state | Visibility/content | Static empty-cart construction by default; non-empty label/count/monthly behavior documented. No shell variant. | `marketplace-nav/cart-region` metadata | Empty cart | Cart data is runtime state, not a shell prop or reusable shell mode. |
 | Marketplace | runtime brand values | brand read `marketplace-shell.tsx:41-45`, display `:59-64`, footer `:153-158` | runtime data state | Content | Static sample text only; live `ABox/Brand/AboxMark` instance for mark. No foundation or component property transfer. | Header/footer brand text nodes | `ABox`, `Agency in a Box` | Branding/White-Label remains runtime-owned; no Figma foundation transfer. |
@@ -169,7 +169,7 @@ Static structure per variant:
 2. Header pill frame: sticky source `:57-141`; top offset is recorded per variant.
 3. Brand/home region: live `ABox/Brand/AboxMark` instance and brand text structure from `:59-64`; runtime branding values are sample text only and not transferred into foundations.
 4. Marketplace nav region: `PillLink` items and cart/sign-in/account branch from `:67-137`, using structural text/icon placeholders where no B4 control exists. Auth/cart dynamic branches are documented, not encoded as variants.
-5. Product switcher rail region: structure comes from `product-switcher.tsx:20-78`; represented as a shell region with `showProducts` BOOLEAN visibility, not as a new primitive.
+5. Product switcher rail region: structure comes from `product-switcher.tsx:20-78`; represented as a shell region only in `variant=flow`, with `showProducts` BOOLEAN visibility attached to that flow-region `visible` field. `variant=landing` has no product-switcher region by source-derived construction, so it has no product-region target and no synthetic hidden placeholder.
 6. Content region: `main id="main"` from `:143-145`, labelled `content-region — shell placeholder`.
 7. Footer plate: monolithic footer from `:148-186`, including live `ABox/Brand/AboxMark` instance and link-column structure; footer grid responsive behavior documented from `:151` and `:177`.
 8. Assistant launcher: source `:188`; region visible is controlled by `showAssistant` BOOLEAN; open panel documented/deferred.
@@ -287,24 +287,28 @@ At minimum, `b7-verify` will assert:
 19. No represented property is detached.
 20. Every omitted/deferred prop has an explicit documented reason.
 21. `Marketplace.variant` is represented as the exact source-backed `flow | landing` variant axis.
-22. `Marketplace.showProducts` is either bound to exact product-region `visible` fields or STOPs with explicit limitation if the target cannot be resolved.
-23. `Marketplace.showAssistant` is either bound to exact launcher-region `visible` fields or STOPs with explicit limitation if the target cannot be resolved.
-24. `Internal.pageTitle` and `Internal.eyebrow` are either bound TEXT properties or STOP with explicit limitation if exact targets cannot be resolved.
-25. `Internal.actions` is either faithfully attached through `hasActions` BOOLEAN + `actions` SLOT, or explicitly deferred because exact SLOT representation is unsupported.
-26. `Member.children` remains structural content-region only and is not fabricated into a generic property.
-27. Every shell matches its source-backed structural signature.
-28. Every nested component resolves to the expected live component id.
-29. No hard-coded duplicate foundation value.
-30. No invented responsive variant.
-31. No invented interaction.
-32. No screen-level content is embedded.
-33. No B6 pattern is mutated.
-34. No B4/B5 primitive is mutated.
-35. No B4/B5/B6 object is mutated to support shell properties.
-36. Run 2 creates zero objects and reports identical ids and property ids.
-37. Real Figma ids are explicitly distinguished from offline/mock ids.
-38. Responsive and interaction audit rows are printed for every shell.
-39. No deferred/rejected B8 screen content is created on `03 Shells`.
+22. `Marketplace.showProducts` is never attached to a nonexistent landing node.
+23. If `showProducts` is represented, the flow variant's exact product-switcher region has the correct `visible` reference.
+24. The landing variant contains no synthetic product-switcher target added solely for the property.
+25. If the shared Figma property cannot be represented safely with this asymmetric structure, verification STOPs rather than accepting a detached property.
+26. The final report prints the `showProducts` property id, type, flow target node id/name, reference field, and explicit landing `no target` condition.
+27. `Marketplace.showAssistant` is either bound to exact launcher-region `visible` fields or STOPs with explicit limitation if the target cannot be resolved.
+28. `Internal.pageTitle` and `Internal.eyebrow` are either bound TEXT properties or STOP with explicit limitation if exact targets cannot be resolved.
+29. `Internal.actions` is either faithfully attached through `hasActions` BOOLEAN + `actions` SLOT, or explicitly deferred because exact SLOT representation is unsupported.
+30. `Member.children` remains structural content-region only and is not fabricated into a generic property.
+31. Every shell matches its source-backed structural signature.
+32. Every nested component resolves to the expected live component id.
+33. No hard-coded duplicate foundation value.
+34. No invented responsive variant.
+35. No invented interaction.
+36. No screen-level content is embedded.
+37. No B6 pattern is mutated.
+38. No B4/B5 primitive is mutated.
+39. No B4/B5/B6 object is mutated to support shell properties.
+40. Run 2 creates zero objects and reports identical ids and property ids.
+41. Real Figma ids are explicitly distinguished from offline/mock ids.
+42. Responsive and interaction audit rows are printed for every shell.
+43. No deferred/rejected B8 screen content is created on `03 Shells`.
 
 Failure line:
 
@@ -321,7 +325,7 @@ B7 must print:
 | Shell | Root id | Root name | Nested component ids | B7 properties | Content region | Responsive behavior | Interaction metadata | Source evidence |
 |---|---|---|---|---|---|---|---|---|
 | ABox/Shell/Internal | live id | exact name | live nested ids | `pageTitle`, `eyebrow`, `entity` if attached; `hasActions`/`actions` only if faithfully supported | content-region placeholder | printed audit rows | printed audit rows | `internal-shell.tsx` line evidence |
-| ABox/Shell/Marketplace | live Component Set id plus variant ids | exact set and variant names | live nested ids | `variant`; `showProducts` and `showAssistant` if attached | content-region placeholder per variant | printed audit rows | printed audit rows | `marketplace-shell.tsx`, `product-switcher.tsx`, `products.ts` line evidence |
+| ABox/Shell/Marketplace | live Component Set id plus variant ids | exact set and variant names | live nested ids | shared `variant`; `showProducts` shared definition only if safely supported; `showProducts` flow binding to product-region `visible`; landing explicit `no target`; `showAssistant` if attached | content-region placeholder per variant | printed audit rows | printed audit rows | `marketplace-shell.tsx`, `product-switcher.tsx`, `products.ts` line evidence |
 | ABox/Shell/Member | live id | exact name | live nested ids | none for `children`; documented metadata only | content-region placeholder | printed audit rows | printed audit rows | `member-shell.tsx` and `nav-config.ts` line evidence |
 
 Also print:
@@ -336,6 +340,7 @@ Also print:
 - Run 2 creation count;
 - identical-id result;
 - component-property ids, type, target node, reference field, and construction value for each represented property;
+- for `ABox/Shell/Marketplace.showProducts`, distinguish shared component-property definition, per-variant target bindings, and variant-local absence where no target layer exists;
 - explicit note that offline/mock ids are not real Figma ids.
 
 ## Files for implementation after approval
