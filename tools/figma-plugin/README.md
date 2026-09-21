@@ -88,8 +88,9 @@ bindings must be written with `setFillStyleIdAsync`, `setStrokeStyleIdAsync`,
 `setEffectStyleIdAsync` and `setTextStyleIdAsync` (awaited); otherwise Figma throws
 `in set_fillStyleId: Cannot call with documentAccess: dynamic-page`. Reading
 `fillStyleId` / `strokeStyleId` / `effectStyleId` in the verifiers remains valid and is
-unchanged. `b4Build` and `b5KpiVariants` use the async setters. The same synchronous
-pattern still exists in the B6-B10 builders (`b6ApplyRoot`, `b7Frame`, `b7Text`,
+unchanged. `b4Build`, `b5KpiVariants` and `b6ApplyRoot` (its single stroke binding, via
+`setStrokeStyleIdAsync`; `b6BuildNode` awaits it) use the async setters. The same
+synchronous pattern still exists in the B7-B10 builders (`b7Frame`, `b7Text`,
 `b7Build*`, `b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`) and must be converted in
 those batches before they are run.
 
