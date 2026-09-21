@@ -2921,6 +2921,7 @@ figma.ui.onmessage = async (msg) => {
   const b3 = msg.type === "b3-run" || msg.type === "b3-verify";
   const b4 = msg.type === "b4-run" || msg.type === "b4-verify";
   const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
+  const b6 = msg.type === "b6-run" || msg.type === "b6-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
