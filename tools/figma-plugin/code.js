@@ -31,7 +31,8 @@ const ABOX_TOKENS = {
   typography: {
     "ABox/Body/Base": {
       family: "Inter Tight",
-      style: "Regular",
+      weight: 400,
+      styleNames: ["Regular"],
       size: 16,
       lineHeightPercent: 150,
       letterSpacingPercent: 0,
@@ -53,7 +54,8 @@ const ABOX_TOKENS = {
     dotSize: 6, // h-1.5 w-1.5
     text: {
       family: "Inter Tight",
-      style: "Semi Bold", // font-semibold
+      weight: 600, // font-semibold
+      styleNames: ["SemiBold", "Semi Bold", "DemiBold", "Demi Bold"],
       size: 10, // text-[10px]
       letterSpacingEm: 0.12, // tracking-[0.12em]
       uppercase: true,
@@ -110,13 +112,107 @@ const lines = [];
 const say = (s) => lines.push(s);
 const report = () => figma.ui.postMessage({ type: "report", text: lines.join("\n") });
 
-async function loadFont(family, style) {
+const normalizeFontStyle = (style) => style.toLowerCase().replace(/[\s_-]/g, "");
+const fontLabel = (font) => {
+  const variation = font.variationSettings && font.variationSettings.wght;
+  return font.family + " / " + font.style + (variation ? " / wght " + variation : "");
+};
+
+async function resolveFont(spec, role) {
+  const available = await figma.listAvailableFontsAsync();
+  const familyFonts = available
+    .map((entry) => entry.fontName)
+    .filter((font) => font.family === spec.family);
+  const availableStyles = [...new Set(familyFonts.map((font) => font.style))].sort();
+
+  say(
+    "font family: " +
+      spec.family +
+      " (" +
+      role +
+      ", required weight " +
+      spec.weight +
+      ")",
+  );
+  say("font styles: " + (availableStyles.length ? availableStyles.join(", ") : "NONE"));
+
+  if (!familyFonts.length) {
+    throw new Error(
+      'STOP: font family "' + spec.family + '" is not available. No substitution is permitted.',
+    );
+  }
+
+  const allowedNames = new Set(spec.styleNames.map(normalizeFontStyle));
+  const named = familyFonts.find((font) => allowedNames.has(normalizeFontStyle(font.style)));
+  if (named) {
+    try {
+      await figma.loadFontAsync(named);
+      say("font resolved: " + fontLabel(named));
+      return named;
+    } catch (e) {
+      throw new Error(
+        'STOP: Figma listed but could not load "' +
+          fontLabel(named) +
+          '". No substitution is permitted. Figma error: ' +
+          String((e && e.message) || e),
+      );
+    }
+  }
+
+  const getAxes = figma.getFontFamilyVariationAxes;
+  const axes = typeof getAxes === "function" ? getAxes.call(figma, spec.family) : null;
+  say("font axes  : " + (axes && axes.length ? axes.join(", ") : "NONE"));
+  if (axes && axes.includes("wght")) {
+    const regular = familyFonts.find((font) => normalizeFontStyle(font.style) === "regular");
+    const base = regular || familyFonts[0];
+    const variableFont = {
+      family: spec.family,
+      style: base.style,
+      variationSettings: { wght: spec.weight },
+    };
+    try {
+      await figma.loadFontAsync({ family: spec.family });
+      say("font resolved: " + fontLabel(variableFont));
+      return variableFont;
+    } catch (e) {
+      throw new Error(
+        'STOP: variable font "' +
+          spec.family +
+          '" could not load at wght ' +
+          spec.weight +
+          ". No substitution is permitted. Figma error: " +
+          String((e && e.message) || e),
+      );
+    }
+  }
+
+  throw new Error(
+    'STOP: font family "' +
+      spec.family +
+      '" is available, but no exact native representation for weight ' +
+      spec.weight +
+      " was found. Available styles: " +
+      availableStyles.join(", ") +
+      ". No substitution is permitted.",
+  );
+}
+
+async function resolveProofFonts() {
+  const body = await resolveFont(T.typography["ABox/Body/Base"], "body");
+  const badge = await resolveFont(T.statusBadge.text, "StatusBadge");
+  return { body, badge };
+}
+
+async function loadFont(font) {
   try {
-    await figma.loadFontAsync({ family, style });
-    return { family, style };
+    await figma.loadFontAsync(font);
+    return font;
   } catch (e) {
     throw new Error(
-      'STOP: font "' + family + " " + style + '" is not available. No substitution is permitted.',
+      'STOP: font "' +
+        fontLabel(font) +
+        '" is not available. No substitution is permitted. Figma error: ' +
+        String((e && e.message) || e),
     );
   }
 }
@@ -144,9 +240,9 @@ async function ensureVariable() {
 }
 
 /* ---------- 2. text style ---------- */
-async function ensureTextStyle() {
+async function ensureTextStyle(resolvedFont) {
   const spec = T.typography["ABox/Body/Base"];
-  const font = await loadFont(spec.family, spec.style);
+  const font = await loadFont(resolvedFont);
   const styles = await figma.getLocalTextStylesAsync();
   let style = styles.find((s) => s.name === "ABox/Body/Base");
   if (!style) style = figma.createTextStyle();
@@ -201,9 +297,9 @@ async function buildToneVariant(tone, font) {
   return component;
 }
 
-async function ensureComponentSet() {
+async function ensureComponentSet(resolvedFont) {
   const b = T.statusBadge;
-  const font = await loadFont(b.text.family, b.text.style);
+  const font = await loadFont(resolvedFont);
 
   const page = figma.currentPage;
   await page.loadAsync();
@@ -226,6 +322,12 @@ async function ensureComponentSet() {
 }
 
 /* ---------- structural verification ---------- */
+const hasExactFont = (font, spec) => {
+  if (!font || font === figma.mixed || font.family !== spec.family) return false;
+  if (font.variationSettings && font.variationSettings.wght === spec.weight) return true;
+  return spec.styleNames.map(normalizeFontStyle).includes(normalizeFontStyle(font.style));
+};
+
 async function verify() {
   const checks = [];
   const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
@@ -242,9 +344,15 @@ async function verify() {
   );
 
   const styles = await figma.getLocalTextStylesAsync();
+  const bodySpec = T.typography["ABox/Body/Base"];
   add(
-    styles.some((s) => s.name === "ABox/Body/Base" && s.fontSize === 16),
-    "text style exists and carries its type settings",
+    styles.some(
+      (s) =>
+        s.name === "ABox/Body/Base" &&
+        s.fontSize === bodySpec.size &&
+        hasExactFont(s.fontName, bodySpec),
+    ),
+    "text style exists with exact Inter Tight 400 font settings",
   );
 
   await figma.currentPage.loadAsync();
@@ -258,6 +366,15 @@ async function verify() {
       first.layoutMode !== "NONE" &&
       first.findOne((n) => n.type === "TEXT") !== null,
     "component is native, uses Auto Layout, contains editable text",
+  );
+
+  const variants = set && set.type === "COMPONENT_SET" ? set.children : [];
+  const labels = variants.map((variant) => variant.findOne((n) => n.type === "TEXT"));
+  add(
+    variants.length === 2 &&
+      variants.every((variant) => variant.type === "COMPONENT") &&
+      labels.every((label) => label && label.type === "TEXT" && hasExactFont(label.fontName, T.statusBadge.text)),
+    "two native variants carry editable Inter Tight 600 labels",
   );
 
   const defs = set ? set.componentPropertyDefinitions : {};
@@ -292,9 +409,11 @@ figma.ui.onmessage = async (msg) => {
       say("ABox Figma Proof — creating native objects");
       say("file: " + figma.root.name);
       say("");
+      const fonts = await resolveProofFonts();
+      say("");
       await ensureVariable();
-      await ensureTextStyle();
-      await ensureComponentSet();
+      await ensureTextStyle(fonts.body);
+      await ensureComponentSet(fonts.badge);
       await verify();
     } else if (msg.type === "verify") {
       say("ABox Figma Proof — verify only");

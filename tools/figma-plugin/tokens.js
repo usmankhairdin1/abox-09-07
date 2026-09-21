@@ -30,7 +30,8 @@ const ABOX_TOKENS = {
   typography: {
     "ABox/Body/Base": {
       family: "Inter Tight",
-      style: "Regular",
+      weight: 400,
+      styleNames: ["Regular"],
       size: 16,
       lineHeightPercent: 150,
       letterSpacingPercent: 0,
@@ -52,7 +53,8 @@ const ABOX_TOKENS = {
     dotSize: 6, // h-1.5 w-1.5
     text: {
       family: "Inter Tight",
-      style: "Semi Bold", // font-semibold
+      weight: 600, // font-semibold
+      styleNames: ["SemiBold", "Semi Bold", "DemiBold", "Demi Bold"],
       size: 10, // text-[10px]
       letterSpacingEm: 0.12, // tracking-[0.12em]
       uppercase: true,
