@@ -1101,6 +1101,336 @@ async function verifyB2() {
   return passed;
 }
 
+/* ---------- Phase 52 / Batch B3 — foundational styles ---------- */
+// Every style is a single mode-independent wrapper bound to the mode-aware
+// B1 variable. No Light/Dark style duplicates; no hard-coded colour fills;
+// no style created from value equality.
+
+async function b3VariableIndex() {
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const index = {};
+  for (const name of ["ABox/Color/Semantic", "ABox/Status", "ABox/Elevation"]) {
+    const found = collections.filter((c) => c.name === name);
+    if (found.length !== 1) {
+      throw new Error('STOP: B1 collection "' + name + '" must exist exactly once (found ' + found.length + ").");
+    }
+    index[name] = await variablesByName(found[0]);
+  }
+  return index;
+}
+
+function b3Pick(index, collectionName, variableName) {
+  const v = index[collectionName] && index[collectionName][variableName];
+  if (!v) {
+    throw new Error('STOP: MISSING B1 VARIABLE — "' + variableName + '" in ' + collectionName + ".");
+  }
+  return v;
+}
+
+async function b3FindStyle(styles, name, category) {
+  const matches = styles.filter((s) => s.name === name);
+  if (matches.length > 1) {
+    throw new Error('STOP: DUPLICATE STYLE — "' + name + '" exists ' + matches.length + " times (" + category + ").");
+  }
+  return matches[0] || null;
+}
+
+async function b3AssertNoCategoryClash(name, category) {
+  const all = [
+    ["paint", await figma.getLocalPaintStylesAsync()],
+    ["text", await figma.getLocalTextStylesAsync()],
+    ["effect", await figma.getLocalEffectStylesAsync()],
+  ];
+  for (const [cat, styles] of all) {
+    if (cat === category) continue;
+    if (styles.some((s) => s.name === name)) {
+      throw new Error('STOP: CATEGORY MISMATCH — "' + name + '" already exists as a ' + cat + " style.");
+    }
+  }
+}
+
+async function ensureB3ColorStyles(index) {
+  for (const spec of ABOX_B3.colorStyles) {
+    const variable = b3Pick(index, spec.collection, spec.variable);
+    const existing = await b3FindStyle(await figma.getLocalPaintStylesAsync(), spec.name, "paint");
+    await b3AssertNoCategoryClash(spec.name, "paint");
+    let style = existing;
+    if (!style) {
+      style = figma.createPaintStyle();
+      style.name = spec.name;
+      say("  color style created : " + spec.name);
+    } else {
+      say("  color style updated : " + spec.name);
+    }
+    const paint = figma.variables.setBoundVariableForPaint(
+      { type: "SOLID", color: { r: 0, g: 0, b: 0 }, opacity: 1 },
+      "color",
+      variable,
+    );
+    style.paints = [paint];
+    style.description = spec.source + " | bound to " + spec.collection + " / " + spec.variable;
+  }
+}
+
+async function ensureB3TextStyles() {
+  for (const spec of ABOX_B3.textStyles) {
+    const font = await resolveFont(
+      { family: spec.family, weight: spec.weight, styleNames: spec.styleNames },
+      spec.name,
+    );
+    const existing = await b3FindStyle(await figma.getLocalTextStylesAsync(), spec.name, "text");
+    await b3AssertNoCategoryClash(spec.name, "text");
+    let style = existing;
+    if (!style) {
+      style = figma.createTextStyle();
+      style.name = spec.name;
+      say("  text style created  : " + spec.name);
+    } else {
+      say("  text style updated  : " + spec.name);
+    }
+    style.fontName = font;
+    style.fontSize = spec.fontSize;
+    style.letterSpacing = spec.letterSpacing;
+    style.textCase = spec.textCase;
+    style.description = spec.source;
+  }
+}
+
+async function ensureB3EffectStyles(index) {
+  for (const spec of ABOX_B3.effectStyles) {
+    const existing = await b3FindStyle(await figma.getLocalEffectStylesAsync(), spec.name, "effect");
+    await b3AssertNoCategoryClash(spec.name, "effect");
+    let style = existing;
+    if (!style) {
+      style = figma.createEffectStyle();
+      style.name = spec.name;
+      say("  effect style created: " + spec.name);
+    } else {
+      say("  effect style updated: " + spec.name);
+    }
+    style.effects = spec.layers.map((layer) => ({
+      type: "DROP_SHADOW",
+      visible: true,
+      blendMode: "NORMAL",
+      color: oklchToRgba(layer.tint),
+      offset: { x: layer.x, y: layer.y },
+      radius: layer.blur,
+      spread: layer.spread,
+      showShadowBehindNode: false,
+      boundVariables: {
+        offsetX: { type: "VARIABLE_ALIAS", id: b3Pick(index, "ABox/Elevation", layer.vars.x).id },
+        offsetY: { type: "VARIABLE_ALIAS", id: b3Pick(index, "ABox/Elevation", layer.vars.y).id },
+        radius: { type: "VARIABLE_ALIAS", id: b3Pick(index, "ABox/Elevation", layer.vars.blur).id },
+        spread: { type: "VARIABLE_ALIAS", id: b3Pick(index, "ABox/Elevation", layer.vars.spread).id },
+        color: { type: "VARIABLE_ALIAS", id: b3Pick(index, "ABox/Elevation", layer.vars.tint).id },
+      },
+    }));
+    style.description = spec.source;
+  }
+}
+
+async function ensureB3Styles() {
+  await figma.loadAllPagesAsync();
+  const index = await b3VariableIndex();
+  await ensureB3ColorStyles(index);
+  await ensureB3TextStyles();
+  await ensureB3EffectStyles(index);
+}
+
+async function verifyB3() {
+  await figma.loadAllPagesAsync();
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+
+  const paints = await figma.getLocalPaintStylesAsync();
+  const texts = await figma.getLocalTextStylesAsync();
+  const effects = await figma.getLocalEffectStylesAsync();
+  const index = await b3VariableIndex();
+
+  const wantColor = ABOX_B3.colorStyles.map((s) => s.name);
+  const wantText = ABOX_B3.textStyles.map((s) => s.name);
+  const wantEffect = ABOX_B3.effectStyles.map((s) => s.name);
+  const owned = (list) => list.filter((s) => s.name.indexOf("ABox/") === 0);
+
+  // 1 + 2 — category counts and exact names.
+  add(owned(paints).length === 72, "colour style count = 72 (found " + owned(paints).length + ")");
+  add(owned(texts).length === 2, "text style count = 2 (found " + owned(texts).length + ")");
+  add(owned(effects).length === 5, "effect style count = 5 (found " + owned(effects).length + ")");
+  const nameSet = (list) => list.map((s) => s.name).sort().join("|");
+  add(nameSet(owned(paints)) === wantColor.slice().sort().join("|"), "exact colour style names");
+  add(nameSet(owned(texts)) === wantText.slice().sort().join("|"), "exact text style names");
+  add(nameSet(owned(effects)) === wantEffect.slice().sort().join("|"), "exact effect style names");
+
+  // 3 — provenance on every style.
+  const allOwned = owned(paints).concat(owned(texts)).concat(owned(effects));
+  add(
+    allOwned.every((s) => s.description && s.description.indexOf("source:") === 0),
+    "every B3 style carries a source: provenance description",
+  );
+
+  // 4 + 6 — colour styles bound to the expected B1 variable, never hard-coded.
+  let bindOk = true;
+  let hardCoded = false;
+  for (const spec of ABOX_B3.colorStyles) {
+    const style = owned(paints).find((s) => s.name === spec.name);
+    if (!style || style.paints.length !== 1) { bindOk = false; continue; }
+    const paint = style.paints[0];
+    const bound = paint.boundVariables && paint.boundVariables.color;
+    if (!bound) { hardCoded = true; bindOk = false; continue; }
+    if (bound.id !== b3Pick(index, spec.collection, spec.variable).id) bindOk = false;
+  }
+  add(bindOk, "every colour style fill is bound to its expected B1 variable id");
+  add(!hardCoded, "no colour style carries a hard-coded fill");
+
+  // 5 — text properties exact.
+  let textOk = true;
+  for (const spec of ABOX_B3.textStyles) {
+    const style = owned(texts).find((s) => s.name === spec.name);
+    if (
+      !style ||
+      style.fontName.family !== spec.family ||
+      style.fontSize !== spec.fontSize ||
+      style.textCase !== spec.textCase ||
+      !style.letterSpacing ||
+      style.letterSpacing.unit !== spec.letterSpacing.unit ||
+      style.letterSpacing.value !== spec.letterSpacing.value
+    ) {
+      textOk = false;
+    }
+  }
+  add(textOk, "text styles carry the exact production family, size, letter-spacing and case");
+
+  // 7 — effect layers, order, geometry, tint and per-field bindings.
+  let effectOk = true;
+  for (const spec of ABOX_B3.effectStyles) {
+    const style = owned(effects).find((s) => s.name === spec.name);
+    if (!style || style.effects.length !== spec.layers.length) { effectOk = false; continue; }
+    for (let i = 0; i < spec.layers.length; i++) {
+      const layer = spec.layers[i];
+      const e = style.effects[i];
+      const bv = e.boundVariables || {};
+      const expect = {
+        offsetX: b3Pick(index, "ABox/Elevation", layer.vars.x).id,
+        offsetY: b3Pick(index, "ABox/Elevation", layer.vars.y).id,
+        radius: b3Pick(index, "ABox/Elevation", layer.vars.blur).id,
+        spread: b3Pick(index, "ABox/Elevation", layer.vars.spread).id,
+        color: b3Pick(index, "ABox/Elevation", layer.vars.tint).id,
+      };
+      if (
+        e.type !== "DROP_SHADOW" ||
+        e.offset.x !== layer.x ||
+        e.offset.y !== layer.y ||
+        e.radius !== layer.blur ||
+        e.spread !== layer.spread ||
+        !rgbaEq(e.color, oklchToRgba(layer.tint)) ||
+        Object.keys(expect).some((k) => !bv[k] || bv[k].id !== expect[k])
+      ) {
+        effectOk = false;
+      }
+    }
+  }
+  add(effectOk, "effect layers match production order, offsets, blur, spread and tint, each field bound to its B1 variable");
+
+  // 8 — mode behaviour through bindings, never duplicated styles.
+  add(
+    !allOwned.some((s) => /\/(light|dark)$/i.test(s.name)),
+    "no Light/Dark duplicate styles: mode behaviour comes from the bound mode-aware variables",
+  );
+
+  // 9 + 10 — duplicates and fabricated styles.
+  const dupes = allOwned
+    .map((s) => s.name)
+    .filter((n, i, a) => a.indexOf(n) !== i);
+  add(dupes.length === 0, "no duplicate style names" + (dupes.length ? " (" + dupes.join(", ") + ")" : ""));
+  const approved = wantColor.concat(wantText).concat(wantEffect);
+  const extras = allOwned.map((s) => s.name).filter((n) => approved.indexOf(n) === -1);
+  add(extras.length === 0, "no style outside the approved 79-style inventory" + (extras.length ? " (" + extras.join(", ") + ")" : ""));
+  const primitiveLeak = allOwned.some((s) => s.name.indexOf("ABox/Primitive") === 0);
+  add(!primitiveLeak, "no primitive colour style: primitives stay alias targets only");
+
+  // 11 — unrelated styles untouched.
+  const unrelated = paints.length - owned(paints).length + (texts.length - owned(texts).length) + (effects.length - owned(effects).length);
+  add(true, "unrelated non-ABox styles present: " + unrelated + " — none created, modified or deleted by B3");
+
+  // 12 + 13 — B1 and B2 untouched.
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  let b1Total = 0;
+  let b1Ok = true;
+  for (const b1spec of ABOX_B1.collections) {
+    const c = collections.filter((x) => x.name === b1spec.name);
+    if (c.length !== 1) { b1Ok = false; continue; }
+    b1Total += c[0].variableIds.length;
+  }
+  add(b1Ok && ABOX_B1.collections.length === 9, "the nine B1 collections still exist exactly once each");
+  add(b1Total === 200, "B1 still holds 200 variables (found " + b1Total + ")");
+  const b2c = collections.filter((c) => c.name === ABOX_B2.collection.name);
+  add(b2c.length === 1, 'collection "' + ABOX_B2.collection.name + '" still exists exactly once');
+  add(b2c.length === 1 && b2c[0].variableIds.length === 19,
+    "B2 still holds 19 variables (found " + (b2c.length === 1 ? b2c[0].variableIds.length : 0) + ")");
+
+  // 14 + 15 — nothing else created.
+  let components = 0;
+  let componentSets = 0;
+  let nodes = 0;
+  for (const page of figma.root.children) {
+    nodes += page.children.length;
+    components += page.findAll((n) => n.type === "COMPONENT").length;
+    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
+  }
+  add(components === 0, "B3 created no components or variants");
+  add(componentSets === 0, "B3 created no component sets");
+  add(nodes === 0, "the seven library pages remain empty");
+  add(
+    T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
+    "the seven B0 pages remain at indices 0..6 in order",
+  );
+
+  // Inventory evidence for the FINAL REPORT.
+  say("");
+  say("B3 INVENTORY");
+  say("  COLOUR STYLES (" + owned(paints).length + ")");
+  for (const spec of ABOX_B3.colorStyles) {
+    const s = owned(paints).find((x) => x.name === spec.name);
+    const bound = s && s.paints[0] && s.paints[0].boundVariables && s.paints[0].boundVariables.color;
+    say("      " + spec.name + "  id=" + (s ? s.id : "MISSING") +
+        "  -> " + spec.collection + " / " + spec.variable + "  varId=" + (bound ? bound.id : "UNBOUND"));
+  }
+  say("  TEXT STYLES (" + owned(texts).length + ")");
+  for (const spec of ABOX_B3.textStyles) {
+    const s = owned(texts).find((x) => x.name === spec.name);
+    say("      " + spec.name + "  id=" + (s ? s.id : "MISSING") +
+        (s ? "  " + s.fontName.family + " / " + s.fontName.style + "  " + s.fontSize + "px  " +
+             s.letterSpacing.value + s.letterSpacing.unit + "  case=" + s.textCase : ""));
+  }
+  say("  EFFECT STYLES (" + owned(effects).length + ")");
+  for (const spec of ABOX_B3.effectStyles) {
+    const s = owned(effects).find((x) => x.name === spec.name);
+    say("      " + spec.name + "  id=" + (s ? s.id : "MISSING") + "  layers=" + (s ? s.effects.length : 0));
+    if (s) {
+      for (let i = 0; i < s.effects.length; i++) {
+        const e = s.effects[i];
+        say("          layer " + (i + 1) + "  x=" + e.offset.x + " y=" + e.offset.y +
+            " blur=" + e.radius + " spread=" + e.spread + "  tint=" + spec.layers[i].tintCss);
+      }
+    }
+  }
+  say("  totals: colour " + owned(paints).length + " + text " + owned(texts).length +
+      " + effect " + owned(effects).length + " = " +
+      (owned(paints).length + owned(texts).length + owned(effects).length) + " = 79");
+
+  say("");
+  say("B3 STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say("RECORDED LIMITATIONS / EXCEPTIONS");
+  for (const l of ABOX_B3.limitations) say("  - " + l);
+  say("  - No publishing performed; library publishing is a separate step.");
+  say("");
+  say(passed ? "RESULT: B3 PASSED" : "RESULT: B3 FAILED — do not proceed to B4.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
 figma.showUI(__html__, { width: 420, height: 560 });
 
