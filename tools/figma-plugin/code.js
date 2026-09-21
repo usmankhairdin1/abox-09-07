@@ -6434,6 +6434,8 @@ async function b4Build(spec, index) {
       "</svg>";
     const node = figma.createNodeFromSvg(svg);
     node.name = "AboxMark";
+    node.fills = []; // wrapper frame only; every painted vector below is style-bound
+    node.strokes = [];
     const kids = node.children;
     const bind = [
       [0, spec.bgStyle, spec.hairlineStyle],
@@ -6553,10 +6555,12 @@ async function b4EnsureSet(set, index, page) {
   if (!node) {
     node = figma.combineAsVariants(variants, page);
     node.name = set.name;
+    node.fills = []; // set container chrome, not a production surface
     b4Created += 1;
     say("  set     created : " + set.name);
   } else {
     for (const v of variants) if (v.parent !== node) node.appendChild(v);
+    node.fills = [];
     say("  set     updated : " + set.name);
   }
   await b4Describe(
