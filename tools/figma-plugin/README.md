@@ -124,5 +124,27 @@ report `RESULT: B1 PASSED` with zero created and identical ids. **Verify foundat
 runs the checks alone. B1 creates no text styles, effect styles, components or page content,
 never publishes, and imports no runtime branding.
 
+### Inventory (9 collections, 200 variables, every collection Light + Dark, no Default mode)
+
+| Collection | Variables |
+| --- | --- |
+| `ABox/Color/Primitive` | 62 — one per production role path declared with an `oklch()` literal in `:root`/`.dark` (includes `ink` and the 12 metal tokens). A Light/Dark literal difference is two mode values on ONE variable. |
+| `ABox/Color/Semantic` | 54 — every `--color-*` role in the two `@theme inline` blocks. `ink` is NOT here: production declares no `--color-ink`. |
+| `ABox/Status` | 18 — 6 StatusBadge tones (`sage`, `primary`, `warning`, `muted`, `destructive`, `info`) + 12 metal variables. |
+| `ABox/Spacing` | 4 · `ABox/Radius` 9 · `ABox/Border` 2 · `ABox/Layout` 2 · `ABox/Control sizing` 4 |
+| `ABox/Elevation` | 45 — 9 shadow layers across `card`, `elevated`, `drawer`, `plate`, `glow`, each with `x`, `y`, `blur`, `spread` (FLOAT) and `tint` (COLOR). |
+
+Aliasing is **source-mapping authoritative**: a semantic variable aliases a primitive only
+because production declares `--color-X: var(--Y)`, resolved independently for Light and Dark.
+Equal colour values never imply an alias. Tones alias semantics per the `tones` record in
+`status-badge.tsx`; metal variables alias primitives per `metal-badge.tsx`.
+
+Tone and metal names follow **production**, not the generic tone list in the batch brief:
+production declares `warning`/`muted`/`destructive`/`info` (not `amber`/`neutral`/`red`/`sky`)
+and the metal tiers `bronze`, `expanded-bronze`, `silver`, `gold`, `platinum`, `catastrophic`
+(not `iron`/`lead`). Counts still match exactly: 6 tones and 12 metal variables.
+
 Recorded limitations: oklch is stored as sRGB (source notation in variable descriptions);
-color-mix() badge tints stay runtime-computed; composite shadows become Effect Styles later.
+`color-mix()` StatusBadge tints stay runtime-computed and get no static variable; composite
+shadows become Effect Styles later; decorative utilities, motion keyframes and responsive
+breakpoints are not variables.

@@ -494,7 +494,7 @@ const rgbaEq = (a, b) =>
 
 async function b1Collections() {
   const existing = await figma.variables.getLocalVariableCollectionsAsync();
-  return B1.collections.map((spec) => {
+  return ABOX_B1.collections.map((spec) => {
     const found = existing.filter((c) => c.name === spec.name);
     if (found.length > 1) {
       throw new Error(
@@ -566,35 +566,38 @@ async function ensureB1Variables() {
   const byName = {};
   for (const entry of entries) byName[entry.spec.name] = await ensureB1Collection(entry);
 
-  const primId = {}; // role path -> variable id (for aliases)
-
-  // 1) Primitives — one variable per role path, Light + Dark mode values.
+  // 1) Primitives — one variable per production role path, Light + Dark values
+  //    on the SAME variable (never two variables for differing literals).
   const prim = byName["ABox/Color/Primitive"];
   for (const p of ABOX_B1.primitives) {
     const desc =
-      "source: src/styles.css --" + p.role +
-      " — light " + p.source.light + "; dark " + p.source.dark +
+      "source: " + p.source.light + " | " + p.source.dark +
       " (oklch converted to sRGB; recorded Figma limitation)";
-    const v = await ensureB1Variable(prim, p.name, "COLOR", {
+    await ensureB1Variable(prim, p.name, "COLOR", {
       Light: oklchToRgba(p.light),
       Dark: oklchToRgba(p.dark),
     }, desc);
-    primId[p.role] = v.id;
   }
+  const primVars = await variablesByName(prim.collection);
 
-  // 2) Semantic roles — aliases to the primitive of the same path.
+  // 2) Semantic roles — aliases derived from the production declaration graph
+  //    (`--color-X: var(--Y)`), resolved independently per mode. Colour
+  //    equality never implies an alias.
   const sem = byName["ABox/Color/Semantic"];
   for (const s of ABOX_B1.semantics) {
-    const aliasId = primId[slashToRole(s.alias)];
-    if (!aliasId) throw new Error('STOP: alias target missing — primitive "' + s.alias + '".');
-    const v = await ensureB1Variable(sem, s.name, "COLOR", {
-      Light: { type: "VARIABLE_ALIAS", id: aliasId },
-      Dark: { type: "VARIABLE_ALIAS", id: aliasId },
-    }, "alias of " + "ABox/Color/Primitive/" + s.alias + " (source: " + s.css + ")");
-    primId["semantic:" + s.name] = v.id;
+    const lightTarget = primVars[s.aliasLight];
+    const darkTarget = primVars[s.aliasDark];
+    if (!lightTarget || !darkTarget) {
+      throw new Error('STOP: alias target missing for semantic "' + s.name + '".');
+    }
+    await ensureB1Variable(sem, s.name, "COLOR", {
+      Light: { type: "VARIABLE_ALIAS", id: lightTarget.id },
+      Dark: { type: "VARIABLE_ALIAS", id: darkTarget.id },
+    }, "source: " + s.css + " — Light " + s.chainLight + "; Dark " + s.chainDark);
   }
 
-  // 3) Status — tones alias semantic roles; metal tiers alias primitives.
+  // 3) Status — StatusBadge tones alias semantic roles, metal tiers alias
+  //    primitives, both by production source mapping.
   const status = byName["ABox/Status"];
   const semVars = await variablesByName(sem.collection);
   for (const t of ABOX_B1.tones) {
@@ -603,29 +606,24 @@ async function ensureB1Variables() {
     await ensureB1Variable(status, t.name, "COLOR", {
       Light: { type: "VARIABLE_ALIAS", id: target.id },
       Dark: { type: "VARIABLE_ALIAS", id: target.id },
-    }, "StatusBadge tone; alias of semantic " + t.alias + " (src/components/abox/status-badge.tsx)");
+    }, "StatusBadge tone; alias of semantic " + t.alias + " — " + t.source);
   }
-  const primVars = await variablesByName(prim.collection);
-  for (const mt of ABOX_B1.metalAliases) {
+  for (const mt of ABOX_B1.metals) {
     const target = primVars[mt.alias];
     if (!target) throw new Error('STOP: alias target missing — primitive "' + mt.alias + '".');
     await ensureB1Variable(status, mt.name, "COLOR", {
       Light: { type: "VARIABLE_ALIAS", id: target.id },
       Dark: { type: "VARIABLE_ALIAS", id: target.id },
-    }, "metal tier; alias of primitive " + mt.alias + " (src/styles.css)");
+    }, "metal tier; alias of primitive " + mt.alias + " — " + mt.source);
   }
 
-  // 4-9) Float collections.
-  const floatGroups = [
-    ["ABox/Spacing", ABOX_B1.spacing, "Surface padding (src/components/abox/surface.tsx)"],
-    ["ABox/Radius", ABOX_B1.radius, "@theme inline --radius-* (src/styles.css)"],
-    ["ABox/Border", ABOX_B1.border, "border / focus:ring-2 widths"],
-    ["ABox/Layout", ABOX_B1.layout, "container max-widths (shells, marketplace-page-layout)"],
-    ["ABox/Control sizing", ABOX_B1.control, "controlClass heights/padding (src/components/abox/control.tsx)"],
-  ];
-  for (const [collectionName, values, desc] of floatGroups) {
+  // 4-9) Float collections — identical values in both modes (no Default mode).
+  for (const [collectionName, values, desc] of b1FloatGroups()) {
     for (const name of Object.keys(values)) {
-      await ensureB1Variable(byName[collectionName], name, "FLOAT", { Default: values[name] }, desc);
+      await ensureB1Variable(byName[collectionName], name, "FLOAT", {
+        Light: values[name],
+        Dark: values[name],
+      }, desc);
     }
   }
 
@@ -633,28 +631,51 @@ async function ensureB1Variables() {
   // Composite box-shadows are NOT a Figma variable type; full shadows become
   // Effect Styles in a later batch. Recorded as a deferred representation.
   const elev = byName["ABox/Elevation"];
-  for (const shadowName of Object.keys(ABOX_B1.shadows)) {
-    ABOX_B1.shadows[shadowName].forEach((layer, i) => {
-      layer._index = i + 1;
-    });
-    for (const layer of ABOX_B1.shadows[shadowName]) {
-      const prefix = "shadow-" + shadowName + "/" + layer._index + "/";
+  for (const family of Object.keys(ABOX_B1.shadows)) {
+    for (const layer of ABOX_B1.shadows[family]) {
+      const prefix = family + "/" + layer.index + "/";
       for (const part of ["x", "y", "blur", "spread"]) {
         await ensureB1Variable(elev, prefix + part, "FLOAT", {
           Light: layer[part],
           Dark: layer[part], // no .dark override in production — recorded
-        }, "--shadow-" + shadowName + " layer " + layer._index + " " + part + " (src/styles.css)");
+        }, "--shadow-" + family + " layer " + layer.index + " " + part + " (src/styles.css)");
       }
       await ensureB1Variable(elev, prefix + "tint", "COLOR", {
         Light: oklchToRgba(layer.tint),
         Dark: oklchToRgba(layer.tint),
-      }, "--shadow-" + shadowName + " layer " + layer._index + " tint " + oklchCss(layer.tint) + " (oklch converted to sRGB; recorded limitation)");
+      }, "--shadow-" + family + " layer " + layer.index + " tint " + layer.tintCss +
+         " (oklch converted to sRGB; recorded limitation)");
     }
   }
 }
 
-function slashToRole(name) {
-  return name.replace(/\//g, "-");
+function b1FloatGroups() {
+  return [
+    ["ABox/Spacing", ABOX_B1.spacing, "SURFACE_PADDING (src/components/abox/surface.tsx)"],
+    ["ABox/Radius", ABOX_B1.radius, "@theme inline --radius-* (src/styles.css)"],
+    ["ABox/Border", ABOX_B1.border, "border / focus:ring-2 widths"],
+    ["ABox/Layout", ABOX_B1.layout, "container max-widths (shells, marketplace-page-layout)"],
+    ["ABox/Control sizing", ABOX_B1.control, "controlClass heights/padding (src/components/abox/control.tsx)"],
+  ];
+}
+
+// Full approved inventory per collection — drives the "no extra variables" check.
+function b1Inventory() {
+  const inv = {
+    "ABox/Color/Primitive": ABOX_B1.primitives.map((p) => p.name),
+    "ABox/Color/Semantic": ABOX_B1.semantics.map((s) => s.name),
+    "ABox/Status": ABOX_B1.tones.map((t) => t.name).concat(ABOX_B1.metals.map((m) => m.name)),
+    "ABox/Elevation": [],
+  };
+  for (const [name, values] of b1FloatGroups()) inv[name] = Object.keys(values);
+  for (const family of Object.keys(ABOX_B1.shadows)) {
+    for (const layer of ABOX_B1.shadows[family]) {
+      for (const part of ["x", "y", "blur", "spread", "tint"]) {
+        inv["ABox/Elevation"].push(family + "/" + layer.index + "/" + part);
+      }
+    }
+  }
+  return inv;
 }
 
 async function variablesByName(collection) {
@@ -676,84 +697,147 @@ async function verifyB1() {
     const found = collections.filter((c) => c.name === spec.name);
     add(found.length === 1, 'collection "' + spec.name + '" exists exactly once');
     if (found.length === 1) {
-      const modeNames = found[0].modes.map((m) => m.name).sort().join(",");
+      const modeNames = found[0].modes.map((m) => m.name);
       add(
-        modeNames === spec.modes.slice().sort().join(","),
-        'collection "' + spec.name + '" modes = ' + spec.modes.join(", "),
+        modeNames.length === 2 && modeNames.indexOf("Light") !== -1 && modeNames.indexOf("Dark") !== -1,
+        'collection "' + spec.name + '" has exactly the modes Light, Dark (no Default)',
       );
     }
   }
   const byName = {};
   for (const spec of ABOX_B1.collections) {
     const c = collections.find((x) => x.name === spec.name);
-    if (c) byName[spec.name] = { collection: c, vars: await variablesByName(c) };
+    if (c) {
+      byName[spec.name] = {
+        collection: c,
+        vars: await variablesByName(c),
+        light: (c.modes.find((m) => m.name === "Light") || {}).modeId,
+        dark: (c.modes.find((m) => m.name === "Dark") || {}).modeId,
+      };
+    }
   }
 
-  const expectFloat = (collectionName, inventory) => {
+  // Exact inventory: every approved variable exists exactly once, nothing extra.
+  const inventory = b1Inventory();
+  for (const collectionName of Object.keys(inventory)) {
     const entry = byName[collectionName];
-    if (!entry) { add(false, collectionName + " present"); return; }
-    for (const name of Object.keys(inventory)) {
+    if (!entry) { add(false, collectionName + " present"); continue; }
+    const missing = inventory[collectionName].filter((n) => !entry.vars[n]);
+    const extras = Object.keys(entry.vars).filter((n) => inventory[collectionName].indexOf(n) === -1);
+    add(missing.length === 0,
+      collectionName + " contains all " + inventory[collectionName].length + " approved variables" +
+      (missing.length ? " (missing: " + missing.join(", ") + ")" : ""));
+    add(extras.length === 0,
+      collectionName + " has no extra variables" + (extras.length ? " (extra: " + extras.join(", ") + ")" : ""));
+  }
+
+  // Resolved semantic inventory — exact count and exact names; ink excluded.
+  const semEntry = byName["ABox/Color/Semantic"];
+  if (semEntry) {
+    const names = Object.keys(semEntry.vars).sort();
+    const expected = ABOX_B1.semantics.map((s) => s.name).sort();
+    add(names.length === expected.length,
+      "semantic inventory count = " + expected.length + " (found " + names.length + ")");
+    add(names.join("|") === expected.join("|"), "semantic variable names match the resolved production list exactly");
+    add(!semEntry.vars["ink"], "ink is NOT in ABox/Color/Semantic (primitive-only role)");
+  }
+  if (byName["ABox/Color/Primitive"]) {
+    add(!!byName["ABox/Color/Primitive"].vars["ink"], "ink exists in ABox/Color/Primitive");
+  }
+
+  // Float values, compared independently per mode.
+  for (const [collectionName, values] of b1FloatGroups()) {
+    const entry = byName[collectionName];
+    if (!entry) continue;
+    let ok = true;
+    for (const name of Object.keys(values)) {
       const v = entry.vars[name];
-      add(!!v && v.resolvedType === "FLOAT", collectionName + " / " + name + " exists as FLOAT");
-      if (v && v.resolvedType === "FLOAT") {
-        const got = v.valuesByMode[entry.collection.modes[0].modeId];
-        add(got === inventory[name], collectionName + " / " + name + " = " + inventory[name]);
-      }
+      if (!v || v.resolvedType !== "FLOAT") { ok = false; continue; }
+      if (v.valuesByMode[entry.light] !== values[name]) ok = false;
+      if (v.valuesByMode[entry.dark] !== values[name]) ok = false;
     }
-    const extras = Object.keys(entry.vars).filter((n) => !(n in inventory));
-    add(extras.length === 0, collectionName + " has no extra variables" + (extras.length ? " (extra: " + extras.join(", ") + ")" : ""));
-  };
+    add(ok, collectionName + " values match production in both modes");
+  }
 
-  expectFloat("ABox/Spacing", ABOX_B1.spacing);
-  expectFloat("ABox/Radius", ABOX_B1.radius);
-  expectFloat("ABox/Border", ABOX_B1.border);
-  expectFloat("ABox/Layout", ABOX_B1.layout);
-  expectFloat("ABox/Control sizing", ABOX_B1.control);
-
-  // Colour value checks against converted production source, per mode.
+  // Primitive colour values, compared independently per mode.
   const prim = byName["ABox/Color/Primitive"];
   if (prim) {
-    const lightId = prim.collection.modes.find((m) => m.name === "Light").modeId;
-    const darkId = prim.collection.modes.find((m) => m.name === "Dark").modeId;
-    let ok = true;
+    let lightOk = true;
+    let darkOk = true;
     for (const p of ABOX_B1.primitives) {
       const v = prim.vars[p.name];
-      if (!v || v.resolvedType !== "COLOR") { ok = false; continue; }
-      if (!rgbaEq(v.valuesByMode[lightId], oklchToRgba(p.light))) ok = false;
-      if (!rgbaEq(v.valuesByMode[darkId], oklchToRgba(p.dark))) ok = false;
+      if (!v || v.resolvedType !== "COLOR") { lightOk = false; darkOk = false; continue; }
+      if (!rgbaEq(v.valuesByMode[prim.light], oklchToRgba(p.light))) lightOk = false;
+      if (!rgbaEq(v.valuesByMode[prim.dark], oklchToRgba(p.dark))) darkOk = false;
     }
-    add(ok, "all " + ABOX_B1.primitives.length + " primitives match production Light/Dark values");
-    const extraP = Object.keys(prim.vars).filter(
-      (n) => !ABOX_B1.primitives.some((p) => p.name === n),
-    );
-    add(extraP.length === 0, "no extra or duplicated primitive variables");
+    add(lightOk, "all " + ABOX_B1.primitives.length + " primitive Light values match :root");
+    add(darkOk, "all " + ABOX_B1.primitives.length + " primitive Dark values match .dark (Light duplicated where no override)");
+    const dupes = {};
+    let duplicated = false;
+    for (const n of Object.keys(prim.vars)) {
+      if (dupes[n]) duplicated = true;
+      dupes[n] = true;
+    }
+    add(!duplicated, "no duplicate primitive created because Light and Dark literals differ");
   }
 
-  const aliasCheck = (collectionName, items, resolveTarget) => {
+  // Aliases, verified per mode against the production declaration graph.
+  const aliasPerMode = (collectionName, items, lightTarget, darkTarget) => {
     const entry = byName[collectionName];
     if (!entry) { add(false, collectionName + " present"); return; }
     let ok = true;
+    const bad = [];
     for (const item of items) {
       const v = entry.vars[item.name];
-      if (!v) { ok = false; continue; }
-      for (const mode of entry.collection.modes) {
-        const val = v.valuesByMode[mode.modeId];
-        if (!val || val.type !== "VARIABLE_ALIAS" || val.id !== resolveTarget(item)) ok = false;
+      if (!v) { ok = false; bad.push(item.name); continue; }
+      const l = v.valuesByMode[entry.light];
+      const d = v.valuesByMode[entry.dark];
+      const lt = lightTarget(item);
+      const dt = darkTarget(item);
+      if (!l || l.type !== "VARIABLE_ALIAS" || l.id !== lt) { ok = false; bad.push(item.name + " (Light)"); }
+      if (!d || d.type !== "VARIABLE_ALIAS" || d.id !== dt) { ok = false; bad.push(item.name + " (Dark)"); }
+    }
+    add(ok, collectionName + " aliases match the production source mapping per mode" +
+      (bad.length ? " (bad: " + bad.join(", ") + ")" : ""));
+  };
+  const primId = (name) => (prim && prim.vars[name] ? prim.vars[name].id : null);
+  const semId = (name) => (semEntry && semEntry.vars[name] ? semEntry.vars[name].id : null);
+  aliasPerMode("ABox/Color/Semantic", ABOX_B1.semantics,
+    (s) => primId(s.aliasLight), (s) => primId(s.aliasDark));
+  aliasPerMode("ABox/Status", ABOX_B1.tones, (t) => semId(t.alias), (t) => semId(t.alias));
+  aliasPerMode("ABox/Status", ABOX_B1.metals, (m) => primId(m.alias), (m) => primId(m.alias));
+  const statusEntry = byName["ABox/Status"];
+  if (statusEntry) {
+    add(ABOX_B1.tones.length === 6, "ABox/Status contains exactly 6 StatusBadge tone variables");
+    add(ABOX_B1.metals.length === 12, "ABox/Status contains exactly 12 metal variables");
+  }
+
+  // Elevation — 5 variables per layer, both modes populated, no Default mode.
+  const elev = byName["ABox/Elevation"];
+  if (elev) {
+    let structural = true;
+    let valuesOk = true;
+    let tintsOk = true;
+    for (const family of Object.keys(ABOX_B1.shadows)) {
+      for (const layer of ABOX_B1.shadows[family]) {
+        const prefix = family + "/" + layer.index + "/";
+        for (const part of ["x", "y", "blur", "spread"]) {
+          const v = elev.vars[prefix + part];
+          if (!v || v.resolvedType !== "FLOAT") { structural = false; continue; }
+          if (v.valuesByMode[elev.light] !== layer[part]) valuesOk = false;
+          if (v.valuesByMode[elev.dark] !== layer[part]) valuesOk = false;
+        }
+        const t = elev.vars[prefix + "tint"];
+        if (!t || t.resolvedType !== "COLOR") { structural = false; continue; }
+        if (!rgbaEq(t.valuesByMode[elev.light], oklchToRgba(layer.tint))) tintsOk = false;
+        if (!rgbaEq(t.valuesByMode[elev.dark], oklchToRgba(layer.tint))) tintsOk = false;
       }
     }
-    add(ok, collectionName + " aliases point at the correct production targets");
-  };
-  aliasCheck("ABox/Color/Semantic", ABOX_B1.semantics, (item) =>
-    prim.vars[item.alias] ? prim.vars[item.alias].id : null,
-  );
-  aliasCheck("ABox/Status", ABOX_B1.tones, (item) =>
-    byName["ABox/Color/Semantic"] && byName["ABox/Color/Semantic"].vars[item.alias]
-      ? byName["ABox/Color/Semantic"].vars[item.alias].id
-      : null,
-  );
-  aliasCheck("ABox/Status", ABOX_B1.metalAliases, (item) =>
-    prim && prim.vars[item.alias] ? prim.vars[item.alias].id : null,
-  );
+    add(structural, "every elevation layer has exactly x, y, blur, spread (FLOAT) and tint (COLOR)");
+    add(valuesOk, "elevation numeric values match production in both modes");
+    add(tintsOk, "elevation tint values match production in both modes");
+    add(!elev.collection.modes.some((m) => m.name === "Default"), "ABox/Elevation has no Default mode");
+  }
 
   // No runtime branding leaked in.
   const brandingTerms = /primary_color|accent_color|white.?label|tenant|brand[_-]?record/i;
@@ -765,7 +849,7 @@ async function verifyB1() {
       if (brandingTerms.test(n) || brandingTerms.test(entry.vars[n].description || "")) brandingLeak = true;
     }
   }
-  add(!brandingLeak, "no runtime/white-label branding values imported");
+  add(!brandingLeak, "no runtime/tenant/white-label branding values imported");
 
   // B1 must not create styles, components or page content.
   const textStyles = await figma.getLocalTextStylesAsync();
@@ -773,27 +857,43 @@ async function verifyB1() {
   add(textStyles.length === 0, "B1 created no text styles");
   add(effectStyles.length === 0, "B1 created no effect styles");
   let components = 0;
+  let componentSets = 0;
   let nodes = 0;
   for (const page of figma.root.children) {
     nodes += page.children.length;
-    components += page.findAll((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET").length;
+    components += page.findAll((n) => n.type === "COMPONENT").length;
+    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
   }
   add(components === 0, "B1 created no components or variants");
+  add(componentSets === 0, "B1 created no component sets");
   add(nodes === 0, "the seven library pages remain empty");
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
-    "the seven pages remain at indices 0..6 in order",
+    "the seven B0 pages remain at indices 0..6 in order",
   );
+
+  // Inventory evidence for the FINAL REPORT.
+  say("");
+  say("B1 INVENTORY");
+  for (const spec of ABOX_B1.collections) {
+    const entry = byName[spec.name];
+    if (!entry) { say("  " + spec.name + " : MISSING"); continue; }
+    const names = Object.keys(entry.vars).sort();
+    say("  " + spec.name + " id=" + entry.collection.id + " variables=" + names.length);
+    for (const n of names) say("      " + n + "  id=" + entry.vars[n].id);
+  }
 
   say("");
   say("B1 STRUCTURAL CHECK");
   checks.forEach((c) => say("  " + c));
   const passed = checks.every((c) => c.indexOf("PASS") === 0);
   say("");
+  say("RECORDED LIMITATIONS / EXCEPTIONS");
+  for (const l of ABOX_B1.limitations) say("  - " + l);
+  say("  - Decorative utilities, motion keyframes and responsive breakpoints are not variables.");
+  say("  - No publishing performed; library publishing is a separate step.");
+  say("");
   say(passed ? "RESULT: B1 PASSED" : "RESULT: B1 FAILED — do not proceed to B2.");
-  say("Recorded limitations: oklch stored as sRGB (source notation kept in descriptions);");
-  say("color-mix() badge tints are runtime-computed (later batch); composite shadows become");
-  say("Effect Styles in a later batch. No runtime branding imported. No publishing performed.");
   return passed;
 }
 

@@ -120,19 +120,22 @@ const ABOX_B1 = {
     {
       "name": "ABox/Spacing",
       "modes": [
-        "Default"
+        "Light",
+        "Dark"
       ]
     },
     {
       "name": "ABox/Radius",
       "modes": [
-        "Default"
+        "Light",
+        "Dark"
       ]
     },
     {
       "name": "ABox/Border",
       "modes": [
-        "Default"
+        "Light",
+        "Dark"
       ]
     },
     {
@@ -145,13 +148,15 @@ const ABOX_B1 = {
     {
       "name": "ABox/Layout",
       "modes": [
-        "Default"
+        "Light",
+        "Dark"
       ]
     },
     {
       "name": "ABox/Control sizing",
       "modes": [
-        "Default"
+        "Light",
+        "Dark"
       ]
     }
   ],
@@ -171,10 +176,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--background",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(1 0 0)",
-        "dark": "oklch(0.165 0.03 265)"
+        "light": "--background: oklch(1 0 0)",
+        "dark": "--background: oklch(0.165 0.03 265)  (.dark)"
       }
     },
     {
@@ -192,10 +197,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--foreground",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.22 0.025 265)",
-        "dark": "oklch(0.95 0.006 265)"
+        "light": "--foreground: oklch(0.22 0.025 265)",
+        "dark": "--foreground: oklch(0.95 0.006 265)  (.dark)"
       }
     },
     {
@@ -213,14 +218,14 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--surface",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.968 0.003 265)",
-        "dark": "oklch(0.195 0.035 265)"
+        "light": "--surface: oklch(0.968 0.003 265)",
+        "dark": "--surface: oklch(0.195 0.035 265)  (.dark)"
       }
     },
     {
-      "name": "surface/foreground",
+      "name": "surface-foreground",
       "role": "surface-foreground",
       "light": {
         "L": 0.22,
@@ -234,10 +239,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--surface-foreground",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.22 0.025 265)",
-        "dark": "oklch(0.95 0.006 265)"
+        "light": "--surface-foreground: oklch(0.22 0.025 265)",
+        "dark": "--surface-foreground: oklch(0.95 0.006 265)  (.dark)"
       }
     },
     {
@@ -255,10 +260,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--panel",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.945 0.004 265)",
-        "dark": "oklch(0.225 0.04 265)"
+        "light": "--panel: oklch(0.945 0.004 265)",
+        "dark": "--panel: oklch(0.225 0.04 265)  (.dark)"
       }
     },
     {
@@ -276,10 +281,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--ink",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.22 0.025 265)",
-        "dark": "oklch(0.95 0.006 265)"
+        "light": "--ink: oklch(0.22 0.025 265)",
+        "dark": "--ink: oklch(0.95 0.006 265)  (.dark)"
       }
     },
     {
@@ -297,14 +302,14 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--card",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(1 0 0)",
-        "dark": "oklch(0.205 0.036 265)"
+        "light": "--card: oklch(1 0 0)",
+        "dark": "--card: oklch(0.205 0.036 265)  (.dark)"
       }
     },
     {
-      "name": "card/foreground",
+      "name": "card-foreground",
       "role": "card-foreground",
       "light": {
         "L": 0.22,
@@ -318,10 +323,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--card-foreground",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.22 0.025 265)",
-        "dark": "oklch(0.95 0.006 265)"
+        "light": "--card-foreground: oklch(0.22 0.025 265)",
+        "dark": "--card-foreground: oklch(0.95 0.006 265)  (.dark)"
       }
     },
     {
@@ -339,14 +344,14 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--popover",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(1 0 0)",
-        "dark": "oklch(0.215 0.038 265)"
+        "light": "--popover: oklch(1 0 0)",
+        "dark": "--popover: oklch(0.215 0.038 265)  (.dark)"
       }
     },
     {
-      "name": "popover/foreground",
+      "name": "popover-foreground",
       "role": "popover-foreground",
       "light": {
         "L": 0.22,
@@ -360,10 +365,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--popover-foreground",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.22 0.025 265)",
-        "dark": "oklch(0.95 0.006 265)"
+        "light": "--popover-foreground: oklch(0.22 0.025 265)",
+        "dark": "--popover-foreground: oklch(0.95 0.006 265)  (.dark)"
       }
     },
     {
@@ -381,14 +386,14 @@ const ABOX_B1 = {
         "h": 255,
         "a": 1
       },
-      "css": "--primary",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.31 0.09 265)",
-        "dark": "oklch(0.68 0.125 255)"
+        "light": "--primary: oklch(0.31 0.09 265)",
+        "dark": "--primary: oklch(0.68 0.125 255)  (.dark)"
       }
     },
     {
-      "name": "primary/foreground",
+      "name": "primary-foreground",
       "role": "primary-foreground",
       "light": {
         "L": 0.99,
@@ -402,14 +407,14 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--primary-foreground",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.99 0.002 265)",
-        "dark": "oklch(0.16 0.045 265)"
+        "light": "--primary-foreground: oklch(0.99 0.002 265)",
+        "dark": "--primary-foreground: oklch(0.16 0.045 265)  (.dark)"
       }
     },
     {
-      "name": "primary/soft",
+      "name": "primary-soft",
       "role": "primary-soft",
       "light": {
         "L": 0.945,
@@ -423,10 +428,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--primary-soft",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.945 0.02 265)",
-        "dark": "oklch(0.3 0.07 265)"
+        "light": "--primary-soft: oklch(0.945 0.02 265)",
+        "dark": "--primary-soft: oklch(0.3 0.07 265)  (.dark)"
       }
     },
     {
@@ -444,14 +449,14 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--secondary",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.955 0.004 265)",
-        "dark": "oklch(0.255 0.04 265)"
+        "light": "--secondary: oklch(0.955 0.004 265)",
+        "dark": "--secondary: oklch(0.255 0.04 265)  (.dark)"
       }
     },
     {
-      "name": "secondary/foreground",
+      "name": "secondary-foreground",
       "role": "secondary-foreground",
       "light": {
         "L": 0.24,
@@ -465,10 +470,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--secondary-foreground",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.24 0.025 265)",
-        "dark": "oklch(0.95 0.006 265)"
+        "light": "--secondary-foreground: oklch(0.24 0.025 265)",
+        "dark": "--secondary-foreground: oklch(0.95 0.006 265)  (.dark)"
       }
     },
     {
@@ -486,14 +491,14 @@ const ABOX_B1 = {
         "h": 195,
         "a": 1
       },
-      "css": "--sage",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.55 0.085 195)",
-        "dark": "oklch(0.74 0.09 195)"
+        "light": "--sage: oklch(0.55 0.085 195)",
+        "dark": "--sage: oklch(0.74 0.09 195)  (.dark)"
       }
     },
     {
-      "name": "sage/foreground",
+      "name": "sage-foreground",
       "role": "sage-foreground",
       "light": {
         "L": 0.99,
@@ -507,14 +512,14 @@ const ABOX_B1 = {
         "h": 195,
         "a": 1
       },
-      "css": "--sage-foreground",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.99 0.004 195)",
-        "dark": "oklch(0.16 0.035 195)"
+        "light": "--sage-foreground: oklch(0.99 0.004 195)",
+        "dark": "--sage-foreground: oklch(0.16 0.035 195)  (.dark)"
       }
     },
     {
-      "name": "sage/soft",
+      "name": "sage-soft",
       "role": "sage-soft",
       "light": {
         "L": 0.945,
@@ -528,10 +533,10 @@ const ABOX_B1 = {
         "h": 195,
         "a": 1
       },
-      "css": "--sage-soft",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.945 0.03 195)",
-        "dark": "oklch(0.3 0.055 195)"
+        "light": "--sage-soft: oklch(0.945 0.03 195)",
+        "dark": "--sage-soft: oklch(0.3 0.055 195)  (.dark)"
       }
     },
     {
@@ -549,14 +554,14 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--muted",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.955 0.004 265)",
-        "dark": "oklch(0.235 0.036 265)"
+        "light": "--muted: oklch(0.955 0.004 265)",
+        "dark": "--muted: oklch(0.235 0.036 265)  (.dark)"
       }
     },
     {
-      "name": "muted/foreground",
+      "name": "muted-foreground",
       "role": "muted-foreground",
       "light": {
         "L": 0.5,
@@ -570,10 +575,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--muted-foreground",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.5 0.018 265)",
-        "dark": "oklch(0.73 0.015 265)"
+        "light": "--muted-foreground: oklch(0.5 0.018 265)",
+        "dark": "--muted-foreground: oklch(0.73 0.015 265)  (.dark)"
       }
     },
     {
@@ -591,14 +596,14 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--accent",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.955 0.004 265)",
-        "dark": "oklch(0.255 0.04 265)"
+        "light": "--accent: oklch(0.955 0.004 265)",
+        "dark": "--accent: oklch(0.255 0.04 265)  (.dark)"
       }
     },
     {
-      "name": "accent/foreground",
+      "name": "accent-foreground",
       "role": "accent-foreground",
       "light": {
         "L": 0.24,
@@ -612,10 +617,10 @@ const ABOX_B1 = {
         "h": 265,
         "a": 1
       },
-      "css": "--accent-foreground",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.24 0.025 265)",
-        "dark": "oklch(0.95 0.006 265)"
+        "light": "--accent-foreground: oklch(0.24 0.025 265)",
+        "dark": "--accent-foreground: oklch(0.95 0.006 265)  (.dark)"
       }
     },
     {
@@ -633,14 +638,14 @@ const ABOX_B1 = {
         "h": 25,
         "a": 1
       },
-      "css": "--destructive",
+      "darkOverridden": false,
       "source": {
-        "light": "oklch(0.55 0.185 25)",
-        "dark": "oklch(0.55 0.185 25)"
+        "light": "--destructive: oklch(0.55 0.185 25)",
+        "dark": "--destructive: oklch(0.55 0.185 25)  (no .dark override — Light duplicated)"
       }
     },
     {
-      "name": "destructive/foreground",
+      "name": "destructive-foreground",
       "role": "destructive-foreground",
       "light": {
         "L": 0.99,
@@ -654,10 +659,10 @@ const ABOX_B1 = {
         "h": 25,
         "a": 1
       },
-      "css": "--destructive-foreground",
+      "darkOverridden": false,
       "source": {
-        "light": "oklch(0.99 0.004 25)",
-        "dark": "oklch(0.99 0.004 25)"
+        "light": "--destructive-foreground: oklch(0.99 0.004 25)",
+        "dark": "--destructive-foreground: oklch(0.99 0.004 25)  (no .dark override — Light duplicated)"
       }
     },
     {
@@ -675,14 +680,14 @@ const ABOX_B1 = {
         "h": 75,
         "a": 1
       },
-      "css": "--warning",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.72 0.125 75)",
-        "dark": "oklch(0.78 0.115 75)"
+        "light": "--warning: oklch(0.72 0.125 75)",
+        "dark": "--warning: oklch(0.78 0.115 75)  (.dark)"
       }
     },
     {
-      "name": "warning/foreground",
+      "name": "warning-foreground",
       "role": "warning-foreground",
       "light": {
         "L": 0.22,
@@ -696,10 +701,10 @@ const ABOX_B1 = {
         "h": 75,
         "a": 1
       },
-      "css": "--warning-foreground",
+      "darkOverridden": false,
       "source": {
-        "light": "oklch(0.22 0.045 75)",
-        "dark": "oklch(0.22 0.045 75)"
+        "light": "--warning-foreground: oklch(0.22 0.045 75)",
+        "dark": "--warning-foreground: oklch(0.22 0.045 75)  (no .dark override — Light duplicated)"
       }
     },
     {
@@ -717,14 +722,14 @@ const ABOX_B1 = {
         "h": 250,
         "a": 1
       },
-      "css": "--info",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.55 0.12 250)",
-        "dark": "oklch(0.7 0.115 250)"
+        "light": "--info: oklch(0.55 0.12 250)",
+        "dark": "--info: oklch(0.7 0.115 250)  (.dark)"
       }
     },
     {
-      "name": "info/foreground",
+      "name": "info-foreground",
       "role": "info-foreground",
       "light": {
         "L": 0.99,
@@ -738,10 +743,10 @@ const ABOX_B1 = {
         "h": 250,
         "a": 1
       },
-      "css": "--info-foreground",
+      "darkOverridden": false,
       "source": {
-        "light": "oklch(0.99 0.004 250)",
-        "dark": "oklch(0.99 0.004 250)"
+        "light": "--info-foreground: oklch(0.99 0.004 250)",
+        "dark": "--info-foreground: oklch(0.99 0.004 250)  (no .dark override — Light duplicated)"
       }
     },
     {
@@ -759,14 +764,14 @@ const ABOX_B1 = {
         "h": 160,
         "a": 1
       },
-      "css": "--success",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.55 0.1 160)",
-        "dark": "oklch(0.7 0.095 160)"
+        "light": "--success: oklch(0.55 0.1 160)",
+        "dark": "--success: oklch(0.7 0.095 160)  (.dark)"
       }
     },
     {
-      "name": "success/foreground",
+      "name": "success-foreground",
       "role": "success-foreground",
       "light": {
         "L": 0.99,
@@ -780,388 +785,10 @@ const ABOX_B1 = {
         "h": 160,
         "a": 1
       },
-      "css": "--success-foreground",
+      "darkOverridden": false,
       "source": {
-        "light": "oklch(0.99 0.004 160)",
-        "dark": "oklch(0.99 0.004 160)"
-      }
-    },
-    {
-      "name": "border",
-      "role": "border",
-      "light": {
-        "L": 0.3,
-        "C": 0.04,
-        "h": 265,
-        "a": 0.1
-      },
-      "dark": {
-        "L": 1,
-        "C": 0,
-        "h": 0,
-        "a": 0.09
-      },
-      "css": "--border",
-      "source": {
-        "light": "oklch(0.3 0.04 265 / 0.1)",
-        "dark": "oklch(1 0 0 / 0.09)"
-      }
-    },
-    {
-      "name": "border-strong",
-      "role": "border-strong",
-      "light": {
-        "L": 0.3,
-        "C": 0.04,
-        "h": 265,
-        "a": 0.24
-      },
-      "dark": {
-        "L": 1,
-        "C": 0,
-        "h": 0,
-        "a": 0.2
-      },
-      "css": "--border-strong",
-      "source": {
-        "light": "oklch(0.3 0.04 265 / 0.24)",
-        "dark": "oklch(1 0 0 / 0.2)"
-      }
-    },
-    {
-      "name": "hairline",
-      "role": "hairline",
-      "light": {
-        "L": 0.3,
-        "C": 0.04,
-        "h": 265,
-        "a": 0.11
-      },
-      "dark": {
-        "L": 1,
-        "C": 0,
-        "h": 0,
-        "a": 0.11
-      },
-      "css": "--hairline",
-      "source": {
-        "light": "oklch(0.3 0.04 265 / 0.11)",
-        "dark": "oklch(1 0 0 / 0.11)"
-      }
-    },
-    {
-      "name": "input",
-      "role": "input",
-      "light": {
-        "L": 0.3,
-        "C": 0.04,
-        "h": 265,
-        "a": 0.16
-      },
-      "dark": {
-        "L": 1,
-        "C": 0,
-        "h": 0,
-        "a": 0.12
-      },
-      "css": "--input",
-      "source": {
-        "light": "oklch(0.3 0.04 265 / 0.16)",
-        "dark": "oklch(1 0 0 / 0.12)"
-      }
-    },
-    {
-      "name": "ring",
-      "role": "ring",
-      "light": {
-        "L": 0.31,
-        "C": 0.09,
-        "h": 265,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.68,
-        "C": 0.125,
-        "h": 255,
-        "a": 1
-      },
-      "css": "--ring",
-      "source": {
-        "light": "oklch(0.31 0.09 265)",
-        "dark": "oklch(0.68 0.125 255)"
-      }
-    },
-    {
-      "name": "chart/1",
-      "role": "chart-1",
-      "light": {
-        "L": 0.31,
-        "C": 0.09,
-        "h": 265,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.68,
-        "C": 0.125,
-        "h": 255,
-        "a": 1
-      },
-      "css": "--chart-1",
-      "source": {
-        "light": "oklch(0.31 0.09 265)",
-        "dark": "oklch(0.68 0.125 255)"
-      }
-    },
-    {
-      "name": "chart/2",
-      "role": "chart-2",
-      "light": {
-        "L": 0.55,
-        "C": 0.085,
-        "h": 195,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.74,
-        "C": 0.09,
-        "h": 195,
-        "a": 1
-      },
-      "css": "--chart-2",
-      "source": {
-        "light": "oklch(0.55 0.085 195)",
-        "dark": "oklch(0.74 0.09 195)"
-      }
-    },
-    {
-      "name": "chart/3",
-      "role": "chart-3",
-      "light": {
-        "L": 0.6,
-        "C": 0.115,
-        "h": 250,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.62,
-        "C": 0.11,
-        "h": 250,
-        "a": 1
-      },
-      "css": "--chart-3",
-      "source": {
-        "light": "oklch(0.6 0.115 250)",
-        "dark": "oklch(0.62 0.11 250)"
-      }
-    },
-    {
-      "name": "chart/4",
-      "role": "chart-4",
-      "light": {
-        "L": 0.72,
-        "C": 0.125,
-        "h": 75,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.78,
-        "C": 0.115,
-        "h": 75,
-        "a": 1
-      },
-      "css": "--chart-4",
-      "source": {
-        "light": "oklch(0.72 0.125 75)",
-        "dark": "oklch(0.78 0.115 75)"
-      }
-    },
-    {
-      "name": "chart/5",
-      "role": "chart-5",
-      "light": {
-        "L": 0.62,
-        "C": 0.02,
-        "h": 265,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.7,
-        "C": 0.02,
-        "h": 265,
-        "a": 1
-      },
-      "css": "--chart-5",
-      "source": {
-        "light": "oklch(0.62 0.02 265)",
-        "dark": "oklch(0.7 0.02 265)"
-      }
-    },
-    {
-      "name": "sidebar",
-      "role": "sidebar",
-      "light": {
-        "L": 0.235,
-        "C": 0.06,
-        "h": 265,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.135,
-        "C": 0.03,
-        "h": 265,
-        "a": 1
-      },
-      "css": "--sidebar",
-      "source": {
-        "light": "oklch(0.235 0.06 265)",
-        "dark": "oklch(0.135 0.03 265)"
-      }
-    },
-    {
-      "name": "sidebar/foreground",
-      "role": "sidebar-foreground",
-      "light": {
-        "L": 0.95,
-        "C": 0.006,
-        "h": 265,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.92,
-        "C": 0.006,
-        "h": 265,
-        "a": 1
-      },
-      "css": "--sidebar-foreground",
-      "source": {
-        "light": "oklch(0.95 0.006 265)",
-        "dark": "oklch(0.92 0.006 265)"
-      }
-    },
-    {
-      "name": "sidebar/primary",
-      "role": "sidebar-primary",
-      "light": {
-        "L": 0.66,
-        "C": 0.12,
-        "h": 250,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.68,
-        "C": 0.125,
-        "h": 255,
-        "a": 1
-      },
-      "css": "--sidebar-primary",
-      "source": {
-        "light": "oklch(0.66 0.12 250)",
-        "dark": "oklch(0.68 0.125 255)"
-      }
-    },
-    {
-      "name": "sidebar/primary-foreground",
-      "role": "sidebar-primary-foreground",
-      "light": {
-        "L": 0.16,
-        "C": 0.045,
-        "h": 265,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.16,
-        "C": 0.045,
-        "h": 265,
-        "a": 1
-      },
-      "css": "--sidebar-primary-foreground",
-      "source": {
-        "light": "oklch(0.16 0.045 265)",
-        "dark": "oklch(0.16 0.045 265)"
-      }
-    },
-    {
-      "name": "sidebar/accent",
-      "role": "sidebar-accent",
-      "light": {
-        "L": 0.29,
-        "C": 0.065,
-        "h": 265,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.235,
-        "C": 0.04,
-        "h": 265,
-        "a": 1
-      },
-      "css": "--sidebar-accent",
-      "source": {
-        "light": "oklch(0.29 0.065 265)",
-        "dark": "oklch(0.235 0.04 265)"
-      }
-    },
-    {
-      "name": "sidebar/accent-foreground",
-      "role": "sidebar-accent-foreground",
-      "light": {
-        "L": 0.95,
-        "C": 0.006,
-        "h": 265,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.95,
-        "C": 0.006,
-        "h": 265,
-        "a": 1
-      },
-      "css": "--sidebar-accent-foreground",
-      "source": {
-        "light": "oklch(0.95 0.006 265)",
-        "dark": "oklch(0.95 0.006 265)"
-      }
-    },
-    {
-      "name": "sidebar/border",
-      "role": "sidebar-border",
-      "light": {
-        "L": 1,
-        "C": 0,
-        "h": 0,
-        "a": 0.09
-      },
-      "dark": {
-        "L": 1,
-        "C": 0,
-        "h": 0,
-        "a": 0.08
-      },
-      "css": "--sidebar-border",
-      "source": {
-        "light": "oklch(1 0 0 / 0.09)",
-        "dark": "oklch(1 0 0 / 0.08)"
-      }
-    },
-    {
-      "name": "sidebar/ring",
-      "role": "sidebar-ring",
-      "light": {
-        "L": 0.66,
-        "C": 0.12,
-        "h": 250,
-        "a": 1
-      },
-      "dark": {
-        "L": 0.68,
-        "C": 0.125,
-        "h": 255,
-        "a": 1
-      },
-      "css": "--sidebar-ring",
-      "source": {
-        "light": "oklch(0.66 0.12 250)",
-        "dark": "oklch(0.68 0.125 255)"
+        "light": "--success-foreground: oklch(0.99 0.004 160)",
+        "dark": "--success-foreground: oklch(0.99 0.004 160)  (no .dark override — Light duplicated)"
       }
     },
     {
@@ -1179,10 +806,10 @@ const ABOX_B1 = {
         "h": 58,
         "a": 1
       },
-      "css": "--metal-bronze",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.56 0.105 58)",
-        "dark": "oklch(0.72 0.105 58)"
+        "light": "--metal-bronze: oklch(0.56 0.105 58)",
+        "dark": "--metal-bronze: oklch(0.72 0.105 58)  (.dark)"
       }
     },
     {
@@ -1200,10 +827,10 @@ const ABOX_B1 = {
         "h": 58,
         "a": 1
       },
-      "css": "--metal-expanded-bronze",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.52 0.09 58)",
-        "dark": "oklch(0.68 0.095 58)"
+        "light": "--metal-expanded-bronze: oklch(0.52 0.09 58)",
+        "dark": "--metal-expanded-bronze: oklch(0.68 0.095 58)  (.dark)"
       }
     },
     {
@@ -1221,10 +848,10 @@ const ABOX_B1 = {
         "h": 255,
         "a": 1
       },
-      "css": "--metal-silver",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.58 0.018 255)",
-        "dark": "oklch(0.78 0.02 255)"
+        "light": "--metal-silver: oklch(0.58 0.018 255)",
+        "dark": "--metal-silver: oklch(0.78 0.02 255)  (.dark)"
       }
     },
     {
@@ -1242,10 +869,10 @@ const ABOX_B1 = {
         "h": 92,
         "a": 1
       },
-      "css": "--metal-gold",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.66 0.13 92)",
-        "dark": "oklch(0.82 0.13 92)"
+        "light": "--metal-gold: oklch(0.66 0.13 92)",
+        "dark": "--metal-gold: oklch(0.82 0.13 92)  (.dark)"
       }
     },
     {
@@ -1263,10 +890,10 @@ const ABOX_B1 = {
         "h": 205,
         "a": 1
       },
-      "css": "--metal-platinum",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.56 0.075 205)",
-        "dark": "oklch(0.76 0.075 205)"
+        "light": "--metal-platinum: oklch(0.56 0.075 205)",
+        "dark": "--metal-platinum: oklch(0.76 0.075 205)  (.dark)"
       }
     },
     {
@@ -1284,10 +911,10 @@ const ABOX_B1 = {
         "h": 25,
         "a": 1
       },
-      "css": "--metal-catastrophic",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.56 0.15 25)",
-        "dark": "oklch(0.7 0.12 25)"
+        "light": "--metal-catastrophic: oklch(0.56 0.15 25)",
+        "dark": "--metal-catastrophic: oklch(0.7 0.12 25)  (.dark)"
       }
     },
     {
@@ -1305,10 +932,10 @@ const ABOX_B1 = {
         "h": 58,
         "a": 1
       },
-      "css": "--metal-bronze-fg",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.99 0 0)",
-        "dark": "oklch(0.14 0.02 58)"
+        "light": "--metal-bronze-fg: oklch(0.99 0 0)",
+        "dark": "--metal-bronze-fg: oklch(0.14 0.02 58)  (.dark)"
       }
     },
     {
@@ -1326,10 +953,10 @@ const ABOX_B1 = {
         "h": 58,
         "a": 1
       },
-      "css": "--metal-expanded-bronze-fg",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.99 0 0)",
-        "dark": "oklch(0.14 0.02 58)"
+        "light": "--metal-expanded-bronze-fg: oklch(0.99 0 0)",
+        "dark": "--metal-expanded-bronze-fg: oklch(0.14 0.02 58)  (.dark)"
       }
     },
     {
@@ -1347,10 +974,10 @@ const ABOX_B1 = {
         "h": 255,
         "a": 1
       },
-      "css": "--metal-silver-fg",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.99 0 0)",
-        "dark": "oklch(0.14 0.01 255)"
+        "light": "--metal-silver-fg: oklch(0.99 0 0)",
+        "dark": "--metal-silver-fg: oklch(0.14 0.01 255)  (.dark)"
       }
     },
     {
@@ -1368,10 +995,10 @@ const ABOX_B1 = {
         "h": 92,
         "a": 1
       },
-      "css": "--metal-gold-fg",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.16 0.02 92)",
-        "dark": "oklch(0.16 0.02 92)"
+        "light": "--metal-gold-fg: oklch(0.16 0.02 92)",
+        "dark": "--metal-gold-fg: oklch(0.16 0.02 92)  (.dark)"
       }
     },
     {
@@ -1389,10 +1016,10 @@ const ABOX_B1 = {
         "h": 205,
         "a": 1
       },
-      "css": "--metal-platinum-fg",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.99 0 0)",
-        "dark": "oklch(0.14 0.02 205)"
+        "light": "--metal-platinum-fg: oklch(0.99 0 0)",
+        "dark": "--metal-platinum-fg: oklch(0.14 0.02 205)  (.dark)"
       }
     },
     {
@@ -1410,329 +1037,959 @@ const ABOX_B1 = {
         "h": 25,
         "a": 1
       },
-      "css": "--metal-catastrophic-fg",
+      "darkOverridden": true,
       "source": {
-        "light": "oklch(0.99 0 0)",
-        "dark": "oklch(0.14 0.02 25)"
+        "light": "--metal-catastrophic-fg: oklch(0.99 0 0)",
+        "dark": "--metal-catastrophic-fg: oklch(0.14 0.02 25)  (.dark)"
+      }
+    },
+    {
+      "name": "border",
+      "role": "border",
+      "light": {
+        "L": 0.3,
+        "C": 0.04,
+        "h": 265,
+        "a": 0.1
+      },
+      "dark": {
+        "L": 1,
+        "C": 0,
+        "h": 0,
+        "a": 0.09
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--border: oklch(0.3 0.04 265 / 0.1)",
+        "dark": "--border: oklch(1 0 0 / 0.09)  (.dark)"
+      }
+    },
+    {
+      "name": "border-strong",
+      "role": "border-strong",
+      "light": {
+        "L": 0.3,
+        "C": 0.04,
+        "h": 265,
+        "a": 0.24
+      },
+      "dark": {
+        "L": 1,
+        "C": 0,
+        "h": 0,
+        "a": 0.2
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--border-strong: oklch(0.3 0.04 265 / 0.24)",
+        "dark": "--border-strong: oklch(1 0 0 / 0.2)  (.dark)"
+      }
+    },
+    {
+      "name": "hairline",
+      "role": "hairline",
+      "light": {
+        "L": 0.3,
+        "C": 0.04,
+        "h": 265,
+        "a": 0.11
+      },
+      "dark": {
+        "L": 1,
+        "C": 0,
+        "h": 0,
+        "a": 0.11
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--hairline: oklch(0.3 0.04 265 / 0.11)",
+        "dark": "--hairline: oklch(1 0 0 / 0.11)  (.dark)"
+      }
+    },
+    {
+      "name": "input",
+      "role": "input",
+      "light": {
+        "L": 0.3,
+        "C": 0.04,
+        "h": 265,
+        "a": 0.16
+      },
+      "dark": {
+        "L": 1,
+        "C": 0,
+        "h": 0,
+        "a": 0.12
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--input: oklch(0.3 0.04 265 / 0.16)",
+        "dark": "--input: oklch(1 0 0 / 0.12)  (.dark)"
+      }
+    },
+    {
+      "name": "ring",
+      "role": "ring",
+      "light": {
+        "L": 0.31,
+        "C": 0.09,
+        "h": 265,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.68,
+        "C": 0.125,
+        "h": 255,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--ring: oklch(0.31 0.09 265)",
+        "dark": "--ring: oklch(0.68 0.125 255)  (.dark)"
+      }
+    },
+    {
+      "name": "chart/1",
+      "role": "chart-1",
+      "light": {
+        "L": 0.31,
+        "C": 0.09,
+        "h": 265,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.68,
+        "C": 0.125,
+        "h": 255,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--chart-1: oklch(0.31 0.09 265)",
+        "dark": "--chart-1: oklch(0.68 0.125 255)  (.dark)"
+      }
+    },
+    {
+      "name": "chart/2",
+      "role": "chart-2",
+      "light": {
+        "L": 0.55,
+        "C": 0.085,
+        "h": 195,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.74,
+        "C": 0.09,
+        "h": 195,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--chart-2: oklch(0.55 0.085 195)",
+        "dark": "--chart-2: oklch(0.74 0.09 195)  (.dark)"
+      }
+    },
+    {
+      "name": "chart/3",
+      "role": "chart-3",
+      "light": {
+        "L": 0.6,
+        "C": 0.115,
+        "h": 250,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.62,
+        "C": 0.11,
+        "h": 250,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--chart-3: oklch(0.6 0.115 250)",
+        "dark": "--chart-3: oklch(0.62 0.11 250)  (.dark)"
+      }
+    },
+    {
+      "name": "chart/4",
+      "role": "chart-4",
+      "light": {
+        "L": 0.72,
+        "C": 0.125,
+        "h": 75,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.78,
+        "C": 0.115,
+        "h": 75,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--chart-4: oklch(0.72 0.125 75)",
+        "dark": "--chart-4: oklch(0.78 0.115 75)  (.dark)"
+      }
+    },
+    {
+      "name": "chart/5",
+      "role": "chart-5",
+      "light": {
+        "L": 0.62,
+        "C": 0.02,
+        "h": 265,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.7,
+        "C": 0.02,
+        "h": 265,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--chart-5: oklch(0.62 0.02 265)",
+        "dark": "--chart-5: oklch(0.7 0.02 265)  (.dark)"
+      }
+    },
+    {
+      "name": "sidebar",
+      "role": "sidebar",
+      "light": {
+        "L": 0.235,
+        "C": 0.06,
+        "h": 265,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.135,
+        "C": 0.03,
+        "h": 265,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--sidebar: oklch(0.235 0.06 265)",
+        "dark": "--sidebar: oklch(0.135 0.03 265)  (.dark)"
+      }
+    },
+    {
+      "name": "sidebar/foreground",
+      "role": "sidebar-foreground",
+      "light": {
+        "L": 0.95,
+        "C": 0.006,
+        "h": 265,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.92,
+        "C": 0.006,
+        "h": 265,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--sidebar-foreground: oklch(0.95 0.006 265)",
+        "dark": "--sidebar-foreground: oklch(0.92 0.006 265)  (.dark)"
+      }
+    },
+    {
+      "name": "sidebar/primary",
+      "role": "sidebar-primary",
+      "light": {
+        "L": 0.66,
+        "C": 0.12,
+        "h": 250,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.68,
+        "C": 0.125,
+        "h": 255,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--sidebar-primary: oklch(0.66 0.12 250)",
+        "dark": "--sidebar-primary: oklch(0.68 0.125 255)  (.dark)"
+      }
+    },
+    {
+      "name": "sidebar/primary-foreground",
+      "role": "sidebar-primary-foreground",
+      "light": {
+        "L": 0.16,
+        "C": 0.045,
+        "h": 265,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.16,
+        "C": 0.045,
+        "h": 265,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--sidebar-primary-foreground: oklch(0.16 0.045 265)",
+        "dark": "--sidebar-primary-foreground: oklch(0.16 0.045 265)  (.dark)"
+      }
+    },
+    {
+      "name": "sidebar/accent",
+      "role": "sidebar-accent",
+      "light": {
+        "L": 0.29,
+        "C": 0.065,
+        "h": 265,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.235,
+        "C": 0.04,
+        "h": 265,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--sidebar-accent: oklch(0.29 0.065 265)",
+        "dark": "--sidebar-accent: oklch(0.235 0.04 265)  (.dark)"
+      }
+    },
+    {
+      "name": "sidebar/accent-foreground",
+      "role": "sidebar-accent-foreground",
+      "light": {
+        "L": 0.95,
+        "C": 0.006,
+        "h": 265,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.95,
+        "C": 0.006,
+        "h": 265,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--sidebar-accent-foreground: oklch(0.95 0.006 265)",
+        "dark": "--sidebar-accent-foreground: oklch(0.95 0.006 265)  (.dark)"
+      }
+    },
+    {
+      "name": "sidebar/border",
+      "role": "sidebar-border",
+      "light": {
+        "L": 1,
+        "C": 0,
+        "h": 0,
+        "a": 0.09
+      },
+      "dark": {
+        "L": 1,
+        "C": 0,
+        "h": 0,
+        "a": 0.08
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--sidebar-border: oklch(1 0 0 / 0.09)",
+        "dark": "--sidebar-border: oklch(1 0 0 / 0.08)  (.dark)"
+      }
+    },
+    {
+      "name": "sidebar/ring",
+      "role": "sidebar-ring",
+      "light": {
+        "L": 0.66,
+        "C": 0.12,
+        "h": 250,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.68,
+        "C": 0.125,
+        "h": 255,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--sidebar-ring: oklch(0.66 0.12 250)",
+        "dark": "--sidebar-ring: oklch(0.68 0.125 255)  (.dark)"
+      }
+    },
+    {
+      "name": "ai",
+      "role": "ai",
+      "light": {
+        "L": 0.52,
+        "C": 0.115,
+        "h": 292,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.7,
+        "C": 0.12,
+        "h": 292,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--ai: oklch(0.52 0.115 292)",
+        "dark": "--ai: oklch(0.7 0.12 292)  (.dark)"
+      }
+    },
+    {
+      "name": "ai-foreground",
+      "role": "ai-foreground",
+      "light": {
+        "L": 0.99,
+        "C": 0.004,
+        "h": 292,
+        "a": 1
+      },
+      "dark": {
+        "L": 0.16,
+        "C": 0.035,
+        "h": 292,
+        "a": 1
+      },
+      "darkOverridden": true,
+      "source": {
+        "light": "--ai-foreground: oklch(0.99 0.004 292)",
+        "dark": "--ai-foreground: oklch(0.16 0.035 292)  (.dark)"
       }
     }
   ],
   "semantics": [
     {
       "name": "background",
-      "alias": "background",
-      "css": "--color-background"
+      "css": "--color-background: var(--background);",
+      "aliasLight": "background",
+      "aliasDark": "background",
+      "chainLight": "--background",
+      "chainDark": "--background"
     },
     {
       "name": "foreground",
-      "alias": "foreground",
-      "css": "--color-foreground"
+      "css": "--color-foreground: var(--foreground);",
+      "aliasLight": "foreground",
+      "aliasDark": "foreground",
+      "chainLight": "--foreground",
+      "chainDark": "--foreground"
     },
     {
       "name": "surface",
-      "alias": "surface",
-      "css": "--color-surface"
+      "css": "--color-surface: var(--surface);",
+      "aliasLight": "surface",
+      "aliasDark": "surface",
+      "chainLight": "--surface",
+      "chainDark": "--surface"
     },
     {
-      "name": "surface/foreground",
-      "alias": "surface/foreground",
-      "css": "--color-surface-foreground"
+      "name": "surface-foreground",
+      "css": "--color-surface-foreground: var(--surface-foreground);",
+      "aliasLight": "surface-foreground",
+      "aliasDark": "surface-foreground",
+      "chainLight": "--surface-foreground",
+      "chainDark": "--surface-foreground"
     },
     {
       "name": "panel",
-      "alias": "panel",
-      "css": "--color-panel"
-    },
-    {
-      "name": "ink",
-      "alias": "ink",
-      "css": "--color-ink"
+      "css": "--color-panel: var(--panel);",
+      "aliasLight": "panel",
+      "aliasDark": "panel",
+      "chainLight": "--panel",
+      "chainDark": "--panel"
     },
     {
       "name": "card",
-      "alias": "card",
-      "css": "--color-card"
+      "css": "--color-card: var(--card);",
+      "aliasLight": "card",
+      "aliasDark": "card",
+      "chainLight": "--card",
+      "chainDark": "--card"
     },
     {
-      "name": "card/foreground",
-      "alias": "card/foreground",
-      "css": "--color-card-foreground"
+      "name": "card-foreground",
+      "css": "--color-card-foreground: var(--card-foreground);",
+      "aliasLight": "card-foreground",
+      "aliasDark": "card-foreground",
+      "chainLight": "--card-foreground",
+      "chainDark": "--card-foreground"
     },
     {
       "name": "popover",
-      "alias": "popover",
-      "css": "--color-popover"
+      "css": "--color-popover: var(--popover);",
+      "aliasLight": "popover",
+      "aliasDark": "popover",
+      "chainLight": "--popover",
+      "chainDark": "--popover"
     },
     {
-      "name": "popover/foreground",
-      "alias": "popover/foreground",
-      "css": "--color-popover-foreground"
+      "name": "popover-foreground",
+      "css": "--color-popover-foreground: var(--popover-foreground);",
+      "aliasLight": "popover-foreground",
+      "aliasDark": "popover-foreground",
+      "chainLight": "--popover-foreground",
+      "chainDark": "--popover-foreground"
     },
     {
       "name": "primary",
-      "alias": "primary",
-      "css": "--color-primary"
+      "css": "--color-primary: var(--primary);",
+      "aliasLight": "primary",
+      "aliasDark": "primary",
+      "chainLight": "--primary",
+      "chainDark": "--primary"
     },
     {
-      "name": "primary/foreground",
-      "alias": "primary/foreground",
-      "css": "--color-primary-foreground"
+      "name": "primary-foreground",
+      "css": "--color-primary-foreground: var(--primary-foreground);",
+      "aliasLight": "primary-foreground",
+      "aliasDark": "primary-foreground",
+      "chainLight": "--primary-foreground",
+      "chainDark": "--primary-foreground"
     },
     {
-      "name": "primary/soft",
-      "alias": "primary/soft",
-      "css": "--color-primary-soft"
+      "name": "primary-soft",
+      "css": "--color-primary-soft: var(--primary-soft);",
+      "aliasLight": "primary-soft",
+      "aliasDark": "primary-soft",
+      "chainLight": "--primary-soft",
+      "chainDark": "--primary-soft"
     },
     {
       "name": "secondary",
-      "alias": "secondary",
-      "css": "--color-secondary"
+      "css": "--color-secondary: var(--secondary);",
+      "aliasLight": "secondary",
+      "aliasDark": "secondary",
+      "chainLight": "--secondary",
+      "chainDark": "--secondary"
     },
     {
-      "name": "secondary/foreground",
-      "alias": "secondary/foreground",
-      "css": "--color-secondary-foreground"
+      "name": "secondary-foreground",
+      "css": "--color-secondary-foreground: var(--secondary-foreground);",
+      "aliasLight": "secondary-foreground",
+      "aliasDark": "secondary-foreground",
+      "chainLight": "--secondary-foreground",
+      "chainDark": "--secondary-foreground"
     },
     {
       "name": "sage",
-      "alias": "sage",
-      "css": "--color-sage"
+      "css": "--color-sage: var(--sage);",
+      "aliasLight": "sage",
+      "aliasDark": "sage",
+      "chainLight": "--sage",
+      "chainDark": "--sage"
     },
     {
-      "name": "sage/foreground",
-      "alias": "sage/foreground",
-      "css": "--color-sage-foreground"
+      "name": "sage-foreground",
+      "css": "--color-sage-foreground: var(--sage-foreground);",
+      "aliasLight": "sage-foreground",
+      "aliasDark": "sage-foreground",
+      "chainLight": "--sage-foreground",
+      "chainDark": "--sage-foreground"
     },
     {
-      "name": "sage/soft",
-      "alias": "sage/soft",
-      "css": "--color-sage-soft"
+      "name": "sage-soft",
+      "css": "--color-sage-soft: var(--sage-soft);",
+      "aliasLight": "sage-soft",
+      "aliasDark": "sage-soft",
+      "chainLight": "--sage-soft",
+      "chainDark": "--sage-soft"
     },
     {
       "name": "muted",
-      "alias": "muted",
-      "css": "--color-muted"
+      "css": "--color-muted: var(--muted);",
+      "aliasLight": "muted",
+      "aliasDark": "muted",
+      "chainLight": "--muted",
+      "chainDark": "--muted"
     },
     {
-      "name": "muted/foreground",
-      "alias": "muted/foreground",
-      "css": "--color-muted-foreground"
+      "name": "muted-foreground",
+      "css": "--color-muted-foreground: var(--muted-foreground);",
+      "aliasLight": "muted-foreground",
+      "aliasDark": "muted-foreground",
+      "chainLight": "--muted-foreground",
+      "chainDark": "--muted-foreground"
     },
     {
       "name": "accent",
-      "alias": "accent",
-      "css": "--color-accent"
+      "css": "--color-accent: var(--accent);",
+      "aliasLight": "accent",
+      "aliasDark": "accent",
+      "chainLight": "--accent",
+      "chainDark": "--accent"
     },
     {
-      "name": "accent/foreground",
-      "alias": "accent/foreground",
-      "css": "--color-accent-foreground"
+      "name": "accent-foreground",
+      "css": "--color-accent-foreground: var(--accent-foreground);",
+      "aliasLight": "accent-foreground",
+      "aliasDark": "accent-foreground",
+      "chainLight": "--accent-foreground",
+      "chainDark": "--accent-foreground"
     },
     {
       "name": "destructive",
-      "alias": "destructive",
-      "css": "--color-destructive"
+      "css": "--color-destructive: var(--destructive);",
+      "aliasLight": "destructive",
+      "aliasDark": "destructive",
+      "chainLight": "--destructive",
+      "chainDark": "--destructive"
     },
     {
-      "name": "destructive/foreground",
-      "alias": "destructive/foreground",
-      "css": "--color-destructive-foreground"
+      "name": "destructive-foreground",
+      "css": "--color-destructive-foreground: var(--destructive-foreground);",
+      "aliasLight": "destructive-foreground",
+      "aliasDark": "destructive-foreground",
+      "chainLight": "--destructive-foreground",
+      "chainDark": "--destructive-foreground"
     },
     {
       "name": "warning",
-      "alias": "warning",
-      "css": "--color-warning"
+      "css": "--color-warning: var(--warning);",
+      "aliasLight": "warning",
+      "aliasDark": "warning",
+      "chainLight": "--warning",
+      "chainDark": "--warning"
     },
     {
-      "name": "warning/foreground",
-      "alias": "warning/foreground",
-      "css": "--color-warning-foreground"
+      "name": "warning-foreground",
+      "css": "--color-warning-foreground: var(--warning-foreground);",
+      "aliasLight": "warning-foreground",
+      "aliasDark": "warning-foreground",
+      "chainLight": "--warning-foreground",
+      "chainDark": "--warning-foreground"
     },
     {
       "name": "info",
-      "alias": "info",
-      "css": "--color-info"
+      "css": "--color-info: var(--info);",
+      "aliasLight": "info",
+      "aliasDark": "info",
+      "chainLight": "--info",
+      "chainDark": "--info"
     },
     {
-      "name": "info/foreground",
-      "alias": "info/foreground",
-      "css": "--color-info-foreground"
+      "name": "info-foreground",
+      "css": "--color-info-foreground: var(--info-foreground);",
+      "aliasLight": "info-foreground",
+      "aliasDark": "info-foreground",
+      "chainLight": "--info-foreground",
+      "chainDark": "--info-foreground"
     },
     {
       "name": "success",
-      "alias": "success",
-      "css": "--color-success"
+      "css": "--color-success: var(--success);",
+      "aliasLight": "success",
+      "aliasDark": "success",
+      "chainLight": "--success",
+      "chainDark": "--success"
     },
     {
-      "name": "success/foreground",
-      "alias": "success/foreground",
-      "css": "--color-success-foreground"
+      "name": "success-foreground",
+      "css": "--color-success-foreground: var(--success-foreground);",
+      "aliasLight": "success-foreground",
+      "aliasDark": "success-foreground",
+      "chainLight": "--success-foreground",
+      "chainDark": "--success-foreground"
     },
     {
       "name": "border",
-      "alias": "border",
-      "css": "--color-border"
+      "css": "--color-border: var(--border);",
+      "aliasLight": "border",
+      "aliasDark": "border",
+      "chainLight": "--border",
+      "chainDark": "--border"
     },
     {
       "name": "border-strong",
-      "alias": "border-strong",
-      "css": "--color-border-strong"
+      "css": "--color-border-strong: var(--border-strong);",
+      "aliasLight": "border-strong",
+      "aliasDark": "border-strong",
+      "chainLight": "--border-strong",
+      "chainDark": "--border-strong"
     },
     {
       "name": "hairline",
-      "alias": "hairline",
-      "css": "--color-hairline"
+      "css": "--color-hairline: var(--hairline);",
+      "aliasLight": "hairline",
+      "aliasDark": "hairline",
+      "chainLight": "--hairline",
+      "chainDark": "--hairline"
     },
     {
       "name": "input",
-      "alias": "input",
-      "css": "--color-input"
+      "css": "--color-input: var(--input);",
+      "aliasLight": "input",
+      "aliasDark": "input",
+      "chainLight": "--input",
+      "chainDark": "--input"
     },
     {
       "name": "ring",
-      "alias": "ring",
-      "css": "--color-ring"
+      "css": "--color-ring: var(--ring);",
+      "aliasLight": "ring",
+      "aliasDark": "ring",
+      "chainLight": "--ring",
+      "chainDark": "--ring"
+    },
+    {
+      "name": "ring-offset-background",
+      "css": "--color-ring-offset-background: var(--background);",
+      "aliasLight": "background",
+      "aliasDark": "background",
+      "chainLight": "--background",
+      "chainDark": "--background"
     },
     {
       "name": "chart/1",
-      "alias": "chart/1",
-      "css": "--color-chart-1"
+      "css": "--color-chart-1: var(--chart-1);",
+      "aliasLight": "chart/1",
+      "aliasDark": "chart/1",
+      "chainLight": "--chart-1",
+      "chainDark": "--chart-1"
     },
     {
       "name": "chart/2",
-      "alias": "chart/2",
-      "css": "--color-chart-2"
+      "css": "--color-chart-2: var(--chart-2);",
+      "aliasLight": "chart/2",
+      "aliasDark": "chart/2",
+      "chainLight": "--chart-2",
+      "chainDark": "--chart-2"
     },
     {
       "name": "chart/3",
-      "alias": "chart/3",
-      "css": "--color-chart-3"
+      "css": "--color-chart-3: var(--chart-3);",
+      "aliasLight": "chart/3",
+      "aliasDark": "chart/3",
+      "chainLight": "--chart-3",
+      "chainDark": "--chart-3"
     },
     {
       "name": "chart/4",
-      "alias": "chart/4",
-      "css": "--color-chart-4"
+      "css": "--color-chart-4: var(--chart-4);",
+      "aliasLight": "chart/4",
+      "aliasDark": "chart/4",
+      "chainLight": "--chart-4",
+      "chainDark": "--chart-4"
     },
     {
       "name": "chart/5",
-      "alias": "chart/5",
-      "css": "--color-chart-5"
+      "css": "--color-chart-5: var(--chart-5);",
+      "aliasLight": "chart/5",
+      "aliasDark": "chart/5",
+      "chainLight": "--chart-5",
+      "chainDark": "--chart-5"
     },
     {
       "name": "sidebar",
-      "alias": "sidebar",
-      "css": "--color-sidebar"
+      "css": "--color-sidebar: var(--sidebar);",
+      "aliasLight": "sidebar",
+      "aliasDark": "sidebar",
+      "chainLight": "--sidebar",
+      "chainDark": "--sidebar"
     },
     {
       "name": "sidebar/foreground",
-      "alias": "sidebar/foreground",
-      "css": "--color-sidebar-foreground"
+      "css": "--color-sidebar-foreground: var(--sidebar-foreground);",
+      "aliasLight": "sidebar/foreground",
+      "aliasDark": "sidebar/foreground",
+      "chainLight": "--sidebar-foreground",
+      "chainDark": "--sidebar-foreground"
     },
     {
       "name": "sidebar/primary",
-      "alias": "sidebar/primary",
-      "css": "--color-sidebar-primary"
+      "css": "--color-sidebar-primary: var(--sidebar-primary);",
+      "aliasLight": "sidebar/primary",
+      "aliasDark": "sidebar/primary",
+      "chainLight": "--sidebar-primary",
+      "chainDark": "--sidebar-primary"
     },
     {
       "name": "sidebar/primary-foreground",
-      "alias": "sidebar/primary-foreground",
-      "css": "--color-sidebar-primary-foreground"
+      "css": "--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);",
+      "aliasLight": "sidebar/primary-foreground",
+      "aliasDark": "sidebar/primary-foreground",
+      "chainLight": "--sidebar-primary-foreground",
+      "chainDark": "--sidebar-primary-foreground"
     },
     {
       "name": "sidebar/accent",
-      "alias": "sidebar/accent",
-      "css": "--color-sidebar-accent"
+      "css": "--color-sidebar-accent: var(--sidebar-accent);",
+      "aliasLight": "sidebar/accent",
+      "aliasDark": "sidebar/accent",
+      "chainLight": "--sidebar-accent",
+      "chainDark": "--sidebar-accent"
     },
     {
       "name": "sidebar/accent-foreground",
-      "alias": "sidebar/accent-foreground",
-      "css": "--color-sidebar-accent-foreground"
+      "css": "--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);",
+      "aliasLight": "sidebar/accent-foreground",
+      "aliasDark": "sidebar/accent-foreground",
+      "chainLight": "--sidebar-accent-foreground",
+      "chainDark": "--sidebar-accent-foreground"
     },
     {
       "name": "sidebar/border",
-      "alias": "sidebar/border",
-      "css": "--color-sidebar-border"
+      "css": "--color-sidebar-border: var(--sidebar-border);",
+      "aliasLight": "sidebar/border",
+      "aliasDark": "sidebar/border",
+      "chainLight": "--sidebar-border",
+      "chainDark": "--sidebar-border"
     },
     {
       "name": "sidebar/ring",
-      "alias": "sidebar/ring",
-      "css": "--color-sidebar-ring"
+      "css": "--color-sidebar-ring: var(--sidebar-ring);",
+      "aliasLight": "sidebar/ring",
+      "aliasDark": "sidebar/ring",
+      "chainLight": "--sidebar-ring",
+      "chainDark": "--sidebar-ring"
+    },
+    {
+      "name": "ai",
+      "css": "--color-ai: var(--ai);",
+      "aliasLight": "ai",
+      "aliasDark": "ai",
+      "chainLight": "--ai",
+      "chainDark": "--ai"
+    },
+    {
+      "name": "ai-foreground",
+      "css": "--color-ai-foreground: var(--ai-foreground);",
+      "aliasLight": "ai-foreground",
+      "aliasDark": "ai-foreground",
+      "chainLight": "--ai-foreground",
+      "chainDark": "--ai-foreground"
+    },
+    {
+      "name": "surface-1",
+      "css": "--color-surface-1: var(--surface-1);",
+      "aliasLight": "card",
+      "aliasDark": "card",
+      "chainLight": "--surface-1 -> --card",
+      "chainDark": "--surface-1 -> --card"
+    },
+    {
+      "name": "surface-2",
+      "css": "--color-surface-2: var(--surface-2);",
+      "aliasLight": "surface",
+      "aliasDark": "surface",
+      "chainLight": "--surface-2 -> --surface",
+      "chainDark": "--surface-2 -> --surface"
+    },
+    {
+      "name": "surface-3",
+      "css": "--color-surface-3: var(--surface-3);",
+      "aliasLight": "panel",
+      "aliasDark": "panel",
+      "chainLight": "--surface-3 -> --panel",
+      "chainDark": "--surface-3 -> --panel"
+    },
+    {
+      "name": "brand-accent",
+      "css": "--color-brand-accent: var(--brand-accent);",
+      "aliasLight": "primary",
+      "aliasDark": "primary",
+      "chainLight": "--brand-accent -> --primary",
+      "chainDark": "--brand-accent -> --primary"
     }
   ],
   "tones": [
     {
-      "name": "tone/sage",
-      "alias": "sage"
+      "name": "sage",
+      "alias": "sage",
+      "source": "src/components/abox/status-badge.tsx — tones.sage: \"[--tone:var(--sage)]\""
     },
     {
-      "name": "tone/primary",
-      "alias": "primary"
+      "name": "primary",
+      "alias": "primary",
+      "source": "src/components/abox/status-badge.tsx — tones.primary: \"[--tone:var(--primary)]\""
     },
     {
-      "name": "tone/warning",
-      "alias": "warning"
+      "name": "warning",
+      "alias": "warning",
+      "source": "src/components/abox/status-badge.tsx — tones.warning: \"[--tone:var(--warning)]\""
     },
     {
-      "name": "tone/muted",
-      "alias": "foreground"
+      "name": "muted",
+      "alias": "foreground",
+      "source": "src/components/abox/status-badge.tsx — tones.muted: \"[--tone:var(--foreground)]\""
     },
     {
-      "name": "tone/destructive",
-      "alias": "destructive"
+      "name": "destructive",
+      "alias": "destructive",
+      "source": "src/components/abox/status-badge.tsx — tones.destructive: \"[--tone:var(--destructive)]\""
     },
     {
-      "name": "tone/info",
-      "alias": "info"
+      "name": "info",
+      "alias": "info",
+      "source": "src/components/abox/status-badge.tsx — tones.info: \"[--tone:var(--info)]\""
     }
   ],
-  "metalAliases": [
+  "metals": [
     {
       "name": "metal/bronze",
-      "alias": "metal/bronze"
+      "alias": "metal/bronze",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-bronze)]"
     },
     {
       "name": "metal/expanded-bronze",
-      "alias": "metal/expanded-bronze"
+      "alias": "metal/expanded-bronze",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-expanded-bronze)]"
     },
     {
       "name": "metal/silver",
-      "alias": "metal/silver"
+      "alias": "metal/silver",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-silver)]"
     },
     {
       "name": "metal/gold",
-      "alias": "metal/gold"
+      "alias": "metal/gold",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-gold)]"
     },
     {
       "name": "metal/platinum",
-      "alias": "metal/platinum"
+      "alias": "metal/platinum",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-platinum)]"
     },
     {
       "name": "metal/catastrophic",
-      "alias": "metal/catastrophic"
+      "alias": "metal/catastrophic",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-catastrophic)]"
     },
     {
       "name": "metal/bronze-fg",
-      "alias": "metal/bronze-fg"
+      "alias": "metal/bronze-fg",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-bronze-fg)]"
     },
     {
       "name": "metal/expanded-bronze-fg",
-      "alias": "metal/expanded-bronze-fg"
+      "alias": "metal/expanded-bronze-fg",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-expanded-bronze-fg)]"
     },
     {
       "name": "metal/silver-fg",
-      "alias": "metal/silver-fg"
+      "alias": "metal/silver-fg",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-silver-fg)]"
     },
     {
       "name": "metal/gold-fg",
-      "alias": "metal/gold-fg"
+      "alias": "metal/gold-fg",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-gold-fg)]"
     },
     {
       "name": "metal/platinum-fg",
-      "alias": "metal/platinum-fg"
+      "alias": "metal/platinum-fg",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-platinum-fg)]"
     },
     {
       "name": "metal/catastrophic-fg",
-      "alias": "metal/catastrophic-fg"
+      "alias": "metal/catastrophic-fg",
+      "source": "src/components/abox/metal-badge.tsx — [--tone:var(--metal-catastrophic-fg)]"
     }
   ],
   "spacing": {
@@ -1757,11 +2014,142 @@ const ABOX_B1 = {
     "ring": 2
   },
   "shadows": {
-    "card": [],
-    "elevated": [],
-    "drawer": [],
-    "plate": [],
-    "glow": []
+    "card": [
+      {
+        "index": 1,
+        "x": 0,
+        "y": 1,
+        "blur": 0,
+        "spread": 0,
+        "tint": {
+          "L": 0.3,
+          "C": 0.05,
+          "h": 265,
+          "a": 0.04
+        },
+        "tintCss": "oklch(0.3 0.05 265 / 0.04)"
+      },
+      {
+        "index": 2,
+        "x": 0,
+        "y": 12,
+        "blur": 24,
+        "spread": -18,
+        "tint": {
+          "L": 0.3,
+          "C": 0.05,
+          "h": 265,
+          "a": 0.2
+        },
+        "tintCss": "oklch(0.3 0.05 265 / 0.2)"
+      }
+    ],
+    "elevated": [
+      {
+        "index": 1,
+        "x": 0,
+        "y": 1,
+        "blur": 0,
+        "spread": 0,
+        "tint": {
+          "L": 0.3,
+          "C": 0.05,
+          "h": 265,
+          "a": 0.06
+        },
+        "tintCss": "oklch(0.3 0.05 265 / 0.06)"
+      },
+      {
+        "index": 2,
+        "x": 0,
+        "y": 24,
+        "blur": 44,
+        "spread": -22,
+        "tint": {
+          "L": 0.3,
+          "C": 0.05,
+          "h": 265,
+          "a": 0.26
+        },
+        "tintCss": "oklch(0.3 0.05 265 / 0.26)"
+      }
+    ],
+    "drawer": [
+      {
+        "index": 1,
+        "x": -20,
+        "y": 0,
+        "blur": 60,
+        "spread": -30,
+        "tint": {
+          "L": 0.3,
+          "C": 0.05,
+          "h": 265,
+          "a": 0.3
+        },
+        "tintCss": "oklch(0.3 0.05 265 / 0.3)"
+      }
+    ],
+    "plate": [
+      {
+        "index": 1,
+        "x": 0,
+        "y": 0,
+        "blur": 0,
+        "spread": 1,
+        "tint": {
+          "L": 0.3,
+          "C": 0.05,
+          "h": 265,
+          "a": 0.06
+        },
+        "tintCss": "oklch(0.3 0.05 265 / 0.06)"
+      },
+      {
+        "index": 2,
+        "x": 0,
+        "y": 20,
+        "blur": 40,
+        "spread": -24,
+        "tint": {
+          "L": 0.3,
+          "C": 0.05,
+          "h": 265,
+          "a": 0.22
+        },
+        "tintCss": "oklch(0.3 0.05 265 / 0.22)"
+      }
+    ],
+    "glow": [
+      {
+        "index": 1,
+        "x": 0,
+        "y": 1,
+        "blur": 0,
+        "spread": 0,
+        "tint": {
+          "L": 0.31,
+          "C": 0.09,
+          "h": 265,
+          "a": 0.32
+        },
+        "tintCss": "oklch(0.31 0.09 265 / 0.32)"
+      },
+      {
+        "index": 2,
+        "x": 0,
+        "y": 10,
+        "blur": 20,
+        "spread": -14,
+        "tint": {
+          "L": 0.24,
+          "C": 0.07,
+          "h": 265,
+          "a": 0.55
+        },
+        "tintCss": "oklch(0.24 0.07 265 / 0.55)"
+      }
+    ]
   },
   "layout": {
     "container/wide": 1408,
@@ -1772,7 +2160,13 @@ const ABOX_B1 = {
     "height/lg": 44,
     "padding-x": 12,
     "min-touch-target": 44
-  }
+  },
+  "limitations": [
+    "StatusBadge colour/background/border use color-mix(in oklch, var(--tone) …, …) (src/components/abox/status-badge.tsx): runtime-computed, no static Figma variable created.",
+    "Composite box-shadow is not a Figma variable type: --shadow-* is decomposed into x/y/blur/spread/tint variables. Effect Styles are a later batch.",
+    "oklch() has no Figma equivalent: values are stored as sRGB and the original oklch literal is preserved in each variable description.",
+    "Production declares no .dark override for --shadow-*: the Light value is duplicated into Dark because Figma has no CSS cascade."
+  ]
 };
 
 // ABox Figma Proof — plugin logic.
@@ -2216,6 +2610,8 @@ async function verifyLibraryPages() {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const textStyles = await figma.getLocalTextStylesAsync();
   const effectStyles = await figma.getLocalEffectStylesAsync();
+  const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const unexpectedCollections = collections.filter((c) => b1Names.indexOf(c.name) === -1);
   say(
     "  local objects: collections=" +
       collections.length +
@@ -2225,8 +2621,8 @@ async function verifyLibraryPages() {
       effectStyles.length,
   );
   add(
-    collections.length === 0 && textStyles.length === 0 && effectStyles.length === 0,
-    "batch B0 created no variables, text styles or effect styles",
+    unexpectedCollections.length === 0 && textStyles.length === 0 && effectStyles.length === 0,
+    "no variables outside the approved B1 collections, and no text or effect styles",
   );
 
   let nodeCount = 0;
@@ -2269,7 +2665,7 @@ const rgbaEq = (a, b) =>
 
 async function b1Collections() {
   const existing = await figma.variables.getLocalVariableCollectionsAsync();
-  return B1.collections.map((spec) => {
+  return ABOX_B1.collections.map((spec) => {
     const found = existing.filter((c) => c.name === spec.name);
     if (found.length > 1) {
       throw new Error(
@@ -2341,35 +2737,38 @@ async function ensureB1Variables() {
   const byName = {};
   for (const entry of entries) byName[entry.spec.name] = await ensureB1Collection(entry);
 
-  const primId = {}; // role path -> variable id (for aliases)
-
-  // 1) Primitives — one variable per role path, Light + Dark mode values.
+  // 1) Primitives — one variable per production role path, Light + Dark values
+  //    on the SAME variable (never two variables for differing literals).
   const prim = byName["ABox/Color/Primitive"];
   for (const p of ABOX_B1.primitives) {
     const desc =
-      "source: src/styles.css --" + p.role +
-      " — light " + p.source.light + "; dark " + p.source.dark +
+      "source: " + p.source.light + " | " + p.source.dark +
       " (oklch converted to sRGB; recorded Figma limitation)";
-    const v = await ensureB1Variable(prim, p.name, "COLOR", {
+    await ensureB1Variable(prim, p.name, "COLOR", {
       Light: oklchToRgba(p.light),
       Dark: oklchToRgba(p.dark),
     }, desc);
-    primId[p.role] = v.id;
   }
+  const primVars = await variablesByName(prim.collection);
 
-  // 2) Semantic roles — aliases to the primitive of the same path.
+  // 2) Semantic roles — aliases derived from the production declaration graph
+  //    (`--color-X: var(--Y)`), resolved independently per mode. Colour
+  //    equality never implies an alias.
   const sem = byName["ABox/Color/Semantic"];
   for (const s of ABOX_B1.semantics) {
-    const aliasId = primId[slashToRole(s.alias)];
-    if (!aliasId) throw new Error('STOP: alias target missing — primitive "' + s.alias + '".');
-    const v = await ensureB1Variable(sem, s.name, "COLOR", {
-      Light: { type: "VARIABLE_ALIAS", id: aliasId },
-      Dark: { type: "VARIABLE_ALIAS", id: aliasId },
-    }, "alias of " + "ABox/Color/Primitive/" + s.alias + " (source: " + s.css + ")");
-    primId["semantic:" + s.name] = v.id;
+    const lightTarget = primVars[s.aliasLight];
+    const darkTarget = primVars[s.aliasDark];
+    if (!lightTarget || !darkTarget) {
+      throw new Error('STOP: alias target missing for semantic "' + s.name + '".');
+    }
+    await ensureB1Variable(sem, s.name, "COLOR", {
+      Light: { type: "VARIABLE_ALIAS", id: lightTarget.id },
+      Dark: { type: "VARIABLE_ALIAS", id: darkTarget.id },
+    }, "source: " + s.css + " — Light " + s.chainLight + "; Dark " + s.chainDark);
   }
 
-  // 3) Status — tones alias semantic roles; metal tiers alias primitives.
+  // 3) Status — StatusBadge tones alias semantic roles, metal tiers alias
+  //    primitives, both by production source mapping.
   const status = byName["ABox/Status"];
   const semVars = await variablesByName(sem.collection);
   for (const t of ABOX_B1.tones) {
@@ -2378,29 +2777,24 @@ async function ensureB1Variables() {
     await ensureB1Variable(status, t.name, "COLOR", {
       Light: { type: "VARIABLE_ALIAS", id: target.id },
       Dark: { type: "VARIABLE_ALIAS", id: target.id },
-    }, "StatusBadge tone; alias of semantic " + t.alias + " (src/components/abox/status-badge.tsx)");
+    }, "StatusBadge tone; alias of semantic " + t.alias + " — " + t.source);
   }
-  const primVars = await variablesByName(prim.collection);
-  for (const mt of ABOX_B1.metalAliases) {
+  for (const mt of ABOX_B1.metals) {
     const target = primVars[mt.alias];
     if (!target) throw new Error('STOP: alias target missing — primitive "' + mt.alias + '".');
     await ensureB1Variable(status, mt.name, "COLOR", {
       Light: { type: "VARIABLE_ALIAS", id: target.id },
       Dark: { type: "VARIABLE_ALIAS", id: target.id },
-    }, "metal tier; alias of primitive " + mt.alias + " (src/styles.css)");
+    }, "metal tier; alias of primitive " + mt.alias + " — " + mt.source);
   }
 
-  // 4-9) Float collections.
-  const floatGroups = [
-    ["ABox/Spacing", ABOX_B1.spacing, "Surface padding (src/components/abox/surface.tsx)"],
-    ["ABox/Radius", ABOX_B1.radius, "@theme inline --radius-* (src/styles.css)"],
-    ["ABox/Border", ABOX_B1.border, "border / focus:ring-2 widths"],
-    ["ABox/Layout", ABOX_B1.layout, "container max-widths (shells, marketplace-page-layout)"],
-    ["ABox/Control sizing", ABOX_B1.control, "controlClass heights/padding (src/components/abox/control.tsx)"],
-  ];
-  for (const [collectionName, values, desc] of floatGroups) {
+  // 4-9) Float collections — identical values in both modes (no Default mode).
+  for (const [collectionName, values, desc] of b1FloatGroups()) {
     for (const name of Object.keys(values)) {
-      await ensureB1Variable(byName[collectionName], name, "FLOAT", { Default: values[name] }, desc);
+      await ensureB1Variable(byName[collectionName], name, "FLOAT", {
+        Light: values[name],
+        Dark: values[name],
+      }, desc);
     }
   }
 
@@ -2408,28 +2802,51 @@ async function ensureB1Variables() {
   // Composite box-shadows are NOT a Figma variable type; full shadows become
   // Effect Styles in a later batch. Recorded as a deferred representation.
   const elev = byName["ABox/Elevation"];
-  for (const shadowName of Object.keys(ABOX_B1.shadows)) {
-    ABOX_B1.shadows[shadowName].forEach((layer, i) => {
-      layer._index = i + 1;
-    });
-    for (const layer of ABOX_B1.shadows[shadowName]) {
-      const prefix = "shadow-" + shadowName + "/" + layer._index + "/";
+  for (const family of Object.keys(ABOX_B1.shadows)) {
+    for (const layer of ABOX_B1.shadows[family]) {
+      const prefix = family + "/" + layer.index + "/";
       for (const part of ["x", "y", "blur", "spread"]) {
         await ensureB1Variable(elev, prefix + part, "FLOAT", {
           Light: layer[part],
           Dark: layer[part], // no .dark override in production — recorded
-        }, "--shadow-" + shadowName + " layer " + layer._index + " " + part + " (src/styles.css)");
+        }, "--shadow-" + family + " layer " + layer.index + " " + part + " (src/styles.css)");
       }
       await ensureB1Variable(elev, prefix + "tint", "COLOR", {
         Light: oklchToRgba(layer.tint),
         Dark: oklchToRgba(layer.tint),
-      }, "--shadow-" + shadowName + " layer " + layer._index + " tint " + oklchCss(layer.tint) + " (oklch converted to sRGB; recorded limitation)");
+      }, "--shadow-" + family + " layer " + layer.index + " tint " + layer.tintCss +
+         " (oklch converted to sRGB; recorded limitation)");
     }
   }
 }
 
-function slashToRole(name) {
-  return name.replace(/\//g, "-");
+function b1FloatGroups() {
+  return [
+    ["ABox/Spacing", ABOX_B1.spacing, "SURFACE_PADDING (src/components/abox/surface.tsx)"],
+    ["ABox/Radius", ABOX_B1.radius, "@theme inline --radius-* (src/styles.css)"],
+    ["ABox/Border", ABOX_B1.border, "border / focus:ring-2 widths"],
+    ["ABox/Layout", ABOX_B1.layout, "container max-widths (shells, marketplace-page-layout)"],
+    ["ABox/Control sizing", ABOX_B1.control, "controlClass heights/padding (src/components/abox/control.tsx)"],
+  ];
+}
+
+// Full approved inventory per collection — drives the "no extra variables" check.
+function b1Inventory() {
+  const inv = {
+    "ABox/Color/Primitive": ABOX_B1.primitives.map((p) => p.name),
+    "ABox/Color/Semantic": ABOX_B1.semantics.map((s) => s.name),
+    "ABox/Status": ABOX_B1.tones.map((t) => t.name).concat(ABOX_B1.metals.map((m) => m.name)),
+    "ABox/Elevation": [],
+  };
+  for (const [name, values] of b1FloatGroups()) inv[name] = Object.keys(values);
+  for (const family of Object.keys(ABOX_B1.shadows)) {
+    for (const layer of ABOX_B1.shadows[family]) {
+      for (const part of ["x", "y", "blur", "spread", "tint"]) {
+        inv["ABox/Elevation"].push(family + "/" + layer.index + "/" + part);
+      }
+    }
+  }
+  return inv;
 }
 
 async function variablesByName(collection) {
@@ -2451,84 +2868,147 @@ async function verifyB1() {
     const found = collections.filter((c) => c.name === spec.name);
     add(found.length === 1, 'collection "' + spec.name + '" exists exactly once');
     if (found.length === 1) {
-      const modeNames = found[0].modes.map((m) => m.name).sort().join(",");
+      const modeNames = found[0].modes.map((m) => m.name);
       add(
-        modeNames === spec.modes.slice().sort().join(","),
-        'collection "' + spec.name + '" modes = ' + spec.modes.join(", "),
+        modeNames.length === 2 && modeNames.indexOf("Light") !== -1 && modeNames.indexOf("Dark") !== -1,
+        'collection "' + spec.name + '" has exactly the modes Light, Dark (no Default)',
       );
     }
   }
   const byName = {};
   for (const spec of ABOX_B1.collections) {
     const c = collections.find((x) => x.name === spec.name);
-    if (c) byName[spec.name] = { collection: c, vars: await variablesByName(c) };
+    if (c) {
+      byName[spec.name] = {
+        collection: c,
+        vars: await variablesByName(c),
+        light: (c.modes.find((m) => m.name === "Light") || {}).modeId,
+        dark: (c.modes.find((m) => m.name === "Dark") || {}).modeId,
+      };
+    }
   }
 
-  const expectFloat = (collectionName, inventory) => {
+  // Exact inventory: every approved variable exists exactly once, nothing extra.
+  const inventory = b1Inventory();
+  for (const collectionName of Object.keys(inventory)) {
     const entry = byName[collectionName];
-    if (!entry) { add(false, collectionName + " present"); return; }
-    for (const name of Object.keys(inventory)) {
+    if (!entry) { add(false, collectionName + " present"); continue; }
+    const missing = inventory[collectionName].filter((n) => !entry.vars[n]);
+    const extras = Object.keys(entry.vars).filter((n) => inventory[collectionName].indexOf(n) === -1);
+    add(missing.length === 0,
+      collectionName + " contains all " + inventory[collectionName].length + " approved variables" +
+      (missing.length ? " (missing: " + missing.join(", ") + ")" : ""));
+    add(extras.length === 0,
+      collectionName + " has no extra variables" + (extras.length ? " (extra: " + extras.join(", ") + ")" : ""));
+  }
+
+  // Resolved semantic inventory — exact count and exact names; ink excluded.
+  const semEntry = byName["ABox/Color/Semantic"];
+  if (semEntry) {
+    const names = Object.keys(semEntry.vars).sort();
+    const expected = ABOX_B1.semantics.map((s) => s.name).sort();
+    add(names.length === expected.length,
+      "semantic inventory count = " + expected.length + " (found " + names.length + ")");
+    add(names.join("|") === expected.join("|"), "semantic variable names match the resolved production list exactly");
+    add(!semEntry.vars["ink"], "ink is NOT in ABox/Color/Semantic (primitive-only role)");
+  }
+  if (byName["ABox/Color/Primitive"]) {
+    add(!!byName["ABox/Color/Primitive"].vars["ink"], "ink exists in ABox/Color/Primitive");
+  }
+
+  // Float values, compared independently per mode.
+  for (const [collectionName, values] of b1FloatGroups()) {
+    const entry = byName[collectionName];
+    if (!entry) continue;
+    let ok = true;
+    for (const name of Object.keys(values)) {
       const v = entry.vars[name];
-      add(!!v && v.resolvedType === "FLOAT", collectionName + " / " + name + " exists as FLOAT");
-      if (v && v.resolvedType === "FLOAT") {
-        const got = v.valuesByMode[entry.collection.modes[0].modeId];
-        add(got === inventory[name], collectionName + " / " + name + " = " + inventory[name]);
-      }
+      if (!v || v.resolvedType !== "FLOAT") { ok = false; continue; }
+      if (v.valuesByMode[entry.light] !== values[name]) ok = false;
+      if (v.valuesByMode[entry.dark] !== values[name]) ok = false;
     }
-    const extras = Object.keys(entry.vars).filter((n) => !(n in inventory));
-    add(extras.length === 0, collectionName + " has no extra variables" + (extras.length ? " (extra: " + extras.join(", ") + ")" : ""));
-  };
+    add(ok, collectionName + " values match production in both modes");
+  }
 
-  expectFloat("ABox/Spacing", ABOX_B1.spacing);
-  expectFloat("ABox/Radius", ABOX_B1.radius);
-  expectFloat("ABox/Border", ABOX_B1.border);
-  expectFloat("ABox/Layout", ABOX_B1.layout);
-  expectFloat("ABox/Control sizing", ABOX_B1.control);
-
-  // Colour value checks against converted production source, per mode.
+  // Primitive colour values, compared independently per mode.
   const prim = byName["ABox/Color/Primitive"];
   if (prim) {
-    const lightId = prim.collection.modes.find((m) => m.name === "Light").modeId;
-    const darkId = prim.collection.modes.find((m) => m.name === "Dark").modeId;
-    let ok = true;
+    let lightOk = true;
+    let darkOk = true;
     for (const p of ABOX_B1.primitives) {
       const v = prim.vars[p.name];
-      if (!v || v.resolvedType !== "COLOR") { ok = false; continue; }
-      if (!rgbaEq(v.valuesByMode[lightId], oklchToRgba(p.light))) ok = false;
-      if (!rgbaEq(v.valuesByMode[darkId], oklchToRgba(p.dark))) ok = false;
+      if (!v || v.resolvedType !== "COLOR") { lightOk = false; darkOk = false; continue; }
+      if (!rgbaEq(v.valuesByMode[prim.light], oklchToRgba(p.light))) lightOk = false;
+      if (!rgbaEq(v.valuesByMode[prim.dark], oklchToRgba(p.dark))) darkOk = false;
     }
-    add(ok, "all " + ABOX_B1.primitives.length + " primitives match production Light/Dark values");
-    const extraP = Object.keys(prim.vars).filter(
-      (n) => !ABOX_B1.primitives.some((p) => p.name === n),
-    );
-    add(extraP.length === 0, "no extra or duplicated primitive variables");
+    add(lightOk, "all " + ABOX_B1.primitives.length + " primitive Light values match :root");
+    add(darkOk, "all " + ABOX_B1.primitives.length + " primitive Dark values match .dark (Light duplicated where no override)");
+    const dupes = {};
+    let duplicated = false;
+    for (const n of Object.keys(prim.vars)) {
+      if (dupes[n]) duplicated = true;
+      dupes[n] = true;
+    }
+    add(!duplicated, "no duplicate primitive created because Light and Dark literals differ");
   }
 
-  const aliasCheck = (collectionName, items, resolveTarget) => {
+  // Aliases, verified per mode against the production declaration graph.
+  const aliasPerMode = (collectionName, items, lightTarget, darkTarget) => {
     const entry = byName[collectionName];
     if (!entry) { add(false, collectionName + " present"); return; }
     let ok = true;
+    const bad = [];
     for (const item of items) {
       const v = entry.vars[item.name];
-      if (!v) { ok = false; continue; }
-      for (const mode of entry.collection.modes) {
-        const val = v.valuesByMode[mode.modeId];
-        if (!val || val.type !== "VARIABLE_ALIAS" || val.id !== resolveTarget(item)) ok = false;
+      if (!v) { ok = false; bad.push(item.name); continue; }
+      const l = v.valuesByMode[entry.light];
+      const d = v.valuesByMode[entry.dark];
+      const lt = lightTarget(item);
+      const dt = darkTarget(item);
+      if (!l || l.type !== "VARIABLE_ALIAS" || l.id !== lt) { ok = false; bad.push(item.name + " (Light)"); }
+      if (!d || d.type !== "VARIABLE_ALIAS" || d.id !== dt) { ok = false; bad.push(item.name + " (Dark)"); }
+    }
+    add(ok, collectionName + " aliases match the production source mapping per mode" +
+      (bad.length ? " (bad: " + bad.join(", ") + ")" : ""));
+  };
+  const primId = (name) => (prim && prim.vars[name] ? prim.vars[name].id : null);
+  const semId = (name) => (semEntry && semEntry.vars[name] ? semEntry.vars[name].id : null);
+  aliasPerMode("ABox/Color/Semantic", ABOX_B1.semantics,
+    (s) => primId(s.aliasLight), (s) => primId(s.aliasDark));
+  aliasPerMode("ABox/Status", ABOX_B1.tones, (t) => semId(t.alias), (t) => semId(t.alias));
+  aliasPerMode("ABox/Status", ABOX_B1.metals, (m) => primId(m.alias), (m) => primId(m.alias));
+  const statusEntry = byName["ABox/Status"];
+  if (statusEntry) {
+    add(ABOX_B1.tones.length === 6, "ABox/Status contains exactly 6 StatusBadge tone variables");
+    add(ABOX_B1.metals.length === 12, "ABox/Status contains exactly 12 metal variables");
+  }
+
+  // Elevation — 5 variables per layer, both modes populated, no Default mode.
+  const elev = byName["ABox/Elevation"];
+  if (elev) {
+    let structural = true;
+    let valuesOk = true;
+    let tintsOk = true;
+    for (const family of Object.keys(ABOX_B1.shadows)) {
+      for (const layer of ABOX_B1.shadows[family]) {
+        const prefix = family + "/" + layer.index + "/";
+        for (const part of ["x", "y", "blur", "spread"]) {
+          const v = elev.vars[prefix + part];
+          if (!v || v.resolvedType !== "FLOAT") { structural = false; continue; }
+          if (v.valuesByMode[elev.light] !== layer[part]) valuesOk = false;
+          if (v.valuesByMode[elev.dark] !== layer[part]) valuesOk = false;
+        }
+        const t = elev.vars[prefix + "tint"];
+        if (!t || t.resolvedType !== "COLOR") { structural = false; continue; }
+        if (!rgbaEq(t.valuesByMode[elev.light], oklchToRgba(layer.tint))) tintsOk = false;
+        if (!rgbaEq(t.valuesByMode[elev.dark], oklchToRgba(layer.tint))) tintsOk = false;
       }
     }
-    add(ok, collectionName + " aliases point at the correct production targets");
-  };
-  aliasCheck("ABox/Color/Semantic", ABOX_B1.semantics, (item) =>
-    prim.vars[item.alias] ? prim.vars[item.alias].id : null,
-  );
-  aliasCheck("ABox/Status", ABOX_B1.tones, (item) =>
-    byName["ABox/Color/Semantic"] && byName["ABox/Color/Semantic"].vars[item.alias]
-      ? byName["ABox/Color/Semantic"].vars[item.alias].id
-      : null,
-  );
-  aliasCheck("ABox/Status", ABOX_B1.metalAliases, (item) =>
-    prim && prim.vars[item.alias] ? prim.vars[item.alias].id : null,
-  );
+    add(structural, "every elevation layer has exactly x, y, blur, spread (FLOAT) and tint (COLOR)");
+    add(valuesOk, "elevation numeric values match production in both modes");
+    add(tintsOk, "elevation tint values match production in both modes");
+    add(!elev.collection.modes.some((m) => m.name === "Default"), "ABox/Elevation has no Default mode");
+  }
 
   // No runtime branding leaked in.
   const brandingTerms = /primary_color|accent_color|white.?label|tenant|brand[_-]?record/i;
@@ -2540,7 +3020,7 @@ async function verifyB1() {
       if (brandingTerms.test(n) || brandingTerms.test(entry.vars[n].description || "")) brandingLeak = true;
     }
   }
-  add(!brandingLeak, "no runtime/white-label branding values imported");
+  add(!brandingLeak, "no runtime/tenant/white-label branding values imported");
 
   // B1 must not create styles, components or page content.
   const textStyles = await figma.getLocalTextStylesAsync();
@@ -2548,27 +3028,43 @@ async function verifyB1() {
   add(textStyles.length === 0, "B1 created no text styles");
   add(effectStyles.length === 0, "B1 created no effect styles");
   let components = 0;
+  let componentSets = 0;
   let nodes = 0;
   for (const page of figma.root.children) {
     nodes += page.children.length;
-    components += page.findAll((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET").length;
+    components += page.findAll((n) => n.type === "COMPONENT").length;
+    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
   }
   add(components === 0, "B1 created no components or variants");
+  add(componentSets === 0, "B1 created no component sets");
   add(nodes === 0, "the seven library pages remain empty");
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
-    "the seven pages remain at indices 0..6 in order",
+    "the seven B0 pages remain at indices 0..6 in order",
   );
+
+  // Inventory evidence for the FINAL REPORT.
+  say("");
+  say("B1 INVENTORY");
+  for (const spec of ABOX_B1.collections) {
+    const entry = byName[spec.name];
+    if (!entry) { say("  " + spec.name + " : MISSING"); continue; }
+    const names = Object.keys(entry.vars).sort();
+    say("  " + spec.name + " id=" + entry.collection.id + " variables=" + names.length);
+    for (const n of names) say("      " + n + "  id=" + entry.vars[n].id);
+  }
 
   say("");
   say("B1 STRUCTURAL CHECK");
   checks.forEach((c) => say("  " + c));
   const passed = checks.every((c) => c.indexOf("PASS") === 0);
   say("");
+  say("RECORDED LIMITATIONS / EXCEPTIONS");
+  for (const l of ABOX_B1.limitations) say("  - " + l);
+  say("  - Decorative utilities, motion keyframes and responsive breakpoints are not variables.");
+  say("  - No publishing performed; library publishing is a separate step.");
+  say("");
   say(passed ? "RESULT: B1 PASSED" : "RESULT: B1 FAILED — do not proceed to B2.");
-  say("Recorded limitations: oklch stored as sRGB (source notation kept in descriptions);");
-  say("color-mix() badge tints are runtime-computed (later batch); composite shadows become");
-  say("Effect Styles in a later batch. No runtime branding imported. No publishing performed.");
   return passed;
 }
 
