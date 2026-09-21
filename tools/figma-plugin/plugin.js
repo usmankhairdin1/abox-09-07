@@ -2977,7 +2977,15 @@ async function b6EnsurePattern(spec, index, page) {
     for (const v of spec.variants) {
       const vname = spec.property + "=" + v.value;
       const stray = b6FindOnPage(page, vname);
-      if (stray) throw new Error("STOP: ORPHAN VARIANT NODE ON " + B6_PAGE + " — " + vname + ".");
+      if (stray) {
+        const strayInstances = stray.type === "COMPONENT" ? (await stray.getInstancesAsync()).length : 0;
+        throw new Error(
+          "STOP: ORPHAN VARIANT NODE ON " + B6_PAGE + " — " + vname +
+            "  (type=" + stray.type + " id=" + stray.id + " instances=" + strayInstances + ")" +
+            '\n  It belongs inside "' + spec.name + '", not on the page.' +
+            '\n  Run "Inspect 02 Patterns", then "Remove stale B6 variant components" first. Nothing was overwritten or deleted.',
+        );
+      }
       const node = b6BuildNode(vname, v.root, v.children, index, page);
       node.description = spec.source;
       b6Say("variant  ", spec.name + " / " + vname, true);
