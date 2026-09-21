@@ -1326,3 +1326,23 @@ bindings; the deviation is printed as a limitation and left for a B4 amendment d
 Human decision required: whether to amend B4 so the 10 deferred properties gain real target
 layers (icon tiles, delta-label text, actions wrapper, EmptyState action region), and whether to
 correct the positive delta-chip binding above.
+
+## Phase 53 / Batch B6 — patterns & interactions (plugin layer)
+
+Implemented in `tools/figma-plugin/` only; `git diff --stat -- src/` is empty and the build is OK.
+`extract-b6.mjs` → `tokens-b6.js`; `plugin.js` gained the B6 section, `b6-run` / `b6-verify`
+handlers, and the two page-scope amendments that let `verifyB4` / `verifyB5` ignore the
+`ABox/Pattern/*` objects on `02 Patterns`. `code.js` regenerated only via `node build.mjs`.
+
+Created: 3 patterns / 4 ComponentNodes — `ABox/Pattern/KpiRow` (set, `columns = 3 | 4`),
+`ABox/Pattern/ModuleTabBar`, `ABox/Pattern/WizardStepper` — all on `02 Patterns`, composed from
+live B4/B5 instances. 0 prototype connections, 9 deferred candidates, 3 rejected, 7 limitations.
+
+Offline dry run only: B6 PASSED on both runs, 0 objects created on run 2, identical ids; B5 and
+B4 still PASS afterwards. Those ids are mock ids and are never presented as Figma ids.
+
+Human action required: run **Create patterns** → **Verify patterns** → **Create patterns** in
+Figma Desktop and return both outputs with the real Figma ids.
+
+Human decision still open (carried from B5): whether to amend B4 for the 10 deferred properties
+and the positive delta-chip binding. B6 preserved both as-is.
