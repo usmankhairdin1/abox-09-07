@@ -44120,6 +44120,39 @@ function b5Texts(node, out) {
   return out;
 }
 
+/**
+ * Load the fonts a live TEXT node already uses, before any character write.
+ * The font is read off the node B4 created; nothing is guessed or substituted.
+ */
+async function b5LoadTextFonts(node) {
+  const fonts = [];
+  if (node.fontName !== figma.mixed) {
+    fonts.push(node.fontName);
+  } else {
+    const seen = {};
+    const len = node.characters.length;
+    for (let i = 0; i < len; i += 1) {
+      const f = node.getRangeFontName(i, i + 1);
+      const key = f.family + "\u0000" + f.style;
+      if (!seen[key]) {
+        seen[key] = true;
+        fonts.push(f);
+      }
+    }
+  }
+  for (const font of fonts) {
+    try {
+      await figma.loadFontAsync(font);
+    } catch (e) {
+      throw new Error(
+        'STOP: B5 FONT — could not load "' + font.family + " " + font.style +
+          '" used by ' + node.name + ". No substitution is permitted. Figma error: " +
+          String((e && e.message) || e),
+      );
+    }
+  }
+}
+
 function b5Owner(name) {
   const set = b4FindSet(name);
   if (set) return set;
@@ -44299,13 +44332,22 @@ async function b5KpiVariants(index) {
       node.name = vname;
       set.appendChild(node);
     }
-    // (10)-(12) the only mutation: the delta chip's text and colour foundation.
-    const chip = b5Texts(node)[2];
-    if (!chip) throw new Error("STOP: KPICARD DELTA LAYER MISSING on " + vname + ".");
-    chip.name = "delta";
-    if (chip.characters !== A.negative.characters) chip.characters = A.negative.characters;
-    if (chip.fillStyleId !== destructive.id) chip.fillStyleId = destructive.id;
-    node.description = A.negative.source;
+    try {
+      // (10)-(12) the only mutation: the delta chip's text and colour foundation.
+      const chip = b5Texts(node)[2];
+      if (!chip) throw new Error("STOP: KPICARD DELTA LAYER MISSING on " + vname + ".");
+      chip.name = "delta";
+      if (chip.characters !== A.negative.characters) {
+        await b5LoadTextFonts(chip);
+        chip.characters = A.negative.characters;
+      }
+      if (chip.fillStyleId !== destructive.id) await chip.setFillStyleIdAsync(destructive.id);
+      node.description = A.negative.source;
+    } catch (e) {
+      // A partial run must not leave a half-built duplicate behind.
+      if (isNew && node && !node.removed) node.remove();
+      throw e;
+    }
     b5Say("variant ", A.set + " / " + vname, isNew);
   }
 
