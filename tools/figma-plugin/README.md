@@ -419,3 +419,28 @@ B9 also classifies source-backed interactions:
 Idempotency is strict: Run 1 creates the approved screen frames plus valid source-backed reactions; Run 2 must create zero duplicate frames and zero duplicate reactions. Existing frames and reactions are reused only when their B9 plugin data, source list, structural signature, reaction source/target, trigger, action and transition/state metadata match exactly. Any duplicate name, changed protected B0-B8 object, missing dependency or conflicting prototype mapping stops without overwriting or deleting live objects.
 
 B9 does not execute React, JavaScript, authentication, database work, pricing, subsidy, file upload or governed runtime logic inside Figma. It is a standalone design/prototype representation, not a permanent Lovable-to-Figma sync. Offline/static validation is not native Figma evidence. Real evidence requires running **Create All Screens** → **Verify All Screens** → **Create All Screens** → **Verify All Screens** in Figma Desktop, then opening representative Internal, Marketplace and Member flows in Figma Presentation/Prototype mode and checking mapped clicks/hovers and reported runtime-only limitations.
+
+## Phase 57 / Batch B10 — documentation / final reference layer
+
+Buttons: **Create documentation** (`b10-run`) and **Verify documentation** (`b10-verify`). Source data is extracted by `extract-b10.mjs` into `tokens-b10.js`; `code.js` is regenerated only by `build.mjs`.
+
+B10 creates exactly 10 editable top-level FRAME documentation assets on `06 Documentation` only:
+
+- `ABox/Documentation/00 Library Overview`;
+- `ABox/Documentation/01 Foundations Tokens Typography Styles`;
+- `ABox/Documentation/02 Components States Properties`;
+- `ABox/Documentation/03 Patterns Shells`;
+- `ABox/Documentation/04 Experiences`;
+- `ABox/Documentation/05 Screens Route Inventory`;
+- `ABox/Documentation/06 Prototype Interaction Mapping`;
+- `ABox/Documentation/07 Governance Source Of Truth`;
+- `ABox/Documentation/08 Import Reimport Workflow`;
+- `ABox/Documentation/09 Limitations Evidence Register`.
+
+The documentation is native editable Figma text and frame structure. It links by plugin metadata to existing B0-B9 pages, variable collections, styles, components, patterns, shells, experiences and screens. B10 creates no variables, styles, components, component sets, patterns, shells, experiences, screens, prototypes, screenshots, HTML embeds or flattened substitutes.
+
+B10 records the source-of-truth hierarchy: production source remains authoritative for runtime behavior; extraction converts audited facts into deterministic reference data; the Figma library is a standalone design/prototype artifact. It documents the B9 one-bulk-import screen model, B9 A/B/C/D interaction classification, current limitation/deferred registers, evidence labels, and the explicit absence of permanent Lovable-to-Figma sync.
+
+Idempotency is strict: Run 1 creates the 10 approved documentation frames; Run 2 must create zero frames with identical ids. Existing B10 frames are reused only when their plugin data, source list, deterministic signature and four approved child regions match exactly. Any duplicate, wrong type, unapproved object on `06 Documentation`, missing B1-B9 reference, changed protected B0-B9 count or conflicting signature stops without overwriting or deleting live objects.
+
+Offline/static validation is not native Figma evidence. Real evidence requires running **Create documentation** → **Verify documentation** → **Create documentation** → **Verify documentation** in Figma Desktop and confirming real ids with zero creations on the second run. Unless that native sequence is executed, B10 must be reported as `REAL FIGMA NOT VERIFIED`.
