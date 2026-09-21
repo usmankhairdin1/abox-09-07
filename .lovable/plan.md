@@ -73,6 +73,24 @@ Set-wide schema test: the ternary at line 78 is unconditional and independent of
 
 The production prop name `delta` is used for neither Figma property, so no component holds two properties called `delta`.
 
+### 3b-bis. `ABox/Card/KpiCard` — exact variant-node creation sequence
+
+Adding a VARIANT property to an existing Component Set only assigns the property's value to the nodes already in the set; it does not produce the nodes the new axis requires. The negative branch therefore requires 4 new ComponentNodes created inside the existing set. Exact sequence:
+
+1. Read and lock the live `ABox/Card/KpiCard` Component Set and its existing Variant ComponentNodes.
+2. **Pre-write check (STOP on any mismatch):** exactly 4 originals exist, their `tone` values are exactly `default`, `primary`, `sage`, `warning`, one each, and no `deltaSign` value other than `positive` is present. Any deviation stops the run and prints the live matrix.
+3. Add, or reuse if already present, the `deltaSign` VARIANT property on the existing set.
+4. The 4 existing variants receive `deltaSign=positive` — the Figma-required value assignment for the new axis, not a production default (§3g-quater).
+5. Create exactly 4 new ComponentNodes by duplicating the corresponding existing variants — one duplicate per tone, no other source node.
+6. Append each duplicate to the same existing Component Set. No new set is created.
+7. Set each duplicate's `deltaSign=negative`, preserving its source `tone`: `default+negative`, `primary+negative`, `sage+negative`, `warning+negative`.
+8. Create no other tone/axis combination.
+9. Duplicate no unrelated B4 component, set or variant.
+
+Resulting matrix, exactly 8 nodes: `tone=default, deltaSign=positive` · `tone=default, deltaSign=negative` · `tone=primary, deltaSign=positive` · `tone=primary, deltaSign=negative` · `tone=sage, deltaSign=positive` · `tone=sage, deltaSign=negative` · `tone=warning, deltaSign=positive` · `tone=warning, deltaSign=negative`.
+
+Idempotency for these nodes: Run 1 may create exactly 4 new negative Variant ComponentNodes. Run 2 matches existing negative variants by exact variant-property matrix (`tone` + `deltaSign`), reuses them in place, creates zero Variant ComponentNodes, and reports ids identical to Run 1. A duplicate negative variant for the same matrix is never created; encountering one is a STOP.
+
 ### 3c. Boolean properties (layer visibility — they add no variants)
 
 Naming rule, applied uniformly: a Boolean representing an optional-render guard `{prop && …}` is named `has<Prop>`; the production prop name stays reserved for the Text or Instance Swap property carrying content.
