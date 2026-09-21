@@ -1346,3 +1346,14 @@ Figma Desktop and return both outputs with the real Figma ids.
 
 Human decision still open (carried from B5): whether to amend B4 for the 10 deferred properties
 and the positive delta-chip binding. B6 preserved both as-is.
+
+## B6 revised precision (plugin layer)
+
+- KpiRow: 1 Component Set, 2 variant nodes (`columns=3`, `columns=4`), created only via
+  `combineAsVariants`; live sets are resolved and verified, never rebuilt.
+- ModuleTabBar / WizardStepper: wrapped auto-layout, gap 6 on both axes, hug on both axes.
+- ModuleTabBar bottom border: individual stroke weight 1 bound to the live B3
+  `ABox/Semantic/hairline` style, `strokesIncludedInLayout=false`, no extra child node.
+- WizardStepper: complete 8-step production list, state configuration copied from
+  `/agency/downlines/new/contacts`; `upcoming` is unreachable in production and not created.
+- Offline dry run only — real Figma ids still require two runs in Figma Desktop.
