@@ -2236,9 +2236,11 @@ async function verifyB5() {
   const A = ABOX_B5.variantAxis;
   const index = await b4StyleIndex();
 
-  const sets = b4AllNodes(["COMPONENT_SET"]).filter((n) => n.name.indexOf("ABox/") === 0);
+  // B6 pattern assets ("ABox/Pattern/…") live on 02 Patterns and are not B4/B5 primitives.
+  const b5Own = (n) => n.name.indexOf("ABox/") === 0 && n.name.indexOf("ABox/Pattern/") !== 0;
+  const sets = b4AllNodes(["COMPONENT_SET"]).filter(b5Own);
   const standalone = b4AllNodes(["COMPONENT"]).filter(
-    (n) => n.name.indexOf("ABox/") === 0 && (!n.parent || n.parent.type !== "COMPONENT_SET"),
+    (n) => b5Own(n) && (!n.parent || n.parent.type !== "COMPONENT_SET"),
   );
   const variants = sets.reduce((n, s) => n + s.children.length, 0);
 
