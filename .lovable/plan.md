@@ -204,9 +204,13 @@ Names must be unique within a component; repetition across components is fine.
 | --- | --- | --- |
 | Component Sets | 11 | unchanged |
 | Standalone Components | 3 | unchanged |
-| Total component objects | 14 | 11 + 3 |
-| Variants before B5 | 52 | B4 |
-| Variants after B5 | 56 | 52 + 4 (KpiCard 4 → 8); Button unchanged at 9 |
+| Top-level component objects | 14 | 11 sets + 3 standalone Components — this is **not** a count of physical ComponentNodes |
+| Variant ComponentNodes before B5 | 52 | B4 |
+| Variant ComponentNodes after B5 | 56 | 52 + 4 (KpiCard 4 → 8); Button unchanged at 9 |
+| **Newly created B5 Variant ComponentNodes** | **4** | KpiCard `default/primary/sage/warning` × `deltaSign=negative`, per §3b-bis |
+| Total physical ComponentNodes after B5 | 59 | 56 Variant ComponentNodes + 3 standalone Components (was 55 after B4) |
+| New standalone Components created by B5 | 0 | none |
+| New Component Sets created by B5 | 0 | none |
 | Variant properties existing after B4 | **16 axes** (corrected from the earlier "13"; see §3g-bis) | 1 + 2 + 1 + 1 + 4 + 2 + 1 + 1 + 1 + 1 + 1 = 16, read from `tokens-b4.js` and re-read from the live sets at run time |
 | Variant properties created by B5 | 1 | `KpiCard.deltaSign` |
 | Variant properties reused unchanged | all B4 axes | none renamed, none removed |
