@@ -583,9 +583,8 @@ async function ensureB1Variables() {
   // 2) Semantic roles — aliases to the primitive of the same path.
   const sem = byName["ABox/Color/Semantic"];
   for (const s of ABOX_B1.semantics) {
-    const target = primId[s.alias.replace(/\//g, "-").replace("primary/foreground", "primary-foreground")] ||
-      primId[s.alias.replace(/^(\w+)\//, "$1-")];
     const aliasId = primId[slashToRole(s.alias)];
+    if (!aliasId) throw new Error('STOP: alias target missing — primitive "' + s.alias + '".');
     const v = await ensureB1Variable(sem, s.name, "COLOR", {
       Light: { type: "VARIABLE_ALIAS", id: aliasId },
       Dark: { type: "VARIABLE_ALIAS", id: aliasId },
