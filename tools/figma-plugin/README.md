@@ -187,14 +187,14 @@ referenced by no token, so it gets no variable. Tailwind's built-in size/leading
 utilities are library-owned defaults and are not imported. B2 creates no text styles.
 
 FLOAT verification tolerance: `verifyB2` compares stored numbers against the production-derived
-values with `Math.abs(stored - expected) <= 1e-9` instead of strict `===`. Figma round-trips a
+values with `Math.abs(stored - expected) <= 1e-7` instead of strict `===`. Figma round-trips a
 stored FLOAT through its own numeric representation, so values that are not exactly representable
 in binary floating point (`-2.8`, `-3.2`, `1.02`) can come back a few ulps away from the JS literal
-that was written, which made an otherwise correct import report
-`FAIL numeric values match production in both modes`. This is not a relaxation of source fidelity:
-the extracted values in `tokens-b2.js` are unchanged, the tolerance is orders of magnitude below any
-meaningful typographic difference, and `B2 NUMERIC EVIDENCE` prints every expected/stored pair at
-20-digit precision with its absolute delta, so a genuine mismatch is always visible and named.
+that was written. The largest real-Figma delta observed so far is ~4.8e-8, so 1e-7 is safely above
+the storage jitter while remaining orders of magnitude below any meaningful typographic
+difference. This is not a relaxation of source fidelity: the extracted values in `tokens-b2.js` are
+unchanged, and `B2 NUMERIC EVIDENCE` prints every expected/stored pair at 20-digit precision with
+its absolute delta, so a genuine mismatch is always visible and named.
 
 
 ## Phase 52 / Batch B3 — foundational styles
