@@ -88,8 +88,9 @@ bindings must be written with `setFillStyleIdAsync`, `setStrokeStyleIdAsync`,
 `setEffectStyleIdAsync` and `setTextStyleIdAsync` (awaited); otherwise Figma throws
 `in set_fillStyleId: Cannot call with documentAccess: dynamic-page`. Reading
 `fillStyleId` / `strokeStyleId` / `effectStyleId` in the verifiers remains valid and is
-unchanged. `b4Build` and `b5KpiVariants` use the async setters. The same synchronous
-pattern still exists in the B6-B10 builders (`b6ApplyRoot`, `b7Frame`, `b7Text`,
+unchanged. `b4Build`, `b5KpiVariants` and `b6ApplyRoot` (its single stroke binding, via
+`setStrokeStyleIdAsync`; `b6BuildNode` awaits it) use the async setters. The same
+synchronous pattern still exists in the B7-B10 builders (`b7Frame`, `b7Text`,
 `b7Build*`, `b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`) and must be converted in
 those batches before they are run.
 
@@ -159,9 +160,17 @@ the same proof B4 requires. When the set does not exist, the removal reason is p
 full: a bare matrix node with zero instances that no approved page inventory permits.
 Anything failing a condition is printed under `KEPT — …` and left alone.
 `ensureB6Patterns` additionally wraps each pattern in `b6Guarded`, which removes only the
-matrix-named, non-set nodes that the failing build itself parented to the page, so a
-future aborted run strands nothing. The existing orphan STOP now also prints the offending
-node's type, id and instance count.
+B6-owned, non-set nodes that the failing build itself parented to the page — approved
+top-level pattern names as well as approved variant matrices — so a future aborted run
+strands nothing. The existing orphan STOP now also prints the offending node's type, id
+and instance count.
+`Remove incomplete B6 pattern nodes` (`b6-cleanup-incomplete-patterns`,
+`b6CleanupIncompletePatterns()`) covers the standalone-pattern case that predates that
+guard: a node is removed only when it sits directly on `02 Patterns`, is a `COMPONENT` and
+never a `COMPONENT_SET`, carries an approved B6 `kind: "COMPONENT"` pattern name, has a
+live signature that differs from the approved expected signature (so a complete, correct
+pattern can never qualify), and reports zero instances. Both signatures are printed as
+evidence before removal, and anything failing a condition is printed under `KEPT — …`.
 
 
 ## Library publishing check

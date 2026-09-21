@@ -2834,7 +2834,7 @@ function b6HairlineId(styleName) {
   return b4Style(b6StyleIndex, "paint", styleName).id;
 }
 
-function b6ApplyRoot(node, root, index) {
+async function b6ApplyRoot(node, root, index) {
   node.layoutMode = root.layout || "HORIZONTAL";
   node.layoutWrap = root.wrap || "NO_WRAP";
   node.primaryAxisSizingMode = root.primarySizing || "AUTO";
@@ -2851,7 +2851,8 @@ function b6ApplyRoot(node, root, index) {
   if (root.strokeBottomStyle) {
     // Individual bottom stroke, bound to the live B3 style — never a colour value,
     // never an extra line child. b4Style STOPs when the style cannot be resolved.
-    node.strokeStyleId = b4Style(index, "paint", root.strokeBottomStyle).id;
+    // documentAccess: dynamic-page forbids the synchronous setter (same rule as B4/B5).
+    await node.setStrokeStyleIdAsync(b4Style(index, "paint", root.strokeBottomStyle).id);
     node.strokeTopWeight = 0;
     node.strokeLeftWeight = 0;
     node.strokeRightWeight = 0;
@@ -2863,11 +2864,11 @@ function b6ApplyRoot(node, root, index) {
 }
 
 /** Create one pattern ComponentNode with its nested live instances. */
-function b6BuildNode(name, root, children, index, page) {
+async function b6BuildNode(name, root, children, index, page) {
   const node = figma.createComponent();
   node.name = name;
   page.appendChild(node);
-  b6ApplyRoot(node, root, index);
+  await b6ApplyRoot(node, root, index);
   for (const spec of children) node.appendChild(b6CreateInstance(spec));
   return node;
 }
@@ -2986,7 +2987,7 @@ async function b6EnsurePattern(spec, index, page) {
             '\n  Run "Inspect 02 Patterns", then "Remove stale B6 variant components" first. Nothing was overwritten or deleted.',
         );
       }
-      const node = b6BuildNode(vname, v.root, v.children, index, page);
+      const node = await b6BuildNode(vname, v.root, v.children, index, page);
       node.description = spec.source;
       b6Say("variant  ", spec.name + " / " + vname, true);
       fresh.push(node);
@@ -3011,7 +3012,7 @@ async function b6EnsurePattern(spec, index, page) {
     b6Say("component", spec.name, false);
     return node;
   }
-  node = b6BuildNode(spec.name, spec.root, spec.children, index, page);
+  node = await b6BuildNode(spec.name, spec.root, spec.children, index, page);
   node.description = spec.source;
   b6Say("component", spec.name, true);
   return node;
@@ -3052,8 +3053,10 @@ function b6VariantOwners() {
 
 /**
  * Per-pattern guard: any node this build parented to 02 Patterns is removed again when the
- * build throws, so an aborted run can never strand a bare variant on the page.
- * Only nodes created during this build, never a COMPONENT_SET, are ever removed.
+ * build throws, so an aborted run can never strand a bare variant or a half-built pattern
+ * component on the page. Only nodes created during this build whose names are B6-owned
+ * (approved top-level pattern names or approved variant matrices), never a COMPONENT_SET,
+ * are ever removed.
  */
 async function b6Guarded(page, label, fn) {
   const before = {};
@@ -3061,15 +3064,19 @@ async function b6Guarded(page, label, fn) {
   try {
     return await fn();
   } catch (err) {
-    const owners = b6VariantOwners();
+    const owned = {};
+    for (const name of b6ApprovedNames()) owned[name] = true;
+    for (const name of Object.keys(b6VariantOwners())) owned[name] = true;
+    let removed = 0;
     for (const child of page.children.slice()) {
       if (before[child.id]) continue;
       if (child.type === "COMPONENT_SET") continue;
-      if (!owners[child.name]) continue;
+      if (!owned[child.name]) continue;
       say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
       child.remove();
+      removed += 1;
     }
-    say("  (" + label + " left no new node on " + B6_PAGE + ")");
+    if (!removed) say("  (" + label + " left no new node on " + B6_PAGE + ")");
     throw err;
   }
 }
@@ -3227,6 +3234,77 @@ async function b6StaleVariants() {
   say("  removed this run: " + doomed.length);
   return doomed.length;
 }
+
+/**
+ * Remove a half-built approved B6 pattern COMPONENT left on 02 Patterns by an aborted run.
+ * A node is removed only when every condition holds:
+ *   1. it sits directly on 02 Patterns;
+ *   2. it is a COMPONENT (never a COMPONENT_SET);
+ *   3. its name is an approved B6 kind:"COMPONENT" pattern name;
+ *   4. its live signature differs from the approved expected signature (provably incomplete);
+ *   5. it reports zero live instances.
+ * Anything failing a condition is printed as KEPT and left untouched.
+ */
+async function b6CleanupIncompletePatterns() {
+  await figma.loadAllPagesAsync();
+  const page = b6Page();
+  const index = await b4StyleIndex();
+  b6StyleIndex = index;
+
+  const specs = {};
+  for (const spec of ABOX_B6.patterns) if (spec.kind === "COMPONENT") specs[spec.name] = spec;
+
+  say("B6 INCOMPLETE PATTERN CLEANUP");
+  say("");
+
+  const doomed = [];
+  const kept = [];
+  for (const node of page.children) {
+    if (node.type !== "COMPONENT") continue; // conditions 1 + 2
+    if (!node.parent || node.parent.id !== page.id) continue;
+    const spec = specs[node.name]; // condition 3
+    if (!spec) {
+      kept.push("  KEPT — not an approved B6 pattern component name : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const expected = b6ExpectedSignature(spec.root, spec.children);
+    const live = b6LiveSignature(node, spec.root, spec.children);
+    if (expected === live) { // condition 4
+      kept.push("  KEPT — complete, matches the approved definition : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const instances = await node.getInstancesAsync(); // condition 5 (async: dynamic-page)
+    if (instances.length) {
+      kept.push("  KEPT — has " + instances.length + " live instance(s) : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    doomed.push({ node: node, live: live, expected: expected });
+  }
+
+  for (const line of kept) say(line);
+  if (kept.length) say("");
+
+  if (!doomed.length) {
+    say("  nothing to remove — no incomplete B6 pattern component on " + B6_PAGE + ".");
+  }
+  for (const entry of doomed) {
+    say("  remove : " + entry.node.name + "  id=" + entry.node.id + "  (incomplete, zero instances)");
+    say("    live     : " + entry.live);
+    say("    expected : " + entry.expected);
+    entry.node.remove();
+  }
+
+  say("");
+  say("  page contents after cleanup");
+  for (const p of figma.root.children) {
+    say("    " + p.name + " : " + p.children.length + " node(s)");
+  }
+  say("");
+  say("  removed this run: " + doomed.length);
+  return doomed.length;
+}
+
+
 
 function b6PatternNodes(page) {
   const out = [];
@@ -5675,7 +5753,7 @@ figma.ui.onmessage = async (msg) => {
     msg.type === "b4-cleanup-stale-variants";
   const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify" || msg.type === "b6-inspect" ||
-    msg.type === "b6-cleanup-stale-variants";
+    msg.type === "b6-cleanup-stale-variants" || msg.type === "b6-cleanup-incomplete-patterns";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
@@ -5813,6 +5891,12 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b6StaleVariants();
+    } else if (msg.type === "b6-cleanup-incomplete-patterns") {
+      say("ABox Phase 53 / Batch B6 — remove incomplete pattern components");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b6CleanupIncompletePatterns();
     } else if (msg.type === "b7-run") {
       say("ABox Phase 54 / Batch B7 — shells");
       say("file: " + figma.root.name);
