@@ -1783,7 +1783,11 @@ async function b4EnsureComponent(spec, index, page) {
   node.layoutMode = "HORIZONTAL";
   node.primaryAxisSizingMode = "AUTO";
   node.counterAxisSizingMode = "AUTO";
+  // Component wrapper chrome, not a production surface.
+  node.fills = [];
+  node.strokes = [];
   node.appendChild(await b4Build(spec.node, index));
+
   await b4Describe(
     node,
     spec.source +
