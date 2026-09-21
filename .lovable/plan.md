@@ -89,20 +89,29 @@ Booleans: 4 + 3 + 3 = **10**. The renames from the B4 recorded names are forced 
 
 Text: 1+1+1+1+2+3+1+1+2+1+1 = **15**, exactly the `textProps` inventory recorded in `tokens-b4.js`.
 
-### 3e. Instance Swap properties and complete slot audit
+### 3e. Content slots — complete audit
 
-Two production props are caller-supplied `React.ReactNode` content slots, and each is represented by **both** a visibility Boolean and a content Instance Swap — the Boolean never absorbs the slot.
+`addComponentProperty("name", "INSTANCE_SWAP", defaultValue)` requires a default component key as part of the definition; `preferredValues` is optional on top of it. The two content slots therefore get different mechanisms, decided per slot from production evidence, not for uniformity.
 
-| Production prop | Type | Source | Figma type | Final Figma name | Meaning | Real component available to swap |
-| --- | --- | --- | --- | --- | --- | --- |
-| PageHeader `actions` | `React.ReactNode` | `page-header.tsx:16` declared, `:55` rendered `{actions && <div …>{actions}</div>}` | Boolean + Instance Swap | `hasActions` + `actions` | both — presence guard and content slot | yes; production call sites pass real B4 components: `ActionPill` (`marketplace.admin.readiness.tsx:28`), `StatusBadge` (`app.jet.branding.tsx:26`, `app.jet.platform.tsx:95`), `SaveContinueButton` (`review.tsx:43`). Preferred swap values: `ABox/Action/ActionPill`, `ABox/Status/StatusBadge`. |
-| EmptyState `action` | `React.ReactNode` | `empty-state.tsx:9` declared, `:24` rendered `{action}` | Boolean + Instance Swap | `hasAction` + `action` | both | yes, but production passes raw inline `<Link>`/`<button>` elements styled with pill classes (`plans.index.tsx:344`, `cart.tsx:59`, `review.tsx:50`, `apply.tsx:96`, `compare.tsx:83`, `member.quotes.tsx:29`, `handoff.tsx:37`), not a B4 component. The Instance Swap is created with **no** default preferred value; no placeholder component is invented. Recorded as a limitation. |
-| PageHeader `icon` | `ComponentType<{className?: string}>` | `page-header.tsx:15,30-35` | Boolean only | `hasIcon` | visibility-only | no — B4 created no icon Component; non-swappable, limitation preserved |
-| KpiCard `icon` | `ComponentType<{className?: string}>` | `kpi-card.tsx:20,60` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
-| EmptyState `icon` | `ComponentType<{className?: string}>` | `empty-state.tsx:6,18-22` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
-| LabeledField control slot | `children: React.ReactNode` | `field.tsx:16-30` — `<label>…<span>{label}</span>{children}</label>`, control explicitly consumer-owned (`field.tsx:11-14`) | exposed nested instance (a node flag, **not** a component property) | nested instance layer named `control` | content slot | yes — B4 already nests a real `ABox/Control/Control` instance (asserted `plugin.js:1814`), but B4 never exposed it (see §3e-bis) |
+| Production prop | Source type | Source evidence | Figma mechanism | Final name | Required default | Preferred values | Reason |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| PageHeader `actions` | `React.ReactNode` | declared `page-header.tsx:16`; rendered `:55` `{actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}`; call sites pass real B4 components — `ActionPill` at `marketplace.admin.readiness.tsx:28`, `StatusBadge` at `app.jet.branding.tsx:26` and `app.jet.platform.tsx:95` | Boolean `hasActions` + **INSTANCE_SWAP** | `hasActions`, `actions` | the existing B4 component `ABox/Action/ActionPill`, variant `action=primaryMd` — its `key` is read live from the file, never hard-coded; the choice is the literal component used at `marketplace.admin.readiness.tsx:28`, not a value-similarity guess | `ABox/Action/ActionPill` (all 10 variants), `ABox/Status/StatusBadge` (all 6 tones) | Instance Swap is faithful because production genuinely supplies reusable ABox components into this region, so a production-backed default exists |
+| EmptyState `action` | `React.ReactNode` | declared `empty-state.tsx:9`; rendered `:24` as bare `{action}`; every call site passes a raw inline `<Link>`/`<button>` with pill utility classes — `plans.index.tsx:344`, `cart.tsx:59`, `review.tsx:50`, `apply.tsx:96`, `compare.tsx:83`, `member.quotes.tsx:29`, `handoff.tsx:37` | Boolean `hasAction` + **SLOT** (see §3e-ter for the runtime capability gate) | `hasAction`, `action` | none — a SLOT takes no default component | n/a | No B4 component is ever passed here, so INSTANCE_SWAP could only be defined by nominating a component production never uses. Naming `ActionPill` because its pill classes look similar would be exactly the value-equality inference this batch forbids. A SLOT is the faithful representation of an arbitrary consumer-owned content region |
+| PageHeader `icon` | `ComponentType<{className?: string}>` | `page-header.tsx:15,30-35` | Boolean only | `hasIcon` | — | — | no B4 icon Component exists; non-swappable, limitation preserved |
+| KpiCard `icon` | `ComponentType<{className?: string}>` | `kpi-card.tsx:20,60` | Boolean only | `hasIcon` | — | — | same |
+| EmptyState `icon` | `ComponentType<{className?: string}>` | `empty-state.tsx:6,18-22` | Boolean only | `hasIcon` | — | — | same |
+| LabeledField control slot | `children: React.ReactNode` | `field.tsx:16-30`; control explicitly consumer-owned `field.tsx:11-14` | exposed nested instance (node flag, not a property) | nested instance layer `control` | — | — | B4 already nests a real `ABox/Control/Control` instance (`plugin.js:1814`) but never exposed it — see §3e-bis |
 
-Instance Swap properties: **2** (`PageHeader.actions`, `EmptyState.action`). No other production prop is a content slot: every remaining optional prop is a string or a `ComponentType` icon.
+### 3e-ter. SLOT capability gate for `EmptyState.action`
+
+The manifest pins `"api": "1.0.0"`, and SLOT is a newer property type than the rest of this plugin uses, so support is verified at run time rather than assumed:
+
+- Before creating it, the plugin feature-detects SLOT support (attempt `addComponentProperty("action", "SLOT", "")` inside a guarded try, or the equivalent capability check the runtime exposes).
+- Supported → the SLOT named `action` is created; `hasAction` stays the separate presence guard from `{action && …}`-equivalent rendering at `empty-state.tsx:24`; no default content is authored.
+- Not supported → the plugin creates **no** content property for `EmptyState.action`, keeps only the Boolean `hasAction`, and records the limitation verbatim, citing `empty-state.tsx:9,24` and every call site above. It does **not** fall back to INSTANCE_SWAP with an invented default.
+- Whichever branch runs is printed in the report and asserted by `b5-verify`, and it is the same on Run 1 and Run 2.
+
+Counts: INSTANCE_SWAP properties **1** (`PageHeader.actions`); SLOT properties **1** or **0** (`EmptyState.action`, per the gate); exposed nested instances **1**. No other production prop is a content slot: every remaining optional prop is a string or a `ComponentType` icon.
 
 ### 3e-bis. `LabeledField.control` — corrected
 
