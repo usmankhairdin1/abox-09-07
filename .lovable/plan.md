@@ -291,6 +291,60 @@ Rule for the whole plan: a value is a **production default** only when the produ
 
 No Button `state` axis and no Button variant added. PageHeader `hasEyebrow = true` together with `compact` (`page-header.tsx:33` suppresses it) is not a supported combination. MetalBadge, AboxMark, ActionPill, Surface, Control gain no second axis. No Boolean or Text property is expanded into a variant, and no property is converted into a variant to avoid a name clash. No Cartesian expansion beyond the schema-complete KpiCard matrix required by the Figma Component Set model.
 
+### 3i. Property-to-layer binding — layer reality audit (supersedes the counts above)
+
+A Figma component property is inert until it is attached to a sublayer through `componentPropertyReferences`: BOOLEAN → `visible`, TEXT → `characters`, INSTANCE_SWAP → `mainComponent`, SLOT → the slot-content reference. Creating a definition without attaching it produces a property that controls nothing, so B5 creates a property **only** when its exact target layer exists.
+
+**Audit of what B4 actually built** (`tokens-b4.js` node trees, built by `b4Build()` at `plugin.js:1550-1581`). Two facts govern everything below:
+
+1. `b4Build()` never assigns `name` to any sublayer — every frame, text, ellipse and instance it creates is unnamed. Targets must therefore be resolved structurally (child index + node type + exact `characters` + bound text style) and then **named** by B5 so the binding is addressable and auditable. Naming an existing layer changes no geometry, style, variant or id; it is recorded as the only B5 mutation of B4 node metadata.
+2. Several layers assumed by the earlier property list **do not exist**. KpiCard has exactly three TEXT children (`"METRIC"`, `"1,280"`, `"▲ 4.2%"`) — no icon tile, no hint layer, no separate delta-label text. PageHeader has exactly three TEXT children (`"SECTION"`, `"Page title"`, `"Supporting description."`) — no icon layer, no actions wrapper, no nested instance. EmptyState has exactly two TEXT children (`"Nothing here yet"`, `"Supporting copy."`) — no icon layer, no action region.
+
+Per the STOP rule, a property whose target layer is missing is **not created**. Adding those layers would be B4 re-architecture, which is out of scope. They are recorded as blocked and carried to a B4 amendment decision.
+
+**Bindings B5 creates (19 properties + 1 exposed instance):**
+
+| Component | Figma property | Type | Production source / guard | Exact target layer | Reference field | Binding rule |
+| --- | --- | --- | --- | --- | --- | --- |
+| ActionPill | `label` | TEXT | `action-pill-component.tsx` children | sole TEXT child, chars `"Action"` → named `label` | `characters` | resolve by index 0 + type TEXT; missing or duplicated = STOP |
+| Button | `label` | TEXT | `ui/button.tsx` children | sole TEXT child, chars `"Button"` → named `label` | `characters` | as above |
+| StatusBadge | `label` | TEXT | `status-badge.tsx` children | TEXT child at index 1 (index 0 is the ELLIPSE dot), chars `"STATUS"` → named `label` | `characters` | ELLIPSE must be present at index 0, else STOP |
+| MetalBadge | `label` | TEXT | `metal-badge.tsx` children | sole TEXT child, chars `"TIER"` → named `label` | `characters` | as above |
+| KpiCard | `label` | TEXT | `kpi-card.tsx:10,46` | TEXT index 0, chars `"METRIC"`, text style `ABox/Text/eyebrow` → named `label` | `characters` | style + chars must both match, else STOP |
+| KpiCard | `value` | TEXT | `:11,62-70` | TEXT index 1, chars `"1,280"` → named `value` | `characters` | as above |
+| KpiCard | `hasDelta` | BOOLEAN | `:12,74` `{delta && …}` | TEXT index 2, chars `"▲ 4.2%"` → named `delta` | `visible` | guards only this chip, never the card frame |
+| PageHeader | `eyebrow` | TEXT | `page-header.tsx:14` | TEXT index 0, chars `"SECTION"`, style `ABox/Text/eyebrow` → named `eyebrow` | `characters` | STOP on mismatch |
+| PageHeader | `hasEyebrow` | BOOLEAN | `:14,33` | same `eyebrow` node | `visible` | subregion only |
+| PageHeader | `title` | TEXT | `:13` | TEXT index 1, chars `"Page title"` → named `title` | `characters` | |
+| PageHeader | `description` | TEXT | `:17` | TEXT index 2, chars `"Supporting description."` → named `description` | `characters` | |
+| PageHeader | `hasDescription` | BOOLEAN | `:17` optional | same `description` node | `visible` | subregion only |
+| ModuleTab | `label` | TEXT | `module-tabs.tsx` | sole TEXT child → named `label` | `characters` | |
+| WizardStep | `label` | TEXT | `downline-wizard-stepper.tsx` | sole TEXT child → named `label` | `characters` | |
+| EmptyState | `title` | TEXT | `empty-state.tsx:7` | TEXT index 0, chars `"Nothing here yet"` → named `title` | `characters` | |
+| EmptyState | `body` | TEXT | `:8` | TEXT index 1, chars `"Supporting copy."` → named `body` | `characters` | |
+| EmptyState | `hasBody` | BOOLEAN | `:8` optional | same `body` node | `visible` | subregion only |
+| LabeledField | `label` | TEXT | `field.tsx:15` | TEXT index 0, chars `"LABEL"` → named `label` | `characters` | |
+| Input | `placeholder` | TEXT | `ui/input.tsx` | sole TEXT child, chars `"Placeholder"` → named `placeholder` | `characters` | |
+| LabeledField | `control` | exposed nested instance | `field.tsx:16-30` | INSTANCE child at index 1, main component `ABox/Control/Control` → named `control` | `isExposedInstance = true` | node flag, not a property; instance must already exist, else STOP; never recreated |
+
+Totals created: **15 TEXT + 4 BOOLEAN = 19 properties**, plus 1 exposed nested instance, plus the `deltaSign` variant axis and its 4 new Variant ComponentNodes (§3b-bis).
+
+**Blocked — property not created because its target layer does not exist in B4:**
+
+| Component | Property | Missing target | Consequence |
+| --- | --- | --- | --- |
+| KpiCard | `hasIcon` | no icon tile layer (`kpi-card.tsx:48-58` not built by B4) | not created; recorded verbatim |
+| KpiCard | `hasHint` | no hint layer (`:85`) | not created; recorded verbatim |
+| KpiCard | `hasDeltaLabel` / `deltaLabel` | no delta-label TEXT (`:84`); the third TEXT is the computed pct chip, already a recorded limitation | neither Boolean nor Text created |
+| PageHeader | `hasIcon` | no icon layer (`:15`) | not created |
+| PageHeader | `hasActions` / `actions` | no actions wrapper and no nested instance (`:16,55`) | Boolean and INSTANCE_SWAP both not created; INSTANCE_SWAP with no nested instance = STOP per the binding rule |
+| EmptyState | `hasIcon` | no icon layer (`:6`) | not created |
+| EmptyState | `hasAction` / `action` | no action region (`:9,24`) — nothing exists to convert into a slot without rebuilding B4 structure | Boolean and SLOT both not created; SLOT capability is still detected read-only and printed, but no detached SLOT is created |
+
+Revised inventory, superseding §3g: BOOLEAN **4**, TEXT **15**, INSTANCE_SWAP **0**, SLOT **0**, non-variant total **19**; exposed nested instances **1**; new variant axes **1**; new Variant ComponentNodes **4**. The wider set (11 Boolean / 16 Text / 1 Swap / 1 SLOT) remains the documented production-faithful target and is deferred to a B4 amendment that adds the missing layers; B5 does not add them.
+
+**Attachment procedure, every property:** read live property definitions first → if missing, create → immediately attach the returned property id to the exact resolved sublayer and reference field → if it already exists, verify its reference points at the correct layer and field → wrong layer = STOP, never silently re-pointed → target layer missing, ambiguous or duplicated = STOP → never create a second property because a reference is missing. Text properties additionally verify the target's initial `characters` equal the approved construction/sample value from §3g-quater; Booleans verify the initial value and that the reference is the subregion node, never the component frame.
+
 ## 4. Excluded states, with reasons
 
 | Candidate | Reason |
