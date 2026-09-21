@@ -105,6 +105,7 @@
     <button id="b6run">Create patterns</button>
     <button id="b6verify" class="secondary">Verify patterns</button>
     <button id="b6inspect" class="secondary">Inspect 02 Patterns (read-only)</button>
+    <button id="b6sigdiff" class="secondary">Diagnose B6 signature mismatch (read-only)</button>
     <button id="b6stale" class="secondary">Remove stale B6 variant components</button>
     <button id="b6incomplete" class="secondary">Remove incomplete B6 pattern nodes</button>
     <p>
@@ -218,6 +219,10 @@
       document.getElementById("b6inspect").onclick = () => {
         log.textContent = "Inspecting 02 Patterns…";
         parent.postMessage({ pluginMessage: { type: "b6-inspect" } }, "*");
+      };
+      document.getElementById("b6sigdiff").onclick = () => {
+        log.textContent = "Diagnosing B6 signature mismatch…";
+        parent.postMessage({ pluginMessage: { type: "b6-signature-diff" } }, "*");
       };
       document.getElementById("b6stale").onclick = () => {
         log.textContent = "Removing stale B6 variant components…";

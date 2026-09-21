@@ -157,6 +157,16 @@ page child, its type, id, parent, component property definitions, variant proper
 child names, live instance count, whether the name is an approved B6 top-level object, an
 approved matrix that must live inside a set, or neither, and for a matrix the expected vs
 live signature. It writes, modifies and deletes nothing.
+`Diagnose B6 signature mismatch (read-only)` (`b6-signature-diff`,
+`b6DiagnoseSignatures()`) assembles exactly the bodies `verifyB6()` compares (each KpiRow
+variant, then each standalone pattern) and prints for each the full expected and live
+signature, a segment-by-segment `MATCH` / `DIFF` table with the first differing segment
+named, raw root evidence (layout, spacing, sizing, padding, strokes, per-side stroke
+weights, `strokesIncludedInLayout`, fills, variant properties, reactions) and per-child
+evidence (live type/name/id, main component and owning set via
+`getMainComponentAsync()`, every component property, the declared spec child and the exact
+`INSTANCE:` segment each side produced). It exists to tell a pattern-construction defect
+apart from a signature-calculation defect and writes, modifies and deletes nothing.
 `Remove stale B6 variant components` (`b6-cleanup-stale-variants`, `b6StaleVariants()`)
 removes a node only when it sits directly on `02 Patterns`, is a `COMPONENT` and never a
 `COMPONENT_SET`, is not an approved B6 top-level or batch-owned name, has a name equal to
