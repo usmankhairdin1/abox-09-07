@@ -2811,8 +2811,12 @@ async function b6LiveSignature(node, root, children) {
     "counterSizing=" + node.counterAxisSizingMode,
     "pb=" + node.paddingBottom,
     "stroke=" + (styled ? root.strokeBottomStyle : "none"),
+    // An unstroked root is proven by strokes.length === 0; its default per-side weights
+    // carry no design meaning. Any live stroke paint still reports its real weights.
     "strokeWeights=" +
-      [node.strokeTopWeight || 0, node.strokeRightWeight || 0, node.strokeLeftWeight || 0, node.strokeBottomWeight || 0].join("/"),
+      (!root.strokeBottomStyle && (node.strokes || []).length === 0
+        ? "n/a"
+        : [node.strokeTopWeight || 0, node.strokeRightWeight || 0, node.strokeLeftWeight || 0, node.strokeBottomWeight || 0].join("/")),
     "strokesInLayout=" + (root.strokeBottomStyle ? String(node.strokesIncludedInLayout === true) : "n/a"),
   ];
   parts.push("children=" + node.children.length);
