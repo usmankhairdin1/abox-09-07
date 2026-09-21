@@ -116,6 +116,8 @@
     <button id="b7run">Create shells</button>
     <button id="b7verify" class="secondary">Verify shells</button>
     <button id="b7incomplete" class="secondary">Remove incomplete B7 shell nodes</button>
+    <button id="b7inspectfound" class="secondary">Inspect 00 Foundations orphans (read-only)</button>
+    <button id="b7cleanfound" class="secondary">Remove B7 orphan frames on 00 Foundations</button>
     <p>
       <strong>Batch B8 — experiences</strong><br />
       Run inside <code>ABox Design System — Library</code>. Creates five source-backed
@@ -245,6 +247,15 @@
         log.textContent = "Removing incomplete B7 shell nodes…";
         parent.postMessage({ pluginMessage: { type: "b7-cleanup-incomplete-shells" } }, "*");
       };
+      document.getElementById("b7inspectfound").onclick = () => {
+        log.textContent = "Inspecting 00 Foundations orphans…";
+        parent.postMessage({ pluginMessage: { type: "b7-inspect-foundations-orphans" } }, "*");
+      };
+      document.getElementById("b7cleanfound").onclick = () => {
+        log.textContent = "Removing B7 orphan frames on 00 Foundations…";
+        parent.postMessage({ pluginMessage: { type: "b7-cleanup-foundations-orphans" } }, "*");
+      };
+
       document.getElementById("b8run").onclick = () => {
         log.textContent = "Creating experiences…";
         parent.postMessage({ pluginMessage: { type: "b8-run" } }, "*");

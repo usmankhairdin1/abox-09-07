@@ -4286,6 +4286,10 @@ function b7ExpectedRegions(name) {
 async function b7Guarded(page, label, fn) {
   const before = {};
   for (const child of page.children) before[child.id] = true;
+  // figma.createFrame/createText append to figma.currentPage at creation time and are only
+  // reparented afterwards (see b4Guarded), so transient debris can land on the active page.
+  const currentBefore = {};
+  if (figma.currentPage) for (const n of figma.currentPage.children) currentBefore[n.id] = true;
   try {
     return await fn();
   } catch (err) {
@@ -4298,7 +4302,17 @@ async function b7Guarded(page, label, fn) {
       child.remove();
       removed += 1;
     }
-    if (!removed) say("  (" + label + " left no new node on " + B7_PAGE + ")");
+    let strays = 0;
+    if (figma.currentPage && figma.currentPage.id !== page.id) {
+      for (const n of figma.currentPage.children.slice()) {
+        if (currentBefore[n.id]) continue;
+        if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+        say("  rollback : removed transient node left on " + figma.currentPage.name + " — " + n.name + "  id=" + n.id);
+        n.remove();
+        strays += 1;
+      }
+    }
+    if (!removed && !strays) say("  (" + label + " left no new node on " + B7_PAGE + ")");
     throw err;
   }
 }
@@ -4334,6 +4348,128 @@ async function b7CleanupIncompleteShells() {
   say("");
   say("  nodes removed: " + removed + "; nothing else was created, modified or deleted.");
 }
+
+const B7_FOUNDATIONS_PAGE = "00 Foundations";
+
+/** Every layer name B7 owns as a shell region (union of the approved region lists). */
+function b7RegionNames() {
+  const out = {};
+  for (const key of ["ABox/Shell/Internal", "ABox/Shell/Member", "variant=flow", "variant=landing"]) {
+    for (const region of b7ExpectedRegions(key) || []) out[region] = true;
+  }
+  return out;
+}
+
+function b7FoundationsPage() {
+  const pages = figma.root.children.filter((p) => p.name === B7_FOUNDATIONS_PAGE);
+  if (pages.length !== 1) throw new Error('STOP: B0 page "' + B7_FOUNDATIONS_PAGE + '" must exist exactly once (found ' + pages.length + ").");
+  return pages[0];
+}
+
+function b7StyleNameById(index, category, id) {
+  if (!id) return "(none)";
+  const table = index[category] || {};
+  for (const name of Object.keys(table)) if (table[name].id === id) return name;
+  return "(unbound id " + id + ")";
+}
+
+async function b7DescendantInstances(node) {
+  const out = [];
+  const walk = (n) => {
+    if (n.type === "INSTANCE") out.push(n);
+    if (n.children) for (const c of n.children) walk(c);
+  };
+  if (node.children) for (const c of node.children) walk(c);
+  const rows = [];
+  for (const inst of out) {
+    const main = await inst.getMainComponentAsync();
+    rows.push("      instance : " + inst.name + "  id=" + inst.id + " -> main " + (main ? main.name + "  id=" + main.id : "(unresolved)"));
+  }
+  return rows;
+}
+
+function b7ApprovedObjectName(name) {
+  for (const shell of ABOX_B7.shells) {
+    if (shell.name === name) return true;
+    for (const variant of shell.variants || []) if ("variant=" + variant.value === name) return true;
+  }
+  return false;
+}
+
+/** READ-ONLY. Prints provenance evidence for every top-level node on 00 Foundations. */
+async function b7InspectFoundationsOrphans() {
+  await figma.loadAllPagesAsync();
+  const page = b7FoundationsPage();
+  const index = await b4StyleIndex();
+  const regions = b7RegionNames();
+  say("B7 FOUNDATIONS ORPHAN INSPECTION — " + B7_FOUNDATIONS_PAGE + " (read-only; nothing is created, modified or deleted)");
+  say("  top-level nodes: " + page.children.length);
+  if (!page.children.length) {
+    say("  page is empty — nothing to inspect.");
+    return;
+  }
+  let debris = 0;
+  for (const child of page.children) {
+    say("");
+    say("  " + child.name + "  (" + child.type + ")  id=" + child.id);
+    say("      parent page      : " + (child.parent ? child.parent.name + " (" + child.parent.type + ")" : "(none)"));
+    if (child.width != null) say("      size             : " + Math.round(child.width) + " x " + Math.round(child.height));
+    if (child.layoutMode != null) say("      layout           : " + child.layoutMode + "  radius=" + (child.cornerRadius != null ? child.cornerRadius : "mixed"));
+    if (child.fillStyleId !== undefined) say("      fill style       : " + b7StyleNameById(index, "paint", child.fillStyleId));
+    if (child.strokeStyleId !== undefined) say("      stroke style     : " + b7StyleNameById(index, "paint", child.strokeStyleId));
+    if (child.effectStyleId !== undefined) say("      effect style     : " + b7StyleNameById(index, "effect", child.effectStyleId));
+    const kids = child.children || [];
+    say("      children (" + kids.length + ")   : " + (kids.map((n) => n.name + " [" + n.type + "]").join(", ") || "none"));
+    const instanceRows = await b7DescendantInstances(child);
+    say("      live instances   : " + instanceRows.length);
+    for (const row of instanceRows) say(row);
+    let instanceCount = 0;
+    if (typeof child.getInstancesAsync === "function") instanceCount = (await child.getInstancesAsync()).length;
+    say("      used as main by  : " + instanceCount + " instance(s)");
+    const approvedObject = b7ApprovedObjectName(child.name);
+    const approvedRegion = regions[child.name] === true;
+    say("      approved B7 object name : " + (approvedObject ? "yes" : "no"));
+    say("      approved B7 region name : " + (approvedRegion ? "yes" : "no"));
+    const isDebris = approvedRegion && !approvedObject && child.type === "FRAME" && child.parent === page && instanceRows.length === 0 && instanceCount === 0;
+    if (isDebris) {
+      debris += 1;
+      say("      VERDICT          : ORPHAN B7 REGION DEBRIS");
+    } else {
+      say("      VERDICT          : UNIDENTIFIED — do not remove");
+    }
+  }
+  say("");
+  say("  orphan B7 region debris: " + debris + " of " + page.children.length + " top-level node(s). No node was changed by this inspection.");
+}
+
+/** Guarded removal of orphan B7 region frames on 00 Foundations. Identity conditions only. */
+async function b7CleanupFoundationsOrphans() {
+  await figma.loadAllPagesAsync();
+  const page = b7FoundationsPage();
+  const regions = b7RegionNames();
+  say("B7 FOUNDATIONS ORPHAN CLEANUP — " + B7_FOUNDATIONS_PAGE);
+  let removed = 0;
+  for (const child of page.children.slice()) {
+    const label = child.name + " id=" + child.id;
+    if (child.parent !== page) { say("  KEPT — " + label + " is not a direct child of " + B7_FOUNDATIONS_PAGE + "."); continue; }
+    if (child.type !== "FRAME") { say("  KEPT — " + label + " is a " + child.type + ", not a FRAME."); continue; }
+    if (b7ApprovedObjectName(child.name) || b7ExpectedRegions(child.name)) { say("  KEPT — " + label + " is an approved B7 shell object name."); continue; }
+    if (regions[child.name] !== true) { say("  KEPT — " + label + " is not an approved B7 region name."); continue; }
+    const instanceRows = await b7DescendantInstances(child);
+    if (instanceRows.length) { say("  KEPT — " + label + " contains " + instanceRows.length + " live component instance(s)."); continue; }
+    if (typeof child.getInstancesAsync === "function") {
+      const used = await child.getInstancesAsync();
+      if (used.length) { say("  KEPT — " + label + " is the main component of " + used.length + " instance(s)."); continue; }
+    }
+    say("  removed orphan region frame — " + label);
+    child.remove();
+    removed += 1;
+  }
+  say("");
+  say("  nodes removed: " + removed + "; only 00 Foundations was touched; nothing was created or modified.");
+}
+
+
 
 async function ensureB7Shells() {
   await figma.loadAllPagesAsync();
@@ -6062,7 +6198,8 @@ figma.ui.onmessage = async (msg) => {
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify" || msg.type === "b6-inspect" ||
     msg.type === "b6-signature-diff" ||
     msg.type === "b6-cleanup-stale-variants" || msg.type === "b6-cleanup-incomplete-patterns";
-  const b7 = msg.type === "b7-run" || msg.type === "b7-verify" || msg.type === "b7-cleanup-incomplete-shells";
+  const b7 = msg.type === "b7-run" || msg.type === "b7-verify" || msg.type === "b7-cleanup-incomplete-shells" ||
+    msg.type === "b7-inspect-foundations-orphans" || msg.type === "b7-cleanup-foundations-orphans";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
   const b10 = msg.type === "b10-run" || msg.type === "b10-verify";
@@ -6230,6 +6367,18 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b7CleanupIncompleteShells();
+    } else if (msg.type === "b7-inspect-foundations-orphans") {
+      say("ABox Phase 54 / Batch B7 — inspect 00 Foundations orphans (read-only)");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b7InspectFoundationsOrphans();
+    } else if (msg.type === "b7-cleanup-foundations-orphans") {
+      say("ABox Phase 54 / Batch B7 — remove B7 orphan frames on 00 Foundations");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b7CleanupFoundationsOrphans();
     } else if (msg.type === "b8-run") {
       say("ABox Phase 55 / Batch B8 — experiences & journey compositions");
       say("file: " + figma.root.name);
