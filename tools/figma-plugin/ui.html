@@ -56,6 +56,13 @@
     </p>
     <button id="b0run">Create library pages</button>
     <button id="b0verify" class="secondary">Verify library pages</button>
+    <p>
+      <strong>Batch B1 — foundation variables</strong><br />
+      Run inside <code>ABox Design System — Library</code>. Creates/updates the nine
+      variable collections only. No styles, components or publishing.
+    </p>
+    <button id="b1run">Create foundation variables</button>
+    <button id="b1verify" class="secondary">Verify foundation variables</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -74,6 +81,14 @@
       document.getElementById("b0verify").onclick = () => {
         log.textContent = "Verifying library pages…";
         parent.postMessage({ pluginMessage: { type: "b0-verify" } }, "*");
+      };
+      document.getElementById("b1run").onclick = () => {
+        log.textContent = "Creating foundation variables…";
+        parent.postMessage({ pluginMessage: { type: "b1-run" } }, "*");
+      };
+      document.getElementById("b1verify").onclick = () => {
+        log.textContent = "Verifying foundation variables…";
+        parent.postMessage({ pluginMessage: { type: "b1-verify" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
