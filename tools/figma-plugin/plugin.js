@@ -5398,7 +5398,8 @@ figma.ui.onmessage = async (msg) => {
   const b1 = msg.type === "b1-run" || msg.type === "b1-verify";
   const b2 = msg.type === "b2-run" || msg.type === "b2-verify";
   const b3 = msg.type === "b3-run" || msg.type === "b3-verify";
-  const b4 = msg.type === "b4-run" || msg.type === "b4-verify" || msg.type === "b4-cleanup-orphans";
+  const b4 = msg.type === "b4-run" || msg.type === "b4-verify" || msg.type === "b4-cleanup-orphans" ||
+    msg.type === "b4-cleanup-stale-variants";
   const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
