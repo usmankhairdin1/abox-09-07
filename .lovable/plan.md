@@ -44,7 +44,7 @@ No other file in the repository changes.
 | Collection | Type | Contents |
 | --- | --- | --- |
 | `ABox/Color/Primitive` | COLOR | one variable per distinct production primitive role path from `:root`/`.dark`; `--color-` stripped, path preserved (`chart/1`); a Light/Dark literal difference stays ONE variable with two mode values; no `.dark` override means Light value copied into Dark |
-| `ABox/Color/Semantic` | COLOR | the 48 approved `@theme inline --color-*` roles plus `ink`; aliases to the matching primitive wherever the role resolves to one, per mode independently |
+| `ABox/Color/Semantic` | COLOR | exactly 54 variables — every `--color-*` role declared in the two `@theme inline` blocks of `src/styles.css` (see resolved inventory below); `ink` is NOT included |
 | `ABox/Status` | COLOR | tones `sage`, `primary`, `amber`, `red`, `sky`, `neutral` aliased to semantic; 12 metal variables (`metal/{platinum,gold,silver,bronze,iron,lead}` and each `-fg`) aliased per production mapping |
 | `ABox/Spacing` | FLOAT | `surface/none 0`, `surface/sm 16`, `surface/md 20`, `surface/lg 24` |
 | `ABox/Radius` | FLOAT | `sm 6`, `md 10`, `lg 14`, `xl 18`, `2xl 22`, `3xl 28`, `4xl 36`, `base 14`, `full 9999` |
