@@ -44941,12 +44941,32 @@ async function b6EnsurePattern(spec, index, page) {
   return node;
 }
 
+/**
+ * Read-only preflight: B6 instances the B5 variant axis on ABox/Card/KpiCard, so B5 must
+ * already be applied to this file. Creates and changes nothing.
+ */
+function b6RequireB5() {
+  const A = ABOX_B5.variantAxis;
+  const set = b4FindSet(A.set);
+  if (!set) throw new Error('STOP: MISSING B4/B5 COMPONENT — "' + A.set + '" not found in the live file.');
+  const defs = set.componentPropertyDefinitions || {};
+  const found = Object.keys(defs).filter((k) => k.split("#")[0] === A.property);
+  if (found.length !== 1) {
+    throw new Error(
+      "STOP: B6 PREREQUISITE — B5 has not been applied to this file (" + A.set + ' has no "' +
+        A.property + '" axis). Run B5 Create + B5 Verify first. B6 creates nothing.',
+    );
+  }
+}
+
 async function ensureB6Patterns() {
   await figma.loadAllPagesAsync();
   b6Created = 0;
+  b6RequireB5();
   const page = b6Page();
   const index = await b4StyleIndex();
   b6StyleIndex = index;
+
   for (const spec of ABOX_B6.patterns) await b6EnsurePattern(spec, index, page);
   say("");
   say("  pattern objects created this run: " + b6Created);
