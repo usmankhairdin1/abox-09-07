@@ -1735,7 +1735,12 @@ async function b4EnsureSet(set, index, page) {
     component.layoutMode = "HORIZONTAL";
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "AUTO";
+    // Variant wrapper chrome, not a production surface: the built child frame below
+    // carries every style-bound foundation paint.
+    component.fills = [];
+    component.strokes = [];
     component.appendChild(content);
+
     await b4Describe(component, value.source);
     b4Say("variant  ", set.name + " / " + vname, isNew);
     variants.push(component);
