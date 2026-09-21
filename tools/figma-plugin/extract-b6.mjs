@@ -136,9 +136,12 @@ const kpiRow = {
     " and " + lineOf(F.statements, "md:grid-cols-3") +
     " — repeated in " + KPI_ROUTES.length + " non-reference routes",
   evidence: KPI_ROUTES,
+  // Variant-matrix names are exactly "columns=<value>"; the axis exists only through
+  // combineAsVariants, never through addComponentProperty.
+  values: ["3", "4"],
   variants: [
-    { value: "4", root: { layout: "HORIZONTAL", gap: 16 }, children: kpiChildren(4) },
-    { value: "3", root: { layout: "HORIZONTAL", gap: 16 }, children: kpiChildren(3) },
+    { value: "4", root: KPI_ROOT, children: kpiChildren(4) },
+    { value: "3", root: KPI_ROOT, children: kpiChildren(3) },
   ],
 };
 
