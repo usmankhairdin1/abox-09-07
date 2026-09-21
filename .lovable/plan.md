@@ -27,26 +27,80 @@ Already in B4, not duplicated by B5: ActionPill `action` (10), Button `variant` 
 
 ### 3a. New variant values — 5 added variants (52 → 57)
 
-| Set | New property/value | Production evidence | Rule |
+| Set | New variant property / values | Production evidence | Rule |
 | --- | --- | --- | --- |
 | `ABox/Action/Button` | `state` = `disabled`, created **only** on the one production combination `variant=default, size=sm` | `ui/button.tsx:8` + `plan-card.tsx:116` | +1 variant. No disabled variant for any other variant/size pair — those combinations do not occur. |
-| `ABox/Card/KpiCard` | `delta` = `up` \| `down`, across the 4 existing tones | `kpi-card.tsx:78` declares both outcomes inside the same component, independent of `tone` | 4 → 8 variants (+4). Both values exist because the branch is unconditional in source; the sign is runtime-computed, and the absence of a negative literal at any call site is recorded verbatim rather than used to drop `down`. |
+| `ABox/Card/KpiCard` | `deltaSign` = `positive` \| `negative`, across the 4 existing tones | `kpi-card.tsx:78` `delta.pct >= 0 ? "text-sage" : "text-destructive"` — both outcomes declared unconditionally, independent of `tone` | 4 → 8 variants (+4). The sign is runtime-computed; the absence of a negative literal at any call site is recorded verbatim rather than used to drop `negative`. |
+
+### 3a-bis. Collision resolution — `KpiCard.delta`
+
+Production `kpi-card.tsx:19` declares one optional prop, `delta?: { pct: number; label?: string }`, which carries **two separate** pieces of meaning that Figma cannot express in one property: whether the delta chip renders at all (`{delta && …}`, line 73) and which colour branch the chip takes (`delta.pct >= 0`, line 78). Two Figma properties are therefore required, and per the Figma property namespace they must carry distinct names.
+
+- Presence → Boolean property **`hasDelta`**. The `has` prefix names the source guard `{delta && …}` exactly and is applied uniformly to every optional-render guard in B5 (see 3b), so nothing is invented for this one case.
+- Sign → Variant property **`deltaSign`**, values **`positive`** and `negative`, named after the production comparison on `delta.pct`. It is a variant axis because it changes colour, which a Boolean visibility property cannot express — not to work around the naming conflict.
+
+The production prop name `delta` is deliberately not used for either Figma property, so no component carries two properties called `delta`.
 
 ### 3b. Boolean component properties (layer visibility — they add no variants)
 
-| Object | Boolean properties | Source |
+Naming rule, applied uniformly: a Figma Boolean that represents an optional-render guard `{prop && …}` is named `has<Prop>`; the production prop name itself stays reserved for the Text or Instance Swap property that carries the prop's content.
+
+| Object | Boolean properties | Source guard |
 | --- | --- | --- |
-| `ABox/Header/PageHeader` | `eyebrow`, `icon`, `description`, `actions` | `page-header.tsx:33,36,51,57` |
-| `ABox/Card/KpiCard` | `icon`, `delta`, `hint` | `kpi-card.tsx:60,73,76,86` |
-| `ABox/Feedback/EmptyState` | `icon`, `body`, `action` | `empty-state.tsx:19,25,26` |
+| `ABox/Header/PageHeader` | `hasEyebrow`, `hasIcon`, `hasDescription`, `hasActions` | `page-header.tsx:33,36,51,57` |
+| `ABox/Card/KpiCard` | `hasIcon`, `hasDelta`, `hasHint` | `kpi-card.tsx:60,73,76,86` |
+| `ABox/Feedback/EmptyState` | `hasIcon`, `hasBody`, `hasAction` | `empty-state.tsx:19,25,26` |
+
+Total Boolean properties: 4 + 3 + 3 = **10**.
 
 ### 3c. Text component properties
 
 `ABox/Action/Button` → `label`; `ABox/Status/StatusBadge` → `label`; `ABox/Card/KpiCard` → `label`, `value`; `ABox/Header/PageHeader` → `eyebrow`, `title`, `description`; `ABox/Nav/ModuleTab` → `label`; `ABox/Nav/WizardStep` → `label`; `ABox/Feedback/EmptyState` → `title`, `body`; `ABox/Form/LabeledField` → `label`; `ABox/Form/Input` → `placeholder`.
 
-### 3d. Combinations that must NOT be created
+Total Text properties: 1 + 1 + 2 + 3 + 1 + 1 + 2 + 1 + 1 = **13**.
 
-Button `state=disabled` on any variant/size other than `default`/`sm`; PageHeader `eyebrow=true` together with the `compact` variant (`page-header.tsx:33` suppresses it); MetalBadge, AboxMark, ActionPill, Surface, Control — no second axis; no Cartesian expansion of Boolean properties into variants.
+### 3c-bis. Instance Swap properties
+
+Two production props are `React.ReactNode` slots filled by the caller, which is exactly what an Instance Swap represents: `ABox/Header/PageHeader` → `actions` (`page-header.tsx:19,57`) and `ABox/Feedback/EmptyState` → `action` (`empty-state.tsx:10,26`). Their presence is carried by the separately named Booleans `hasActions` / `hasAction`, so no name is used twice.
+
+Total Instance Swap properties: **2**. The `icon?: ComponentType` props are **not** Instance Swaps: B4 created no icon component, so there is no swappable source; only the `hasIcon` Boolean and a placeholder vector exist, recorded as a limitation.
+
+### 3d. Collision audit — complete
+
+Every property name is checked for uniqueness inside its own component; a name may repeat across different components.
+
+| Component | All Figma properties after B5 | Collision |
+| --- | --- | --- |
+| `ABox/Action/Button` | variant `variant`, variant `size`, variant `state`, text `label` | none |
+| `ABox/Status/StatusBadge` | variant `tone`, text `label` | none |
+| `ABox/Card/KpiCard` | variant `tone`, variant `deltaSign`, bool `hasIcon`, bool `hasDelta`, bool `hasHint`, text `label`, text `value` | resolved (`delta` → `hasDelta` + `deltaSign`) |
+| `ABox/Header/PageHeader` | variant `variant`, bool `hasEyebrow`, bool `hasIcon`, bool `hasDescription`, bool `hasActions`, text `eyebrow`, text `title`, text `description`, swap `actions` | resolved (`eyebrow`/`description`/`actions` Booleans renamed to `has…`) |
+| `ABox/Feedback/EmptyState` | bool `hasIcon`, bool `hasBody`, bool `hasAction`, text `title`, text `body`, swap `action` | resolved (`body`/`action` Booleans renamed to `has…`) |
+| `ABox/Nav/ModuleTab` | variant `state`, text `label` | none |
+| `ABox/Nav/WizardStep` | variant `state`, text `label` | none |
+| `ABox/Form/LabeledField` | text `label` | none |
+| `ABox/Form/Input` | text `placeholder` | none |
+| `ABox/Action/ActionPill`, `ABox/Status/MetalBadge`, `ABox/Surface/Surface`, `ABox/Control/Control`, `ABox/Brand/AboxMark` | B4 variant axes only, no B5 property | none |
+
+No B4 Figma object is renamed or recreated: the B4 descriptions merely recorded the intended properties in text, so B5 creates every property for the first time under its final name.
+
+### 3e. Recalculated totals
+
+| Count | Value | Arithmetic |
+| --- | --- | --- |
+| Component Sets | 11 | unchanged from B4 |
+| Standalone Components | 3 | unchanged from B4 |
+| Total component objects | 14 | 11 + 3 |
+| Total variants | 57 | 52 + 1 (Button) + 4 (KpiCard) |
+| Variant properties added by B5 | 2 | `Button.state`, `KpiCard.deltaSign` |
+| Boolean properties | 10 | 4 + 3 + 3 |
+| Text properties | 13 | 1+1+2+3+1+1+2+1+1 |
+| Instance Swap properties | 2 | 1 + 1 |
+| Total B5 non-variant properties | 25 | 10 + 13 + 2 |
+
+### 3f. Combinations that must NOT be created
+
+Button `state=disabled` on any variant/size other than `default`/`sm`; PageHeader `hasEyebrow=true` together with the `compact` variant (`page-header.tsx:33` suppresses it); MetalBadge, AboxMark, ActionPill, Surface, Control — no second axis; no Boolean or Text property is expanded into a variant; no Cartesian expansion of any axis.
 
 ## 4. Excluded states, with reasons
 
