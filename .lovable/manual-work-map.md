@@ -1152,3 +1152,53 @@ All twelve gate criteria met with evidence: clean tree, matching hashes, clean t
 ### 13. Changed files, validation and rollback
 
 Changed: `.lovable/manual-work-map.md` (this block) only. No `src/` diff, no Figma mutation, no asset/branding/route/token/behaviour/responsive change; all Phase 49 locked hashes unchanged. Rollback: delete this block.
+
+---
+
+## Phase 52 / Batch B1 — Foundation variables: inventory reconciliation (2026-09-21)
+
+Scope: plugin layer only (`tools/figma-plugin/`). No `src/` diff; `git diff --stat -- src/` empty; all Phase 49 locked hashes unchanged; no Figma mutation from this workspace.
+
+### 1. Status tone names — approved brief vs production
+
+The B1 brief named six tones `sage, primary, amber, red, sky, neutral`. The mapping authority `src/components/abox/status-badge.tsx` declares:
+
+```
+type Tone = "sage" | "primary" | "warning" | "muted" | "destructive" | "info";
+sage: "[--tone:var(--sage)]"      primary: "[--tone:var(--primary)]"
+warning: "[--tone:var(--warning)]"  muted: "[--tone:var(--foreground)]"
+destructive: "[--tone:var(--destructive)]"  info: "[--tone:var(--info)]"
+```
+
+Referenced tokens exist in `src/styles.css` (`--sage`, `--primary`, `--warning`, `--foreground`, `--destructive`, `--info`), each with a `.dark` counterpart. No `--amber`, `--red`, `--sky`, `--neutral` exists anywhere in `src/`.
+
+FINDING: the brief's generic list is superseded by production; the implementation did not deviate. Final `ABox/Status` tone names: `sage`, `primary`, `warning`, `muted`, `destructive`, `info`, each aliasing the semantic variable named by its `[--tone:var(--X)]` declaration (`muted` -> semantic `foreground`, by declaration, never by colour equality). Correction required: none.
+
+### 2. Metal tier names — approved brief vs production
+
+The brief named `platinum, gold, silver, bronze, iron, lead` (+ `-fg`). `src/components/abox/metal-badge.tsx` `TIER_VAR` maps: Bronze, Expanded Bronze, Silver, Gold, Platinum, Catastrophic to `--metal-<tier>` / `--metal-<tier>-fg`; declared in `src/styles.css` lines 140-151 (`:root`) and 206-217 (`.dark`). The tier union is `src/lib/sample-data.ts:12`. No `--metal-iron` or `--metal-lead` exists in `src/`.
+
+FINDING: superseded by production; implementation correct. Final 12 names: `metal/bronze(-fg)`, `metal/expanded-bronze(-fg)`, `metal/silver(-fg)`, `metal/gold(-fg)`, `metal/platinum(-fg)`, `metal/catastrophic(-fg)`, each aliasing the primitive of the same role path. Correction required: none.
+
+### 3. Resolved B1 inventory (9 collections, 200 variables, Light + Dark only, no Default mode)
+
+Primitive 62 (one per production role path declared with an `oklch()` literal, `ink` and the 12 metal tokens included; a Light/Dark literal difference is two mode values on ONE variable) · Semantic 54 (both `@theme inline` blocks: 48 + `ai`, `ai-foreground`, `surface-1`, `surface-2`, `surface-3`, `brand-accent`; `ink` absent — production declares no `--color-ink`) · Status 18 (6 tones + 12 metals) · Spacing 4 · Radius 9 · Border 2 · Layout 2 · Control sizing 4 · Elevation 45 (9 layers across `card`, `elevated`, `drawer`, `plate`, `glow`, each x/y/blur/spread FLOAT + tint COLOR).
+
+Aliasing is source-mapping authoritative: a semantic variable aliases a primitive only because production declares `--color-X: var(--Y)`, resolved independently per mode. Colour equality never implies an alias.
+
+### 4. Execution status — OPEN
+
+Evidence to date is an offline dry-run only (mocked `figma.*` API driving the generated `code.js` twice: all structural checks PASS, `RESULT: B1 PASSED` both runs, zero objects created on run 2). Its ids are mock ids and must never be presented as Figma ids. This workspace has no Figma write path (no cloud connector; desktop MCP read-only), so real runtime evidence can only come from the user running the plugin in Figma Desktop against `ABox Design System — Library`. B1 remains OPEN until two real runs return `RESULT: B1 PASSED` with identical collection and variable ids.
+
+### 5. Recorded limitations (verbatim from the plugin report block)
+
+- StatusBadge colour/background/border use color-mix(in oklch, var(--tone) ..., ...) (src/components/abox/status-badge.tsx): runtime-computed, no static Figma variable created.
+- Composite box-shadow is not a Figma variable type: --shadow-* is decomposed into x/y/blur/spread/tint variables. Effect Styles are a later batch.
+- oklch() has no Figma equivalent: values are stored as sRGB and the original oklch literal is preserved in each variable description.
+- Production declares no .dark override for --shadow-*: the Light value is duplicated into Dark because Figma has no CSS cascade.
+- Decorative utilities, motion keyframes and responsive breakpoints are not variables.
+- No publishing performed; library publishing is a separate step.
+
+### 6. Changed files and rollback
+
+Changed: `.lovable/manual-work-map.md` (this block) only. Rollback: delete this block. The plugin layer (`extract-b1.mjs`, `tokens-b1.js`, `plugin.js`, `ui.html`, `README.md`, generated `code.js` via `node build.mjs`) is unchanged by this reconciliation.
