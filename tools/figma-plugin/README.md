@@ -94,6 +94,12 @@ synchronous pattern still exists in the B7-B10 builders (`b7Frame`, `b7Text`,
 `b7Build*`, `b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`) and must be converted in
 those batches before they are run.
 
+The same mode also forbids the synchronous `instance.mainComponent` getter
+(`in get_mainComponent: Cannot call with documentAccess: dynamic-page`). B6 reads the main
+component through `await inst.getMainComponentAsync()`, so `b6MainName`, `b6MainId`,
+`b6LiveSignature` and `b6Check` are `async` and every call site awaits them
+(`b6EnsurePattern`, `b6InspectPatterns`, `b6CleanupIncompletePatterns`, `verifyB6`).
+
 B5 writes characters onto TEXT nodes B4 already created, so it calls `b5LoadTextFonts`
 first: the node's own `fontName` (or every range font when it is mixed) is loaded with
 `figma.loadFontAsync` and awaited before the write, and an unloadable font stops the run
