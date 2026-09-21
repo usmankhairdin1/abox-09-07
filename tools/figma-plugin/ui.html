@@ -110,6 +110,15 @@
     </p>
     <button id="b8run">Create experiences</button>
     <button id="b8verify" class="secondary">Verify experiences</button>
+    <p>
+      <strong>Batch B9 — complete screens</strong><br />
+      Run inside <code>ABox Design System — Library</code>. One bulk import creates all
+      source-backed editable screen frames on <code>05 Screens</code> and source-backed
+      native prototype reactions only where targets are deterministic. No manual
+      per-screen import, no permanent sync, no publishing and no app changes.
+    </p>
+    <button id="b9run">Create All Screens</button>
+    <button id="b9verify" class="secondary">Verify All Screens</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -192,6 +201,14 @@
       document.getElementById("b8verify").onclick = () => {
         log.textContent = "Verifying experiences…";
         parent.postMessage({ pluginMessage: { type: "b8-verify" } }, "*");
+      };
+      document.getElementById("b9run").onclick = () => {
+        log.textContent = "Creating all screens…";
+        parent.postMessage({ pluginMessage: { type: "b9-run" } }, "*");
+      };
+      document.getElementById("b9verify").onclick = () => {
+        log.textContent = "Verifying all screens…";
+        parent.postMessage({ pluginMessage: { type: "b9-verify" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;

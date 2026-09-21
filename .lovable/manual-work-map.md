@@ -1403,3 +1403,37 @@ sibling editable regions and recorded with source metadata.
 Offline/static validation only in this environment; real Figma ids still require Create experiences →
 Verify experiences → Create experiences in Figma Desktop with identical ids and zero creation count on
 run 2. No publishing performed.
+
+
+---
+
+## Phase 56 / Batch B9 — Complete screens / bulk application import (reference-layer implementation)
+
+B9 is implemented only in the Figma/plugin reference layer. It does not change `src/**`, backend data, migrations, runtime behavior, publishing, or ownership boundaries. The single user-facing action is **Create All Screens**; there is no manual per-screen import and no permanent Lovable-to-Figma sync.
+
+### Source-backed inventory rule
+
+The B9 extractor derives the screen list from production route declarations, `SCREENS`, the governed M06 registry, the governed M08 registry, shell/component/pattern sources, and B1-B8 generated token outputs. Redirect-only routes, layout-only route gates, internal design-reference routes, and shared host routes replaced by governed screen registries are excluded rather than represented as invented screens. Dynamic route parameters stay source metadata and are not expanded into fake records.
+
+### Native Figma output
+
+B9 creates editable top-level FRAME nodes on `05 Screens` only. It reuses existing B1 variables, B2 typography, B3 styles, B4/B5 components, B6 patterns, B7 shells, and B8 references where applicable. It creates no variables, styles, components, component sets, patterns, component properties, screenshots, HTML embeds, flattened imports, or objects on protected B0-B8 pages.
+
+### Interaction/prototype boundary
+
+Every source-backed interaction is classified as:
+
+1. directly representable as a native Figma prototype reaction;
+2. represented through existing B4/B5 component state or variant behavior;
+3. runtime/business-logic dependent metadata only, unless a source-backed visual target exists;
+4. unsupported or ambiguous metadata only.
+
+Category-A reactions are created only when source and target resolve to generated B9 screen/state frames. Signatures include prototype source identity, target identity, trigger, action, transition/animation mapping and state target where applicable. Conflicting live reactions stop the run and are not overwritten.
+
+### Runtime boundary
+
+B9 recreates the application's design and prototype representation. It does not execute React, JavaScript, backend APIs, database operations, authentication logic, pricing engines, subsidy calculations, validation side effects, uploads, or other runtime business logic inside Figma. Runtime-only behavior is reported as limitation metadata rather than simulated.
+
+### Verification
+
+Offline checks can verify extractor determinism, generated token structure and plugin syntax, but they are not native write/read evidence. Real proof requires Figma Desktop execution: **Create All Screens**, **Verify All Screens**, repeat **Create All Screens**, repeat verification, confirm zero duplicate frames and zero duplicate reactions on the second run, then open representative Internal, Marketplace and Member flows in Presentation/Prototype mode and verify mapped navigation/state behavior and runtime-only limitation reporting.

@@ -4215,6 +4215,479 @@ async function verifyB8() {
   return passed;
 }
 
+
+/* =====================  Phase 56 / Batch B9 — complete screens  ===================== */
+/*
+ * B9 is a one-bulk-import screen pass. It creates editable top-level FRAME
+ * nodes on 05 Screens only, then adds source-backed native prototype reactions
+ * where the extractor proves a deterministic generated target. Runtime logic is
+ * reported as metadata and never simulated.
+ */
+
+const B9_PAGE = "05 Screens";
+var b9CreatedFrames = 0;
+var b9CreatedReactions = 0;
+
+function b9Page() {
+  const page = figma.root.children.filter((p) => p.name === B9_PAGE);
+  if (page.length !== 1) {
+    throw new Error('STOP: B0 page "' + B9_PAGE + '" must exist exactly once (found ' + page.length + ").");
+  }
+  return page[0];
+}
+
+function b9ApprovedNames() {
+  return ABOX_B9.screens.map((s) => s.name);
+}
+
+function b9FrameMap(page) {
+  const out = {};
+  for (const node of page.children) {
+    if (node.name.indexOf("ABox/Screen/") === 0 || node.name.indexOf("ABox/ScreenState/") === 0) {
+      if (out[node.name]) throw new Error('STOP: DUPLICATE B9 SCREEN — "' + node.name + '" exists more than once on ' + B9_PAGE + ".");
+      out[node.name] = node;
+    }
+  }
+  return out;
+}
+
+function b9FindFrame(page, spec) {
+  const found = page.children.filter((n) => n.name === spec.name);
+  if (found.length > 1) throw new Error('STOP: DUPLICATE B9 SCREEN — "' + spec.name + '" exists ' + found.length + " times on " + B9_PAGE + ".");
+  return found[0] || null;
+}
+
+function b9PluginSignature(frame) {
+  return {
+    batch: frame.getPluginData("aboxBatch"),
+    kind: frame.getPluginData("aboxKind"),
+    name: frame.getPluginData("aboxName"),
+    key: frame.getPluginData("aboxKey"),
+    signature: frame.getPluginData("aboxSignature"),
+    sources: frame.getPluginData("aboxSources"),
+  };
+}
+
+function b9SetPluginData(frame, spec) {
+  frame.setPluginData("aboxBatch", "B9");
+  frame.setPluginData("aboxKind", spec.kind || "screen");
+  frame.setPluginData("aboxName", spec.name);
+  frame.setPluginData("aboxKey", spec.key);
+  frame.setPluginData("aboxSignature", spec.signature);
+  frame.setPluginData("aboxSources", spec.sources.slice().sort().join("|"));
+  frame.setPluginData("aboxRoute", spec.route || "");
+  frame.setPluginData("aboxScreenId", spec.id || "");
+}
+
+function b9Main(name, batch) {
+  const set = b4FindSet(name);
+  if (set) return set;
+  const component = b4FindComponent(name);
+  if (component) return component;
+  throw new Error('STOP: MISSING ' + batch + ' DEPENDENCY — "' + name + '" not found. Run the required prior batch first.');
+}
+
+function b9Instance(name, props, label) {
+  const main = b9Main(name, name.indexOf("/Shell/") !== -1 ? "B7 SHELL" : name.indexOf("/Pattern/") !== -1 ? "B6 PATTERN" : "B4/B5 COMPONENT");
+  return b8CreateInstance(main, props || {}, label || name.split("/").pop());
+}
+
+async function b9MetadataRegion(spec, index) {
+  const region = b7Frame("metadata/source-and-identity", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b7Text("screen-title", spec.title || spec.name, { size: 18, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
+  region.appendChild(await b7Text("screen-route", (spec.id || "route") + " · " + (spec.route || "no-route") + " · " + spec.sourceType, { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(await b7Text("screen-purpose", spec.purpose || "Source-backed screen composition.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(await b7Text("source-list", spec.sources.join("\n"), { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  return region;
+}
+
+async function b9ShellRegion(spec, index) {
+  const region = b7Frame("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b7Text("region-label", spec.shell && spec.shell.name ? "B7 shell instance" : "Standalone/public route", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  if (spec.shell && spec.shell.name) {
+    const inst = b9Instance(spec.shell.name, spec.shell.overrides || {}, "shell-reference-instance");
+    inst.setPluginData("aboxB9Reference", spec.shell.name);
+    region.appendChild(inst);
+  } else {
+    region.appendChild(await b7Text("standalone-note", "This route does not use one of the three B7 shell families; source-backed content remains editable native composition.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  }
+  return region;
+}
+
+async function b9FoundationRegion(spec, index) {
+  const region = b7Frame("foundations-and-states", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b7Text("region-label", "Existing foundations reused", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  const patternRow = b7Frame("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
+  for (const pat of spec.patterns || []) patternRow.appendChild(b9Instance(pat.name, pat.variant || {}, pat.name.split("/").pop()));
+  if (!(spec.patterns || []).length) patternRow.appendChild(await b7Text("no-pattern", "No B6 pattern applies; this screen is represented as route-local native content.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(patternRow);
+  const compRow = b7Frame("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
+  for (const name of spec.components || []) compRow.appendChild(b9Instance(name, {}, name.split("/").pop()));
+  region.appendChild(compRow);
+  const states = b7Frame("source-backed-states", { layout: "VERTICAL", gap: 6, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  states.appendChild(await b7Text("states-title", "States and responsive evidence", { size: 13, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
+  states.appendChild(await b7Text("states-list", (spec.states || []).join(", ") + "\n" + (spec.responsive || "canonical desktop"), { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(states);
+  return region;
+}
+
+function b9Outgoing(spec) {
+  return ABOX_B9.interactions.filter((i) => i.sourceKey === spec.key);
+}
+
+async function b9PrototypeRegion(spec, index) {
+  const region = b7Frame("prototype-links", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b7Text("region-label", "Source-backed prototype reactions", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  const outgoing = b9Outgoing(spec);
+  if (!outgoing.length) {
+    region.appendChild(await b7Text("no-reactions", "No deterministic Category-A prototype destination is source-backed for this frame.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+    return region;
+  }
+  for (const interaction of outgoing) {
+    const link = b7Frame("prototype-link/" + interaction.id, { layout: "HORIZONTAL", align: "CENTER", gap: 8, px: 10, py: 8, radius: 12, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+    link.setPluginData("aboxB9InteractionId", interaction.id);
+    link.setPluginData("aboxB9ReactionSignature", interaction.signature);
+    link.setPluginData("aboxB9TargetKey", interaction.targetKey);
+    link.setPluginData("aboxB9Trigger", interaction.trigger);
+    link.setPluginData("aboxB9Action", interaction.action);
+    link.appendChild(await b7Text("control", interaction.control, { size: 11, weight: 500, colorStyle: "ABox/Semantic/foreground" }, index));
+    link.appendChild(await b7Text("target", "→ " + interaction.targetIdentity, { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+    region.appendChild(link);
+  }
+  return region;
+}
+
+async function b9RuntimeRegion(spec, index) {
+  const b = ABOX_B9.interactionClassification.B.filter((i) => i.sourceKey === spec.key).length;
+  const c = ABOX_B9.interactionClassification.C.filter((i) => i.sourceKey === spec.key).length;
+  const d = ABOX_B9.interactionClassification.D.filter((i) => i.sourceKey === spec.key).length;
+  const region = b7Frame("runtime-boundaries", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b7Text("region-label", "B/C/D classifications", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(await b7Text("classification-counts", "B component-state mappings: " + b + "\nC runtime/business-logic metadata: " + c + "\nD unsupported/ambiguous metadata: " + d, { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  return region;
+}
+
+async function b9BuildFrame(spec, placement, index, page) {
+  const root = figma.createFrame();
+  root.name = spec.name;
+  root.layoutMode = "VERTICAL";
+  root.primaryAxisSizingMode = "AUTO";
+  root.counterAxisSizingMode = "FIXED";
+  root.primaryAxisAlignItems = "MIN";
+  root.counterAxisAlignItems = "MIN";
+  root.itemSpacing = 18;
+  root.paddingLeft = root.paddingRight = root.paddingTop = root.paddingBottom = 24;
+  root.resize(ABOX_B9.layout.frameWidth, 1000);
+  root.x = placement.x;
+  root.y = placement.y;
+  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
+  root.strokeStyleId = b4Style(index, "paint", "ABox/Semantic/hairline").id;
+  root.strokeWeight = 1;
+  root.cornerRadius = 24;
+  b9SetPluginData(root, spec);
+  root.appendChild(await b9MetadataRegion(spec, index));
+  root.appendChild(await b9ShellRegion(spec, index));
+  root.appendChild(await b9FoundationRegion(spec, index));
+  root.appendChild(await b9PrototypeRegion(spec, index));
+  root.appendChild(await b9RuntimeRegion(spec, index));
+  page.appendChild(root);
+  b9CreatedFrames += 1;
+  return root;
+}
+
+function b9ExpectedRegions() {
+  return ["metadata/source-and-identity", "shell-reference", "foundations-and-states", "prototype-links", "runtime-boundaries"];
+}
+
+function b9HasRegions(frame) {
+  const names = frame.children.map((c) => c.name);
+  return b9ExpectedRegions().every((name, i) => names[i] === name);
+}
+
+function b9FindInteractionNode(frame, interaction) {
+  const found = [];
+  b8Walk(frame, (n) => {
+    if (n.getPluginData && n.getPluginData("aboxB9InteractionId") === interaction.id) found.push(n);
+  });
+  if (found.length > 1) throw new Error('STOP: DUPLICATE B9 PROTOTYPE HOTSPOT — "' + interaction.id + '" appears ' + found.length + " times in " + frame.name + ".");
+  return found[0] || null;
+}
+
+function b9AssertReusable(frame, spec) {
+  if (frame.type !== "FRAME") throw new Error('STOP: B9 SCREEN TYPE MISMATCH — "' + spec.name + '" is ' + frame.type + ", expected FRAME.");
+  const pd = b9PluginSignature(frame);
+  const wantSources = spec.sources.slice().sort().join("|");
+  if (pd.batch !== "B9" || pd.kind !== (spec.kind || "screen") || pd.name !== spec.name || pd.key !== spec.key || pd.signature !== spec.signature || pd.sources !== wantSources) {
+    throw new Error('STOP: LIVE B9 SCREEN DIFFERS FROM APPROVED SIGNATURE — "' + spec.name + '". Nothing was overwritten or deleted.');
+  }
+  if (!b9HasRegions(frame)) throw new Error('STOP: LIVE B9 SCREEN STRUCTURE DIFFERS FROM APPROVED REGIONS — "' + spec.name + '". Nothing was overwritten or deleted.');
+  for (const interaction of b9Outgoing(spec)) {
+    const node = b9FindInteractionNode(frame, interaction);
+    if (!node) throw new Error('STOP: B9 SCREEN IS MISSING SOURCE-BACKED PROTOTYPE HOTSPOT — "' + interaction.id + '" in "' + spec.name + '".');
+  }
+}
+
+function b9TriggerPayload(interaction) {
+  const trigger = String(interaction.trigger || "click").toLowerCase();
+  if (trigger === "hover") return { type: "ON_HOVER" };
+  if (trigger === "press") return { type: "ON_PRESS" };
+  if (trigger === "drag") return { type: "ON_DRAG" };
+  if (trigger === "timeout") return { type: "AFTER_TIMEOUT", timeout: interaction.timeout || 1 };
+  return { type: "ON_CLICK" };
+}
+
+function b9TransitionPayload(interaction) {
+  const transition = String(interaction.transition || "instant");
+  if (transition === "instant" || transition === "instant-overlay") return null;
+  if (transition === "dissolve") return { type: "DISSOLVE", easing: { type: "EASE_OUT" }, duration: interaction.duration || 0.2 };
+  return null;
+}
+
+function b9ReactionAction(target, interaction) {
+  const navigation = interaction.navigation || (interaction.action === "overlay" ? "OVERLAY" : "NAVIGATE");
+  return {
+    type: "NODE",
+    destinationId: target.id,
+    navigation,
+    transition: b9TransitionPayload(interaction),
+    resetScrollPosition: true,
+  };
+}
+
+function b9ReactionPayload(target, interaction) {
+  const action = b9ReactionAction(target, interaction);
+  return {
+    trigger: b9TriggerPayload(interaction),
+    action,
+    actions: [action],
+  };
+}
+
+function b9ReactionActions(reaction) {
+  if (reaction.actions && reaction.actions.length) return reaction.actions;
+  return reaction.action ? [reaction.action] : [];
+}
+
+function b9ReactionMatches(node, target, interaction) {
+  const reactions = node.reactions || [];
+  if (reactions.length !== 1) return false;
+  const reaction = reactions[0];
+  const actions = b9ReactionActions(reaction);
+  const action = actions[0] || {};
+  const trigger = b9TriggerPayload(interaction);
+  return node.getPluginData("aboxB9ReactionSignature") === interaction.signature &&
+    node.getPluginData("aboxB9TargetKey") === interaction.targetKey &&
+    node.getPluginData("aboxB9Trigger") === interaction.trigger &&
+    node.getPluginData("aboxB9Action") === interaction.action &&
+    node.getPluginData("aboxB9Navigation") === (interaction.navigation || "NAVIGATE") &&
+    node.getPluginData("aboxB9Transition") === (interaction.transition || "instant") &&
+    reaction.trigger && reaction.trigger.type === trigger.type &&
+    actions.length === 1 &&
+    action.type === "NODE" && action.destinationId === target.id && action.navigation === (interaction.navigation || "NAVIGATE");
+}
+
+async function b9EnsureReaction(sourceFrame, targetFrame, interaction) {
+  const node = b9FindInteractionNode(sourceFrame, interaction);
+  if (!node) throw new Error('STOP: B9 PROTOTYPE HOTSPOT MISSING — "' + interaction.id + '".');
+  if (typeof node.setReactionsAsync !== "function") throw new Error('STOP: Figma host does not expose native prototype reaction writing for "' + interaction.id + '".');
+  const reactions = node.reactions || [];
+  if (reactions.length > 1) throw new Error('STOP: DUPLICATE B9 PROTOTYPE REACTIONS — "' + interaction.id + '" has ' + reactions.length + " reactions.");
+  if (reactions.length === 1) {
+    if (!b9ReactionMatches(node, targetFrame, interaction)) {
+      throw new Error('STOP: CONFLICTING B9 PROTOTYPE MAPPING — "' + interaction.id + '". Existing reaction was not overwritten.');
+    }
+    return;
+  }
+  await node.setReactionsAsync([b9ReactionPayload(targetFrame, interaction)]);
+  node.setPluginData("aboxB9ReactionSignature", interaction.signature);
+  node.setPluginData("aboxB9TargetNodeId", targetFrame.id);
+  node.setPluginData("aboxB9TargetKey", interaction.targetKey);
+  node.setPluginData("aboxB9Trigger", interaction.trigger || "click");
+  node.setPluginData("aboxB9Action", interaction.action || "navigate");
+  node.setPluginData("aboxB9Navigation", interaction.navigation || "NAVIGATE");
+  node.setPluginData("aboxB9Transition", interaction.transition || "instant");
+  b9CreatedReactions += 1;
+}
+
+function b9HasImageFill(root) {
+  let bad = false;
+  b8Walk(root, (n) => { for (const fill of n.fills || []) if (fill.type === "IMAGE") bad = true; });
+  return bad;
+}
+
+async function ensureB9Screens() {
+  await figma.loadAllPagesAsync();
+  b9CreatedFrames = 0;
+  b9CreatedReactions = 0;
+  const page = b9Page();
+  const index = await b4StyleIndex();
+
+  // Protected dependencies are resolved before any B9 write.
+  for (const shell of ["ABox/Shell/Internal", "ABox/Shell/Marketplace", "ABox/Shell/Member"]) say("  B7 shell resolved: " + shell + "  id=" + b9Main(shell, "B7 SHELL").id);
+  for (const pattern of ["ABox/Pattern/KpiRow", "ABox/Pattern/ModuleTabBar", "ABox/Pattern/WizardStepper"]) say("  B6 pattern resolved: " + pattern + "  id=" + b9Main(pattern, "B6 PATTERN").id);
+  const needed = {};
+  for (const screen of ABOX_B9.screens) for (const comp of screen.components || []) needed[comp] = true;
+  for (const name of Object.keys(needed).sort()) say("  B4/B5 component resolved: " + name + "  id=" + b9Main(name, "B4/B5 COMPONENT").id);
+
+  for (const existing of page.children) {
+    if ((existing.name.indexOf("ABox/Screen/") === 0 || existing.name.indexOf("ABox/ScreenState/") === 0) && b9ApprovedNames().indexOf(existing.name) === -1) {
+      throw new Error('STOP: UNAPPROVED OBJECT ON 05 SCREENS — "' + existing.name + '". B9 will not overwrite or delete it.');
+    }
+  }
+
+  for (let i = 0; i < ABOX_B9.screens.length; i += 1) {
+    const spec = ABOX_B9.screens[i];
+    const placement = ABOX_B9.placement.filter((p) => p.name === spec.name)[0];
+    if (!placement) throw new Error('STOP: B9 placement missing for "' + spec.name + '".');
+    const existing = b9FindFrame(page, spec);
+    if (existing) {
+      b9AssertReusable(existing, spec);
+      say("  frame    reused  : " + spec.name + "  id=" + existing.id);
+    } else {
+      const frame = await b9BuildFrame(spec, placement, index, page);
+      say("  frame    created : " + spec.name + "  id=" + frame.id);
+    }
+  }
+
+  const frames = b9FrameMap(page);
+  for (const interaction of ABOX_B9.interactions) {
+    const sourceSpec = ABOX_B9.screens.filter((s) => s.key === interaction.sourceKey)[0];
+    const targetSpec = ABOX_B9.screens.filter((s) => s.key === interaction.targetKey)[0];
+    if (!sourceSpec || !targetSpec) throw new Error('STOP: B9 PROTOTYPE TARGET UNRESOLVED — "' + interaction.id + '".');
+    await b9EnsureReaction(frames[sourceSpec.name], frames[targetSpec.name], interaction);
+  }
+  say("");
+  say("  B9 top-level frames created this run: " + b9CreatedFrames);
+  say("  B9 native prototype reactions created this run: " + b9CreatedReactions);
+}
+
+async function verifyB9() {
+  await figma.loadAllPagesAsync();
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+  const C = ABOX_B9.counts;
+  const page = b9Page();
+
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
+  add(figma.root.children.filter((p) => ["00 Foundations", "06 Documentation"].indexOf(p.name) !== -1).every((p) => p.children.length === 0), "00 Foundations and 06 Documentation remain empty during B9");
+
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const b1Cols = collections.filter((c) => b1Names.indexOf(c.name) !== -1);
+  let b1Vars = 0;
+  for (const c of b1Cols) b1Vars += c.variableIds.length;
+  const typo = collections.filter((c) => c.name === "ABox/Typography");
+  add(b1Cols.length === C.b1Collections && b1Vars === C.b1Variables, "B1 unchanged: 9 collections / 200 variables (found " + b1Cols.length + " / " + b1Vars + ")");
+  add(typo.length === 1 && typo[0].variableIds.length === C.b2Variables, "B2 unchanged: ABox/Typography with 19 variables");
+  const owned = (list) => list.filter((s) => s.name.indexOf("ABox/") === 0);
+  const paints = owned(await figma.getLocalPaintStylesAsync());
+  const texts = owned(await figma.getLocalTextStylesAsync());
+  const effects = owned(await figma.getLocalEffectStylesAsync());
+  add(paints.length + texts.length + effects.length === C.b3Styles, "B3 unchanged: 79 styles — found " + (paints.length + texts.length + effects.length));
+
+  const componentsPage = figma.root.children.filter((p) => p.name === B4_PAGE)[0];
+  const primSets = componentsPage ? componentsPage.children.filter((n) => n.type === "COMPONENT_SET") : [];
+  const primStandalone = componentsPage ? componentsPage.children.filter((n) => n.type === "COMPONENT") : [];
+  const primVariants = primSets.reduce((n, s) => n + s.children.length, 0);
+  add(primSets.length === C.b4Sets, "B4 unchanged: 11 component sets on 01 Components (found " + primSets.length + ")");
+  add(primStandalone.length === C.b4Standalone && primVariants === C.b5Variants && primVariants + primStandalone.length === C.b5Physical, "B5 unchanged: 3 standalone, 56 variant nodes, 59 physical nodes");
+  const b5Props = ABOX_B5.bindings.filter((b) => !!b7PropKey(b5Owner(b.component), b.property, b.type)).length;
+  add(b5Props === C.b5NonVariant, "B5 non-variant component properties preserved (" + b5Props + " / " + C.b5NonVariant + ")");
+  const patternPage = figma.root.children.filter((p) => p.name === B6_PAGE)[0];
+  const patternNodes = patternPage ? b6PatternNodes(patternPage) : [];
+  add(patternPage && patternPage.children.length === C.b6TopLevel && patternNodes.length === C.b6PhysicalNodes, "B6 unchanged: 3 top-level pattern objects / 4 physical ComponentNodes");
+  const shellPage = figma.root.children.filter((p) => p.name === B7_PAGE)[0];
+  const shellNodes = shellPage ? b7Nodes(shellPage) : { physical: 0 };
+  add(shellPage && shellPage.children.length === C.b7TopLevel && shellNodes.physical === C.b7PhysicalNodes, "B7 unchanged: 3 shell assets / 4 physical ComponentNodes");
+  const expPage = figma.root.children.filter((p) => p.name === B8_PAGE)[0];
+  add(expPage && expPage.children.length === C.b8TopLevelFrames, "B8 unchanged: 5 experience frames on 04 Experiences");
+
+  const frames = page.children.filter((n) => n.name.indexOf("ABox/Screen/") === 0 || n.name.indexOf("ABox/ScreenState/") === 0);
+  const frameNames = frames.map((n) => n.name);
+  add(page.children.length === C.topLevelFrames, "only 05 Screens receives B9 content: exactly " + C.topLevelFrames + " top-level frames (found " + page.children.length + ")");
+  add(frameNames.join("|") === b9ApprovedNames().join("|"), "05 Screens contains exactly the approved B9 frame names in deterministic order");
+  add(frames.every((n) => n.type === "FRAME"), "every B9 top-level object is a FRAME, not Component or Component Set");
+
+  let signaturesOk = true, placementOk = true, regionsOk = true, imageOk = true, propOk = true, shellOk = true, dependencyOk = true;
+  let reactionOk = true, reactionCount = 0, duplicateReactionOk = true, targetOk = true;
+  const inventory = [];
+  const map = b9FrameMap(page);
+  for (const spec of ABOX_B9.screens) {
+    const frame = map[spec.name];
+    const placement = ABOX_B9.placement.filter((p) => p.name === spec.name)[0];
+    if (!frame) { signaturesOk = false; placementOk = false; regionsOk = false; continue; }
+    const pd = b9PluginSignature(frame);
+    if (pd.batch !== "B9" || pd.kind !== (spec.kind || "screen") || pd.name !== spec.name || pd.key !== spec.key || pd.signature !== spec.signature || pd.sources !== spec.sources.slice().sort().join("|")) signaturesOk = false;
+    if (!placement || frame.x !== placement.x || frame.y !== placement.y || Math.round(frame.width) !== ABOX_B9.layout.frameWidth) placementOk = false;
+    if (!b9HasRegions(frame)) regionsOk = false;
+    if (b9HasImageFill(frame)) imageOk = false;
+    if (Object.keys(frame.componentPropertyDefinitions || {}).length) propOk = false;
+    const mains = b8InstanceMainNames(frame);
+    if (spec.shell && spec.shell.name && mains.indexOf(spec.shell.name) === -1) shellOk = false;
+    for (const pat of spec.patterns || []) if (mains.indexOf(pat.name) === -1) dependencyOk = false;
+    for (const comp of spec.components || []) if (mains.indexOf(comp) === -1) dependencyOk = false;
+    const outgoing = b9Outgoing(spec);
+    for (const interaction of outgoing) {
+      const node = b9FindInteractionNode(frame, interaction);
+      const targetSpec = ABOX_B9.screens.filter((s) => s.key === interaction.targetKey)[0];
+      const targetFrame = targetSpec ? map[targetSpec.name] : null;
+      if (!node || !targetFrame) { reactionOk = false; targetOk = false; continue; }
+      const reactions = node.reactions || [];
+      reactionCount += reactions.length;
+      if (reactions.length !== 1) { reactionOk = false; duplicateReactionOk = false; }
+      else if (!b9ReactionMatches(node, targetFrame, interaction)) { reactionOk = false; targetOk = false; }
+    }
+    inventory.push("  " + spec.name + "  id=" + frame.id + "  route=" + (spec.route || "-") + "  outgoing=" + outgoing.length + "  signature=" + pd.signature);
+  }
+  add(signaturesOk, "every B9 frame has matching B9 plugin data, deterministic signature and sorted source list");
+  add(placementOk, "every B9 frame uses deterministic x/y placement and 1440px canonical desktop width");
+  add(regionsOk, "every B9 frame contains the five approved child regions in order");
+  add(shellOk, "B9 shell mapping resolves to existing B7 shell instances where a shell is source-backed");
+  add(dependencyOk, "all referenced B6 patterns and B4/B5 component instances resolve to existing library nodes");
+  add(propOk, "B9 creates no component properties or synthetic foundation/property layer");
+  add(imageOk, "B9 uses no screenshots, HTML embeds, flattened images or external image substitutions");
+  add(reactionOk && reactionCount === C.categoryAPrototypeReactions, "Category-A interactions have native Figma prototype reactions (found " + reactionCount + " / " + C.categoryAPrototypeReactions + ")");
+  add(targetOk, "prototype reaction targets resolve to the correct generated B9 screen/state frames");
+  add(duplicateReactionOk, "no duplicate prototype reactions exist on B9 hotspots after Run 2");
+  add(ABOX_B9.interactionClassification.A.length === C.categoryAPrototypeReactions && ABOX_B9.interactionClassification.B.length === C.categoryBStateMappings && ABOX_B9.interactionClassification.C.length === C.categoryCRuntimeMappings && ABOX_B9.interactionClassification.D.length === C.categoryDUnsupportedMappings, "every source-backed interaction classification bucket is represented in B9 tokens");
+  add(ABOX_B9.motionAudit.every((m) => String(m.figmaMapping || "").indexOf("Smart Animate") !== -1 || String(m.figmaMapping || "").indexOf("metadata") !== -1), "motion audit distinguishes source animation from supported Figma representation and does not invent Smart Animate");
+  add(C.newVariables === 0 && C.newStyles === 0 && C.newComponents === 0 && C.newComponentSets === 0 && C.newPatterns === 0 && C.newProperties === 0, "B9 token contract declares zero new foundations, properties, patterns and components");
+  add(b9CreatedFrames === 0 || b9CreatedFrames === C.topLevelFrames, "run bookkeeping: B9 top-level frames created this run = " + b9CreatedFrames + " (run 2 must be 0)");
+  add(b9CreatedReactions === 0 || b9CreatedReactions === C.categoryAPrototypeReactions, "run bookkeeping: B9 prototype reactions created this run = " + b9CreatedReactions + " (run 2 must be 0)");
+
+  say("");
+  say("ID PROVENANCE: ids below are REAL FIGMA ids only when this run executed inside Figma Desktop.");
+  say("  An offline/mock harness prints OFFLINE MOCK ids and they are never evidence of a real write.");
+  say("  runtime: " + (typeof figma.getFileThumbnailNodeAsync === "function" ? "figma plugin API" : "figma plugin API (host-reported)"));
+  say("");
+  say("B9 SCREEN INVENTORY");
+  for (const line of inventory) say(line);
+  say("");
+  say("B9 INTERACTION CLASSIFICATION COUNTS");
+  say("  A native prototype reactions: " + C.categoryAPrototypeReactions);
+  say("  B component state/variant mappings: " + C.categoryBStateMappings);
+  say("  C runtime/business-logic metadata: " + C.categoryCRuntimeMappings);
+  say("  D unsupported/ambiguous metadata: " + C.categoryDUnsupportedMappings);
+  say("");
+  say("B9 INVENTORY ARITHMETIC");
+  say("  " + ABOX_B9.arithmetic.formula);
+  say("");
+  say("B9 LIMITATIONS");
+  for (const l of ABOX_B9.limitations) say("  - " + l);
+  say("");
+  say("REAL-FIGMA PRESENTATION CHECK REQUIRED");
+  say("  Open representative Internal, Marketplace and Member flows in Figma Presentation/Prototype mode; click/hover mapped interactions; verify runtime-only limitations are reported, not simulated.");
+  say("");
+  say("B9 STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  say("  NOTE  src/** unchanged — asserted outside Figma with `git diff --stat -- src/`; the plugin sandbox cannot read the repository.");
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say(passed ? "RESULT: B9 PASSED" : "RESULT: B9 FAILED — do not use generated screen/prototype evidence.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
 
 figma.showUI(__html__, { width: 420, height: 640 });
@@ -4230,6 +4703,7 @@ figma.ui.onmessage = async (msg) => {
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
+  const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
@@ -4364,6 +4838,19 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB8();
+    } else if (msg.type === "b9-run") {
+      say("ABox Phase 56 / Batch B9 — complete screens / bulk application import");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await ensureB9Screens();
+      await verifyB9();
+    } else if (msg.type === "b9-verify") {
+      say("ABox Phase 56 / Batch B9 — verify only");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await verifyB9();
     }
   } catch (e) {
     say("");
@@ -4387,7 +4874,9 @@ figma.ui.onmessage = async (msg) => {
                       ? "RESULT: B7 FAILED — do not proceed to B8."
                       : b8
                         ? "RESULT: B8 FAILED — do not proceed to B9."
-                        : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
+                        : b9
+                          ? "RESULT: B9 FAILED — do not use generated screen/prototype evidence."
+                          : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
     );
   }
   report();

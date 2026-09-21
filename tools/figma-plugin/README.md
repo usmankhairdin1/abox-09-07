@@ -401,3 +401,21 @@ creates five frames; Run 2 must create zero frames with identical ids.
 Offline/static validation is not native Figma evidence. Real evidence requires running **Create
 experiences** → **Verify experiences** → **Create experiences** in Figma Desktop and confirming real ids
 with zero creations on the second run. No publishing is performed.
+
+
+## Phase 56 / Batch B9 — complete screens / bulk application import
+
+Buttons: **Create All Screens** (`b9-run`) and **Verify All Screens** (`b9-verify`). Source data is extracted by `extract-b9.mjs` into `tokens-b9.js`; `code.js` is regenerated only by `build.mjs`.
+
+B9 creates editable top-level FRAME screen artifacts on `05 Screens` only. The bulk import derives the inventory from the route files, stable screen registry, governed M06 screen registry, governed M08 registry, and the B1-B8 token outputs. It excludes redirect-only routes, layout-only routes, internal design-reference routes, and shared host routes that are replaced by registered governed screen records.
+
+B9 also classifies source-backed interactions:
+
+- **A** — deterministic Figma prototype reaction, with source frame, target frame/state, trigger/action and transition metadata in the signature;
+- **B** — existing B4/B5 component state or variant representation for hover, focus, pressed, active, selected, expanded and disabled states;
+- **C** — runtime or business-logic dependent metadata only, unless a source-backed visual destination exists;
+- **D** — unsupported or ambiguous metadata only, with no invented destination.
+
+Idempotency is strict: Run 1 creates the approved screen frames plus valid source-backed reactions; Run 2 must create zero duplicate frames and zero duplicate reactions. Existing frames and reactions are reused only when their B9 plugin data, source list, structural signature, reaction source/target, trigger, action and transition/state metadata match exactly. Any duplicate name, changed protected B0-B8 object, missing dependency or conflicting prototype mapping stops without overwriting or deleting live objects.
+
+B9 does not execute React, JavaScript, authentication, database work, pricing, subsidy, file upload or governed runtime logic inside Figma. It is a standalone design/prototype representation, not a permanent Lovable-to-Figma sync. Offline/static validation is not native Figma evidence. Real evidence requires running **Create All Screens** → **Verify All Screens** → **Create All Screens** → **Verify All Screens** in Figma Desktop, then opening representative Internal, Marketplace and Member flows in Figma Presentation/Prototype mode and checking mapped clicks/hovers and reported runtime-only limitations.
