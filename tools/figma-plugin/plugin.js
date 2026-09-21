@@ -2787,6 +2787,7 @@ async function ensureB6Patterns() {
   b6Created = 0;
   const page = b6Page();
   const index = await b4StyleIndex();
+  b6StyleIndex = index;
   for (const spec of ABOX_B6.patterns) await b6EnsurePattern(spec, index, page);
   say("");
   say("  pattern objects created this run: " + b6Created);
@@ -2807,6 +2808,7 @@ async function verifyB6() {
   const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
   const C = ABOX_B6.counts;
   const index = await b4StyleIndex();
+  b6StyleIndex = index;
   const page = b6Page();
 
   /* ---------- protected B1-B5 inventory ---------- */
