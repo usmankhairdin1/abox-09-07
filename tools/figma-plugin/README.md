@@ -112,3 +112,17 @@ which regenerates `code.js`. Never edit `code.js` directly.
 - `color-mix(in oklch, …)` is resolved numerically at build time.
 - Variable font axes, the decorative CSS utilities and keyframe motion have no
   Figma equivalent.
+
+## Phase 52 / Batch B1 — foundation variables
+
+`tokens-b1.js` is GENERATED from `src/styles.css` by `node tools/figma-plugin/extract-b1.mjs`
+(run from the project root). Never edit it by hand. Rebuild with `node build.mjs`.
+
+In Figma Desktop, inside `ABox Design System — Library`: click **Create library pages**
+(B0, already done), then **Create foundation variables** (B1). Run a second time — it must
+report `RESULT: B1 PASSED` with zero created and identical ids. **Verify foundation variables**
+runs the checks alone. B1 creates no text styles, effect styles, components or page content,
+never publishes, and imports no runtime branding.
+
+Recorded limitations: oklch is stored as sRGB (source notation in variable descriptions);
+color-mix() badge tints stay runtime-computed; composite shadows become Effect Styles later.
