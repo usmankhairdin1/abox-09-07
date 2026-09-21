@@ -1626,9 +1626,17 @@ function b4MatchVariant(children, vname) {
     const have = c.name.split(",").map((s) => s.trim());
     return pairs.every((p) => have.indexOf(p) !== -1);
   });
-  // A widened match is only reused when exactly one live variant carries every
-  // B4 pair; anything else is ambiguous and must not be silently rewritten.
-  return wider.length === 1 ? wider[0] : null;
+  if (wider.length === 1) return wider[0];
+  if (wider.length > 1 && typeof ABOX_B5 !== "undefined") {
+    // Axes added by a later batch: the B4 spec addresses the axis default.
+    const A = ABOX_B5.variantAxis;
+    const preferred = wider.filter((c) => c.name.indexOf(A.property + "=" + A.values[0]) !== -1);
+    if (preferred.length === 1) return preferred[0];
+  }
+  if (wider.length > 1) {
+    throw new Error('STOP: AMBIGUOUS VARIANT — "' + vname + '" matches ' + wider.length + " live variants; not silently rewritten.");
+  }
+  return null;
 }
 
 async function b4EnsureSet(set, index, page) {
