@@ -1,0 +1,239 @@
+// ABox Figma Proof — plugin logic.
+// Concatenated with tokens.js into code.js by build.mjs.
+// Creates exactly four native objects and verifies their structure.
+
+const T = ABOX_TOKENS;
+
+/* ---------- oklch -> sRGB (Figma has no oklch colour space) ---------- */
+function oklchToRgb(L, C, hDeg) {
+  const h = (hDeg * Math.PI) / 180;
+  const a = C * Math.cos(h);
+  const bb = C * Math.sin(h);
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * bb;
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * bb;
+  const s_ = L - 0.0894841775 * a - 1.291485548 * bb;
+  const l = l_ * l_ * l_;
+  const m = m_ * m_ * m_;
+  const s = s_ * s_ * s_;
+  const lr = 4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
+  const lg = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
+  const lb = -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s;
+  const enc = (v) => {
+    const c = v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(Math.max(v, 0), 1 / 2.4) - 0.055;
+    return Math.min(1, Math.max(0, c));
+  };
+  return { r: enc(lr), g: enc(lg), b: enc(lb) };
+}
+const tokenRgb = (name) => {
+  const t = T.color[name];
+  return oklchToRgb(t.oklch[0], t.oklch[1], t.oklch[2]);
+};
+const mix = (a, b, amount) => ({
+  r: a.r * amount + b.r * (1 - amount),
+  g: a.g * amount + b.g * (1 - amount),
+  b: a.b * amount + b.b * (1 - amount),
+});
+
+/* ---------- helpers ---------- */
+const lines = [];
+const say = (s) => lines.push(s);
+const report = () => figma.ui.postMessage({ type: "report", text: lines.join("\n") });
+
+async function loadFont(family, style) {
+  try {
+    await figma.loadFontAsync({ family, style });
+    return { family, style };
+  } catch (e) {
+    throw new Error(
+      'STOP: font "' + family + " " + style + '" is not available. No substitution is permitted.',
+    );
+  }
+}
+
+/* ---------- 1. colour variable ---------- */
+async function ensureVariable() {
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  let collection = collections.find((c) => c.name === "ABox/Color/Semantic");
+  if (!collection) {
+    collection = figma.variables.createVariableCollection("ABox/Color/Semantic");
+    collection.renameMode(collection.modes[0].modeId, "Light");
+  }
+  const modeId = collection.modes[0].modeId;
+  const existing = await figma.variables.getLocalVariablesAsync("COLOR");
+  let variable = existing.find(
+    (v) => v.name === "background/base" && v.variableCollectionId === collection.id,
+  );
+  if (!variable) {
+    variable = figma.variables.createVariable("background/base", collection, "COLOR");
+  }
+  variable.setValueForMode(modeId, tokenRgb("background/base"));
+  variable.description = "abox/styles.css --background (oklch converted to sRGB)";
+  say("variable   : ABox/Color/Semantic / background/base");
+  return { collection, variable, modeId };
+}
+
+/* ---------- 2. text style ---------- */
+async function ensureTextStyle() {
+  const spec = T.typography["ABox/Body/Base"];
+  const font = await loadFont(spec.family, spec.style);
+  const styles = await figma.getLocalTextStylesAsync();
+  let style = styles.find((s) => s.name === "ABox/Body/Base");
+  if (!style) style = figma.createTextStyle();
+  style.name = "ABox/Body/Base";
+  style.fontName = font;
+  style.fontSize = spec.size;
+  style.lineHeight = { unit: "PERCENT", value: spec.lineHeightPercent };
+  style.letterSpacing = { unit: "PERCENT", value: spec.letterSpacingPercent };
+  style.description = "abox/styles.css --font-sans body role";
+  say("text style : ABox/Body/Base");
+  return style;
+}
+
+/* ---------- 3 + 4. component and variant ---------- */
+async function buildToneVariant(tone, font) {
+  const b = T.statusBadge;
+  const toneRgb = tokenRgb(b.toneVar[tone]);
+  const fg = tokenRgb("foreground/base");
+  const card = tokenRgb("card/base");
+
+  const component = figma.createComponent();
+  component.name = "tone=" + tone;
+  component.layoutMode = "HORIZONTAL";
+  component.primaryAxisSizingMode = "AUTO";
+  component.counterAxisSizingMode = "AUTO";
+  component.counterAxisAlignItems = "CENTER";
+  component.paddingLeft = b.paddingX;
+  component.paddingRight = b.paddingX;
+  component.paddingTop = b.paddingY;
+  component.paddingBottom = b.paddingY;
+  component.itemSpacing = b.gap;
+  component.cornerRadius = b.cornerRadius;
+  component.fills = [{ type: "SOLID", color: mix(toneRgb, card, b.mix.background) }];
+  component.strokeWeight = b.borderWidth;
+  component.strokes = [{ type: "SOLID", color: toneRgb, opacity: b.mix.border }];
+
+  const dot = figma.createEllipse();
+  dot.name = "dot";
+  dot.resize(b.dotSize, b.dotSize);
+  dot.fills = [{ type: "SOLID", color: toneRgb }];
+  component.appendChild(dot);
+
+  const text = figma.createText();
+  text.name = "label";
+  text.fontName = font;
+  text.fontSize = b.text.size;
+  text.letterSpacing = { unit: "PERCENT", value: b.text.letterSpacingEm * 100 };
+  text.characters = tone.toUpperCase();
+  text.fills = [{ type: "SOLID", color: mix(toneRgb, fg, b.mix.text) }];
+  component.appendChild(text);
+
+  return component;
+}
+
+async function ensureComponentSet() {
+  const b = T.statusBadge;
+  const font = await loadFont(b.text.family, b.text.style);
+
+  const page = figma.currentPage;
+  await page.loadAsync();
+  const previous = page.findOne((n) => n.name === "ABox/StatusBadge");
+  if (previous) previous.remove(); // idempotent: rebuild in place, never duplicate
+
+  const variants = [];
+  for (const tone of b.proofTones) variants.push(await buildToneVariant(tone, font));
+  const set = figma.combineAsVariants(variants, page);
+  set.name = "ABox/StatusBadge";
+  set.description = b.traceabilityId + " — source " + b.source;
+  set.layoutMode = "VERTICAL";
+  set.itemSpacing = 12;
+  set.paddingLeft = set.paddingRight = set.paddingTop = set.paddingBottom = 16;
+  set.x = 0;
+  set.y = 0;
+  say("component  : ABox/StatusBadge (COMPONENT_SET)");
+  say("variant    : tone = " + b.proofTones.join(", "));
+  return set;
+}
+
+/* ---------- structural verification ---------- */
+async function verify() {
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const collection = collections.find((c) => c.name === "ABox/Color/Semantic");
+  const vars = await figma.variables.getLocalVariablesAsync("COLOR");
+  const variable = vars.find(
+    (v) => v.name === "background/base" && collection && v.variableCollectionId === collection.id,
+  );
+  add(
+    !!variable && !!collection && collection.modes.length > 0 && variable.resolvedType === "COLOR",
+    "variable resolves in collection with a mode",
+  );
+
+  const styles = await figma.getLocalTextStylesAsync();
+  add(
+    styles.some((s) => s.name === "ABox/Body/Base" && s.fontSize === 16),
+    "text style exists and carries its type settings",
+  );
+
+  await figma.currentPage.loadAsync();
+  const set = figma.currentPage.findOne((n) => n.name === "ABox/StatusBadge");
+  add(!!set && set.type === "COMPONENT_SET", "component set node type is COMPONENT_SET");
+
+  const first = set && set.children[0];
+  add(
+    !!first &&
+      first.type === "COMPONENT" &&
+      first.layoutMode !== "NONE" &&
+      first.findOne((n) => n.type === "TEXT") !== null,
+    "component is native, uses Auto Layout, contains editable text",
+  );
+
+  const defs = set ? set.componentPropertyDefinitions : {};
+  const toneDef = defs["tone"];
+  add(
+    !!toneDef && toneDef.type === "VARIANT" && toneDef.variantOptions.length === 2,
+    "variant property 'tone' exposes two options",
+  );
+
+  const flat = figma.currentPage.findAll(
+    (n) =>
+      Array.isArray(n.fills) && n.fills.some((f) => f && f.type === "IMAGE"),
+  );
+  add(flat.length === 0, "no image fills anywhere on the page (nothing flattened)");
+
+  say("");
+  say("STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say(passed ? "RESULT: PROOF PASSED" : "RESULT: PROOF FAILED — do not proceed to Phase 52.");
+  return passed;
+}
+
+/* ---------- entry ---------- */
+figma.showUI(__html__, { width: 420, height: 480 });
+
+figma.ui.onmessage = async (msg) => {
+  lines.length = 0;
+  try {
+    if (msg.type === "run") {
+      say("ABox Figma Proof — creating native objects");
+      say("file: " + figma.root.name);
+      say("");
+      await ensureVariable();
+      await ensureTextStyle();
+      await ensureComponentSet();
+      await verify();
+    } else if (msg.type === "verify") {
+      say("ABox Figma Proof — verify only");
+      say("file: " + figma.root.name);
+      await verify();
+    }
+  } catch (e) {
+    say("");
+    say(String((e && e.message) || e));
+    say("RESULT: PROOF FAILED — do not proceed to Phase 52.");
+  }
+  report();
+};

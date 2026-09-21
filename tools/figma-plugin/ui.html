@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font: 12px/1.5 ui-sans-serif, system-ui, sans-serif;
+        margin: 0;
+        padding: 12px;
+        color: #1c1c1c;
+      }
+      h1 {
+        font-size: 13px;
+        margin: 0 0 4px;
+      }
+      p.sub {
+        margin: 0 0 12px;
+        color: #666;
+      }
+      button {
+        font: inherit;
+        padding: 6px 12px;
+        border: 1px solid #1c1c1c;
+        background: #1c1c1c;
+        color: #fff;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #fff;
+        color: #1c1c1c;
+      }
+      pre {
+        margin: 12px 0 0;
+        padding: 8px;
+        background: #f4f4f4;
+        border-radius: 6px;
+        white-space: pre-wrap;
+        font: 11px/1.5 ui-monospace, monospace;
+        max-height: 320px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ABox Figma Proof</h1>
+    <p class="sub">
+      Creates 1 colour variable, 1 text style, 1 component and 1 variant in the
+      current file, then verifies they are native objects.
+    </p>
+    <button id="run">Run proof</button>
+    <button id="verify" class="secondary">Verify only</button>
+    <pre id="log">Ready.</pre>
+    <script>
+      const log = document.getElementById("log");
+      document.getElementById("run").onclick = () => {
+        log.textContent = "Running…";
+        parent.postMessage({ pluginMessage: { type: "run" } }, "*");
+      };
+      document.getElementById("verify").onclick = () => {
+        log.textContent = "Verifying…";
+        parent.postMessage({ pluginMessage: { type: "verify" } }, "*");
+      };
+      onmessage = (e) => {
+        const msg = e.data.pluginMessage;
+        if (msg && msg.type === "report") log.textContent = msg.text;
+      };
+    </script>
+  </body>
+</html>
