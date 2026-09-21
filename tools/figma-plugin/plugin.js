@@ -1617,16 +1617,27 @@ async function b4Describe(node, text) {
   node.description = text;
 }
 
+/** Match a live variant to a B4 spec name, tolerating axes added later by B5. */
+function b4MatchVariant(children, vname) {
+  const exact = children.filter((c) => c.name === vname);
+  if (exact.length) return exact[0];
+  const pairs = vname.split(",").map((s) => s.trim());
+  const wider = children.filter((c) => {
+    const have = c.name.split(",").map((s) => s.trim());
+    return pairs.every((p) => have.indexOf(p) !== -1);
+  });
+  // A widened match is only reused when exactly one live variant carries every
+  // B4 pair; anything else is ambiguous and must not be silently rewritten.
+  return wider.length === 1 ? wider[0] : null;
+}
+
 async function b4EnsureSet(set, index, page) {
   const existing = b4FindSet(set.name);
-  const byName = {};
-  if (existing) {
-    for (const child of existing.children) byName[child.name] = child;
-  }
+  const children = existing ? existing.children.slice() : [];
   const variants = [];
   for (const value of set.values) {
     const vname = b4VariantName(set, value);
-    let component = byName[vname];
+    let component = b4MatchVariant(children, vname);
     const isNew = !component;
     if (isNew) {
       component = figma.createComponent();
@@ -1634,6 +1645,7 @@ async function b4EnsureSet(set, index, page) {
       // Figma requires component nodes to live on a page before they can be combined.
       page.appendChild(component);
     } else {
+
       for (const child of component.children.slice()) child.remove();
     }
     const content = await b4Build(value.node, index);
