@@ -351,3 +351,25 @@ zero duplicated foundation values, and zero creations on run 2.
 - Structural signatures now include layout mode, wrap, both gaps, both sizing modes,
   padding, the four individual stroke weights, the live stroke style id and
   `strokesIncludedInLayout`; verification adds 18 further checks covering all of the above.
+
+## Phase 54 / Batch B7 — shells
+
+Buttons: **Create shells** (`b7-run`) and **Verify shells** (`b7-verify`). Source data is
+extracted by `extract-b7.mjs` into `tokens-b7.js`; `code.js` is regenerated only by `build.mjs`.
+
+B7 creates only on `03 Shells`:
+
+- `ABox/Shell/Internal` — standalone Component;
+- `ABox/Shell/Marketplace` — Component Set with exactly `variant = flow | landing`;
+- `ABox/Shell/Member` — standalone Component.
+
+The shell assets consume live B4/B5/B6 foundations and components by id. `Marketplace.showProducts`
+is intentionally asymmetric: the `flow` variant binds the Boolean to the real
+`product-switcher-region.visible` target, while `landing` has no product switcher layer and no
+synthetic hidden placeholder. If Figma cannot safely keep the shared property definition with only a
+flow target binding, B7 must stop rather than creating a detached property.
+
+B7 creates no screens, no responsive variants, no prototype links, no publishing and no application
+files. Real evidence requires running **Create shells** → **Verify shells** → **Create shells** in
+Figma Desktop and comparing identical ids with zero creations on the second run.
+

@@ -95,6 +95,13 @@
     </p>
     <button id="b6run">Create patterns</button>
     <button id="b6verify" class="secondary">Verify patterns</button>
+    <p>
+      <strong>Batch B7 — shells</strong><br />
+      Run inside <code>ABox Design System — Library</code>. Creates the three production-backed
+      shell assets on <code>03 Shells</code> only. No screens, no publishing, no app changes.
+    </p>
+    <button id="b7run">Create shells</button>
+    <button id="b7verify" class="secondary">Verify shells</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -161,6 +168,14 @@
       document.getElementById("b6verify").onclick = () => {
         log.textContent = "Verifying patterns…";
         parent.postMessage({ pluginMessage: { type: "b6-verify" } }, "*");
+      };
+      document.getElementById("b7run").onclick = () => {
+        log.textContent = "Creating shells…";
+        parent.postMessage({ pluginMessage: { type: "b7-run" } }, "*");
+      };
+      document.getElementById("b7verify").onclick = () => {
+        log.textContent = "Verifying shells…";
+        parent.postMessage({ pluginMessage: { type: "b7-verify" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
