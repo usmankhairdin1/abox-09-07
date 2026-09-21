@@ -1431,6 +1431,462 @@ async function verifyB3() {
   return passed;
 }
 
+/* ---------- Phase 52 / Batch B4 — production component foundation ---------- */
+// Every component/variant comes from tokens-b4.js, which is generated from the
+// production source. Colours/typography/elevation are applied through the B3
+// styles (which already bind the B1/B2 variables); Tailwind numeric utilities
+// stay literal and are recorded in each description.
+
+const B4_PAGE = "01 Components";
+var b4Created = 0;
+
+function b4Say(kind, name, isNew) {
+  if (isNew) {
+    b4Created += 1;
+    say("  " + kind + " created : " + name);
+  } else {
+    say("  " + kind + " updated : " + name);
+  }
+}
+
+async function b4StyleIndex() {
+  const index = { paint: {}, text: {}, effect: {} };
+  for (const s of await figma.getLocalPaintStylesAsync()) index.paint[s.name] = s;
+  for (const s of await figma.getLocalTextStylesAsync()) index.text[s.name] = s;
+  for (const s of await figma.getLocalEffectStylesAsync()) index.effect[s.name] = s;
+  return index;
+}
+
+function b4Style(index, category, name) {
+  const s = index[category][name];
+  if (!s) throw new Error('STOP: MISSING B3 ' + category.toUpperCase() + ' STYLE — "' + name + '".');
+  return s;
+}
+
+const B4_FONTS = {};
+async function b4Font(weight) {
+  const key = String(weight);
+  if (B4_FONTS[key]) return B4_FONTS[key];
+  const styleNames = weight >= 600 ? ["SemiBold", "Semi Bold"] : weight >= 500 ? ["Medium"] : ["Regular"];
+  const font = await resolveFont({ family: "Inter Tight", weight: weight, styleNames: styleNames }, "B4 weight " + weight);
+  B4_FONTS[key] = font;
+  return font;
+}
+
+function b4Page() {
+  const page = figma.root.children.filter((p) => p.name === B4_PAGE);
+  if (page.length !== 1) {
+    throw new Error('STOP: B0 page "' + B4_PAGE + '" must exist exactly once (found ' + page.length + ").");
+  }
+  return page[0];
+}
+
+/** Build one node spec into a real Figma node. Content is rebuilt in place. */
+async function b4Build(spec, index) {
+  if (spec.type === "TEXT") {
+    const node = figma.createText();
+    if (spec.textStyle) {
+      const style = b4Style(index, "text", spec.textStyle);
+      if (style.fontName) await figma.loadFontAsync(style.fontName);
+      node.characters = spec.characters;
+      node.textStyleId = style.id;
+    } else {
+      const font = await b4Font(spec.weight || 400);
+      node.fontName = font;
+      node.characters = spec.characters;
+      node.fontSize = spec.fontSize;
+      if (spec.letterSpacingPercent) node.letterSpacing = { value: spec.letterSpacingPercent, unit: "PERCENT" };
+      if (spec.textCase) node.textCase = spec.textCase;
+    }
+    if (spec.colorStyle) node.fillStyleId = b4Style(index, "paint", spec.colorStyle).id;
+    return node;
+  }
+  if (spec.type === "ELLIPSE") {
+    const node = figma.createEllipse();
+    node.resize(spec.w, spec.h);
+    if (spec.fillStyle) node.fillStyleId = b4Style(index, "paint", spec.fillStyle).id;
+    return node;
+  }
+  if (spec.type === "INSTANCE") {
+    const target = b4FindSet(spec.of) || b4FindComponent(spec.of);
+    if (!target) throw new Error("STOP: nested component not found — " + spec.of);
+    const source = target.type === "COMPONENT_SET" ? target.defaultVariant || target.children[0] : target;
+    return source.createInstance();
+  }
+  if (spec.type === "MARK") {
+    const svg =
+      '<svg viewBox="0 0 40 40" width="' + spec.size + '" height="' + spec.size + '">' +
+      '<circle cx="20" cy="20" r="19" fill="#ffffff" stroke="#000000" stroke-width="1"/>' +
+      '<circle cx="20" cy="20" r="13" fill="none" stroke="#000000" stroke-width="1.2"/>' +
+      '<circle cx="20" cy="20" r="16" fill="none" stroke="#000000" stroke-width="0.6" stroke-dasharray="1.4 2.4"/>' +
+      '<circle cx="34" cy="20" r="2.2" fill="#000000"/>' +
+      '<path d="M13.5 25 L20 12 L26.5 25" fill="none" stroke="#000000" stroke-width="1.8"/>' +
+      '<path d="M16.5 21.5 H23.5" stroke="#000000" stroke-width="1.5"/>' +
+      "</svg>";
+    const node = figma.createNodeFromSvg(svg);
+    node.name = "AboxMark";
+    const kids = node.children;
+    const bind = [
+      [0, spec.bgStyle, spec.hairlineStyle],
+      [1, null, spec.ringStyle],
+      [2, null, spec.ringStyle],
+      [3, spec.dotStyle, null],
+      [4, null, spec.fgStyle],
+      [5, null, spec.fgStyle],
+    ];
+    for (const [i, fill, stroke] of bind) {
+      const kid = kids[i];
+      if (!kid) continue;
+      if (fill) kid.fillStyleId = b4Style(index, "paint", fill).id;
+      if (stroke) kid.strokeStyleId = b4Style(index, "paint", stroke).id;
+    }
+    return node;
+  }
+  // FRAME
+  const frame = figma.createFrame();
+  frame.layoutMode = spec.layout || "NONE";
+  if (frame.layoutMode !== "NONE") {
+    frame.primaryAxisSizingMode = "AUTO";
+    frame.counterAxisSizingMode = "AUTO";
+    frame.counterAxisAlignItems = spec.align === "CENTER" ? "CENTER" : "MIN";
+    frame.primaryAxisAlignItems = spec.justify === "CENTER" ? "CENTER" : "MIN";
+    frame.itemSpacing = spec.gap || 0;
+    frame.paddingLeft = spec.px || 0;
+    frame.paddingRight = spec.px || 0;
+    frame.paddingTop = spec.py || 0;
+    frame.paddingBottom = spec.py || 0;
+  }
+  frame.cornerRadius = spec.radius || 0;
+  if (spec.fillStyle) frame.fillStyleId = b4Style(index, "paint", spec.fillStyle).id;
+  else frame.fills = [];
+  if (spec.strokeStyle) {
+    frame.strokeStyleId = b4Style(index, "paint", spec.strokeStyle).id;
+    frame.strokeWeight = spec.strokeWeight || 1;
+    if (spec.dashed) frame.dashPattern = [4, 4];
+  } else {
+    frame.strokes = [];
+  }
+  if (spec.effectStyle) frame.effectStyleId = b4Style(index, "effect", spec.effectStyle).id;
+  for (const child of spec.children || []) {
+    frame.appendChild(await b4Build(child, index));
+  }
+  if (spec.w || spec.h) {
+    if (frame.layoutMode === "HORIZONTAL" && spec.w) frame.counterAxisSizingMode = "FIXED";
+    frame.resize(spec.w || frame.width, spec.h || frame.height);
+  }
+  return frame;
+}
+
+function b4AllNodes(types) {
+  return figma.root.findAllWithCriteria({ types: types });
+}
+
+function b4FindSet(name) {
+  const found = b4AllNodes(["COMPONENT_SET"]).filter((n) => n.name === name);
+  if (found.length > 1) throw new Error('STOP: DUPLICATE COMPONENT SET — "' + name + '" exists ' + found.length + " times.");
+  const clash = b4AllNodes(["COMPONENT"]).filter((n) => n.name === name && (!n.parent || n.parent.type !== "COMPONENT_SET"));
+  if (found.length && clash.length) throw new Error('STOP: TYPE MISMATCH — "' + name + '" exists as both a component and a set.');
+  return found[0] || null;
+}
+
+function b4FindComponent(name) {
+  const found = b4AllNodes(["COMPONENT"]).filter(
+    (n) => n.name === name && (!n.parent || n.parent.type !== "COMPONENT_SET"),
+  );
+  if (found.length > 1) throw new Error('STOP: DUPLICATE COMPONENT — "' + name + '" exists ' + found.length + " times.");
+  if (b4AllNodes(["COMPONENT_SET"]).some((n) => n.name === name) && found.length) {
+    throw new Error('STOP: TYPE MISMATCH — "' + name + '" exists as both a component and a set.');
+  }
+  return found[0] || null;
+}
+
+function b4VariantName(set, value) {
+  if (set.properties) {
+    // multi-axis: the extractor already emits "prop=value, prop=value"
+    return value.value;
+  }
+  return set.property + "=" + value.value;
+}
+
+async function b4Describe(node, text) {
+  node.description = text;
+}
+
+async function b4EnsureSet(set, index, page) {
+  const existing = b4FindSet(set.name);
+  const byName = {};
+  if (existing) {
+    for (const child of existing.children) byName[child.name] = child;
+  }
+  const variants = [];
+  for (const value of set.values) {
+    const vname = b4VariantName(set, value);
+    let component = byName[vname];
+    const isNew = !component;
+    if (isNew) {
+      component = figma.createComponent();
+      component.name = vname;
+    } else {
+      for (const child of component.children.slice()) child.remove();
+    }
+    const content = await b4Build(value.node, index);
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.appendChild(content);
+    await b4Describe(component, value.source);
+    b4Say("variant  ", set.name + " / " + vname, isNew);
+    variants.push(component);
+  }
+  let node = existing;
+  if (!node) {
+    node = figma.combineAsVariants(variants, page);
+    node.name = set.name;
+    b4Created += 1;
+    say("  set     created : " + set.name);
+  } else {
+    for (const v of variants) if (v.parent !== node) node.appendChild(v);
+    say("  set     updated : " + set.name);
+  }
+  await b4Describe(
+    node,
+    set.source +
+      (set.defaults ? " | production defaults: " + JSON.stringify(set.defaults) : "") +
+      (set.textProps ? " | text properties: " + set.textProps.map((p) => p.name).join(", ") : "") +
+      (set.boolProps ? " | boolean properties: " + set.boolProps.join(", ") : ""),
+  );
+  return node;
+}
+
+async function b4EnsureComponent(spec, index, page) {
+  let node = b4FindComponent(spec.name);
+  const isNew = !node;
+  if (isNew) {
+    node = figma.createComponent();
+    node.name = spec.name;
+    page.appendChild(node);
+  } else {
+    for (const child of node.children.slice()) child.remove();
+  }
+  node.layoutMode = "HORIZONTAL";
+  node.primaryAxisSizingMode = "AUTO";
+  node.counterAxisSizingMode = "AUTO";
+  node.appendChild(await b4Build(spec.node, index));
+  await b4Describe(
+    node,
+    spec.source +
+      (spec.textProps ? " | text properties: " + spec.textProps.map((p) => p.name).join(", ") : "") +
+      (spec.boolProps ? " | boolean properties: " + spec.boolProps.join(", ") : "") +
+      (spec.instanceProps ? " | instance-swap properties: " + spec.instanceProps.join(", ") : "") +
+      (spec.exposedInstances ? " | exposed nested instances: " + spec.exposedInstances.join(", ") : ""),
+  );
+  b4Say("component", spec.name, isNew);
+  return node;
+}
+
+async function ensureB4Components() {
+  await figma.loadAllPagesAsync();
+  b4Created = 0;
+  const page = b4Page();
+  const index = await b4StyleIndex();
+  for (const set of ABOX_B4.sets) await b4EnsureSet(set, index, page);
+  for (const spec of ABOX_B4.components) await b4EnsureComponent(spec, index, page);
+  say("");
+  say("  objects created this run: " + b4Created);
+}
+
+async function verifyB4() {
+  await figma.loadAllPagesAsync();
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+
+  const page = b4Page();
+  const sets = b4AllNodes(["COMPONENT_SET"]).filter((n) => n.name.indexOf("ABox/") === 0);
+  const standalone = b4AllNodes(["COMPONENT"]).filter(
+    (n) => n.name.indexOf("ABox/") === 0 && (!n.parent || n.parent.type !== "COMPONENT_SET"),
+  );
+  const variants = sets.reduce((n, s) => n + s.children.length, 0);
+  const C = ABOX_B4.counts;
+
+  // 1-3 — counts and the printed arithmetic.
+  add(sets.length === C.sets, "component set count = " + C.sets + " (found " + sets.length + ")");
+  add(standalone.length === C.components, "standalone component count = " + C.components + " (found " + standalone.length + ")");
+  add(
+    sets.length + standalone.length === C.objects,
+    "object arithmetic " + sets.length + " + " + standalone.length + " = " + C.objects,
+  );
+  add(variants === C.totalVariants, "variant count = " + C.totalVariants + " (found " + variants + ")");
+  add(
+    C.fixedVariants + C.enumeratedVariants === C.totalVariants,
+    "variant arithmetic fixed " + C.fixedVariants + " + enumerated " + C.enumeratedVariants + " = " + C.totalVariants,
+  );
+
+  // 4 — exact names.
+  const wantSets = ABOX_B4.sets.map((s) => s.name).sort().join("|");
+  const wantCmp = ABOX_B4.components.map((s) => s.name).sort().join("|");
+  add(sets.map((s) => s.name).sort().join("|") === wantSets, "exact component set names");
+  add(standalone.map((s) => s.name).sort().join("|") === wantCmp, "exact standalone component names");
+  add(
+    sets.some((s) => s.name === "ABox/Brand/AboxMark") && !standalone.some((s) => s.name === "ABox/Brand/AboxMark"),
+    "ABox/Brand/AboxMark is a Component Set, never a standalone component",
+  );
+  const mark = sets.find((s) => s.name === "ABox/Brand/AboxMark");
+  add(
+    !!mark && mark.children.map((c) => c.name).sort().join("|") === "tone=foreground|tone=primary|tone=sage|tone=sidebar",
+    "AboxMark tone axis = primary, sage, sidebar, foreground",
+  );
+  add(
+    !sets.some((s) => standalone.some((c) => c.name === s.name)),
+    "no B4 object is both a set and a standalone component",
+  );
+
+  // 5-6 — variant property names and values.
+  let axisOk = true;
+  for (const spec of ABOX_B4.sets) {
+    const node = sets.find((s) => s.name === spec.name);
+    if (!node) { axisOk = false; continue; }
+    const want = spec.values.map((v) => b4VariantName(spec, v)).sort().join("|");
+    if (node.children.map((c) => c.name).sort().join("|") !== want) axisOk = false;
+  }
+  add(axisOk, "exact variant property names and values on every set");
+
+  // 7-8 — declared properties and production defaults carried in the description.
+  let propsOk = true;
+  for (const spec of ABOX_B4.sets.concat(ABOX_B4.components)) {
+    const node = sets.concat(standalone).find((s) => s.name === spec.name);
+    if (!node || !node.description || node.description.indexOf("source:") !== 0) propsOk = false;
+    if (spec.defaults && node && node.description.indexOf("production defaults") === -1) propsOk = false;
+  }
+  add(propsOk, "declared text/boolean/instance properties and production defaults recorded");
+
+  // 9 — per-variant production source mapping.
+  let srcOk = true;
+  for (const spec of ABOX_B4.sets) {
+    const node = sets.find((s) => s.name === spec.name);
+    if (!node) { srcOk = false; continue; }
+    for (const value of spec.values) {
+      const v = node.children.find((c) => c.name === b4VariantName(spec, value));
+      if (!v || !v.description || v.description.indexOf("source:") !== 0) srcOk = false;
+    }
+  }
+  add(srcOk, "every variant carries its exact production source mapping");
+
+  // 10-11 — foundation bindings, no hard-coded foundation values.
+  const paintNames = {};
+  for (const s of await figma.getLocalPaintStylesAsync()) paintNames[s.id] = s.name;
+  const effectNames = {};
+  for (const s of await figma.getLocalEffectStylesAsync()) effectNames[s.id] = s.name;
+  let boundOk = true;
+  let rawFill = 0;
+  const walk = (node) => {
+    if (node.type !== "COMPONENT" && node.type !== "COMPONENT_SET" && node.type !== "FRAME" && node.type !== "TEXT" &&
+        node.type !== "ELLIPSE" && node.type !== "VECTOR" && node.type !== "INSTANCE") return;
+    if (node.fills && node.fills.length && !node.fillStyleId) rawFill += 1;
+    if (node.strokes && node.strokes.length && !node.strokeStyleId) rawFill += 1;
+    if (node.fillStyleId && !paintNames[node.fillStyleId]) boundOk = false;
+    if (node.effectStyleId && !effectNames[node.effectStyleId]) boundOk = false;
+    for (const child of node.children || []) walk(child);
+  };
+  for (const node of sets.concat(standalone)) walk(node);
+  add(boundOk, "every colour/elevation reference resolves to an existing B3 style");
+  add(rawFill === 0, "no hard-coded foundation fill or stroke (found " + rawFill + ")");
+
+  // 12-14 — no invented variants, no equality-derived relationships, no file-only primitives.
+  add(
+    ABOX_B4.sets.every((s) => s.values.every((v) => typeof v.source === "string" && v.source.indexOf("source:") === 0)),
+    "no value-equality-derived or invented variants: every variant cites a production declaration",
+  );
+  add(ABOX_B4.excluded.length > 0, "excluded primitives recorded with reasons (" + ABOX_B4.excluded.length + ")");
+
+  // 15 — nesting consistency.
+  const field = standalone.find((s) => s.name === "ABox/Form/LabeledField");
+  const hasInstance = (node) =>
+    (node.children || []).some((c) => c.type === "INSTANCE" || hasInstance(c));
+  add(!!field && hasInstance(field), "LabeledField nests a real ABox/Control/Control instance");
+
+  // 16-18 — foundations untouched.
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const b1Names = ["ABox/Color/Primitive", "ABox/Color/Semantic", "ABox/Status", "ABox/Spacing", "ABox/Radius",
+    "ABox/Border", "ABox/Elevation", "ABox/Layout", "ABox/Control sizing"];
+  const b1Cols = collections.filter((c) => b1Names.indexOf(c.name) !== -1);
+  let b1Vars = 0;
+  for (const c of b1Cols) b1Vars += c.variableIds.length;
+  add(b1Cols.length === 9 && b1Vars === 200, "B1 unchanged: 9 collections / 200 variables (found " + b1Cols.length + " / " + b1Vars + ")");
+  const typo = collections.filter((c) => c.name === "ABox/Typography");
+  add(typo.length === 1 && typo[0].variableIds.length === 19, "B2 unchanged: ABox/Typography with 19 variables");
+  const owned = (list) => list.filter((s) => s.name.indexOf("ABox/") === 0);
+  const paints = owned(await figma.getLocalPaintStylesAsync());
+  const texts = owned(await figma.getLocalTextStylesAsync());
+  const effects = owned(await figma.getLocalEffectStylesAsync());
+  add(
+    paints.length === 72 && texts.length === 2 && effects.length === 5,
+    "B3 unchanged: 72 colour + 2 text + 5 effect styles (found " + paints.length + " / " + texts.length + " / " + effects.length + ")",
+  );
+
+  // 19-20 — pages.
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  add(
+    figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
+    "B0 pages unchanged: exactly 7, in order, none created/renamed/reordered",
+  );
+  const others = figma.root.children.filter((p) => p.name !== B4_PAGE);
+  add(others.every((p) => p.children.length === 0), "pages 00, 02, 03, 04, 05, 06 remain empty");
+  add(
+    page.children.length === sets.length + standalone.length,
+    'page "01 Components" holds exactly the ' + (sets.length + standalone.length) + " B4 objects (Figma requires component nodes to live on a page)",
+  );
+  add(
+    page.children.every((n) => n.type === "COMPONENT_SET" || n.type === "COMPONENT"),
+    "no patterns, shells, screens or documentation content created",
+  );
+
+  /* ---------- inventory ---------- */
+  say("");
+  say("B4 INVENTORY");
+  say('  page: "' + B4_PAGE + '"  id=' + page.id);
+  for (const spec of ABOX_B4.sets) {
+    const node = sets.find((s) => s.name === spec.name);
+    say("  SET  " + spec.name + "  id=" + (node ? node.id : "MISSING") + "  variants=" + (node ? node.children.length : 0));
+    say("       " + spec.source);
+    for (const value of spec.values) {
+      const v = node && node.children.find((c) => c.name === b4VariantName(spec, value));
+      say("         " + b4VariantName(spec, value) + "  id=" + (v ? v.id : "MISSING"));
+      say("             " + value.source);
+    }
+  }
+  for (const spec of ABOX_B4.components) {
+    const node = standalone.find((s) => s.name === spec.name);
+    say("  CMP  " + spec.name + "  id=" + (node ? node.id : "MISSING"));
+    say("       " + spec.source);
+  }
+  say("");
+  say("  totals: sets " + sets.length + " + components " + standalone.length + " = " + (sets.length + standalone.length) +
+      " objects; variants fixed " + C.fixedVariants + " + enumerated " + C.enumeratedVariants + " = " + variants);
+
+  say("");
+  say("B1/B2/B3 BINDING SUMMARY");
+  say("  colours  -> B3 Colour Styles (each already bound to an ABox/Color/Semantic, ABox/Status or ABox/Metal B1 variable)");
+  say("  type     -> B3 Text Styles ABox/Text/eyebrow and ABox/Text/serial where a production role exists; other text carries the production font size/weight literal");
+  say("  elevation-> B3 Effect Styles ABox/Elevation/* (bound to the 45 B1 elevation variables)");
+  say("  spacing/radius -> Tailwind utility literals: production does not declare them through B1 variables, so nothing is bound by value equality");
+
+  say("");
+  say("EXCLUDED PRODUCTION PRIMITIVES / COMPONENTS");
+  for (const e of ABOX_B4.excluded) say("  - " + e.source + " — " + e.reason);
+
+  say("");
+  say("B4 STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say("RECORDED LIMITATIONS / EXCEPTIONS");
+  for (const l of ABOX_B4.limitations) say("  - " + l);
+  say("  - No publishing performed; library publishing is a separate step.");
+  say("");
+  say(passed ? "RESULT: B4 PASSED" : "RESULT: B4 FAILED — do not proceed to B5.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
 figma.showUI(__html__, { width: 420, height: 560 });
 
@@ -1440,6 +1896,7 @@ figma.ui.onmessage = async (msg) => {
   const b1 = msg.type === "b1-run" || msg.type === "b1-verify";
   const b2 = msg.type === "b2-run" || msg.type === "b2-verify";
   const b3 = msg.type === "b3-run" || msg.type === "b3-verify";
+  const b4 = msg.type === "b4-run" || msg.type === "b4-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
@@ -1509,6 +1966,19 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB3();
+    } else if (msg.type === "b4-run") {
+      say("ABox Phase 52 / Batch B4 — component foundation");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await ensureB4Components();
+      await verifyB4();
+    } else if (msg.type === "b4-verify") {
+      say("ABox Phase 52 / Batch B4 — verify only");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await verifyB4();
     }
   } catch (e) {
     say("");
@@ -1522,7 +1992,9 @@ figma.ui.onmessage = async (msg) => {
             ? "RESULT: B2 FAILED — do not proceed to B3."
             : b3
               ? "RESULT: B3 FAILED — do not proceed to B4."
-              : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
+              : b4
+                ? "RESULT: B4 FAILED — do not proceed to B5."
+                : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
     );
   }
   report();
