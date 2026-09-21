@@ -4465,12 +4465,13 @@ async function verifyB7() {
     const bodies = top.type === "COMPONENT_SET" ? top.children : [top];
     for (const body of bodies) {
       if ((body.reactions || []).length) protoOk = false;
-      const mark = b7NestedComponentIds(body).filter((line) => line.indexOf("ABox/Brand/AboxMark") === 0);
+      const nested = await b7NestedComponentIds(body);
+      const mark = nested.filter((line) => line.indexOf("ABox/Brand/AboxMark") === 0);
       if (!mark.length) nestedOk = false;
       for (const r of b7Refs(body)) {
         if (!r.prop) shellPropsDetached = false;
       }
-      inventory.push("  " + top.name + (top.type === "COMPONENT_SET" ? " / " + body.name : "") + "  root id=" + body.id + "  root=" + body.type + "/" + body.layoutMode + "\n      nested: " + (b7NestedComponentIds(body).join(" | ") || "none") + "\n      content: " + (b7FindOptional(body, "content-region — shell placeholder") ? b7FindOptional(body, "content-region — shell placeholder").id : "MISSING"));
+      inventory.push("  " + top.name + (top.type === "COMPONENT_SET" ? " / " + body.name : "") + "  root id=" + body.id + "  root=" + body.type + "/" + body.layoutMode + "\n      nested: " + (nested.join(" | ") || "none") + "\n      content: " + (b7FindOptional(body, "content-region — shell placeholder") ? b7FindOptional(body, "content-region — shell placeholder").id : "MISSING"));
     }
   }
   add(nestedOk, "every shell nested component resolves to the expected live B4/B5/B6 component id where used");
