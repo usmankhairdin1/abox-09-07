@@ -2987,7 +2987,7 @@ async function b6EnsurePattern(spec, index, page) {
             '\n  Run "Inspect 02 Patterns", then "Remove stale B6 variant components" first. Nothing was overwritten or deleted.',
         );
       }
-      const node = b6BuildNode(vname, v.root, v.children, index, page);
+      const node = await b6BuildNode(vname, v.root, v.children, index, page);
       node.description = spec.source;
       b6Say("variant  ", spec.name + " / " + vname, true);
       fresh.push(node);
@@ -3012,7 +3012,7 @@ async function b6EnsurePattern(spec, index, page) {
     b6Say("component", spec.name, false);
     return node;
   }
-  node = b6BuildNode(spec.name, spec.root, spec.children, index, page);
+  node = await b6BuildNode(spec.name, spec.root, spec.children, index, page);
   node.description = spec.source;
   b6Say("component", spec.name, true);
   return node;
