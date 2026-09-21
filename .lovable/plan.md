@@ -43,7 +43,7 @@ Conclusion, now evidence-backed: after B4 the file contains VARIANT properties o
 | `ABox/Nav/WizardStep` | variant `state` (4) | text `label` |
 | `ABox/Brand/AboxMark` | variant `tone` (4) | — |
 | `ABox/Feedback/EmptyState` | none (standalone) | text `title`, `body`; bool `icon`, `body`; instance-swap `action` |
-| `ABox/Form/LabeledField` | none (standalone) | text `label`; exposed nested instance `control` |
+| `ABox/Form/LabeledField` | none (standalone); it does contain a real nested `ABox/Control/Control` instance, asserted by `plugin.js:1814`, but that instance is **not** exposed — `isExposedInstance` is never set anywhere in `plugin.js` or `code.js` | text `label`; exposed nested instance `control` |
 | `ABox/Form/Input` | none (standalone) | text `placeholder` |
 
 B5 rule: read the live inventory; existing property = reuse in place with its id preserved; missing property = create; name/type mismatch = STOP.
@@ -100,9 +100,23 @@ Two production props are caller-supplied `React.ReactNode` content slots, and ea
 | PageHeader `icon` | `ComponentType<{className?: string}>` | `page-header.tsx:15,30-35` | Boolean only | `hasIcon` | visibility-only | no — B4 created no icon Component; non-swappable, limitation preserved |
 | KpiCard `icon` | `ComponentType<{className?: string}>` | `kpi-card.tsx:20,60` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
 | EmptyState `icon` | `ComponentType<{className?: string}>` | `empty-state.tsx:6,18-22` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
-| LabeledField `control` | children | `field.tsx` | exposed nested instance (not a property) | `control` | content, already exposed in B4 | existing `ABox/Control/Control` instance |
+| LabeledField control slot | `children: React.ReactNode` | `field.tsx:16-30` — `<label>…<span>{label}</span>{children}</label>`, control explicitly consumer-owned (`field.tsx:11-14`) | exposed nested instance (a node flag, **not** a component property) | nested instance layer named `control` | content slot | yes — B4 already nests a real `ABox/Control/Control` instance (asserted `plugin.js:1814`), but B4 never exposed it (see §3e-bis) |
 
 Instance Swap properties: **2** (`PageHeader.actions`, `EmptyState.action`). No other production prop is a content slot: every remaining optional prop is a string or a `ComponentType` icon.
+
+### 3e-bis. `LabeledField.control` — corrected
+
+Audit result, from the real implementation: `plugin.js:1811-1814` builds `ABox/Form/LabeledField` with a genuine nested `ABox/Control/Control` **instance** and verifies it ("LabeledField nests a real ABox/Control/Control instance"). But `isExposedInstance` appears nowhere in `plugin.js` or `code.js`; the only `exposedInstances` occurrences are the `tokens-b4.js` data (`code.js:4787`) and the description printer (`plugin.js:1690`). **B4 therefore did not expose the nested instance in the live Figma component.** The earlier plan wording "already exposed in B4" was wrong and is withdrawn.
+
+B5 correction, using the exact Figma mechanism rather than a property:
+
+- Representation: set `isExposedInstance = true` on the existing nested `ABox/Control/Control` instance inside `ABox/Form/LabeledField`. This is a node flag on an instance, not an Instance Swap component property and not a Boolean.
+- Why not an Instance Swap property: production `children` is an arbitrary consumer-owned node (`field.tsx:11-14`, `:23`) with no single swappable production default; exposing the nested instance gives the designer the real Control's own properties without inventing a swap target. Figma's native swap on the exposed instance still allows substitution.
+- Exact name: the nested instance layer keeps the name `control`, matching the `exposedInstances` entry already recorded in `tokens-b4.js`. Figma derives the exposed-instance label from that layer name, so no technical rename is required.
+- Affected object: `ABox/Form/LabeledField` (standalone Component, id read live and printed in the report) → nested instance of `ABox/Control/Control` (id read live and printed). Both ids are reported from the real Figma run, never from the offline mock.
+- Idempotency: if `isExposedInstance` is already true, it is left in place and counted as reused. If the nested instance is missing, STOP — B5 does not rebuild B4 structure.
+
+Exposed nested instances: **1**. It adds nothing to the Boolean, Text or Instance Swap counts, because it is not a component property.
 
 ### 3f. Collision audit — complete
 
@@ -122,7 +136,7 @@ Names must be unique within a component; repetition across components is fine.
 | `ABox/Nav/WizardStep` | variant `state`, text `label` | none |
 | `ABox/Brand/AboxMark` | variant `tone` | none |
 | `ABox/Feedback/EmptyState` | bool `hasIcon`, `hasBody`, `hasAction`, text `title`, `body`, swap `action` | resolved (`body` → `hasBody` + text `body`; `action` → `hasAction` + swap `action`) |
-| `ABox/Form/LabeledField` | text `label` (+ exposed nested instance `control`, not a property) | none |
+| `ABox/Form/LabeledField` | text `label`; plus the nested `ABox/Control/Control` instance named `control` flagged `isExposedInstance = true` — a node flag, not a property (§3e-bis) | none |
 | `ABox/Form/Input` | text `placeholder` | none |
 
 ### 3g. Recalculated totals — actual Figma objects
@@ -141,6 +155,8 @@ Names must be unique within a component; repetition across components is fine.
 | Text properties created | 15 | 1+1+1+1+2+3+1+1+2+1+1 |
 | Instance Swap properties created | 2 | PageHeader `actions` + EmptyState `action` |
 | Non-variant properties created | 27 | 10 + 15 + 2 |
+| Exposed nested instances flagged | 1 | `LabeledField` → nested `ABox/Control/Control` named `control`; not a property, so not part of the 27 |
+| Total B5 object additions/updates | 28 changes + 4 new variants | 27 properties + 1 exposed instance flag; variants 52 → 56 |
 | Properties reused in place (already real in Figma) | 0 Boolean / 0 Text / 0 Swap | proven by §2 audit; re-proven at run time against the live inventory |
 
 ### 3h. Combinations that must NOT be created
@@ -171,7 +187,7 @@ The live property inventory of each B4 object is read before any write. Exact-na
 
 ## 7. `b5-verify` — 25 checks
 
-1. B4 existing property inventory is read and printed first. 2. No existing B4 property is recreated; every pre-existing property id is preserved. 3. No B4 component, set or variant is renamed, deleted or re-architected. 4. Exactly one new variant property exists: `KpiCard.deltaSign` with values `positive`, `negative`. 5. Component Set schema consistency: every variant of every set carries a value for every variant property of that set — asserted for all 11 sets, KpiCard included at `tone` × `deltaSign` = 8. 6. `ABox/Action/Button` still has exactly the axes `variant` × `size` and exactly 9 variants; no `state` property exists on it. 7. Per component, every property name is unique and no name is used for two property types — asserted against the §3f table. 8. Boolean = 10, Text = 15, Instance Swap = 2, non-variant total = 27, with arithmetic `10 + 15 + 2 = 27` printed. 9. Exact property names per component match §3c–§3e; every `React.ReactNode` content slot has both its Boolean and its Instance Swap — `PageHeader.hasActions` + `PageHeader.actions`, `EmptyState.hasAction` + `EmptyState.action` — and no content slot is collapsed into a Boolean; every `ComponentType` icon prop has a Boolean only. 10. Per-state production source mapping printed for every B5 property and value. 11. B1/B2/B3 bindings resolve to existing objects. 12. No hard-coded duplicate foundation value. 13. No value-equality-derived state. 14. No invented state and no invented variant value. 15. No property converted into a variant to avoid a name clash. 16. No pseudo-class rendered as a variant. 17. Responsive only where justified (zero); motion only where justified (zero). 18. B1 = 9 collections / 200 variables. 19. B2 = 1 collection / 19 variables. 20. B3 = 79 styles. 21. Objects = 11 sets + 3 components, `11 + 3 = 14`; variants `52 + 4 = 56` printed. 22. Pages unchanged: 7, in order, only `01 Components` populated; no patterns, shells, screens or documentation content. 23. `git diff --stat -- src/` empty. 24. `code.js` regenerated only by `node build.mjs`. 25. Offline Run 1 passes and Run 2 creates zero objects with identical ids; offline mock execution is explicitly distinguished from real Figma Desktop execution and mock ids are never presented as Figma ids.
+1. B4 existing property inventory is read and printed first. 2. No existing B4 property is recreated; every pre-existing property id is preserved. 3. No B4 component, set or variant is renamed, deleted or re-architected. 4. Exactly one new variant property exists: `KpiCard.deltaSign` with values `positive`, `negative`. 5. Component Set schema consistency: every variant of every set carries a value for every variant property of that set — asserted for all 11 sets, KpiCard included at `tone` × `deltaSign` = 8. 6. `ABox/Action/Button` still has exactly the axes `variant` × `size` and exactly 9 variants; no `state` property exists on it. 7. Per component, every property name is unique and no name is used for two property types — asserted against the §3f table. 8. Boolean = 10, Text = 15, Instance Swap = 2, non-variant total = 27, with arithmetic `10 + 15 + 2 = 27` printed. 9. Exact property names per component match §3c–§3e; every `React.ReactNode` content slot has both its Boolean and its Instance Swap — `PageHeader.hasActions` + `PageHeader.actions`, `EmptyState.hasAction` + `EmptyState.action` — and no content slot is collapsed into a Boolean; every `ComponentType` icon prop has a Boolean only. 10. Per-state production source mapping printed for every B5 property and value; `ABox/Form/LabeledField` contains exactly one nested `ABox/Control/Control` instance named `control` with `isExposedInstance === true`, printed with the component id and the nested instance id, and it is counted as an exposed nested instance (1), not as a component property. 11. B1/B2/B3 bindings resolve to existing objects. 12. No hard-coded duplicate foundation value. 13. No value-equality-derived state. 14. No invented state and no invented variant value. 15. No property converted into a variant to avoid a name clash. 16. No pseudo-class rendered as a variant. 17. Responsive only where justified (zero); motion only where justified (zero). 18. B1 = 9 collections / 200 variables. 19. B2 = 1 collection / 19 variables. 20. B3 = 79 styles. 21. Objects = 11 sets + 3 components, `11 + 3 = 14`; variants `52 + 4 = 56` printed. 22. Pages unchanged: 7, in order, only `01 Components` populated; no patterns, shells, screens or documentation content. 23. `git diff --stat -- src/` empty. 24. `code.js` regenerated only by `node build.mjs`. 25. Offline Run 1 passes and Run 2 creates zero objects with identical ids; offline mock execution is explicitly distinguished from real Figma Desktop execution and mock ids are never presented as Figma ids.
 
 Final line: `RESULT: B5 PASSED` or `RESULT: B5 FAILED — do not proceed to B6.`
 
