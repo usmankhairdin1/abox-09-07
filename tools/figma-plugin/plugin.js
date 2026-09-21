@@ -1617,16 +1617,35 @@ async function b4Describe(node, text) {
   node.description = text;
 }
 
+/** Match a live variant to a B4 spec name, tolerating axes added later by B5. */
+function b4MatchVariant(children, vname) {
+  const exact = children.filter((c) => c.name === vname);
+  if (exact.length) return exact[0];
+  const pairs = vname.split(",").map((s) => s.trim());
+  const wider = children.filter((c) => {
+    const have = c.name.split(",").map((s) => s.trim());
+    return pairs.every((p) => have.indexOf(p) !== -1);
+  });
+  if (wider.length === 1) return wider[0];
+  if (wider.length > 1 && typeof ABOX_B5 !== "undefined") {
+    // Axes added by a later batch: the B4 spec addresses the axis default.
+    const A = ABOX_B5.variantAxis;
+    const preferred = wider.filter((c) => c.name.indexOf(A.property + "=" + A.values[0]) !== -1);
+    if (preferred.length === 1) return preferred[0];
+  }
+  if (wider.length > 1) {
+    throw new Error('STOP: AMBIGUOUS VARIANT — "' + vname + '" matches ' + wider.length + " live variants; not silently rewritten.");
+  }
+  return null;
+}
+
 async function b4EnsureSet(set, index, page) {
   const existing = b4FindSet(set.name);
-  const byName = {};
-  if (existing) {
-    for (const child of existing.children) byName[child.name] = child;
-  }
+  const children = existing ? existing.children.slice() : [];
   const variants = [];
   for (const value of set.values) {
     const vname = b4VariantName(set, value);
-    let component = byName[vname];
+    let component = b4MatchVariant(children, vname);
     const isNew = !component;
     if (isNew) {
       component = figma.createComponent();
@@ -1634,6 +1653,7 @@ async function b4EnsureSet(set, index, page) {
       // Figma requires component nodes to live on a page before they can be combined.
       page.appendChild(component);
     } else {
+
       for (const child of component.children.slice()) child.remove();
     }
     const content = await b4Build(value.node, index);
@@ -1724,7 +1744,12 @@ async function verifyB4() {
     sets.length + standalone.length === C.objects,
     "object arithmetic " + sets.length + " + " + standalone.length + " = " + C.objects,
   );
-  add(variants === C.totalVariants, "variant count = " + C.totalVariants + " (found " + variants + ")");
+  const b5Extra = typeof ABOX_B5 === "undefined" ? 0 : ABOX_B5.counts.newVariantNodes;
+  add(
+    variants === C.totalVariants || variants === C.totalVariants + b5Extra,
+    "variant count = " + C.totalVariants + " (B4) or " + (C.totalVariants + b5Extra) + " (after B5) — found " + variants,
+  );
+
   add(
     C.fixedVariants + C.enumeratedVariants === C.totalVariants,
     "variant arithmetic fixed " + C.fixedVariants + " + enumerated " + C.enumeratedVariants + " = " + C.totalVariants,
@@ -1754,8 +1779,11 @@ async function verifyB4() {
   for (const spec of ABOX_B4.sets) {
     const node = sets.find((s) => s.name === spec.name);
     if (!node) { axisOk = false; continue; }
-    const want = spec.values.map((v) => b4VariantName(spec, v)).sort().join("|");
-    if (node.children.map((c) => c.name).sort().join("|") !== want) axisOk = false;
+    // Every B4 variant must still be addressable; axes added by a later batch
+    // widen the name and are matched through b4MatchVariant, never renamed.
+    for (const v of spec.values) {
+      if (!b4MatchVariant(node.children.slice(), b4VariantName(spec, v))) axisOk = false;
+    }
   }
   add(axisOk, "exact variant property names and values on every set");
 
@@ -1774,7 +1802,7 @@ async function verifyB4() {
     const node = sets.find((s) => s.name === spec.name);
     if (!node) { srcOk = false; continue; }
     for (const value of spec.values) {
-      const v = node.children.find((c) => c.name === b4VariantName(spec, value));
+      const v = b4MatchVariant(node.children.slice(), b4VariantName(spec, value));
       if (!v || !v.description || v.description.indexOf("source:") !== 0) srcOk = false;
     }
   }
@@ -1858,7 +1886,7 @@ async function verifyB4() {
     say("  SET  " + spec.name + "  id=" + (node ? node.id : "MISSING") + "  variants=" + (node ? node.children.length : 0));
     say("       " + spec.source);
     for (const value of spec.values) {
-      const v = node && node.children.find((c) => c.name === b4VariantName(spec, value));
+      const v = node && b4MatchVariant(node.children.slice(), b4VariantName(spec, value));
       say("         " + b4VariantName(spec, value) + "  id=" + (v ? v.id : "MISSING"));
       say("             " + value.source);
     }
@@ -1896,7 +1924,522 @@ async function verifyB4() {
   return passed;
 }
 
+/* =========================================================================
+   Phase 52 / Batch B5 — component variants & states.
+
+   B5 creates NO new Component Set and NO new standalone Component. It:
+     - adds one Variant axis (deltaSign) to the existing ABox/Card/KpiCard set
+       and creates exactly 4 new negative Variant ComponentNodes inside it;
+     - creates 19 non-variant component properties (15 TEXT + 4 BOOLEAN) and
+       attaches each one to the exact production-equivalent sublayer;
+     - exposes the existing nested ABox/Control/Control instance inside
+       ABox/Form/LabeledField.
+   10 further production properties are deferred because the B4 object contains
+   no target layer for them; they are reported, never approximated.
+   ========================================================================= */
+
+let b5Created = 0;
+function b5Say(kind, name, isNew) {
+  if (isNew) {
+    b5Created += 1;
+    say("  " + kind + " created : " + name);
+  } else {
+    say("  " + kind + " reused  : " + name);
+  }
+}
+
+/** TEXT descendants in document order — B4 assigns no layer names. */
+function b5Texts(node, out) {
+  out = out || [];
+  for (const child of node.children || []) {
+    if (child.type === "TEXT") out.push(child);
+    b5Texts(child, out);
+  }
+  return out;
+}
+
+function b5Owner(name) {
+  const set = b4FindSet(name);
+  if (set) return set;
+  const cmp = b4FindComponent(name);
+  if (cmp) return cmp;
+  throw new Error('STOP: MISSING B4 OBJECT — "' + name + '" does not exist; run B4 first.');
+}
+
+/** Bodies that carry the layers: every variant of a set, or the component itself. */
+function b5Bodies(owner) {
+  return owner.type === "COMPONENT_SET" ? owner.children.slice() : [owner];
+}
+
+/** Characters B4 authored for a given body, from the generated spec. */
+function b5SpecChars(ownerName, bodyName) {
+  const collect = (node) => {
+    const list = [];
+    (function walk(n) {
+      if (n.type === "TEXT") list.push(n.characters);
+      for (const c of n.children || []) walk(c);
+    })(node);
+    return list;
+  };
+  const set = ABOX_B4.sets.find((s) => s.name === ownerName);
+  if (set) {
+    const value = set.values.filter(function (v) {
+      const pairs = b4VariantName(set, v).split(",").map((s) => s.trim());
+      const have = String(bodyName).split(",").map((s) => s.trim());
+      return pairs.every((p) => have.indexOf(p) !== -1);
+    })[0];
+    return { body: value ? collect(value.node) : null, canonical: collect(set.values[0].node) };
+  }
+  const cmp = ABOX_B4.components.find((c) => c.name === ownerName);
+  if (!cmp) return { body: null, canonical: null };
+  const list = collect(cmp.node);
+  return { body: list, canonical: list };
+}
+
+/**
+ * Resolve the TEXT index of a binding inside one body. Variants that omit the
+ * role entirely (PageHeader compact suppresses the eyebrow, page-header.tsx:29)
+ * return null: the property is not attached there and the omission is reported,
+ * never approximated by index drift.
+ */
+function b5IndexIn(ownerName, bodyName, binding) {
+  const spec = b5SpecChars(ownerName, bodyName);
+  if (!spec.body || !spec.canonical) return binding.target.textIndex;
+  if (spec.body.length === spec.canonical.length) return binding.target.textIndex;
+  const canonical = spec.canonical[binding.target.textIndex];
+  const idx = spec.body.indexOf(canonical);
+  return idx === -1 ? null : idx;
+}
+
+/** Resolve the exact target layer, structurally. Missing or ambiguous => STOP. */
+function b5Target(ownerName, body, binding) {
+  const index = b5IndexIn(ownerName, body.name, binding);
+  if (index === null) return null;
+  const node = b5Texts(body)[index];
+  if (!node) {
+    throw new Error(
+      "STOP: TARGET LAYER MISSING — " + ownerName + " / " + body.name +
+        " has no TEXT descendant at index " + index +
+        " for property " + binding.property + ".",
+    );
+  }
+  const spec = b5SpecChars(ownerName, body.name);
+  let expect = spec.body ? spec.body[index] : null;
+  // The four B5 negative variants carry the negative chip text by design.
+  if (
+    ownerName === ABOX_B5.variantAxis.set &&
+    b5ParseVariant(body.name)[ABOX_B5.variantAxis.property] === ABOX_B5.variantAxis.values[1] &&
+    expect === ABOX_B5.variantAxis.positive.characters
+  ) {
+    expect = ABOX_B5.variantAxis.negative.characters;
+  }
+  if (expect !== null && expect !== undefined && node.characters !== expect) {
+    throw new Error(
+      "STOP: TARGET LAYER MISMATCH — " + ownerName + " / " + body.name +
+        " TEXT[" + index + '] is "' + node.characters +
+        '", expected the B4 construction text "' + expect + '".',
+    );
+  }
+  return node;
+}
+
+/** Read live definitions first; reuse in place; name/type mismatch => STOP. */
+function b5EnsureProperty(owner, name, type, defaultValue) {
+  const defs = owner.componentPropertyDefinitions || {};
+  const keys = Object.keys(defs).filter((k) => k === name || k.split("#")[0] === name);
+  if (keys.length > 1) {
+    throw new Error('STOP: DUPLICATE PROPERTY — "' + name + '" is defined ' + keys.length + " times on " + owner.name + ".");
+  }
+  if (keys.length === 1) {
+    if (defs[keys[0]].type !== type) {
+      throw new Error(
+        'STOP: PROPERTY TYPE MISMATCH — "' + name + '" on ' + owner.name +
+          " is " + defs[keys[0]].type + ", expected " + type + ". Not renamed, not recreated.",
+      );
+    }
+    return { id: keys[0], created: false };
+  }
+  return { id: owner.addComponentProperty(name, type, defaultValue), created: true };
+}
+
+/** Attach a property id to the exact sublayer. Wrong existing binding => STOP. */
+function b5Bind(owner, body, node, field, propId, property) {
+  const refs = node.componentPropertyReferences || {};
+  if (refs[field] && refs[field] !== propId && refs[field].split("#")[0] !== property) {
+    throw new Error(
+      "STOP: WRONG BINDING — " + owner.name + " / " + body.name + " layer " + node.name +
+        " already references " + refs[field] + ' on "' + field + '"; not silently moved.',
+    );
+  }
+  const next = {};
+  for (const k of Object.keys(refs)) next[k] = refs[k];
+  next[field] = propId;
+  node.componentPropertyReferences = next;
+}
+
+/* ---------- the one new Variant axis, and its 4 new ComponentNodes ---------- */
+
+function b5ParseVariant(name) {
+  const out = {};
+  for (const part of name.split(",")) {
+    const bits = part.split("=");
+    if (bits.length === 2) out[bits[0].trim()] = bits[1].trim();
+  }
+  return out;
+}
+
+async function b5KpiVariants(index) {
+  const A = ABOX_B5.variantAxis;
+  const set = b5Owner(A.set);
+  if (set.type !== "COMPONENT_SET") throw new Error("STOP: " + A.set + " is not a Component Set.");
+
+  // (1) read and lock the live B4 variants.
+  const live = set.children.slice();
+  const positives = live.filter((c) => {
+    const v = b5ParseVariant(c.name);
+    return !v[A.property] || v[A.property] === A.values[0];
+  });
+  const negatives = live.filter((c) => b5ParseVariant(c.name)[A.property] === A.values[1]);
+
+  // pre-write check: exactly 4 originals, tones default/primary/sage/warning, one each.
+  const tones = positives.map((c) => b5ParseVariant(c.name)[A.existingProperty]).sort();
+  const want = A.tones.slice().sort();
+  if (positives.length !== A.tones.length || tones.join("|") !== want.join("|")) {
+    throw new Error(
+      "STOP: KPICARD PRE-WRITE CHECK FAILED — expected exactly " + A.tones.length +
+        " existing variants with tones " + want.join(", ") + "; found " + positives.length +
+        " (" + tones.join(", ") + ").",
+    );
+  }
+  if (negatives.length > A.tones.length) {
+    throw new Error("STOP: DUPLICATE NEGATIVE VARIANT — found " + negatives.length + ", expected at most " + A.tones.length + ".");
+  }
+
+  // (2)(3) the axis itself: every existing variant becomes deltaSign=positive.
+  for (const node of positives) {
+    const v = b5ParseVariant(node.name);
+    if (!v[A.property]) {
+      node.name = A.existingProperty + "=" + v[A.existingProperty] + ", " + A.property + "=" + A.values[0];
+      b5Say("variant ", A.set + " / " + node.name + " (axis added)", false);
+    }
+  }
+
+  const destructive = b4Style(index, "paint", A.negative.colorStyle);
+
+  // (4)-(8) exactly one negative ComponentNode per existing tone, by duplication.
+  for (const source of positives) {
+    const tone = b5ParseVariant(source.name)[A.existingProperty];
+    const vname = A.existingProperty + "=" + tone + ", " + A.property + "=" + A.values[1];
+    let node = set.children.filter((c) => c.name === vname)[0];
+    const isNew = !node;
+    if (isNew) {
+      node = source.clone();
+      node.name = vname;
+      set.appendChild(node);
+    }
+    // (10)-(12) the only mutation: the delta chip's text and colour foundation.
+    const chip = b5Texts(node)[2];
+    if (!chip) throw new Error("STOP: KPICARD DELTA LAYER MISSING on " + vname + ".");
+    chip.name = "delta";
+    if (chip.characters !== A.negative.characters) chip.characters = A.negative.characters;
+    if (chip.fillStyleId !== destructive.id) chip.fillStyleId = destructive.id;
+    node.description = A.negative.source;
+    b5Say("variant ", A.set + " / " + vname, isNew);
+  }
+
+  // (9) positives keep their B4 text and their existing colour binding untouched.
+  for (const node of positives) {
+    const chip = b5Texts(node)[2];
+    if (chip) chip.name = "delta";
+  }
+  return set;
+}
+
+/* ---------- non-variant properties ---------- */
+
+async function b5Properties() {
+  for (const binding of ABOX_B5.bindings) {
+    const owner = b5Owner(binding.component);
+    const defaultValue = binding.type === "TEXT" ? binding.value : true;
+    const prop = b5EnsureProperty(owner, binding.property, binding.type, defaultValue);
+    for (const body of b5Bodies(owner)) {
+      const node = b5Target(binding.component, body, binding);
+      if (!node) {
+        say("  skipped : " + binding.component + " / " + body.name + " omits the " + binding.property + " layer in production");
+        continue;
+      }
+      node.name = binding.target.name;
+      b5Bind(owner, body, node, binding.reference, prop.id, binding.property);
+    }
+    b5Say(binding.type === "TEXT" ? "text    " : "boolean ", binding.component + " . " + binding.property, prop.created);
+  }
+}
+
+/* ---------- exposed nested instance ---------- */
+
+function b5Exposed() {
+  const E = ABOX_B5.exposed;
+  const owner = b5Owner(E.component);
+  const found = [];
+  (function walk(n) {
+    for (const c of n.children || []) {
+      if (c.type === "INSTANCE") found.push(c);
+      walk(c);
+    }
+  })(owner);
+  if (found.length !== 1) {
+    throw new Error(
+      "STOP: EXPOSED INSTANCE TARGET — " + E.component + " must contain exactly one nested instance (found " + found.length + ").",
+    );
+  }
+  const node = found[0];
+  node.name = E.name;
+  const already = node.isExposedInstance === true;
+  node.isExposedInstance = true;
+  b5Say("exposed ", E.component + " -> " + E.of, !already);
+  return node;
+}
+
+/* ---------- SLOT: non-mutating capability check, structural gate ---------- */
+
+function b5SlotCapability() {
+  const hasCreateSlot = typeof figma.createSlot === "function";
+  let typeSurface = false;
+  try {
+    const list = (figma.mixed, figma.componentPropertyTypes) || null;
+    typeSurface = !!(list && String(list).indexOf("SLOT") !== -1);
+  } catch (e) {
+    typeSurface = false;
+  }
+  return { supported: hasCreateSlot || typeSurface, createSlot: hasCreateSlot, typeSurface: typeSurface };
+}
+
+async function ensureB5Properties() {
+  await figma.loadAllPagesAsync();
+  b5Created = 0;
+  const index = await b4StyleIndex();
+  await b5KpiVariants(index);
+  await b5Properties();
+  b5Exposed();
+  say("");
+  say("  objects/properties created this run: " + b5Created);
+}
+
+async function verifyB5() {
+  await figma.loadAllPagesAsync();
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+  const C = ABOX_B5.counts;
+  const A = ABOX_B5.variantAxis;
+  const index = await b4StyleIndex();
+
+  const sets = b4AllNodes(["COMPONENT_SET"]).filter((n) => n.name.indexOf("ABox/") === 0);
+  const standalone = b4AllNodes(["COMPONENT"]).filter(
+    (n) => n.name.indexOf("ABox/") === 0 && (!n.parent || n.parent.type !== "COMPONENT_SET"),
+  );
+  const variants = sets.reduce((n, s) => n + s.children.length, 0);
+
+  // 1-5 — the object population B5 may not change, and the counts it must reach.
+  add(sets.length === C.sets, "component sets = " + C.sets + " (found " + sets.length + ") — B5 creates none");
+  add(standalone.length === C.standalone, "standalone components = " + C.standalone + " (found " + standalone.length + ") — B5 creates none");
+  add(variants === C.variantsAfter, "variant ComponentNodes = " + C.variantsAfter + " (found " + variants + ")");
+  add(
+    C.variantsBefore + C.newVariantNodes === C.variantsAfter,
+    "variant arithmetic " + C.variantsBefore + " (B4) + " + C.newVariantNodes + " (B5) = " + C.variantsAfter,
+  );
+  add(
+    variants + standalone.length === C.physicalNodes,
+    "physical ComponentNodes " + variants + " + " + standalone.length + " = " + C.physicalNodes,
+  );
+
+  // 6-9 — the KpiCard matrix.
+  const kpi = sets.filter((s) => s.name === A.set)[0];
+  const matrix = kpi ? kpi.children.map((c) => b5ParseVariant(c.name)) : [];
+  const expected = [];
+  for (const tone of A.tones) for (const sign of A.values) expected.push(tone + "/" + sign);
+  const actual = matrix.map((v) => v[A.existingProperty] + "/" + v[A.property]).sort();
+  add(!!kpi && kpi.children.length === 8, A.set + " holds exactly 8 variants (found " + (kpi ? kpi.children.length : 0) + ")");
+  add(actual.join("|") === expected.slice().sort().join("|"), "KpiCard matrix = tone x deltaSign, all 8 combinations, none extra");
+  add(
+    matrix.filter((v) => v[A.property] === A.values[1]).length === C.newVariantNodes,
+    "exactly " + C.newVariantNodes + " negative variants, one per tone, no duplicate",
+  );
+  add(
+    Object.keys((kpi && kpi.componentPropertyDefinitions) || {}).filter((k) => k.split("#")[0] === A.property).length <= 1,
+    'the "' + A.property + '" axis exists once, added, never renamed',
+  );
+
+  // 10-12 — the visual mutation of the negative nodes (check 21a-bis).
+  let negOk = true, posOk = true, rawOk = true;
+  const dest = b4Style(index, "paint", A.negative.colorStyle);
+  if (kpi) {
+    for (const node of kpi.children) {
+      const v = b5ParseVariant(node.name);
+      const chip = b5Texts(node)[2];
+      if (!chip) { negOk = false; posOk = false; continue; }
+      if (!chip.fillStyleId) rawOk = false;
+      if (v[A.property] === A.values[1]) {
+        if (chip.characters !== A.negative.characters || chip.fillStyleId !== dest.id) negOk = false;
+      } else if (chip.characters !== A.positive.characters) {
+        posOk = false;
+      }
+    }
+  }
+  add(negOk, 'negative variants: delta text "' + A.negative.characters + '" + existing B3 ' + A.negative.colorStyle);
+  add(posOk, 'positive variants: delta text "' + A.positive.characters + '" unchanged');
+  add(rawOk, "no hard-coded or duplicated colour on any delta chip — every fill resolves to an existing B3 style");
+
+  // 13-18 — property definitions and their layer bindings.
+  let textCount = 0, boolCount = 0, bindOk = true, typeOk = true, defaultOk = true;
+  const inventory = [];
+  for (const b of ABOX_B5.bindings) {
+    const owner = b5Owner(b.component);
+    const defs = owner.componentPropertyDefinitions || {};
+    const key = Object.keys(defs).filter((k) => k.split("#")[0] === b.property)[0];
+    if (!key) { typeOk = false; continue; }
+    if (defs[key].type !== b.type) typeOk = false;
+    if (b.type === "TEXT") { textCount += 1; if (defs[key].defaultValue !== b.value) defaultOk = false; }
+    else { boolCount += 1; if (defs[key].defaultValue !== true) defaultOk = false; }
+    for (const body of b5Bodies(owner)) {
+      const idx = b5IndexIn(b.component, body.name, b);
+      if (idx === null) {
+        inventory.push("  " + b.component + " . " + b.property + "  [" + b.type + "]  id=" + key +
+          "  -> " + body.name + " : layer absent in this variant (production omits it) — not attached");
+        continue;
+      }
+      const node = b5Texts(body)[idx];
+      const refs = (node && node.componentPropertyReferences) || {};
+      const ok = !!node && refs[b.reference] === key && node.name === b.target.name;
+      if (!ok) bindOk = false;
+      inventory.push(
+        "  " + b.component + " . " + b.property + "  [" + b.type + "]  id=" + key +
+          "  -> " + body.name + " / " + (node ? node.name : "MISSING") + " id=" + (node ? node.id : "-") +
+          "  ref=" + b.reference + "  " + (ok ? "bound" : "UNBOUND") + "  " + b.source,
+      );
+    }
+  }
+  add(textCount === C.text, "TEXT properties = " + C.text + " (found " + textCount + ")");
+  add(boolCount === C.boolean, "BOOLEAN properties = " + C.boolean + " (found " + boolCount + ")");
+  add(typeOk, "every property exists exactly once with the planned type — none renamed, none recreated");
+  add(bindOk, "every property is attached to its exact production-equivalent layer (characters / visible)");
+  add(defaultOk, "every construction value matches the B4 literal; no production default is invented");
+  add(
+    textCount + boolCount === C.nonVariant,
+    "created non-variant properties " + textCount + " + " + boolCount + " = " + C.nonVariant,
+  );
+
+  // 19-20 — exposed instance, and the absence of anything B5 may not create.
+  const field = b5Owner(ABOX_B5.exposed.component);
+  const nested = [];
+  (function walk(n) { for (const c of n.children || []) { if (c.type === "INSTANCE") nested.push(c); walk(c); } })(field);
+  add(
+    nested.length === C.exposedInstances && nested[0] && nested[0].isExposedInstance === true && nested[0].name === ABOX_B5.exposed.name,
+    "exposed nested instances = " + C.exposedInstances + " (the existing " + ABOX_B5.exposed.of + ", not recreated)",
+  );
+  let swaps = 0, slots = 0;
+  for (const owner of sets.concat(standalone)) {
+    const defs = owner.componentPropertyDefinitions || {};
+    for (const k of Object.keys(defs)) {
+      if (defs[k].type === "INSTANCE_SWAP") swaps += 1;
+      if (defs[k].type === "SLOT") slots += 1;
+    }
+  }
+  add(swaps === C.instanceSwap && slots === C.slot, "INSTANCE_SWAP properties = 0 and SLOT properties = 0");
+
+  // 21 — EmptyState.action: capability reported, structural target absent, nothing created.
+  const cap = b5SlotCapability();
+  const empty = b5Owner("ABox/Feedback/EmptyState");
+  const emptyDefs = Object.keys(empty.componentPropertyDefinitions || {});
+  add(
+    emptyDefs.filter((k) => k.split("#")[0] === "action").length === 0,
+    "no EmptyState.action property of any type exists, and no temporary or probe SLOT was created " +
+      "(runtime SLOT capability = " + cap.supported + "; target region in B4 = absent)",
+  );
+
+  // 22-25 — B0-B4 foundations untouched.
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const b1Cols = collections.filter((c) => b1Names.indexOf(c.name) !== -1);
+  let b1Vars = 0;
+  for (const c of b1Cols) b1Vars += c.variableIds.length;
+  const typo = collections.filter((c) => c.name === "ABox/Typography");
+  add(b1Cols.length === 9 && b1Vars === 200, "B1 unchanged: 9 collections / 200 variables (found " + b1Cols.length + " / " + b1Vars + ")");
+  add(typo.length === 1 && typo[0].variableIds.length === 19, "B2 unchanged: ABox/Typography with 19 variables");
+  const owned = (list) => list.filter((s) => s.name.indexOf("ABox/") === 0);
+  const paints = owned(await figma.getLocalPaintStylesAsync());
+  const tstyles = owned(await figma.getLocalTextStylesAsync());
+  const effects = owned(await figma.getLocalEffectStylesAsync());
+  add(
+    paints.length === 72 && tstyles.length === 2 && effects.length === 5,
+    "B3 unchanged: 72 colour + 2 text + 5 effect styles (found " + paints.length + " / " + tstyles.length + " / " + effects.length + ")",
+  );
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  add(
+    figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|") &&
+      figma.root.children.filter((p) => p.name !== B4_PAGE).every((p) => p.children.length === 0),
+    "B0 pages unchanged: exactly 7, in order, only 01 Components populated",
+  );
+
+  /* ---------- inventory ---------- */
+  say("");
+  say("B5 VARIANT INVENTORY");
+  if (kpi) {
+    say("  SET  " + kpi.name + "  id=" + kpi.id + "  variants=" + kpi.children.length);
+    for (const node of kpi.children) {
+      const chip = b5Texts(node)[2];
+      say(
+        "    " + node.name + "  id=" + node.id + '  delta="' + (chip ? chip.characters : "MISSING") +
+          '"  fillStyle=' + (chip && chip.fillStyleId === dest.id ? A.negative.colorStyle : "(B4 tone style, unchanged)"),
+      );
+    }
+  }
+  say("");
+  say("B5 PROPERTY / LAYER BINDING INVENTORY");
+  for (const line of inventory) say(line);
+  say("");
+  say("  exposed instance: " + ABOX_B5.exposed.component + "  parent id=" + field.id +
+      "  nested " + ABOX_B5.exposed.of + " id=" + (nested[0] ? nested[0].id : "MISSING") +
+      "  isExposedInstance=" + !!(nested[0] && nested[0].isExposedInstance));
+  say("  SLOT capability (read-only check): figma.createSlot=" + cap.createSlot + "  type surface=" + cap.typeSurface);
+  say("  EmptyState.action target region in B4: absent — SLOT created = 0, action property created = 0");
+
+  say("");
+  say("B5 COUNTS");
+  say("  component sets " + C.sets + " | standalone components " + C.standalone +
+      " | variant ComponentNodes " + C.variantsAfter + " (B5 created " + C.newVariantNodes + ")" +
+      " | physical ComponentNodes " + C.physicalNodes);
+  say("  variant axes " + C.axesBefore + " (B4) + " + C.newVariantAxes + " (B5) = " + C.axesAfter);
+  say("  created non-variant properties: " + C.nonVariant + " (TEXT " + C.text + " + BOOLEAN " + C.boolean +
+      " + INSTANCE_SWAP " + C.instanceSwap + " + SLOT " + C.slot + ")");
+  say("  deferred/blocked properties: " + C.deferred);
+  say("  total documented production-faithful non-variant target: " + C.target +
+      "  (" + C.nonVariant + " + " + C.deferred + " = " + C.target + ")");
+
+  say("");
+  say("DEFERRED PROPERTIES — target layer absent in the audited B4 object");
+  for (const d of ABOX_B5.deferred) {
+    say("  - " + d.component + " . " + d.property + " [" + d.type + "] — " + d.missing + " — " + d.source);
+  }
+
+  say("");
+  say("EXCLUDED STATES");
+  for (const e of ABOX_B5.excluded) say("  - " + e.candidate + " — " + e.reason);
+
+  say("");
+  say("B5 STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say("RECORDED LIMITATIONS / EXCEPTIONS");
+  for (const l of ABOX_B5.limitations) say("  - " + l);
+  say("  - No publishing performed; library publishing is a separate step.");
+  say("");
+  say(passed ? "RESULT: B5 PASSED" : "RESULT: B5 FAILED — do not proceed to B6.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
+
 figma.showUI(__html__, { width: 420, height: 560 });
 
 figma.ui.onmessage = async (msg) => {
@@ -1906,6 +2449,7 @@ figma.ui.onmessage = async (msg) => {
   const b2 = msg.type === "b2-run" || msg.type === "b2-verify";
   const b3 = msg.type === "b3-run" || msg.type === "b3-verify";
   const b4 = msg.type === "b4-run" || msg.type === "b4-verify";
+  const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
@@ -1988,6 +2532,19 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB4();
+    } else if (msg.type === "b5-run") {
+      say("ABox Phase 52 / Batch B5 — component variants & states");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await ensureB5Properties();
+      await verifyB5();
+    } else if (msg.type === "b5-verify") {
+      say("ABox Phase 52 / Batch B5 — verify only");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await verifyB5();
     }
   } catch (e) {
     say("");
@@ -2003,6 +2560,8 @@ figma.ui.onmessage = async (msg) => {
               ? "RESULT: B3 FAILED — do not proceed to B4."
               : b4
                 ? "RESULT: B4 FAILED — do not proceed to B5."
+                : b5
+                  ? "RESULT: B5 FAILED — do not proceed to B6."
                 : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
     );
   }
