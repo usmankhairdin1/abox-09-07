@@ -1933,18 +1933,26 @@ async function verifyB4() {
   for (const s of await figma.getLocalEffectStylesAsync()) effectNames[s.id] = s.name;
   let boundOk = true;
   let rawFill = 0;
-  const walk = (node) => {
+  const rawEvidence = [];
+  const noteRaw = (node, root, kind) => {
+    rawFill += 1;
+    if (rawEvidence.length < 40) {
+      rawEvidence.push("  " + root.name + " › " + node.name + " (" + node.type + ") " + kind + "  id=" + node.id);
+    }
+  };
+  const walk = (node, root) => {
     if (node.type !== "COMPONENT" && node.type !== "COMPONENT_SET" && node.type !== "FRAME" && node.type !== "TEXT" &&
         node.type !== "ELLIPSE" && node.type !== "VECTOR" && node.type !== "INSTANCE") return;
-    if (node.fills && node.fills.length && !node.fillStyleId) rawFill += 1;
-    if (node.strokes && node.strokes.length && !node.strokeStyleId) rawFill += 1;
+    if (node.fills && node.fills.length && !node.fillStyleId) noteRaw(node, root, "fill");
+    if (node.strokes && node.strokes.length && !node.strokeStyleId) noteRaw(node, root, "stroke");
     if (node.fillStyleId && !paintNames[node.fillStyleId]) boundOk = false;
     if (node.effectStyleId && !effectNames[node.effectStyleId]) boundOk = false;
-    for (const child of node.children || []) walk(child);
+    for (const child of node.children || []) walk(child, root);
   };
-  for (const node of sets.concat(standalone)) walk(node);
+  for (const node of sets.concat(standalone)) walk(node, node);
   add(boundOk, "every colour/elevation reference resolves to an existing B3 style");
   add(rawFill === 0, "no hard-coded foundation fill or stroke (found " + rawFill + ")");
+
 
   // 12-14 — no invented variants, no equality-derived relationships, no file-only primitives.
   add(
