@@ -3016,6 +3016,19 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB5();
+    } else if (msg.type === "b6-run") {
+      say("ABox Phase 53 / Batch B6 — patterns & interactions");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await ensureB6Patterns();
+      await verifyB6();
+    } else if (msg.type === "b6-verify") {
+      say("ABox Phase 53 / Batch B6 — verify only");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await verifyB6();
     }
   } catch (e) {
     say("");
@@ -3033,6 +3046,8 @@ figma.ui.onmessage = async (msg) => {
                 ? "RESULT: B4 FAILED — do not proceed to B5."
                 : b5
                   ? "RESULT: B5 FAILED — do not proceed to B6."
+                  : b6
+                    ? "RESULT: B6 FAILED — do not proceed to B7."
                 : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
     );
   }
