@@ -326,15 +326,148 @@ async function verify() {
   return passed;
 }
 
+/* ---------- Phase 52 / Batch B0: library foundation pages ---------- */
+function requireFile(expectedName) {
+  if (figma.root.name !== expectedName) {
+    throw new Error(
+      'STOP: wrong target file. Expected "' +
+        expectedName +
+        '" but this file is "' +
+        figma.root.name +
+        '". Nothing was changed.',
+    );
+  }
+}
+
+function ensureLibraryPages() {
+  const names = T.library.pages;
+  const pages = figma.root.children;
+
+  for (const name of names) {
+    const matches = pages.filter((p) => p.name === name);
+    if (matches.length > 1) {
+      throw new Error(
+        'STOP: DUPLICATE PAGE — ' +
+          matches.length +
+          ' pages are named "' +
+          name +
+          '". Resolve manually; the plugin will not guess which to delete.',
+      );
+    }
+  }
+
+  const resolved = names.map((name) => {
+    let page = figma.root.children.find((p) => p.name === name);
+    if (page) {
+      say("page reused  : " + name);
+    } else {
+      page = figma.createPage();
+      page.name = name;
+      say("page created : " + name);
+    }
+    return page;
+  });
+
+  resolved.forEach((page, index) => figma.root.insertChild(index, page));
+
+  const strays = figma.root.children.filter((p) => names.indexOf(p.name) === -1);
+  for (const stray of strays) {
+    if (stray.children.length === 0 && figma.root.children.length > 1) {
+      say("page removed : " + stray.name + " (empty default page)");
+      stray.remove();
+    } else {
+      say("UNEXPECTED PAGE: " + stray.name + " (not empty — left untouched)");
+    }
+  }
+
+  say("");
+  say("PAGE INVENTORY");
+  figma.root.children.forEach((page, index) => {
+    say("  [" + index + "] " + page.name + "  id=" + page.id);
+  });
+  return resolved;
+}
+
+async function verifyLibraryPages() {
+  const names = T.library.pages;
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+
+  add(figma.root.name === T.library.targetFileName, "file name is the library target file");
+
+  const children = figma.root.children;
+  add(
+    names.every((name) => children.filter((p) => p.name === name).length === 1),
+    "each of the seven pages exists exactly once",
+  );
+  add(
+    names.every((name) => {
+      const page = children.find((p) => p.name === name);
+      return !!page && page.type === "PAGE";
+    }),
+    "every library page is a native PAGE node",
+  );
+  add(
+    names.every((name, index) => children[index] && children[index].name === name),
+    "pages occupy indices 0..6 in the declared order",
+  );
+
+  const strays = children.filter((p) => names.indexOf(p.name) === -1);
+  if (strays.length) say("  unexpected pages: " + strays.map((p) => p.name).join(", "));
+  add(strays.length === 0, "no unexpected extra pages in the file");
+
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const textStyles = await figma.getLocalTextStylesAsync();
+  const effectStyles = await figma.getLocalEffectStylesAsync();
+  say(
+    "  local objects: collections=" +
+      collections.length +
+      " textStyles=" +
+      textStyles.length +
+      " effectStyles=" +
+      effectStyles.length,
+  );
+  add(
+    collections.length === 0 && textStyles.length === 0 && effectStyles.length === 0,
+    "batch B0 created no variables, text styles or effect styles",
+  );
+
+  let nodeCount = 0;
+  let imageFills = 0;
+  let components = 0;
+  for (const page of children) {
+    await page.loadAsync();
+    nodeCount += page.children.length;
+    components += page.findAll((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET").length;
+    imageFills += page.findAll(
+      (n) => Array.isArray(n.fills) && n.fills.some((f) => f && f.type === "IMAGE"),
+    ).length;
+  }
+  add(components === 0, "no components or component sets created by this batch");
+  add(imageFills === 0, "no image fills anywhere in the file (nothing flattened)");
+  say("  top-level nodes across all pages: " + nodeCount);
+
+  say("");
+  say("STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say(passed ? "RESULT: B0 PASSED" : "RESULT: B0 FAILED — do not proceed to B1.");
+  say("Library publishing is NOT part of this batch and was not performed.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
-figma.showUI(__html__, { width: 420, height: 480 });
+figma.showUI(__html__, { width: 420, height: 520 });
 
 figma.ui.onmessage = async (msg) => {
   lines.length = 0;
+  const b0 = msg.type === "b0-run" || msg.type === "b0-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
       say("file: " + figma.root.name);
+      requireFile(T.library.proofFileName);
       say("");
       const fonts = await resolveProofFonts();
       say("");
@@ -345,12 +478,30 @@ figma.ui.onmessage = async (msg) => {
     } else if (msg.type === "verify") {
       say("ABox Figma Proof — verify only");
       say("file: " + figma.root.name);
+      requireFile(T.library.proofFileName);
       await verify();
+    } else if (msg.type === "b0-run") {
+      say("ABox Phase 52 / Batch B0 — library foundation pages");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      ensureLibraryPages();
+      await verifyLibraryPages();
+    } else if (msg.type === "b0-verify") {
+      say("ABox Phase 52 / Batch B0 — verify only");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await verifyLibraryPages();
     }
   } catch (e) {
     say("");
     say(String((e && e.message) || e));
-    say("RESULT: PROOF FAILED — do not proceed to Phase 52.");
+    say(
+      b0
+        ? "RESULT: B0 FAILED — do not proceed to B1."
+        : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
+    );
   }
   report();
 };
