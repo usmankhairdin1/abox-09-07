@@ -6038,6 +6038,12 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b6InspectPatterns();
+    } else if (msg.type === "b6-signature-diff") {
+      say("ABox Phase 53 / Batch B6 — diagnose signature mismatch (read-only)");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b6DiagnoseSignatures();
     } else if (msg.type === "b6-cleanup-stale-variants") {
       say("ABox Phase 53 / Batch B6 — remove stale variant components");
       say("file: " + figma.root.name);
