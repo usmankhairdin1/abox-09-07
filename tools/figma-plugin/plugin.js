@@ -1578,8 +1578,9 @@ async function b4Build(spec, index) {
       const isPainted = (n.fills && n.fills.length) || (n.strokes && n.strokes.length);
       if (n !== node && isPainted && (!n.children || !n.children.length)) painted.push(n);
       for (const child of n.children || []) {
-        if (n !== node || true) collect(child);
+        collect(child);
       }
+
       // Group / wrapper frames introduced by the SVG importer are chrome, never a
       // production surface: clear their own paint so nothing is left hard-coded.
       if (n !== node && n.children && n.children.length) {
