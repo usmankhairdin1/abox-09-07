@@ -87,6 +87,17 @@ Adding a VARIANT property to an existing Component Set only assigns the property
 8. Create no other tone/axis combination.
 9. Duplicate no unrelated B4 component, set or variant.
 
+**Visual mutation of each duplicated negative node** — deterministic, and the only content change B5 makes inside a variant:
+
+10. On the duplicate, resolve the same delta node identified in §3i: third TEXT child, initial characters `"▲ 4.2%"`, named `delta`. Missing or ambiguous = STOP.
+11. Set that node's characters to `"▼ 4.2%"`. This is not an invented production literal: it is the Figma construction rendering of the production branch at `kpi-card.tsx:81`, where the glyph flips on `delta.pct >= 0`.
+12. Repoint that node's fill to the existing live B3 style used by the negative branch at `kpi-card.tsx:78` — `ABox/Semantic/destructive` — resolved by its live style identity. No hex, RGB, oklch or duplicate style is created, and no new style is added.
+13. Change nothing else on the duplicate: tone styling, typography, geometry, spacing, elevation and every other B4 binding stay exactly as duplicated.
+
+Positive variants are left untouched and keep `"▲ 4.2%"` with the existing `ABox/Semantic/sage` style from `kpi-card.tsx:78`.
+
+Final state, stated exactly: `deltaSign=positive` → delta text `"▲ 4.2%"` + existing B3 `ABox/Semantic/sage`; `deltaSign=negative` → delta text `"▼ 4.2%"` + existing B3 `ABox/Semantic/destructive`. The numeric percentage remains a recorded limitation — `{delta.pct >= 0 ? "▲" : "▼"} {Math.abs(delta.pct).toFixed(1)}%` is computed at runtime, and the Figma text is sample/construction content, never a replacement for that computation.
+
 Resulting matrix, exactly 8 nodes: `tone=default, deltaSign=positive` · `tone=default, deltaSign=negative` · `tone=primary, deltaSign=positive` · `tone=primary, deltaSign=negative` · `tone=sage, deltaSign=positive` · `tone=sage, deltaSign=negative` · `tone=warning, deltaSign=positive` · `tone=warning, deltaSign=negative`.
 
 Idempotency for these nodes: Run 1 may create exactly 4 new negative Variant ComponentNodes. Run 2 matches existing negative variants by exact variant-property matrix (`tone` + `deltaSign`), reuses them in place, creates zero Variant ComponentNodes, and reports ids identical to Run 1. A duplicate negative variant for the same matrix is never created; encountering one is a STOP.
@@ -152,16 +163,20 @@ KpiCard property count: 2 variant + 4 Boolean + 3 Text = **9** (variants of the 
 | EmptyState `icon` | `ComponentType<{className?: string}>` | `empty-state.tsx:6,18-22` | Boolean only | `hasIcon` | — | — | same |
 | LabeledField control slot | `children: React.ReactNode` | `field.tsx:16-30`; control explicitly consumer-owned `field.tsx:11-14` | exposed nested instance (node flag, not a property) | nested instance layer `control` | — | — | B4 already nests a real `ABox/Control/Control` instance (`plugin.js:1814`) but never exposed it — see §3e-bis |
 
-### 3e-ter. SLOT capability gate for `EmptyState.action`
+### 3e-ter. SLOT decision for `EmptyState.action` — two conditions, deterministic outcome
 
-The manifest pins `"api": "1.0.0"`, and SLOT is a newer property type than the rest of this plugin uses, so support is verified at run time rather than assumed:
+Runtime capability alone cannot authorise creation. A SLOT is created only when **both** hold:
 
-- The capability check is **non-mutating**. The plugin inspects the runtime surface only — presence of the slot APIs (`typeof figma.createSlot === "function"`, and the SLOT entry in the runtime's component-property type surface) — before any write. It never calls `addComponentProperty()` to discover support, never creates a probe property, and never creates-then-deletes anything. No temporary property may exist in the document at any point.
-- Supported → the SLOT named `action` is created; `hasAction` stays the separate presence guard from `{action && …}`-equivalent rendering at `empty-state.tsx:24`; no default content is authored.
-- Not supported → the plugin creates **no** content property for `EmptyState.action`, keeps only the Boolean `hasAction`, and records the limitation verbatim, citing `empty-state.tsx:9,24` and every call site above. It does **not** fall back to INSTANCE_SWAP with an invented default.
-- Whichever branch runs is printed in the report and asserted by `b5-verify`, and it is the same on Run 1 and Run 2.
+1. the runtime supports SLOT, **and**
+2. the exact production-equivalent EmptyState action target region exists in the B4 object and can be attached or converted without rebuilding unrelated B4 structure.
 
-Counts: INSTANCE_SWAP properties **1** (`PageHeader.actions`); SLOT properties **1** or **0** (`EmptyState.action`, per the gate); exposed nested instances **1**. No other production prop is a content slot: every remaining optional prop is a string or a `ComponentType` icon.
+Condition 1 is still checked, and the check is **non-mutating**: the plugin inspects the runtime surface only (`typeof figma.createSlot === "function"` and the SLOT entry in the runtime's component-property type surface) before any write. It never calls `addComponentProperty()` to discover support, never creates a probe property, never creates-then-deletes anything, and no temporary property may exist in the document at any point.
+
+Condition 2 is **false** in the audited B4 object: EmptyState has exactly two TEXT children and no action region, wrapper or nested instance (§3i).
+
+Deterministic outcome, regardless of the runtime answer: `runtime SLOT supported?` → reported · `target region exists?` → **false** · SLOT properties created → **0** · `EmptyState.action` content properties created → **0**. The plugin prints both results, plus the verbatim limitation citing `empty-state.tsx:9,24` and every call site. No detached SLOT, no probe property, no invented wrapper, frame, button or link, no B4 layer added to make a slot possible, and no fallback to INSTANCE_SWAP. Run 1 and Run 2 report the same capability result, the same target-absence result and the same zero creation.
+
+Counts: INSTANCE_SWAP properties **0**; SLOT properties **0**; exposed nested instances **1**. No other production prop is a content slot: every remaining optional prop is a string or a `ComponentType` icon.
 
 ### 3e-bis. `LabeledField.control` — corrected
 
