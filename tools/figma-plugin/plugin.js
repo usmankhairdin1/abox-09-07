@@ -801,6 +801,7 @@ figma.showUI(__html__, { width: 420, height: 560 });
 figma.ui.onmessage = async (msg) => {
   lines.length = 0;
   const b0 = msg.type === "b0-run" || msg.type === "b0-verify";
+  const b1 = msg.type === "b1-run" || msg.type === "b1-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
@@ -831,6 +832,19 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyLibraryPages();
+    } else if (msg.type === "b1-run") {
+      say("ABox Phase 52 / Batch B1 — foundation variables");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await ensureB1Variables();
+      await verifyB1();
+    } else if (msg.type === "b1-verify") {
+      say("ABox Phase 52 / Batch B1 — verify only");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await verifyB1();
     }
   } catch (e) {
     say("");
@@ -838,7 +852,9 @@ figma.ui.onmessage = async (msg) => {
     say(
       b0
         ? "RESULT: B0 FAILED — do not proceed to B1."
-        : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
+        : b1
+          ? "RESULT: B1 FAILED — do not proceed to B2."
+          : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
     );
   }
   report();
