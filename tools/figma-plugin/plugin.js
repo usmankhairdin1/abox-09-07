@@ -1487,7 +1487,10 @@ async function b4Build(spec, index) {
     const node = figma.createText();
     if (spec.textStyle) {
       const style = b4Style(index, "text", spec.textStyle);
-      if (style.fontName) await figma.loadFontAsync(style.fontName);
+      if (style.fontName) {
+        await figma.loadFontAsync(style.fontName);
+        node.fontName = style.fontName;
+      }
       node.characters = spec.characters;
       node.textStyleId = style.id;
     } else {
@@ -1626,6 +1629,8 @@ async function b4EnsureSet(set, index, page) {
     if (isNew) {
       component = figma.createComponent();
       component.name = vname;
+      // Figma requires component nodes to live on a page before they can be combined.
+      page.appendChild(component);
     } else {
       for (const child of component.children.slice()) child.remove();
     }
