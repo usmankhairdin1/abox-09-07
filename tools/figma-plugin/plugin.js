@@ -4012,18 +4012,18 @@ async function b7BuildInternal(index, page, shell) {
   await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
   page.appendChild(root);
 
-  const rail = await b7Frame("desktop-rail", { w: 268, h: 900, layout: "VERTICAL", gap: 24, px: 18, py: 18, radius: 28, fillStyle: "ABox/Semantic/sidebar", strokeStyle: "ABox/Semantic/sidebar-border", effectStyle: "ABox/Elevation/plate" }, index);
+  const rail = await b7Frame("desktop-rail", { w: 268, h: 900, layout: "VERTICAL", gap: 24, px: 18, py: 18, radius: 28, fillStyle: "ABox/Semantic/sidebar", strokeStyle: "ABox/Semantic/sidebar/border", effectStyle: "ABox/Elevation/plate" }, index);
   const brand = await b7Frame("rail-brand", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
   brand.appendChild(b7Instance({ of: "ABox/Brand/AboxMark", variants: { tone: "sidebar" }, name: "AboxMark" }));
-  brand.appendChild(await b7Text("brand-label", "Agency in a Box", { size: 16, weight: 600, colorStyle: "ABox/Semantic/sidebar-foreground" }, index));
+  brand.appendChild(await b7Text("brand-label", "Agency in a Box", { size: 16, weight: 600, colorStyle: "ABox/Semantic/sidebar/foreground" }, index));
   rail.appendChild(brand);
   const nav = await b7Frame("rail-navigation", { layout: "VERTICAL", gap: 8 }, index);
   for (const label of ["Dashboard", "Organizations", "Customers", "Tasks", "Commissions"]) {
     nav.appendChild(await b7Pill(label === shell.construction.activeNavSample ? "nav-item[active-sample]" : "nav-item", label, index, {
       icon: "•",
-      fillStyle: label === shell.construction.activeNavSample ? "ABox/Semantic/sidebar-accent" : null,
-      strokeStyle: label === shell.construction.activeNavSample ? "ABox/Semantic/sidebar-border" : null,
-      colorStyle: "ABox/Semantic/sidebar-foreground",
+      fillStyle: label === shell.construction.activeNavSample ? "ABox/Semantic/sidebar/accent" : null,
+      strokeStyle: label === shell.construction.activeNavSample ? "ABox/Semantic/sidebar/border" : null,
+      colorStyle: "ABox/Semantic/sidebar/foreground",
     }));
   }
   rail.appendChild(nav);
