@@ -55,9 +55,29 @@ No other file in the repository changes.
 
 Non-colour collections carry identical values in both modes. No STRING or BOOLEAN variables.
 
-## Alias strategy
+## Resolved semantic inventory (exact)
 
-Primitives are created first, then semantics resolve by name: if a semantic role's Light value equals a primitive's Light value and the role is declared as that token in production, the variable is set as a `VARIABLE_ALIAS` to that primitive, per mode independently. Status tones and metal variables alias to semantics. A raw sRGB value is written only when no primitive/semantic source exists; each such case is reported as a mapping exception.
+`src/styles.css` declares `--color-*` roles in two `@theme inline` blocks:
+
+- Block 1, lines 32–79 — 48 roles: `background`, `foreground`, `surface`, `surface-foreground`, `panel`, `card`, `card-foreground`, `popover`, `popover-foreground`, `primary`, `primary-foreground`, `primary-soft`, `secondary`, `secondary-foreground`, `sage`, `sage-foreground`, `sage-soft`, `muted`, `muted-foreground`, `accent`, `accent-foreground`, `destructive`, `destructive-foreground`, `warning`, `warning-foreground`, `info`, `info-foreground`, `success`, `success-foreground`, `border`, `border-strong`, `hairline`, `input`, `ring`, `ring-offset-background`, `chart/1`, `chart/2`, `chart/3`, `chart/4`, `chart/5`, `sidebar`, `sidebar/foreground`, `sidebar/primary`, `sidebar/primary-foreground`, `sidebar/accent`, `sidebar/accent-foreground`, `sidebar/border`, `sidebar/ring`
+- Block 2, lines 473–480 — 6 roles: `ai`, `ai-foreground`, `surface-1`, `surface-2`, `surface-3`, `brand-accent`
+
+**Exact semantic count: 54.** `ink` is excluded — production declares `--ink` only as a `:root`/`.dark` primitive (lines 100 and 185) with no `--color-ink` theme role, so it belongs to `ABox/Color/Primitive` and must not be duplicated into the Semantic collection. The earlier "48 plus ink" wording is superseded by this resolved list.
+
+Recorded discrepancy: the approved inventory figure of 48 covers Block 1 only. This plan treats the production source as authoritative and includes Block 2's 6 roles, bringing the total to 54. If the 6 Block-2 roles are meant to be excluded, say so before implementation.
+
+Each variable's source declaration is the `--color-<name>: var(--<token>)` line above; the referenced token's `:root` and `.dark` declarations supply the Light and Dark mappings.
+
+## Alias strategy — source-mapping authoritative
+
+Aliasing is derived from the production declaration graph in `src/styles.css`, never from colour-value equality.
+
+- A semantic variable aliases a primitive only when the production source explicitly maps it: `--color-X: var(--Y)` and `--Y` is a declared primitive role. The alias target is `--Y`, resolved separately for `Light` (`:root`) and `Dark` (`.dark`).
+- Two distinct production roles that happen to resolve to identical oklch/sRGB literals remain two distinct variables. Equal values never imply an alias.
+- Where a role's Light and Dark declarations reference different primitives, each mode gets its own alias independently.
+- Where a role resolves through `color-mix(in oklch, …)` or another unsupported runtime computation, no alias and no hard-coded approximation is written; it is recorded as a runtime-computed limitation with its verbatim production source line.
+- Status tones and the 12 metal variables alias according to their actual production source mapping in `status-badge.tsx` / `metal-badge.tsx` and the tokens they reference — again never by colour equality.
+- A raw sRGB value is written only where production declares a literal directly at that role; every such case is reported as a mapping exception in the verification output.
 
 ## Recorded limitations (never silently approximated)
 
