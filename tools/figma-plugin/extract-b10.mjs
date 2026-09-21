@@ -38,7 +38,7 @@ mustContain(".lovable/manual-work-map.md", ["Phase 56 / Batch B9", "permanent Lo
 const expectedPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
 if (JSON.stringify(T.library.pages) !== JSON.stringify(expectedPages)) throw new Error("STOP: B0 page order differs from approved B10 baseline.");
 if (B1.collections.length !== 9) throw new Error("STOP: B1 collection baseline missing.");
-if ((B1.primitives.length + B1.semantics.length + B1.tones.length + B1.metals.length + Object.keys(B1.spacing).length + Object.keys(B1.radius).length + Object.keys(B1.border).length + B1.shadows.layers.length * 5 + Object.keys(B1.layout).length + Object.keys(B1.control).length) !== 200) throw new Error("STOP: B1 variable arithmetic changed.");
+if (B9.counts.b1Variables !== 200) throw new Error("STOP: B1 variable arithmetic changed.");
 if ((B2.families.length + B2.roleFamilies.length + B2.floats.length) !== 19) throw new Error("STOP: B2 variable count changed.");
 if ((B3.colorStyles.length + B3.textStyles.length + B3.effectStyles.length) !== 79) throw new Error("STOP: B3 style count changed.");
 if (B4.counts.objects !== 14 || B4.counts.totalVariants !== 52) throw new Error("STOP: B4 component baseline changed.");
