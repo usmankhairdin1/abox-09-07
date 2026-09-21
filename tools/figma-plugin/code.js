@@ -461,15 +461,31 @@ async function ensureLibraryPages() {
 
   resolved.forEach((page, index) => figma.root.insertChild(index, page));
 
+  say("");
+  say("PAGE INVENTORY (before stray removal)");
+  figma.root.children.forEach((page, index) => {
+    say("  [" + index + "] " + page.name + "  id=" + page.id);
+  });
+  say("");
+
+  // The Figma API refuses remove() on the currently active page. Make a required
+  // page current first so no stray can ever be the active page at removal time.
+  if (names.indexOf(figma.currentPage.name) === -1) {
+    await figma.setCurrentPageAsync(resolved[0]);
+    say("active page  : " + resolved[0].name + " (switched before stray removal)");
+  }
+
   const strays = figma.root.children.filter((p) => names.indexOf(p.name) === -1);
   for (const stray of strays) {
     if (stray.children.length === 0 && figma.root.children.length > 1) {
-      say("page removed : " + stray.name + " (empty default page)");
+      const strayName = stray.name;
       stray.remove();
+      say("page removed : " + strayName + " (empty default page)");
     } else {
       say("UNEXPECTED PAGE: " + stray.name + " (not empty — left untouched)");
     }
   }
+
 
   say("");
   say("PAGE INVENTORY");
