@@ -127,6 +127,17 @@ const kpiChildren = (n) =>
     ),
   );
 
+// Production KPI rows are a single non-wrapping grid row (gap-4); both axes hug.
+const KPI_ROOT = {
+  layout: "HORIZONTAL",
+  wrap: "NO_WRAP",
+  gap: 16,
+  counterGap: 0,
+  primarySizing: "AUTO",
+  counterSizing: "AUTO",
+};
+
+
 const kpiRow = {
   name: "ABox/Pattern/KpiRow",
   kind: "SET",
