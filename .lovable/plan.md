@@ -81,13 +81,43 @@ Naming rule, applied uniformly: a Boolean representing an optional-render guard 
 | `ABox/Card/KpiCard` | `hasIcon`, `hasDelta`, `hasDeltaLabel`, `hasHint` | `kpi-card.tsx:48` `{Icon && …}`, `:74` `{delta && …}`, `:84` `{delta?.label && <span className="text-muted-foreground">{delta.label}</span>}`, `:85` `{hint && …}` | `icon`, `delta`, `hint` (no B4 name for the delta label — new in B5) |
 | `ABox/Feedback/EmptyState` | `hasIcon`, `hasBody`, `hasAction` | `empty-state.tsx:18,23,24` | `icon`, `body` (+ `action` slot) |
 
-Booleans: 4 + 3 + 3 = **10**. The renames from the B4 recorded names are forced by the collision rule and touch no existing Figma object, since no Boolean exists yet.
+Booleans: 4 (PageHeader) + 4 (KpiCard) + 3 (EmptyState) = **11**. The renames from the B4 recorded names are forced by the collision rule and touch no existing Figma object, since no Boolean exists yet.
 
 ### 3d. Text properties
 
-`ABox/Action/ActionPill` → `label`; `ABox/Action/Button` → `label`; `ABox/Status/StatusBadge` → `label`; `ABox/Status/MetalBadge` → `label`; `ABox/Card/KpiCard` → `label`, `value`; `ABox/Header/PageHeader` → `title`, `eyebrow`, `description`; `ABox/Nav/ModuleTab` → `label`; `ABox/Nav/WizardStep` → `label`; `ABox/Feedback/EmptyState` → `title`, `body`; `ABox/Form/LabeledField` → `label`; `ABox/Form/Input` → `placeholder`.
+`ABox/Action/ActionPill` → `label`; `ABox/Action/Button` → `label`; `ABox/Status/StatusBadge` → `label`; `ABox/Status/MetalBadge` → `label`; `ABox/Card/KpiCard` → `label`, `value`, `deltaLabel`; `ABox/Header/PageHeader` → `title`, `eyebrow`, `description`; `ABox/Nav/ModuleTab` → `label`; `ABox/Nav/WizardStep` → `label`; `ABox/Feedback/EmptyState` → `title`, `body`; `ABox/Form/LabeledField` → `label`; `ABox/Form/Input` → `placeholder`.
 
-Text: 1+1+1+1+2+3+1+1+2+1+1 = **15**, exactly the `textProps` inventory recorded in `tokens-b4.js`.
+Text: 1+1+1+1+3+3+1+1+2+1+1 = **16** — the 15 `textProps` recorded in `tokens-b4.js` plus `KpiCard.deltaLabel` added in §3d-bis.
+
+### 3d-bis. `delta.label` — corrected
+
+Source findings from `src/components/abox/kpi-card.tsx`:
+
+1. Rendered: yes. `:84` `{delta?.label && <span className="text-muted-foreground">{delta.label}</span>}` — caller-supplied text, output verbatim with no transformation.
+2. Declared at `:12` as `delta?: { pct: number; label?: string }`; it sits inside the `(delta || hint)` row opened at `:72`, beside the pct chip (`:74-83`) and `hint` (`:85`).
+3. Call sites supplying `delta`, all real production routes: `app.dashboard.tsx:32,33,34` pass `{ pct: … }` with **no** label; `app.index.tsx:85,86,88` pass literal strings — `"this month"`, `"this week"`, `"vs. last month"`. So the field is optional in practice and always a literal when present; never computed.
+4. It becomes a Figma **Text** property: it is caller-supplied text rendered unchanged, exactly like `label` and `value`.
+5. Exact final name: `deltaLabel`. Figma property names are flat, so the nested React path `delta.label` cannot be used literally, and `delta` is already excluded by the collision rule (§3b). `deltaLabel` is the minimal flattening of the production path, introduces no new concept, and pairs with the separate presence guard `hasDeltaLabel` required by the independent `delta?.label &&` check at `:84` — that guard is distinct from `hasDelta` at `:74`, because `app.dashboard.tsx:32` proves delta can be present while its label is absent.
+
+Mapping: `delta.label` (`kpi-card.tsx:12`, rendered `:84`) → Boolean `hasDeltaLabel` + Text `deltaLabel`. Default text content: `"this month"`, the literal at `app.index.tsx:85`; default `hasDeltaLabel = true` since a production call site supplies it. No other default is invented.
+
+The pct chip text at `:81` (`{delta.pct >= 0 ? "▲" : "▼"} {Math.abs(delta.pct).toFixed(1)}%`) is **not** a text property: it is computed from a numeric prop through `Math.abs(...).toFixed(1)` plus a glyph chosen by the same branch that drives `deltaSign`; recorded as a limitation, not flattened into caller-editable text.
+
+### 3d-ter. Complete final `ABox/Card/KpiCard` property inventory
+
+| Type | Name | Values / content | Source | Default |
+| --- | --- | --- | --- | --- |
+| Variant | `tone` | `default`, `primary`, `sage`, `warning` | `:15`, `TONE` `:26-31` | `default` (`:33` `tone = "default"`) |
+| Variant | `deltaSign` | `positive`, `negative` | `:78` `delta.pct >= 0 ? "text-sage" : "text-destructive"` | `positive` (every production call site passes a positive literal) |
+| Boolean | `hasIcon` | show/hide icon tile | `:13`, `:48` | `true` (all six call sites pass `icon`) |
+| Boolean | `hasDelta` | show/hide pct chip | `:12`, `:74` | `true` |
+| Boolean | `hasDeltaLabel` | show/hide the delta label text | `:12`, `:84` | `true` (`app.index.tsx:85`) |
+| Boolean | `hasHint` | show/hide hint | `:14`, `:85` | `false` (no production call site passes `hint`) |
+| Text | `label` | metric label | `:10`, `:46` | `"Active members"` (`app.index.tsx:85`) |
+| Text | `value` | metric value | `:11`, `:62-70` | `"1,284"`-shaped literal read from the same call site |
+| Text | `deltaLabel` | delta caption | `:12`, `:84` | `"this month"` (`app.index.tsx:85`) |
+
+KpiCard property count: 2 variant + 4 Boolean + 3 Text = **9** (variants of the set: `tone` × `deltaSign` = 8, unchanged).
 
 ### 3e. Content slots — complete audit
 
