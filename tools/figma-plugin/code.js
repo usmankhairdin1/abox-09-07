@@ -7501,9 +7501,11 @@ async function verifyB4() {
   const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
 
   const page = b4Page();
-  const sets = b4AllNodes(["COMPONENT_SET"]).filter((n) => n.name.indexOf("ABox/") === 0);
+  // B6 pattern assets ("ABox/Pattern/…") live on 02 Patterns and are not B4/B5 primitives.
+  const b4Own = (n) => n.name.indexOf("ABox/") === 0 && n.name.indexOf("ABox/Pattern/") !== 0;
+  const sets = b4AllNodes(["COMPONENT_SET"]).filter(b4Own);
   const standalone = b4AllNodes(["COMPONENT"]).filter(
-    (n) => n.name.indexOf("ABox/") === 0 && (!n.parent || n.parent.type !== "COMPONENT_SET"),
+    (n) => b4Own(n) && (!n.parent || n.parent.type !== "COMPONENT_SET"),
   );
   const variants = sets.reduce((n, s) => n + s.children.length, 0);
   const C = ABOX_B4.counts;
@@ -7637,8 +7639,9 @@ async function verifyB4() {
     figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
     "B0 pages unchanged: exactly 7, in order, none created/renamed/reordered",
   );
-  const others = figma.root.children.filter((p) => p.name !== B4_PAGE);
-  add(others.every((p) => p.children.length === 0), "pages 00, 02, 03, 04, 05, 06 remain empty");
+  // "02 Patterns" is B6's page; every other non-component page must stay empty.
+  const others = figma.root.children.filter((p) => p.name !== B4_PAGE && p.name !== "02 Patterns");
+  add(others.every((p) => p.children.length === 0), "pages 00, 03, 04, 05, 06 remain empty (02 Patterns is B6-owned)");
   add(
     page.children.length === sets.length + standalone.length,
     'page "01 Components" holds exactly the ' + (sets.length + standalone.length) + " B4 objects (Figma requires component nodes to live on a page)",
@@ -8004,9 +8007,11 @@ async function verifyB5() {
   const A = ABOX_B5.variantAxis;
   const index = await b4StyleIndex();
 
-  const sets = b4AllNodes(["COMPONENT_SET"]).filter((n) => n.name.indexOf("ABox/") === 0);
+  // B6 pattern assets ("ABox/Pattern/…") live on 02 Patterns and are not B4/B5 primitives.
+  const b5Own = (n) => n.name.indexOf("ABox/") === 0 && n.name.indexOf("ABox/Pattern/") !== 0;
+  const sets = b4AllNodes(["COMPONENT_SET"]).filter(b5Own);
   const standalone = b4AllNodes(["COMPONENT"]).filter(
-    (n) => n.name.indexOf("ABox/") === 0 && (!n.parent || n.parent.type !== "COMPONENT_SET"),
+    (n) => b5Own(n) && (!n.parent || n.parent.type !== "COMPONENT_SET"),
   );
   const variants = sets.reduce((n, s) => n + s.children.length, 0);
 
