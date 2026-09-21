@@ -6202,6 +6202,12 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB7();
+    } else if (msg.type === "b7-cleanup-incomplete-shells") {
+      say("ABox Phase 54 / Batch B7 — remove incomplete shell components");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b7CleanupIncompleteShells();
     } else if (msg.type === "b8-run") {
       say("ABox Phase 55 / Batch B8 — experiences & journey compositions");
       say("file: " + figma.root.name);
