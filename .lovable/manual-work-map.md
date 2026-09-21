@@ -1232,3 +1232,37 @@ Offline dry-run only: `RESULT: B2 PASSED` on both runs, all 23 structural checks
 ### 5. Changed files
 
 Created `tools/figma-plugin/extract-b2.mjs` and generated `tokens-b2.js`. Modified `plugin.js` (B2 create/verify + entry), `ui.html` (two buttons), `build.mjs` (concatenates `tokens-b2.js`), `README.md`, `.lovable/manual-work-map.md`. `code.js` regenerated only via `node build.mjs`, never hand-edited. No `src/` change. Rollback: revert the plugin-layer files and this block.
+
+---
+
+## Phase 52 / Batch B3 — Foundational styles (2026-09-21)
+
+Scope: plugin layer only. No `src/` diff; B0 pages unchanged and empty; B1 (9 collections / 200 variables) and B2 (`ABox/Typography`, 19 variables) read-only and asserted untouched; proof file untouched; no publishing; no B4 work.
+
+### 1. Architecture decision
+
+Figma paint and effect styles bind to variables, so every B3 style is a single mode-independent wrapper around the mode-aware B1 variable. No Light/Dark style duplicates exist, no colour style carries a literal fill, and no style was created because two values matched.
+
+### 2. Inventory — 79 styles
+
+Colour 72: `ABox/Semantic/<role>` for all 54 production roles (bound to `ABox/Color/Semantic`), `ABox/Status/<tone>` for the six StatusBadge tones and `ABox/Metal/<tier>` plus `<tier>-fg` for the twelve MetalBadge entries (bound to `ABox/Status`). The 62 primitives get no style: production consumes them only as alias targets.
+
+Text 2: `ABox/Text/eyebrow` (Inter Tight, 11px, 500, 0 tracking, uppercase) and `ABox/Text/serial` (Inter Tight, 10px, 0 tracking, uppercase; production declares no weight, so the CSS-inherited 400 is used and stated). `base`, `heading` and `display` are not text styles — production declares no font-size for them.
+
+Effect 5: `ABox/Elevation/{card,elevated,drawer,plate,glow}`, nine layers total, each layer's `offsetX`/`offsetY`/`radius`/`spread`/`color` bound to the existing `ABox/Elevation` variables so no number is duplicated.
+
+### 3. Limitations recorded verbatim
+
+`color-mix()` badge tints (runtime-computed); `oklch()` -> sRGB with the literal preserved; heading/display/base have no production font-size; `font-variation-settings` (261, 287), `font-feature-settings` (254), `font-variant-numeric` (305) have no Text Style property; eyebrow/serial `color: var(--muted-foreground)` is carried by a colour style, not the text style; `plan-o-assistant.tsx:27` composes `--shadow-glow` with an inline layer (component-level); `--shadow-overlay` (462) is an unused alias of `--shadow-elevated`; no `.dark` shadow override exists; decorative utilities, motion keyframes and responsive breakpoints are not styles; grid styles = zero.
+
+### 4. Idempotency
+
+Exact-name matching per category. Existing style reused and updated in place. Duplicate name in a category = STOP. Same name in another category = STOP. Unrelated non-ABox styles counted and never touched.
+
+### 5. Execution status — OPEN
+
+Offline dry-run only: `RESULT: B3 PASSED` on both runs, all 24 structural checks PASS, strict "created" line count in run 2 = 0, 79 styles, B1 200 and B2 19 variables unchanged. Its ids are mock ids and are never presented as Figma ids. Real evidence requires the user running the plugin in Figma Desktop twice with identical style ids.
+
+### 6. Changed files
+
+Created `tools/figma-plugin/extract-b3.mjs` and generated `tokens-b3.js`. Modified `plugin.js` (B3 create/verify + entry), `ui.html` (two buttons), `build.mjs` (concatenates `tokens-b3.js`), `README.md`, `.lovable/manual-work-map.md`. `code.js` regenerated only via `node build.mjs`, never hand-edited. No `src/` change. Rollback: revert the plugin-layer files and this block.
