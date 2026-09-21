@@ -41,6 +41,43 @@ Inter Tight styles and variable axes Figma exposes, then records the native 400 
 Re-running rebuilds in place; it does not create duplicates. **Verify only**
 re-checks without creating anything.
 
+## Two files, two batches
+
+The plugin enforces which file each action may run in:
+
+| Action | Required file |
+| --- | --- |
+| Run proof / Verify only (Phase 52A) | `ABox Proof — Scratch` |
+| Create library pages / Verify library pages (Batch B0) | `ABox Design System — Library` |
+
+Running an action in the wrong file stops immediately with `STOP: wrong target file`
+and changes nothing, so the proof objects can never be touched by B0 and vice versa.
+
+## Batch B0 — library foundation pages
+
+Create a new, empty Figma Design file named exactly `ABox Design System — Library`
+(same team as the scratch file, with Can edit). Open it, run the plugin and click
+**Create library pages**. It creates exactly these pages, in this order:
+
+```
+00 Foundations
+01 Components
+02 Patterns
+03 Shells
+04 Experiences
+05 Screens
+06 Documentation
+```
+
+Pages are matched by exact name, so re-running reuses and reorders the same pages
+instead of duplicating them; page ids are printed on every run for comparison. An
+empty leftover default page is removed; a non-empty stray page is reported and the
+run fails. Duplicate names stop the run rather than being guessed at.
+
+B0 creates no variables, text styles, effect styles, components or variants, and
+never publishes the library. The report ends with `RESULT: B0 PASSED` or
+`RESULT: B0 FAILED`.
+
 ## Library publishing check
 
 In the scratch file, open the Assets panel and look for the publish/library control.
