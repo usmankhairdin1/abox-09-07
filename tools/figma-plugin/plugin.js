@@ -3823,7 +3823,46 @@ function b7Instance(spec) {
   return inst;
 }
 
-function b7Frame(name, opts, index) {
+async function b7Frame(name, opts, index) {
+  const node = figma.createFrame();
+  node.name = name;
+  node.layoutMode = opts.layout || "VERTICAL";
+  node.layoutWrap = opts.wrap || "NO_WRAP";
+  node.primaryAxisSizingMode = opts.primarySizing || "AUTO";
+  node.counterAxisSizingMode = opts.counterSizing || "AUTO";
+  node.primaryAxisAlignItems = opts.justify || "MIN";
+  node.counterAxisAlignItems = opts.align || "MIN";
+  node.itemSpacing = opts.gap || 0;
+  if (node.layoutWrap === "WRAP") node.counterAxisSpacing = opts.counterGap || 0;
+  node.paddingLeft = opts.pl != null ? opts.pl : opts.px || 0;
+  node.paddingRight = opts.pr != null ? opts.pr : opts.px || 0;
+  node.paddingTop = opts.pt != null ? opts.pt : opts.py || 0;
+  node.paddingBottom = opts.pb != null ? opts.pb : opts.py || 0;
+  node.cornerRadius = opts.radius || 0;
+  // documentAccess: dynamic-page forbids the synchronous style-id setters.
+  if (opts.fillStyle) await node.setFillStyleIdAsync(b4Style(index, "paint", opts.fillStyle).id);
+  else node.fills = [];
+  if (opts.strokeStyle) {
+    await node.setStrokeStyleIdAsync(b4Style(index, "paint", opts.strokeStyle).id);
+    node.strokeWeight = opts.strokeWeight || 1;
+  } else {
+    node.strokes = [];
+  }
+  if (opts.effectStyle) await node.setEffectStyleIdAsync(b4Style(index, "effect", opts.effectStyle).id);
+  if (opts.w || opts.h) {
+    node.resize(opts.w || node.width, opts.h || node.height);
+    if (opts.w) node.primaryAxisSizingMode = opts.primarySizing || node.primaryAxisSizingMode;
+    if (opts.h) node.counterAxisSizingMode = opts.counterSizing || node.counterAxisSizingMode;
+  }
+  return node;
+}
+
+/*
+ * B8/B9/B10 builders still call the frame helper synchronously. Their own batches
+ * carry the dynamic-page correction; until then they keep the original synchronous
+ * implementation unchanged so this B7 fix cannot alter their behaviour.
+ */
+function b7FrameLegacy(name, opts, index) {
   const node = figma.createFrame();
   node.name = name;
   node.layoutMode = opts.layout || "VERTICAL";
@@ -3856,6 +3895,8 @@ function b7Frame(name, opts, index) {
   return node;
 }
 
+
+
 async function b7Text(name, characters, opts, index) {
   const node = figma.createText();
   node.name = name;
@@ -3865,7 +3906,7 @@ async function b7Text(name, characters, opts, index) {
       await figma.loadFontAsync(style.fontName);
       node.fontName = style.fontName;
     }
-    node.textStyleId = style.id;
+    await node.setTextStyleIdAsync(style.id);
   } else {
     const font = await b4Font(opts.weight || 400);
     node.fontName = font;
@@ -3873,12 +3914,12 @@ async function b7Text(name, characters, opts, index) {
     if (opts.letterSpacingPercent != null) node.letterSpacing = { unit: "PERCENT", value: opts.letterSpacingPercent };
   }
   node.characters = characters;
-  if (opts.colorStyle) node.fillStyleId = b4Style(index, "paint", opts.colorStyle).id;
+  if (opts.colorStyle) await node.setFillStyleIdAsync(b4Style(index, "paint", opts.colorStyle).id);
   return node;
 }
 
 async function b7Pill(name, label, index, opts) {
-  const frame = b7Frame(name, {
+  const frame = await b7Frame(name, {
     layout: "HORIZONTAL", align: "CENTER", gap: 6, px: 12, py: 8, radius: 9999,
     fillStyle: opts && opts.fillStyle ? opts.fillStyle : null,
     strokeStyle: opts && opts.strokeStyle ? opts.strokeStyle : null,
@@ -3968,15 +4009,15 @@ async function b7BuildInternal(index, page, shell) {
   root.counterAxisSizingMode = "AUTO";
   root.itemSpacing = 24;
   root.paddingLeft = root.paddingRight = root.paddingTop = root.paddingBottom = 24;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
   page.appendChild(root);
 
-  const rail = b7Frame("desktop-rail", { w: 268, h: 900, layout: "VERTICAL", gap: 24, px: 18, py: 18, radius: 28, fillStyle: "ABox/Semantic/sidebar", strokeStyle: "ABox/Semantic/sidebar-border", effectStyle: "ABox/Elevation/plate" }, index);
-  const brand = b7Frame("rail-brand", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
+  const rail = await b7Frame("desktop-rail", { w: 268, h: 900, layout: "VERTICAL", gap: 24, px: 18, py: 18, radius: 28, fillStyle: "ABox/Semantic/sidebar", strokeStyle: "ABox/Semantic/sidebar-border", effectStyle: "ABox/Elevation/plate" }, index);
+  const brand = await b7Frame("rail-brand", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
   brand.appendChild(b7Instance({ of: "ABox/Brand/AboxMark", variants: { tone: "sidebar" }, name: "AboxMark" }));
   brand.appendChild(await b7Text("brand-label", "Agency in a Box", { size: 16, weight: 600, colorStyle: "ABox/Semantic/sidebar-foreground" }, index));
   rail.appendChild(brand);
-  const nav = b7Frame("rail-navigation", { layout: "VERTICAL", gap: 8 }, index);
+  const nav = await b7Frame("rail-navigation", { layout: "VERTICAL", gap: 8 }, index);
   for (const label of ["Dashboard", "Organizations", "Customers", "Tasks", "Commissions"]) {
     nav.appendChild(await b7Pill(label === shell.construction.activeNavSample ? "nav-item[active-sample]" : "nav-item", label, index, {
       icon: "•",
@@ -3988,9 +4029,9 @@ async function b7BuildInternal(index, page, shell) {
   rail.appendChild(nav);
   root.appendChild(rail);
 
-  const content = b7Frame("workspace-column", { w: 1080, h: 900, layout: "VERTICAL", gap: 28 }, index);
-  const top = b7Frame("top-bar", { layout: "HORIZONTAL", align: "CENTER", gap: 16, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
-  const wp = b7Frame("workspace-pill", { layout: "VERTICAL", gap: 2 }, index);
+  const content = await b7Frame("workspace-column", { w: 1080, h: 900, layout: "VERTICAL", gap: 28 }, index);
+  const top = await b7Frame("top-bar", { layout: "HORIZONTAL", align: "CENTER", gap: 16, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
+  const wp = await b7Frame("workspace-pill", { layout: "VERTICAL", gap: 2 }, index);
   wp.appendChild(await b7Text("workspace-label", shell.construction.workspaceLabel, { size: 11, weight: 500, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   wp.appendChild(await b7Text("entity-label", shell.construction.entity, { size: 14, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   top.appendChild(wp);
@@ -3998,14 +4039,14 @@ async function b7BuildInternal(index, page, shell) {
   top.appendChild(await b7Pill("action-orb-group", "Tasks · Notifications · Theme · Account", index, { icon: "◌", colorStyle: "ABox/Semantic/muted-foreground" }));
   content.appendChild(top);
 
-  const header = b7Frame("page-header", { layout: "HORIZONTAL", align: "CENTER", gap: 20 }, index);
-  const copy = b7Frame("page-header-copy", { layout: "VERTICAL", gap: 8 }, index);
+  const header = await b7Frame("page-header", { layout: "HORIZONTAL", align: "CENTER", gap: 20 }, index);
+  const copy = await b7Frame("page-header-copy", { layout: "VERTICAL", gap: 8 }, index);
   copy.appendChild(await b7Text("eyebrow", shell.construction.eyebrow, { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   copy.appendChild(await b7Text("title", shell.construction.pageTitle, { size: 44, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   header.appendChild(copy);
-  header.appendChild(b7Frame("actions-region", { w: 220, h: 44, layout: "HORIZONTAL", gap: 8, px: 0, py: 0 }, index));
+  header.appendChild(await b7Frame("actions-region", { w: 220, h: 44, layout: "HORIZONTAL", gap: 8, px: 0, py: 0 }, index));
   content.appendChild(header);
-  const main = b7Frame("content-region — shell placeholder", { w: 980, h: 520, layout: "VERTICAL", gap: 0, px: 24, py: 24, radius: 24, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const main = await b7Frame("content-region — shell placeholder", { w: 980, h: 520, layout: "VERTICAL", gap: 0, px: 24, py: 24, radius: 24, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   content.appendChild(main);
   content.appendChild(await b7Pill("assistant-launcher-region", "Plan-AI", index, { icon: "✦", fillStyle: "ABox/Semantic/primary", colorStyle: "ABox/Semantic/primary-foreground" }));
   root.appendChild(content);
@@ -4024,17 +4065,17 @@ async function b7BuildMarketplaceVariant(index, shell, variant) {
   root.paddingLeft = root.paddingRight = 32;
   root.paddingTop = variant.value === "landing" ? 24 : 16;
   root.paddingBottom = 32;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
 
-  const header = b7Frame("header-pill", { layout: "HORIZONTAL", align: "CENTER", gap: 18, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
-  const brand = b7Frame("brand-home-region", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
+  const header = await b7Frame("header-pill", { layout: "HORIZONTAL", align: "CENTER", gap: 18, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
+  const brand = await b7Frame("brand-home-region", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
   brand.appendChild(b7Instance({ of: "ABox/Brand/AboxMark", variants: { tone: "primary" }, name: "AboxMark" }));
-  const brandText = b7Frame("brand-copy", { layout: "VERTICAL", gap: 2 }, index);
+  const brandText = await b7Frame("brand-copy", { layout: "VERTICAL", gap: 2 }, index);
   brandText.appendChild(await b7Text("brand-name", "ABox", { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   brandText.appendChild(await b7Text("brand-tagline", "Agency in a Box", { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   brand.appendChild(brandText);
   header.appendChild(brand);
-  const nav = b7Frame("marketplace-navigation", { layout: "HORIZONTAL", align: "CENTER", gap: 6 }, index);
+  const nav = await b7Frame("marketplace-navigation", { layout: "HORIZONTAL", align: "CENTER", gap: 6 }, index);
   if (variant.navAddsShopPlans) nav.appendChild(await b7Pill("pill-link-shop-plans", "Shop plans", index, { icon: "▦" }));
   nav.appendChild(await b7Pill("pill-link-ichra", "ICHRA", index, { icon: "▣" }));
   nav.appendChild(await b7Pill("pill-link-agent-help", "Agent help", index, { icon: "?" }));
@@ -4044,7 +4085,7 @@ async function b7BuildMarketplaceVariant(index, shell, variant) {
   root.appendChild(header);
 
   if (variant.hasProductRegion) {
-    const rail = b7Frame("product-switcher-region", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8, px: 12, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+    const rail = await b7Frame("product-switcher-region", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8, px: 12, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
     for (const key of ABOX_B7.shells[1].productKeys) {
       rail.appendChild(await b7Pill(key === variant.construction.product ? "product-item[active-sample]" : "product-item", key.toUpperCase(), index, {
         icon: "•",
@@ -4055,9 +4096,9 @@ async function b7BuildMarketplaceVariant(index, shell, variant) {
     }
     root.appendChild(rail);
   }
-  root.appendChild(b7Frame("content-region — shell placeholder", { w: 1180, h: 440, layout: "VERTICAL", gap: 0, px: 24, py: 24, radius: 0 }, index));
-  const footer = b7Frame("footer-plate", { layout: "VERTICAL", gap: 18, px: 28, py: 28, radius: 28, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
-  const footBrand = b7Frame("footer-brand-region", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
+  root.appendChild(await b7Frame("content-region — shell placeholder", { w: 1180, h: 440, layout: "VERTICAL", gap: 0, px: 24, py: 24, radius: 0 }, index));
+  const footer = await b7Frame("footer-plate", { layout: "VERTICAL", gap: 18, px: 28, py: 28, radius: 28, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const footBrand = await b7Frame("footer-brand-region", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
   footBrand.appendChild(b7Instance({ of: "ABox/Brand/AboxMark", variants: { tone: "foreground" }, name: "AboxMark" }));
   footBrand.appendChild(await b7Text("footer-brand-copy", "ABox · Agency in a Box", { size: 14, weight: 500, colorStyle: "ABox/Semantic/foreground" }, index));
   footer.appendChild(footBrand);
@@ -4078,17 +4119,17 @@ async function b7BuildMember(index, page, shell) {
   root.itemSpacing = 28;
   root.paddingLeft = root.paddingRight = 32;
   root.paddingTop = root.paddingBottom = 24;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
   page.appendChild(root);
 
-  const header = b7Frame("header-pill", { layout: "HORIZONTAL", align: "CENTER", gap: 16, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
+  const header = await b7Frame("header-pill", { layout: "HORIZONTAL", align: "CENTER", gap: 16, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
   header.appendChild(b7Instance({ of: "ABox/Brand/AboxMark", variants: { tone: "primary" }, name: "AboxMark" }));
   header.appendChild(await b7Text("member-workspace-label", "Member workspace", { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   header.appendChild(await b7Pill("member-header-actions", "Hello · Theme · Sign out", index, { icon: "◌" }));
   root.appendChild(header);
 
-  const body = b7Frame("member-body", { layout: "HORIZONTAL", gap: 32 }, index);
-  const nav = b7Frame("member-nav", { layout: "VERTICAL", gap: 12 }, index);
+  const body = await b7Frame("member-body", { layout: "HORIZONTAL", gap: 32 }, index);
+  const nav = await b7Frame("member-nav", { layout: "VERTICAL", gap: 12 }, index);
   for (const label of shell.construction.navItems) {
     nav.appendChild(await b7Pill(label === shell.construction.activeNavSample ? "member-nav/item[active-sample]" : "member-nav/item", label, index, {
       icon: "•",
@@ -4098,7 +4139,7 @@ async function b7BuildMember(index, page, shell) {
     }));
   }
   body.appendChild(nav);
-  body.appendChild(b7Frame("content-region — shell placeholder", { w: 920, h: 560, layout: "VERTICAL", gap: 0, px: 40, py: 40, radius: 24, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index));
+  body.appendChild(await b7Frame("content-region — shell placeholder", { w: 920, h: 560, layout: "VERTICAL", gap: 0, px: 40, py: 40, radius: 24, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index));
   root.appendChild(body);
   root.appendChild(await b7Pill("assistant-launcher-region", "Plan-AI", index, { icon: "✦", fillStyle: "ABox/Semantic/primary", colorStyle: "ABox/Semantic/primary-foreground" }));
   b7SetDescription(root, shell);
@@ -4221,6 +4262,79 @@ async function b7EnsureStandalone(index, page, shell) {
   return node;
 }
 
+/** The approved region list for every node B7 is allowed to own on 03 Shells. */
+function b7ExpectedRegions(name) {
+  if (name === "ABox/Shell/Internal") {
+    return ["desktop-rail", "top-bar", "page-header", "content-region — shell placeholder", "assistant-launcher-region"];
+  }
+  if (name === "ABox/Shell/Member") {
+    return ["header-pill", "member-body", "member-nav", "content-region — shell placeholder", "assistant-launcher-region"];
+  }
+  if (name === "variant=flow") {
+    return ["header-pill", "product-switcher-region", "content-region — shell placeholder", "footer-plate", "assistant-launcher-region"];
+  }
+  if (name === "variant=landing") {
+    return ["header-pill", "content-region — shell placeholder", "footer-plate", "assistant-launcher-region"];
+  }
+  return null;
+}
+
+/**
+ * Removes only nodes this run created and only when their name is an approved B7 shell
+ * or approved variant node. Pre-existing nodes and Component Sets are never touched.
+ */
+async function b7Guarded(page, label, fn) {
+  const before = {};
+  for (const child of page.children) before[child.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const child of page.children.slice()) {
+      if (before[child.id]) continue;
+      if (child.type === "COMPONENT_SET") continue;
+      if (!b7ExpectedRegions(child.name)) continue;
+      say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
+      child.remove();
+      removed += 1;
+    }
+    if (!removed) say("  (" + label + " left no new node on " + B7_PAGE + ")");
+    throw err;
+  }
+}
+
+/** Guarded removal of provably incomplete B7 shell debris. Never deletes a complete shell. */
+async function b7CleanupIncompleteShells() {
+  await figma.loadAllPagesAsync();
+  const page = b7Page();
+  say("B7 INCOMPLETE-SHELL CLEANUP — " + B7_PAGE);
+  let removed = 0;
+  for (const child of page.children.slice()) {
+    const expected = b7ExpectedRegions(child.name);
+    const live = b7NodePaths(child).map((p) => p.split(":")[1].split("|")[0]);
+    if (child.parent !== page) { say("  KEPT — " + child.name + " is not a direct child of the page."); continue; }
+    if (child.type === "COMPONENT_SET") { say("  KEPT — " + child.name + " id=" + child.id + " is a Component Set."); continue; }
+    if (child.type !== "COMPONENT") { say("  KEPT — " + child.name + " id=" + child.id + " is a " + child.type + ", not a B7 component."); continue; }
+    if (!expected) { say("  KEPT — " + child.name + " id=" + child.id + " is not an approved B7 shell or variant name."); continue; }
+    if (b7HasRequiredShape(child, expected)) {
+      say("  KEPT — " + child.name + " id=" + child.id + " is complete; expected regions all present: " + expected.join(", "));
+      continue;
+    }
+    const instances = await child.getInstancesAsync();
+    if (instances.length) {
+      say("  KEPT — " + child.name + " id=" + child.id + " has " + instances.length + " live instance(s).");
+      continue;
+    }
+    say("  removed incomplete — " + child.name + "  id=" + child.id);
+    say("      expected regions: " + expected.join(", "));
+    say("      live layer names : " + (live.join(", ") || "none"));
+    child.remove();
+    removed += 1;
+  }
+  say("");
+  say("  nodes removed: " + removed + "; nothing else was created, modified or deleted.");
+}
+
 async function ensureB7Shells() {
   await figma.loadAllPagesAsync();
   b7CreatedPhysical = 0;
@@ -4239,8 +4353,10 @@ async function ensureB7Shells() {
   }
 
   for (const shell of ABOX_B7.shells) {
-    if (shell.kind === "COMPONENT_SET") await b7EnsureMarketplace(index, page, shell);
-    else await b7EnsureStandalone(index, page, shell);
+    await b7Guarded(page, shell.name, async () => {
+      if (shell.kind === "COMPONENT_SET") return await b7EnsureMarketplace(index, page, shell);
+      return await b7EnsureStandalone(index, page, shell);
+    });
   }
   say("");
   say("  shell physical ComponentNodes created this run: " + b7CreatedPhysical);
@@ -4273,21 +4389,32 @@ function b7PropKey(owner, name, type) {
   return keys[0];
 }
 
-function b7MainName(inst) {
-  const main = inst.mainComponent;
+// documentAccess: dynamic-page forbids instance.mainComponent — read it asynchronously.
+async function b7MainName(inst) {
+  const main = await inst.getMainComponentAsync();
   if (!main) return "MISSING";
   if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.name;
   return main.name;
 }
 
-function b7NestedComponentIds(root) {
-  const ids = [];
+function b7Instances(root) {
+  const out = [];
   (function walk(n) {
     for (const c of n.children || []) {
-      if (c.type === "INSTANCE") ids.push(b7MainName(c) + " id=" + (c.mainComponent ? (c.mainComponent.parent && c.mainComponent.parent.type === "COMPONENT_SET" ? c.mainComponent.parent.id : c.mainComponent.id) : "MISSING"));
+      if (c.type === "INSTANCE") out.push(c);
       walk(c);
     }
   })(root);
+  return out;
+}
+
+async function b7NestedComponentIds(root) {
+  const ids = [];
+  for (const c of b7Instances(root)) {
+    const main = await c.getMainComponentAsync();
+    const id = main ? (main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.id : main.id) : "MISSING";
+    ids.push((await b7MainName(c)) + " id=" + id);
+  }
   return ids;
 }
 
@@ -4413,12 +4540,13 @@ async function verifyB7() {
     const bodies = top.type === "COMPONENT_SET" ? top.children : [top];
     for (const body of bodies) {
       if ((body.reactions || []).length) protoOk = false;
-      const mark = b7NestedComponentIds(body).filter((line) => line.indexOf("ABox/Brand/AboxMark") === 0);
+      const nested = await b7NestedComponentIds(body);
+      const mark = nested.filter((line) => line.indexOf("ABox/Brand/AboxMark") === 0);
       if (!mark.length) nestedOk = false;
       for (const r of b7Refs(body)) {
         if (!r.prop) shellPropsDetached = false;
       }
-      inventory.push("  " + top.name + (top.type === "COMPONENT_SET" ? " / " + body.name : "") + "  root id=" + body.id + "  root=" + body.type + "/" + body.layoutMode + "\n      nested: " + (b7NestedComponentIds(body).join(" | ") || "none") + "\n      content: " + (b7FindOptional(body, "content-region — shell placeholder") ? b7FindOptional(body, "content-region — shell placeholder").id : "MISSING"));
+      inventory.push("  " + top.name + (top.type === "COMPONENT_SET" ? " / " + body.name : "") + "  root id=" + body.id + "  root=" + body.type + "/" + body.layoutMode + "\n      nested: " + (nested.join(" | ") || "none") + "\n      content: " + (b7FindOptional(body, "content-region — shell placeholder") ? b7FindOptional(body, "content-region — shell placeholder").id : "MISSING"));
     }
   }
   add(nestedOk, "every shell nested component resolves to the expected live B4/B5/B6 component id where used");
@@ -4607,7 +4735,7 @@ function b8ComponentInstance(comp) {
 }
 
 async function b8Card(title, body, source, index) {
-  const card = b7Frame("state-card", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", w: 300, primarySizing: "FIXED" }, index);
+  const card = b7FrameLegacy("state-card", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", w: 300, primarySizing: "FIXED" }, index);
   card.appendChild(await b7Text("state-title", title, { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   card.appendChild(await b7Text("state-body", body, { size: 13, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   card.appendChild(await b7Text("state-source", source, { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
@@ -4615,7 +4743,7 @@ async function b8Card(title, body, source, index) {
 }
 
 async function b8MetadataRegion(spec, index) {
-  const region = b7Frame("metadata/source-and-limitations", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("metadata/source-and-limitations", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("experience-name", spec.name, { size: 14, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   region.appendChild(await b7Text("experience-kind", spec.type + " · source-derived reference composition · no B8 properties/prototypes", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(await b7Text("source-list", spec.sources.join("\n"), { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
@@ -4624,32 +4752,32 @@ async function b8MetadataRegion(spec, index) {
 }
 
 async function b8ShellRegion(spec, index) {
-  const region = b7Frame("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "B7 shell instance", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(b8ShellInstance(spec));
   return region;
 }
 
 async function b8SequenceRegion(spec, index) {
-  const region = b7Frame("journey-sequence", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("journey-sequence", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Journey states", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  const row = b7Frame("state-cards", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
+  const row = b7FrameLegacy("state-cards", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
   for (const item of spec.sequence) row.appendChild(await b8Card(item.title, item.body, item.source, index));
   region.appendChild(row);
   return region;
 }
 
 async function b8ContentRegion(spec, index) {
-  const region = b7Frame("representative-content", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("representative-content", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Existing foundations used", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  const patternRow = b7Frame("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
+  const patternRow = b7FrameLegacy("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
   for (const pat of spec.patterns || []) patternRow.appendChild(b8PatternInstance(pat));
   if (!(spec.patterns || []).length) patternRow.appendChild(await b7Text("no-b6-pattern", "No B6 pattern applies to this journey; route-local composition remains editable native content.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(patternRow);
-  const componentRow = b7Frame("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
+  const componentRow = b7FrameLegacy("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
   for (const comp of spec.components || []) componentRow.appendChild(b8ComponentInstance(comp));
   region.appendChild(componentRow);
-  const native = b7Frame("route-composition-notes", { layout: "VERTICAL", gap: 8, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const native = b7FrameLegacy("route-composition-notes", { layout: "VERTICAL", gap: 8, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   native.appendChild(await b7Text("note-title", "Editable route content", { size: 13, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   native.appendChild(await b7Text("note-body", spec.sequence.map((s) => s.title + ": " + s.body).join("\n"), { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(native);
@@ -4963,7 +5091,7 @@ function b9Instance(name, props, label) {
 }
 
 async function b9MetadataRegion(spec, index) {
-  const region = b7Frame("metadata/source-and-identity", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("metadata/source-and-identity", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("screen-title", spec.title || spec.name, { size: 18, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   region.appendChild(await b7Text("screen-route", (spec.id || "route") + " · " + (spec.route || "no-route") + " · " + spec.sourceType, { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(await b7Text("screen-purpose", spec.purpose || "Source-backed screen composition.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
@@ -4972,7 +5100,7 @@ async function b9MetadataRegion(spec, index) {
 }
 
 async function b9ShellRegion(spec, index) {
-  const region = b7Frame("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", spec.shell && spec.shell.name ? "B7 shell instance" : "Standalone/public route", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   if (spec.shell && spec.shell.name) {
     const inst = b9Instance(spec.shell.name, spec.shell.overrides || {}, "shell-reference-instance");
@@ -4985,16 +5113,16 @@ async function b9ShellRegion(spec, index) {
 }
 
 async function b9FoundationRegion(spec, index) {
-  const region = b7Frame("foundations-and-states", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("foundations-and-states", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Existing foundations reused", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  const patternRow = b7Frame("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
+  const patternRow = b7FrameLegacy("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
   for (const pat of spec.patterns || []) patternRow.appendChild(b9Instance(pat.name, pat.variant || {}, pat.name.split("/").pop()));
   if (!(spec.patterns || []).length) patternRow.appendChild(await b7Text("no-pattern", "No B6 pattern applies; this screen is represented as route-local native content.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(patternRow);
-  const compRow = b7Frame("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
+  const compRow = b7FrameLegacy("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
   for (const name of spec.components || []) compRow.appendChild(b9Instance(name, {}, name.split("/").pop()));
   region.appendChild(compRow);
-  const states = b7Frame("source-backed-states", { layout: "VERTICAL", gap: 6, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const states = b7FrameLegacy("source-backed-states", { layout: "VERTICAL", gap: 6, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   states.appendChild(await b7Text("states-title", "States and responsive evidence", { size: 13, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   states.appendChild(await b7Text("states-list", (spec.states || []).join(", ") + "\n" + (spec.responsive || "canonical desktop"), { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(states);
@@ -5006,7 +5134,7 @@ function b9Outgoing(spec) {
 }
 
 async function b9PrototypeRegion(spec, index) {
-  const region = b7Frame("prototype-links", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("prototype-links", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Source-backed prototype reactions", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   const outgoing = b9Outgoing(spec);
   if (!outgoing.length) {
@@ -5014,7 +5142,7 @@ async function b9PrototypeRegion(spec, index) {
     return region;
   }
   for (const interaction of outgoing) {
-    const link = b7Frame("prototype-link/" + interaction.id, { layout: "HORIZONTAL", align: "CENTER", gap: 8, px: 10, py: 8, radius: 12, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+    const link = b7FrameLegacy("prototype-link/" + interaction.id, { layout: "HORIZONTAL", align: "CENTER", gap: 8, px: 10, py: 8, radius: 12, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
     link.setPluginData("aboxB9InteractionId", interaction.id);
     link.setPluginData("aboxB9ReactionSignature", interaction.signature);
     link.setPluginData("aboxB9TargetKey", interaction.targetKey);
@@ -5031,7 +5159,7 @@ async function b9RuntimeRegion(spec, index) {
   const b = ABOX_B9.interactionClassification.B.filter((i) => i.sourceKey === spec.key).length;
   const c = ABOX_B9.interactionClassification.C.filter((i) => i.sourceKey === spec.key).length;
   const d = ABOX_B9.interactionClassification.D.filter((i) => i.sourceKey === spec.key).length;
-  const region = b7Frame("runtime-boundaries", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("runtime-boundaries", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "B/C/D classifications", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(await b7Text("classification-counts", "B component-state mappings: " + b + "\nC runtime/business-logic metadata: " + c + "\nD unsupported/ambiguous metadata: " + d, { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   return region;
@@ -5487,7 +5615,7 @@ async function b10Text(name, text, opts, index) {
 }
 
 async function b10MetaRegion(spec, index) {
-  const region = b7Frame("metadata/source-and-purpose", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("metadata/source-and-purpose", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b10Text("doc-title", spec.title, { size: 24, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
   region.appendChild(await b10Text("doc-purpose", spec.purpose, { size: 13, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
   region.appendChild(await b10Text("source-list", spec.sources.join("\n"), { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
@@ -5495,16 +5623,16 @@ async function b10MetaRegion(spec, index) {
 }
 
 async function b10ReferenceRegion(spec, index) {
-  const region = b7Frame("reference-links", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("reference-links", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b10Text("region-label", "Native reference links", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
-  const refs = b7Frame("reference-grid", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
+  const refs = b7FrameLegacy("reference-grid", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
   const seen = {};
   for (const ref of spec.references || []) {
     const key = b10ReferenceKey(ref);
     if (seen[key]) continue;
     seen[key] = true;
     const target = b10RequireReference(ref);
-    const chip = b7Frame("reference/" + ref.kind + "/" + String(ref.name).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 10, py: 8, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+    const chip = b7FrameLegacy("reference/" + ref.kind + "/" + String(ref.name).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 10, py: 8, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
     chip.setPluginData("aboxB10ReferenceKind", ref.kind);
     chip.setPluginData("aboxB10ReferenceName", ref.name);
     chip.setPluginData("aboxB10ReferenceId", target.id || ref.name);
@@ -5517,7 +5645,7 @@ async function b10ReferenceRegion(spec, index) {
 }
 
 async function b10RowNode(row, index) {
-  const item = b7Frame("row/" + String(row.label).slice(0, 64).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 12, py: 10, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const item = b7FrameLegacy("row/" + String(row.label).slice(0, 64).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 12, py: 10, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   item.setPluginData("aboxB10RowLabel", row.label);
   item.appendChild(await b10Text("label", row.label, { size: 11, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
   item.appendChild(await b10Text("value", row.value, { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
@@ -5528,7 +5656,7 @@ async function b10RowNode(row, index) {
 }
 
 async function b10SectionNode(section, index) {
-  const wrapper = b7Frame("section/" + section.key, { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 16, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const wrapper = b7FrameLegacy("section/" + section.key, { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 16, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   wrapper.setPluginData("aboxB10SectionKey", section.key);
   wrapper.appendChild(await b10Text("section-title", section.title, { size: 15, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
   for (const r of section.rows) wrapper.appendChild(await b10RowNode(r, index));
@@ -5536,13 +5664,13 @@ async function b10SectionNode(section, index) {
 }
 
 async function b10SectionsRegion(spec, index) {
-  const region = b7Frame("documentation-sections", { layout: "VERTICAL", gap: 12, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("documentation-sections", { layout: "VERTICAL", gap: 12, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   for (const section of spec.sections) region.appendChild(await b10SectionNode(section, index));
   return region;
 }
 
 async function b10EvidenceRegion(spec, index) {
-  const region = b7Frame("evidence-and-boundaries", { layout: "VERTICAL", gap: 8, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = b7FrameLegacy("evidence-and-boundaries", { layout: "VERTICAL", gap: 8, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b10Text("region-label", "Evidence and boundaries", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
   region.appendChild(await b10Text("evidence", ABOX_B10.evidenceStatus.map((e) => e.phase + ": " + e.status + " · " + e.realFigma).join("\n"), { size: 11, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
   region.appendChild(await b10Text("signature", "B10 signature " + spec.signature + " · no screenshots/HTML/flattening · no production app changes · no permanent sync", { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
@@ -5912,7 +6040,7 @@ figma.ui.onmessage = async (msg) => {
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify" || msg.type === "b6-inspect" ||
     msg.type === "b6-signature-diff" ||
     msg.type === "b6-cleanup-stale-variants" || msg.type === "b6-cleanup-incomplete-patterns";
-  const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
+  const b7 = msg.type === "b7-run" || msg.type === "b7-verify" || msg.type === "b7-cleanup-incomplete-shells";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
   const b10 = msg.type === "b10-run" || msg.type === "b10-verify";
@@ -6074,6 +6202,12 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB7();
+    } else if (msg.type === "b7-cleanup-incomplete-shells") {
+      say("ABox Phase 54 / Batch B7 — remove incomplete shell components");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b7CleanupIncompleteShells();
     } else if (msg.type === "b8-run") {
       say("ABox Phase 55 / Batch B8 — experiences & journey compositions");
       say("file: " + figma.root.name);

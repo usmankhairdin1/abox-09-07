@@ -89,10 +89,11 @@ bindings must be written with `setFillStyleIdAsync`, `setStrokeStyleIdAsync`,
 `in set_fillStyleId: Cannot call with documentAccess: dynamic-page`. Reading
 `fillStyleId` / `strokeStyleId` / `effectStyleId` in the verifiers remains valid and is
 unchanged. `b4Build`, `b5KpiVariants` and `b6ApplyRoot` (its single stroke binding, via
-`setStrokeStyleIdAsync`; `b6BuildNode` awaits it) use the async setters. The same
-synchronous pattern still exists in the B7-B10 builders (`b7Frame`, `b7Text`,
-`b7Build*`, `b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`) and must be converted in
-those batches before they are run.
+`setStrokeStyleIdAsync`; `b6BuildNode` awaits it) use the async setters. B7 carries the
+same correction: `b7Frame`, `b7Pill`, `b7Text` and `b7Build*` are async and await the
+style setters. The synchronous copy `b7FrameLegacy` remains only for the B8/B9/B10
+builders (`b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`), which still use the
+synchronous pattern and must be converted in their own batches before they are run.
 
 The same mode also forbids the synchronous `instance.mainComponent` getter
 (`in get_mainComponent: Cannot call with documentAccess: dynamic-page`). B6 reads the main
@@ -489,6 +490,15 @@ flow target binding, B7 must stop rather than creating a detached property.
 B7 creates no screens, no responsive variants, no prototype links, no publishing and no application
 files. Real evidence requires running **Create shells** → **Verify shells** → **Create shells** in
 Figma Desktop and comparing identical ids with zero creations on the second run.
+
+Each per-shell build runs inside `b7Guarded`, which snapshots the children of `03 Shells` and, if the
+build throws, removes only nodes created during that run whose name is an approved shell or
+`variant=…` node — never a pre-existing node and never a Component Set. **Remove incomplete B7 shell
+nodes** (`b7-cleanup-incomplete-shells`) deletes a top-level node on `03 Shells` only when every
+condition holds: its parent is the page, it is a `COMPONENT`, its name is an approved B7 shell or
+variant name, it fails `b7HasRequiredShape` for that name's region list (so a complete shell can
+never qualify), and `getInstancesAsync()` reports zero instances. Anything failing a condition prints
+`KEPT — …` with its expected regions and live layer names, and is left alone.
 
 ## Phase 55 / Batch B8 — experiences
 
