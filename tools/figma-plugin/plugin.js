@@ -3823,7 +3823,7 @@ function b7Instance(spec) {
   return inst;
 }
 
-function b7Frame(name, opts, index) {
+async function b7Frame(name, opts, index) {
   const node = figma.createFrame();
   node.name = name;
   node.layoutMode = opts.layout || "VERTICAL";
