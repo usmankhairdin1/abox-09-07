@@ -22,8 +22,9 @@ All values are transcribed from `src/styles.css` and
 - A Figma account with **Can edit** on the target team/file.
 - A new, empty Figma Design file named `ABox Proof — Scratch`, used for nothing else.
   Verify edit access first by creating and deleting a rectangle.
-- Font **Inter Tight** (Regular and Semi Bold) available to Figma. The plugin stops
-  rather than substituting a font.
+- Font **Inter Tight** available to Figma at native weights 400 and 600. The plugin
+  discovers Figma's exact named styles (including `SemiBold` or `Semi Bold`) or a
+  native `wght` variation axis. It stops rather than guessing or substituting.
 
 ## Install and run
 
@@ -32,6 +33,10 @@ All values are transcribed from `src/styles.css` and
 3. Open the scratch file, run **ABox Figma Proof**, click **Run proof**.
 4. Read the structural report in the plugin panel. It ends with
    `RESULT: PROOF PASSED` or `RESULT: PROOF FAILED`.
+
+Font discovery runs before any proof object is created. The report lists the exact
+Inter Tight styles and variable axes Figma exposes, then records the native 400 and
+600 representations selected. If weight 600 cannot be proven, creation stops.
 
 Re-running rebuilds in place; it does not create duplicates. **Verify only**
 re-checks without creating anything.
@@ -46,6 +51,8 @@ the proof — it is recorded as a constraint for later.
 
 Independent of the plugin's own report, you can confirm the objects by changing the
 `tone` variant, editing the label text and renaming the variable directly in Figma.
+The structural report also reads the font back from the text style and both variant
+labels; the labels must resolve to Inter Tight weight 600.
 
 ## Editing
 
