@@ -491,6 +491,15 @@ B7 creates no screens, no responsive variants, no prototype links, no publishing
 files. Real evidence requires running **Create shells** → **Verify shells** → **Create shells** in
 Figma Desktop and comparing identical ids with zero creations on the second run.
 
+Each per-shell build runs inside `b7Guarded`, which snapshots the children of `03 Shells` and, if the
+build throws, removes only nodes created during that run whose name is an approved shell or
+`variant=…` node — never a pre-existing node and never a Component Set. **Remove incomplete B7 shell
+nodes** (`b7-cleanup-incomplete-shells`) deletes a top-level node on `03 Shells` only when every
+condition holds: its parent is the page, it is a `COMPONENT`, its name is an approved B7 shell or
+variant name, it fails `b7HasRequiredShape` for that name's region list (so a complete shell can
+never qualify), and `getInstancesAsync()` reports zero instances. Anything failing a condition prints
+`KEPT — …` with its expected regions and live layer names, and is left alone.
+
 ## Phase 55 / Batch B8 — experiences
 
 Buttons: **Create experiences** (`b8-run`) and **Verify experiences** (`b8-verify`). Source data is
