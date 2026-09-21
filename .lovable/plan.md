@@ -72,7 +72,7 @@ Before Phase 52A can be marked COMPLETE, the user must return a FINAL REPORT con
 2. Confirmation Inter Tight loaded (no font-substitution halt).
 3. The plugin's verbatim output, including the `PROOF PASSED` line and the structural self-check results.
 4. Object inventory after run 1: names/IDs of the 1 variable, 1 text style, 1 StatusBadge COMPONENT_SET, the 2 variant COMPONENT nodes inside it, the 1 `tone` variant property, and its 2 real tone values.
-5. Object inventory after run 2 confirming no duplicates (counts unchanged; update-in-place observed).
+5. Object inventory after run 2 confirming no duplicates: component-set count, variant-component count, variant-property count, and variant-value count all unchanged; update-in-place observed.
 6. Explicit confirmation no flattened image-based objects were created.
 7. Library-publishing availability: `permitted` or `unavailable`.
 8. Any failure or deviation, recorded verbatim, if the gate did not pass.
