@@ -44,7 +44,7 @@ No other file in the repository changes.
 | Collection | Type | Contents |
 | --- | --- | --- |
 | `ABox/Color/Primitive` | COLOR | one variable per distinct production primitive role path from `:root`/`.dark`; `--color-` stripped, path preserved (`chart/1`); a Light/Dark literal difference stays ONE variable with two mode values; no `.dark` override means Light value copied into Dark |
-| `ABox/Color/Semantic` | COLOR | the 48 approved `@theme inline --color-*` roles plus `ink`; aliases to the matching primitive wherever the role resolves to one, per mode independently |
+| `ABox/Color/Semantic` | COLOR | exactly 54 variables — every `--color-*` role declared in the two `@theme inline` blocks of `src/styles.css` (see resolved inventory below); `ink` is NOT included |
 | `ABox/Status` | COLOR | tones `sage`, `primary`, `amber`, `red`, `sky`, `neutral` aliased to semantic; 12 metal variables (`metal/{platinum,gold,silver,bronze,iron,lead}` and each `-fg`) aliased per production mapping |
 | `ABox/Spacing` | FLOAT | `surface/none 0`, `surface/sm 16`, `surface/md 20`, `surface/lg 24` |
 | `ABox/Radius` | FLOAT | `sm 6`, `md 10`, `lg 14`, `xl 18`, `2xl 22`, `3xl 28`, `4xl 36`, `base 14`, `full 9999` |
@@ -55,9 +55,29 @@ No other file in the repository changes.
 
 Non-colour collections carry identical values in both modes. No STRING or BOOLEAN variables.
 
-## Alias strategy
+## Resolved semantic inventory (exact)
 
-Primitives are created first, then semantics resolve by name: if a semantic role's Light value equals a primitive's Light value and the role is declared as that token in production, the variable is set as a `VARIABLE_ALIAS` to that primitive, per mode independently. Status tones and metal variables alias to semantics. A raw sRGB value is written only when no primitive/semantic source exists; each such case is reported as a mapping exception.
+`src/styles.css` declares `--color-*` roles in two `@theme inline` blocks:
+
+- Block 1, lines 32–79 — 48 roles: `background`, `foreground`, `surface`, `surface-foreground`, `panel`, `card`, `card-foreground`, `popover`, `popover-foreground`, `primary`, `primary-foreground`, `primary-soft`, `secondary`, `secondary-foreground`, `sage`, `sage-foreground`, `sage-soft`, `muted`, `muted-foreground`, `accent`, `accent-foreground`, `destructive`, `destructive-foreground`, `warning`, `warning-foreground`, `info`, `info-foreground`, `success`, `success-foreground`, `border`, `border-strong`, `hairline`, `input`, `ring`, `ring-offset-background`, `chart/1`, `chart/2`, `chart/3`, `chart/4`, `chart/5`, `sidebar`, `sidebar/foreground`, `sidebar/primary`, `sidebar/primary-foreground`, `sidebar/accent`, `sidebar/accent-foreground`, `sidebar/border`, `sidebar/ring`
+- Block 2, lines 473–480 — 6 roles: `ai`, `ai-foreground`, `surface-1`, `surface-2`, `surface-3`, `brand-accent`
+
+**Exact semantic count: 54.** `ink` is excluded — production declares `--ink` only as a `:root`/`.dark` primitive (lines 100 and 185) with no `--color-ink` theme role, so it belongs to `ABox/Color/Primitive` and must not be duplicated into the Semantic collection. The earlier "48 plus ink" wording is superseded by this resolved list.
+
+Recorded discrepancy: the approved inventory figure of 48 covers Block 1 only. This plan treats the production source as authoritative and includes Block 2's 6 roles, bringing the total to 54. If the 6 Block-2 roles are meant to be excluded, say so before implementation.
+
+Each variable's source declaration is the `--color-<name>: var(--<token>)` line above; the referenced token's `:root` and `.dark` declarations supply the Light and Dark mappings.
+
+## Alias strategy — source-mapping authoritative
+
+Aliasing is derived from the production declaration graph in `src/styles.css`, never from colour-value equality.
+
+- A semantic variable aliases a primitive only when the production source explicitly maps it: `--color-X: var(--Y)` and `--Y` is a declared primitive role. The alias target is `--Y`, resolved separately for `Light` (`:root`) and `Dark` (`.dark`).
+- Two distinct production roles that happen to resolve to identical oklch/sRGB literals remain two distinct variables. Equal values never imply an alias.
+- Where a role's Light and Dark declarations reference different primitives, each mode gets its own alias independently.
+- Where a role resolves through `color-mix(in oklch, …)` or another unsupported runtime computation, no alias and no hard-coded approximation is written; it is recorded as a runtime-computed limitation with its verbatim production source line.
+- Status tones and the 12 metal variables alias according to their actual production source mapping in `status-badge.tsx` / `metal-badge.tsx` and the tokens they reference — again never by colour equality.
+- A raw sRGB value is written only where production declares a literal directly at that role; every such case is reported as a mapping exception in the verification output.
 
 ## Recorded limitations (never silently approximated)
 
@@ -72,7 +92,7 @@ Collections and variables match by exact name. Existing ones are reused/updated 
 
 ## Verification (`b1-verify`)
 
-Implements all 31 listed checks — collection count/modes, per-variable existence, `resolvedType`, one primitive per role path, independent Light/Dark comparison against `:root` and `.dark`, 48 semantic roles, alias correctness, 6 tones + 12 metals, exact numeric matches for Spacing/Radius/Border/Layout/Control sizing, 5 variables per elevation layer with both modes and no `Default`, no extra variables in B1 collections, no runtime/tenant/branding values, and unchanged counts of text styles, effect styles, components, component sets and variants against a pre-run baseline, plus B0 pages at indices 0–6 and empty.
+Implements all 31 listed checks — collection count/modes, per-variable existence, `resolvedType`, one primitive per role path, independent Light/Dark comparison against `:root` and `.dark`, the resolved semantic inventory by exact count and exact name list (no hard-coded "48 plus ink" rule; `ink` must be absent from the Semantic collection), alias targets verified against the production declaration graph rather than colour equality, 6 tones + 12 metals, exact numeric matches for Spacing/Radius/Border/Layout/Control sizing, 5 variables per elevation layer with both modes and no `Default`, no extra variables in B1 collections, no runtime/tenant/branding values, and unchanged counts of text styles, effect styles, components, component sets and variants against a pre-run baseline, plus B0 pages at indices 0–6 and empty.
 
 Output includes per-collection variable counts, collection ids, per-variable ids, structural summary, mapping exceptions/limitations, and exactly one of `RESULT: B1 PASSED` or `RESULT: B1 FAILED — do not proceed to B2.`
 
