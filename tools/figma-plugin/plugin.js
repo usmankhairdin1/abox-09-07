@@ -3857,6 +3857,46 @@ async function b7Frame(name, opts, index) {
   return node;
 }
 
+/*
+ * B8/B9/B10 builders still call the frame helper synchronously. Their own batches
+ * carry the dynamic-page correction; until then they keep the original synchronous
+ * implementation unchanged so this B7 fix cannot alter their behaviour.
+ */
+function b7FrameLegacy(name, opts, index) {
+  const node = figma.createFrame();
+  node.name = name;
+  node.layoutMode = opts.layout || "VERTICAL";
+  node.layoutWrap = opts.wrap || "NO_WRAP";
+  node.primaryAxisSizingMode = opts.primarySizing || "AUTO";
+  node.counterAxisSizingMode = opts.counterSizing || "AUTO";
+  node.primaryAxisAlignItems = opts.justify || "MIN";
+  node.counterAxisAlignItems = opts.align || "MIN";
+  node.itemSpacing = opts.gap || 0;
+  if (node.layoutWrap === "WRAP") node.counterAxisSpacing = opts.counterGap || 0;
+  node.paddingLeft = opts.pl != null ? opts.pl : opts.px || 0;
+  node.paddingRight = opts.pr != null ? opts.pr : opts.px || 0;
+  node.paddingTop = opts.pt != null ? opts.pt : opts.py || 0;
+  node.paddingBottom = opts.pb != null ? opts.pb : opts.py || 0;
+  node.cornerRadius = opts.radius || 0;
+  if (opts.fillStyle) node.fillStyleId = b4Style(index, "paint", opts.fillStyle).id;
+  else node.fills = [];
+  if (opts.strokeStyle) {
+    node.strokeStyleId = b4Style(index, "paint", opts.strokeStyle).id;
+    node.strokeWeight = opts.strokeWeight || 1;
+  } else {
+    node.strokes = [];
+  }
+  if (opts.effectStyle) node.effectStyleId = b4Style(index, "effect", opts.effectStyle).id;
+  if (opts.w || opts.h) {
+    node.resize(opts.w || node.width, opts.h || node.height);
+    if (opts.w) node.primaryAxisSizingMode = opts.primarySizing || node.primaryAxisSizingMode;
+    if (opts.h) node.counterAxisSizingMode = opts.counterSizing || node.counterAxisSizingMode;
+  }
+  return node;
+}
+
+
+
 async function b7Text(name, characters, opts, index) {
   const node = figma.createText();
   node.name = name;
