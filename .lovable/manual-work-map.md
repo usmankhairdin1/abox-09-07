@@ -1202,3 +1202,33 @@ Evidence to date is an offline dry-run only (mocked `figma.*` API driving the ge
 ### 6. Changed files and rollback
 
 Changed: `.lovable/manual-work-map.md` (this block) only. Rollback: delete this block. The plugin layer (`extract-b1.mjs`, `tokens-b1.js`, `plugin.js`, `ui.html`, `README.md`, generated `code.js` via `node build.mjs`) is unchanged by this reconciliation.
+
+---
+
+## Phase 52 / Batch B2 — Typography foundation (2026-09-21)
+
+Scope: plugin layer only. No `src/` diff; B0 pages unchanged and empty; B1's nine collections and 200 variables untouched (read-only, asserted in `b2-verify`); proof file untouched; no publishing; no B3 work.
+
+### 1. Source authority
+
+No `tailwind.config.*` exists; Tailwind v4 is configured through `src/styles.css`, which holds every production typography declaration. Four font tokens (`--font-sans` 27, `--font-display` 28, `--font-serif` 29, `--font-mono` 30) and five roles: `html` (244), `h1,h2,h3,.font-display` (257-262), `@utility text-display` (282-288), `@utility text-eyebrow` (290-297), `@utility text-serial` (299-306). Production declares no `--text-*`, `--leading-*`, `--tracking-*` or `--font-weight-*` scale tokens; Tailwind's built-in utilities are library-owned defaults and are not imported. `src/lib/design/**` typography data is reference documentation with zero production importers and was not used as a source.
+
+### 2. Inventory — 1 collection, 19 variables, Light + Dark, no Default
+
+`ABox/Typography`. STRING 9 = 4 `family/*` (production stack verbatim) + 5 `role/*/family` (aliases). FLOAT 10 = heading `weight`,`letter-spacing`; display `weight`,`letter-spacing`,`line-height`; eyebrow `size`,`weight`,`letter-spacing`; serial `size`,`letter-spacing`. Arithmetic check 9 + 10 = 19 is asserted at runtime and printed in the report.
+
+Light and Dark values are intentionally identical: production declares no `.dark` typography override. No variable exists for a property a role does not declare (`role/base` has family only; `role/serial` has no weight). `--font-serif`/`--font-display` and `--font-mono`/`--font-sans` share stacks but remain four distinct variables; equality is never alias evidence. Aliases exist only where production writes `font-family: var(--font-X)`.
+
+Conversions: rem to px at the 16px root (`0.6875rem`->11, `0.625rem`->10); em letter-spacing to Figma percentage (`-0.028em`->-2.8, `-0.032em`->-3.2); line-height keeps the unitless 1.02. Original literals and `src/styles.css:<line>` stay in every description.
+
+### 3. Recorded limitations
+
+`font-variation-settings` (heading `"wdth" 102, "opsz" 32`; display `"wdth" 102, "opsz" 48`), `font-feature-settings: "ss01", "cv11"` (body), `font-variant-numeric: tabular-nums` (serial), `text-transform: uppercase` (eyebrow, serial) — no Figma variable type; recorded verbatim, not approximated. Eyebrow/serial `color: var(--muted-foreground)` is already a B1 semantic variable and is not duplicated. Font stacks are stored whole though Figma has no fallback concept. JetBrains Mono is loaded in `src/routes/__root.tsx:100` but referenced by no token (`--font-mono` resolves to Inter Tight); no variable created. No text styles, effect styles, components, component sets, variants or page content created.
+
+### 4. Execution status — OPEN
+
+Offline dry-run only: `RESULT: B2 PASSED` on both runs, all 23 structural checks PASS, strict "created" line count in run 2 = 0, totals 10 collections / 219 variables (200 B1 + 19 B2). Its ids are mock ids and are never presented as Figma ids. This workspace has no Figma write path, so real evidence requires the user running the plugin in Figma Desktop twice with identical ids.
+
+### 5. Changed files
+
+Created `tools/figma-plugin/extract-b2.mjs` and generated `tokens-b2.js`. Modified `plugin.js` (B2 create/verify + entry), `ui.html` (two buttons), `build.mjs` (concatenates `tokens-b2.js`), `README.md`, `.lovable/manual-work-map.md`. `code.js` regenerated only via `node build.mjs`, never hand-edited. No `src/` change. Rollback: revert the plugin-layer files and this block.
