@@ -4353,8 +4353,10 @@ async function ensureB7Shells() {
   }
 
   for (const shell of ABOX_B7.shells) {
-    if (shell.kind === "COMPONENT_SET") await b7EnsureMarketplace(index, page, shell);
-    else await b7EnsureStandalone(index, page, shell);
+    await b7Guarded(page, shell.name, async () => {
+      if (shell.kind === "COMPONENT_SET") return await b7EnsureMarketplace(index, page, shell);
+      return await b7EnsureStandalone(index, page, shell);
+    });
   }
   say("");
   say("  shell physical ComponentNodes created this run: " + b7CreatedPhysical);
