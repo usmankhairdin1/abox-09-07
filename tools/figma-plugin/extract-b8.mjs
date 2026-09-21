@@ -81,7 +81,7 @@ mustContain("src/routes/apply.tsx", ["Consent & signature", "Application readine
 mustContain("src/routes/member.index.tsx", ["Welcome back", "Pick up where you left off", "KpiCard"]);
 mustContain("src/routes/member.quotes.tsx", ["Saved quotes & plans", "PlanCard", "saved"]);
 mustContain("src/routes/member.messages.tsx", ["Messages", "Unread"]);
-mustContain("src/routes/member.settings.tsx", ["Settings", "Saving...", "Saved."]);
+mustContain("src/routes/member.settings.tsx", ["Settings", "Saving…", "Saved."]);
 
 const component = (name) => ({ name });
 const pattern = (name, variant) => ({ name, variant: variant || null });
