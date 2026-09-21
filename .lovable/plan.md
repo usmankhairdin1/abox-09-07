@@ -78,7 +78,7 @@ Naming rule, applied uniformly: a Boolean representing an optional-render guard 
 | Object | Boolean properties | Source guard | B4 recorded name |
 | --- | --- | --- | --- |
 | `ABox/Header/PageHeader` | `hasEyebrow`, `hasIcon`, `hasDescription`, `hasActions` | `page-header.tsx:33,36,51,57` | `eyebrow`, `icon`, `description`, `actions` |
-| `ABox/Card/KpiCard` | `hasIcon`, `hasDelta`, `hasHint` | `kpi-card.tsx:60,73,76,86` | `icon`, `delta`, `hint` |
+| `ABox/Card/KpiCard` | `hasIcon`, `hasDelta`, `hasDeltaLabel`, `hasHint` | `kpi-card.tsx:48` `{Icon && …}`, `:74` `{delta && …}`, `:84` `{delta?.label && <span className="text-muted-foreground">{delta.label}</span>}`, `:85` `{hint && …}` | `icon`, `delta`, `hint` (no B4 name for the delta label — new in B5) |
 | `ABox/Feedback/EmptyState` | `hasIcon`, `hasBody`, `hasAction` | `empty-state.tsx:18,23,24` | `icon`, `body` (+ `action` slot) |
 
 Booleans: 4 + 3 + 3 = **10**. The renames from the B4 recorded names are forced by the collision rule and touch no existing Figma object, since no Boolean exists yet.
