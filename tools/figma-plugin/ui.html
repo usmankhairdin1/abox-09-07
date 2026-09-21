@@ -67,6 +67,14 @@
         log.textContent = "Verifying…";
         parent.postMessage({ pluginMessage: { type: "verify" } }, "*");
       };
+      document.getElementById("b0run").onclick = () => {
+        log.textContent = "Creating library pages…";
+        parent.postMessage({ pluginMessage: { type: "b0-run" } }, "*");
+      };
+      document.getElementById("b0verify").onclick = () => {
+        log.textContent = "Verifying library pages…";
+        parent.postMessage({ pluginMessage: { type: "b0-verify" } }, "*");
+      };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
         if (msg && msg.type === "report") log.textContent = msg.text;
