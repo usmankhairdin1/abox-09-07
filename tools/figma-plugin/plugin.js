@@ -2440,6 +2440,475 @@ async function verifyB5() {
   return passed;
 }
 
+/* =====================  Phase 53 / Batch B6 — patterns  ===================== */
+/*
+ * B6 composes production-backed patterns out of the existing B4/B5 components.
+ * It never creates, renames, rebuilds or mutates a B1-B5 object: nested
+ * primitives are live instances, and an existing pattern whose structure
+ * differs from the approved definition is reported, never overwritten.
+ */
+
+const B6_PAGE = "02 Patterns";
+var b6Created = 0;
+
+function b6Say(kind, name, isNew) {
+  if (isNew) {
+    b6Created += 1;
+    say("  " + kind + " created : " + name);
+  } else {
+    say("  " + kind + " reused  : " + name);
+  }
+}
+
+function b6Page() {
+  const page = figma.root.children.filter((p) => p.name === B6_PAGE);
+  if (page.length !== 1) {
+    throw new Error('STOP: B0 page "' + B6_PAGE + '" must exist exactly once (found ' + page.length + ").");
+  }
+  return page[0];
+}
+
+/** Resolve the live B4/B5 object a pattern instances. Never creates anything. */
+function b6Main(name) {
+  const set = b4FindSet(name);
+  if (set) return set;
+  const cmp = b4FindComponent(name);
+  if (cmp) return cmp;
+  throw new Error('STOP: MISSING B4/B5 COMPONENT — "' + name + '" not found in the live file.');
+}
+
+function b6Key(defs, name) {
+  const keys = Object.keys(defs || {}).filter((k) => k.split("#")[0] === name);
+  if (keys.length !== 1) {
+    throw new Error(
+      'STOP: component property "' + name + '" resolves to ' + keys.length + " live definitions; B6 never guesses.",
+    );
+  }
+  return keys[0];
+}
+
+/** Short, deterministic instance layer name — "ABox/Nav/ModuleTab" -> "ModuleTab". */
+function b6InstanceName(of) {
+  const parts = of.split("/");
+  return parts[parts.length - 1];
+}
+
+function b6CreateInstance(spec) {
+  const main = b6Main(spec.of);
+  const source = main.type === "COMPONENT_SET" ? main.defaultVariant || main.children[0] : main;
+  const inst = source.createInstance();
+  const props = {};
+  const defs = inst.componentProperties || {};
+  for (const k of Object.keys(spec.variants || {})) props[b6Key(defs, k)] = spec.variants[k];
+  for (const k of Object.keys(spec.texts || {})) props[b6Key(defs, k)] = spec.texts[k];
+  if (Object.keys(props).length) inst.setProperties(props);
+  inst.name = b6InstanceName(spec.of);
+  return inst;
+}
+
+/** Name of the live main component (the set, when the instance is a variant). */
+function b6MainName(inst) {
+  const main = inst.mainComponent;
+  if (!main) return "MISSING";
+  if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.name;
+  return main.name;
+}
+
+function b6MainId(inst) {
+  const main = inst.mainComponent;
+  if (!main) return "-";
+  if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.id;
+  return main.id;
+}
+
+/** Only the properties the approved definition declares take part in the signature. */
+function b6LiveProps(inst, spec) {
+  const live = inst.componentProperties || {};
+  const names = Object.keys(spec.variants || {}).concat(Object.keys(spec.texts || {})).sort();
+  return names
+    .map((n) => {
+      const keys = Object.keys(live).filter((k) => k.split("#")[0] === n);
+      return n + "=" + (keys.length === 1 ? String(live[keys[0]].value) : "MISSING");
+    })
+    .join(",");
+}
+
+function b6SpecProps(spec) {
+  const all = {};
+  for (const k of Object.keys(spec.variants || {})) all[k] = spec.variants[k];
+  for (const k of Object.keys(spec.texts || {})) all[k] = spec.texts[k];
+  return Object.keys(all)
+    .sort()
+    .map((n) => n + "=" + all[n])
+    .join(",");
+}
+
+function b6ExpectedSignature(root, children) {
+  const parts = [
+    "layout=" + (root.layout || "HORIZONTAL"),
+    "gap=" + (root.gap || 0),
+    "pb=" + (root.paddingBottom || 0),
+    "stroke=" + (root.strokeBottomStyle || "none"),
+    "children=" + children.length,
+  ];
+  for (const c of children) parts.push("INSTANCE:" + c.of + ":" + b6SpecProps(c));
+  return parts.join("|");
+}
+
+function b6LiveSignature(node, root, children) {
+  const parts = [
+    "layout=" + node.layoutMode,
+    "gap=" + node.itemSpacing,
+    "pb=" + node.paddingBottom,
+    "stroke=" + (root.strokeBottomStyle && node.strokeStyleId ? root.strokeBottomStyle : "none"),
+    "children=" + node.children.length,
+  ];
+  for (let i = 0; i < node.children.length; i += 1) {
+    const kid = node.children[i];
+    const spec = children[i];
+    if (kid.type !== "INSTANCE" || !spec) {
+      parts.push(kid.type + ":" + kid.name + ":-");
+      continue;
+    }
+    parts.push("INSTANCE:" + b6MainName(kid) + ":" + b6LiveProps(kid, spec));
+  }
+  return parts.join("|");
+}
+
+function b6ApplyRoot(node, root, index) {
+  node.layoutMode = root.layout || "HORIZONTAL";
+  node.primaryAxisSizingMode = "AUTO";
+  node.counterAxisSizingMode = "AUTO";
+  node.counterAxisAlignItems = "MIN";
+  node.primaryAxisAlignItems = "MIN";
+  node.itemSpacing = root.gap || 0;
+  node.paddingLeft = 0;
+  node.paddingRight = 0;
+  node.paddingTop = 0;
+  node.paddingBottom = root.paddingBottom || 0;
+  node.fills = []; // production row wrappers carry layout classes only
+  if (root.strokeBottomStyle) {
+    node.strokeStyleId = b4Style(index, "paint", root.strokeBottomStyle).id;
+    node.strokeTopWeight = 0;
+    node.strokeLeftWeight = 0;
+    node.strokeRightWeight = 0;
+    node.strokeBottomWeight = 1;
+  } else {
+    node.strokes = [];
+  }
+}
+
+/** Create one pattern ComponentNode with its nested live instances. */
+function b6BuildNode(name, root, children, index, page) {
+  const node = figma.createComponent();
+  node.name = name;
+  page.appendChild(node);
+  b6ApplyRoot(node, root, index);
+  for (const spec of children) node.appendChild(b6CreateInstance(spec));
+  return node;
+}
+
+/** Reuse when the live structure matches the approved definition; STOP when it differs. */
+function b6Check(node, root, children, label) {
+  const expected = b6ExpectedSignature(root, children);
+  const live = b6LiveSignature(node, root, children);
+  if (expected !== live) {
+    throw new Error(
+      "STOP: LIVE PATTERN DIFFERS FROM THE APPROVED DEFINITION — " + label +
+        "\n  live     : " + live +
+        "\n  expected : " + expected +
+        "\n  nothing was overwritten or deleted.",
+    );
+  }
+}
+
+function b6FindOnPage(page, name) {
+  const found = page.children.filter((n) => n.name === name);
+  if (found.length > 1) throw new Error('STOP: DUPLICATE PATTERN — "' + name + '" exists ' + found.length + " times on " + B6_PAGE + ".");
+  return found[0] || null;
+}
+
+async function b6EnsurePattern(spec, index, page) {
+  if (spec.kind === "SET") {
+    let set = b4FindSet(spec.name);
+    if (set && set.parent !== page) {
+      throw new Error('STOP: PATTERN OUTSIDE SCOPE — "' + spec.name + '" lives on "' + (set.parent && set.parent.name) + '".');
+    }
+    const fresh = [];
+    for (const v of spec.variants) {
+      const vname = spec.property + "=" + v.value;
+      const existing = set ? set.children.filter((c) => c.name === vname)[0] : b6FindOnPage(page, vname);
+      if (existing) {
+        b6Check(existing, v.root, v.children, spec.name + " / " + vname);
+        b6Say("variant  ", spec.name + " / " + vname, false);
+        continue;
+      }
+      const node = b6BuildNode(vname, v.root, v.children, index, page);
+      node.description = spec.source;
+      b6Say("variant  ", spec.name + " / " + vname, true);
+      if (set) set.appendChild(node);
+      else fresh.push(node);
+    }
+    if (!set) {
+      set = figma.combineAsVariants(fresh, page);
+      set.name = spec.name;
+      set.fills = [];
+      b6Created += 1;
+      say("  set      created : " + spec.name);
+    } else {
+      say("  set      reused  : " + spec.name);
+    }
+    set.description = spec.source;
+    return set;
+  }
+
+  let node = b4FindComponent(spec.name);
+  if (node && node.parent !== page) {
+    throw new Error('STOP: PATTERN OUTSIDE SCOPE — "' + spec.name + '" lives on "' + (node.parent && node.parent.name) + '".');
+  }
+  if (node) {
+    b6Check(node, spec.root, spec.children, spec.name);
+    b6Say("component", spec.name, false);
+    return node;
+  }
+  node = b6BuildNode(spec.name, spec.root, spec.children, index, page);
+  node.description = spec.source;
+  b6Say("component", spec.name, true);
+  return node;
+}
+
+async function ensureB6Patterns() {
+  await figma.loadAllPagesAsync();
+  b6Created = 0;
+  const page = b6Page();
+  const index = await b4StyleIndex();
+  for (const spec of ABOX_B6.patterns) await b6EnsurePattern(spec, index, page);
+  say("");
+  say("  pattern objects created this run: " + b6Created);
+}
+
+function b6PatternNodes(page) {
+  const out = [];
+  for (const child of page.children) {
+    if (child.type === "COMPONENT_SET") for (const v of child.children) out.push(v);
+    else if (child.type === "COMPONENT") out.push(child);
+  }
+  return out;
+}
+
+async function verifyB6() {
+  await figma.loadAllPagesAsync();
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+  const C = ABOX_B6.counts;
+  const index = await b4StyleIndex();
+  const page = b6Page();
+
+  /* ---------- protected B1-B5 inventory ---------- */
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const b1Cols = collections.filter((c) => b1Names.indexOf(c.name) !== -1);
+  let b1Vars = 0;
+  for (const c of b1Cols) b1Vars += c.variableIds.length;
+  const typo = collections.filter((c) => c.name === "ABox/Typography");
+  add(b1Cols.length === 9 && b1Vars === 200, "B1 unchanged: 9 collections / 200 variables (found " + b1Cols.length + " / " + b1Vars + ")");
+  add(typo.length === 1 && typo[0].variableIds.length === 19, "B2 unchanged: ABox/Typography with 19 variables");
+  const owned = (list) => list.filter((s) => s.name.indexOf("ABox/") === 0);
+  const paints = owned(await figma.getLocalPaintStylesAsync());
+  const tstyles = owned(await figma.getLocalTextStylesAsync());
+  const effects = owned(await figma.getLocalEffectStylesAsync());
+  add(
+    paints.length + tstyles.length + effects.length === 79,
+    "B3 unchanged: 79 styles — 72 colour + 2 text + 5 effect (found " +
+      paints.length + " / " + tstyles.length + " / " + effects.length + ")",
+  );
+
+  const componentsPage = figma.root.children.filter((p) => p.name === B4_PAGE)[0];
+  const primSets = componentsPage.children.filter((n) => n.type === "COMPONENT_SET");
+  const primStandalone = componentsPage.children.filter((n) => n.type === "COMPONENT");
+  const primVariants = primSets.reduce((n, s) => n + s.children.length, 0);
+  add(primSets.length === C.b4Sets, "B4 architecture unchanged: " + C.b4Sets + " component sets (found " + primSets.length + ")");
+  add(
+    primStandalone.length === C.b4Standalone && primVariants === C.b5Variants &&
+      primVariants + primStandalone.length === C.b5Physical,
+    "B5 architecture unchanged: " + C.b4Standalone + " standalone, " + C.b5Variants +
+      " variant nodes, " + C.b5Physical + " physical nodes (found " + primStandalone.length + " / " +
+      primVariants + " / " + (primVariants + primStandalone.length) + ")",
+  );
+
+  // every nested primitive the patterns rely on still exists under its own id
+  const usedNames = {};
+  for (const p of ABOX_B6.patterns) {
+    const kids = p.kind === "SET" ? p.variants.reduce((a, v) => a.concat(v.children), []) : p.children;
+    for (const k of kids) usedNames[k.of] = true;
+  }
+  let idsOk = true;
+  const primIds = [];
+  for (const name of Object.keys(usedNames).sort()) {
+    const main = b4FindSet(name) || b4FindComponent(name);
+    if (!main || main.parent !== componentsPage) idsOk = false;
+    primIds.push("  " + name + "  id=" + (main ? main.id : "MISSING"));
+  }
+  add(idsOk, "every B4/B5 component id used by a pattern resolves live on " + B4_PAGE);
+
+  let propIdsOk = true, propCount = 0;
+  for (const b of ABOX_B5.bindings) {
+    const owner = b5Owner(b.component);
+    const keys = Object.keys(owner.componentPropertyDefinitions || {}).filter((k) => k.split("#")[0] === b.property);
+    if (keys.length !== 1 || (owner.componentPropertyDefinitions[keys[0]].type !== b.type)) propIdsOk = false;
+    else propCount += 1;
+  }
+  add(propIdsOk && propCount === C.b5NonVariant, "every B4/B5 component-property id preserved (" + propCount + " / " + C.b5NonVariant + ")");
+
+  const patternNames = ABOX_B6.patterns.map((p) => p.name);
+  const duplicated = primSets.concat(primStandalone).filter((n) => patternNames.indexOf(n.name) !== -1);
+  add(duplicated.length === 0, "no B4/B5 primitive duplicated by a pattern (0 pattern name collides on " + B4_PAGE + ")");
+  add(primSets.length === C.b4Sets, "no new B4/B5 Component Set created");
+
+  /* ---------- page scope ---------- */
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  const writable = [B4_PAGE, B6_PAGE];
+  add(
+    figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
+    "B0 pages unchanged: exactly 7, in the original order",
+  );
+  add(
+    figma.root.children.filter((p) => writable.indexOf(p.name) === -1).every((p) => p.children.length === 0),
+    "00 Foundations, 03 Shells, 04 Experiences, 05 Screens and 06 Documentation remain empty",
+  );
+  add(
+    page.children.length === C.patterns,
+    "pattern assets exist only on " + B6_PAGE + " — " + C.patterns + " top-level objects (found " + page.children.length + ")",
+  );
+
+  /* ---------- the patterns themselves ---------- */
+  let structOk = true, nestedOk = true, rawOk = true, protoOk = true, axisOk = true;
+  const inventory = [];
+  for (const spec of ABOX_B6.patterns) {
+    const bodies = [];
+    if (spec.kind === "SET") {
+      const set = b4FindSet(spec.name);
+      if (!set || set.parent !== page) { structOk = false; continue; }
+      const axes = Object.keys(set.componentPropertyDefinitions || {}).map((k) => k.split("#")[0]);
+      if (axes.length !== 1 || axes[0] !== spec.property) axisOk = false;
+      for (const v of spec.variants) {
+        const vname = spec.property + "=" + v.value;
+        const node = set.children.filter((c) => c.name === vname)[0];
+        bodies.push({ node: node, root: v.root, children: v.children, label: spec.name + " / " + vname, set: set });
+      }
+    } else {
+      const node = b4FindComponent(spec.name);
+      if (node && node.parent !== page) structOk = false;
+      bodies.push({ node: node, root: spec.root, children: spec.children, label: spec.name, set: null });
+    }
+    for (const body of bodies) {
+      const node = body.node;
+      if (!node) { structOk = false; inventory.push("  " + body.label + "  MISSING"); continue; }
+      const live = b6LiveSignature(node, body.root, body.children);
+      const expected = b6ExpectedSignature(body.root, body.children);
+      if (live !== expected) structOk = false;
+      if ((node.reactions || []).length) protoOk = false;
+      if (node.fills && node.fills.length) rawOk = false;
+      if (body.root.strokeBottomStyle) {
+        if (node.strokeStyleId !== b4Style(index, "paint", body.root.strokeBottomStyle).id) rawOk = false;
+      } else if (node.strokes && node.strokes.length) rawOk = false;
+      const ids = [];
+      for (let i = 0; i < node.children.length; i += 1) {
+        const kid = node.children[i];
+        const cspec = body.children[i];
+        if (kid.type !== "INSTANCE" || !cspec || b6MainName(kid) !== cspec.of) { nestedOk = false; continue; }
+        if ((kid.reactions || []).length) protoOk = false;
+        ids.push(b6MainName(kid) + " id=" + b6MainId(kid) + " [" + b6LiveProps(kid, cspec) + "]");
+      }
+      inventory.push(
+        "  " + body.label + "  root id=" + node.id + "  root=" + node.type + "/" + node.layoutMode +
+          "\n      nested: " + ids.join("  |  ") +
+          "\n      source: " + spec.source,
+      );
+    }
+  }
+  add(structOk, "every pattern matches its approved source-backed structural signature");
+  add(nestedOk, "every nested primitive resolves to the expected live B4/B5 component");
+  add(rawOk, "no hard-coded duplicate foundation value — pattern roots are unfilled, the only stroke is the live B3 ABox/Semantic/hairline style");
+  add(axisOk, "no invented pattern state — the single pattern axis is " + ABOX_B6.patterns[0].property);
+  add(protoOk, "no invented interaction — " + C.prototypes + " prototype reactions on any B6 node");
+
+  const nodes = b6PatternNodes(page);
+  add(nodes.length === C.patternNodes, "pattern ComponentNodes = " + C.patternNodes + " (found " + nodes.length + ")");
+  const deferredNames = ABOX_B6.deferred.map((d) => d.candidate).concat(ABOX_B6.rejected.map((r) => r.candidate));
+  add(
+    page.children.every((n) => patternNames.indexOf(n.name) !== -1),
+    "no deferred or rejected candidate was created (" + deferredNames.length + " candidates, 0 built)",
+  );
+  add(
+    page.children.every((n) => n.name.indexOf("ABox/Pattern/") === 0),
+    "no shell, screen, experience or responsive layout construct created on " + B6_PAGE,
+  );
+  add(b6Created === 0 || b6Created === C.patternNodes + C.sets, "run bookkeeping: objects created this run = " + b6Created);
+
+  /* ---------- report ---------- */
+  say("");
+  say("ID PROVENANCE: ids below are REAL FIGMA ids only when this run executed inside Figma Desktop.");
+  say("  An offline/mock harness prints OFFLINE MOCK ids and they are never evidence of a real write.");
+  say("  runtime: " + (typeof figma.getFileThumbnailNodeAsync === "function" ? "figma plugin API" : "figma plugin API (host-reported)"));
+
+  say("");
+  say("B6 PATTERN INVENTORY");
+  for (const line of inventory) say(line);
+
+  say("");
+  say("B4/B5 PRIMITIVES CONSUMED (live ids, unchanged by B6)");
+  for (const line of primIds) say(line);
+
+  say("");
+  say("B6 INTERACTION VERIFICATION");
+  for (const it of ABOX_B6.interactions) {
+    const target = b4FindComponent(it.pattern) || b4FindSet(it.pattern);
+    say("  pattern " + it.pattern + "  id=" + (target ? target.id : "MISSING"));
+    say("    trigger        : " + it.trigger);
+    say("    source         : " + it.source);
+    say("    behaviour      : " + it.behaviour);
+    say("    representation : " + it.representation);
+    say("    before -> after: " + it.before + " -> " + it.after);
+    say("    prototype      : " + it.prototype);
+    say("    reuse          : " + it.reuse);
+    if (it.limitation) say("    limitation     : " + it.limitation);
+  }
+  say("");
+  say("  DEFERRED INTERACTIONS (production behaviour with no faithful Figma representation)");
+  for (const d of ABOX_B6.deferredInteractions) say("    - " + d.candidate + " — " + d.source + " — " + d.reason);
+
+  say("");
+  say("B6 COUNTS");
+  say("  patterns " + C.patterns + " (sets " + C.sets + " + components " + C.components + ")" +
+      " | pattern ComponentNodes " + C.patternNodes + " | prototype connections " + C.prototypes);
+  say("  deferred candidates " + C.deferred + " | rejected candidates " + C.rejected);
+  say("  protected and unchanged: B4 sets " + C.b4Sets + ", standalone " + C.b4Standalone +
+      ", variant nodes " + C.b5Variants + ", physical nodes " + C.b5Physical +
+      ", non-variant properties " + C.b5NonVariant + ", exposed instances " + C.b5Exposed);
+
+  say("");
+  say("DEFERRED PATTERN CANDIDATES");
+  for (const d of ABOX_B6.deferred) say("  - " + d.candidate + " — " + d.decision + " — " + d.reason + " — " + d.source);
+  say("");
+  say("REJECTED PATTERN CANDIDATES");
+  for (const r of ABOX_B6.rejected) say("  - " + r.candidate + " — " + r.reason);
+
+  say("");
+  say("B6 STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  say("  NOTE  src/** unchanged — asserted outside Figma with `git diff --stat -- src/`; the plugin sandbox cannot read the repository.");
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+
+  say("");
+  say("RECORDED LIMITATIONS / EXCEPTIONS");
+  for (const l of ABOX_B6.limitations) say("  - " + l);
+  say("  - No publishing performed; library publishing is a separate step.");
+  say("");
+  say(passed ? "RESULT: B6 PASSED" : "RESULT: B6 FAILED — do not proceed to B7.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
 
 figma.showUI(__html__, { width: 420, height: 560 });
