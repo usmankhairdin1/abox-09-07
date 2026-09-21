@@ -28,8 +28,23 @@ Component Sets (10):
 | `ABox/Header/PageHeader` | `variant` → default, compact | `abox/page-header.tsx` |
 | `ABox/Nav/ModuleTab` | `state` → default, active (production `activeProps`) | `abox/module-tabs.tsx` |
 | `ABox/Nav/WizardStep` | `state` → current, done, upcoming, unreachable (the four real branches) | `abox/downline-wizard-stepper.tsx` |
+| `ABox/Brand/AboxMark` | `tone` → primary, sage, sidebar, foreground | `abox/logo.tsx` |
 
-Single Components (4): `ABox/Feedback/EmptyState`, `ABox/Form/LabeledField`, `ABox/Form/Input`, `ABox/Brand/AboxMark` (variant set on `tone` → primary, sage, sidebar, foreground).
+Standalone Components (3, no variant axis): `ABox/Feedback/EmptyState`, `ABox/Form/LabeledField`, `ABox/Form/Input`.
+
+### 2a. `ABox/Brand/AboxMark` classification (corrected)
+
+It is a **Component Set with exactly four variants**, not a standalone Component. Production evidence: `abox/logo.tsx` declares `tone?: "primary" | "sage" | "sidebar" | "foreground"` and a `TONES` record (lines 15–20) in which each of the four branches maps to a *different* set of four token values (`bg`, `ring`, `fg`, `dot`) — the branches produce visually distinct output, so they are true variants, not a non-visual property. Per-value call-site evidence: `primary` — `marketplace-shell.tsx:60`, `member-shell.tsx:71`, `internal-shell.tsx:167`, `routes/index.tsx:122`, `routes/quote.tsx:501`, `placeholder-screen.tsx:43`; `sidebar` — `internal-shell.tsx:80`, `marketplace-shell.tsx:154`; `sage` — `plan-o-assistant.tsx:47`; `foreground` — declared in the production `TONES` record but with no non-reference call site (its only occurrences are `routes/design-system.tsx` and `routes/design-guide.tsx`, which are reference layers). `foreground` is included because the production component API defines it as a first-class branch with its own token mapping — the same basis on which all 10 ACTION_PILL keys are included — and this absence of a production call site is recorded verbatim in the final report rather than used to drop the value. `size` stays a numeric prop with no finite production set and is therefore **not** a variant axis: the set is built at the default `size = 36` and resizing is left to the instance.
+
+### 2b. Corrected totals
+
+- Component Sets: **11**
+- Standalone Components: **3**
+- Total B4 objects: **14**
+- Fixed variants (source-enumerated, known now): ActionPill 10 + StatusBadge 6 + MetalBadge 6 + KpiCard 4 + PageHeader 2 + ModuleTab 2 + WizardStep 4 + AboxMark 4 = **38**
+- Call-site-enumerated variants: Button + Surface + Control = **E** (determined by §4, printed and asserted at run time; never guessed here)
+- Total Variants = 38 + E. Arithmetic check printed by `b4-verify`: `11 sets + 3 components = 14 objects`, and `fixed 38 + enumerated E = total variants`.
+
 
 Text / boolean / instance-swap properties are added only where production exposes the prop: EmptyState (`title` text, `body` boolean+text, `icon` boolean, `action` instance swap), KpiCard (`label`, `value`, `delta` boolean, `hint` boolean, `icon` boolean), PageHeader (`title`, `eyebrow` boolean+text, `description` boolean+text, `icon` boolean, `actions` instance swap), LabeledField (`label` text, control = exposed nested instance), StatusBadge/MetalBadge/ActionPill/Button (label text; icon slot only where the class string carries `gap-*`). Defaults are set only where production sets one: Button `variant=default`, `size=default`; KpiCard `tone=default`; PageHeader `variant=default`; Surface `padding=md` and the three booleans `false`; Control `height=md`, `focusRing=false`; AboxMark `tone=primary`.
 
@@ -63,7 +78,7 @@ Exact-name matching; existing component / set / variant reused and updated in pl
 
 ## 8. `b4-verify`
 
-All 25 checks from the brief, in order: counts (components, sets, variants), exact names, exact variant property names and values, boolean/text/instance-swap properties, defaults, per-object source mapping, B1/B2/B3 bindings, no hard-coded foundation duplicates, no equality-derived relationships, no invented states, no file-only primitives, nesting consistency, B1 unchanged (9 collections / 200 variables), B2 unchanged (19 variables), B3 unchanged (79 styles), zero new pages and empty B0 pages at indices 0..6, no patterns/shells/screens/documentation, `git diff --stat -- src/` empty, `code.js` regenerated only by `build.mjs`, offline Run 1 pass, offline Run 2 zero-creation with identical ids, and an explicit line stating whether the run was offline mock or real Figma Desktop.
+All 25 checks from the brief, in order: counts — asserting exactly **11 Component Sets**, exactly **3 standalone Components**, exactly **14 B4 objects**, exactly **38 fixed variants** plus the enumerated count E with the arithmetic `11 + 3 = 14` and `38 + E = total` printed; exact names (including `ABox/Brand/AboxMark` verified as a Component Set with the `tone` axis and exactly the four values primary, sage, sidebar, foreground, and that no B4 object is both a set and a standalone component); exact variant property names and values, boolean/text/instance-swap properties, defaults, per-object source mapping, B1/B2/B3 bindings, no hard-coded foundation duplicates, no equality-derived relationships, no invented states, no file-only primitives, nesting consistency, B1 unchanged (9 collections / 200 variables), B2 unchanged (19 variables), B3 unchanged (79 styles), zero new pages and empty B0 pages at indices 0..6, no patterns/shells/screens/documentation, `git diff --stat -- src/` empty, `code.js` regenerated only by `build.mjs`, offline Run 1 pass, offline Run 2 zero-creation with identical ids, and an explicit line stating whether the run was offline mock or real Figma Desktop.
 
 Final report prints: totals, every component/set/variant name with id, property/value list with ids, source file and line map, binding summary, exclusion list with reasons, limitations verbatim, Run 1 and Run 2 output, zero-creation proof, unchanged-page proof, unchanged-source proof, and `RESULT: B4 PASSED` or `RESULT: B4 FAILED — do not proceed to B5.`
 
