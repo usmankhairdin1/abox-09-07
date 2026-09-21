@@ -16,6 +16,7 @@ const out = [
   read("tokens-b3.js"),
   read("tokens-b4.js"),
   read("tokens-b5.js"),
+  read("tokens-b6.js"),
   read("plugin.js"),
 ].join("\n");
 
