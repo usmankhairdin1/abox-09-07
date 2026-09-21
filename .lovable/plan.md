@@ -121,7 +121,7 @@ Names must be unique within a component; repetition across components is fine.
 | `ABox/Nav/ModuleTab` | variant `state`, text `label` | none |
 | `ABox/Nav/WizardStep` | variant `state`, text `label` | none |
 | `ABox/Brand/AboxMark` | variant `tone` | none |
-| `ABox/Feedback/EmptyState` | bool `hasIcon`, `hasBody`, text `title`, `body`, swap `action` | resolved (`body` → `hasBody` + text `body`) |
+| `ABox/Feedback/EmptyState` | bool `hasIcon`, `hasBody`, `hasAction`, text `title`, `body`, swap `action` | resolved (`body` → `hasBody` + text `body`; `action` → `hasAction` + swap `action`) |
 | `ABox/Form/LabeledField` | text `label` (+ exposed nested instance `control`, not a property) | none |
 | `ABox/Form/Input` | text `placeholder` | none |
 
@@ -137,10 +137,10 @@ Names must be unique within a component; repetition across components is fine.
 | Variant properties existing after B4 | 13 axes | ActionPill 1, Button 2, StatusBadge 1, MetalBadge 1, Surface n, Control 2, KpiCard 1, PageHeader 1, ModuleTab 1, WizardStep 1, AboxMark 1 — printed and asserted at run time |
 | Variant properties created by B5 | 1 | `KpiCard.deltaSign` |
 | Variant properties reused unchanged | all B4 axes | none renamed, none removed |
-| Boolean properties created | 9 | 4 + 3 + 2 |
+| Boolean properties created | 10 | 4 (PageHeader) + 3 (KpiCard) + 3 (EmptyState) |
 | Text properties created | 15 | 1+1+1+1+2+3+1+1+2+1+1 |
-| Instance Swap properties created | 1 | EmptyState `action` |
-| Non-variant properties created | 25 | 9 + 15 + 1 |
+| Instance Swap properties created | 2 | PageHeader `actions` + EmptyState `action` |
+| Non-variant properties created | 27 | 10 + 15 + 2 |
 | Properties reused in place (already real in Figma) | 0 Boolean / 0 Text / 0 Swap | proven by §2 audit; re-proven at run time against the live inventory |
 
 ### 3h. Combinations that must NOT be created
