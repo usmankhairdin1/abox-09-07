@@ -195,27 +195,59 @@ const moduleTabBar = {
 };
 
 /* ---------- 3. Downline wizard stepper ---------- */
-// Rule B: downline-wizard-stepper.tsx owns the fixed step list; 8 step routes.
-const STEP_LABELS = ["Identity", "Legal & identifiers", "Contacts", "Addresses & offices", "Settings"];
-for (const l of STEP_LABELS) {
-  if (!read(F.wizard).includes('label: "' + l + '"')) {
-    throw new Error("STOP: wizard label not in " + F.wizard + " — " + l);
-  }
+// Rule B: downline-wizard-stepper.tsx owns the fixed 8-step list; 8 step routes consume it.
+// The pattern carries the COMPLETE production list, not a demonstration sample.
+const WIZARD_SRC = read(F.wizard);
+const STEP_ROWS = [];
+for (const m of WIZARD_SRC.matchAll(/\{ n: (\d+), scr: "([^"]+)", label: "([^"]+)", to: "([^"]+)" \}/g)) {
+  STEP_ROWS.push({ n: Number(m[1]), scr: m[2], label: m[3], to: m[4] });
 }
-const STEP_STATES = ["done", "done", "current", "upcoming", "unreachable"];
+if (STEP_ROWS.length !== 8) {
+  throw new Error("STOP: expected the 8 production DOWNLINE_WIZARD_STEPS, read " + STEP_ROWS.length);
+}
+STEP_ROWS.forEach((s, i) => {
+  if (s.n !== i + 1) throw new Error("STOP: wizard step order mismatch at index " + i);
+});
+
+// One documented real production route/current-step condition, copied verbatim.
+// No states are manufactured and none are combined across routes.
+const WIZARD_ROUTE = "/agency/downlines/new/contacts";
+const WIZARD_CURRENT = STEP_ROWS.findIndex((s) => s.to === WIZARD_ROUTE);
+if (WIZARD_CURRENT === -1) throw new Error("STOP: wizard route not in the step list — " + WIZARD_ROUTE);
+// Source branches: isCurrent = i === currentIndex; isDone = i < currentIndex;
+// isReachable = i <= currentIndex; everything else renders the dimmed span.
+// B4's "upcoming" (reachable, not current, not done) cannot occur for any real route.
+const stepState = (i) => (i === WIZARD_CURRENT ? "current" : i < WIZARD_CURRENT ? "done" : "unreachable");
+
 const wizardStepper = {
   name: "ABox/Pattern/WizardStepper",
   kind: "COMPONENT",
   source:
     "source: " + lineOf(F.wizard, "export const DOWNLINE_WIZARD_STEPS") +
-    " | states " + lineOf(F.wizard, "const isCurrent ="),
-  root: { layout: "HORIZONTAL", gap: 6, gapSource: lineOf(F.wizard, "items-center gap-1.5") },
-  children: STEP_LABELS.map((label, i) =>
+    " | states " + lineOf(F.wizard, "const isCurrent =") +
+    " | configuration: route " + WIZARD_ROUTE + " (" + STEP_ROWS[WIZARD_CURRENT].scr +
+    ", step " + (WIZARD_CURRENT + 1) + " of " + STEP_ROWS.length + ")",
+  configuration: {
+    route: WIZARD_ROUTE,
+    scr: STEP_ROWS[WIZARD_CURRENT].scr,
+    currentStep: WIZARD_CURRENT + 1,
+    steps: STEP_ROWS.map((s, i) => ({ n: s.n, label: s.label, state: stepState(i) })),
+  },
+  root: {
+    layout: "HORIZONTAL",
+    wrap: "WRAP", // flex-wrap
+    gap: 6, // gap-1.5 — primary axis
+    counterGap: 6, // gap-1.5 — wrapped (row) axis
+    primarySizing: "AUTO",
+    counterSizing: "AUTO",
+    gapSource: lineOf(F.wizard, "items-center gap-1.5"),
+  },
+  children: STEP_ROWS.map((s, i) =>
     instance(
       "ABox/Nav/WizardStep",
-      { state: STEP_STATES[i] },
-      { label },
-      lineOf(F.wizard, 'label: "' + label + '"'),
+      { state: stepState(i) },
+      { label: s.label },
+      lineOf(F.wizard, 'label: "' + s.label + '"'),
     ),
   ),
 };
