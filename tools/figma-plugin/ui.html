@@ -77,6 +77,14 @@
     </p>
     <button id="b3run">Create foundational styles</button>
     <button id="b3verify" class="secondary">Verify foundational styles</button>
+    <p>
+      <strong>Batch B4 — component foundation</strong><br />
+      Run inside <code>ABox Design System — Library</code>. Creates/updates 11 component sets and
+      3 standalone components on <code>01 Components</code>, bound to the existing B1/B2/B3
+      foundations. No patterns, shells, screens or publishing.
+    </p>
+    <button id="b4run">Create components</button>
+    <button id="b4verify" class="secondary">Verify components</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -119,6 +127,14 @@
       document.getElementById("b3verify").onclick = () => {
         log.textContent = "Verifying foundational styles…";
         parent.postMessage({ pluginMessage: { type: "b3-verify" } }, "*");
+      };
+      document.getElementById("b4run").onclick = () => {
+        log.textContent = "Creating foundational styles…";
+        parent.postMessage({ pluginMessage: { type: "b4-run" } }, "*");
+      };
+      document.getElementById("b4verify").onclick = () => {
+        log.textContent = "Verifying foundational styles…";
+        parent.postMessage({ pluginMessage: { type: "b4-verify" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
