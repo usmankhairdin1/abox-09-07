@@ -104,6 +104,20 @@ Two production props are caller-supplied `React.ReactNode` content slots, and ea
 
 Instance Swap properties: **2** (`PageHeader.actions`, `EmptyState.action`). No other production prop is a content slot: every remaining optional prop is a string or a `ComponentType` icon.
 
+### 3e-bis. `LabeledField.control` — corrected
+
+Audit result, from the real implementation: `plugin.js:1811-1814` builds `ABox/Form/LabeledField` with a genuine nested `ABox/Control/Control` **instance** and verifies it ("LabeledField nests a real ABox/Control/Control instance"). But `isExposedInstance` appears nowhere in `plugin.js` or `code.js`; the only `exposedInstances` occurrences are the `tokens-b4.js` data (`code.js:4787`) and the description printer (`plugin.js:1690`). **B4 therefore did not expose the nested instance in the live Figma component.** The earlier plan wording "already exposed in B4" was wrong and is withdrawn.
+
+B5 correction, using the exact Figma mechanism rather than a property:
+
+- Representation: set `isExposedInstance = true` on the existing nested `ABox/Control/Control` instance inside `ABox/Form/LabeledField`. This is a node flag on an instance, not an Instance Swap component property and not a Boolean.
+- Why not an Instance Swap property: production `children` is an arbitrary consumer-owned node (`field.tsx:11-14`, `:23`) with no single swappable production default; exposing the nested instance gives the designer the real Control's own properties without inventing a swap target. Figma's native swap on the exposed instance still allows substitution.
+- Exact name: the nested instance layer keeps the name `control`, matching the `exposedInstances` entry already recorded in `tokens-b4.js`. Figma derives the exposed-instance label from that layer name, so no technical rename is required.
+- Affected object: `ABox/Form/LabeledField` (standalone Component, id read live and printed in the report) → nested instance of `ABox/Control/Control` (id read live and printed). Both ids are reported from the real Figma run, never from the offline mock.
+- Idempotency: if `isExposedInstance` is already true, it is left in place and counted as reused. If the nested instance is missing, STOP — B5 does not rebuild B4 structure.
+
+Exposed nested instances: **1**. It adds nothing to the Boolean, Text or Instance Swap counts, because it is not a component property.
+
 ### 3f. Collision audit — complete
 
 Names must be unique within a component; repetition across components is fine.
