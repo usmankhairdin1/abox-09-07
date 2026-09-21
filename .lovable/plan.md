@@ -214,13 +214,14 @@ Names must be unique within a component; repetition across components is fine.
 | Variant properties existing after B4 | **16 axes** (corrected from the earlier "13"; see §3g-bis) | 1 + 2 + 1 + 1 + 4 + 2 + 1 + 1 + 1 + 1 + 1 = 16, read from `tokens-b4.js` and re-read from the live sets at run time |
 | Variant properties created by B5 | 1 | `KpiCard.deltaSign` |
 | Variant properties reused unchanged | all B4 axes | none renamed, none removed |
-| Boolean properties created | 11 | 4 (PageHeader) + 4 (KpiCard) + 3 (EmptyState) |
-| Text properties created | 16 | 1+1+1+1+3+3+1+1+2+1+1 |
-| Instance Swap properties created | 1 | PageHeader `actions`; Figma-required construction default = `ABox/Action/ActionPill` variant `variant=primaryMd` |
-| SLOT properties created | 1, or 0 if unsupported | EmptyState `action`, per the §3e-ter runtime gate |
-| Non-variant properties created | 29, or 28 if SLOT is unsupported | 11 + 16 + 1 + 1 = 29; 11 + 16 + 1 + 0 = 28 |
-| Exposed nested instances flagged | 1 | `LabeledField` → nested `ABox/Control/Control` named `control`; not a property, so not part of the 29 |
-| Total B5 object additions/updates | 30 (or 29) changes + 4 new variants | 29 (or 28) properties + 1 exposed instance flag; variants 52 → 56 |
+| Boolean properties created | **4** (documented target 11) | only those with a real target layer: KpiCard `hasDelta`, PageHeader `hasEyebrow`, `hasDescription`, EmptyState `hasBody` — see §3i |
+| Text properties created | **15** (documented target 16) | 1+1+1+1+2+3+1+1+2+1+1 = 15; `KpiCard.deltaLabel` has no target layer — see §3i |
+| Instance Swap properties created | **0** (documented target 1) | PageHeader has no nested actions instance in B4; creating a detached swap = STOP — see §3i |
+| SLOT properties created | **0** (documented target 1) | EmptyState has no action region to convert; capability still detected read-only and printed — see §3e-ter, §3i |
+| Non-variant properties created | **19** | 4 + 15 + 0 + 0 = 19 |
+| Exposed nested instances flagged | 1 | `LabeledField` → existing nested `ABox/Control/Control` named `control`; not a property, so not part of the 19 |
+| Blocked properties, deferred to a B4 amendment | 11 | 7 Boolean + 1 Text + 1 Instance Swap + 1 SLOT, itemised in §3i; none created, each recorded verbatim |
+| Total B5 object additions/updates | 20 changes + 4 new Variant ComponentNodes | 19 properties + 1 exposed instance flag; variants 52 → 56 |
 | Properties reused in place (already real in Figma) | 0 Boolean / 0 Text / 0 Swap | proven by §2 audit; re-proven at run time against the live inventory |
 
 ### 3g-bis. B4 variant-axis audit — corrected
