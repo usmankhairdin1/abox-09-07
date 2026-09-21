@@ -1800,16 +1800,45 @@ async function b4EnsureComponent(spec, index, page) {
   return node;
 }
 
+/**
+ * Run one build step and, when it throws, remove the transient nodes it left on the
+ * current page. figma.createFrame/createText/createNodeFromSvg append to
+ * figma.currentPage at creation time and are only reparented afterwards, so an
+ * aborted build otherwise leaves orphan debris behind on a library page.
+ */
+async function b4Guarded(label, fn) {
+  const before = {};
+  for (const n of figma.currentPage.children) before[n.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const n of figma.currentPage.children.slice()) {
+      if (before[n.id]) continue;
+      if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+      n.remove();
+      removed += 1;
+    }
+    if (removed) say("  cleanup : removed " + removed + " transient node(s) left by " + label);
+    throw err;
+  }
+}
+
 async function ensureB4Components() {
   await figma.loadAllPagesAsync();
   b4Created = 0;
   const page = b4Page();
   const index = await b4StyleIndex();
-  for (const set of ABOX_B4.sets) await b4EnsureSet(set, index, page);
-  for (const spec of ABOX_B4.components) await b4EnsureComponent(spec, index, page);
+  for (const set of ABOX_B4.sets) {
+    await b4Guarded(set.name, () => b4EnsureSet(set, index, page));
+  }
+  for (const spec of ABOX_B4.components) {
+    await b4Guarded(spec.name, () => b4EnsureComponent(spec, index, page));
+  }
   say("");
   say("  objects created this run: " + b4Created);
 }
+
 
 async function verifyB4() {
   await figma.loadAllPagesAsync();
