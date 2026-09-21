@@ -195,8 +195,8 @@ Names must be unique within a component; repetition across components is fine.
 | Instance Swap properties created | 1 | PageHeader `actions`, default `ABox/Action/ActionPill` variant `action=primaryMd` |
 | SLOT properties created | 1, or 0 if unsupported | EmptyState `action`, per the §3e-ter runtime gate |
 | Non-variant properties created | 29, or 28 if SLOT is unsupported | 11 + 16 + 1 + 1 = 29; 11 + 16 + 1 + 0 = 28 |
-| Exposed nested instances flagged | 1 | `LabeledField` → nested `ABox/Control/Control` named `control`; not a property, so not part of the 27 |
-| Total B5 object additions/updates | 28 (or 27) changes + 4 new variants | 27 (or 26) properties + 1 exposed instance flag; variants 52 → 56 |
+| Exposed nested instances flagged | 1 | `LabeledField` → nested `ABox/Control/Control` named `control`; not a property, so not part of the 29 |
+| Total B5 object additions/updates | 30 (or 29) changes + 4 new variants | 29 (or 28) properties + 1 exposed instance flag; variants 52 → 56 |
 | Properties reused in place (already real in Figma) | 0 Boolean / 0 Text / 0 Swap | proven by §2 audit; re-proven at run time against the live inventory |
 
 ### 3h. Combinations that must NOT be created
