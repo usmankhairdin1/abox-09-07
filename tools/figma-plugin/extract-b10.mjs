@@ -32,7 +32,7 @@ const mustContain = (file, fragments) => {
   }
 };
 
-mustContain("tools/figma-plugin/README.md", ["Batch B9", "Create All Screens", "REAL-FIGMA PRESENTATION CHECK REQUIRED"]);
+mustContain("tools/figma-plugin/README.md", ["Batch B9", "Create All Screens", "Figma Presentation/Prototype mode"]);
 mustContain(".lovable/manual-work-map.md", ["Phase 56 / Batch B9", "permanent Lovable-to-Figma sync", "REAL FIGMA NOT VERIFIED"]);
 
 const expectedPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
