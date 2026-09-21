@@ -1724,7 +1724,12 @@ async function verifyB4() {
     sets.length + standalone.length === C.objects,
     "object arithmetic " + sets.length + " + " + standalone.length + " = " + C.objects,
   );
-  add(variants === C.totalVariants, "variant count = " + C.totalVariants + " (found " + variants + ")");
+  const b5Extra = typeof ABOX_B5 === "undefined" ? 0 : ABOX_B5.counts.newVariantNodes;
+  add(
+    variants === C.totalVariants || variants === C.totalVariants + b5Extra,
+    "variant count = " + C.totalVariants + " (B4) or " + (C.totalVariants + b5Extra) + " (after B5) — found " + variants,
+  );
+
   add(
     C.fixedVariants + C.enumeratedVariants === C.totalVariants,
     "variant arithmetic fixed " + C.fixedVariants + " + enumerated " + C.enumeratedVariants + " = " + C.totalVariants,
