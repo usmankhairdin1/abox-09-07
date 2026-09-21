@@ -1,4 +1,4 @@
-// Concatenates tokens.js + tokens-b1.js + tokens-b2.js + tokens-b3.js + tokens-b4.js + tokens-b5.js + tokens-b6.js + tokens-b7.js + tokens-b8.js + tokens-b9.js + plugin.js into code.js (the manifest entry point).
+// Concatenates tokens.js + tokens-b1.js + tokens-b2.js + tokens-b3.js + tokens-b4.js + tokens-b5.js + tokens-b6.js + tokens-b7.js + tokens-b8.js + tokens-b9.js + tokens-b10.js + plugin.js into code.js (the manifest entry point).
 // Figma plugins have no module loader, so the two source files are joined.
 // Run: node tools/figma-plugin/build.mjs
 import { readFileSync, writeFileSync } from "node:fs";
@@ -20,6 +20,7 @@ const out = [
   read("tokens-b7.js"),
   read("tokens-b8.js"),
   read("tokens-b9.js"),
+  read("tokens-b10.js"),
   read("plugin.js"),
 ].join("\n");
 
