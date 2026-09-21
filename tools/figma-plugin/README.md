@@ -116,6 +116,26 @@ the approved B8/B9/B10 frame names). It prints every removal and the resulting p
 counts, and never touches B0 pages, B1/B2/B3 data, or any B4 component. `ensureB4Components`
 additionally removes its own transient nodes when a build step throws.
 
+A component stranded outside its set is a separate case: `b4EnsureSet` parents each new
+variant to `01 Components` before `combineAsVariants` absorbs it, so a run that aborts
+mid-loop leaves a top-level `COMPONENT` named like a variant (e.g. `variant=primaryXs`).
+The orphan cleanup deliberately refuses to touch components, and reconciliation never
+consults stray top-level nodes, so the next successful run builds a fresh variant inside
+the set and the verifier reports a 15th object.
+
+`Remove stale B4 variant components` (`b4-cleanup-stale-variants`, `b4StaleVariants()`)
+handles exactly that. It removes a node only when all six identity conditions hold:
+(1) it sits directly on `01 Components`; (2) it is a `COMPONENT`, never a
+`COMPONENT_SET`; (3) its name is not an approved standalone B4 component name and not
+batch-owned; (4) its name equals an approved B4 variant name, so it belongs inside a
+set; (5) that set exists and already holds a different live variant of the same name —
+the valid replacement is proven present; (6) `getInstancesAsync()` returns zero
+instances. A node failing any single condition is printed under `KEPT — …` and left
+alone, so no valid B4 object, and nothing from B0/B1/B2/B3 or B5+, can qualify. The
+builder now also throws `STOP: STALE TOP-LEVEL VARIANT` instead of quietly creating a
+duplicate when such a node is present, and the verifier still demands exactly the 14 B4
+objects on `01 Components`.
+
 
 ## Library publishing check
 
