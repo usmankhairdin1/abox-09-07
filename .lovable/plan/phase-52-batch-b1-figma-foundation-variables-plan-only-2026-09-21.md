@@ -1,90 +1,110 @@
 # Phase 52 / Batch B1 — Figma Foundation Variables (PLAN ONLY)
 
-Target: existing `ABox Design System — Library` file (file-isolation guard unchanged). No Text Styles, Effect Styles, Components, Variants, Patterns, Screens or page content. No publishing. No `src/**` change.
+Target file: `ABox Design System — Library`. Proof file `ABox Proof — Scratch` is never touched. Nothing under `src/**` changes.
 
-## A. Collections and ownership
+## Blocking discrepancy to resolve before implementation
 
-| # | Collection | Modes | Owner | Source |
-|---|---|---|---|---|
-| 1 | `ABox/Color/Primitive` | Light, Dark | ABox foundation | raw `oklch(...)` literals in `src/styles.css` `:root` / `.dark` |
-| 2 | `ABox/Color/Semantic` | Light, Dark | ABox foundation | role names in `@theme inline` (`--color-*`) |
-| 3 | `ABox/Status` | Light, Dark | ABox foundation | status + metal tier roles |
-| 4 | `ABox/Spacing` | Default | ABox foundation | Surface padding + shell/layout spacing actually defined in ABox code |
-| 5 | `ABox/Radius` | Default | ABox foundation | `@theme inline --radius-*` + `--radius` |
-| 6 | `ABox/Border` | Default | ABox foundation | border widths used by canonical components |
-| 7 | `ABox/Elevation` | Light, Dark | ABox foundation (partial — see F) | `--shadow-*` in `@theme inline` |
-| 8 | `ABox/Layout` | Default | ABox foundation | container max-widths in shells / marketplace layout |
-| 9 | `ABox/Control sizing` | Default | ABox foundation | `controlClass` heights and padding |
+The B0 page list already created and validated in Figma (and recorded in `tools/figma-plugin/tokens.js`, `library.pages`) is:
 
-Excluded by rule: runtime tenant/white-label branding (`primary_color`, `accent_color`, logo/favicon assets in `src/lib/marketplace-store.ts`). None of it enters Figma. Tailwind's generic spacing scale is library-owned and not re-declared as ABox variables.
+```text
+00 Foundations · 01 Components · 02 Patterns · 03 Shells · 04 Experiences · 05 Screens · 06 Documentation
+```
 
-## B. Variable inventory (extracted, nothing invented)
+Section 1 of this request lists a different set:
 
-**Color/Primitive** — exactly one primitive variable per distinct production primitive token/role path, with Light and Dark mode values populated from the corresponding `:root` and `.dark` source values. A token with different Light and Dark literals remains ONE Figma variable with two mode values; it must never become two separate variables merely because the literals differ. If a primitive token has no `.dark` override, explicitly record the Light value as the Dark-mode value because Figma has no CSS cascade. No primitive is created that is not literally present in `src/styles.css`.
+```text
+00 Foundations · 01 Brand · 02 Components · 03 Patterns · 04 Shells · 05 Screens · 06 Documentation
+```
 
-**Color/Semantic** — one variable per `@theme inline --color-*` role (lines 32-79): background, foreground, surface, surface-foreground, panel, card, card-foreground, popover, popover-foreground, primary, primary-foreground, primary-soft, secondary, secondary-foreground, sage, sage-foreground, sage-soft, muted, muted-foreground, accent, accent-foreground, destructive, destructive-foreground, warning, warning-foreground, info, info-foreground, success, success-foreground, border, border-strong, hairline, input, ring, chart-1..chart-5, sidebar, sidebar-foreground, sidebar-primary, sidebar-primary-foreground, sidebar-accent, sidebar-accent-foreground, sidebar-border, sidebar-ring. Plus `ink` (declared in `:root`, not exported through `@theme`) recorded as a semantic role.
+B1 does not create or rename pages, and Section 2 forbids page changes, so this plan keeps the existing B0 page list as the verification baseline (item 30 checks the seven B0 pages at indices 0–6, empty). If the new list is the intended library structure, it needs its own approved page-rename batch before or after B1 — it is not silently applied here.
 
-**Status** — the six StatusBadge tones as they actually resolve (`sage`, `primary`, `warning`, `muted` → foreground, `destructive`, `info`) as aliases to Color/Semantic, plus the twelve metal tier variables `--metal-{bronze, expanded-bronze, silver, gold, platinum, catastrophic}` and their `-fg` pairs.
+## Files inspected (read-only)
 
-**Spacing** — `surface/none 0`, `surface/sm 16`, `surface/md 20`, `surface/lg 24` (from `SURFACE_PADDING` p-4/p-5/p-6).
+- `src/styles.css` — `:root`, `.dark`, `@theme inline --color-*`, `--radius-*`, `--shadow-*`
+- `src/components/abox/surface.tsx` (`SURFACE_PADDING`), `control.tsx`, `status-badge.tsx`, `metal-badge.tsx`
+- `src/components/abox/marketplace-shell.tsx`, `internal-shell.tsx`, `member-shell.tsx`, `marketplace-page-layout.ts` (max-widths)
+- `tools/figma-plugin/*` (existing plugin, tokens, build)
 
-**Radius** — `sm 6`, `md 10`, `lg 14`, `xl 18`, `2xl 22`, `3xl 28`, `4xl 36`, plus `base 14` (`--radius: 0.875rem`) and `full 9999` (the `rounded-full` used by StatusBadge/ring-pill).
+## Files modified / generated
 
-**Border** — `hairline 1` (the single border width all canonical components use), `ring 2` (`focus:ring-2`).
+Modified: `tools/figma-plugin/extract-b1.mjs`, `tokens-b1.js` (regenerated data), `plugin.js`, `ui.html`, `README.md`.
+Generated: `tools/figma-plugin/code.js` via `node build.mjs` only — never hand-edited.
+No other file in the repository changes.
 
-**Elevation** — for each of `shadow-card`, `shadow-elevated`, `shadow-drawer`, `shadow-plate`, `shadow-glow`: the numeric x/y/blur/spread floats and the tint colors as color variables, one set per layer. The composite shadow itself is not a Figma variable type (see F).
+## Implementation sequence
 
-**Layout** — `container/wide 1408` (`max-w-[88rem]`), `container/shell 1500` (`max-w-[1500px]`).
+1. **Extraction** — `extract-b1.mjs` parses `src/styles.css` and the named component sources, converts every `oklch()` literal to sRGB, and emits `tokens-b1.js` as a pure data module (no `src/` import at plugin runtime). Each colour entry carries its original `oklch()` literal string for the Figma variable description.
+2. **Collections** — nine collections, each with exactly the modes `Light` and `Dark`; the Figma default mode is renamed to `Light` and a second mode `Dark` added. No `Default` mode anywhere, including `ABox/Elevation`.
+3. **Variables** — created per the approved inventory below.
+4. **Verification** — `verifyVariables()` runs the 31 checks and prints the final result line.
+5. **Build** — `node build.mjs` regenerates `code.js`.
 
-**Control sizing** — `height/md 40` (`h-10`), `height/lg 44` (`h-11`), `padding-x 12` (`px-3`), `min-touch-target 44` (the `max-width: 640px` rule).
+## Collection + variable inventory
 
-## C. Primitive vs semantic
+| Collection | Type | Contents |
+| --- | --- | --- |
+| `ABox/Color/Primitive` | COLOR | one variable per distinct production primitive role path from `:root`/`.dark`; `--color-` stripped, path preserved (`chart/1`); a Light/Dark literal difference stays ONE variable with two mode values; no `.dark` override means Light value copied into Dark |
+| `ABox/Color/Semantic` | COLOR | exactly 54 variables — every `--color-*` role declared in the two `@theme inline` blocks of `src/styles.css` (see resolved inventory below); `ink` is NOT included |
+| `ABox/Status` | COLOR | tones `sage`, `primary`, `amber`, `red`, `sky`, `neutral` aliased to semantic; 12 metal variables (`metal/{platinum,gold,silver,bronze,iron,lead}` and each `-fg`) aliased per production mapping |
+| `ABox/Spacing` | FLOAT | `surface/none 0`, `surface/sm 16`, `surface/md 20`, `surface/lg 24` |
+| `ABox/Radius` | FLOAT | `sm 6`, `md 10`, `lg 14`, `xl 18`, `2xl 22`, `3xl 28`, `4xl 36`, `base 14`, `full 9999` |
+| `ABox/Border` | FLOAT | `hairline 1`, `ring 2` |
+| `ABox/Elevation` | FLOAT + COLOR | per family (`card`, `elevated`, `drawer`, `plate`, `glow`) and per actual layer `i`: `{family}/{i}/{x,y,blur,spread}` FLOAT and `{family}/{i}/tint` COLOR; both modes populated, Light/Dark differences preserved independently |
+| `ABox/Layout` | FLOAT | `container/wide 1408`, `container/shell 1500` |
+| `ABox/Control sizing` | FLOAT | `height/md 40`, `height/lg 44`, `padding-x 12`, `min-touch-target 44` |
 
-Primitives hold literal color values per mode. Semantic variables are created as **aliases** to primitives wherever the production CSS itself points a role at a value shared by another role; where a role declares a unique literal, the semantic variable holds the value directly and no artificial primitive is manufactured for it. Status tone variables alias Color/Semantic exactly as `status-badge.tsx` aliases `var(--sage)` etc. No alias chain is invented that production does not express.
+Non-colour collections carry identical values in both modes. No STRING or BOOLEAN variables.
 
-## D. Figma types and modes
+## Resolved semantic inventory (exact)
 
-- Colors → `COLOR`, modes `Light` / `Dark` matching `:root` and `.dark`. Roles that the `.dark` block does not redeclare inherit the Light value explicitly (recorded, since Figma has no CSS cascade).
-- Spacing, Radius, Border, Layout, Control, Elevation numerics → `FLOAT`, single `Default` mode, unitless px numbers.
-- Elevation tints → `COLOR`, `Light` / `Dark`.
-- No `STRING` or `BOOLEAN` variables in B1.
+`src/styles.css` declares `--color-*` roles in two `@theme inline` blocks:
 
-## E. Naming mapping
+- Block 1, lines 32–79 — 48 roles: `background`, `foreground`, `surface`, `surface-foreground`, `panel`, `card`, `card-foreground`, `popover`, `popover-foreground`, `primary`, `primary-foreground`, `primary-soft`, `secondary`, `secondary-foreground`, `sage`, `sage-foreground`, `sage-soft`, `muted`, `muted-foreground`, `accent`, `accent-foreground`, `destructive`, `destructive-foreground`, `warning`, `warning-foreground`, `info`, `info-foreground`, `success`, `success-foreground`, `border`, `border-strong`, `hairline`, `input`, `ring`, `ring-offset-background`, `chart/1`, `chart/2`, `chart/3`, `chart/4`, `chart/5`, `sidebar`, `sidebar/foreground`, `sidebar/primary`, `sidebar/primary-foreground`, `sidebar/accent`, `sidebar/accent-foreground`, `sidebar/border`, `sidebar/ring`
+- Block 2, lines 473–480 — 6 roles: `ai`, `ai-foreground`, `surface-1`, `surface-2`, `surface-3`, `brand-accent`
 
-`--color-surface-foreground` → `ABox/Color/Semantic` variable `surface-foreground`; `--metal-gold-fg` → `ABox/Status` variable `metal/gold-fg`; `--radius-2xl` → `ABox/Radius` variable `2xl`. Rule: strip the `--color-` / `--` prefix, keep the production token name verbatim, use `/` only to group families that already exist in production (`metal/`, `chart/`, `sidebar/`, `container/`, `height/`, `shadow-card/`). No renaming, no re-casing, no "improvement" of production names.
+**Exact semantic count: 54.** `ink` is excluded — production declares `--ink` only as a `:root`/`.dark` primitive (lines 100 and 185) with no `--color-ink` theme role, so it belongs to `ABox/Color/Primitive` and must not be duplicated into the Semantic collection. The earlier "48 plus ink" wording is superseded by this resolved list.
 
-## F. Values Figma cannot represent exactly — recorded, never silently approximated
+Recorded discrepancy: the approved inventory figure of 48 covers Block 1 only. This plan treats the production source as authoritative and includes Block 2's 6 roles, bringing the total to 54. If the 6 Block-2 roles are meant to be excluded, say so before implementation.
 
-1. **oklch source notation.** Figma variables store sRGB. Every color is converted once, deterministically, and the original `oklch(...)` string is recorded in the variable description as the authoritative value. Conversion is a recorded limitation; production is never changed to match Figma.
-2. **Alpha-bearing roles** (`--border`, `--border-strong`, `--hairline`, `--input`, `--sidebar-border`) keep their alpha in the Figma color value; the source notation stays in the description.
-3. **`color-mix(in oklch, …)`** used by StatusBadge for text/background/border is computed at runtime from the tone and cannot be a static variable. Not created in B1; recorded as runtime-computed and handled at component level in a later batch.
-4. **Composite box-shadows** are not a Figma variable type. B1 stores only their numeric parts and tints; the shadows themselves become Effect Styles in a later batch. Recorded as a deferred representation, not a gap.
-5. **Decorative utilities** (`noise-field`, `contour`, `aurora`, `glass`, `edge-sheen`, `ember-underline`, `card-brackets`, `divider-warm`) and keyframe motion are not variables and are not converted into invented tokens.
-6. **Tailwind responsive breakpoints and generic spacing scale** are library-owned; no ABox variables are created for them.
+Each variable's source declaration is the `--color-<name>: var(--<token>)` line above; the referenced token's `:root` and `.dark` declarations supply the Light and Dark mappings.
 
-## G. Idempotency
+## Alias strategy — source-mapping authoritative
 
-Collections and variables are matched by exact name within their collection. Existing collection → reuse its id; existing variable of the same name and type → update its per-mode values in place; type mismatch → STOP with an explicit error rather than delete-and-recreate. Modes are matched by name and reused. A rerun must change no ids. The plugin never deletes a variable it did not create in this batch.
+Aliasing is derived from the production declaration graph in `src/styles.css`, never from colour-value equality.
 
-## H. Validation
+- A semantic variable aliases a primitive only when the production source explicitly maps it: `--color-X: var(--Y)` and `--Y` is a declared primitive role. The alias target is `--Y`, resolved separately for `Light` (`:root`) and `Dark` (`.dark`).
+- Two distinct production roles that happen to resolve to identical oklch/sRGB literals remain two distinct variables. Equal values never imply an alias.
+- Where a role's Light and Dark declarations reference different primitives, each mode gets its own alias independently.
+- Where a role resolves through `color-mix(in oklch, …)` or another unsupported runtime computation, no alias and no hard-coded approximation is written; it is recorded as a runtime-computed limitation with its verbatim production source line.
+- Status tones and the 12 metal variables alias according to their actual production source mapping in `status-badge.tsx` / `metal-badge.tsx` and the tokens they reference — again never by colour equality.
+- A raw sRGB value is written only where production declares a literal directly at that role; every such case is reported as a mapping exception in the verification output.
 
-`b1-verify` runs independently of creation and checks:
-1. the nine collections exist exactly once, with the declared modes;
-2. every inventoried variable exists exactly once, in the right collection, with the right `resolvedType` — including exactly one primitive variable per production primitive token/role path, with no duplicate primitive created solely because Light and Dark literals differ;
-3. each value per mode matches the converted production source within exact equality of the stored sRGB tuple — Light and Dark values compared independently against their `:root` and `.dark` source values (Dark explicitly equal to Light where production declares no override);
-4. no variable exists in an ABox collection that is not in the approved inventory (extras are listed and fail);
-5. no branding/runtime value from `marketplace-store.ts` appears in any variable name or description;
-6. counts of text styles, effect styles, components and component sets are unchanged from the pre-B1 baseline (B1 must create none);
-7. the seven pages still exist at indices 0..6 and remain empty.
+## Recorded limitations (never silently approximated)
 
-Any FAIL → `RESULT: B1 FAILED`.
+- `oklch()` → sRGB conversion; original literal preserved in each variable description.
+- `color-mix(in oklch, …)` — no fabricated static variable; recorded as runtime-computed with its production source reference in the verification output.
+- Composite `box-shadow` — decomposed only; Effect Styles are later work.
+- Decorative utilities (`noise-field`, `contour`, `aurora`, `glass`, `ember-underline`, `card-brackets`, `edge-sheen`), motion keyframes, and responsive breakpoints are not variables.
 
-## I. Run 1 / Run 2 evidence
+## Idempotency
 
-Run 1: verbatim output with per-collection creation log, total variables created per collection, full `RESULT: B1 PASSED`, plus collection and variable ids.
-Run 2: every line reads "reused/updated", zero created, identical collection and variable ids, identical counts, `RESULT: B1 PASSED`.
-Both runs: confirmation that text-style / effect-style / component / component-set counts are unchanged and that the seven pages are untouched and empty. Any limitation from section F restated in the run output.
+Collections and variables match by exact name. Existing ones are reused/updated in place, ids preserved. Duplicate collection → STOP with a duplicate-collection error. Type mismatch → STOP with a type-mismatch error. Nothing outside the approved inventory is deleted.
 
-## J. Scope
+## Verification (`b1-verify`)
 
-B2 Typography, B3 Foundational Styles, B4 components, B5 patterns/shells, B6 screens, traceability and validation batches, and library publishing all remain out of scope. Nothing in `src/**` or any ABox production/reference file is modified; only `tools/figma-plugin/` source plus the regenerated `code.js`.
+Implements all 31 listed checks — collection count/modes, per-variable existence, `resolvedType`, one primitive per role path, independent Light/Dark comparison against `:root` and `.dark`, the resolved semantic inventory by exact count and exact name list (no hard-coded "48 plus ink" rule; `ink` must be absent from the Semantic collection), alias targets verified against the production declaration graph rather than colour equality, 6 tones + 12 metals, exact numeric matches for Spacing/Radius/Border/Layout/Control sizing, 5 variables per elevation layer with both modes and no `Default`, no extra variables in B1 collections, no runtime/tenant/branding values, and unchanged counts of text styles, effect styles, components, component sets and variants against a pre-run baseline, plus B0 pages at indices 0–6 and empty.
+
+Output includes per-collection variable counts, collection ids, per-variable ids, structural summary, mapping exceptions/limitations, and exactly one of `RESULT: B1 PASSED` or `RESULT: B1 FAILED — do not proceed to B2.`
+
+## Run 1 / Run 2
+
+Run 1: file-isolation guard → B0 page validation → create/reuse collections → create/update variables → verify → must end `RESULT: B1 PASSED`.
+Run 2: identical operation; every line must read `reused` or `updated`, zero collections and zero variables created, all ids identical to Run 1, B0 pages unchanged — must also end `RESULT: B1 PASSED`.
+
+## Safeguards
+
+`requireFile("ABox Design System — Library")` rejects any other file. The plugin reads no `src/` module at runtime. After implementation, `git diff --stat -- src/` is checked and must be empty, and `code.js` is confirmed regenerated through `build.mjs`.
+
+## Out of scope
+
+B2 Typography and all later batches, text/effect styles, components, component sets, variants, patterns, shells, screens, documentation content, library publishing, and any application change.
