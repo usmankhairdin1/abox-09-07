@@ -79,9 +79,9 @@ Naming rule, applied uniformly: a Boolean representing an optional-render guard 
 | --- | --- | --- | --- |
 | `ABox/Header/PageHeader` | `hasEyebrow`, `hasIcon`, `hasDescription`, `hasActions` | `page-header.tsx:33,36,51,57` | `eyebrow`, `icon`, `description`, `actions` |
 | `ABox/Card/KpiCard` | `hasIcon`, `hasDelta`, `hasHint` | `kpi-card.tsx:60,73,76,86` | `icon`, `delta`, `hint` |
-| `ABox/Feedback/EmptyState` | `hasIcon`, `hasBody` | `empty-state.tsx:19,25` | `icon`, `body` |
+| `ABox/Feedback/EmptyState` | `hasIcon`, `hasBody`, `hasAction` | `empty-state.tsx:18,23,24` | `icon`, `body` (+ `action` slot) |
 
-Booleans: 4 + 3 + 2 = **9**. The renames from the B4 recorded names are forced by the collision rule and touch no existing Figma object, since no Boolean exists yet.
+Booleans: 4 + 3 + 3 = **10**. The renames from the B4 recorded names are forced by the collision rule and touch no existing Figma object, since no Boolean exists yet.
 
 ### 3d. Text properties
 
@@ -89,9 +89,20 @@ Booleans: 4 + 3 + 2 = **9**. The renames from the B4 recorded names are forced b
 
 Text: 1+1+1+1+2+3+1+1+2+1+1 = **15**, exactly the `textProps` inventory recorded in `tokens-b4.js`.
 
-### 3e. Instance Swap properties
+### 3e. Instance Swap properties and complete slot audit
 
-`ABox/Feedback/EmptyState` → `action` (`empty-state.tsx:10,26`, recorded as `instanceProps` in `tokens-b4.js`). Instance Swap: **1**. PageHeader `actions` stays a Boolean only, matching the B4 record. `icon?: ComponentType` props are not Instance Swaps: B4 created no icon component, so there is no swappable source — `hasIcon` plus the existing placeholder vector only.
+Two production props are caller-supplied `React.ReactNode` content slots, and each is represented by **both** a visibility Boolean and a content Instance Swap — the Boolean never absorbs the slot.
+
+| Production prop | Type | Source | Figma type | Final Figma name | Meaning | Real component available to swap |
+| --- | --- | --- | --- | --- | --- | --- |
+| PageHeader `actions` | `React.ReactNode` | `page-header.tsx:16` declared, `:55` rendered `{actions && <div …>{actions}</div>}` | Boolean + Instance Swap | `hasActions` + `actions` | both — presence guard and content slot | yes; production call sites pass real B4 components: `ActionPill` (`marketplace.admin.readiness.tsx:28`), `StatusBadge` (`app.jet.branding.tsx:26`, `app.jet.platform.tsx:95`), `SaveContinueButton` (`review.tsx:43`). Preferred swap values: `ABox/Action/ActionPill`, `ABox/Status/StatusBadge`. |
+| EmptyState `action` | `React.ReactNode` | `empty-state.tsx:9` declared, `:24` rendered `{action}` | Boolean + Instance Swap | `hasAction` + `action` | both | yes, but production passes raw inline `<Link>`/`<button>` elements styled with pill classes (`plans.index.tsx:344`, `cart.tsx:59`, `review.tsx:50`, `apply.tsx:96`, `compare.tsx:83`, `member.quotes.tsx:29`, `handoff.tsx:37`), not a B4 component. The Instance Swap is created with **no** default preferred value; no placeholder component is invented. Recorded as a limitation. |
+| PageHeader `icon` | `ComponentType<{className?: string}>` | `page-header.tsx:15,30-35` | Boolean only | `hasIcon` | visibility-only | no — B4 created no icon Component; non-swappable, limitation preserved |
+| KpiCard `icon` | `ComponentType<{className?: string}>` | `kpi-card.tsx:20,60` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
+| EmptyState `icon` | `ComponentType<{className?: string}>` | `empty-state.tsx:6,18-22` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
+| LabeledField `control` | children | `field.tsx` | exposed nested instance (not a property) | `control` | content, already exposed in B4 | existing `ABox/Control/Control` instance |
+
+Instance Swap properties: **2** (`PageHeader.actions`, `EmptyState.action`). No other production prop is a content slot: every remaining optional prop is a string or a `ComponentType` icon.
 
 ### 3f. Collision audit — complete
 
@@ -106,11 +117,11 @@ Names must be unique within a component; repetition across components is fine.
 | `ABox/Surface/Surface` | B4 axes only | none |
 | `ABox/Control/Control` | B4 axes only | none |
 | `ABox/Card/KpiCard` | variant `tone`, variant `deltaSign`, bool `hasIcon`, `hasDelta`, `hasHint`, text `label`, `value` | resolved (`delta` → `hasDelta` + `deltaSign`) |
-| `ABox/Header/PageHeader` | variant `variant`, bool `hasEyebrow`, `hasIcon`, `hasDescription`, `hasActions`, text `title`, `eyebrow`, `description` | resolved (Booleans renamed `has…`) |
+| `ABox/Header/PageHeader` | variant `variant`, bool `hasEyebrow`, `hasIcon`, `hasDescription`, `hasActions`, text `title`, `eyebrow`, `description`, swap `actions` | resolved (Booleans renamed `has…`; `actions` kept as the content slot) |
 | `ABox/Nav/ModuleTab` | variant `state`, text `label` | none |
 | `ABox/Nav/WizardStep` | variant `state`, text `label` | none |
 | `ABox/Brand/AboxMark` | variant `tone` | none |
-| `ABox/Feedback/EmptyState` | bool `hasIcon`, `hasBody`, text `title`, `body`, swap `action` | resolved (`body` → `hasBody` + text `body`) |
+| `ABox/Feedback/EmptyState` | bool `hasIcon`, `hasBody`, `hasAction`, text `title`, `body`, swap `action` | resolved (`body` → `hasBody` + text `body`; `action` → `hasAction` + swap `action`) |
 | `ABox/Form/LabeledField` | text `label` (+ exposed nested instance `control`, not a property) | none |
 | `ABox/Form/Input` | text `placeholder` | none |
 
@@ -126,10 +137,10 @@ Names must be unique within a component; repetition across components is fine.
 | Variant properties existing after B4 | 13 axes | ActionPill 1, Button 2, StatusBadge 1, MetalBadge 1, Surface n, Control 2, KpiCard 1, PageHeader 1, ModuleTab 1, WizardStep 1, AboxMark 1 — printed and asserted at run time |
 | Variant properties created by B5 | 1 | `KpiCard.deltaSign` |
 | Variant properties reused unchanged | all B4 axes | none renamed, none removed |
-| Boolean properties created | 9 | 4 + 3 + 2 |
+| Boolean properties created | 10 | 4 (PageHeader) + 3 (KpiCard) + 3 (EmptyState) |
 | Text properties created | 15 | 1+1+1+1+2+3+1+1+2+1+1 |
-| Instance Swap properties created | 1 | EmptyState `action` |
-| Non-variant properties created | 25 | 9 + 15 + 1 |
+| Instance Swap properties created | 2 | PageHeader `actions` + EmptyState `action` |
+| Non-variant properties created | 27 | 10 + 15 + 2 |
 | Properties reused in place (already real in Figma) | 0 Boolean / 0 Text / 0 Swap | proven by §2 audit; re-proven at run time against the live inventory |
 
 ### 3h. Combinations that must NOT be created
@@ -160,7 +171,7 @@ The live property inventory of each B4 object is read before any write. Exact-na
 
 ## 7. `b5-verify` — 25 checks
 
-1. B4 existing property inventory is read and printed first. 2. No existing B4 property is recreated; every pre-existing property id is preserved. 3. No B4 component, set or variant is renamed, deleted or re-architected. 4. Exactly one new variant property exists: `KpiCard.deltaSign` with values `positive`, `negative`. 5. Component Set schema consistency: every variant of every set carries a value for every variant property of that set — asserted for all 11 sets, KpiCard included at `tone` × `deltaSign` = 8. 6. `ABox/Action/Button` still has exactly the axes `variant` × `size` and exactly 9 variants; no `state` property exists on it. 7. Per component, every property name is unique and no name is used for two property types — asserted against the §3f table. 8. Boolean = 9, Text = 15, Instance Swap = 1, non-variant total = 25, with arithmetic printed. 9. Exact property names per component match §3c–§3e. 10. Per-state production source mapping printed for every B5 property and value. 11. B1/B2/B3 bindings resolve to existing objects. 12. No hard-coded duplicate foundation value. 13. No value-equality-derived state. 14. No invented state and no invented variant value. 15. No property converted into a variant to avoid a name clash. 16. No pseudo-class rendered as a variant. 17. Responsive only where justified (zero); motion only where justified (zero). 18. B1 = 9 collections / 200 variables. 19. B2 = 1 collection / 19 variables. 20. B3 = 79 styles. 21. Objects = 11 sets + 3 components, `11 + 3 = 14`; variants `52 + 4 = 56` printed. 22. Pages unchanged: 7, in order, only `01 Components` populated; no patterns, shells, screens or documentation content. 23. `git diff --stat -- src/` empty. 24. `code.js` regenerated only by `node build.mjs`. 25. Offline Run 1 passes and Run 2 creates zero objects with identical ids; offline mock execution is explicitly distinguished from real Figma Desktop execution and mock ids are never presented as Figma ids.
+1. B4 existing property inventory is read and printed first. 2. No existing B4 property is recreated; every pre-existing property id is preserved. 3. No B4 component, set or variant is renamed, deleted or re-architected. 4. Exactly one new variant property exists: `KpiCard.deltaSign` with values `positive`, `negative`. 5. Component Set schema consistency: every variant of every set carries a value for every variant property of that set — asserted for all 11 sets, KpiCard included at `tone` × `deltaSign` = 8. 6. `ABox/Action/Button` still has exactly the axes `variant` × `size` and exactly 9 variants; no `state` property exists on it. 7. Per component, every property name is unique and no name is used for two property types — asserted against the §3f table. 8. Boolean = 10, Text = 15, Instance Swap = 2, non-variant total = 27, with arithmetic `10 + 15 + 2 = 27` printed. 9. Exact property names per component match §3c–§3e; every `React.ReactNode` content slot has both its Boolean and its Instance Swap — `PageHeader.hasActions` + `PageHeader.actions`, `EmptyState.hasAction` + `EmptyState.action` — and no content slot is collapsed into a Boolean; every `ComponentType` icon prop has a Boolean only. 10. Per-state production source mapping printed for every B5 property and value. 11. B1/B2/B3 bindings resolve to existing objects. 12. No hard-coded duplicate foundation value. 13. No value-equality-derived state. 14. No invented state and no invented variant value. 15. No property converted into a variant to avoid a name clash. 16. No pseudo-class rendered as a variant. 17. Responsive only where justified (zero); motion only where justified (zero). 18. B1 = 9 collections / 200 variables. 19. B2 = 1 collection / 19 variables. 20. B3 = 79 styles. 21. Objects = 11 sets + 3 components, `11 + 3 = 14`; variants `52 + 4 = 56` printed. 22. Pages unchanged: 7, in order, only `01 Components` populated; no patterns, shells, screens or documentation content. 23. `git diff --stat -- src/` empty. 24. `code.js` regenerated only by `node build.mjs`. 25. Offline Run 1 passes and Run 2 creates zero objects with identical ids; offline mock execution is explicitly distinguished from real Figma Desktop execution and mock ids are never presented as Figma ids.
 
 Final line: `RESULT: B5 PASSED` or `RESULT: B5 FAILED — do not proceed to B6.`
 
@@ -176,7 +187,7 @@ No file under `src/**` is created, modified or deleted; no application UI, routi
 
 ## 10. Limitations recorded verbatim in the report
 
-`ui/button.tsx:8` `disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed`, used at `plan-card.tsx:116` (`size="sm" disabled={inCart}`) — not converted to a Figma variant or property: a set-wide `state` axis would require a production-backed value for the other eight Button combinations, and production names none; only the opacity is visual in any case, and pointer-events and cursor have no Figma representation. `kpi-card.tsx:19,73,78` — with `hasDelta = false` the hidden delta layer still carries a `deltaSign` value, because Figma requires every variant to hold a value for every axis of its set; recorded rather than resolved by invention. `ui/input.tsx:11` `disabled:cursor-not-allowed disabled:opacity-50` — declared, never used in production; not converted. `control.tsx:11-12` — disabled variants consumer-owned. `kpi-card.tsx:19,73,78` — one production prop `delta?` carries both presence and sign; Figma cannot express both in a single property, so it is split into `hasDelta` and `deltaSign`, and the production prop name `delta` is used for neither. `kpi-card.tsx:78` — no negative `pct` literal occurs at any production call site; `deltaSign=negative` is included on the strength of the source branch and this absence is recorded. `page-header.tsx:33` — `eyebrow` is suppressed in `compact`; the combination is not created. `page-header.tsx:18` / `kpi-card.tsx:20` / `empty-state.tsx:7` — `icon?: ComponentType` cannot be an Instance Swap because B4 created no icon component; only `hasIcon` and a placeholder vector exist. Hover/focus/active/transition rules in `ui/button.tsx:8`, `action-pill.ts`, `surface.tsx`, `control.tsx`, `module-tabs.tsx:28`, `kpi-card.tsx:41,62`. Motion: `CountUp`, `FadeRise`, `animate-hairline`, `group-hover:-rotate-6 group-hover:scale-105`. Responsive `md:`/`xl:` rules deferred to B7/B8. `color-mix()` tints and `oklch()`, as already recorded in B3/B4.
+`ui/button.tsx:8` `disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed`, used at `plan-card.tsx:116` (`size="sm" disabled={inCart}`) — not converted to a Figma variant or property: a set-wide `state` axis would require a production-backed value for the other eight Button combinations, and production names none; only the opacity is visual in any case, and pointer-events and cursor have no Figma representation. `kpi-card.tsx:19,73,78` — with `hasDelta = false` the hidden delta layer still carries a `deltaSign` value, because Figma requires every variant to hold a value for every axis of its set; recorded rather than resolved by invention. `ui/input.tsx:11` `disabled:cursor-not-allowed disabled:opacity-50` — declared, never used in production; not converted. `control.tsx:11-12` — disabled variants consumer-owned. `kpi-card.tsx:19,73,78` — one production prop `delta?` carries both presence and sign; Figma cannot express both in a single property, so it is split into `hasDelta` and `deltaSign`, and the production prop name `delta` is used for neither. `kpi-card.tsx:78` — no negative `pct` literal occurs at any production call site; `deltaSign=negative` is included on the strength of the source branch and this absence is recorded. `page-header.tsx:33` — `eyebrow` is suppressed in `compact`; the combination is not created. `page-header.tsx:15` / `kpi-card.tsx:20` / `empty-state.tsx:6` — `icon?: ComponentType<{className?: string}>` cannot be an Instance Swap because B4 created no icon Component; only `hasIcon` and the existing placeholder vector exist, and no placeholder component is invented to make a swap possible. `empty-state.tsx:9,24` — production passes raw inline `<Link>`/`<button>` elements styled with pill classes rather than a B4 component, so the `action` Instance Swap is created with no default preferred value. Hover/focus/active/transition rules in `ui/button.tsx:8`, `action-pill.ts`, `surface.tsx`, `control.tsx`, `module-tabs.tsx:28`, `kpi-card.tsx:41,62`. Motion: `CountUp`, `FadeRise`, `animate-hairline`, `group-hover:-rotate-6 group-hover:scale-105`. Responsive `md:`/`xl:` rules deferred to B7/B8. `color-mix()` tints and `oklch()`, as already recorded in B3/B4.
 
 ## 11. Out of scope
 
