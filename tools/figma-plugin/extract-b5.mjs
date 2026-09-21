@@ -97,8 +97,8 @@ const bool = (component, property, textIndex, source, layerName) => {
 
 /* ---------- 15 TEXT properties ---------- */
 const bindings = [
-  text("ABox/Action/ActionPill", "label", 0, lineOf(F.pillCmp, "children"), "label"),
-  text("ABox/Action/Button", "label", 0, lineOf(F.button, "children"), "label"),
+  text("ABox/Action/ActionPill", "label", 0, lineOf(F.pillCmp, "export interface ActionPillProps"), "label"),
+  text("ABox/Action/Button", "label", 0, lineOf(F.button, "export interface ButtonProps"), "label"),
   text("ABox/Status/StatusBadge", "label", 0, lineOf(F.status, "children"), "label"),
   text("ABox/Status/MetalBadge", "label", 0, lineOf(F.metal, "tier"), "label"),
   text("ABox/Card/KpiCard", "label", 0, lineOf(F.kpi, "label: string"), "label"),
@@ -114,7 +114,7 @@ const bindings = [
   text("ABox/Form/Input", "placeholder", 0, lineOf(F.input, "placeholder"), "placeholder"),
   /* ---------- 4 BOOLEAN properties (optional-render guards) ---------- */
   bool("ABox/Card/KpiCard", "hasDelta", 2, lineOf(F.kpi, "{delta && ("), "delta"),
-  bool("ABox/Header/PageHeader", "hasEyebrow", 0, lineOf(F.header, "{eyebrow && "), "eyebrow"),
+  bool("ABox/Header/PageHeader", "hasEyebrow", 0, lineOf(F.header, "contextLabel && "), "eyebrow"),
   bool("ABox/Header/PageHeader", "hasDescription", 2, lineOf(F.header, "{description && "), "description"),
   bool("ABox/Feedback/EmptyState", "hasBody", 1, lineOf(F.empty, "{body && "), "body"),
 ];
