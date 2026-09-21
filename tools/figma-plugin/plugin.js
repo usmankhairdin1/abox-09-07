@@ -2834,7 +2834,7 @@ function b6HairlineId(styleName) {
   return b4Style(b6StyleIndex, "paint", styleName).id;
 }
 
-function b6ApplyRoot(node, root, index) {
+async function b6ApplyRoot(node, root, index) {
   node.layoutMode = root.layout || "HORIZONTAL";
   node.layoutWrap = root.wrap || "NO_WRAP";
   node.primaryAxisSizingMode = root.primarySizing || "AUTO";
@@ -2851,7 +2851,8 @@ function b6ApplyRoot(node, root, index) {
   if (root.strokeBottomStyle) {
     // Individual bottom stroke, bound to the live B3 style — never a colour value,
     // never an extra line child. b4Style STOPs when the style cannot be resolved.
-    node.strokeStyleId = b4Style(index, "paint", root.strokeBottomStyle).id;
+    // documentAccess: dynamic-page forbids the synchronous setter (same rule as B4/B5).
+    await node.setStrokeStyleIdAsync(b4Style(index, "paint", root.strokeBottomStyle).id);
     node.strokeTopWeight = 0;
     node.strokeLeftWeight = 0;
     node.strokeRightWeight = 0;
@@ -2863,11 +2864,11 @@ function b6ApplyRoot(node, root, index) {
 }
 
 /** Create one pattern ComponentNode with its nested live instances. */
-function b6BuildNode(name, root, children, index, page) {
+async function b6BuildNode(name, root, children, index, page) {
   const node = figma.createComponent();
   node.name = name;
   page.appendChild(node);
-  b6ApplyRoot(node, root, index);
+  await b6ApplyRoot(node, root, index);
   for (const spec of children) node.appendChild(b6CreateInstance(spec));
   return node;
 }
