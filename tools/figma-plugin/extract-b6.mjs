@@ -173,10 +173,16 @@ const moduleTabBar = {
     ", " + lineOf(F.frames, "<ModuleTabs tabs={EMPLOYER_TABS}"),
   root: {
     layout: "HORIZONTAL",
-    gap: 6, // gap-1.5
+    wrap: "WRAP", // flex-wrap
+    gap: 6, // gap-1.5 — primary axis
+    counterGap: 6, // gap-1.5 — wrapped (row) axis
+    primarySizing: "AUTO", // no width constraint in production
+    counterSizing: "AUTO", // no height constraint in production
     paddingBottom: 12, // pb-3
     strokeBottomStyle: "ABox/Semantic/hairline", // border-b border-hairline
+    strokesIncludedInLayout: false, // border-b paints outside the pb-3 spacing contract
     strokeSource: lineOf(F.tabs, "border-b border-hairline"),
+    gapSource: lineOf(F.tabs, "gap-1.5"),
   },
   children: TAB_LABELS.map((label, i) =>
     instance(
