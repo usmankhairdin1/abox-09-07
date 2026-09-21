@@ -24,19 +24,44 @@ Define the exact verification sequence to complete the Phase 52A proof gate usin
 The run must create exactly:
 - 1 Color Variable (from `tokens.js` extraction source).
 - 1 Text Style (Inter Tight).
-- 1 native StatusBadge Component.
-- 1 Variant property with exactly 2 real StatusBadge tone values (the approved tone variants — no invented options).
+- 1 native StatusBadge COMPONENT_SET.
+- Exactly 2 native variant COMPONENT nodes inside that component set.
+- Exactly 1 variant property named `tone`.
+- Exactly 2 real tone values taken from the production StatusBadge source.
+- 1 editable text child per variant component as appropriate to the existing plugin implementation.
+- No IMAGE fills and no flattened substitutes.
 
-Evidence per object: the object exists in the Figma file and is editable (variable appears in the Variables panel; text style in the Text Styles panel; component is a real COMPONENT/COMPONENT_SET node on canvas, not an image).
+Evidence per object: the object exists in the Figma file and is editable (variable appears in the Variables panel; text style in the Text Styles panel; component set is a real COMPONENT_SET node on canvas containing two COMPONENT variant children, not an image or flattened group).
+
+Distinguish these structural counts separately in the report:
+1. component-set count = 1
+2. variant-component count = 2
+3. variant-property count = 1
+4. variant-value count = 2
 
 ### Step 4 — Structural self-check
-The plugin's built-in structural self-check must pass every native-object check: variable is a native VARIABLE, style is a native TEXT style, component is a native component with variant properties — and it must confirm there are no flattened image-based substitutes (no rectangle-with-image-fill stand-ins).
+The plugin's built-in structural self-check must pass every required native-object check:
+- variable is a native VARIABLE
+- style is a native TEXT style
+- component set is a native COMPONENT_SET
+- both variants are native COMPONENT nodes inside the set
+- the set exposes exactly one variant property named `tone`
+- that property exposes exactly two real tone values from the production StatusBadge source
+- each variant contains an editable text child as appropriate to the plugin implementation
+- there are no flattened image-based substitutes (no rectangle-with-image-fill stand-ins, no IMAGE fills).
 
 ### Step 5 — Result gate
 The plugin output must report `PROOF PASSED`. Any other result = gate not passed; record the failure message verbatim and stop.
 
 ### Step 6 — Determinism / re-run
-Run the plugin a second time in the same file. Verify it updates the existing variable, text style, and component in place rather than creating duplicates. Evidence: object counts remain exactly 1 variable / 1 text style / 1 component after the second run.
+Run the plugin a second time in the same file. Verify it updates the existing variable, text style, component set, variant components, and variant property in place rather than creating duplicates. Evidence after run 2 must show unchanged structural counts:
+- 1 Color Variable
+- 1 Text Style
+- 1 StatusBadge COMPONENT_SET
+- 2 variant COMPONENT nodes inside that set
+- 1 `tone` variant property
+- 2 tone values
+- 0 additional component sets, 0 additional variant components, 0 additional properties, 0 additional variables, 0 additional text styles.
 
 ### Step 7 — Library publishing availability (non-blocking)
 Record whether the user can publish a library on the target team (Team/Org permission) as either `permitted` or `unavailable`. This is recorded for Batch 0 planning only and does not block the proof.
@@ -46,8 +71,8 @@ Before Phase 52A can be marked COMPLETE, the user must return a FINAL REPORT con
 1. Confirmation the file `ABox Proof — Scratch` exists with edit access.
 2. Confirmation Inter Tight loaded (no font-substitution halt).
 3. The plugin's verbatim output, including the `PROOF PASSED` line and the structural self-check results.
-4. Object inventory after run 1: names/IDs of the 1 variable, 1 text style, 1 component, and the variant property name with its 2 values.
-5. Object inventory after run 2 confirming no duplicates (counts unchanged; update-in-place observed).
+4. Object inventory after run 1: names/IDs of the 1 variable, 1 text style, 1 StatusBadge COMPONENT_SET, the 2 variant COMPONENT nodes inside it, the 1 `tone` variant property, and its 2 real tone values.
+5. Object inventory after run 2 confirming no duplicates: component-set count, variant-component count, variant-property count, and variant-value count all unchanged; update-in-place observed.
 6. Explicit confirmation no flattened image-based objects were created.
 7. Library-publishing availability: `permitted` or `unavailable`.
 8. Any failure or deviation, recorded verbatim, if the gate did not pass.
