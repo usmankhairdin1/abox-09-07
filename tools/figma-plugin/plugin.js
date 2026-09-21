@@ -1779,8 +1779,11 @@ async function verifyB4() {
   for (const spec of ABOX_B4.sets) {
     const node = sets.find((s) => s.name === spec.name);
     if (!node) { axisOk = false; continue; }
-    const want = spec.values.map((v) => b4VariantName(spec, v)).sort().join("|");
-    if (node.children.map((c) => c.name).sort().join("|") !== want) axisOk = false;
+    // Every B4 variant must still be addressable; axes added by a later batch
+    // widen the name and are matched through b4MatchVariant, never renamed.
+    for (const v of spec.values) {
+      if (!b4MatchVariant(node.children.slice(), b4VariantName(spec, v))) axisOk = false;
+    }
   }
   add(axisOk, "exact variant property names and values on every set");
 
@@ -1799,7 +1802,7 @@ async function verifyB4() {
     const node = sets.find((s) => s.name === spec.name);
     if (!node) { srcOk = false; continue; }
     for (const value of spec.values) {
-      const v = node.children.find((c) => c.name === b4VariantName(spec, value));
+      const v = b4MatchVariant(node.children.slice(), b4VariantName(spec, value));
       if (!v || !v.description || v.description.indexOf("source:") !== 0) srcOk = false;
     }
   }
@@ -1883,7 +1886,7 @@ async function verifyB4() {
     say("  SET  " + spec.name + "  id=" + (node ? node.id : "MISSING") + "  variants=" + (node ? node.children.length : 0));
     say("       " + spec.source);
     for (const value of spec.values) {
-      const v = node && node.children.find((c) => c.name === b4VariantName(spec, value));
+      const v = node && b4MatchVariant(node.children.slice(), b4VariantName(spec, value));
       say("         " + b4VariantName(spec, value) + "  id=" + (v ? v.id : "MISSING"));
       say("             " + value.source);
     }
