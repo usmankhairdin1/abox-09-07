@@ -2123,6 +2123,39 @@ function b5Texts(node, out) {
   return out;
 }
 
+/**
+ * Load the fonts a live TEXT node already uses, before any character write.
+ * The font is read off the node B4 created; nothing is guessed or substituted.
+ */
+async function b5LoadTextFonts(node) {
+  const fonts = [];
+  if (node.fontName !== figma.mixed) {
+    fonts.push(node.fontName);
+  } else {
+    const seen = {};
+    const len = node.characters.length;
+    for (let i = 0; i < len; i += 1) {
+      const f = node.getRangeFontName(i, i + 1);
+      const key = f.family + "\u0000" + f.style;
+      if (!seen[key]) {
+        seen[key] = true;
+        fonts.push(f);
+      }
+    }
+  }
+  for (const font of fonts) {
+    try {
+      await figma.loadFontAsync(font);
+    } catch (e) {
+      throw new Error(
+        'STOP: B5 FONT — could not load "' + font.family + " " + font.style +
+          '" used by ' + node.name + ". No substitution is permitted. Figma error: " +
+          String((e && e.message) || e),
+      );
+    }
+  }
+}
+
 function b5Owner(name) {
   const set = b4FindSet(name);
   if (set) return set;
