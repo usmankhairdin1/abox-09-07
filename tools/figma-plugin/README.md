@@ -83,6 +83,16 @@ pages with `figma.loadAllPagesAsync()` before reading any page's children (both 
 page creation and in verification). Re-import the plugin from `manifest.json` after
 pulling plugin changes so Figma Desktop picks up the rebuilt `code.js`.
 
+`documentAccess: dynamic-page` also forbids the synchronous style-id setters. Node style
+bindings must be written with `setFillStyleIdAsync`, `setStrokeStyleIdAsync`,
+`setEffectStyleIdAsync` and `setTextStyleIdAsync` (awaited); otherwise Figma throws
+`in set_fillStyleId: Cannot call with documentAccess: dynamic-page`. Reading
+`fillStyleId` / `strokeStyleId` / `effectStyleId` in the verifiers remains valid and is
+unchanged. `b4Build` uses the async setters. The same synchronous pattern still exists in
+the B5-B10 builders (`b5KpiVariants`, `b6ApplyRoot`, `b7Frame`, `b7Text`, `b7Build*`,
+`b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`) and must be converted in those batches
+before they are run.
+
 ## Library publishing check
 
 In the scratch file, open the Assets panel and look for the publish/library control.

@@ -1526,7 +1526,7 @@ async function b4Build(spec, index) {
         node.fontName = style.fontName;
       }
       node.characters = spec.characters;
-      node.textStyleId = style.id;
+      await node.setTextStyleIdAsync(style.id);
     } else {
       const font = await b4Font(spec.weight || 400);
       node.fontName = font;
@@ -1535,13 +1535,13 @@ async function b4Build(spec, index) {
       if (spec.letterSpacingPercent) node.letterSpacing = { value: spec.letterSpacingPercent, unit: "PERCENT" };
       if (spec.textCase) node.textCase = spec.textCase;
     }
-    if (spec.colorStyle) node.fillStyleId = b4Style(index, "paint", spec.colorStyle).id;
+    if (spec.colorStyle) await node.setFillStyleIdAsync(b4Style(index, "paint", spec.colorStyle).id);
     return node;
   }
   if (spec.type === "ELLIPSE") {
     const node = figma.createEllipse();
     node.resize(spec.w, spec.h);
-    if (spec.fillStyle) node.fillStyleId = b4Style(index, "paint", spec.fillStyle).id;
+    if (spec.fillStyle) await node.setFillStyleIdAsync(b4Style(index, "paint", spec.fillStyle).id);
     return node;
   }
   if (spec.type === "INSTANCE") {
@@ -1576,8 +1576,8 @@ async function b4Build(spec, index) {
     for (const [i, fill, stroke] of bind) {
       const kid = kids[i];
       if (!kid) continue;
-      if (fill) kid.fillStyleId = b4Style(index, "paint", fill).id;
-      if (stroke) kid.strokeStyleId = b4Style(index, "paint", stroke).id;
+      if (fill) await kid.setFillStyleIdAsync(b4Style(index, "paint", fill).id);
+      if (stroke) await kid.setStrokeStyleIdAsync(b4Style(index, "paint", stroke).id);
     }
     return node;
   }
@@ -1596,16 +1596,16 @@ async function b4Build(spec, index) {
     frame.paddingBottom = spec.py || 0;
   }
   frame.cornerRadius = spec.radius || 0;
-  if (spec.fillStyle) frame.fillStyleId = b4Style(index, "paint", spec.fillStyle).id;
+  if (spec.fillStyle) await frame.setFillStyleIdAsync(b4Style(index, "paint", spec.fillStyle).id);
   else frame.fills = [];
   if (spec.strokeStyle) {
-    frame.strokeStyleId = b4Style(index, "paint", spec.strokeStyle).id;
+    await frame.setStrokeStyleIdAsync(b4Style(index, "paint", spec.strokeStyle).id);
     frame.strokeWeight = spec.strokeWeight || 1;
     if (spec.dashed) frame.dashPattern = [4, 4];
   } else {
     frame.strokes = [];
   }
-  if (spec.effectStyle) frame.effectStyleId = b4Style(index, "effect", spec.effectStyle).id;
+  if (spec.effectStyle) await frame.setEffectStyleIdAsync(b4Style(index, "effect", spec.effectStyle).id);
   for (const child of spec.children || []) {
     frame.appendChild(await b4Build(child, index));
   }
