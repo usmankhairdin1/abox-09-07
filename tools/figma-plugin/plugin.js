@@ -1548,7 +1548,13 @@ async function b4Build(spec, index) {
     const target = b4FindSet(spec.of) || b4FindComponent(spec.of);
     if (!target) throw new Error("STOP: nested component not found — " + spec.of);
     const source = target.type === "COMPONENT_SET" ? target.defaultVariant || target.children[0] : target;
-    return source.createInstance();
+    const instance = source.createInstance();
+    // The main component's root is a chrome wrapper (fills cleared in b4EnsureSet /
+    // b4EnsureComponent). Clear the instance root the same way, but only when it is
+    // not style-bound — a style-bound root is a production surface and stays as is.
+    if (!instance.fillStyleId && instance.fills && instance.fills.length) instance.fills = [];
+    if (!instance.strokeStyleId && instance.strokes && instance.strokes.length) instance.strokes = [];
+    return instance;
   }
   if (spec.type === "MARK") {
     const svg =
@@ -1564,23 +1570,57 @@ async function b4Build(spec, index) {
     node.name = "AboxMark";
     node.fills = []; // wrapper frame only; every painted vector below is style-bound
     node.strokes = [];
-    const kids = node.children;
+    // Bind by painted-shape identity in document order rather than by direct child
+    // index: figma.createNodeFromSvg may nest the six shapes inside groups, in which
+    // case index-based binding silently leaves vectors unbound.
+    const painted = [];
+    const collect = (n) => {
+      const isPainted = (n.fills && n.fills.length) || (n.strokes && n.strokes.length);
+      if (n !== node && isPainted && (!n.children || !n.children.length)) painted.push(n);
+      for (const child of n.children || []) {
+        if (n !== node || true) collect(child);
+      }
+      // Group / wrapper frames introduced by the SVG importer are chrome, never a
+      // production surface: clear their own paint so nothing is left hard-coded.
+      if (n !== node && n.children && n.children.length) {
+        if (!n.fillStyleId && n.fills && n.fills.length) n.fills = [];
+        if (!n.strokeStyleId && n.strokes && n.strokes.length) n.strokes = [];
+      }
+    };
+    collect(node);
     const bind = [
-      [0, spec.bgStyle, spec.hairlineStyle],
-      [1, null, spec.ringStyle],
-      [2, null, spec.ringStyle],
-      [3, spec.dotStyle, null],
-      [4, null, spec.fgStyle],
-      [5, null, spec.fgStyle],
+      [spec.bgStyle, spec.hairlineStyle],
+      [null, spec.ringStyle],
+      [null, spec.ringStyle],
+      [spec.dotStyle, null],
+      [null, spec.fgStyle],
+      [null, spec.fgStyle],
     ];
-    for (const [i, fill, stroke] of bind) {
-      const kid = kids[i];
-      if (!kid) continue;
+    if (painted.length !== bind.length) {
+      throw new Error(
+        "STOP: MARK SHAPE COUNT — expected " + bind.length + " painted vectors, found " + painted.length + ".",
+      );
+    }
+    for (let i = 0; i < bind.length; i += 1) {
+      const kid = painted[i];
+      const fill = bind[i][0];
+      const stroke = bind[i][1];
       if (fill) await kid.setFillStyleIdAsync(b4Style(index, "paint", fill).id);
+      else if (kid.fills && kid.fills.length) kid.fills = [];
       if (stroke) await kid.setStrokeStyleIdAsync(b4Style(index, "paint", stroke).id);
+      else if (kid.strokes && kid.strokes.length) kid.strokes = [];
+    }
+    for (const kid of painted) {
+      if (kid.fills && kid.fills.length && !kid.fillStyleId) {
+        throw new Error('STOP: UNBOUND MARK VECTOR — "' + kid.name + '" keeps a hard-coded fill.');
+      }
+      if (kid.strokes && kid.strokes.length && !kid.strokeStyleId) {
+        throw new Error('STOP: UNBOUND MARK VECTOR — "' + kid.name + '" keeps a hard-coded stroke.');
+      }
     }
     return node;
   }
+
   // FRAME
   const frame = figma.createFrame();
   frame.layoutMode = spec.layout || "NONE";
