@@ -494,7 +494,7 @@ const rgbaEq = (a, b) =>
 
 async function b1Collections() {
   const existing = await figma.variables.getLocalVariableCollectionsAsync();
-  return B1.collections.map((spec) => {
+  return ABOX_B1.collections.map((spec) => {
     const found = existing.filter((c) => c.name === spec.name);
     if (found.length > 1) {
       throw new Error(
