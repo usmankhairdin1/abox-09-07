@@ -105,17 +105,17 @@ The pct chip text at `:81` (`{delta.pct >= 0 ? "▲" : "▼"} {Math.abs(delta.pc
 
 ### 3d-ter. Complete final `ABox/Card/KpiCard` property inventory
 
-| Type | Name | Values / content | Source | Default |
-| --- | --- | --- | --- | --- |
-| Variant | `tone` | `default`, `primary`, `sage`, `warning` | `:15`, `TONE` `:26-31` | `default` (`:33` `tone = "default"`) |
-| Variant | `deltaSign` | `positive`, `negative` | `:78` `delta.pct >= 0 ? "text-sage" : "text-destructive"` | `positive` (every production call site passes a positive literal) |
-| Boolean | `hasIcon` | show/hide icon tile | `:13`, `:48` | `true` (all six call sites pass `icon`) |
-| Boolean | `hasDelta` | show/hide pct chip | `:12`, `:74` | `true` |
-| Boolean | `hasDeltaLabel` | show/hide the delta label text | `:12`, `:84` | `true` (`app.index.tsx:85`) |
-| Boolean | `hasHint` | show/hide hint | `:14`, `:85` | `false` (no production call site passes `hint`) |
-| Text | `label` | metric label | `:10`, `:46` | `"Active members"` (`app.index.tsx:85`) |
-| Text | `value` | metric value | `:11`, `:62-70` | `"1,284"`-shaped literal read from the same call site |
-| Text | `deltaLabel` | delta caption | `:12`, `:84` | `"this month"` (`app.index.tsx:85`) |
+| Type | Name | Values / content | Source | Production default? | Figma construction value |
+| --- | --- | --- | --- | --- | --- |
+| Variant | `tone` | `default`, `primary`, `sage`, `warning` | `:15`, `TONE` `:26-31` | **yes** — `:33` `tone = "default"` | `default` (same as the declared default) |
+| Variant | `deltaSign` | `positive`, `negative` | `:78` `delta.pct >= 0 ? "text-sage" : "text-destructive"` | **no** — a runtime branch on `delta.pct`, not an API default | `positive`, required only because Figma selects one variant as the set's default; chosen as the branch every production call site exercises |
+| Boolean | `hasIcon` | show/hide icon tile | `:13` `icon?`, `:48` | **no** — optional prop, no declared default | `true`, from observed usage (all six call sites pass `icon`) |
+| Boolean | `hasDelta` | show/hide pct chip | `:12` `delta?`, `:74` | **no** — optional prop | `true`, from observed usage |
+| Boolean | `hasDeltaLabel` | show/hide the delta label text | `:12` `label?`, `:84` | **no** — optional and genuinely mixed in production: absent at `app.dashboard.tsx:32,33,34`, present at `app.index.tsx:85,86,88` | `true`, an arbitrary-but-source-observed starting state so the layer and its text property are visible in the default variant; the optionality is the source fact |
+| Boolean | `hasHint` | show/hide hint | `:14` `hint?`, `:85` | **no** — optional prop | `false`, reflecting observed absence at every production call site, not a declared default |
+| Text | `label` | metric label | `:10`, `:46` | **no** — required prop, no default | sample content `"Active members"` (`app.index.tsx:85`) |
+| Text | `value` | metric value | `:11`, `:62-70` | **no** — required prop, no default | sample content, the literal at the same call site |
+| Text | `deltaLabel` | delta caption | `:12`, `:84` | **no** | sample content `"this month"` (`app.index.tsx:85`) |
 
 KpiCard property count: 2 variant + 4 Boolean + 3 Text = **9** (variants of the set: `tone` × `deltaSign` = 8, unchanged).
 
