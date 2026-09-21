@@ -32,7 +32,7 @@ mustContain("src/components/abox/marketplace-shell.tsx", [
 mustContain("src/components/abox/member-shell.tsx", [
   "MemberShell",
   "MEMBER_NAV",
-  "PlanAIAssistant",
+  "PlanOAssistant",
 ]);
 mustContain("src/components/abox/product-switcher.tsx", [
   "SHOP_PRODUCTS",
