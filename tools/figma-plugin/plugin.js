@@ -4874,7 +4874,9 @@ figma.ui.onmessage = async (msg) => {
                       ? "RESULT: B7 FAILED — do not proceed to B8."
                       : b8
                         ? "RESULT: B8 FAILED — do not proceed to B9."
-                        : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
+                        : b9
+                          ? "RESULT: B9 FAILED — do not use generated screen/prototype evidence."
+                          : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
     );
   }
   report();
