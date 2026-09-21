@@ -70,6 +70,13 @@
     </p>
     <button id="b2run">Create typography variables</button>
     <button id="b2verify" class="secondary">Verify typography variables</button>
+    <p>
+      <strong>Batch B3 — foundational styles</strong><br />
+      Run inside <code>ABox Design System — Library</code>. Creates/updates 72 colour, 2 text and
+      5 effect styles, each bound to the existing B1 variables. No components and no publishing.
+    </p>
+    <button id="b3run">Create foundational styles</button>
+    <button id="b3verify" class="secondary">Verify foundational styles</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -104,6 +111,14 @@
       document.getElementById("b2verify").onclick = () => {
         log.textContent = "Verifying typography variables…";
         parent.postMessage({ pluginMessage: { type: "b2-verify" } }, "*");
+      };
+      document.getElementById("b3run").onclick = () => {
+        log.textContent = "Creating foundational styles…";
+        parent.postMessage({ pluginMessage: { type: "b3-run" } }, "*");
+      };
+      document.getElementById("b3verify").onclick = () => {
+        log.textContent = "Verifying foundational styles…";
+        parent.postMessage({ pluginMessage: { type: "b3-verify" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
