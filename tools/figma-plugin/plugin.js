@@ -1005,13 +1005,14 @@ async function verifyB2() {
   }
   add(famOk, "font-family stacks match src/styles.css verbatim in both modes");
 
-  // FLOAT comparison uses a 1e-9 tolerance. Figma round-trips a stored FLOAT
+  // FLOAT comparison uses a 1e-7 tolerance. Figma round-trips a stored FLOAT
   // through its own numeric representation, so values that are not exactly
   // representable in binary floating point (-2.8, -3.2, 1.02) can come back a
-  // few ulps away from the JS literal that was written. The tolerance is far
-  // smaller than any meaningful typographic difference, and every comparison
-  // is printed at full precision below, so a real mismatch cannot hide.
-  const FLOAT_EPSILON = 1e-9;
+  // few ulps away from the JS literal that was written. The largest observed
+  // real-Figma delta is ~4.8e-8; 1e-7 is safely above that while remaining many
+  // orders of magnitude below any meaningful typographic difference. Every
+  // comparison is printed at full precision below, so a real mismatch cannot hide.
+  const FLOAT_EPSILON = 1e-7;
   const floatMatches = (stored, expected) =>
     typeof stored === "number" && Math.abs(stored - expected) <= FLOAT_EPSILON;
 
