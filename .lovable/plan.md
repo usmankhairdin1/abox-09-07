@@ -67,6 +67,40 @@ Top-level objects on `02 Patterns` = 3 (1 set + 2 components).
 `ModuleTabBar` additionally keeps `paddingBottom = 12` (production `pb-3`). `WizardStepper` keeps
 zero padding. `KpiRow` variants stay `HORIZONTAL` with `layoutWrap = "NO_WRAP"`, `itemSpacing = 16`
 (`gap-4`), both sizing modes `AUTO`, and those values are printed in its signature too.
+`WizardStepper` carries no fill, no stroke and no effect.
+
+## 2b. WizardStepper — the complete production composition (corrected)
+
+The pattern represents the full fixed production list, not a shortened demonstration. Any earlier
+wording about "five of eight steps … the minimum that demonstrates all four real states" is removed
+entirely.
+
+- Root stays a single Component `ABox/Pattern/WizardStepper` with the §2 layout values.
+- It contains exactly **8** child instances, one per entry of `DOWNLINE_WIZARD_STEPS`
+  (`src/components/abox/downline-wizard-stepper.tsx:18-27`), in exact source order.
+- Every child is an instance of the live B4/B5 `ABox/Nav/WizardStep` component, with its existing
+  `state` and `label` properties set — no new property, no new state value.
+- The state configuration is copied from one documented real production route and current-step
+  condition: **`/agency/downlines/new/contacts` (SCR-M05-009, step 3 of 8)**, which is one of the 8
+  step routes that render the stepper. The states follow the source branches verbatim
+  (`isDone = i < currentIndex`, `isCurrent = i === currentIndex`,
+  `isReachable = i <= currentIndex`, otherwise the dimmed span):
+
+| # | Label | State |
+| --- | --- | --- |
+| 1 | Identity | done |
+| 2 | Legal & identifiers | done |
+| 3 | Contacts | current |
+| 4 | Addresses & offices | unreachable |
+| 5 | Settings | unreachable |
+| 6 | Initial administrator | unreachable |
+| 7 | Readiness review | unreachable |
+| 8 | Activation | unreachable |
+
+- The B4 `upcoming` state (reachable, not current, not done) does not occur in this configuration —
+  the source makes a step reachable only when `i <= currentIndex`, so no real route produces it.
+  That is recorded as an observation; no state is manufactured and no states are mixed across
+  routes to fake coverage.
 
 ## 3. ModuleTabBar bottom border — exact stroke binding
 
