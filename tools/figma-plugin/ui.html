@@ -104,6 +104,8 @@
     </p>
     <button id="b6run">Create patterns</button>
     <button id="b6verify" class="secondary">Verify patterns</button>
+    <button id="b6inspect" class="secondary">Inspect 02 Patterns (read-only)</button>
+    <button id="b6stale" class="secondary">Remove stale B6 variant components</button>
     <p>
       <strong>Batch B7 — shells</strong><br />
       Run inside <code>ABox Design System — Library</code>. Creates the three production-backed
@@ -211,6 +213,14 @@
       document.getElementById("b6verify").onclick = () => {
         log.textContent = "Verifying patterns…";
         parent.postMessage({ pluginMessage: { type: "b6-verify" } }, "*");
+      };
+      document.getElementById("b6inspect").onclick = () => {
+        log.textContent = "Inspecting 02 Patterns…";
+        parent.postMessage({ pluginMessage: { type: "b6-inspect" } }, "*");
+      };
+      document.getElementById("b6stale").onclick = () => {
+        log.textContent = "Removing stale B6 variant components…";
+        parent.postMessage({ pluginMessage: { type: "b6-cleanup-stale-variants" } }, "*");
       };
       document.getElementById("b7run").onclick = () => {
         log.textContent = "Creating shells…";

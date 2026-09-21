@@ -2977,7 +2977,15 @@ async function b6EnsurePattern(spec, index, page) {
     for (const v of spec.variants) {
       const vname = spec.property + "=" + v.value;
       const stray = b6FindOnPage(page, vname);
-      if (stray) throw new Error("STOP: ORPHAN VARIANT NODE ON " + B6_PAGE + " — " + vname + ".");
+      if (stray) {
+        const strayInstances = stray.type === "COMPONENT" ? (await stray.getInstancesAsync()).length : 0;
+        throw new Error(
+          "STOP: ORPHAN VARIANT NODE ON " + B6_PAGE + " — " + vname +
+            "  (type=" + stray.type + " id=" + stray.id + " instances=" + strayInstances + ")" +
+            '\n  It belongs inside "' + spec.name + '", not on the page.' +
+            '\n  Run "Inspect 02 Patterns", then "Remove stale B6 variant components" first. Nothing was overwritten or deleted.',
+        );
+      }
       const node = b6BuildNode(vname, v.root, v.children, index, page);
       node.description = spec.source;
       b6Say("variant  ", spec.name + " / " + vname, true);
@@ -3027,6 +3035,45 @@ function b6RequireB5() {
   }
 }
 
+/** Approved B6 top-level object names on 02 Patterns. */
+function b6ApprovedNames() {
+  return ABOX_B6.patterns.map((p) => p.name);
+}
+
+/** Approved B6 variant-matrix names ("columns=3") mapped to their owning set spec. */
+function b6VariantOwners() {
+  const owners = {};
+  for (const spec of ABOX_B6.patterns) {
+    if (spec.kind !== "SET") continue;
+    for (const v of spec.variants) owners[spec.property + "=" + v.value] = spec;
+  }
+  return owners;
+}
+
+/**
+ * Per-pattern guard: any node this build parented to 02 Patterns is removed again when the
+ * build throws, so an aborted run can never strand a bare variant on the page.
+ * Only nodes created during this build, never a COMPONENT_SET, are ever removed.
+ */
+async function b6Guarded(page, label, fn) {
+  const before = {};
+  for (const child of page.children) before[child.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    const owners = b6VariantOwners();
+    for (const child of page.children.slice()) {
+      if (before[child.id]) continue;
+      if (child.type === "COMPONENT_SET") continue;
+      if (!owners[child.name]) continue;
+      say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
+      child.remove();
+    }
+    say("  (" + label + " left no new node on " + B6_PAGE + ")");
+    throw err;
+  }
+}
+
 async function ensureB6Patterns() {
   await figma.loadAllPagesAsync();
   b6Created = 0;
@@ -3035,9 +3082,150 @@ async function ensureB6Patterns() {
   const index = await b4StyleIndex();
   b6StyleIndex = index;
 
-  for (const spec of ABOX_B6.patterns) await b6EnsurePattern(spec, index, page);
+  for (const spec of ABOX_B6.patterns) {
+    await b6Guarded(page, spec.name, () => b6EnsurePattern(spec, index, page));
+  }
   say("");
   say("  pattern objects created this run: " + b6Created);
+}
+
+/**
+ * Read-only evidence report for 02 Patterns. Writes nothing, deletes nothing.
+ */
+async function b6InspectPatterns() {
+  await figma.loadAllPagesAsync();
+  const page = b6Page();
+  const index = await b4StyleIndex();
+  b6StyleIndex = index;
+  const approved = {};
+  for (const name of b6ApprovedNames()) approved[name] = true;
+  const owners = b6VariantOwners();
+
+  say("B6 PAGE INSPECTION — " + B6_PAGE + " (read-only)");
+  say("  page id=" + page.id + "  children=" + page.children.length);
+  say("");
+  if (!page.children.length) say("  page is empty.");
+
+  for (const node of page.children) {
+    say("  " + node.name + "  (" + node.type + ")  id=" + node.id);
+    say("    parent : " + (node.parent ? node.parent.name + " (" + node.parent.type + ") id=" + node.parent.id : "none"));
+    const ownership = approved[node.name]
+      ? "approved B6 top-level object"
+      : owners[node.name]
+        ? 'approved B6 variant matrix of "' + owners[node.name].name + '" — must live INSIDE that set'
+        : "not an approved B6 name";
+    say("    ownership : " + ownership);
+    if (node.type === "COMPONENT" || node.type === "COMPONENT_SET") {
+      const defs = node.componentPropertyDefinitions || {};
+      say("    componentPropertyDefinitions : " + JSON.stringify(Object.keys(defs)));
+    }
+    if (node.type === "COMPONENT") {
+      say("    variantProperties : " + JSON.stringify(node.variantProperties || null));
+      const instances = await node.getInstancesAsync();
+      say("    live instances : " + instances.length);
+    }
+    if ("children" in node) {
+      say("    children : " + node.children.length + "  " + JSON.stringify(node.children.map((c) => c.name)));
+    }
+    const owner = owners[node.name];
+    if (owner && node.type === "COMPONENT") {
+      const v = owner.variants.filter((x) => owner.property + "=" + x.value === node.name)[0];
+      if (v) {
+        let live = "(unreadable)";
+        try {
+          live = b6LiveSignature(node, v.root, v.children);
+        } catch (err) {
+          live = "(signature error: " + (err && err.message) + ")";
+        }
+        say("    expected signature : " + b6ExpectedSignature(v.root, v.children));
+        say("    live     signature : " + live);
+      }
+    }
+    say("");
+  }
+  say("  nothing was created, modified or deleted.");
+}
+
+/**
+ * Remove B6 variant components stranded directly on 02 Patterns by an aborted run.
+ * A node is removed ONLY when every identity condition holds; anything failing a single
+ * condition is reported and kept. Approved B6 objects and component sets never qualify.
+ */
+async function b6StaleVariants() {
+  await figma.loadAllPagesAsync();
+  const page = b6Page();
+
+  const approved = {};
+  for (const list of [b6ApprovedNames(), b8ApprovedNames(), b9ApprovedNames(), b10ApprovedNames()]) {
+    for (const name of list || []) approved[name] = true;
+  }
+  const batchOwned = (name) =>
+    approved[name] === true ||
+    name.indexOf("ABox/Pattern/") === 0 ||
+    name.indexOf("ABox/Shell/") === 0 ||
+    name.indexOf("ABox/Screen/") === 0 ||
+    name.indexOf("ABox/ScreenState/") === 0 ||
+    name.indexOf("ABox/Doc/") === 0;
+  const owners = b6VariantOwners();
+
+  say("B6 STALE VARIANT CLEANUP");
+  say("");
+
+  const doomed = [];
+  const kept = [];
+  for (const node of page.children) {
+    if (node.type !== "COMPONENT") continue; // conditions 1 + 2
+    if (!node.parent || node.parent.id !== page.id) continue;
+    if (batchOwned(node.name)) {
+      kept.push("  KEPT — batch-owned name : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const owner = owners[node.name]; // condition 4
+    if (!owner) {
+      kept.push("  KEPT — not a B6 variant matrix name : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const instances = await node.getInstancesAsync(); // condition 5 (async: dynamic-page)
+    if (instances.length) {
+      kept.push("  KEPT — has " + instances.length + " live instance(s) : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const set = b4FindSet(owner.name);
+    let reason;
+    if (set) {
+      const live = set.children.filter((c) => c.name === node.name)[0];
+      if (!live || live.id === node.id) {
+        kept.push("  KEPT — owning set " + owner.name + " holds no surviving " + node.name + " : id=" + node.id);
+        continue;
+      }
+      reason = "belongs in " + owner.name + "; surviving variant id=" + live.id;
+    } else {
+      reason =
+        "bare variant matrix of " + owner.name + " with zero instances; the owning set does not exist, " +
+        "and no approved page inventory permits a top-level " + node.name + " on " + B6_PAGE;
+    }
+    doomed.push({ node: node, reason: reason });
+  }
+
+  for (const line of kept) say(line);
+  if (kept.length) say("");
+
+  if (!doomed.length) {
+    say("  nothing to remove — no stale B6 variant component on " + B6_PAGE + ".");
+  }
+  for (const entry of doomed) {
+    say("  remove : " + entry.node.name + "  id=" + entry.node.id + "  (" + entry.reason + ")");
+    entry.node.remove();
+  }
+
+  say("");
+  say("  page contents after cleanup");
+  for (const p of figma.root.children) {
+    say("    " + p.name + " : " + p.children.length + " node(s)");
+  }
+  say("");
+  say("  removed this run: " + doomed.length);
+  return doomed.length;
 }
 
 function b6PatternNodes(page) {
@@ -5486,7 +5674,8 @@ figma.ui.onmessage = async (msg) => {
   const b4 = msg.type === "b4-run" || msg.type === "b4-verify" || msg.type === "b4-cleanup-orphans" ||
     msg.type === "b4-cleanup-stale-variants";
   const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
-  const b6 = msg.type === "b6-run" || msg.type === "b6-verify";
+  const b6 = msg.type === "b6-run" || msg.type === "b6-verify" || msg.type === "b6-inspect" ||
+    msg.type === "b6-cleanup-stale-variants";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
@@ -5612,6 +5801,18 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB6();
+    } else if (msg.type === "b6-inspect") {
+      say("ABox Phase 53 / Batch B6 — inspect 02 Patterns (read-only)");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b6InspectPatterns();
+    } else if (msg.type === "b6-cleanup-stale-variants") {
+      say("ABox Phase 53 / Batch B6 — remove stale variant components");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b6StaleVariants();
     } else if (msg.type === "b7-run") {
       say("ABox Phase 54 / Batch B7 — shells");
       say("file: " + figma.root.name);
