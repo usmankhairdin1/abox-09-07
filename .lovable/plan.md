@@ -217,6 +217,28 @@ This is also the collision audit: names must be unique within a component; repet
 | `ABox/Form/LabeledField` | text `label`; plus the nested `ABox/Control/Control` instance named `control` flagged `isExposedInstance = true` — a node flag, not a property (§3e-bis) | none |
 | `ABox/Form/Input` | text `placeholder` | none |
 
+#### 3f-B. ACTUAL B5 POST-IMPLEMENTATION PROPERTY INVENTORY — matches §3i exactly
+
+| Component | Properties that exist after B5 | Explicitly absent (deferred) |
+| --- | --- | --- |
+| `ABox/Action/ActionPill` | variant `variant`; text `label` | — |
+| `ABox/Action/Button` | variant `variant`, variant `size`; text `label` | — |
+| `ABox/Status/StatusBadge` | variant `tone`; text `label` | — |
+| `ABox/Status/MetalBadge` | variant `tier`; text `label` | — |
+| `ABox/Surface/Surface` | B4 axes only | — |
+| `ABox/Control/Control` | B4 axes only | — |
+| `ABox/Card/KpiCard` | variant `tone`, variant `deltaSign`; Boolean `hasDelta`; text `label`, `value` — nothing else | `hasIcon`, `hasHint`, `hasDeltaLabel`, `deltaLabel` |
+| `ABox/Header/PageHeader` | variant `variant`; Boolean `hasEyebrow`, `hasDescription`; text `eyebrow`, `title`, `description` | `hasIcon`, `hasActions`, `actions` |
+| `ABox/Nav/ModuleTab` | variant `state`; text `label` | — |
+| `ABox/Nav/WizardStep` | variant `state`; text `label` | — |
+| `ABox/Brand/AboxMark` | variant `tone` | — |
+| `ABox/Feedback/EmptyState` | Boolean `hasBody`; text `title`, `body` | `hasIcon`, `hasAction`, `action` |
+| `ABox/Form/LabeledField` | text `label`; nested `ABox/Control/Control` instance exposed via `isExposedInstance = true` — no component property for `control` | — |
+| `ABox/Form/Input` | text `placeholder` | — |
+
+Actual totals: Boolean **4**, Text **15**, INSTANCE_SWAP **0**, SLOT **0**, non-variant **19**, exposed nested instances **1**. Deferred target properties **10**; `19 + 10 = 29`.
+
+
 ### 3g. Recalculated totals — actual Figma objects
 
 | Count | Value | Arithmetic |
