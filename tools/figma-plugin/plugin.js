@@ -3839,15 +3839,16 @@ async function b7Frame(name, opts, index) {
   node.paddingTop = opts.pt != null ? opts.pt : opts.py || 0;
   node.paddingBottom = opts.pb != null ? opts.pb : opts.py || 0;
   node.cornerRadius = opts.radius || 0;
-  if (opts.fillStyle) node.fillStyleId = b4Style(index, "paint", opts.fillStyle).id;
+  // documentAccess: dynamic-page forbids the synchronous style-id setters.
+  if (opts.fillStyle) await node.setFillStyleIdAsync(b4Style(index, "paint", opts.fillStyle).id);
   else node.fills = [];
   if (opts.strokeStyle) {
-    node.strokeStyleId = b4Style(index, "paint", opts.strokeStyle).id;
+    await node.setStrokeStyleIdAsync(b4Style(index, "paint", opts.strokeStyle).id);
     node.strokeWeight = opts.strokeWeight || 1;
   } else {
     node.strokes = [];
   }
-  if (opts.effectStyle) node.effectStyleId = b4Style(index, "effect", opts.effectStyle).id;
+  if (opts.effectStyle) await node.setEffectStyleIdAsync(b4Style(index, "effect", opts.effectStyle).id);
   if (opts.w || opts.h) {
     node.resize(opts.w || node.width, opts.h || node.height);
     if (opts.w) node.primaryAxisSizingMode = opts.primarySizing || node.primaryAxisSizingMode;
