@@ -154,6 +154,14 @@
         log.textContent = "Verifying component states…";
         parent.postMessage({ pluginMessage: { type: "b5-verify" } }, "*");
       };
+      document.getElementById("b6run").onclick = () => {
+        log.textContent = "Creating patterns…";
+        parent.postMessage({ pluginMessage: { type: "b6-run" } }, "*");
+      };
+      document.getElementById("b6verify").onclick = () => {
+        log.textContent = "Verifying patterns…";
+        parent.postMessage({ pluginMessage: { type: "b6-verify" } }, "*");
+      };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
         if (msg && msg.type === "report") log.textContent = msg.text;
