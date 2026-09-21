@@ -3053,8 +3053,10 @@ function b6VariantOwners() {
 
 /**
  * Per-pattern guard: any node this build parented to 02 Patterns is removed again when the
- * build throws, so an aborted run can never strand a bare variant on the page.
- * Only nodes created during this build, never a COMPONENT_SET, are ever removed.
+ * build throws, so an aborted run can never strand a bare variant or a half-built pattern
+ * component on the page. Only nodes created during this build whose names are B6-owned
+ * (approved top-level pattern names or approved variant matrices), never a COMPONENT_SET,
+ * are ever removed.
  */
 async function b6Guarded(page, label, fn) {
   const before = {};
@@ -3062,15 +3064,19 @@ async function b6Guarded(page, label, fn) {
   try {
     return await fn();
   } catch (err) {
-    const owners = b6VariantOwners();
+    const owned = {};
+    for (const name of b6ApprovedNames()) owned[name] = true;
+    for (const name of Object.keys(b6VariantOwners())) owned[name] = true;
+    let removed = 0;
     for (const child of page.children.slice()) {
       if (before[child.id]) continue;
       if (child.type === "COMPONENT_SET") continue;
-      if (!owners[child.name]) continue;
+      if (!owned[child.name]) continue;
       say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
       child.remove();
+      removed += 1;
     }
-    say("  (" + label + " left no new node on " + B6_PAGE + ")");
+    if (!removed) say("  (" + label + " left no new node on " + B6_PAGE + ")");
     throw err;
   }
 }
