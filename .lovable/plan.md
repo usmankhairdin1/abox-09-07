@@ -14,7 +14,7 @@ Target: existing `ABox Design System — Library` file (file-isolation guard unc
 | 6 | `ABox/Border` | Default | ABox foundation | border widths used by canonical components |
 | 7 | `ABox/Elevation` | Light, Dark | ABox foundation (partial — see F) | `--shadow-*` in `@theme inline` |
 | 8 | `ABox/Layout` | Default | ABox foundation | container max-widths in shells / marketplace layout |
-| 9 | `ABox/Control` | Default | ABox foundation | `controlClass` heights and padding |
+| 9 | `ABox/Control sizing` | Default | ABox foundation | `controlClass` heights and padding |
 
 Excluded by rule: runtime tenant/white-label branding (`primary_color`, `accent_color`, logo/favicon assets in `src/lib/marketplace-store.ts`). None of it enters Figma. Tailwind's generic spacing scale is library-owned and not re-declared as ABox variables.
 
@@ -36,7 +36,7 @@ Excluded by rule: runtime tenant/white-label branding (`primary_color`, `accent_
 
 **Layout** — `container/wide 1408` (`max-w-[88rem]`), `container/shell 1500` (`max-w-[1500px]`).
 
-**Control** — `height/md 40` (`h-10`), `height/lg 44` (`h-11`), `padding-x 12` (`px-3`), `min-touch-target 44` (the `max-width: 640px` rule).
+**Control sizing** — `height/md 40` (`h-10`), `height/lg 44` (`h-11`), `padding-x 12` (`px-3`), `min-touch-target 44` (the `max-width: 640px` rule).
 
 ## C. Primitive vs semantic
 
