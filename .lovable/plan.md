@@ -192,11 +192,15 @@ B5 correction, using the exact Figma mechanism rather than a property:
 
 Exposed nested instances: **1**. It adds nothing to the Boolean, Text or Instance Swap counts, because it is not a component property.
 
-### 3f. Collision audit — complete
+### 3f. Property inventories — target schema vs actual B5 inventory
 
-Names must be unique within a component; repetition across components is fine.
+Three terms are used consistently from here on: **target schema** = the full production-faithful model, including properties deferred to a future B4 amendment; **actual B5 inventory** = only what B5 creates; **deferred** = not present after B5.
 
-| Component | All Figma properties after B5 | Collision |
+#### 3f-A. TARGET SCHEMA — includes properties deferred to a future B4 amendment; these are not claimed to exist after B5
+
+This is also the collision audit: names must be unique within a component; repetition across components is fine.
+
+| Component | Target-schema properties | Collision |
 | --- | --- | --- |
 | `ABox/Action/ActionPill` | variant `variant`, text `label` | none — no `action` variant axis exists (§3g-ter) |
 | `ABox/Action/Button` | variant `variant`, variant `size`, text `label` | none |
