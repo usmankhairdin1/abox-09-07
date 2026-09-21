@@ -241,6 +241,10 @@
         log.textContent = "Verifying shells…";
         parent.postMessage({ pluginMessage: { type: "b7-verify" } }, "*");
       };
+      document.getElementById("b7incomplete").onclick = () => {
+        log.textContent = "Removing incomplete B7 shell nodes…";
+        parent.postMessage({ pluginMessage: { type: "b7-cleanup-incomplete-shells" } }, "*");
+      };
       document.getElementById("b8run").onclick = () => {
         log.textContent = "Creating experiences…";
         parent.postMessage({ pluginMessage: { type: "b8-run" } }, "*");
