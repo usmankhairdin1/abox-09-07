@@ -2584,9 +2584,7 @@ function b6LiveSignature(node, root, children) {
     "pb=" + node.paddingBottom,
     "stroke=" + (styled ? root.strokeBottomStyle : "none"),
     "strokeWeights=" +
-      [node.strokeTopWeight || 0, node.strokeRightWeight || 0, node.strokeLeftWeight || 0, node.strokeBottomWeight || 0]
-        .join("/")
-        .replace(/^(\d+)\/(\d+)\/(\d+)\/(\d+)$/, "$1/$2/$3/$4"),
+      [node.strokeTopWeight || 0, node.strokeRightWeight || 0, node.strokeLeftWeight || 0, node.strokeBottomWeight || 0].join("/"),
     "strokesInLayout=" + (root.strokeBottomStyle ? String(node.strokesIncludedInLayout === true) : "n/a"),
   ];
   parts.push("children=" + node.children.length);
