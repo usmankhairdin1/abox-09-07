@@ -20,7 +20,7 @@ Excluded by rule: runtime tenant/white-label branding (`primary_color`, `accent_
 
 ## B. Variable inventory (extracted, nothing invented)
 
-**Color/Primitive** — every distinct `oklch()` literal declared in `:root` and `.dark`, named by its first defining role path, e.g. `navy/ink`, `white/pure`, `navy/primary-600`. No primitive is created that is not literally present in `src/styles.css`.
+**Color/Primitive** — exactly one primitive variable per distinct production primitive token/role path, with Light and Dark mode values populated from the corresponding `:root` and `.dark` source values. A token with different Light and Dark literals remains ONE Figma variable with two mode values; it must never become two separate variables merely because the literals differ. If a primitive token has no `.dark` override, explicitly record the Light value as the Dark-mode value because Figma has no CSS cascade. No primitive is created that is not literally present in `src/styles.css`.
 
 **Color/Semantic** — one variable per `@theme inline --color-*` role (lines 32-79): background, foreground, surface, surface-foreground, panel, card, card-foreground, popover, popover-foreground, primary, primary-foreground, primary-soft, secondary, secondary-foreground, sage, sage-foreground, sage-soft, muted, muted-foreground, accent, accent-foreground, destructive, destructive-foreground, warning, warning-foreground, info, info-foreground, success, success-foreground, border, border-strong, hairline, input, ring, chart-1..chart-5, sidebar, sidebar-foreground, sidebar-primary, sidebar-primary-foreground, sidebar-accent, sidebar-accent-foreground, sidebar-border, sidebar-ring. Plus `ink` (declared in `:root`, not exported through `@theme`) recorded as a semantic role.
 
@@ -70,8 +70,8 @@ Collections and variables are matched by exact name within their collection. Exi
 
 `b1-verify` runs independently of creation and checks:
 1. the nine collections exist exactly once, with the declared modes;
-2. every inventoried variable exists exactly once, in the right collection, with the right `resolvedType`;
-3. each value per mode matches the converted production source within exact equality of the stored sRGB tuple;
+2. every inventoried variable exists exactly once, in the right collection, with the right `resolvedType` — including exactly one primitive variable per production primitive token/role path, with no duplicate primitive created solely because Light and Dark literals differ;
+3. each value per mode matches the converted production source within exact equality of the stored sRGB tuple — Light and Dark values compared independently against their `:root` and `.dark` source values (Dark explicitly equal to Light where production declares no override);
 4. no variable exists in an ABox collection that is not in the approved inventory (extras are listed and fail);
 5. no branding/runtime value from `marketplace-store.ts` appears in any variable name or description;
 6. counts of text styles, effect styles, components and component sets are unchanged from the pre-B1 baseline (B1 must create none);
