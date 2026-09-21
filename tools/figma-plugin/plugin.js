@@ -3231,7 +3231,13 @@ async function b6DiagnoseSignatures() {
     }
 
     /* raw root evidence */
-    const styleName = node.strokeStyleId ? b4StyleName(index, node.strokeStyleId) : "(none)";
+    let styleName = "(none)";
+    if (node.strokeStyleId) {
+      styleName = "(unknown id)";
+      for (const n of Object.keys(index.paint)) {
+        if (index.paint[n].id === node.strokeStyleId) { styleName = n; break; }
+      }
+    }
     say("    root evidence :");
     say("      type=" + node.type + "  id=" + node.id +
       "  layoutMode=" + node.layoutMode + "  layoutWrap=" + node.layoutWrap);
@@ -5899,6 +5905,7 @@ figma.ui.onmessage = async (msg) => {
     msg.type === "b4-cleanup-stale-variants";
   const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify" || msg.type === "b6-inspect" ||
+    msg.type === "b6-signature-diff" ||
     msg.type === "b6-cleanup-stale-variants" || msg.type === "b6-cleanup-incomplete-patterns";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
