@@ -69,7 +69,24 @@ Roles (15):
 | `role/serial/size` | FLOAT | 10 | same (`0.625rem`) |
 | `role/serial/letter-spacing` | FLOAT | 0 | same |
 
-Total: **1 collection, 19 variables, 2 modes**. No variable is created for a property production does not declare on that role — `role/base` has family only, `role/serial` has no weight.
+### Type totals (arithmetic check)
+
+| Group | Type | Count |
+| --- | --- | --- |
+| `family/sans`, `family/display`, `family/serif`, `family/mono` | STRING | 4 |
+| `role/base/family`, `role/heading/family`, `role/display/family`, `role/eyebrow/family`, `role/serial/family` | STRING | 5 |
+| heading: `weight`, `letter-spacing` | FLOAT | 2 |
+| display: `weight`, `letter-spacing`, `line-height` | FLOAT | 3 |
+| eyebrow: `size`, `weight`, `letter-spacing` | FLOAT | 3 |
+| serial: `size`, `letter-spacing` | FLOAT | 2 |
+
+- **STRING = 4 + 5 = 9**
+- **FLOAT = 2 + 3 + 3 + 2 = 10**
+- **Check: 9 + 10 = 19 = total variables.**
+
+The earlier "4 + 5 family variables STRING, the 10 numeric variables FLOAT" phrasing implied 4 and 5 were separate totals; they are two STRING groups summing to 9. The 19-variable inventory itself is unchanged — only the type arithmetic is now stated explicitly.
+
+Total: **1 collection, 19 variables (9 STRING + 10 FLOAT), 2 modes**. No variable is created for a property production does not declare on that role — `role/base` has family only, `role/serial` has no weight.
 
 ## 4. Mapping rules
 
