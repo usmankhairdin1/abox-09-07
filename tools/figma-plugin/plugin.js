@@ -2583,13 +2583,36 @@ async function verifyB5() {
     "B3 unchanged: 72 colour + 2 text + 5 effect styles (found " + paints.length + " / " + tstyles.length + " / " + effects.length + ")",
   );
   const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
-  // B6 populates "02 Patterns"; every other non-component page must stay empty.
-  const writable = [B4_PAGE, "02 Patterns", "03 Shells"];
+  const livePageNames = figma.root.children.map((p) => p.name);
   add(
-    figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|") &&
-      figma.root.children.filter((p) => writable.indexOf(p.name) === -1).every((p) => p.children.length === 0),
-    "B0 pages unchanged: exactly 7, in order, only 01 Components, 02 Patterns and 03 Shells populated",
+    figma.root.children.length === 7 && livePageNames.join("|") === wantPages.join("|"),
+    "B0 pages unchanged: exactly 7, in the approved order (found " + figma.root.children.length + ": " + livePageNames.join(", ") + ")",
   );
+  // B6 populates "02 Patterns", B7 "03 Shells"; every other non-component page must stay empty,
+  // except "06 Documentation", which may hold exactly the approved B10 frames (see verifyB9).
+  const writable = [B4_PAGE, "02 Patterns", "03 Shells"];
+  const b5PageEvidence = [];
+  for (const p of figma.root.children) {
+    if (writable.indexOf(p.name) !== -1) continue;
+    if (p.name === "06 Documentation") {
+      const docNames = p.children.map((n) => n.name);
+      if (docNames.length === 0 || docNames.join("|") === b10ApprovedNames().join("|")) continue;
+    }
+    for (const child of p.children) {
+      if (b5PageEvidence.length >= 40) break;
+      b5PageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
+    }
+  }
+  add(
+    b5PageEvidence.length === 0,
+    "only 01 Components, 02 Patterns and 03 Shells populated (06 Documentation may hold the approved B10 frames); unexpected nodes: " +
+      b5PageEvidence.length,
+  );
+  if (b5PageEvidence.length) {
+    say("");
+    say("B5 PAGE EVIDENCE");
+    for (const line of b5PageEvidence) say(line);
+  }
 
   /* ---------- inventory ---------- */
   say("");
