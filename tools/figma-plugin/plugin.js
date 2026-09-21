@@ -4286,6 +4286,10 @@ function b7ExpectedRegions(name) {
 async function b7Guarded(page, label, fn) {
   const before = {};
   for (const child of page.children) before[child.id] = true;
+  // figma.createFrame/createText append to figma.currentPage at creation time and are only
+  // reparented afterwards (see b4Guarded), so transient debris can land on the active page.
+  const currentBefore = {};
+  if (figma.currentPage) for (const n of figma.currentPage.children) currentBefore[n.id] = true;
   try {
     return await fn();
   } catch (err) {
@@ -4298,7 +4302,17 @@ async function b7Guarded(page, label, fn) {
       child.remove();
       removed += 1;
     }
-    if (!removed) say("  (" + label + " left no new node on " + B7_PAGE + ")");
+    let strays = 0;
+    if (figma.currentPage && figma.currentPage.id !== page.id) {
+      for (const n of figma.currentPage.children.slice()) {
+        if (currentBefore[n.id]) continue;
+        if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+        say("  rollback : removed transient node left on " + figma.currentPage.name + " — " + n.name + "  id=" + n.id);
+        n.remove();
+        strays += 1;
+      }
+    }
+    if (!removed && !strays) say("  (" + label + " left no new node on " + B7_PAGE + ")");
     throw err;
   }
 }
