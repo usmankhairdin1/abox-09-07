@@ -88,10 +88,16 @@ bindings must be written with `setFillStyleIdAsync`, `setStrokeStyleIdAsync`,
 `setEffectStyleIdAsync` and `setTextStyleIdAsync` (awaited); otherwise Figma throws
 `in set_fillStyleId: Cannot call with documentAccess: dynamic-page`. Reading
 `fillStyleId` / `strokeStyleId` / `effectStyleId` in the verifiers remains valid and is
-unchanged. `b4Build` uses the async setters. The same synchronous pattern still exists in
-the B5-B10 builders (`b5KpiVariants`, `b6ApplyRoot`, `b7Frame`, `b7Text`, `b7Build*`,
-`b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`) and must be converted in those batches
-before they are run.
+unchanged. `b4Build` and `b5KpiVariants` use the async setters. The same synchronous
+pattern still exists in the B6-B10 builders (`b6ApplyRoot`, `b7Frame`, `b7Text`,
+`b7Build*`, `b8BuildFrame`, `b9BuildFrame`, `b10BuildFrame`) and must be converted in
+those batches before they are run.
+
+B5 writes characters onto TEXT nodes B4 already created, so it calls `b5LoadTextFonts`
+first: the node's own `fontName` (or every range font when it is mixed) is loaded with
+`figma.loadFontAsync` and awaited before the write, and an unloadable font stops the run
+rather than being substituted. If a negative variant clone fails mid-mutation, the clone
+is removed again so a partial run leaves no duplicate variant behind.
 
 B4 component and variant wrappers are Figma packaging, not production surfaces:
 `b4EnsureSet` and `b4EnsureComponent` clear the wrapper's `fills` and `strokes` (the
