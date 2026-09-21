@@ -43,7 +43,7 @@ Conclusion, now evidence-backed: after B4 the file contains VARIANT properties o
 | `ABox/Nav/WizardStep` | variant `state` (4) | text `label` |
 | `ABox/Brand/AboxMark` | variant `tone` (4) | — |
 | `ABox/Feedback/EmptyState` | none (standalone) | text `title`, `body`; bool `icon`, `body`; instance-swap `action` |
-| `ABox/Form/LabeledField` | none (standalone) | text `label`; exposed nested instance `control` |
+| `ABox/Form/LabeledField` | none (standalone); it does contain a real nested `ABox/Control/Control` instance, asserted by `plugin.js:1814`, but that instance is **not** exposed — `isExposedInstance` is never set anywhere in `plugin.js` or `code.js` | text `label`; exposed nested instance `control` |
 | `ABox/Form/Input` | none (standalone) | text `placeholder` |
 
 B5 rule: read the live inventory; existing property = reuse in place with its id preserved; missing property = create; name/type mismatch = STOP.
