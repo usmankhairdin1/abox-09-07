@@ -1266,3 +1266,35 @@ Offline dry-run only: `RESULT: B3 PASSED` on both runs, all 24 structural checks
 ### 6. Changed files
 
 Created `tools/figma-plugin/extract-b3.mjs` and generated `tokens-b3.js`. Modified `plugin.js` (B3 create/verify + entry), `ui.html` (two buttons), `build.mjs` (concatenates `tokens-b3.js`), `README.md`, `.lovable/manual-work-map.md`. `code.js` regenerated only via `node build.mjs`, never hand-edited. No `src/` change. Rollback: revert the plugin-layer files and this block.
+
+## Phase 52 / Batch B4 — Component foundation (2026-09-21)
+
+Scope: plugin layer only. No `src/` diff; B1 (9 collections / 200 variables), B2 (`ABox/Typography`, 19 variables) and B3 (79 styles) read-only and asserted untouched; proof file untouched; no publishing; no B5 work.
+
+### 1. Architecture decision
+
+11 Component Sets + 3 standalone Components = 14 objects; 38 fixed variants + 14 enumerated = 52. `ABox/Brand/AboxMark` is a Component Set with exactly four `tone` variants (primary, sage, sidebar, foreground), each backed by a distinct branch of the production `TONES` record in `abox/logo.tsx:15-20`; `size` is a free numeric prop with no finite production set and is therefore not a variant axis. Every enumerated variant on Button, Surface and Control comes from literal prop values at real production call sites; combinations production never uses are not created.
+
+### 2. Bindings
+
+Colours -> B3 Colour Styles (already bound to B1 variables). Elevation -> B3 Effect Styles. Typography -> `ABox/Text/eyebrow` and `ABox/Text/serial` where production declares the role, otherwise the production font size/weight literal. Tailwind numeric utilities are literal and explicitly not bound to the B1 spacing/radius/control-sizing variables, because production does not declare them through those variables — no binding is inferred from value equality.
+
+### 3. Exclusions
+
+Zero-importer `ui/*` primitives; reference-route-only primitives (alert, checkbox, switch, drawer); assistant-surface-only primitives; behavioural overlays/navigation (dialog, sheet, popover, tooltip, dropdown-menu, tabs) deferred to B6; composite surfaces and shells deferred to B6/B7/B8; `carrier-mark.tsx` (runtime-computed hue, no finite variant set); zero-importer assistants. Each exclusion is printed with its reason in `b4-verify`.
+
+### 4. Limitations recorded verbatim
+
+`color-mix()` badge tints; `oklch()` -> sRGB; Tailwind numeric utilities literal; hover/group-hover/focus-visible/active/transition are not Figma variants; CountUp and FadeRise motion; `card-brackets`, `edge-sheen`, `glass`, `DiagonalWeave`; responsive `md:`/`xl:` rules deferred to composition; `logo.tsx` free numeric `size`; `carrier-mark.tsx` hash-derived hue; Button `shadow`/`shadow-sm` are Tailwind defaults, not production `--shadow-*`; three `<Button>` call sites with computed variant/size expressions. Deviation recorded, not worked around: Figma requires component nodes to belong to a page, so the 14 objects live on the existing B0 page `01 Components`; the other six pages remain empty and no page is created, renamed or reordered.
+
+### 5. Idempotency
+
+Exact-name matching for sets, standalone components and variants. Existing objects reused and rebuilt in place. Duplicate name = STOP. Component/set type mismatch = STOP. Nothing unrelated is ever deleted.
+
+### 6. Execution status — OPEN
+
+Offline dry-run only: `RESULT: B4 PASSED` on both runs, all 25 structural checks PASS, strict "created" line count in run 2 = 0, ids identical between runs, 14 objects / 52 variants, B1 200, B2 19 and B3 79 unchanged. Its ids are mock ids and are never presented as Figma ids. Real evidence requires the user running the plugin in Figma Desktop twice with identical component, set and variant ids.
+
+### 7. Changed files
+
+Created `tools/figma-plugin/extract-b4.mjs` and generated `tokens-b4.js`. Modified `plugin.js` (B4 create/verify + entry), `ui.html` (two buttons), `build.mjs` (concatenates `tokens-b4.js`), `README.md`, `.lovable/manual-work-map.md`. `code.js` regenerated only via `node build.mjs`, never hand-edited. No `src/` change. Rollback: revert the plugin-layer files and this block.
