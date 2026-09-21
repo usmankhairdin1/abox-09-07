@@ -46464,7 +46464,29 @@ async function verifyB7() {
   const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
   add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages unchanged: exactly 7, in original order");
   const writable = [B4_PAGE, B6_PAGE, B7_PAGE, B8_PAGE];
-  add(figma.root.children.filter((p) => writable.indexOf(p.name) === -1).every((p) => p.children.length === 0), "00 Foundations, 05 Screens and 06 Documentation remain empty; B8 may populate 04 Experiences");
+  // "06 Documentation" may hold exactly the approved B10 frames — same allowance verifyB5/verifyB9 already carry.
+  const b7PageEvidence = [];
+  for (const p of figma.root.children) {
+    if (writable.indexOf(p.name) !== -1) continue;
+    if (p.name === B10_PAGE) {
+      const docNames = p.children.map((n) => n.name);
+      if (docNames.length === 0 || docNames.join("|") === b10ApprovedNames().join("|")) continue;
+    }
+    for (const child of p.children) {
+      if (b7PageEvidence.length >= 40) break;
+      b7PageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
+    }
+  }
+  add(
+    b7PageEvidence.length === 0,
+    "00 Foundations and 05 Screens remain empty; 06 Documentation may hold the approved B10 frames; B8 may populate 04 Experiences — unexpected nodes: " +
+      b7PageEvidence.length,
+  );
+  if (b7PageEvidence.length) {
+    say("");
+    say("B7 PAGE EVIDENCE");
+    for (const line of b7PageEvidence) say(line);
+  }
   add(page.children.length === C.topLevelObjects, "only 03 Shells receives B7 shell content: 3 top-level shell objects (found " + page.children.length + ")");
 
   const internal = page.children.filter((n) => n.name === "ABox/Shell/Internal" && n.type === "COMPONENT")[0];
