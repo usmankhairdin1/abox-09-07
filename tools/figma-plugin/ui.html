@@ -223,6 +223,10 @@
         log.textContent = "Removing stale B6 variant components…";
         parent.postMessage({ pluginMessage: { type: "b6-cleanup-stale-variants" } }, "*");
       };
+      document.getElementById("b6incomplete").onclick = () => {
+        log.textContent = "Removing incomplete B6 pattern nodes…";
+        parent.postMessage({ pluginMessage: { type: "b6-cleanup-incomplete-patterns" } }, "*");
+      };
       document.getElementById("b7run").onclick = () => {
         log.textContent = "Creating shells…";
         parent.postMessage({ pluginMessage: { type: "b7-run" } }, "*");
