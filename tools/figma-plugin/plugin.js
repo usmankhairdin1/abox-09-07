@@ -2940,6 +2940,86 @@ async function verifyB6() {
   add(axisOk, "no invented pattern state — the single pattern axis is " + ABOX_B6.patterns[0].property);
   add(protoOk, "no invented interaction — " + C.prototypes + " prototype reactions on any B6 node");
 
+  /* ---------- revised-precision checks ---------- */
+  const kpiSpec = ABOX_B6.patterns.filter((p) => p.kind === "SET")[0];
+  const kpiSets = page.children.filter((n) => n.type === "COMPONENT_SET" && n.name === kpiSpec.name);
+  const kpiSet = kpiSets[0] || null;
+  const kpiAxis = kpiSet ? b6SetAxis(kpiSet) : { names: [], values: [] };
+  add(kpiSets.length === 1 && kpiSet.children.length === 2,
+    kpiSpec.name + " is exactly one Component Set with exactly two Variant ComponentNodes (found " +
+      kpiSets.length + " set(s) / " + (kpiSet ? kpiSet.children.length : 0) + " variant nodes)");
+  add(kpiAxis.names.length === 1 && kpiAxis.name === kpiSpec.property,
+    "the only " + kpiSpec.name + " Variant property is " + kpiSpec.property + " (live: " + JSON.stringify(kpiAxis.names) + ")");
+  add(kpiAxis.values.join(",") === kpiSpec.values.slice().sort().join(","),
+    kpiSpec.name + " values are exactly " + kpiSpec.values.join(" and ") + " (live: " + JSON.stringify(kpiAxis.values) + ")");
+  const kpiMatrix = {};
+  let kpiDup = false;
+  if (kpiSet) for (const c of kpiSet.children) { if (kpiMatrix[c.name]) kpiDup = true; kpiMatrix[c.name] = true; }
+  add(!kpiDup, "no duplicate " + kpiSpec.name + " variant matrix exists");
+
+  const wrapSpecs = ABOX_B6.patterns.filter((p) => p.kind !== "SET");
+  let wrapOk = true, gapsOk = true;
+  const gapReport = [];
+  for (const spec of wrapSpecs) {
+    const node = b4FindComponent(spec.name);
+    if (!node) { wrapOk = false; gapsOk = false; continue; }
+    if (node.layoutWrap !== "WRAP") wrapOk = false;
+    if (node.itemSpacing !== 6 || node.counterAxisSpacing !== 6) gapsOk = false;
+    gapReport.push(spec.name + " wrap=" + node.layoutWrap + " itemSpacing=" + node.itemSpacing +
+      " counterAxisSpacing=" + node.counterAxisSpacing + " sizing=" + node.primaryAxisSizingMode + "/" + node.counterAxisSizingMode);
+  }
+  add(wrapOk, "ModuleTabBar and WizardStepper have layoutWrap = WRAP");
+  add(gapsOk, "both wrapped patterns have itemSpacing = 6 and counterAxisSpacing = 6 — " + gapReport.join(" ; "));
+
+  const tabSpec = wrapSpecs.filter((p) => p.name.indexOf("ModuleTabBar") !== -1)[0];
+  const tabNode = tabSpec ? b4FindComponent(tabSpec.name) : null;
+  const hairlineId = b4Style(index, "paint", tabSpec.root.strokeBottomStyle).id;
+  const strokeOk = !!tabNode && tabNode.strokeBottomWeight === 1 &&
+    (tabNode.strokeTopWeight || 0) === 0 && (tabNode.strokeLeftWeight || 0) === 0 && (tabNode.strokeRightWeight || 0) === 0 &&
+    tabNode.strokeStyleId === hairlineId &&
+    tabNode.strokesIncludedInLayout === (tabSpec.root.strokesIncludedInLayout === true);
+  add(strokeOk,
+    "ModuleTabBar has exactly one bottom stroke of weight 1 bound to the live B3 " + tabSpec.root.strokeBottomStyle +
+      " style (id=" + hairlineId + "), other sides 0, strokesIncludedInLayout=" +
+      (tabNode ? String(tabNode.strokesIncludedInLayout) : "-"));
+  const tabExtras = tabNode ? tabNode.children.filter((c) => c.type !== "INSTANCE") : [];
+  add(tabExtras.length === 0, "ModuleTabBar has no extra line/border child (found " + tabExtras.length + ")");
+  const tabRawStroke = !!tabNode && (!tabNode.strokeStyleId && (tabNode.strokes || []).length > 0);
+  add(!tabRawStroke, "no hard-coded stroke colour exists on any pattern root");
+  add(page.children.every((n) => n.name.indexOf("/sm") === -1 && n.name.indexOf("breakpoint") === -1),
+    "no responsive breakpoint state or variant was created");
+
+  /* ---------- WizardStepper: the complete production step list ---------- */
+  const wizSpec = wrapSpecs.filter((p) => p.name.indexOf("WizardStepper") !== -1)[0];
+  const wizNode = wizSpec ? b4FindComponent(wizSpec.name) : null;
+  const wizSteps = wizSpec.configuration.steps;
+  const wizMain = b6Main("ABox/Nav/WizardStep");
+  const wizKids = wizNode ? wizNode.children : [];
+  add(wizKids.length === 8, "WizardStepper contains exactly 8 child nodes (found " + wizKids.length + ")");
+  let orderOk = wizKids.length === 8, mainOk = true, stateOk = true, labelOk = true;
+  const allowedStates = ["current", "done", "upcoming", "unreachable"];
+  const wizReport = [];
+  for (let i = 0; i < wizKids.length; i += 1) {
+    const kid = wizKids[i];
+    const want = wizSteps[i];
+    const cspec = wizSpec.children[i];
+    if (!want || kid.type !== "INSTANCE") { orderOk = false; continue; }
+    if (b6MainId(kid) !== wizMain.id) mainOk = false;
+    const live = b6LiveProps(kid, cspec);
+    if (live.indexOf("state=" + want.state) === -1) stateOk = false;
+    if (allowedStates.indexOf(want.state) === -1) stateOk = false;
+    if (live.indexOf("label=" + want.label) === -1) labelOk = false;
+    wizReport.push("    " + (i + 1) + ". " + want.label + " — " + want.state + " — main id=" + b6MainId(kid));
+  }
+  add(orderOk, "WizardStepper child order matches DOWNLINE_WIZARD_STEPS position by position (1-8)");
+  add(mainOk, "every WizardStepper child resolves to the live B4/B5 ABox/Nav/WizardStep main component (id=" + wizMain.id + ")");
+  add(stateOk, "every WizardStepper child state is a real production state copied from " + wizSpec.configuration.route +
+    " (step " + wizSpec.configuration.currentStep + " of 8) — none manufactured, none combined across routes");
+  add(labelOk, "every WizardStepper child label matches the production step label");
+  add(page.children.filter((n) => n.name === wizSpec.name).length === 1 &&
+    figma.root.children.reduce((n, pg) => n + pg.children.filter((c) => c.name === wizSpec.name).length, 0) === 1,
+    "no duplicate WizardStepper exists on any page");
+
   const nodes = b6PatternNodes(page);
   add(nodes.length === C.patternNodes, "pattern ComponentNodes = " + C.patternNodes + " (found " + nodes.length + ")");
   const deferredNames = ABOX_B6.deferred.map((d) => d.candidate).concat(ABOX_B6.rejected.map((r) => r.candidate));
@@ -2962,6 +3042,11 @@ async function verifyB6() {
   say("");
   say("B6 PATTERN INVENTORY");
   for (const line of inventory) say(line);
+
+  say("");
+  say("B6 WIZARDSTEPPER CONFIGURATION (route " + wizSpec.configuration.route + " — " +
+    wizSpec.configuration.scr + " — step " + wizSpec.configuration.currentStep + " of 8)");
+  for (const line of wizReport) say(line);
 
   say("");
   say("B4/B5 PRIMITIVES CONSUMED (live ids, unchanged by B6)");

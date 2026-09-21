@@ -5408,12 +5408,20 @@ var ABOX_B6 = {
         "src/routes/app.jet.platform.tsx",
         "src/routes/app.index.tsx"
       ],
+      "values": [
+        "3",
+        "4"
+      ],
       "variants": [
         {
           "value": "4",
           "root": {
             "layout": "HORIZONTAL",
-            "gap": 16
+            "wrap": "NO_WRAP",
+            "gap": 16,
+            "counterGap": 0,
+            "primarySizing": "AUTO",
+            "counterSizing": "AUTO"
           },
           "children": [
             {
@@ -5470,7 +5478,11 @@ var ABOX_B6 = {
           "value": "3",
           "root": {
             "layout": "HORIZONTAL",
-            "gap": 16
+            "wrap": "NO_WRAP",
+            "gap": 16,
+            "counterGap": 0,
+            "primarySizing": "AUTO",
+            "counterSizing": "AUTO"
           },
           "children": [
             {
@@ -5519,10 +5531,16 @@ var ABOX_B6 = {
       "source": "source: src/components/abox/module-tabs.tsx:14 | hosts src/components/m06/workforce-page.tsx:46, src/components/lucie-app/frames.tsx:21",
       "root": {
         "layout": "HORIZONTAL",
+        "wrap": "WRAP",
         "gap": 6,
+        "counterGap": 6,
+        "primarySizing": "AUTO",
+        "counterSizing": "AUTO",
         "paddingBottom": 12,
         "strokeBottomStyle": "ABox/Semantic/hairline",
-        "strokeSource": "src/components/abox/module-tabs.tsx:18"
+        "strokesIncludedInLayout": false,
+        "strokeSource": "src/components/abox/module-tabs.tsx:18",
+        "gapSource": "src/components/abox/module-tabs.tsx:18"
       },
       "children": [
         {
@@ -5580,10 +5598,61 @@ var ABOX_B6 = {
     {
       "name": "ABox/Pattern/WizardStepper",
       "kind": "COMPONENT",
-      "source": "source: src/components/abox/downline-wizard-stepper.tsx:18 | states src/components/abox/downline-wizard-stepper.tsx:37",
+      "source": "source: src/components/abox/downline-wizard-stepper.tsx:18 | states src/components/abox/downline-wizard-stepper.tsx:37 | configuration: route /agency/downlines/new/contacts (SCR-M05-009, step 3 of 8)",
+      "configuration": {
+        "route": "/agency/downlines/new/contacts",
+        "scr": "SCR-M05-009",
+        "currentStep": 3,
+        "steps": [
+          {
+            "n": 1,
+            "label": "Identity",
+            "state": "done"
+          },
+          {
+            "n": 2,
+            "label": "Legal & identifiers",
+            "state": "done"
+          },
+          {
+            "n": 3,
+            "label": "Contacts",
+            "state": "current"
+          },
+          {
+            "n": 4,
+            "label": "Addresses & offices",
+            "state": "unreachable"
+          },
+          {
+            "n": 5,
+            "label": "Settings",
+            "state": "unreachable"
+          },
+          {
+            "n": 6,
+            "label": "Initial administrator",
+            "state": "unreachable"
+          },
+          {
+            "n": 7,
+            "label": "Readiness review",
+            "state": "unreachable"
+          },
+          {
+            "n": 8,
+            "label": "Activation",
+            "state": "unreachable"
+          }
+        ]
+      },
       "root": {
         "layout": "HORIZONTAL",
+        "wrap": "WRAP",
         "gap": 6,
+        "counterGap": 6,
+        "primarySizing": "AUTO",
+        "counterSizing": "AUTO",
         "gapSource": "src/components/abox/downline-wizard-stepper.tsx:35"
       },
       "children": [
@@ -5620,7 +5689,7 @@ var ABOX_B6 = {
         {
           "of": "ABox/Nav/WizardStep",
           "variants": {
-            "state": "upcoming"
+            "state": "unreachable"
           },
           "texts": {
             "label": "Addresses & offices"
@@ -5636,6 +5705,36 @@ var ABOX_B6 = {
             "label": "Settings"
           },
           "source": "src/components/abox/downline-wizard-stepper.tsx:23"
+        },
+        {
+          "of": "ABox/Nav/WizardStep",
+          "variants": {
+            "state": "unreachable"
+          },
+          "texts": {
+            "label": "Initial administrator"
+          },
+          "source": "src/components/abox/downline-wizard-stepper.tsx:24"
+        },
+        {
+          "of": "ABox/Nav/WizardStep",
+          "variants": {
+            "state": "unreachable"
+          },
+          "texts": {
+            "label": "Readiness review"
+          },
+          "source": "src/components/abox/downline-wizard-stepper.tsx:25"
+        },
+        {
+          "of": "ABox/Nav/WizardStep",
+          "variants": {
+            "state": "unreachable"
+          },
+          "texts": {
+            "label": "Activation"
+          },
+          "source": "src/components/abox/downline-wizard-stepper.tsx:26"
         }
       ]
     }
@@ -5657,9 +5756,9 @@ var ABOX_B6 = {
       "pattern": "ABox/Pattern/WizardStepper",
       "trigger": "current route position within DOWNLINE_WIZARD_STEPS",
       "source": "src/components/abox/downline-wizard-stepper.tsx:37",
-      "behaviour": "steps render as done (check glyph), current (filled), upcoming (reachable link) or unreachable (dimmed span)",
-      "representation": "existing B4 variants ABox/Nav/WizardStep state=done|current|upcoming|unreachable",
-      "before": "state=upcoming",
+      "behaviour": "steps render as done (check glyph), current (filled) or unreachable (dimmed span); B4's upcoming branch is unreachable for any real route because isReachable = i <= currentIndex",
+      "representation": "existing B4 variants ABox/Nav/WizardStep state=done|current|unreachable, copied from route /agency/downlines/new/contacts",
+      "before": "state=unreachable",
       "after": "state=current / state=done",
       "prototype": "none",
       "reuse": "existing B4 variants reused; no new state axis, no B4 mutation",
@@ -5761,7 +5860,7 @@ var ABOX_B6 = {
   "limitations": [
     "Production lays KPI rows out with CSS grid and responsive breakpoints (grid gap-4 sm:grid-cols-2 lg:grid-cols-4); Figma auto-layout has no responsive breakpoint concept, so the columns axis encodes only the two authored column counts (3 and 4) and no breakpoint behaviour is modelled. — src/routes/app.dashboard.tsx:31",
     "ModuleTabBar shows 5 of the 12 production workforce tabs; the count is sample scope, chosen as the minimum that demonstrates the active/default relationship. — src/components/m06/workforce-page.tsx:17",
-    "WizardStepper shows 5 of the 8 production steps; the count is sample scope, chosen as the minimum that demonstrates all four real step states. — src/components/abox/downline-wizard-stepper.tsx:18",
+    "WizardStepper contains all 8 production steps in source order; its state configuration is copied from one documented real production route/current-step condition (/agency/downlines/new/contacts, SCR-M05-009, step 3 of 8). B4's upcoming state does not occur there — the source makes a step reachable only when i <= currentIndex, so no real route produces it; no state is manufactured and none are combined across routes. — src/components/abox/downline-wizard-stepper.tsx:18",
     "B4 coloured positive KpiCard delta chips per tone, while production always uses the sage branch for a positive delta (kpi-card.tsx:78). KpiRow consumes the live B5 component unchanged: the deviation is displayed, recorded, and not silently corrected in B6.",
     "Tab and wizard-step navigation is router-driven; no Figma prototype connection is created because the destination screens are B8 scope. B6 creates 0 prototype reactions.",
     "CSS pseudo-class states (hover, focus-visible, active) are not converted into Figma variants; each is recorded as a deferred interaction instead.",
@@ -8319,26 +8418,46 @@ function b6SpecProps(spec) {
     .join(",");
 }
 
-function b6ExpectedSignature(root, children) {
-  const parts = [
+/** Every geometry field the approved definition pins down, in a fixed order. */
+function b6RootParts(root) {
+  return [
     "layout=" + (root.layout || "HORIZONTAL"),
+    "wrap=" + (root.wrap || "NO_WRAP"),
     "gap=" + (root.gap || 0),
+    "cgap=" + (root.counterGap || 0),
+    "primarySizing=" + (root.primarySizing || "AUTO"),
+    "counterSizing=" + (root.counterSizing || "AUTO"),
     "pb=" + (root.paddingBottom || 0),
     "stroke=" + (root.strokeBottomStyle || "none"),
-    "children=" + children.length,
+    "strokeWeights=" + (root.strokeBottomStyle ? "0/0/0/1" : "0/0/0/0"),
+    "strokesInLayout=" + (root.strokeBottomStyle ? String(root.strokesIncludedInLayout === true) : "n/a"),
   ];
+}
+
+function b6ExpectedSignature(root, children) {
+  const parts = b6RootParts(root);
+  parts.push("children=" + children.length);
   for (const c of children) parts.push("INSTANCE:" + c.of + ":" + b6SpecProps(c));
   return parts.join("|");
 }
 
 function b6LiveSignature(node, root, children) {
+  const styled = !!root.strokeBottomStyle && !!node.strokeStyleId &&
+    node.strokeStyleId === b6HairlineId(root.strokeBottomStyle);
   const parts = [
     "layout=" + node.layoutMode,
+    "wrap=" + (node.layoutWrap || "NO_WRAP"),
     "gap=" + node.itemSpacing,
+    "cgap=" + (node.counterAxisSpacing || 0),
+    "primarySizing=" + node.primaryAxisSizingMode,
+    "counterSizing=" + node.counterAxisSizingMode,
     "pb=" + node.paddingBottom,
-    "stroke=" + (root.strokeBottomStyle && node.strokeStyleId ? root.strokeBottomStyle : "none"),
-    "children=" + node.children.length,
+    "stroke=" + (styled ? root.strokeBottomStyle : "none"),
+    "strokeWeights=" +
+      [node.strokeTopWeight || 0, node.strokeRightWeight || 0, node.strokeLeftWeight || 0, node.strokeBottomWeight || 0].join("/"),
+    "strokesInLayout=" + (root.strokeBottomStyle ? String(node.strokesIncludedInLayout === true) : "n/a"),
   ];
+  parts.push("children=" + node.children.length);
   for (let i = 0; i < node.children.length; i += 1) {
     const kid = node.children[i];
     const spec = children[i];
@@ -8351,24 +8470,36 @@ function b6LiveSignature(node, root, children) {
   return parts.join("|");
 }
 
+/** Resolved once per run; STOP rather than approximate the B3 hairline. */
+var b6StyleIndex = null;
+function b6HairlineId(styleName) {
+  if (!b6StyleIndex) throw new Error("STOP: style index not resolved before a pattern stroke was read.");
+  return b4Style(b6StyleIndex, "paint", styleName).id;
+}
+
 function b6ApplyRoot(node, root, index) {
   node.layoutMode = root.layout || "HORIZONTAL";
-  node.primaryAxisSizingMode = "AUTO";
-  node.counterAxisSizingMode = "AUTO";
+  node.layoutWrap = root.wrap || "NO_WRAP";
+  node.primaryAxisSizingMode = root.primarySizing || "AUTO";
+  node.counterAxisSizingMode = root.counterSizing || "AUTO";
   node.counterAxisAlignItems = "MIN";
   node.primaryAxisAlignItems = "MIN";
   node.itemSpacing = root.gap || 0;
+  if (node.layoutWrap === "WRAP") node.counterAxisSpacing = root.counterGap || 0;
   node.paddingLeft = 0;
   node.paddingRight = 0;
   node.paddingTop = 0;
   node.paddingBottom = root.paddingBottom || 0;
   node.fills = []; // production row wrappers carry layout classes only
   if (root.strokeBottomStyle) {
+    // Individual bottom stroke, bound to the live B3 style — never a colour value,
+    // never an extra line child. b4Style STOPs when the style cannot be resolved.
     node.strokeStyleId = b4Style(index, "paint", root.strokeBottomStyle).id;
     node.strokeTopWeight = 0;
     node.strokeLeftWeight = 0;
     node.strokeRightWeight = 0;
     node.strokeBottomWeight = 1;
+    node.strokesIncludedInLayout = root.strokesIncludedInLayout === true;
   } else {
     node.strokes = [];
   }
@@ -8404,36 +8535,104 @@ function b6FindOnPage(page, name) {
   return found[0] || null;
 }
 
+/** The set's single variant axis, read from the live node. */
+function b6SetAxis(set) {
+  const defs = set.componentPropertyDefinitions || {};
+  const names = Object.keys(defs).filter((k) => defs[k].type === "VARIANT");
+  return { names: names, name: names[0], values: names.length === 1 ? (defs[names[0]].variantOptions || []).slice().sort() : [] };
+}
+
+function b6AssertAxis(set, spec) {
+  const axis = b6SetAxis(set);
+  const want = spec.values.slice().sort();
+  if (set.name !== spec.name) {
+    throw new Error('STOP: PATTERN SET NAME MISMATCH — expected "' + spec.name + '", live "' + set.name + '".');
+  }
+  if (axis.names.length !== 1 || axis.name !== spec.property) {
+    throw new Error(
+      "STOP: PATTERN SET AXIS MISMATCH — " + spec.name + " must expose exactly one VARIANT property named \"" +
+        spec.property + '"; live axes: ' + JSON.stringify(axis.names) + ".",
+    );
+  }
+  if (axis.values.join(",") !== want.join(",")) {
+    throw new Error(
+      "STOP: PATTERN SET VALUES MISMATCH — " + spec.name + " expected " + JSON.stringify(want) +
+        ", live " + JSON.stringify(axis.values) + ".",
+    );
+  }
+  if (set.children.length !== spec.variants.length) {
+    throw new Error(
+      "STOP: PATTERN SET SHAPE MISMATCH — " + spec.name + " expected " + spec.variants.length +
+        " variant nodes, live " + set.children.length + ".",
+    );
+  }
+  const seen = {};
+  for (const child of set.children) {
+    if (seen[child.name]) throw new Error("STOP: DUPLICATE VARIANT MATRIX — " + spec.name + " / " + child.name + ".");
+    seen[child.name] = true;
+  }
+}
+
 async function b6EnsurePattern(spec, index, page) {
   if (spec.kind === "SET") {
+    // 1. resolve the live B4/B5 main components every nested instance needs, before any write
+    const needed = {};
+    for (const v of spec.variants) for (const c of v.children) needed[c.of] = true;
+    for (const name of Object.keys(needed).sort()) {
+      const main = b6Main(name);
+      say("  primitive resolved: " + name + "  id=" + main.id);
+    }
+
+    // 2. read the live 02 Patterns inventory and detect the set by deterministic identity
     let set = b4FindSet(spec.name);
     if (set && set.parent !== page) {
       throw new Error('STOP: PATTERN OUTSIDE SCOPE — "' + spec.name + '" lives on "' + (set.parent && set.parent.name) + '".');
     }
+    if (!set) {
+      for (const child of page.children) {
+        if (child.type === "COMPONENT_SET" && child.name === spec.name) {
+          throw new Error("STOP: CONFLICTING PATTERN SET — " + spec.name + ".");
+        }
+      }
+    }
+
+    if (set) {
+      // 3a. present — verify the axis, then resolve each variant by its exact matrix. Never create.
+      b6AssertAxis(set, spec);
+      for (const v of spec.variants) {
+        const vname = spec.property + "=" + v.value;
+        const matches = set.children.filter((c) => c.name === vname);
+        if (matches.length !== 1) {
+          throw new Error(
+            "STOP: VARIANT MATRIX NOT RESOLVABLE — " + spec.name + " / " + vname + " matched " + matches.length + " nodes.",
+          );
+        }
+        b6Check(matches[0], v.root, v.children, spec.name + " / " + vname);
+        b6Say("variant  ", spec.name + " / " + vname, false);
+      }
+      say("  set      reused  : " + spec.name + "  id=" + set.id);
+      set.description = spec.source;
+      return set;
+    }
+
+    // 3b. absent — create exactly one ComponentNode per declared matrix, then combine only those.
     const fresh = [];
     for (const v of spec.variants) {
       const vname = spec.property + "=" + v.value;
-      const existing = set ? set.children.filter((c) => c.name === vname)[0] : b6FindOnPage(page, vname);
-      if (existing) {
-        b6Check(existing, v.root, v.children, spec.name + " / " + vname);
-        b6Say("variant  ", spec.name + " / " + vname, false);
-        continue;
-      }
+      const stray = b6FindOnPage(page, vname);
+      if (stray) throw new Error("STOP: ORPHAN VARIANT NODE ON " + B6_PAGE + " — " + vname + ".");
       const node = b6BuildNode(vname, v.root, v.children, index, page);
       node.description = spec.source;
       b6Say("variant  ", spec.name + " / " + vname, true);
-      if (set) set.appendChild(node);
-      else fresh.push(node);
+      fresh.push(node);
     }
-    if (!set) {
-      set = figma.combineAsVariants(fresh, page);
-      set.name = spec.name;
-      set.fills = [];
-      b6Created += 1;
-      say("  set      created : " + spec.name);
-    } else {
-      say("  set      reused  : " + spec.name);
-    }
+    // combineAsVariants is the only supported mechanism — no addComponentProperty, no second axis.
+    set = figma.combineAsVariants(fresh, page);
+    set.name = spec.name;
+    set.fills = [];
+    b6Created += 1;
+    b6AssertAxis(set, spec);
+    say("  set      created : " + spec.name + "  id=" + set.id);
     set.description = spec.source;
     return set;
   }
@@ -8458,6 +8657,7 @@ async function ensureB6Patterns() {
   b6Created = 0;
   const page = b6Page();
   const index = await b4StyleIndex();
+  b6StyleIndex = index;
   for (const spec of ABOX_B6.patterns) await b6EnsurePattern(spec, index, page);
   say("");
   say("  pattern objects created this run: " + b6Created);
@@ -8478,6 +8678,7 @@ async function verifyB6() {
   const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
   const C = ABOX_B6.counts;
   const index = await b4StyleIndex();
+  b6StyleIndex = index;
   const page = b6Page();
 
   /* ---------- protected B1-B5 inventory ---------- */
@@ -8609,6 +8810,86 @@ async function verifyB6() {
   add(axisOk, "no invented pattern state — the single pattern axis is " + ABOX_B6.patterns[0].property);
   add(protoOk, "no invented interaction — " + C.prototypes + " prototype reactions on any B6 node");
 
+  /* ---------- revised-precision checks ---------- */
+  const kpiSpec = ABOX_B6.patterns.filter((p) => p.kind === "SET")[0];
+  const kpiSets = page.children.filter((n) => n.type === "COMPONENT_SET" && n.name === kpiSpec.name);
+  const kpiSet = kpiSets[0] || null;
+  const kpiAxis = kpiSet ? b6SetAxis(kpiSet) : { names: [], values: [] };
+  add(kpiSets.length === 1 && kpiSet.children.length === 2,
+    kpiSpec.name + " is exactly one Component Set with exactly two Variant ComponentNodes (found " +
+      kpiSets.length + " set(s) / " + (kpiSet ? kpiSet.children.length : 0) + " variant nodes)");
+  add(kpiAxis.names.length === 1 && kpiAxis.name === kpiSpec.property,
+    "the only " + kpiSpec.name + " Variant property is " + kpiSpec.property + " (live: " + JSON.stringify(kpiAxis.names) + ")");
+  add(kpiAxis.values.join(",") === kpiSpec.values.slice().sort().join(","),
+    kpiSpec.name + " values are exactly " + kpiSpec.values.join(" and ") + " (live: " + JSON.stringify(kpiAxis.values) + ")");
+  const kpiMatrix = {};
+  let kpiDup = false;
+  if (kpiSet) for (const c of kpiSet.children) { if (kpiMatrix[c.name]) kpiDup = true; kpiMatrix[c.name] = true; }
+  add(!kpiDup, "no duplicate " + kpiSpec.name + " variant matrix exists");
+
+  const wrapSpecs = ABOX_B6.patterns.filter((p) => p.kind !== "SET");
+  let wrapOk = true, gapsOk = true;
+  const gapReport = [];
+  for (const spec of wrapSpecs) {
+    const node = b4FindComponent(spec.name);
+    if (!node) { wrapOk = false; gapsOk = false; continue; }
+    if (node.layoutWrap !== "WRAP") wrapOk = false;
+    if (node.itemSpacing !== 6 || node.counterAxisSpacing !== 6) gapsOk = false;
+    gapReport.push(spec.name + " wrap=" + node.layoutWrap + " itemSpacing=" + node.itemSpacing +
+      " counterAxisSpacing=" + node.counterAxisSpacing + " sizing=" + node.primaryAxisSizingMode + "/" + node.counterAxisSizingMode);
+  }
+  add(wrapOk, "ModuleTabBar and WizardStepper have layoutWrap = WRAP");
+  add(gapsOk, "both wrapped patterns have itemSpacing = 6 and counterAxisSpacing = 6 — " + gapReport.join(" ; "));
+
+  const tabSpec = wrapSpecs.filter((p) => p.name.indexOf("ModuleTabBar") !== -1)[0];
+  const tabNode = tabSpec ? b4FindComponent(tabSpec.name) : null;
+  const hairlineId = b4Style(index, "paint", tabSpec.root.strokeBottomStyle).id;
+  const strokeOk = !!tabNode && tabNode.strokeBottomWeight === 1 &&
+    (tabNode.strokeTopWeight || 0) === 0 && (tabNode.strokeLeftWeight || 0) === 0 && (tabNode.strokeRightWeight || 0) === 0 &&
+    tabNode.strokeStyleId === hairlineId &&
+    tabNode.strokesIncludedInLayout === (tabSpec.root.strokesIncludedInLayout === true);
+  add(strokeOk,
+    "ModuleTabBar has exactly one bottom stroke of weight 1 bound to the live B3 " + tabSpec.root.strokeBottomStyle +
+      " style (id=" + hairlineId + "), other sides 0, strokesIncludedInLayout=" +
+      (tabNode ? String(tabNode.strokesIncludedInLayout) : "-"));
+  const tabExtras = tabNode ? tabNode.children.filter((c) => c.type !== "INSTANCE") : [];
+  add(tabExtras.length === 0, "ModuleTabBar has no extra line/border child (found " + tabExtras.length + ")");
+  const tabRawStroke = !!tabNode && (!tabNode.strokeStyleId && (tabNode.strokes || []).length > 0);
+  add(!tabRawStroke, "no hard-coded stroke colour exists on any pattern root");
+  add(page.children.every((n) => n.name.indexOf("/sm") === -1 && n.name.indexOf("breakpoint") === -1),
+    "no responsive breakpoint state or variant was created");
+
+  /* ---------- WizardStepper: the complete production step list ---------- */
+  const wizSpec = wrapSpecs.filter((p) => p.name.indexOf("WizardStepper") !== -1)[0];
+  const wizNode = wizSpec ? b4FindComponent(wizSpec.name) : null;
+  const wizSteps = wizSpec.configuration.steps;
+  const wizMain = b6Main("ABox/Nav/WizardStep");
+  const wizKids = wizNode ? wizNode.children : [];
+  add(wizKids.length === 8, "WizardStepper contains exactly 8 child nodes (found " + wizKids.length + ")");
+  let orderOk = wizKids.length === 8, mainOk = true, stateOk = true, labelOk = true;
+  const allowedStates = ["current", "done", "upcoming", "unreachable"];
+  const wizReport = [];
+  for (let i = 0; i < wizKids.length; i += 1) {
+    const kid = wizKids[i];
+    const want = wizSteps[i];
+    const cspec = wizSpec.children[i];
+    if (!want || kid.type !== "INSTANCE") { orderOk = false; continue; }
+    if (b6MainId(kid) !== wizMain.id) mainOk = false;
+    const live = b6LiveProps(kid, cspec);
+    if (live.indexOf("state=" + want.state) === -1) stateOk = false;
+    if (allowedStates.indexOf(want.state) === -1) stateOk = false;
+    if (live.indexOf("label=" + want.label) === -1) labelOk = false;
+    wizReport.push("    " + (i + 1) + ". " + want.label + " — " + want.state + " — main id=" + b6MainId(kid));
+  }
+  add(orderOk, "WizardStepper child order matches DOWNLINE_WIZARD_STEPS position by position (1-8)");
+  add(mainOk, "every WizardStepper child resolves to the live B4/B5 ABox/Nav/WizardStep main component (id=" + wizMain.id + ")");
+  add(stateOk, "every WizardStepper child state is a real production state copied from " + wizSpec.configuration.route +
+    " (step " + wizSpec.configuration.currentStep + " of 8) — none manufactured, none combined across routes");
+  add(labelOk, "every WizardStepper child label matches the production step label");
+  add(page.children.filter((n) => n.name === wizSpec.name).length === 1 &&
+    figma.root.children.reduce((n, pg) => n + pg.children.filter((c) => c.name === wizSpec.name).length, 0) === 1,
+    "no duplicate WizardStepper exists on any page");
+
   const nodes = b6PatternNodes(page);
   add(nodes.length === C.patternNodes, "pattern ComponentNodes = " + C.patternNodes + " (found " + nodes.length + ")");
   const deferredNames = ABOX_B6.deferred.map((d) => d.candidate).concat(ABOX_B6.rejected.map((r) => r.candidate));
@@ -8631,6 +8912,11 @@ async function verifyB6() {
   say("");
   say("B6 PATTERN INVENTORY");
   for (const line of inventory) say(line);
+
+  say("");
+  say("B6 WIZARDSTEPPER CONFIGURATION (route " + wizSpec.configuration.route + " — " +
+    wizSpec.configuration.scr + " — step " + wizSpec.configuration.currentStep + " of 8)");
+  for (const line of wizReport) say(line);
 
   say("");
   say("B4/B5 PRIMITIVES CONSUMED (live ids, unchanged by B6)");
