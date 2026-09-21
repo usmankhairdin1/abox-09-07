@@ -1005,12 +1005,36 @@ async function verifyB2() {
   }
   add(famOk, "font-family stacks match src/styles.css verbatim in both modes");
 
+  // FLOAT comparison uses a 1e-9 tolerance. Figma round-trips a stored FLOAT
+  // through its own numeric representation, so values that are not exactly
+  // representable in binary floating point (-2.8, -3.2, 1.02) can come back a
+  // few ulps away from the JS literal that was written. The tolerance is far
+  // smaller than any meaningful typographic difference, and every comparison
+  // is printed at full precision below, so a real mismatch cannot hide.
+  const FLOAT_EPSILON = 1e-9;
+  const floatMatches = (stored, expected) =>
+    typeof stored === "number" && Math.abs(stored - expected) <= FLOAT_EPSILON;
+
   let floatOk = true;
+  const floatEvidence = [];
   for (const f of ABOX_B2.floats) {
     const v = vars[f.name];
-    if (!v || v.valuesByMode[light] !== f.value || v.valuesByMode[dark] !== f.value) floatOk = false;
+    const l = v ? v.valuesByMode[light] : undefined;
+    const d = v ? v.valuesByMode[dark] : undefined;
+    const ok = !!v && floatMatches(l, f.value) && floatMatches(d, f.value);
+    if (!ok) floatOk = false;
+    const prec = (x) => (typeof x === "number" ? x.toPrecision(20) : String(x));
+    const diff = (x) => (typeof x === "number" ? Math.abs(x - f.value).toExponential(3) : "n/a");
+    floatEvidence.push(
+      "      " + (ok ? "PASS  " : "FAIL  ") + f.name +
+        "  expected=" + prec(f.value) +
+        "  Light=" + prec(l) + " (delta " + diff(l) + ")" +
+        "  Dark=" + prec(d) + " (delta " + diff(d) + ")",
+    );
   }
-  add(floatOk, "numeric values match production in both modes");
+  const floatFailures = floatEvidence.filter((l) => l.indexOf("FAIL") !== -1).length;
+  add(floatOk, "numeric values match production in both modes" +
+    (floatOk ? "" : " (" + floatFailures + " of " + ABOX_B2.floats.length + " FLOAT variables mismatched; see B2 NUMERIC EVIDENCE)"));
 
   let aliasOk = true;
   for (const role of ABOX_B2.roleFamilies) {
@@ -1029,10 +1053,15 @@ async function verifyB2() {
     const v = vars[n];
     const a = v.valuesByMode[light];
     const b = v.valuesByMode[dark];
-    const same = a && typeof a === "object" && b && typeof b === "object" ? a.id === b.id : a === b;
+    const same = a && typeof a === "object" && b && typeof b === "object"
+      ? a.id === b.id
+      : typeof a === "number" && typeof b === "number"
+        ? Math.abs(a - b) <= FLOAT_EPSILON
+        : a === b;
     if (!same) parityOk = false;
   }
   add(parityOk, "Light and Dark values identical for all 19 variables (production declares no .dark typography override)");
+
 
   add(names.every((n) => vars[n].description && vars[n].description.indexOf("src/styles.css") !== -1),
     "every variable description carries its src/styles.css source line");
