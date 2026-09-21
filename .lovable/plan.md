@@ -117,7 +117,7 @@ Button `state=disabled` on any variant/size other than `default`/`sm`; PageHeade
 
 ## 5. Foundation bindings
 
-Every B5 state reuses the existing foundations, from the production declaration and never from value equality: `disabled` = 50% layer opacity over the unchanged bound B3 styles (`disabled:opacity-50`); KpiCard `delta=up` binds `ABox/Semantic/sage`, `delta=down` binds `ABox/Semantic/destructive`; all other colour, elevation and typography references stay on the B3 styles and B1/B2 variables already attached in B4. No hard-coded foundation value is introduced.
+Every B5 state reuses the existing foundations, from the production declaration and never from value equality: `disabled` = 50% layer opacity over the unchanged bound B3 styles (`disabled:opacity-50`); KpiCard `deltaSign=positive` binds `ABox/Semantic/sage`, `deltaSign=negative` binds `ABox/Semantic/destructive`; all other colour, elevation and typography references stay on the B3 styles and B1/B2 variables already attached in B4. No hard-coded foundation value is introduced.
 
 ## 6. Idempotency
 
