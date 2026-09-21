@@ -3969,15 +3969,15 @@ async function b7BuildInternal(index, page, shell) {
   root.counterAxisSizingMode = "AUTO";
   root.itemSpacing = 24;
   root.paddingLeft = root.paddingRight = root.paddingTop = root.paddingBottom = 24;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
   page.appendChild(root);
 
-  const rail = b7Frame("desktop-rail", { w: 268, h: 900, layout: "VERTICAL", gap: 24, px: 18, py: 18, radius: 28, fillStyle: "ABox/Semantic/sidebar", strokeStyle: "ABox/Semantic/sidebar-border", effectStyle: "ABox/Elevation/plate" }, index);
-  const brand = b7Frame("rail-brand", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
+  const rail = await b7Frame("desktop-rail", { w: 268, h: 900, layout: "VERTICAL", gap: 24, px: 18, py: 18, radius: 28, fillStyle: "ABox/Semantic/sidebar", strokeStyle: "ABox/Semantic/sidebar-border", effectStyle: "ABox/Elevation/plate" }, index);
+  const brand = await b7Frame("rail-brand", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
   brand.appendChild(b7Instance({ of: "ABox/Brand/AboxMark", variants: { tone: "sidebar" }, name: "AboxMark" }));
   brand.appendChild(await b7Text("brand-label", "Agency in a Box", { size: 16, weight: 600, colorStyle: "ABox/Semantic/sidebar-foreground" }, index));
   rail.appendChild(brand);
-  const nav = b7Frame("rail-navigation", { layout: "VERTICAL", gap: 8 }, index);
+  const nav = await b7Frame("rail-navigation", { layout: "VERTICAL", gap: 8 }, index);
   for (const label of ["Dashboard", "Organizations", "Customers", "Tasks", "Commissions"]) {
     nav.appendChild(await b7Pill(label === shell.construction.activeNavSample ? "nav-item[active-sample]" : "nav-item", label, index, {
       icon: "•",
@@ -3989,9 +3989,9 @@ async function b7BuildInternal(index, page, shell) {
   rail.appendChild(nav);
   root.appendChild(rail);
 
-  const content = b7Frame("workspace-column", { w: 1080, h: 900, layout: "VERTICAL", gap: 28 }, index);
-  const top = b7Frame("top-bar", { layout: "HORIZONTAL", align: "CENTER", gap: 16, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
-  const wp = b7Frame("workspace-pill", { layout: "VERTICAL", gap: 2 }, index);
+  const content = await b7Frame("workspace-column", { w: 1080, h: 900, layout: "VERTICAL", gap: 28 }, index);
+  const top = await b7Frame("top-bar", { layout: "HORIZONTAL", align: "CENTER", gap: 16, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
+  const wp = await b7Frame("workspace-pill", { layout: "VERTICAL", gap: 2 }, index);
   wp.appendChild(await b7Text("workspace-label", shell.construction.workspaceLabel, { size: 11, weight: 500, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   wp.appendChild(await b7Text("entity-label", shell.construction.entity, { size: 14, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   top.appendChild(wp);
@@ -3999,14 +3999,14 @@ async function b7BuildInternal(index, page, shell) {
   top.appendChild(await b7Pill("action-orb-group", "Tasks · Notifications · Theme · Account", index, { icon: "◌", colorStyle: "ABox/Semantic/muted-foreground" }));
   content.appendChild(top);
 
-  const header = b7Frame("page-header", { layout: "HORIZONTAL", align: "CENTER", gap: 20 }, index);
-  const copy = b7Frame("page-header-copy", { layout: "VERTICAL", gap: 8 }, index);
+  const header = await b7Frame("page-header", { layout: "HORIZONTAL", align: "CENTER", gap: 20 }, index);
+  const copy = await b7Frame("page-header-copy", { layout: "VERTICAL", gap: 8 }, index);
   copy.appendChild(await b7Text("eyebrow", shell.construction.eyebrow, { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   copy.appendChild(await b7Text("title", shell.construction.pageTitle, { size: 44, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   header.appendChild(copy);
-  header.appendChild(b7Frame("actions-region", { w: 220, h: 44, layout: "HORIZONTAL", gap: 8, px: 0, py: 0 }, index));
+  header.appendChild(await b7Frame("actions-region", { w: 220, h: 44, layout: "HORIZONTAL", gap: 8, px: 0, py: 0 }, index));
   content.appendChild(header);
-  const main = b7Frame("content-region — shell placeholder", { w: 980, h: 520, layout: "VERTICAL", gap: 0, px: 24, py: 24, radius: 24, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const main = await b7Frame("content-region — shell placeholder", { w: 980, h: 520, layout: "VERTICAL", gap: 0, px: 24, py: 24, radius: 24, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   content.appendChild(main);
   content.appendChild(await b7Pill("assistant-launcher-region", "Plan-AI", index, { icon: "✦", fillStyle: "ABox/Semantic/primary", colorStyle: "ABox/Semantic/primary-foreground" }));
   root.appendChild(content);
@@ -4025,17 +4025,17 @@ async function b7BuildMarketplaceVariant(index, shell, variant) {
   root.paddingLeft = root.paddingRight = 32;
   root.paddingTop = variant.value === "landing" ? 24 : 16;
   root.paddingBottom = 32;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
 
-  const header = b7Frame("header-pill", { layout: "HORIZONTAL", align: "CENTER", gap: 18, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
-  const brand = b7Frame("brand-home-region", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
+  const header = await b7Frame("header-pill", { layout: "HORIZONTAL", align: "CENTER", gap: 18, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
+  const brand = await b7Frame("brand-home-region", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
   brand.appendChild(b7Instance({ of: "ABox/Brand/AboxMark", variants: { tone: "primary" }, name: "AboxMark" }));
-  const brandText = b7Frame("brand-copy", { layout: "VERTICAL", gap: 2 }, index);
+  const brandText = await b7Frame("brand-copy", { layout: "VERTICAL", gap: 2 }, index);
   brandText.appendChild(await b7Text("brand-name", "ABox", { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   brandText.appendChild(await b7Text("brand-tagline", "Agency in a Box", { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   brand.appendChild(brandText);
   header.appendChild(brand);
-  const nav = b7Frame("marketplace-navigation", { layout: "HORIZONTAL", align: "CENTER", gap: 6 }, index);
+  const nav = await b7Frame("marketplace-navigation", { layout: "HORIZONTAL", align: "CENTER", gap: 6 }, index);
   if (variant.navAddsShopPlans) nav.appendChild(await b7Pill("pill-link-shop-plans", "Shop plans", index, { icon: "▦" }));
   nav.appendChild(await b7Pill("pill-link-ichra", "ICHRA", index, { icon: "▣" }));
   nav.appendChild(await b7Pill("pill-link-agent-help", "Agent help", index, { icon: "?" }));
@@ -4045,7 +4045,7 @@ async function b7BuildMarketplaceVariant(index, shell, variant) {
   root.appendChild(header);
 
   if (variant.hasProductRegion) {
-    const rail = b7Frame("product-switcher-region", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8, px: 12, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+    const rail = await b7Frame("product-switcher-region", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8, px: 12, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
     for (const key of ABOX_B7.shells[1].productKeys) {
       rail.appendChild(await b7Pill(key === variant.construction.product ? "product-item[active-sample]" : "product-item", key.toUpperCase(), index, {
         icon: "•",
@@ -4056,9 +4056,9 @@ async function b7BuildMarketplaceVariant(index, shell, variant) {
     }
     root.appendChild(rail);
   }
-  root.appendChild(b7Frame("content-region — shell placeholder", { w: 1180, h: 440, layout: "VERTICAL", gap: 0, px: 24, py: 24, radius: 0 }, index));
-  const footer = b7Frame("footer-plate", { layout: "VERTICAL", gap: 18, px: 28, py: 28, radius: 28, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
-  const footBrand = b7Frame("footer-brand-region", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
+  root.appendChild(await b7Frame("content-region — shell placeholder", { w: 1180, h: 440, layout: "VERTICAL", gap: 0, px: 24, py: 24, radius: 0 }, index));
+  const footer = await b7Frame("footer-plate", { layout: "VERTICAL", gap: 18, px: 28, py: 28, radius: 28, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const footBrand = await b7Frame("footer-brand-region", { layout: "HORIZONTAL", align: "CENTER", gap: 10 }, index);
   footBrand.appendChild(b7Instance({ of: "ABox/Brand/AboxMark", variants: { tone: "foreground" }, name: "AboxMark" }));
   footBrand.appendChild(await b7Text("footer-brand-copy", "ABox · Agency in a Box", { size: 14, weight: 500, colorStyle: "ABox/Semantic/foreground" }, index));
   footer.appendChild(footBrand);
@@ -4079,17 +4079,17 @@ async function b7BuildMember(index, page, shell) {
   root.itemSpacing = 28;
   root.paddingLeft = root.paddingRight = 32;
   root.paddingTop = root.paddingBottom = 24;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
   page.appendChild(root);
 
-  const header = b7Frame("header-pill", { layout: "HORIZONTAL", align: "CENTER", gap: 16, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
+  const header = await b7Frame("header-pill", { layout: "HORIZONTAL", align: "CENTER", gap: 16, px: 16, py: 10, radius: 9999, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", effectStyle: "ABox/Elevation/plate" }, index);
   header.appendChild(b7Instance({ of: "ABox/Brand/AboxMark", variants: { tone: "primary" }, name: "AboxMark" }));
   header.appendChild(await b7Text("member-workspace-label", "Member workspace", { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   header.appendChild(await b7Pill("member-header-actions", "Hello · Theme · Sign out", index, { icon: "◌" }));
   root.appendChild(header);
 
-  const body = b7Frame("member-body", { layout: "HORIZONTAL", gap: 32 }, index);
-  const nav = b7Frame("member-nav", { layout: "VERTICAL", gap: 12 }, index);
+  const body = await b7Frame("member-body", { layout: "HORIZONTAL", gap: 32 }, index);
+  const nav = await b7Frame("member-nav", { layout: "VERTICAL", gap: 12 }, index);
   for (const label of shell.construction.navItems) {
     nav.appendChild(await b7Pill(label === shell.construction.activeNavSample ? "member-nav/item[active-sample]" : "member-nav/item", label, index, {
       icon: "•",
@@ -4099,7 +4099,7 @@ async function b7BuildMember(index, page, shell) {
     }));
   }
   body.appendChild(nav);
-  body.appendChild(b7Frame("content-region — shell placeholder", { w: 920, h: 560, layout: "VERTICAL", gap: 0, px: 40, py: 40, radius: 24, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index));
+  body.appendChild(await b7Frame("content-region — shell placeholder", { w: 920, h: 560, layout: "VERTICAL", gap: 0, px: 40, py: 40, radius: 24, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index));
   root.appendChild(body);
   root.appendChild(await b7Pill("assistant-launcher-region", "Plan-AI", index, { icon: "✦", fillStyle: "ABox/Semantic/primary", colorStyle: "ABox/Semantic/primary-foreground" }));
   b7SetDescription(root, shell);
