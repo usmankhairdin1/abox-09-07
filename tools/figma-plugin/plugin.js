@@ -3153,6 +3153,150 @@ async function b6InspectPatterns() {
   say("  nothing was created, modified or deleted.");
 }
 
+/** Stable label for each signature segment index, used only by the diagnosis report. */
+function b6SegmentLabels(childCount) {
+  const labels = [
+    "layout", "wrap", "gap", "cgap", "primarySizing", "counterSizing", "pb",
+    "stroke", "strokeWeights", "strokesInLayout", "children",
+  ];
+  for (let i = 0; i < childCount; i += 1) labels.push("child[" + i + "]");
+  return labels;
+}
+
+/**
+ * Read-only diagnosis of the single failing verifyB6 structural-signature check.
+ * Assembles exactly the same bodies verifyB6 assembles, prints both signatures, the first
+ * differing segment and the raw node/child evidence behind it. Writes nothing, deletes nothing.
+ */
+async function b6DiagnoseSignatures() {
+  await figma.loadAllPagesAsync();
+  const page = b6Page();
+  const index = await b4StyleIndex();
+  b6StyleIndex = index;
+
+  say("B6 SIGNATURE DIAGNOSIS — " + B6_PAGE + " (read-only)");
+  say("  page id=" + page.id + "  children=" + page.children.length);
+  say("");
+
+  const bodies = [];
+  for (const spec of ABOX_B6.patterns) {
+    if (spec.kind === "SET") {
+      const set = b4FindSet(spec.name);
+      if (!set) { bodies.push({ label: spec.name, node: null, root: null, children: [] }); continue; }
+      for (const v of spec.variants) {
+        const vname = spec.property + "=" + v.value;
+        bodies.push({
+          label: spec.name + " / " + vname,
+          node: set.children.filter((c) => c.name === vname)[0] || null,
+          root: v.root,
+          children: v.children,
+        });
+      }
+    } else {
+      bodies.push({ label: spec.name, node: b4FindComponent(spec.name), root: spec.root, children: spec.children });
+    }
+  }
+
+  const failing = [];
+  for (const body of bodies) {
+    const node = body.node;
+    say("- " + body.label);
+    if (!node) {
+      say("    NODE MISSING — nothing to compare.");
+      failing.push(body.label + " (missing node)");
+      say("");
+      continue;
+    }
+    const expected = b6ExpectedSignature(body.root, body.children);
+    const live = await b6LiveSignature(node, body.root, body.children);
+    say("    expected : " + expected);
+    say("    live     : " + live);
+
+    const exp = expected.split("|");
+    const liv = live.split("|");
+    const labels = b6SegmentLabels(Math.max(body.children.length, node.children.length));
+    const max = Math.max(exp.length, liv.length);
+    let first = null;
+    say("    segments :");
+    for (let i = 0; i < max; i += 1) {
+      const label = labels[i] || "segment[" + i + "]";
+      const e = i < exp.length ? exp[i] : "(absent)";
+      const l = i < liv.length ? liv[i] : "(absent)";
+      if (e === l) {
+        say("      MATCH  " + label + " : " + e);
+      } else {
+        if (first === null) first = { label: label, e: e, l: l };
+        say("      DIFF   " + label + " : expected=" + e + "  live=" + l);
+      }
+    }
+
+    /* raw root evidence */
+    const styleName = node.strokeStyleId ? b4StyleName(index, node.strokeStyleId) : "(none)";
+    say("    root evidence :");
+    say("      type=" + node.type + "  id=" + node.id +
+      "  layoutMode=" + node.layoutMode + "  layoutWrap=" + node.layoutWrap);
+    say("      itemSpacing=" + node.itemSpacing + "  counterAxisSpacing=" + (node.counterAxisSpacing || 0) +
+      "  primaryAxisSizingMode=" + node.primaryAxisSizingMode + "  counterAxisSizingMode=" + node.counterAxisSizingMode);
+    say("      padding L/R/T/B=" + node.paddingLeft + "/" + node.paddingRight + "/" + node.paddingTop + "/" + node.paddingBottom);
+    say("      strokes=" + ((node.strokes || []).length) + "  strokeStyleId=" + (node.strokeStyleId || "(empty)") +
+      "  styleName=" + styleName);
+    say("      strokeWeights T/R/L/B=" + [node.strokeTopWeight, node.strokeRightWeight, node.strokeLeftWeight, node.strokeBottomWeight].join("/") +
+      "  strokeWeight=" + node.strokeWeight + "  strokesIncludedInLayout=" + node.strokesIncludedInLayout);
+    say("      fills=" + ((node.fills || []).length) + "  reactions=" + ((node.reactions || []).length) +
+      "  variantProperties=" + JSON.stringify(node.variantProperties || null));
+
+    /* per-child evidence */
+    say("    children (" + node.children.length + " live / " + body.children.length + " declared) :");
+    const count = Math.max(node.children.length, body.children.length);
+    for (let i = 0; i < count; i += 1) {
+      const kid = node.children[i];
+      const cspec = body.children[i];
+      if (!kid) {
+        say("      [" + i + "] LIVE MISSING — declared " + cspec.of + " " + JSON.stringify(cspec.variants || {}) + " " + JSON.stringify(cspec.texts || {}));
+        continue;
+      }
+      if (!cspec) {
+        say("      [" + i + "] UNDECLARED LIVE NODE — " + kid.type + " " + kid.name + " id=" + kid.id);
+        continue;
+      }
+      say("      [" + i + "] live " + kid.type + " name=" + kid.name + " id=" + kid.id);
+      if (kid.type === "INSTANCE") {
+        const main = await kid.getMainComponentAsync();
+        const owner = main && main.parent && main.parent.type === "COMPONENT_SET" ? main.parent : null;
+        say("          main : " + (main ? main.name + " id=" + main.id : "MISSING") +
+          (owner ? "   set : " + owner.name + " id=" + owner.id : "   set : (none)"));
+        const props = kid.componentProperties || {};
+        const dump = Object.keys(props).sort().map((k) => k + "=" + String(props[k].value));
+        say("          componentProperties : " + JSON.stringify(dump));
+        say("          declared            : of=" + cspec.of +
+          "  variants=" + JSON.stringify(cspec.variants || {}) + "  texts=" + JSON.stringify(cspec.texts || {}));
+        say("          expected segment    : INSTANCE:" + cspec.of + ":" + b6SpecProps(cspec));
+        say("          live     segment    : INSTANCE:" + (await b6MainName(kid)) + ":" + b6LiveProps(kid, cspec));
+      } else {
+        say("          declared : of=" + cspec.of + " — live node is not an INSTANCE");
+      }
+    }
+
+    if (first === null) {
+      say("    VERDICT : SIGNATURE MATCHES");
+    } else {
+      failing.push(body.label + " — first diff " + first.label);
+      say('    VERDICT : FIRST DIFF: ' + first.label + ' — expected "' + first.e + '" live "' + first.l + '"');
+    }
+    say("");
+  }
+
+  say("  bodies compared : " + bodies.length);
+  if (!failing.length) {
+    say("  every body matches its approved signature.");
+  } else {
+    say("  failing bodies (" + failing.length + "):");
+    for (const f of failing) say("    - " + f);
+  }
+  say("  nothing was created, modified or deleted.");
+}
+
+
 /**
  * Remove B6 variant components stranded directly on 02 Patterns by an aborted run.
  * A node is removed ONLY when every identity condition holds; anything failing a single
