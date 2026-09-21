@@ -1298,3 +1298,31 @@ Offline dry-run only: `RESULT: B4 PASSED` on both runs, all 25 structural checks
 ### 7. Changed files
 
 Created `tools/figma-plugin/extract-b4.mjs` and generated `tokens-b4.js`. Modified `plugin.js` (B4 create/verify + entry), `ui.html` (two buttons), `build.mjs` (concatenates `tokens-b4.js`), `README.md`, `.lovable/manual-work-map.md`. `code.js` regenerated only via `node build.mjs`, never hand-edited. No `src/` change. Rollback: revert the plugin-layer files and this block.
+
+## Phase 52 / Batch B5 — Component variants & states (2026-09-21)
+
+Scope: plugin layer only. No `src/` diff (`git diff --stat -- src/` empty); B0 pages unchanged;
+B1 (9 collections / 200 variables), B2 (`ABox/Typography`, 19 variables) and B3 (72 colour + 2
+text + 5 effect styles) asserted untouched; proof file untouched; no publishing; no B6 work.
+
+Created `tools/figma-plugin/extract-b5.mjs` and generated `tokens-b5.js`. Modified `plugin.js`
+(B5 create/verify + entry; plus `b4MatchVariant`, so B4 stays idempotent once B5 has widened the
+KpiCard variant names — a re-run of B4 after B5 creates zero objects and still reports
+`RESULT: B4 PASSED`), `ui.html` (two buttons), `build.mjs` (concatenates `tokens-b5.js`),
+`README.md`, this file. `code.js` regenerated only via `node build.mjs`, never hand-edited.
+Rollback: revert the plugin-layer files and this block.
+
+Offline dry-run only: `RESULT: B5 PASSED` on both runs, all 25 structural checks PASS, strict
+"created" count in run 2 = 0, ids identical between runs, 4 new negative KpiCard Variant
+ComponentNodes in run 1, 19 properties bound, 1 exposed instance, 0 INSTANCE_SWAP, 0 SLOT. Those
+ids are mock ids and are never presented as Figma ids. Real evidence requires the user running
+the plugin in Figma Desktop twice with identical ids.
+
+Recorded deviation, not silently corrected: B4 bound the positive KpiCard delta chip to the
+per-tone status style (`ABox/Status/primary | sage | warning`), while `kpi-card.tsx:78` declares
+`text-sage` for every positive delta regardless of tone. B5 does not rewrite existing B4
+bindings; the deviation is printed as a limitation and left for a B4 amendment decision.
+
+Human decision required: whether to amend B4 so the 10 deferred properties gain real target
+layers (icon tiles, delta-label text, actions wrapper, EmptyState action region), and whether to
+correct the positive delta-chip binding above.
