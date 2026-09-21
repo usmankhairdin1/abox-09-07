@@ -3885,7 +3885,7 @@ function b8SetInstanceProps(inst, props) {
   for (const name of Object.keys(props || {})) {
     if (name === "product") continue; // B7 records product as metadata only.
     const keys = Object.keys(defs).filter((k) => k.split("#")[0] === name);
-    if (keys.length === 0) continue;
+    if (keys.length === 0) throw new Error('STOP: MISSING INSTANCE PROPERTY — "' + name + '" is not available on "' + b8MainName(inst) + '".');
     if (keys.length > 1) throw new Error('STOP: instance property "' + name + '" resolves to ' + keys.length + " definitions.");
     out[keys[0]] = props[name];
   }
