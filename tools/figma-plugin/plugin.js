@@ -2786,7 +2786,8 @@ function b6RootParts(root) {
     "counterSizing=" + (root.counterSizing || "AUTO"),
     "pb=" + (root.paddingBottom || 0),
     "stroke=" + (root.strokeBottomStyle || "none"),
-    "strokeWeights=" + (root.strokeBottomStyle ? "0/0/0/1" : "0/0/0/0"),
+    // Per-side weights only mean something when the approved definition declares a stroke.
+    "strokeWeights=" + (root.strokeBottomStyle ? "0/0/0/1" : "n/a"),
     "strokesInLayout=" + (root.strokeBottomStyle ? String(root.strokesIncludedInLayout === true) : "n/a"),
   ];
 }
