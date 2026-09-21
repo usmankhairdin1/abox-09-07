@@ -31,7 +31,7 @@ Conclusion, now evidence-backed: after B4 the file contains VARIANT properties o
 
 | Component | Real Figma properties existing after B4 | Recorded-but-not-created in `tokens-b4.js` |
 | --- | --- | --- |
-| `ABox/Action/ActionPill` | variant `action` (10) | text `label` |
+| `ABox/Action/ActionPill` | variant `variant` (10) — authoritative name, see §3g-ter | text `label` |
 | `ABox/Action/Button` | variant `variant`, variant `size` (9 combos) | text `label` |
 | `ABox/Status/StatusBadge` | variant `tone` (6) | text `label` |
 | `ABox/Status/MetalBadge` | variant `tier` (6) | text `label` |
@@ -50,7 +50,7 @@ B5 rule: read the live inventory; existing property = reuse in place with its id
 
 ## 2b. B4 / B5 boundary
 
-Already in B4, not duplicated by B5: ActionPill `action` (10), Button `variant` × `size`, StatusBadge `tone` (6), MetalBadge `tier` (6), Surface enumerated combinations, Control `height`/`focusRing`, KpiCard `tone` (4), PageHeader `default`/`compact`, ModuleTab `default`/`active`, WizardStep `current`/`done`/`upcoming`/`unreachable`, AboxMark `tone` (4). B5 renames nothing, recreates nothing and re-architects nothing.
+Already in B4, not duplicated by B5: ActionPill `variant` (10), Button `variant` × `size`, StatusBadge `tone` (6), MetalBadge `tier` (6), Surface enumerated combinations, Control `height`/`focusRing`, KpiCard `tone` (4), PageHeader `default`/`compact`, ModuleTab `default`/`active`, WizardStep `current`/`done`/`upcoming`/`unreachable`, AboxMark `tone` (4). B5 renames nothing, recreates nothing and re-architects nothing.
 
 ## 3. Included B5 states
 
@@ -105,17 +105,17 @@ The pct chip text at `:81` (`{delta.pct >= 0 ? "▲" : "▼"} {Math.abs(delta.pc
 
 ### 3d-ter. Complete final `ABox/Card/KpiCard` property inventory
 
-| Type | Name | Values / content | Source | Default |
-| --- | --- | --- | --- | --- |
-| Variant | `tone` | `default`, `primary`, `sage`, `warning` | `:15`, `TONE` `:26-31` | `default` (`:33` `tone = "default"`) |
-| Variant | `deltaSign` | `positive`, `negative` | `:78` `delta.pct >= 0 ? "text-sage" : "text-destructive"` | `positive` (every production call site passes a positive literal) |
-| Boolean | `hasIcon` | show/hide icon tile | `:13`, `:48` | `true` (all six call sites pass `icon`) |
-| Boolean | `hasDelta` | show/hide pct chip | `:12`, `:74` | `true` |
-| Boolean | `hasDeltaLabel` | show/hide the delta label text | `:12`, `:84` | `true` (`app.index.tsx:85`) |
-| Boolean | `hasHint` | show/hide hint | `:14`, `:85` | `false` (no production call site passes `hint`) |
-| Text | `label` | metric label | `:10`, `:46` | `"Active members"` (`app.index.tsx:85`) |
-| Text | `value` | metric value | `:11`, `:62-70` | `"1,284"`-shaped literal read from the same call site |
-| Text | `deltaLabel` | delta caption | `:12`, `:84` | `"this month"` (`app.index.tsx:85`) |
+| Type | Name | Values / content | Source | Production default? | Figma construction value |
+| --- | --- | --- | --- | --- | --- |
+| Variant | `tone` | `default`, `primary`, `sage`, `warning` | `:15`, `TONE` `:26-31` | **yes** — `:33` `tone = "default"` | `default` (same as the declared default) |
+| Variant | `deltaSign` | `positive`, `negative` | `:78` `delta.pct >= 0 ? "text-sage" : "text-destructive"` | **no** — a runtime branch on `delta.pct`, not an API default | `positive`, required only because Figma selects one variant as the set's default; chosen as the branch every production call site exercises |
+| Boolean | `hasIcon` | show/hide icon tile | `:13` `icon?`, `:48` | **no** — optional prop, no declared default | `true`, from observed usage (all six call sites pass `icon`) |
+| Boolean | `hasDelta` | show/hide pct chip | `:12` `delta?`, `:74` | **no** — optional prop | `true`, from observed usage |
+| Boolean | `hasDeltaLabel` | show/hide the delta label text | `:12` `label?`, `:84` | **no** — optional and genuinely mixed in production: absent at `app.dashboard.tsx:32,33,34`, present at `app.index.tsx:85,86,88` | `true`, an arbitrary-but-source-observed starting state so the layer and its text property are visible in the default variant; the optionality is the source fact |
+| Boolean | `hasHint` | show/hide hint | `:14` `hint?`, `:85` | **no** — optional prop | `false`, reflecting observed absence at every production call site, not a declared default |
+| Text | `label` | metric label | `:10`, `:46` | **no** — required prop, no default | sample content `"Active members"` (`app.index.tsx:85`) |
+| Text | `value` | metric value | `:11`, `:62-70` | **no** — required prop, no default | sample content, the literal at the same call site |
+| Text | `deltaLabel` | delta caption | `:12`, `:84` | **no** | sample content `"this month"` (`app.index.tsx:85`) |
 
 KpiCard property count: 2 variant + 4 Boolean + 3 Text = **9** (variants of the set: `tone` × `deltaSign` = 8, unchanged).
 
@@ -125,7 +125,7 @@ KpiCard property count: 2 variant + 4 Boolean + 3 Text = **9** (variants of the 
 
 | Production prop | Source type | Source evidence | Figma mechanism | Final name | Required default | Preferred values | Reason |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| PageHeader `actions` | `React.ReactNode` | declared `page-header.tsx:16`; rendered `:55` `{actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}`; call sites pass real B4 components — `ActionPill` at `marketplace.admin.readiness.tsx:28`, `StatusBadge` at `app.jet.branding.tsx:26` and `app.jet.platform.tsx:95` | Boolean `hasActions` + **INSTANCE_SWAP** | `hasActions`, `actions` | the existing B4 component `ABox/Action/ActionPill`, variant `action=primaryMd` — its `key` is read live from the file, never hard-coded; the choice is the literal component used at `marketplace.admin.readiness.tsx:28`, not a value-similarity guess | `ABox/Action/ActionPill` (all 10 variants), `ABox/Status/StatusBadge` (all 6 tones) | Instance Swap is faithful because production genuinely supplies reusable ABox components into this region, so a production-backed default exists |
+| PageHeader `actions` | `React.ReactNode` | declared `page-header.tsx:16`; rendered `:55` `{actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}`; call sites pass real B4 components — `ActionPill` at `marketplace.admin.readiness.tsx:28`, `StatusBadge` at `app.jet.branding.tsx:26` and `app.jet.platform.tsx:95` | Boolean `hasActions` + **INSTANCE_SWAP** | `hasActions`, `actions` | **Figma-required construction default** (INSTANCE_SWAP cannot be defined without one): the existing B4 variant `ABox/Action/ActionPill` `variant=primaryMd`, whose `key` is read live from the file and never hard-coded. Production declares no default for `actions`; this value is selected from the real call site `marketplace.admin.readiness.tsx:28` and is labelled a construction default everywhere | `ABox/Action/ActionPill` (all 10 variants), `ABox/Status/StatusBadge` (all 6 tones) | Instance Swap is faithful because production genuinely supplies reusable ABox components into this region, so a real component can satisfy Figma's required default without inventing one |
 | EmptyState `action` | `React.ReactNode` | declared `empty-state.tsx:9`; rendered `:24` as bare `{action}`; every call site passes a raw inline `<Link>`/`<button>` with pill utility classes — `plans.index.tsx:344`, `cart.tsx:59`, `review.tsx:50`, `apply.tsx:96`, `compare.tsx:83`, `member.quotes.tsx:29`, `handoff.tsx:37` | Boolean `hasAction` + **SLOT** (see §3e-ter for the runtime capability gate) | `hasAction`, `action` | none — a SLOT takes no default component | n/a | No B4 component is ever passed here, so INSTANCE_SWAP could only be defined by nominating a component production never uses. Naming `ActionPill` because its pill classes look similar would be exactly the value-equality inference this batch forbids. A SLOT is the faithful representation of an arbitrary consumer-owned content region |
 | PageHeader `icon` | `ComponentType<{className?: string}>` | `page-header.tsx:15,30-35` | Boolean only | `hasIcon` | — | — | no B4 icon Component exists; non-swappable, limitation preserved |
 | KpiCard `icon` | `ComponentType<{className?: string}>` | `kpi-card.tsx:20,60` | Boolean only | `hasIcon` | — | — | same |
@@ -192,7 +192,7 @@ Names must be unique within a component; repetition across components is fine.
 | Variant properties reused unchanged | all B4 axes | none renamed, none removed |
 | Boolean properties created | 11 | 4 (PageHeader) + 4 (KpiCard) + 3 (EmptyState) |
 | Text properties created | 16 | 1+1+1+1+3+3+1+1+2+1+1 |
-| Instance Swap properties created | 1 | PageHeader `actions`, default `ABox/Action/ActionPill` variant `action=primaryMd` |
+| Instance Swap properties created | 1 | PageHeader `actions`; Figma-required construction default = `ABox/Action/ActionPill` variant `variant=primaryMd` |
 | SLOT properties created | 1, or 0 if unsupported | EmptyState `action`, per the §3e-ter runtime gate |
 | Non-variant properties created | 29, or 28 if SLOT is unsupported | 11 + 16 + 1 + 1 = 29; 11 + 16 + 1 + 0 = 28 |
 | Exposed nested instances flagged | 1 | `LabeledField` → nested `ABox/Control/Control` named `control`; not a property, so not part of the 29 |
@@ -229,6 +229,39 @@ Arithmetic:
 
 This is a count correction to the plan text only. No B4 component, set, variant, axis or property is recreated, renamed, reordered or re-architected; Surface and Control are read and left exactly as they are.
 
+### 3g-ter. `ABox/Action/ActionPill` axis name — authoritative resolution
+
+The earlier B4 audit line called this axis `action`; §3g-bis called it `variant`. Resolved from the generated source rather than prose:
+
+- `tools/figma-plugin/tokens-b4.js:19` — `"property": "variant"` on the ActionPill set entry.
+- `tools/figma-plugin/plugin.js:1613` — `b4VariantName()` returns `set.property + "=" + value.value`, so the live single-axis variant names are built from exactly that string.
+- `code.js` is generated from those two by `build.mjs` and carries the same value.
+
+**Authoritative name: `variant`.** Every occurrence of `action` as this axis name is a plan-text error and is corrected throughout — B4 audit, boundary section, tables, axis audit, verification, idempotency, final report. The production prop is also literally `variant` in `action-pill.ts` usage, so no rename of any live object is implied.
+
+Live-vs-source guard: before any B5 change the plugin reads the live `componentPropertyDefinitions` of `ABox/Action/ActionPill` and asserts a single axis named exactly `variant`. If the live file reports a different name, the run **STOPs** and prints both names. It never renames, recreates or re-architects the property to make them agree.
+
+### 3g-quater. Production defaults vs Figma construction values
+
+Rule for the whole plan: a value is a **production default** only when the production source literally declares it. Everything else is either a **Figma construction value** (Figma cannot define the property or the set without one) or **sample content** (a real production literal authored into a text layer). No observed call-site value is described as a production default anywhere.
+
+| Component | Property | Production default? | Production evidence | Figma construction value | Reason |
+| --- | --- | --- | --- | --- | --- |
+| KpiCard | `tone` | yes | `kpi-card.tsx:33` `tone = "default"` | `default` | genuine declared default |
+| KpiCard | `deltaSign` | no | `:78` runtime branch on `delta.pct` | `positive` | Figma requires one variant to be the set default; `positive` is the only branch exercised by production call sites, `negative` remains a real value from the source branch |
+| KpiCard | `hasIcon` | no | `:13` `icon?` optional | `true` | Boolean needs an initial value; taken from observed usage |
+| KpiCard | `hasDelta` | no | `:12` `delta?` optional | `true` | same |
+| KpiCard | `hasDeltaLabel` | no | `:12` `label?` optional; absent at `app.dashboard.tsx:32-34`, present at `app.index.tsx:85,86,88` | `true` | same; optionality is the source fact and is preserved |
+| KpiCard | `hasHint` | no | `:14` `hint?` optional | `false` | observed absence at every call site, not a declared default |
+| KpiCard | `label` / `value` / `deltaLabel` | no | required/optional props, no declared defaults | sample content from `app.index.tsx:85` | Figma text layers must contain characters |
+| PageHeader | `variant` | yes | `page-header.tsx` declares the default variant | `default` | genuine declared default |
+| PageHeader | `hasEyebrow` / `hasIcon` / `hasDescription` / `hasActions` | no | all optional props | from observed usage, labelled construction values | Boolean needs an initial value |
+| PageHeader | `actions` (INSTANCE_SWAP) | no | `:16` `React.ReactNode`, no default | `ABox/Action/ActionPill` `variant=primaryMd` | INSTANCE_SWAP cannot be defined without a default component; a real production-passed component is used, none invented |
+| PageHeader / ModuleTab / WizardStep / StatusBadge / MetalBadge / ActionPill / Button / Surface / Control / AboxMark | text properties | no | required props | sample content from real call sites | text layers must contain characters |
+| EmptyState | `hasIcon` / `hasBody` / `hasAction` | no | all optional props | from observed usage | Boolean needs an initial value |
+| EmptyState | `action` (SLOT) | no | `:9` `React.ReactNode` | none — SLOT takes no default | no fake default component is introduced |
+| AboxMark | `tone` | yes | `logo.tsx` declares `tone` with a default branch | declared value | genuine declared default |
+
 
 ### 3h. Combinations that must NOT be created
 
@@ -258,7 +291,7 @@ The live property inventory of each B4 object is read before any write. Exact-na
 
 ## 7. `b5-verify` — 25 checks
 
-1. B4 existing property inventory is read and printed first. 2. No existing B4 property is recreated; every pre-existing property id is preserved. 3. No B4 component, set or variant is renamed, deleted or re-architected. 4. Exactly one new variant property exists: `KpiCard.deltaSign` with values `positive`, `negative`. 4a. Live B4 axis audit printed before any change and matching §3g-bis exactly — per set: axis count, axis names, variant values, variant count; totals `1+2+1+1+4+2+1+1+1+1+1 = 16` axes and `10+9+6+6+4+1+4+2+2+4+4 = 52` variants; `ABox/Surface/Surface` asserted at 4 axes (`padding`, `elevated`, `interactiveHover`, `decor`) with 4 variants and `ABox/Control/Control` at 2 axes with 1 variant; after B5, `16 + 1 = 17` axes and `10+9+6+6+4+1+8+2+2+4+4 = 56` variants, both routes agreeing; any live deviation from this table is a STOP. 5. Component Set schema consistency: every variant of every set carries a value for every variant property of that set — asserted for all 11 sets, KpiCard included at `tone` × `deltaSign` = 8. 6. `ABox/Action/Button` still has exactly the axes `variant` × `size` and exactly 9 variants; no `state` property exists on it. 7. Per component, every property name is unique and no name is used for two property types — asserted against the §3f table. 8. Boolean = 11, Text = 16, Instance Swap = 1, SLOT = 1 (or 0 with the gate recorded), non-variant total = `11 + 16 + 1 + 1 = 29` (or 28), with the arithmetic and the chosen branch printed. 8a. `ABox/Card/KpiCard` carries exactly nine properties — variant `tone`, variant `deltaSign`, Boolean `hasIcon`, `hasDelta`, `hasDeltaLabel`, `hasHint`, Text `label`, `value`, `deltaLabel` — matching §3d-ter name for name and type for type, with `hasDeltaLabel` bound to the `:84` text layer and proven distinct from `hasDelta` at `:74`, and no production-declared KpiCard field left unrepresented. 9. Exact property names per component match §3c–§3e; every `React.ReactNode` content slot keeps both its Boolean and its content mechanism — `PageHeader.hasActions` + INSTANCE_SWAP `actions` whose default resolves to a live `ABox/Action/ActionPill` variant and whose preferred values resolve to existing ActionPill and StatusBadge components, and `EmptyState.hasAction` + SLOT `action` (or Boolean only with the limitation printed) — no content slot is collapsed into a Boolean, and no INSTANCE_SWAP default points at a component production never passes; every `ComponentType` icon prop has a Boolean only. 10. Per-state production source mapping printed for every B5 property and value; `ABox/Form/LabeledField` contains exactly one nested `ABox/Control/Control` instance named `control` with `isExposedInstance === true`, printed with the component id and the nested instance id, and it is counted as an exposed nested instance (1), not as a component property. 11. B1/B2/B3 bindings resolve to existing objects. 12. No hard-coded duplicate foundation value. 13. No value-equality-derived state. 14. No invented state and no invented variant value. 15. No property converted into a variant to avoid a name clash. 16. No pseudo-class rendered as a variant. 17. Responsive only where justified (zero); motion only where justified (zero). 18. B1 = 9 collections / 200 variables. 19. B2 = 1 collection / 19 variables. 20. B3 = 79 styles. 21. Objects = 11 sets + 3 components, `11 + 3 = 14`; variants `52 + 4 = 56` printed. 22. Pages unchanged: 7, in order, only `01 Components` populated; no patterns, shells, screens or documentation content. 23. `git diff --stat -- src/` empty. 24. `code.js` regenerated only by `node build.mjs`. 25. Offline Run 1 passes and Run 2 creates zero objects with identical ids; offline mock execution is explicitly distinguished from real Figma Desktop execution and mock ids are never presented as Figma ids.
+1. B4 existing property inventory is read and printed first. 1a. Every live B4 variant-property name matches the expected name exactly, `ABox/Action/ActionPill` asserted as the single axis `variant` per §3g-ter; any mismatch between live Figma and the generated source data is a STOP with both names printed, never a silent rename or recreate. 1b. Default audit: every property carrying an initial value is printed with its classification — production default, Figma construction value, or sample content — matching §3g-quater row for row; no observed call-site value is labelled a production default, every Figma-required construction value is labelled as such, and no value appears that is not either declared in production or a literal read from a real production call site. 2. No existing B4 property is recreated; every pre-existing property id is preserved, and no B4 property is renamed. 3. No B4 component, set or variant is renamed, deleted or re-architected. 4. Exactly one new variant property exists: `KpiCard.deltaSign` with values `positive`, `negative`. 4a. Live B4 axis audit printed before any change and matching §3g-bis exactly — per set: axis count, axis names, variant values, variant count; totals `1+2+1+1+4+2+1+1+1+1+1 = 16` axes and `10+9+6+6+4+1+4+2+2+4+4 = 52` variants; `ABox/Surface/Surface` asserted at 4 axes (`padding`, `elevated`, `interactiveHover`, `decor`) with 4 variants and `ABox/Control/Control` at 2 axes with 1 variant; after B5, `16 + 1 = 17` axes and `10+9+6+6+4+1+8+2+2+4+4 = 56` variants, both routes agreeing; any live deviation from this table is a STOP. 5. Component Set schema consistency: every variant of every set carries a value for every variant property of that set — asserted for all 11 sets, KpiCard included at `tone` × `deltaSign` = 8. 6. `ABox/Action/Button` still has exactly the axes `variant` × `size` and exactly 9 variants; no `state` property exists on it. 7. Per component, every property name is unique and no name is used for two property types — asserted against the §3f table. 8. Boolean = 11, Text = 16, Instance Swap = 1, SLOT = 1 (or 0 with the gate recorded), non-variant total = `11 + 16 + 1 + 1 = 29` (or 28), with the arithmetic and the chosen branch printed. 8a. `ABox/Card/KpiCard` carries exactly nine properties — variant `tone`, variant `deltaSign`, Boolean `hasIcon`, `hasDelta`, `hasDeltaLabel`, `hasHint`, Text `label`, `value`, `deltaLabel` — matching §3d-ter name for name and type for type, with `hasDeltaLabel` bound to the `:84` text layer and proven distinct from `hasDelta` at `:74`, and no production-declared KpiCard field left unrepresented. 9. Exact property names per component match §3c–§3e; every `React.ReactNode` content slot keeps both its Boolean and its content mechanism — `PageHeader.hasActions` + INSTANCE_SWAP `actions` whose default resolves to a live `ABox/Action/ActionPill` variant and whose preferred values resolve to existing ActionPill and StatusBadge components, and `EmptyState.hasAction` + SLOT `action` (or Boolean only with the limitation printed) — no content slot is collapsed into a Boolean, and no INSTANCE_SWAP default points at a component production never passes; every `ComponentType` icon prop has a Boolean only. 10. Per-state production source mapping printed for every B5 property and value; `ABox/Form/LabeledField` contains exactly one nested `ABox/Control/Control` instance named `control` with `isExposedInstance === true`, printed with the component id and the nested instance id, and it is counted as an exposed nested instance (1), not as a component property. 11. B1/B2/B3 bindings resolve to existing objects. 12. No hard-coded duplicate foundation value. 13. No value-equality-derived state. 14. No invented state and no invented variant value. 15. No property converted into a variant to avoid a name clash. 16. No pseudo-class rendered as a variant. 17. Responsive only where justified (zero); motion only where justified (zero). 18. B1 = 9 collections / 200 variables. 19. B2 = 1 collection / 19 variables. 20. B3 = 79 styles. 21. Objects = 11 sets + 3 components, `11 + 3 = 14`; variants `52 + 4 = 56` printed. 22. Pages unchanged: 7, in order, only `01 Components` populated; no patterns, shells, screens or documentation content. 23. `git diff --stat -- src/` empty. 24. `code.js` regenerated only by `node build.mjs`. 25. Offline Run 1 passes and Run 2 creates zero objects with identical ids; offline mock execution is explicitly distinguished from real Figma Desktop execution and mock ids are never presented as Figma ids.
 
 Final line: `RESULT: B5 PASSED` or `RESULT: B5 FAILED — do not proceed to B6.`
 
