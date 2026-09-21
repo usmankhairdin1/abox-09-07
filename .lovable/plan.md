@@ -89,9 +89,20 @@ Booleans: 4 + 3 + 2 = **9**. The renames from the B4 recorded names are forced b
 
 Text: 1+1+1+1+2+3+1+1+2+1+1 = **15**, exactly the `textProps` inventory recorded in `tokens-b4.js`.
 
-### 3e. Instance Swap properties
+### 3e. Instance Swap properties and complete slot audit
 
-`ABox/Feedback/EmptyState` → `action` (`empty-state.tsx:10,26`, recorded as `instanceProps` in `tokens-b4.js`). Instance Swap: **1**. PageHeader `actions` stays a Boolean only, matching the B4 record. `icon?: ComponentType` props are not Instance Swaps: B4 created no icon component, so there is no swappable source — `hasIcon` plus the existing placeholder vector only.
+Two production props are caller-supplied `React.ReactNode` content slots, and each is represented by **both** a visibility Boolean and a content Instance Swap — the Boolean never absorbs the slot.
+
+| Production prop | Type | Source | Figma type | Final Figma name | Meaning | Real component available to swap |
+| --- | --- | --- | --- | --- | --- | --- |
+| PageHeader `actions` | `React.ReactNode` | `page-header.tsx:16` declared, `:55` rendered `{actions && <div …>{actions}</div>}` | Boolean + Instance Swap | `hasActions` + `actions` | both — presence guard and content slot | yes; production call sites pass real B4 components: `ActionPill` (`marketplace.admin.readiness.tsx:28`), `StatusBadge` (`app.jet.branding.tsx:26`, `app.jet.platform.tsx:95`), `SaveContinueButton` (`review.tsx:43`). Preferred swap values: `ABox/Action/ActionPill`, `ABox/Status/StatusBadge`. |
+| EmptyState `action` | `React.ReactNode` | `empty-state.tsx:9` declared, `:24` rendered `{action}` | Boolean + Instance Swap | `hasAction` + `action` | both | yes, but production passes raw inline `<Link>`/`<button>` elements styled with pill classes (`plans.index.tsx:344`, `cart.tsx:59`, `review.tsx:50`, `apply.tsx:96`, `compare.tsx:83`, `member.quotes.tsx:29`, `handoff.tsx:37`), not a B4 component. The Instance Swap is created with **no** default preferred value; no placeholder component is invented. Recorded as a limitation. |
+| PageHeader `icon` | `ComponentType<{className?: string}>` | `page-header.tsx:15,30-35` | Boolean only | `hasIcon` | visibility-only | no — B4 created no icon Component; non-swappable, limitation preserved |
+| KpiCard `icon` | `ComponentType<{className?: string}>` | `kpi-card.tsx:20,60` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
+| EmptyState `icon` | `ComponentType<{className?: string}>` | `empty-state.tsx:6,18-22` | Boolean only | `hasIcon` | visibility-only | no — same limitation |
+| LabeledField `control` | children | `field.tsx` | exposed nested instance (not a property) | `control` | content, already exposed in B4 | existing `ABox/Control/Control` instance |
+
+Instance Swap properties: **2** (`PageHeader.actions`, `EmptyState.action`). No other production prop is a content slot: every remaining optional prop is a string or a `ComponentType` icon.
 
 ### 3f. Collision audit — complete
 
