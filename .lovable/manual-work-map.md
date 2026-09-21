@@ -1380,3 +1380,26 @@ content region only.
 Offline/static validation only in this environment; real Figma ids still require two runs in Figma
 Desktop with identical ids and zero creation count on run 2. No publishing performed.
 
+## Phase 55 / Batch B8 — experiences (plugin layer)
+
+Implemented in `tools/figma-plugin/` only; no `src/` files were edited. `extract-b8.mjs` generates
+`tokens-b8.js`; `plugin.js` gained B8 create/verify handlers; `ui.html`, `build.mjs`, `README.md`
+and generated `code.js` were updated. Rollback: revert those plugin-layer files and delete this
+block.
+
+Approved inventory: five top-level editable FRAME reference compositions on `04 Experiences` only —
+`ABox/Experience/Internal/DownlineAgencyCreation`,
+`ABox/Experience/Internal/MarketplaceActivationGovernance`,
+`ABox/Experience/Marketplace/PlanAIShoppingPath`,
+`ABox/Experience/Marketplace/EnrollmentReviewAndSubmission`, and
+`ABox/Experience/Member/ContinuationWorkspace`.
+
+B8 consumes existing B7 shells, B6 patterns and B4/B5 components by live instance reference. It
+creates no new foundations, styles, variables, components, component sets, patterns, component
+properties, responsive variants, prototype links, screenshots, HTML embeds or flattened substitutes.
+Where B7 shell slots cannot receive arbitrary route content, representative route content is placed as
+sibling editable regions and recorded with source metadata.
+
+Offline/static validation only in this environment; real Figma ids still require Create experiences →
+Verify experiences → Create experiences in Figma Desktop with identical ids and zero creation count on
+run 2. No publishing performed.

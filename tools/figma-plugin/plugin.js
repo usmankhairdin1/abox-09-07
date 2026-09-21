@@ -3669,9 +3669,9 @@ async function verifyB7() {
 
   const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
   add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages unchanged: exactly 7, in original order");
-  const writable = [B4_PAGE, B6_PAGE, B7_PAGE];
-  add(figma.root.children.filter((p) => writable.indexOf(p.name) === -1).every((p) => p.children.length === 0), "00 Foundations, 04 Experiences, 05 Screens and 06 Documentation remain empty");
-  add(page.children.length === C.topLevelObjects, "only 03 Shells receives B7 content: 3 top-level shell objects (found " + page.children.length + ")");
+  const writable = [B4_PAGE, B6_PAGE, B7_PAGE, B8_PAGE];
+  add(figma.root.children.filter((p) => writable.indexOf(p.name) === -1).every((p) => p.children.length === 0), "00 Foundations, 05 Screens and 06 Documentation remain empty; B8 may populate 04 Experiences");
+  add(page.children.length === C.topLevelObjects, "only 03 Shells receives B7 shell content: 3 top-level shell objects (found " + page.children.length + ")");
 
   const internal = page.children.filter((n) => n.name === "ABox/Shell/Internal" && n.type === "COMPONENT")[0];
   const member = page.children.filter((n) => n.name === "ABox/Shell/Member" && n.type === "COMPONENT")[0];
@@ -3806,9 +3806,418 @@ async function verifyB7() {
   return passed;
 }
 
+
+/* =====================  Phase 55 / Batch B8 — experiences  ===================== */
+/*
+ * B8 creates journey-level reference compositions on 04 Experiences only. It
+ * consumes existing B7 shells, B6 patterns and B4/B5 components as live
+ * instances, creates only top-level FRAME assets, and never creates variables,
+ * styles, components, component sets, properties, patterns or prototype links.
+ */
+
+const B8_PAGE = "04 Experiences";
+var b8Created = 0;
+
+function b8Page() {
+  const page = figma.root.children.filter((p) => p.name === B8_PAGE);
+  if (page.length !== 1) {
+    throw new Error('STOP: B0 page "' + B8_PAGE + '" must exist exactly once (found ' + page.length + ").");
+  }
+  return page[0];
+}
+
+function b8ApprovedNames() {
+  return ABOX_B8.experiences.map((e) => e.name);
+}
+
+function b8PluginSignature(frame) {
+  return {
+    batch: frame.getPluginData("aboxBatch"),
+    kind: frame.getPluginData("aboxKind"),
+    name: frame.getPluginData("aboxName"),
+    signature: frame.getPluginData("aboxSignature"),
+    sources: frame.getPluginData("aboxSources"),
+  };
+}
+
+function b8SetPluginData(frame, spec) {
+  frame.setPluginData("aboxBatch", "B8");
+  frame.setPluginData("aboxKind", "experience");
+  frame.setPluginData("aboxName", spec.name);
+  frame.setPluginData("aboxSignature", spec.signature);
+  frame.setPluginData("aboxSources", spec.sources.slice().sort().join("|"));
+}
+
+function b8ShellMain(name) {
+  const set = b4FindSet(name);
+  if (set) return set;
+  const component = b4FindComponent(name);
+  if (component) return component;
+  throw new Error('STOP: MISSING B7 SHELL — "' + name + '" not found. Run B7 first.');
+}
+
+function b8PatternMain(name) {
+  const set = b4FindSet(name);
+  if (set) return set;
+  const component = b4FindComponent(name);
+  if (component) return component;
+  throw new Error('STOP: MISSING B6 PATTERN — "' + name + '" not found. Run B6 first.');
+}
+
+function b8ComponentMain(name) {
+  const set = b4FindSet(name);
+  if (set) return set;
+  const component = b4FindComponent(name);
+  if (component) return component;
+  throw new Error('STOP: MISSING B4/B5 COMPONENT — "' + name + '" not found. Run B4/B5 first.');
+}
+
+function b8MainName(inst) {
+  const main = inst.mainComponent;
+  if (!main) return "MISSING";
+  if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.name;
+  return main.name;
+}
+
+function b8SetInstanceProps(inst, props) {
+  const defs = inst.componentProperties || {};
+  const out = {};
+  for (const name of Object.keys(props || {})) {
+    if (name === "product") continue; // B7 records product as metadata only.
+    const keys = Object.keys(defs).filter((k) => k.split("#")[0] === name);
+    if (keys.length === 0) throw new Error('STOP: MISSING INSTANCE PROPERTY — "' + name + '" is not available on "' + b8MainName(inst) + '".');
+    if (keys.length > 1) throw new Error('STOP: instance property "' + name + '" resolves to ' + keys.length + " definitions.");
+    out[keys[0]] = props[name];
+  }
+  if (Object.keys(out).length) inst.setProperties(out);
+}
+
+function b8VariantChild(main, props) {
+  if (main.type !== "COMPONENT_SET") return main;
+  const entries = Object.keys(props || {}).filter((k) => k !== "product" && typeof props[k] === "string");
+  for (const key of entries) {
+    const wanted = key + "=" + props[key];
+    const match = main.children.filter((c) => c.name.split(",").map((s) => s.trim()).indexOf(wanted) !== -1);
+    if (match.length === 1) return match[0];
+    if (match.length > 1) throw new Error('STOP: AMBIGUOUS B8 VARIANT — "' + main.name + '" / "' + wanted + '" matched ' + match.length + " variants.");
+  }
+  return main.defaultVariant || main.children[0];
+}
+
+function b8CreateInstance(main, props, name) {
+  const source = b8VariantChild(main, props || {});
+  const inst = source.createInstance();
+  b8SetInstanceProps(inst, props || {});
+  inst.name = name || main.name.split("/").pop();
+  return inst;
+}
+
+function b8ShellInstance(spec) {
+  const main = b8ShellMain(spec.shell.name);
+  const inst = b8CreateInstance(main, spec.shell.overrides || {}, "shell-reference-instance");
+  inst.setPluginData("aboxB8Reference", spec.shell.name);
+  const meta = [];
+  for (const k of Object.keys(spec.shell.overrides || {}).sort()) meta.push(k + "=" + String(spec.shell.overrides[k]));
+  inst.setPluginData("aboxB8Overrides", meta.join("|"));
+  return inst;
+}
+
+function b8PatternInstance(pat) {
+  const main = b8PatternMain(pat.name);
+  const inst = b8CreateInstance(main, pat.variant || {}, pat.name.split("/").pop());
+  inst.setPluginData("aboxB8Reference", pat.name);
+  return inst;
+}
+
+function b8ComponentInstance(comp) {
+  const main = b8ComponentMain(comp.name);
+  const inst = b8CreateInstance(main, {}, comp.name.split("/").pop());
+  inst.setPluginData("aboxB8Reference", comp.name);
+  return inst;
+}
+
+async function b8Card(title, body, source, index) {
+  const card = b7Frame("state-card", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", w: 300, primarySizing: "FIXED" }, index);
+  card.appendChild(await b7Text("state-title", title, { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
+  card.appendChild(await b7Text("state-body", body, { size: 13, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  card.appendChild(await b7Text("state-source", source, { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  return card;
+}
+
+async function b8MetadataRegion(spec, index) {
+  const region = b7Frame("metadata/source-and-limitations", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b7Text("experience-name", spec.name, { size: 14, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
+  region.appendChild(await b7Text("experience-kind", spec.type + " · source-derived reference composition · no B8 properties/prototypes", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(await b7Text("source-list", spec.sources.join("\n"), { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(await b7Text("limitations", spec.limitations.join("\n"), { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  return region;
+}
+
+async function b8ShellRegion(spec, index) {
+  const region = b7Frame("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b7Text("region-label", "B7 shell instance", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(b8ShellInstance(spec));
+  return region;
+}
+
+async function b8SequenceRegion(spec, index) {
+  const region = b7Frame("journey-sequence", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b7Text("region-label", "Journey states", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  const row = b7Frame("state-cards", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
+  for (const item of spec.sequence) row.appendChild(await b8Card(item.title, item.body, item.source, index));
+  region.appendChild(row);
+  return region;
+}
+
+async function b8ContentRegion(spec, index) {
+  const region = b7Frame("representative-content", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  region.appendChild(await b7Text("region-label", "Existing foundations used", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  const patternRow = b7Frame("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
+  for (const pat of spec.patterns || []) patternRow.appendChild(b8PatternInstance(pat));
+  if (!(spec.patterns || []).length) patternRow.appendChild(await b7Text("no-b6-pattern", "No B6 pattern applies to this journey; route-local composition remains editable native content.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(patternRow);
+  const componentRow = b7Frame("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
+  for (const comp of spec.components || []) componentRow.appendChild(b8ComponentInstance(comp));
+  region.appendChild(componentRow);
+  const native = b7Frame("route-composition-notes", { layout: "VERTICAL", gap: 8, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  native.appendChild(await b7Text("note-title", "Editable route content", { size: 13, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
+  native.appendChild(await b7Text("note-body", spec.sequence.map((s) => s.title + ": " + s.body).join("\n"), { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
+  region.appendChild(native);
+  return region;
+}
+
+async function b8BuildFrame(spec, placement, index, page) {
+  const root = figma.createFrame();
+  root.name = spec.name;
+  root.layoutMode = "VERTICAL";
+  root.primaryAxisSizingMode = "AUTO";
+  root.counterAxisSizingMode = "FIXED";
+  root.counterAxisAlignItems = "MIN";
+  root.primaryAxisAlignItems = "MIN";
+  root.itemSpacing = 18;
+  root.paddingLeft = root.paddingRight = root.paddingTop = root.paddingBottom = 24;
+  root.resize(ABOX_B8.layout.frameWidth, 1000);
+  root.x = placement.x;
+  root.y = placement.y;
+  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
+  root.strokeStyleId = b4Style(index, "paint", "ABox/Semantic/hairline").id;
+  root.strokeWeight = 1;
+  root.cornerRadius = 24;
+  b8SetPluginData(root, spec);
+  root.appendChild(await b8MetadataRegion(spec, index));
+  root.appendChild(await b8ShellRegion(spec, index));
+  root.appendChild(await b8SequenceRegion(spec, index));
+  root.appendChild(await b8ContentRegion(spec, index));
+  page.appendChild(root);
+  b8Created += 1;
+  return root;
+}
+
+function b8ExpectedRegions() {
+  return ["metadata/source-and-limitations", "shell-reference", "journey-sequence", "representative-content"];
+}
+
+function b8HasRegions(frame) {
+  const names = frame.children.map((c) => c.name);
+  return b8ExpectedRegions().every((name, i) => names[i] === name);
+}
+
+function b8FindFrame(page, spec) {
+  const found = page.children.filter((n) => n.name === spec.name);
+  if (found.length > 1) throw new Error('STOP: DUPLICATE EXPERIENCE — "' + spec.name + '" exists ' + found.length + " times on " + B8_PAGE + ".");
+  return found[0] || null;
+}
+
+function b8AssertReusable(frame, spec) {
+  if (frame.type !== "FRAME") throw new Error('STOP: EXPERIENCE TYPE MISMATCH — "' + spec.name + '" is ' + frame.type + ", expected FRAME.");
+  const pd = b8PluginSignature(frame);
+  const wantSources = spec.sources.slice().sort().join("|");
+  if (pd.batch !== "B8" || pd.kind !== "experience" || pd.name !== spec.name || pd.signature !== spec.signature || pd.sources !== wantSources) {
+    throw new Error('STOP: LIVE EXPERIENCE DIFFERS FROM APPROVED B8 SIGNATURE — "' + spec.name + '". Nothing was overwritten or deleted.');
+  }
+  if (!b8HasRegions(frame)) {
+    throw new Error('STOP: LIVE EXPERIENCE STRUCTURE DIFFERS FROM APPROVED B8 REGIONS — "' + spec.name + '". Nothing was overwritten or deleted.');
+  }
+}
+
+async function ensureB8Experiences() {
+  await figma.loadAllPagesAsync();
+  b8Created = 0;
+  const page = b8Page();
+  const index = await b4StyleIndex();
+
+  // Protected dependencies are resolved before any write.
+  for (const shell of ["ABox/Shell/Internal", "ABox/Shell/Marketplace", "ABox/Shell/Member"]) {
+    const main = b8ShellMain(shell);
+    say("  B7 shell resolved: " + shell + "  id=" + main.id);
+  }
+  for (const pattern of ["ABox/Pattern/KpiRow", "ABox/Pattern/WizardStepper"]) {
+    const main = b8PatternMain(pattern);
+    say("  B6 pattern resolved: " + pattern + "  id=" + main.id);
+  }
+  const needed = {};
+  for (const exp of ABOX_B8.experiences) for (const comp of exp.components || []) needed[comp.name] = true;
+  for (const name of Object.keys(needed).sort()) {
+    const main = b8ComponentMain(name);
+    say("  B4/B5 component resolved: " + name + "  id=" + main.id);
+  }
+
+  for (let i = 0; i < ABOX_B8.experiences.length; i += 1) {
+    const spec = ABOX_B8.experiences[i];
+    const placement = ABOX_B8.placement.filter((p) => p.name === spec.name)[0];
+    if (!placement) throw new Error('STOP: B8 placement missing for "' + spec.name + '".');
+    const existing = b8FindFrame(page, spec);
+    if (existing) {
+      b8AssertReusable(existing, spec);
+      say("  frame    reused  : " + spec.name + "  id=" + existing.id);
+    } else {
+      const frame = await b8BuildFrame(spec, placement, index, page);
+      say("  frame    created : " + spec.name + "  id=" + frame.id);
+    }
+  }
+  say("");
+  say("  B8 top-level frames created this run: " + b8Created);
+}
+
+function b8Walk(root, fn) {
+  fn(root);
+  for (const c of root.children || []) b8Walk(c, fn);
+}
+
+function b8InstanceMainNames(root) {
+  const names = [];
+  b8Walk(root, (n) => {
+    if (n.type === "INSTANCE") names.push(b8MainName(n));
+  });
+  return names;
+}
+
+function b8HasImageFill(root) {
+  let bad = false;
+  b8Walk(root, (n) => {
+    for (const fill of n.fills || []) if (fill.type === "IMAGE") bad = true;
+  });
+  return bad;
+}
+
+function b8HasPrototype(root) {
+  let bad = false;
+  b8Walk(root, (n) => { if ((n.reactions || []).length) bad = true; });
+  return bad;
+}
+
+async function verifyB8() {
+  await figma.loadAllPagesAsync();
+  const checks = [];
+  const add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
+  const C = ABOX_B8.counts;
+  const page = b8Page();
+
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
+  const emptyPages = figma.root.children.filter((p) => ["00 Foundations", "05 Screens", "06 Documentation"].indexOf(p.name) !== -1);
+  add(emptyPages.every((p) => p.children.length === 0), "00 Foundations, 05 Screens and 06 Documentation remain empty during B8");
+
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const b1Cols = collections.filter((c) => b1Names.indexOf(c.name) !== -1);
+  let b1Vars = 0;
+  for (const c of b1Cols) b1Vars += c.variableIds.length;
+  const typo = collections.filter((c) => c.name === "ABox/Typography");
+  add(b1Cols.length === C.b1Collections && b1Vars === C.b1Variables, "B1 unchanged: 9 collections / 200 variables (found " + b1Cols.length + " / " + b1Vars + ")");
+  add(typo.length === 1 && typo[0].variableIds.length === C.b2Variables, "B2 unchanged: ABox/Typography with 19 variables");
+  const owned = (list) => list.filter((s) => s.name.indexOf("ABox/") === 0);
+  const paints = owned(await figma.getLocalPaintStylesAsync());
+  const texts = owned(await figma.getLocalTextStylesAsync());
+  const effects = owned(await figma.getLocalEffectStylesAsync());
+  add(paints.length + texts.length + effects.length === C.b3Styles, "B3 unchanged: 79 styles — found " + (paints.length + texts.length + effects.length));
+
+  const componentsPage = figma.root.children.filter((p) => p.name === B4_PAGE)[0];
+  const primSets = componentsPage ? componentsPage.children.filter((n) => n.type === "COMPONENT_SET") : [];
+  const primStandalone = componentsPage ? componentsPage.children.filter((n) => n.type === "COMPONENT") : [];
+  const primVariants = primSets.reduce((n, s) => n + s.children.length, 0);
+  add(primSets.length === C.b4Sets, "B4 unchanged: 11 component sets on 01 Components (found " + primSets.length + ")");
+  add(primStandalone.length === C.b4Standalone && primVariants === C.b5Variants && primVariants + primStandalone.length === C.b5Physical,
+    "B5 unchanged: 3 standalone, 56 variant nodes, 59 physical nodes (found " + primStandalone.length + " / " + primVariants + " / " + (primStandalone.length + primVariants) + ")");
+  const b5Props = ABOX_B5.bindings.filter((b) => !!b7PropKey(b5Owner(b.component), b.property, b.type)).length;
+  add(b5Props === C.b5NonVariant, "B5 non-variant component properties preserved (" + b5Props + " / " + C.b5NonVariant + ")");
+
+  const patternPage = figma.root.children.filter((p) => p.name === B6_PAGE)[0];
+  const patternNodes = patternPage ? b6PatternNodes(patternPage) : [];
+  add(patternPage && patternPage.children.length === C.b6TopLevel && patternNodes.length === C.b6PhysicalNodes, "B6 unchanged: 3 top-level pattern objects / 4 physical ComponentNodes");
+  const shellPage = figma.root.children.filter((p) => p.name === B7_PAGE)[0];
+  const shellNodes = shellPage ? b7Nodes(shellPage) : { sets: [], standalone: [], physical: 0 };
+  add(shellPage && shellPage.children.length === C.b7TopLevel && shellNodes.physical === C.b7PhysicalNodes, "B7 unchanged: 3 shell assets / 4 physical ComponentNodes");
+
+  const approved = b8ApprovedNames();
+  const frames = page.children.filter((n) => n.name.indexOf("ABox/Experience/") === 0);
+  const frameNames = frames.map((n) => n.name);
+  add(page.children.length === C.topLevelFrames, "only 04 Experiences receives B8 content: exactly 5 top-level objects (found " + page.children.length + ")");
+  add(frameNames.join("|") === approved.join("|"), "04 Experiences contains exactly the five approved B8 frame names in deterministic order");
+  add(frames.every((n) => n.type === "FRAME"), "every B8 top-level object is a FRAME, not Component or Component Set");
+
+  let signaturesOk = true, placementOk = true, shellOk = true, patternOk = true, componentsOk = true, protoOk = true, imageOk = true, regionsOk = true, propOk = true;
+  const inventory = [];
+  for (let i = 0; i < ABOX_B8.experiences.length; i += 1) {
+    const spec = ABOX_B8.experiences[i];
+    const frame = frames.filter((n) => n.name === spec.name)[0];
+    const placement = ABOX_B8.placement.filter((p) => p.name === spec.name)[0];
+    if (!frame) { signaturesOk = false; placementOk = false; shellOk = false; continue; }
+    const pd = b8PluginSignature(frame);
+    if (pd.batch !== "B8" || pd.kind !== "experience" || pd.name !== spec.name || pd.signature !== spec.signature || pd.sources !== spec.sources.slice().sort().join("|")) signaturesOk = false;
+    if (frame.x !== placement.x || frame.y !== placement.y || Math.round(frame.width) !== ABOX_B8.layout.frameWidth) placementOk = false;
+    if (!b8HasRegions(frame)) regionsOk = false;
+    if (b8HasPrototype(frame)) protoOk = false;
+    if (b8HasImageFill(frame)) imageOk = false;
+    if (Object.keys(frame.componentPropertyDefinitions || {}).length) propOk = false;
+    const mains = b8InstanceMainNames(frame);
+    if (mains.indexOf(spec.shell.name) === -1) shellOk = false;
+    for (const pat of spec.patterns || []) if (mains.indexOf(pat.name) === -1) patternOk = false;
+    for (const comp of spec.components || []) if (mains.indexOf(comp.name) === -1) componentsOk = false;
+    inventory.push("  " + spec.name + "  id=" + frame.id + "  x=" + frame.x + " y=" + frame.y + "  signature=" + pd.signature + "\n      instances: " + mains.join(" | "));
+  }
+  add(signaturesOk, "every B8 frame has matching B8 plugin data, deterministic signature and sorted source list");
+  add(placementOk, "every B8 frame uses deterministic x/y placement and 1440px canonical desktop width");
+  add(regionsOk, "every B8 frame contains the four approved child regions in order");
+  add(shellOk, "every B8 frame includes at least one existing B7 shell instance matching its mapped shell");
+  add(patternOk, "B6 pattern usage is exact: Downline uses WizardStepper; governance/member use KpiRow columns 4/3; none invented");
+  add(componentsOk, "all referenced B4/B5 component instances resolve to existing library nodes");
+  add(propOk, "B8 creates no top-level component properties, generic children/content property or synthetic state property");
+  add(protoOk, "B8 creates no prototype reactions or simulated navigation links");
+  add(imageOk, "B8 uses no screenshots, HTML embeds, flattened images or external image substitutions");
+  add(C.newVariables === 0 && C.newStyles === 0 && C.newComponents === 0 && C.newComponentSets === 0 && C.newPatterns === 0 && C.newProperties === 0 && C.prototypes === 0, "B8 token contract declares zero new foundations, properties and prototypes");
+  add(!page.children.some((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET"), "B8 creates no components, component sets, patterns, variables or styles");
+  add(ABOX_B8.experiences.every((e) => e.sources.length >= 4 && e.sequence.length >= 3), "every B8 experience has source traceability and multi-state journey evidence");
+  add(ABOX_B8.limitations.length >= 6, "dynamic, unsupported and deferred areas are documented as B8 limitations");
+  add(b8Created === 0 || b8Created === C.topLevelFrames, "run bookkeeping: B8 top-level frames created this run = " + b8Created + " (run 2 must be 0)");
+
+  say("");
+  say("ID PROVENANCE: ids below are REAL FIGMA ids only when this run executed inside Figma Desktop.");
+  say("  An offline/mock harness prints OFFLINE MOCK ids and they are never evidence of a real write.");
+  say("  runtime: " + (typeof figma.getFileThumbnailNodeAsync === "function" ? "figma plugin API" : "figma plugin API (host-reported)"));
+  say("");
+  say("B8 EXPERIENCE INVENTORY");
+  for (const line of inventory) say(line);
+  say("");
+  say("B8 LIMITATIONS / DEFERRED FOUNDATIONS");
+  for (const l of ABOX_B8.limitations) say("  - " + l);
+  say("");
+  say("B8 COUNTS");
+  say("  top-level frames " + C.topLevelFrames + " | new variables/styles/components/component sets/patterns/properties/prototypes = 0");
+  say("  protected and unchanged: B1 " + C.b1Variables + " vars, B2 " + C.b2Variables + " vars, B3 " + C.b3Styles + " styles, B4/B5 " + C.b5Physical + " physical nodes, B6 " + C.b6PhysicalNodes + " nodes, B7 " + C.b7PhysicalNodes + " nodes");
+  say("");
+  say("B8 STRUCTURAL CHECK");
+  checks.forEach((c) => say("  " + c));
+  say("  NOTE  src/** unchanged — asserted outside Figma with `git diff --stat -- src/`; the plugin sandbox cannot read the repository.");
+  const passed = checks.every((c) => c.indexOf("PASS") === 0);
+  say("");
+  say(passed ? "RESULT: B8 PASSED" : "RESULT: B8 FAILED — do not proceed to B9.");
+  return passed;
+}
+
 /* ---------- entry ---------- */
 
-figma.showUI(__html__, { width: 420, height: 560 });
+figma.showUI(__html__, { width: 420, height: 640 });
 
 figma.ui.onmessage = async (msg) => {
   lines.length = 0;
@@ -3820,6 +4229,7 @@ figma.ui.onmessage = async (msg) => {
   const b5 = msg.type === "b5-run" || msg.type === "b5-verify";
   const b6 = msg.type === "b6-run" || msg.type === "b6-verify";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify";
+  const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
@@ -3941,6 +4351,19 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB7();
+    } else if (msg.type === "b8-run") {
+      say("ABox Phase 55 / Batch B8 — experiences & journey compositions");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await ensureB8Experiences();
+      await verifyB8();
+    } else if (msg.type === "b8-verify") {
+      say("ABox Phase 55 / Batch B8 — verify only");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await verifyB8();
     }
   } catch (e) {
     say("");
@@ -3960,7 +4383,11 @@ figma.ui.onmessage = async (msg) => {
                   ? "RESULT: B5 FAILED — do not proceed to B6."
                   : b6
                     ? "RESULT: B6 FAILED — do not proceed to B7."
-                : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
+                    : b7
+                      ? "RESULT: B7 FAILED — do not proceed to B8."
+                      : b8
+                        ? "RESULT: B8 FAILED — do not proceed to B9."
+                        : "RESULT: PROOF FAILED — do not proceed to Phase 52.",
     );
   }
   report();

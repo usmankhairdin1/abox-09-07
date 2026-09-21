@@ -102,6 +102,14 @@
     </p>
     <button id="b7run">Create shells</button>
     <button id="b7verify" class="secondary">Verify shells</button>
+    <p>
+      <strong>Batch B8 — experiences</strong><br />
+      Run inside <code>ABox Design System — Library</code>. Creates five source-backed
+      journey frames on <code>04 Experiences</code> only. No new foundations, properties,
+      prototypes, screens, publishing or app changes.
+    </p>
+    <button id="b8run">Create experiences</button>
+    <button id="b8verify" class="secondary">Verify experiences</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -176,6 +184,14 @@
       document.getElementById("b7verify").onclick = () => {
         log.textContent = "Verifying shells…";
         parent.postMessage({ pluginMessage: { type: "b7-verify" } }, "*");
+      };
+      document.getElementById("b8run").onclick = () => {
+        log.textContent = "Creating experiences…";
+        parent.postMessage({ pluginMessage: { type: "b8-run" } }, "*");
+      };
+      document.getElementById("b8verify").onclick = () => {
+        log.textContent = "Verifying experiences…";
+        parent.postMessage({ pluginMessage: { type: "b8-verify" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
