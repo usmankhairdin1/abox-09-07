@@ -229,6 +229,39 @@ Arithmetic:
 
 This is a count correction to the plan text only. No B4 component, set, variant, axis or property is recreated, renamed, reordered or re-architected; Surface and Control are read and left exactly as they are.
 
+### 3g-ter. `ABox/Action/ActionPill` axis name — authoritative resolution
+
+The earlier B4 audit line called this axis `action`; §3g-bis called it `variant`. Resolved from the generated source rather than prose:
+
+- `tools/figma-plugin/tokens-b4.js:19` — `"property": "variant"` on the ActionPill set entry.
+- `tools/figma-plugin/plugin.js:1613` — `b4VariantName()` returns `set.property + "=" + value.value`, so the live single-axis variant names are built from exactly that string.
+- `code.js` is generated from those two by `build.mjs` and carries the same value.
+
+**Authoritative name: `variant`.** Every occurrence of `action` as this axis name is a plan-text error and is corrected throughout — B4 audit, boundary section, tables, axis audit, verification, idempotency, final report. The production prop is also literally `variant` in `action-pill.ts` usage, so no rename of any live object is implied.
+
+Live-vs-source guard: before any B5 change the plugin reads the live `componentPropertyDefinitions` of `ABox/Action/ActionPill` and asserts a single axis named exactly `variant`. If the live file reports a different name, the run **STOPs** and prints both names. It never renames, recreates or re-architects the property to make them agree.
+
+### 3g-quater. Production defaults vs Figma construction values
+
+Rule for the whole plan: a value is a **production default** only when the production source literally declares it. Everything else is either a **Figma construction value** (Figma cannot define the property or the set without one) or **sample content** (a real production literal authored into a text layer). No observed call-site value is described as a production default anywhere.
+
+| Component | Property | Production default? | Production evidence | Figma construction value | Reason |
+| --- | --- | --- | --- | --- | --- |
+| KpiCard | `tone` | yes | `kpi-card.tsx:33` `tone = "default"` | `default` | genuine declared default |
+| KpiCard | `deltaSign` | no | `:78` runtime branch on `delta.pct` | `positive` | Figma requires one variant to be the set default; `positive` is the only branch exercised by production call sites, `negative` remains a real value from the source branch |
+| KpiCard | `hasIcon` | no | `:13` `icon?` optional | `true` | Boolean needs an initial value; taken from observed usage |
+| KpiCard | `hasDelta` | no | `:12` `delta?` optional | `true` | same |
+| KpiCard | `hasDeltaLabel` | no | `:12` `label?` optional; absent at `app.dashboard.tsx:32-34`, present at `app.index.tsx:85,86,88` | `true` | same; optionality is the source fact and is preserved |
+| KpiCard | `hasHint` | no | `:14` `hint?` optional | `false` | observed absence at every call site, not a declared default |
+| KpiCard | `label` / `value` / `deltaLabel` | no | required/optional props, no declared defaults | sample content from `app.index.tsx:85` | Figma text layers must contain characters |
+| PageHeader | `variant` | yes | `page-header.tsx` declares the default variant | `default` | genuine declared default |
+| PageHeader | `hasEyebrow` / `hasIcon` / `hasDescription` / `hasActions` | no | all optional props | from observed usage, labelled construction values | Boolean needs an initial value |
+| PageHeader | `actions` (INSTANCE_SWAP) | no | `:16` `React.ReactNode`, no default | `ABox/Action/ActionPill` `variant=primaryMd` | INSTANCE_SWAP cannot be defined without a default component; a real production-passed component is used, none invented |
+| PageHeader / ModuleTab / WizardStep / StatusBadge / MetalBadge / ActionPill / Button / Surface / Control / AboxMark | text properties | no | required props | sample content from real call sites | text layers must contain characters |
+| EmptyState | `hasIcon` / `hasBody` / `hasAction` | no | all optional props | from observed usage | Boolean needs an initial value |
+| EmptyState | `action` (SLOT) | no | `:9` `React.ReactNode` | none — SLOT takes no default | no fake default component is introduced |
+| AboxMark | `tone` | yes | `logo.tsx` declares `tone` with a default branch | declared value | genuine declared default |
+
 
 ### 3h. Combinations that must NOT be created
 
