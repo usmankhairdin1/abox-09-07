@@ -3235,6 +3235,77 @@ async function b6StaleVariants() {
   return doomed.length;
 }
 
+/**
+ * Remove a half-built approved B6 pattern COMPONENT left on 02 Patterns by an aborted run.
+ * A node is removed only when every condition holds:
+ *   1. it sits directly on 02 Patterns;
+ *   2. it is a COMPONENT (never a COMPONENT_SET);
+ *   3. its name is an approved B6 kind:"COMPONENT" pattern name;
+ *   4. its live signature differs from the approved expected signature (provably incomplete);
+ *   5. it reports zero live instances.
+ * Anything failing a condition is printed as KEPT and left untouched.
+ */
+async function b6CleanupIncompletePatterns() {
+  await figma.loadAllPagesAsync();
+  const page = b6Page();
+  const index = await b4StyleIndex();
+  b6StyleIndex = index;
+
+  const specs = {};
+  for (const spec of ABOX_B6.patterns) if (spec.kind === "COMPONENT") specs[spec.name] = spec;
+
+  say("B6 INCOMPLETE PATTERN CLEANUP");
+  say("");
+
+  const doomed = [];
+  const kept = [];
+  for (const node of page.children) {
+    if (node.type !== "COMPONENT") continue; // conditions 1 + 2
+    if (!node.parent || node.parent.id !== page.id) continue;
+    const spec = specs[node.name]; // condition 3
+    if (!spec) {
+      kept.push("  KEPT — not an approved B6 pattern component name : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const expected = b6ExpectedSignature(spec.root, spec.children);
+    const live = b6LiveSignature(node, spec.root, spec.children);
+    if (expected === live) { // condition 4
+      kept.push("  KEPT — complete, matches the approved definition : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    const instances = await node.getInstancesAsync(); // condition 5 (async: dynamic-page)
+    if (instances.length) {
+      kept.push("  KEPT — has " + instances.length + " live instance(s) : " + node.name + "  id=" + node.id);
+      continue;
+    }
+    doomed.push({ node: node, live: live, expected: expected });
+  }
+
+  for (const line of kept) say(line);
+  if (kept.length) say("");
+
+  if (!doomed.length) {
+    say("  nothing to remove — no incomplete B6 pattern component on " + B6_PAGE + ".");
+  }
+  for (const entry of doomed) {
+    say("  remove : " + entry.node.name + "  id=" + entry.node.id + "  (incomplete, zero instances)");
+    say("    live     : " + entry.live);
+    say("    expected : " + entry.expected);
+    entry.node.remove();
+  }
+
+  say("");
+  say("  page contents after cleanup");
+  for (const p of figma.root.children) {
+    say("    " + p.name + " : " + p.children.length + " node(s)");
+  }
+  say("");
+  say("  removed this run: " + doomed.length);
+  return doomed.length;
+}
+
+
+
 function b6PatternNodes(page) {
   const out = [];
   for (const child of page.children) {
