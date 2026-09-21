@@ -142,6 +142,27 @@ builder now also throws `STOP: STALE TOP-LEVEL VARIANT` instead of quietly creat
 duplicate when such a node is present, and the verifier still demands exactly the 14 B4
 objects on `01 Components`.
 
+B6 has the same stranding shape: `b6BuildNode` parents each variant to `02 Patterns`
+before `combineAsVariants` absorbs it, so an aborted pattern run can leave a top-level
+`COMPONENT` named like a matrix (e.g. `columns=4`). Three plugin controls cover it.
+`Inspect 02 Patterns (read-only)` (`b6-inspect`, `b6InspectPatterns()`) prints, for every
+page child, its type, id, parent, component property definitions, variant properties,
+child names, live instance count, whether the name is an approved B6 top-level object, an
+approved matrix that must live inside a set, or neither, and for a matrix the expected vs
+live signature. It writes, modifies and deletes nothing.
+`Remove stale B6 variant components` (`b6-cleanup-stale-variants`, `b6StaleVariants()`)
+removes a node only when it sits directly on `02 Patterns`, is a `COMPONENT` and never a
+`COMPONENT_SET`, is not an approved B6 top-level or batch-owned name, has a name equal to
+an approved B6 variant matrix, and reports zero instances from `getInstancesAsync()`. When
+the owning set exists, a different live variant of the same matrix must also be present —
+the same proof B4 requires. When the set does not exist, the removal reason is printed in
+full: a bare matrix node with zero instances that no approved page inventory permits.
+Anything failing a condition is printed under `KEPT — …` and left alone.
+`ensureB6Patterns` additionally wraps each pattern in `b6Guarded`, which removes only the
+matrix-named, non-set nodes that the failing build itself parented to the page, so a
+future aborted run strands nothing. The existing orphan STOP now also prints the offending
+node's type, id and instance count.
+
 
 ## Library publishing check
 
