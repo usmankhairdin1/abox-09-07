@@ -50,12 +50,20 @@ var ABOX_B6 = {
         "src/routes/app.jet.platform.tsx",
         "src/routes/app.index.tsx"
       ],
+      "values": [
+        "3",
+        "4"
+      ],
       "variants": [
         {
           "value": "4",
           "root": {
             "layout": "HORIZONTAL",
-            "gap": 16
+            "wrap": "NO_WRAP",
+            "gap": 16,
+            "counterGap": 0,
+            "primarySizing": "AUTO",
+            "counterSizing": "AUTO"
           },
           "children": [
             {
@@ -112,7 +120,11 @@ var ABOX_B6 = {
           "value": "3",
           "root": {
             "layout": "HORIZONTAL",
-            "gap": 16
+            "wrap": "NO_WRAP",
+            "gap": 16,
+            "counterGap": 0,
+            "primarySizing": "AUTO",
+            "counterSizing": "AUTO"
           },
           "children": [
             {
@@ -161,10 +173,16 @@ var ABOX_B6 = {
       "source": "source: src/components/abox/module-tabs.tsx:14 | hosts src/components/m06/workforce-page.tsx:46, src/components/lucie-app/frames.tsx:21",
       "root": {
         "layout": "HORIZONTAL",
+        "wrap": "WRAP",
         "gap": 6,
+        "counterGap": 6,
+        "primarySizing": "AUTO",
+        "counterSizing": "AUTO",
         "paddingBottom": 12,
         "strokeBottomStyle": "ABox/Semantic/hairline",
-        "strokeSource": "src/components/abox/module-tabs.tsx:18"
+        "strokesIncludedInLayout": false,
+        "strokeSource": "src/components/abox/module-tabs.tsx:18",
+        "gapSource": "src/components/abox/module-tabs.tsx:18"
       },
       "children": [
         {
@@ -222,10 +240,61 @@ var ABOX_B6 = {
     {
       "name": "ABox/Pattern/WizardStepper",
       "kind": "COMPONENT",
-      "source": "source: src/components/abox/downline-wizard-stepper.tsx:18 | states src/components/abox/downline-wizard-stepper.tsx:37",
+      "source": "source: src/components/abox/downline-wizard-stepper.tsx:18 | states src/components/abox/downline-wizard-stepper.tsx:37 | configuration: route /agency/downlines/new/contacts (SCR-M05-009, step 3 of 8)",
+      "configuration": {
+        "route": "/agency/downlines/new/contacts",
+        "scr": "SCR-M05-009",
+        "currentStep": 3,
+        "steps": [
+          {
+            "n": 1,
+            "label": "Identity",
+            "state": "done"
+          },
+          {
+            "n": 2,
+            "label": "Legal & identifiers",
+            "state": "done"
+          },
+          {
+            "n": 3,
+            "label": "Contacts",
+            "state": "current"
+          },
+          {
+            "n": 4,
+            "label": "Addresses & offices",
+            "state": "unreachable"
+          },
+          {
+            "n": 5,
+            "label": "Settings",
+            "state": "unreachable"
+          },
+          {
+            "n": 6,
+            "label": "Initial administrator",
+            "state": "unreachable"
+          },
+          {
+            "n": 7,
+            "label": "Readiness review",
+            "state": "unreachable"
+          },
+          {
+            "n": 8,
+            "label": "Activation",
+            "state": "unreachable"
+          }
+        ]
+      },
       "root": {
         "layout": "HORIZONTAL",
+        "wrap": "WRAP",
         "gap": 6,
+        "counterGap": 6,
+        "primarySizing": "AUTO",
+        "counterSizing": "AUTO",
         "gapSource": "src/components/abox/downline-wizard-stepper.tsx:35"
       },
       "children": [
@@ -262,7 +331,7 @@ var ABOX_B6 = {
         {
           "of": "ABox/Nav/WizardStep",
           "variants": {
-            "state": "upcoming"
+            "state": "unreachable"
           },
           "texts": {
             "label": "Addresses & offices"
@@ -278,6 +347,36 @@ var ABOX_B6 = {
             "label": "Settings"
           },
           "source": "src/components/abox/downline-wizard-stepper.tsx:23"
+        },
+        {
+          "of": "ABox/Nav/WizardStep",
+          "variants": {
+            "state": "unreachable"
+          },
+          "texts": {
+            "label": "Initial administrator"
+          },
+          "source": "src/components/abox/downline-wizard-stepper.tsx:24"
+        },
+        {
+          "of": "ABox/Nav/WizardStep",
+          "variants": {
+            "state": "unreachable"
+          },
+          "texts": {
+            "label": "Readiness review"
+          },
+          "source": "src/components/abox/downline-wizard-stepper.tsx:25"
+        },
+        {
+          "of": "ABox/Nav/WizardStep",
+          "variants": {
+            "state": "unreachable"
+          },
+          "texts": {
+            "label": "Activation"
+          },
+          "source": "src/components/abox/downline-wizard-stepper.tsx:26"
         }
       ]
     }
@@ -299,9 +398,9 @@ var ABOX_B6 = {
       "pattern": "ABox/Pattern/WizardStepper",
       "trigger": "current route position within DOWNLINE_WIZARD_STEPS",
       "source": "src/components/abox/downline-wizard-stepper.tsx:37",
-      "behaviour": "steps render as done (check glyph), current (filled), upcoming (reachable link) or unreachable (dimmed span)",
-      "representation": "existing B4 variants ABox/Nav/WizardStep state=done|current|upcoming|unreachable",
-      "before": "state=upcoming",
+      "behaviour": "steps render as done (check glyph), current (filled) or unreachable (dimmed span); B4's upcoming branch is unreachable for any real route because isReachable = i <= currentIndex",
+      "representation": "existing B4 variants ABox/Nav/WizardStep state=done|current|unreachable, copied from route /agency/downlines/new/contacts",
+      "before": "state=unreachable",
       "after": "state=current / state=done",
       "prototype": "none",
       "reuse": "existing B4 variants reused; no new state axis, no B4 mutation",
@@ -403,7 +502,7 @@ var ABOX_B6 = {
   "limitations": [
     "Production lays KPI rows out with CSS grid and responsive breakpoints (grid gap-4 sm:grid-cols-2 lg:grid-cols-4); Figma auto-layout has no responsive breakpoint concept, so the columns axis encodes only the two authored column counts (3 and 4) and no breakpoint behaviour is modelled. — src/routes/app.dashboard.tsx:31",
     "ModuleTabBar shows 5 of the 12 production workforce tabs; the count is sample scope, chosen as the minimum that demonstrates the active/default relationship. — src/components/m06/workforce-page.tsx:17",
-    "WizardStepper shows 5 of the 8 production steps; the count is sample scope, chosen as the minimum that demonstrates all four real step states. — src/components/abox/downline-wizard-stepper.tsx:18",
+    "WizardStepper contains all 8 production steps in source order; its state configuration is copied from one documented real production route/current-step condition (/agency/downlines/new/contacts, SCR-M05-009, step 3 of 8). B4's upcoming state does not occur there — the source makes a step reachable only when i <= currentIndex, so no real route produces it; no state is manufactured and none are combined across routes. — src/components/abox/downline-wizard-stepper.tsx:18",
     "B4 coloured positive KpiCard delta chips per tone, while production always uses the sage branch for a positive delta (kpi-card.tsx:78). KpiRow consumes the live B5 component unchanged: the deviation is displayed, recorded, and not silently corrected in B6.",
     "Tab and wizard-step navigation is router-driven; no Figma prototype connection is created because the destination screens are B8 scope. B6 creates 0 prototype reactions.",
     "CSS pseudo-class states (hover, focus-visible, active) are not converted into Figma variants; each is recorded as a deferred interaction instead.",

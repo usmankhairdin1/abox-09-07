@@ -127,6 +127,17 @@ const kpiChildren = (n) =>
     ),
   );
 
+// Production KPI rows are a single non-wrapping grid row (gap-4); both axes hug.
+const KPI_ROOT = {
+  layout: "HORIZONTAL",
+  wrap: "NO_WRAP",
+  gap: 16,
+  counterGap: 0,
+  primarySizing: "AUTO",
+  counterSizing: "AUTO",
+};
+
+
 const kpiRow = {
   name: "ABox/Pattern/KpiRow",
   kind: "SET",
@@ -136,9 +147,12 @@ const kpiRow = {
     " and " + lineOf(F.statements, "md:grid-cols-3") +
     " — repeated in " + KPI_ROUTES.length + " non-reference routes",
   evidence: KPI_ROUTES,
+  // Variant-matrix names are exactly "columns=<value>"; the axis exists only through
+  // combineAsVariants, never through addComponentProperty.
+  values: ["3", "4"],
   variants: [
-    { value: "4", root: { layout: "HORIZONTAL", gap: 16 }, children: kpiChildren(4) },
-    { value: "3", root: { layout: "HORIZONTAL", gap: 16 }, children: kpiChildren(3) },
+    { value: "4", root: KPI_ROOT, children: kpiChildren(4) },
+    { value: "3", root: KPI_ROOT, children: kpiChildren(3) },
   ],
 };
 
@@ -159,10 +173,16 @@ const moduleTabBar = {
     ", " + lineOf(F.frames, "<ModuleTabs tabs={EMPLOYER_TABS}"),
   root: {
     layout: "HORIZONTAL",
-    gap: 6, // gap-1.5
+    wrap: "WRAP", // flex-wrap
+    gap: 6, // gap-1.5 — primary axis
+    counterGap: 6, // gap-1.5 — wrapped (row) axis
+    primarySizing: "AUTO", // no width constraint in production
+    counterSizing: "AUTO", // no height constraint in production
     paddingBottom: 12, // pb-3
     strokeBottomStyle: "ABox/Semantic/hairline", // border-b border-hairline
+    strokesIncludedInLayout: false, // border-b paints outside the pb-3 spacing contract
     strokeSource: lineOf(F.tabs, "border-b border-hairline"),
+    gapSource: lineOf(F.tabs, "gap-1.5"),
   },
   children: TAB_LABELS.map((label, i) =>
     instance(
@@ -175,27 +195,59 @@ const moduleTabBar = {
 };
 
 /* ---------- 3. Downline wizard stepper ---------- */
-// Rule B: downline-wizard-stepper.tsx owns the fixed step list; 8 step routes.
-const STEP_LABELS = ["Identity", "Legal & identifiers", "Contacts", "Addresses & offices", "Settings"];
-for (const l of STEP_LABELS) {
-  if (!read(F.wizard).includes('label: "' + l + '"')) {
-    throw new Error("STOP: wizard label not in " + F.wizard + " — " + l);
-  }
+// Rule B: downline-wizard-stepper.tsx owns the fixed 8-step list; 8 step routes consume it.
+// The pattern carries the COMPLETE production list, not a demonstration sample.
+const WIZARD_SRC = read(F.wizard);
+const STEP_ROWS = [];
+for (const m of WIZARD_SRC.matchAll(/\{ n: (\d+), scr: "([^"]+)", label: "([^"]+)", to: "([^"]+)" \}/g)) {
+  STEP_ROWS.push({ n: Number(m[1]), scr: m[2], label: m[3], to: m[4] });
 }
-const STEP_STATES = ["done", "done", "current", "upcoming", "unreachable"];
+if (STEP_ROWS.length !== 8) {
+  throw new Error("STOP: expected the 8 production DOWNLINE_WIZARD_STEPS, read " + STEP_ROWS.length);
+}
+STEP_ROWS.forEach((s, i) => {
+  if (s.n !== i + 1) throw new Error("STOP: wizard step order mismatch at index " + i);
+});
+
+// One documented real production route/current-step condition, copied verbatim.
+// No states are manufactured and none are combined across routes.
+const WIZARD_ROUTE = "/agency/downlines/new/contacts";
+const WIZARD_CURRENT = STEP_ROWS.findIndex((s) => s.to === WIZARD_ROUTE);
+if (WIZARD_CURRENT === -1) throw new Error("STOP: wizard route not in the step list — " + WIZARD_ROUTE);
+// Source branches: isCurrent = i === currentIndex; isDone = i < currentIndex;
+// isReachable = i <= currentIndex; everything else renders the dimmed span.
+// B4's "upcoming" (reachable, not current, not done) cannot occur for any real route.
+const stepState = (i) => (i === WIZARD_CURRENT ? "current" : i < WIZARD_CURRENT ? "done" : "unreachable");
+
 const wizardStepper = {
   name: "ABox/Pattern/WizardStepper",
   kind: "COMPONENT",
   source:
     "source: " + lineOf(F.wizard, "export const DOWNLINE_WIZARD_STEPS") +
-    " | states " + lineOf(F.wizard, "const isCurrent ="),
-  root: { layout: "HORIZONTAL", gap: 6, gapSource: lineOf(F.wizard, "items-center gap-1.5") },
-  children: STEP_LABELS.map((label, i) =>
+    " | states " + lineOf(F.wizard, "const isCurrent =") +
+    " | configuration: route " + WIZARD_ROUTE + " (" + STEP_ROWS[WIZARD_CURRENT].scr +
+    ", step " + (WIZARD_CURRENT + 1) + " of " + STEP_ROWS.length + ")",
+  configuration: {
+    route: WIZARD_ROUTE,
+    scr: STEP_ROWS[WIZARD_CURRENT].scr,
+    currentStep: WIZARD_CURRENT + 1,
+    steps: STEP_ROWS.map((s, i) => ({ n: s.n, label: s.label, state: stepState(i) })),
+  },
+  root: {
+    layout: "HORIZONTAL",
+    wrap: "WRAP", // flex-wrap
+    gap: 6, // gap-1.5 — primary axis
+    counterGap: 6, // gap-1.5 — wrapped (row) axis
+    primarySizing: "AUTO",
+    counterSizing: "AUTO",
+    gapSource: lineOf(F.wizard, "items-center gap-1.5"),
+  },
+  children: STEP_ROWS.map((s, i) =>
     instance(
       "ABox/Nav/WizardStep",
-      { state: STEP_STATES[i] },
-      { label },
-      lineOf(F.wizard, 'label: "' + label + '"'),
+      { state: stepState(i) },
+      { label: s.label },
+      lineOf(F.wizard, 'label: "' + s.label + '"'),
     ),
   ),
 };
@@ -218,9 +270,9 @@ const interactions = [
     pattern: "ABox/Pattern/WizardStepper",
     trigger: "current route position within DOWNLINE_WIZARD_STEPS",
     source: lineOf(F.wizard, "const isCurrent ="),
-    behaviour: "steps render as done (check glyph), current (filled), upcoming (reachable link) or unreachable (dimmed span)",
-    representation: "existing B4 variants ABox/Nav/WizardStep state=done|current|upcoming|unreachable",
-    before: "state=upcoming",
+    behaviour: "steps render as done (check glyph), current (filled) or unreachable (dimmed span); B4's upcoming branch is unreachable for any real route because isReachable = i <= currentIndex",
+    representation: "existing B4 variants ABox/Nav/WizardStep state=done|current|unreachable, copied from route " + WIZARD_ROUTE,
+    before: "state=unreachable",
     after: "state=current / state=done",
     prototype: "none",
     reuse: "existing B4 variants reused; no new state axis, no B4 mutation",
@@ -258,7 +310,7 @@ const rejected = [
 const limitations = [
   "Production lays KPI rows out with CSS grid and responsive breakpoints (grid gap-4 sm:grid-cols-2 lg:grid-cols-4); Figma auto-layout has no responsive breakpoint concept, so the columns axis encodes only the two authored column counts (3 and 4) and no breakpoint behaviour is modelled. — " + lineOf(F.dash, "md:grid-cols-4"),
   "ModuleTabBar shows 5 of the 12 production workforce tabs; the count is sample scope, chosen as the minimum that demonstrates the active/default relationship. — " + lineOf(F.workforce, "export const WORKFORCE_TABS"),
-  "WizardStepper shows 5 of the 8 production steps; the count is sample scope, chosen as the minimum that demonstrates all four real step states. — " + lineOf(F.wizard, "export const DOWNLINE_WIZARD_STEPS"),
+  "WizardStepper contains all 8 production steps in source order; its state configuration is copied from one documented real production route/current-step condition (" + WIZARD_ROUTE + ", " + STEP_ROWS[WIZARD_CURRENT].scr + ", step " + (WIZARD_CURRENT + 1) + " of 8). B4's upcoming state does not occur there — the source makes a step reachable only when i <= currentIndex, so no real route produces it; no state is manufactured and none are combined across routes. — " + lineOf(F.wizard, "export const DOWNLINE_WIZARD_STEPS"),
   "B4 coloured positive KpiCard delta chips per tone, while production always uses the sage branch for a positive delta (kpi-card.tsx:78). KpiRow consumes the live B5 component unchanged: the deviation is displayed, recorded, and not silently corrected in B6.",
   "Tab and wizard-step navigation is router-driven; no Figma prototype connection is created because the destination screens are B8 scope. B6 creates 0 prototype reactions.",
   "CSS pseudo-class states (hover, focus-visible, active) are not converted into Figma variants; each is recorded as a deferred interaction instead.",

@@ -327,3 +327,27 @@ preserved B5 KpiCard positive-delta deviation, which B6 displays but does not co
 `verifyB6` asserts B1 (9 collections / 200 variables), B2 (19 variables), B3 (79 styles), B4/B5
 architecture and every component and property id, page scope, per-pattern structural signatures,
 zero duplicated foundation values, and zero creations on run 2.
+
+### B6 — revised precision amendment
+
+- KpiRow creation sequence: resolve `02 Patterns`, resolve the live KpiCard main
+  component(s) before any write, read the live page inventory, then either resolve the
+  existing set (exactly one `columns` VARIANT axis with values `3` and `4`, each variant
+  resolved by exact matrix, never recreated) or create exactly two ComponentNodes named
+  `columns=3` / `columns=4` and combine only those with `combineAsVariants`. No
+  `addComponentProperty`, no second axis. Physical B6 nodes: 1 Component Set + 2 variant
+  ComponentNodes + 2 standalone Components = 4.
+- Wrapped auto-layout: ModuleTabBar and WizardStepper set `layoutMode=HORIZONTAL`,
+  `layoutWrap=WRAP`, `itemSpacing=6`, `counterAxisSpacing=6` (gap-1.5 on both axes),
+  `primaryAxisSizingMode=AUTO`, `counterAxisSizingMode=AUTO`; no fixed width, no
+  breakpoint. ModuleTabBar keeps `paddingBottom=12` (pb-3). KpiRow stays `NO_WRAP`.
+- ModuleTabBar border: individual strokes — bottom 1, other sides 0 — bound to the live
+  B3 `ABox/Semantic/hairline` paint style (STOP when unresolvable), with
+  `strokesIncludedInLayout=false`; no extra line child, no colour literal.
+- WizardStepper carries all 8 production steps in `DOWNLINE_WIZARD_STEPS` order; states
+  are copied from one real route (`/agency/downlines/new/contacts`, SCR-M05-009, step 3
+  of 8) → done, done, current, unreachable ×5. B4's `upcoming` state does not occur for
+  any real route and is not manufactured.
+- Structural signatures now include layout mode, wrap, both gaps, both sizing modes,
+  padding, the four individual stroke weights, the live stroke style id and
+  `strokesIncludedInLayout`; verification adds 18 further checks covering all of the above.
