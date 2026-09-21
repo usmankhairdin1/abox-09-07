@@ -6366,6 +6366,18 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b7CleanupIncompleteShells();
+    } else if (msg.type === "b7-inspect-foundations-orphans") {
+      say("ABox Phase 54 / Batch B7 — inspect 00 Foundations orphans (read-only)");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b7InspectFoundationsOrphans();
+    } else if (msg.type === "b7-cleanup-foundations-orphans") {
+      say("ABox Phase 54 / Batch B7 — remove B7 orphan frames on 00 Foundations");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b7CleanupFoundationsOrphans();
     } else if (msg.type === "b8-run") {
       say("ABox Phase 55 / Batch B8 — experiences & journey compositions");
       say("file: " + figma.root.name);
