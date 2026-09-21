@@ -7371,7 +7371,15 @@ function b5Target(ownerName, body, binding) {
     );
   }
   const spec = b5SpecChars(ownerName, body.name);
-  const expect = spec.body ? spec.body[index] : null;
+  let expect = spec.body ? spec.body[index] : null;
+  // The four B5 negative variants carry the negative chip text by design.
+  if (
+    ownerName === ABOX_B5.variantAxis.set &&
+    b5ParseVariant(body.name)[ABOX_B5.variantAxis.property] === ABOX_B5.variantAxis.values[1] &&
+    expect === ABOX_B5.variantAxis.positive.characters
+  ) {
+    expect = ABOX_B5.variantAxis.negative.characters;
+  }
   if (expect !== null && expect !== undefined && node.characters !== expect) {
     throw new Error(
       "STOP: TARGET LAYER MISMATCH — " + ownerName + " / " + body.name +
