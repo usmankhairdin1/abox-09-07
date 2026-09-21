@@ -2548,26 +2548,48 @@ function b6SpecProps(spec) {
     .join(",");
 }
 
-function b6ExpectedSignature(root, children) {
-  const parts = [
+/** Every geometry field the approved definition pins down, in a fixed order. */
+function b6RootParts(root) {
+  return [
     "layout=" + (root.layout || "HORIZONTAL"),
+    "wrap=" + (root.wrap || "NO_WRAP"),
     "gap=" + (root.gap || 0),
+    "cgap=" + (root.counterGap || 0),
+    "primarySizing=" + (root.primarySizing || "AUTO"),
+    "counterSizing=" + (root.counterSizing || "AUTO"),
     "pb=" + (root.paddingBottom || 0),
     "stroke=" + (root.strokeBottomStyle || "none"),
-    "children=" + children.length,
+    "strokeWeights=" + (root.strokeBottomStyle ? "0/0/0/1" : "0/0/0/0"),
+    "strokesInLayout=" + (root.strokeBottomStyle ? String(root.strokesIncludedInLayout === true) : "n/a"),
   ];
+}
+
+function b6ExpectedSignature(root, children) {
+  const parts = b6RootParts(root);
+  parts.push("children=" + children.length);
   for (const c of children) parts.push("INSTANCE:" + c.of + ":" + b6SpecProps(c));
   return parts.join("|");
 }
 
 function b6LiveSignature(node, root, children) {
+  const styled = !!root.strokeBottomStyle && !!node.strokeStyleId &&
+    node.strokeStyleId === b6HairlineId(root.strokeBottomStyle);
   const parts = [
     "layout=" + node.layoutMode,
+    "wrap=" + (node.layoutWrap || "NO_WRAP"),
     "gap=" + node.itemSpacing,
+    "cgap=" + (node.counterAxisSpacing || 0),
+    "primarySizing=" + node.primaryAxisSizingMode,
+    "counterSizing=" + node.counterAxisSizingMode,
     "pb=" + node.paddingBottom,
-    "stroke=" + (root.strokeBottomStyle && node.strokeStyleId ? root.strokeBottomStyle : "none"),
-    "children=" + node.children.length,
+    "stroke=" + (styled ? root.strokeBottomStyle : "none"),
+    "strokeWeights=" +
+      [node.strokeTopWeight || 0, node.strokeRightWeight || 0, node.strokeLeftWeight || 0, node.strokeBottomWeight || 0]
+        .join("/")
+        .replace(/^(\d+)\/(\d+)\/(\d+)\/(\d+)$/, "$1/$2/$3/$4"),
+    "strokesInLayout=" + (root.strokeBottomStyle ? String(node.strokesIncludedInLayout === true) : "n/a"),
   ];
+  parts.push("children=" + node.children.length);
   for (let i = 0; i < node.children.length; i += 1) {
     const kid = node.children[i];
     const spec = children[i];
@@ -2580,24 +2602,36 @@ function b6LiveSignature(node, root, children) {
   return parts.join("|");
 }
 
+/** Resolved once per run; STOP rather than approximate the B3 hairline. */
+var b6StyleIndex = null;
+function b6HairlineId(styleName) {
+  if (!b6StyleIndex) throw new Error("STOP: style index not resolved before a pattern stroke was read.");
+  return b4Style(b6StyleIndex, "paint", styleName).id;
+}
+
 function b6ApplyRoot(node, root, index) {
   node.layoutMode = root.layout || "HORIZONTAL";
-  node.primaryAxisSizingMode = "AUTO";
-  node.counterAxisSizingMode = "AUTO";
+  node.layoutWrap = root.wrap || "NO_WRAP";
+  node.primaryAxisSizingMode = root.primarySizing || "AUTO";
+  node.counterAxisSizingMode = root.counterSizing || "AUTO";
   node.counterAxisAlignItems = "MIN";
   node.primaryAxisAlignItems = "MIN";
   node.itemSpacing = root.gap || 0;
+  if (node.layoutWrap === "WRAP") node.counterAxisSpacing = root.counterGap || 0;
   node.paddingLeft = 0;
   node.paddingRight = 0;
   node.paddingTop = 0;
   node.paddingBottom = root.paddingBottom || 0;
   node.fills = []; // production row wrappers carry layout classes only
   if (root.strokeBottomStyle) {
+    // Individual bottom stroke, bound to the live B3 style — never a colour value,
+    // never an extra line child. b4Style STOPs when the style cannot be resolved.
     node.strokeStyleId = b4Style(index, "paint", root.strokeBottomStyle).id;
     node.strokeTopWeight = 0;
     node.strokeLeftWeight = 0;
     node.strokeRightWeight = 0;
     node.strokeBottomWeight = 1;
+    node.strokesIncludedInLayout = root.strokesIncludedInLayout === true;
   } else {
     node.strokes = [];
   }
