@@ -1357,3 +1357,26 @@ and the positive delta-chip binding. B6 preserved both as-is.
 - WizardStepper: complete 8-step production list, state configuration copied from
   `/agency/downlines/new/contacts`; `upcoming` is unreachable in production and not created.
 - Offline dry run only — real Figma ids still require two runs in Figma Desktop.
+
+## Phase 54 / Batch B7 — shells (plugin layer)
+
+Implemented in `tools/figma-plugin/` only; no `src/` files were edited. `extract-b7.mjs` generates
+`tokens-b7.js`; `plugin.js` gained B7 create/verify handlers; `ui.html`, `build.mjs`, `README.md`
+and generated `code.js` were updated. Rollback: revert those plugin-layer files and delete this
+block.
+
+Approved inventory: 3 shell assets on `03 Shells` only — standalone `ABox/Shell/Internal`, Component
+Set `ABox/Shell/Marketplace` with exactly `variant=flow|landing`, and standalone
+`ABox/Shell/Member`. Physical B7 ComponentNodes total: 4. No B1-B6 object is recreated, renamed,
+deleted or mutated; nested mark usage resolves live `ABox/Brand/AboxMark` instances.
+
+Shell API representation is explicit: Internal `pageTitle`, `eyebrow` and `entity` are TEXT
+properties bound through `componentPropertyReferences`; Internal `actions` is a structural region
+unless faithful SLOT support exists. Marketplace `showAssistant` is a BOOLEAN visibility binding.
+Marketplace `showProducts` binds only to the `variant=flow` product-switcher region; `variant=landing`
+has no product-switcher target and no synthetic hidden placeholder. Member `children` is a structural
+content region only.
+
+Offline/static validation only in this environment; real Figma ids still require two runs in Figma
+Desktop with identical ids and zero creation count on run 2. No publishing performed.
+
