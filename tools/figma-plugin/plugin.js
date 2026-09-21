@@ -2739,15 +2739,15 @@ function b6CreateInstance(spec) {
 }
 
 /** Name of the live main component (the set, when the instance is a variant). */
-function b6MainName(inst) {
-  const main = inst.mainComponent;
+async function b6MainName(inst) {
+  const main = await inst.getMainComponentAsync(); // async: documentAccess dynamic-page
   if (!main) return "MISSING";
   if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.name;
   return main.name;
 }
 
-function b6MainId(inst) {
-  const main = inst.mainComponent;
+async function b6MainId(inst) {
+  const main = await inst.getMainComponentAsync(); // async: documentAccess dynamic-page
   if (!main) return "-";
   if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.id;
   return main.id;
@@ -2798,7 +2798,7 @@ function b6ExpectedSignature(root, children) {
   return parts.join("|");
 }
 
-function b6LiveSignature(node, root, children) {
+async function b6LiveSignature(node, root, children) {
   const styled = !!root.strokeBottomStyle && !!node.strokeStyleId &&
     node.strokeStyleId === b6HairlineId(root.strokeBottomStyle);
   const parts = [
@@ -2822,7 +2822,7 @@ function b6LiveSignature(node, root, children) {
       parts.push(kid.type + ":" + kid.name + ":-");
       continue;
     }
-    parts.push("INSTANCE:" + b6MainName(kid) + ":" + b6LiveProps(kid, spec));
+    parts.push("INSTANCE:" + (await b6MainName(kid)) + ":" + b6LiveProps(kid, spec));
   }
   return parts.join("|");
 }
@@ -2874,9 +2874,9 @@ async function b6BuildNode(name, root, children, index, page) {
 }
 
 /** Reuse when the live structure matches the approved definition; STOP when it differs. */
-function b6Check(node, root, children, label) {
+async function b6Check(node, root, children, label) {
   const expected = b6ExpectedSignature(root, children);
-  const live = b6LiveSignature(node, root, children);
+  const live = await b6LiveSignature(node, root, children);
   if (expected !== live) {
     throw new Error(
       "STOP: LIVE PATTERN DIFFERS FROM THE APPROVED DEFINITION — " + label +
@@ -2965,7 +2965,7 @@ async function b6EnsurePattern(spec, index, page) {
             "STOP: VARIANT MATRIX NOT RESOLVABLE — " + spec.name + " / " + vname + " matched " + matches.length + " nodes.",
           );
         }
-        b6Check(matches[0], v.root, v.children, spec.name + " / " + vname);
+        await b6Check(matches[0], v.root, v.children, spec.name + " / " + vname);
         b6Say("variant  ", spec.name + " / " + vname, false);
       }
       say("  set      reused  : " + spec.name + "  id=" + set.id);
@@ -3008,7 +3008,7 @@ async function b6EnsurePattern(spec, index, page) {
     throw new Error('STOP: PATTERN OUTSIDE SCOPE — "' + spec.name + '" lives on "' + (node.parent && node.parent.name) + '".');
   }
   if (node) {
-    b6Check(node, spec.root, spec.children, spec.name);
+    await b6Check(node, spec.root, spec.children, spec.name);
     b6Say("component", spec.name, false);
     return node;
   }
@@ -3140,7 +3140,7 @@ async function b6InspectPatterns() {
       if (v) {
         let live = "(unreadable)";
         try {
-          live = b6LiveSignature(node, v.root, v.children);
+          live = await b6LiveSignature(node, v.root, v.children);
         } catch (err) {
           live = "(signature error: " + (err && err.message) + ")";
         }
@@ -3268,7 +3268,7 @@ async function b6CleanupIncompletePatterns() {
       continue;
     }
     const expected = b6ExpectedSignature(spec.root, spec.children);
-    const live = b6LiveSignature(node, spec.root, spec.children);
+    const live = await b6LiveSignature(node, spec.root, spec.children);
     if (expected === live) { // condition 4
       kept.push("  KEPT — complete, matches the approved definition : " + node.name + "  id=" + node.id);
       continue;
@@ -3424,7 +3424,7 @@ async function verifyB6() {
     for (const body of bodies) {
       const node = body.node;
       if (!node) { structOk = false; inventory.push("  " + body.label + "  MISSING"); continue; }
-      const live = b6LiveSignature(node, body.root, body.children);
+      const live = await b6LiveSignature(node, body.root, body.children);
       const expected = b6ExpectedSignature(body.root, body.children);
       if (live !== expected) structOk = false;
       if ((node.reactions || []).length) protoOk = false;
@@ -3436,9 +3436,10 @@ async function verifyB6() {
       for (let i = 0; i < node.children.length; i += 1) {
         const kid = node.children[i];
         const cspec = body.children[i];
-        if (kid.type !== "INSTANCE" || !cspec || b6MainName(kid) !== cspec.of) { nestedOk = false; continue; }
+        const kidMain = kid.type === "INSTANCE" ? await b6MainName(kid) : null;
+        if (kid.type !== "INSTANCE" || !cspec || kidMain !== cspec.of) { nestedOk = false; continue; }
         if ((kid.reactions || []).length) protoOk = false;
-        ids.push(b6MainName(kid) + " id=" + b6MainId(kid) + " [" + b6LiveProps(kid, cspec) + "]");
+        ids.push(kidMain + " id=" + (await b6MainId(kid)) + " [" + b6LiveProps(kid, cspec) + "]");
       }
       inventory.push(
         "  " + body.label + "  root id=" + node.id + "  root=" + node.type + "/" + node.layoutMode +
@@ -3517,12 +3518,13 @@ async function verifyB6() {
     const want = wizSteps[i];
     const cspec = wizSpec.children[i];
     if (!want || kid.type !== "INSTANCE") { orderOk = false; continue; }
-    if (b6MainId(kid) !== wizMain.id) mainOk = false;
+    const kidMainId = await b6MainId(kid);
+    if (kidMainId !== wizMain.id) mainOk = false;
     const live = b6LiveProps(kid, cspec);
     if (live.indexOf("state=" + want.state) === -1) stateOk = false;
     if (allowedStates.indexOf(want.state) === -1) stateOk = false;
     if (live.indexOf("label=" + want.label) === -1) labelOk = false;
-    wizReport.push("    " + (i + 1) + ". " + want.label + " — " + want.state + " — main id=" + b6MainId(kid));
+    wizReport.push("    " + (i + 1) + ". " + want.label + " — " + want.state + " — main id=" + kidMainId);
   }
   add(orderOk, "WizardStepper child order matches DOWNLINE_WIZARD_STEPS position by position (1-8)");
   add(mainOk, "every WizardStepper child resolves to the live B4/B5 ABox/Nav/WizardStep main component (id=" + wizMain.id + ")");
