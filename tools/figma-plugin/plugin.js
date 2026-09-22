@@ -7089,15 +7089,100 @@ async function verifyCurrentApp() {
   return passed;
 }
 
+const CURRENT_APP_DEBRIS_NAMES = ["desktop/", "mobile/", "section/", "section-grid", "prototype-controls", "prototype-control/",
+  "route-local-content", "component-instances", "pattern-instances", "item-", "row", "title", "route-label", "page-title",
+  "runtime-boundaries", "control-label"];
+
+function currentAppLooksLikeDebrisName(name) {
+  const value = String(name || "");
+  return CURRENT_APP_DEBRIS_NAMES.some((prefix) => value === prefix || value.indexOf(prefix) === 0);
+}
+
+/** Classifies a top-level node on 00 Foundations. Read-only; never mutates. */
+async function currentAppFoundationsVerdict(node) {
+  if (node.type === "COMPONENT" || node.type === "COMPONENT_SET") return "UNIDENTIFIED — DO NOT REMOVE";
+  if (node.type !== "FRAME" && node.type !== "TEXT") return "UNIDENTIFIED — DO NOT REMOVE";
+  if (typeof node.getInstancesAsync === "function" && (await node.getInstancesAsync()).length) return "UNIDENTIFIED — DO NOT REMOVE";
+  if ((await b7DescendantInstances(node)).length) return "UNIDENTIFIED — DO NOT REMOVE";
+  if (node.getPluginData("aboxCurrentAppOwner") === "Phase59") return "PHASE 59 TRANSIENT DEBRIS";
+  if (node.getPluginData("aboxBatch")) return "UNIDENTIFIED — DO NOT REMOVE";
+  if (b7RegionNames()[node.name] === true) return "B7 REGION ORPHAN";
+  if (currentAppLooksLikeDebrisName(node.name)) return "PHASE 59 TRANSIENT DEBRIS";
+  return "UNIDENTIFIED — DO NOT REMOVE";
+}
+
+/** READ-ONLY. Reports every top-level node on 00 Foundations with a removal verdict. */
+async function currentAppInspectFoundations() {
+  await figma.loadAllPagesAsync();
+  const page = b7FoundationsPage();
+  say("PHASE 59 — 00 FOUNDATIONS INSPECTION (read-only; nothing is created, moved or removed)");
+  say("  expected top-level nodes : 0");
+  say("  actual top-level nodes   : " + page.children.length);
+  if (!page.children.length) { say("  page is at its protected B0 baseline — Create Current App may proceed."); return; }
+  let debris = 0, unidentified = 0;
+  for (const child of page.children) {
+    const verdict = await currentAppFoundationsVerdict(child);
+    if (verdict === "PHASE 59 TRANSIENT DEBRIS") debris += 1;
+    else unidentified += 1;
+    say("");
+    say("  " + child.name + "  (" + child.type + ")  id=" + child.id);
+    if (child.width != null) say("      size            : " + Math.round(child.width) + " x " + Math.round(child.height));
+    say("      parent page     : " + (child.parent ? child.parent.name : "(none)"));
+    say("      children        : " + ((child.children || []).map((n) => n.name + " [" + n.type + "]").join(", ") || "none"));
+    say("      aboxCurrentAppOwner : " + (child.getPluginData("aboxCurrentAppOwner") || "(none)"));
+    say("      aboxCurrentAppKind  : " + (child.getPluginData("aboxCurrentAppKind") || "(none)"));
+    say("      aboxCurrentAppKey   : " + (child.getPluginData("aboxCurrentAppKey") || "(none)"));
+    say("      aboxBatch           : " + (child.getPluginData("aboxBatch") || "(none)"));
+    say("      aboxKey             : " + (child.getPluginData("aboxKey") || "(none)"));
+    say("      used as main by     : " + (typeof child.getInstancesAsync === "function" ? (await child.getInstancesAsync()).length : 0) + " instance(s)");
+    say("      VERDICT         : " + verdict);
+  }
+  say("");
+  say("  Phase 59 debris: " + debris + " · other nodes: " + unidentified + " of " + page.children.length + " top-level node(s).");
+  if (unidentified) say("  Other nodes must be reviewed by hand — the cleanup command will not touch them.");
+}
+
+/** Removes ONLY nodes verdicted PHASE 59 TRANSIENT DEBRIS on 00 Foundations. */
+async function currentAppCleanupFoundations() {
+  await figma.loadAllPagesAsync();
+  const page = b7FoundationsPage();
+  say("PHASE 59 — 00 FOUNDATIONS DEBRIS REMOVAL");
+  let removed = 0, kept = 0;
+  for (const child of page.children.slice()) {
+    const label = child.name + " id=" + child.id;
+    const verdict = await currentAppFoundationsVerdict(child);
+    if (verdict !== "PHASE 59 TRANSIENT DEBRIS") { kept += 1; say("  KEPT — " + label + " (" + verdict + ")"); continue; }
+    say("  removed Phase 59 debris — " + label);
+    child.remove();
+    removed += 1;
+  }
+  say("");
+  say("  nodes removed: " + removed + "; nodes kept: " + kept + "; only 00 Foundations was touched; nothing was created or modified.");
+  say("  remaining top-level nodes on 00 Foundations: " + page.children.length + " (protected baseline is 0).");
+}
+
 async function currentAppGuarded(label, fn) {
   await figma.loadAllPagesAsync();
   const beforePages = figma.root.children.map((p) => p.id);
   let page = figma.root.children.find((p) => p.name === CURRENT_APP_PAGE);
   const before = page ? page.children.map((n) => n.id) : [];
+  // figma.createFrame/createText append to the active page until reparented, so transient
+  // debris can land on whichever page was open when a run throws (see b7Guarded).
+  const entryPage = figma.currentPage;
+  const entryBefore = {};
+  if (entryPage) for (const n of entryPage.children) entryBefore[n.id] = true;
   try { return await fn(); }
   catch (error) {
     page = figma.root.children.find((p) => p.name === CURRENT_APP_PAGE);
     if (page) for (const child of page.children.slice()) if (before.indexOf(child.id) === -1 && currentAppApprovedNames().indexOf(child.name) !== -1) child.remove();
+    if (entryPage && !entryPage.removed && (!page || entryPage.id !== page.id)) {
+      for (const n of entryPage.children.slice()) {
+        if (entryBefore[n.id]) continue;
+        if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+        say("  rollback : removed transient node left on " + entryPage.name + " — " + n.name + "  id=" + n.id);
+        n.remove();
+      }
+    }
     if (page && beforePages.indexOf(page.id) === -1 && page.children.length === 0 && figma.currentPage.id !== page.id) page.remove();
     say("  guarded rollback completed for " + label);
     throw error;
