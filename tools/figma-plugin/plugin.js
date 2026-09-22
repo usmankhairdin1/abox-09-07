@@ -6915,12 +6915,19 @@ function currentAppAssertProtected() {
   }
 }
 
+function currentAppProtectedSignature(node) {
+  if (node.getPluginData("aboxBatch") === "B8") return JSON.stringify(b8PluginSignature(node));
+  if (node.getPluginData("aboxBatch") === "B9") return JSON.stringify(b9PluginSignature(node));
+  if (node.getPluginData("aboxBatch") === "B10") return JSON.stringify(b10PluginSignature(node));
+  return [node.getPluginData("aboxSignature"), node.getPluginData("aboxKey"), node.getPluginData("aboxBatch")].join("~");
+}
+
 function currentAppProtectedSnapshot() {
   const snapshot = [];
   for (const pageName of T.library.pages) {
     const page = figma.root.children.find((candidate) => candidate.name === pageName);
     if (!page) throw new Error('STOP: protected page missing — "' + pageName + '".');
-    snapshot.push(page.id + ":" + page.name + ":" + page.children.map((node) => [node.id, node.name, node.type, node.getPluginData("aboxSignature"), node.getPluginData("aboxKey"), node.getPluginData("aboxBatch"), (node.reactions || []).length].join("~")).join("|"));
+    snapshot.push(page.id + ":" + page.name + ":" + page.children.map((node) => [node.id, node.name, node.type, currentAppProtectedSignature(node), (node.reactions || []).length].join("~")).join("|"));
   }
   return snapshot.join("||");
 }
@@ -6990,7 +6997,7 @@ async function verifyCurrentApp() {
   const groups = page.children;
   add(figma.root.children.map((p) => p.name).join("|") === aboxApprovedPageNames().join("|"), "protected seven pages remain first and 07 Current App is appended");
   add(groups.length === ABOX_CURRENT_APP.counts.groups && groups.map((g) => g.name).join("|") === currentAppApprovedNames().join("|"), "current-app module groups are complete and ordered");
-  let signatures = true, placement = true, screensOk = true, mobileOk = true, mobileCount = 0, instanceCount = 0, styleBindings = 0, images = true, foundations = true, overlaps = true, reactionCount = 0, reactionsOk = true;
+  let signatures = true, placement = true, screensOk = true, mobileOk = true, mobileCount = 0, instanceCount = 0, styleBindings = 0, images = true, foundations = true, overlaps = true, reactionCount = 0, reactionsOk = true, refsOk = true;
   const map = currentAppScreenMap(page);
   for (const spec of ABOX_CURRENT_APP.groups) {
     const group = currentAppFindGroup(page, spec);
@@ -7002,6 +7009,7 @@ async function verifyCurrentApp() {
       const screenSpec = ABOX_CURRENT_APP.screens.find((s) => s.key === key);
       const p = spec.placements.find((x) => x.key === key);
       if (!screen || !screenSpec || !p || screen.getPluginData("aboxCurrentAppSignature") !== screenSpec.signature) { screensOk = false; continue; }
+      if (screen.getPluginData("aboxCurrentAppB9Key") !== screenSpec.b9Key || screen.getPluginData("aboxCurrentAppB8Refs") !== (screenSpec.b8Refs || []).join("|")) refsOk = false;
       if (screen.x !== p.x || screen.y !== p.y || Math.round(screen.width) !== p.width || Math.round(screen.height) !== p.height) placement = false;
       rectangles.push(p);
       currentAppWalk(screen, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; if (n.type === "INSTANCE") instanceCount += 1; if (n.fillStyleId) styleBindings += 1; if (n.strokeStyleId) styleBindings += 1; if (n.type === "TEXT" && n.textStyleId) styleBindings += 1; });
@@ -7028,6 +7036,7 @@ async function verifyCurrentApp() {
   add(signatures, "all module and screen signatures match the source-derived manifest");
   add(placement && overlaps, "deterministic four-column placement has zero screen overlaps");
   add(Object.keys(map).length === ABOX_CURRENT_APP.counts.screens && screensOk, "all 179 current screen/state identities are native editable frames");
+  add(refsOk, "every imported screen retains its B9 key and source-derived B8 cross-references");
   add(mobileOk && mobileCount === ABOX_CURRENT_APP.counts.mobileCompanions, "all source-proven 390px responsive companions are present and placed deterministically");
   add(images, "no screenshots, HTML embeds or image fills exist");
   add(foundations, "the import creates no components or component sets");
