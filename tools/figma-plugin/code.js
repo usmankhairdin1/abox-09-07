@@ -90775,14 +90775,35 @@ function currentAppLooksLikeDebrisName(name) {
   return CURRENT_APP_DEBRIS_NAMES.some((prefix) => value === prefix || value.indexOf(prefix) === 0);
 }
 
+// Phase 59 stamps written only by currentAppSetData; no B0-B10 batch writes these keys.
+const CURRENT_APP_OWNED_KINDS = { "module-group": /^group:[a-z0-9][a-z0-9-]*$/, "screen": /^current:.+$/, "mobile-screen": /^current:.+:mobile$/ };
+
+/**
+ * Phase 59 ownership proof for a top-level node. Returns a { owned, reason } pair.
+ * Ownership requires the Phase 59 owner stamp AND a known kind AND a key matching that
+ * kind's contract; a lone stray stamp is never enough to authorise removal.
+ */
+function currentAppOwnedVerdict(node) {
+  if (node.getPluginData("aboxCurrentAppOwner") !== "Phase59") return { owned: false, reason: "no Phase 59 owner stamp" };
+  const kind = node.getPluginData("aboxCurrentAppKind") || "";
+  const pattern = Object.prototype.hasOwnProperty.call(CURRENT_APP_OWNED_KINDS, kind) ? CURRENT_APP_OWNED_KINDS[kind] : null;
+  if (!pattern) return { owned: false, reason: 'unknown Phase 59 kind "' + (kind || "(none)") + '"' };
+  const key = node.getPluginData("aboxCurrentAppKey") || "";
+  if (!pattern.test(key)) return { owned: false, reason: 'key "' + (key || "(none)") + '" does not match the ' + kind + " contract" };
+  return { owned: true, reason: "pass (Phase 59 kind + key contract)" };
+}
+
 /** Classifies a top-level node on 00 Foundations. Read-only; never mutates. */
 async function currentAppFoundationsVerdict(node) {
   if (node.type === "COMPONENT" || node.type === "COMPONENT_SET") return "UNIDENTIFIED — DO NOT REMOVE";
   if (node.type !== "FRAME" && node.type !== "TEXT") return "UNIDENTIFIED — DO NOT REMOVE";
   if (typeof node.getInstancesAsync === "function" && (await node.getInstancesAsync()).length) return "UNIDENTIFIED — DO NOT REMOVE";
+  if (node.getPluginData("aboxBatch") || node.getPluginData("aboxKey")) return "UNIDENTIFIED — DO NOT REMOVE";
+  // A Phase 59 group is built out of B4-B7 instances by design, so descendant instances do NOT
+  // disprove ownership here; they only matter for unstamped, name-matched strays below.
+  if (currentAppOwnedVerdict(node).owned) return "PHASE 59 TRANSIENT DEBRIS";
+  if (node.getPluginData("aboxCurrentAppOwner") === "Phase59") return "UNIDENTIFIED — DO NOT REMOVE";
   if ((await b7DescendantInstances(node)).length) return "UNIDENTIFIED — DO NOT REMOVE";
-  if (node.getPluginData("aboxCurrentAppOwner") === "Phase59") return "PHASE 59 TRANSIENT DEBRIS";
-  if (node.getPluginData("aboxBatch")) return "UNIDENTIFIED — DO NOT REMOVE";
   if (b7RegionNames()[node.name] === true) return "B7 REGION ORPHAN";
   if (currentAppLooksLikeDebrisName(node.name)) return "PHASE 59 TRANSIENT DEBRIS";
   return "UNIDENTIFIED — DO NOT REMOVE";
@@ -90812,6 +90833,7 @@ async function currentAppInspectFoundations() {
     say("      aboxBatch           : " + (child.getPluginData("aboxBatch") || "(none)"));
     say("      aboxKey             : " + (child.getPluginData("aboxKey") || "(none)"));
     say("      used as main by     : " + (typeof child.getInstancesAsync === "function" ? (await child.getInstancesAsync()).length : 0) + " instance(s)");
+    say("      ownership check : " + currentAppOwnedVerdict(child).reason);
     say("      VERDICT         : " + verdict);
   }
   say("");
