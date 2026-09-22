@@ -5859,7 +5859,7 @@ async function verifyB9() {
     if (!b9HasRegions(frame)) regionsOk = false;
     if (b9HasImageFill(frame)) imageOk = false;
     if (Object.keys(frame.componentPropertyDefinitions || {}).length) propOk = false;
-    const mains = b8InstanceMainNames(frame);
+    const mains = await b8InstanceMainNames(frame);
     if (spec.shell && spec.shell.name && mains.indexOf(spec.shell.name) === -1) shellOk = false;
     for (const pat of spec.patterns || []) if (mains.indexOf(pat.name) === -1) dependencyOk = false;
     for (const comp of spec.components || []) if (mains.indexOf(comp) === -1) dependencyOk = false;
