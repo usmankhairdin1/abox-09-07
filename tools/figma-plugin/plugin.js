@@ -5521,13 +5521,13 @@ function b9Main(name, batch) {
   throw new Error('STOP: MISSING ' + batch + ' DEPENDENCY — "' + name + '" not found. Run the required prior batch first.');
 }
 
-function b9Instance(name, props, label) {
+async function b9Instance(name, props, label) {
   const main = b9Main(name, name.indexOf("/Shell/") !== -1 ? "B7 SHELL" : name.indexOf("/Pattern/") !== -1 ? "B6 PATTERN" : "B4/B5 COMPONENT");
-  return b8CreateInstance(main, props || {}, label || name.split("/").pop());
+  return await b8CreateInstance(main, props || {}, label || name.split("/").pop());
 }
 
 async function b9MetadataRegion(spec, index) {
-  const region = b7FrameLegacy("metadata/source-and-identity", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("metadata/source-and-identity", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("screen-title", spec.title || spec.name, { size: 18, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   region.appendChild(await b7Text("screen-route", (spec.id || "route") + " · " + (spec.route || "no-route") + " · " + spec.sourceType, { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(await b7Text("screen-purpose", spec.purpose || "Source-backed screen composition.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
