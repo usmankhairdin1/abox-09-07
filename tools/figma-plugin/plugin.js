@@ -6357,7 +6357,8 @@ figma.ui.onmessage = async (msg) => {
     msg.type === "b6-signature-diff" ||
     msg.type === "b6-cleanup-stale-variants" || msg.type === "b6-cleanup-incomplete-patterns";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify" || msg.type === "b7-cleanup-incomplete-shells" ||
-    msg.type === "b7-inspect-foundations-orphans" || msg.type === "b7-cleanup-foundations-orphans";
+    msg.type === "b7-inspect-foundations-orphans" || msg.type === "b7-cleanup-foundations-orphans" ||
+    msg.type === "b7-diagnose-internal-shell";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
   const b10 = msg.type === "b10-run" || msg.type === "b10-verify";
