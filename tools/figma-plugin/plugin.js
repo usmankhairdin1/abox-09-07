@@ -5749,6 +5749,41 @@ function b9HasImageFill(root) {
   return bad;
 }
 
+// Mirrors b8Guarded: on failure, removes only approved B9 nodes created by this run.
+async function b9Guarded(page, label, fn) {
+  const before = {};
+  for (const child of page.children) before[child.id] = true;
+  const currentBefore = {};
+  if (figma.currentPage) for (const n of figma.currentPage.children) currentBefore[n.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const child of page.children.slice()) {
+      if (before[child.id]) continue;
+      if (child.type === "COMPONENT" || child.type === "COMPONENT_SET") continue;
+      if (b9ApprovedNames().indexOf(child.name) === -1) continue;
+      say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
+      child.remove();
+      removed += 1;
+    }
+    let strays = 0;
+    if (figma.currentPage && figma.currentPage.id !== page.id) {
+      for (const n of figma.currentPage.children.slice()) {
+        if (currentBefore[n.id]) continue;
+        if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+        say("  rollback : removed transient node left on " + figma.currentPage.name + " — " + n.name + "  id=" + n.id);
+        n.remove();
+        strays += 1;
+      }
+    }
+    if (!removed && !strays) say("  (" + label + " left no new node on " + B9_PAGE + ")");
+    throw err;
+  }
+}
+
+
+
 async function ensureB9Screens() {
   await figma.loadAllPagesAsync();
   b9CreatedFrames = 0;
