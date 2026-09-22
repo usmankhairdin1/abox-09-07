@@ -4202,9 +4202,7 @@ async function b7EnsureMarketplace(index, page, shell) {
     b7MarketplaceAxis(set, shell);
     for (const variant of shell.variants) {
       const node = b7MarketplaceVariant(set, variant.value);
-      const expected = variant.hasProductRegion
-        ? ["header-pill", "product-switcher-region", "content-region — shell placeholder", "footer-plate", "assistant-launcher-region"]
-        : ["header-pill", "content-region — shell placeholder", "footer-plate", "assistant-launcher-region"];
+      const expected = b7ExpectedPaths(variant.hasProductRegion ? "variant=flow" : "variant=landing");
       if (!b7HasRequiredShape(node, expected)) {
         throw new Error('STOP: LIVE SHELL DIFFERS FROM THE APPROVED DEFINITION — ' + shell.name + " / variant=" + variant.value + ". Nothing was overwritten or deleted.");
       }
@@ -4244,9 +4242,7 @@ async function b7EnsureStandalone(index, page, shell) {
     node = shell.name.indexOf("/Internal") !== -1 ? await b7BuildInternal(index, page, shell) : await b7BuildMember(index, page, shell);
     b7Say("component", shell.name, true);
   } else {
-    const expected = shell.name.indexOf("/Internal") !== -1
-      ? ["desktop-rail", "top-bar", "page-header", "content-region — shell placeholder", "assistant-launcher-region"]
-      : ["header-pill", "member-body", "member-nav", "content-region — shell placeholder", "assistant-launcher-region"];
+    const expected = b7ExpectedPaths(shell.name);
     if (!b7HasRequiredShape(node, expected)) {
       throw new Error('STOP: LIVE SHELL DIFFERS FROM THE APPROVED DEFINITION — ' + shell.name + ". Nothing was overwritten or deleted.");
     }
@@ -4266,6 +4262,27 @@ async function b7EnsureStandalone(index, page, shell) {
 function b7ExpectedRegions(name) {
   if (name === "ABox/Shell/Internal") {
     return ["desktop-rail", "top-bar", "page-header", "content-region — shell placeholder", "assistant-launcher-region"];
+  }
+  if (name === "ABox/Shell/Member") {
+    return ["header-pill", "member-body", "member-nav", "content-region — shell placeholder", "assistant-launcher-region"];
+  }
+  if (name === "variant=flow") {
+    return ["header-pill", "product-switcher-region", "content-region — shell placeholder", "footer-plate", "assistant-launcher-region"];
+  }
+  if (name === "variant=landing") {
+    return ["header-pill", "content-region — shell placeholder", "footer-plate", "assistant-launcher-region"];
+  }
+  return null;
+}
+
+/**
+ * Approved exact descendant paths per shell, as produced by b7NodePaths.
+ * Internal nests four regions under workspace-column/; the other shells keep
+ * every region as a direct child. Exact-match only — no substring/leaf logic.
+ */
+function b7ExpectedPaths(name) {
+  if (name === "ABox/Shell/Internal") {
+    return ["desktop-rail", "workspace-column/top-bar", "workspace-column/page-header", "workspace-column/content-region — shell placeholder", "workspace-column/assistant-launcher-region"];
   }
   if (name === "ABox/Shell/Member") {
     return ["header-pill", "member-body", "member-nav", "content-region — shell placeholder", "assistant-launcher-region"];
@@ -4324,7 +4341,7 @@ async function b7CleanupIncompleteShells() {
   say("B7 INCOMPLETE-SHELL CLEANUP — " + B7_PAGE);
   let removed = 0;
   for (const child of page.children.slice()) {
-    const expected = b7ExpectedRegions(child.name);
+    const expected = b7ExpectedPaths(child.name);
     const live = b7NodePaths(child).map((p) => p.split(":")[1].split("|")[0]);
     if (child.parent !== page) { say("  KEPT — " + child.name + " is not a direct child of the page."); continue; }
     if (child.type === "COMPONENT_SET") { say("  KEPT — " + child.name + " id=" + child.id + " is a Component Set."); continue; }
@@ -4519,7 +4536,7 @@ async function b7DiagnoseInternalShell() {
   say("    on approved page  : " + (node.parent === page ? "yes" : "NO — " + B7_PAGE + " is expected"));
   say("    builder resolves  : yes (b4FindComponent returned this node)");
 
-  const expected = b7ExpectedRegions(shellName) || [];
+  const expected = b7ExpectedPaths(shellName) || [];
   const paths = b7NodePaths(node);
   const liveNames = paths.map((p) => p.split(":")[1].split("|")[0]);
   const leafNames = liveNames.map((p) => p.split("/").pop());
