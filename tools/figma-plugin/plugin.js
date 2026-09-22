@@ -6526,7 +6526,6 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b7CleanupIncompleteShells();
-    } else if (msg.type === "b7-inspect-foundations-orphans") {
     } else if (msg.type === "b7-diagnose-internal-shell") {
       say("ABox Phase 54 / Batch B7 — diagnose Internal shell (read-only)");
       say("file: " + figma.root.name);
