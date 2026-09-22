@@ -46955,6 +46955,42 @@ async function verifyB7() {
 const B8_PAGE = "04 Experiences";
 var b8Created = 0;
 
+// Async frame helper for B8 only — documentAccess: dynamic-page forbids the
+// synchronous style-id setters used by b7FrameLegacy (which stays untouched for
+// the B9/B10 builders).
+async function b8Frame(name, opts, index) {
+  const node = figma.createFrame();
+  node.name = name;
+  node.layoutMode = opts.layout || "VERTICAL";
+  node.layoutWrap = opts.wrap || "NO_WRAP";
+  node.primaryAxisSizingMode = opts.primarySizing || "AUTO";
+  node.counterAxisSizingMode = opts.counterSizing || "AUTO";
+  node.primaryAxisAlignItems = opts.justify || "MIN";
+  node.counterAxisAlignItems = opts.align || "MIN";
+  node.itemSpacing = opts.gap || 0;
+  if (node.layoutWrap === "WRAP") node.counterAxisSpacing = opts.counterGap || 0;
+  node.paddingLeft = opts.pl != null ? opts.pl : opts.px || 0;
+  node.paddingRight = opts.pr != null ? opts.pr : opts.px || 0;
+  node.paddingTop = opts.pt != null ? opts.pt : opts.py || 0;
+  node.paddingBottom = opts.pb != null ? opts.pb : opts.py || 0;
+  node.cornerRadius = opts.radius || 0;
+  if (opts.fillStyle) await node.setFillStyleIdAsync(b4Style(index, "paint", opts.fillStyle).id);
+  else node.fills = [];
+  if (opts.strokeStyle) {
+    await node.setStrokeStyleIdAsync(b4Style(index, "paint", opts.strokeStyle).id);
+    node.strokeWeight = opts.strokeWeight || 1;
+  } else {
+    node.strokes = [];
+  }
+  if (opts.effectStyle) await node.setEffectStyleIdAsync(b4Style(index, "effect", opts.effectStyle).id);
+  if (opts.w || opts.h) {
+    node.resize(opts.w || node.width, opts.h || node.height);
+    if (opts.w) node.primaryAxisSizingMode = opts.primarySizing || node.primaryAxisSizingMode;
+    if (opts.h) node.counterAxisSizingMode = opts.counterSizing || node.counterAxisSizingMode;
+  }
+  return node;
+}
+
 function b8Page() {
   const page = figma.root.children.filter((p) => p.name === B8_PAGE);
   if (page.length !== 1) {
@@ -47009,20 +47045,20 @@ function b8ComponentMain(name) {
   throw new Error('STOP: MISSING B4/B5 COMPONENT — "' + name + '" not found. Run B4/B5 first.');
 }
 
-function b8MainName(inst) {
-  const main = inst.mainComponent;
+async function b8MainName(inst) {
+  const main = await inst.getMainComponentAsync();
   if (!main) return "MISSING";
   if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.name;
   return main.name;
 }
 
-function b8SetInstanceProps(inst, props) {
+async function b8SetInstanceProps(inst, props) {
   const defs = inst.componentProperties || {};
   const out = {};
   for (const name of Object.keys(props || {})) {
     if (name === "product") continue; // B7 records product as metadata only.
     const keys = Object.keys(defs).filter((k) => k.split("#")[0] === name);
-    if (keys.length === 0) throw new Error('STOP: MISSING INSTANCE PROPERTY — "' + name + '" is not available on "' + b8MainName(inst) + '".');
+    if (keys.length === 0) throw new Error('STOP: MISSING INSTANCE PROPERTY — "' + name + '" is not available on "' + (await b8MainName(inst)) + '".');
     if (keys.length > 1) throw new Error('STOP: instance property "' + name + '" resolves to ' + keys.length + " definitions.");
     out[keys[0]] = props[name];
   }
@@ -47041,17 +47077,17 @@ function b8VariantChild(main, props) {
   return main.defaultVariant || main.children[0];
 }
 
-function b8CreateInstance(main, props, name) {
+async function b8CreateInstance(main, props, name) {
   const source = b8VariantChild(main, props || {});
   const inst = source.createInstance();
-  b8SetInstanceProps(inst, props || {});
+  await b8SetInstanceProps(inst, props || {});
   inst.name = name || main.name.split("/").pop();
   return inst;
 }
 
-function b8ShellInstance(spec) {
+async function b8ShellInstance(spec) {
   const main = b8ShellMain(spec.shell.name);
-  const inst = b8CreateInstance(main, spec.shell.overrides || {}, "shell-reference-instance");
+  const inst = await b8CreateInstance(main, spec.shell.overrides || {}, "shell-reference-instance");
   inst.setPluginData("aboxB8Reference", spec.shell.name);
   const meta = [];
   for (const k of Object.keys(spec.shell.overrides || {}).sort()) meta.push(k + "=" + String(spec.shell.overrides[k]));
@@ -47059,22 +47095,22 @@ function b8ShellInstance(spec) {
   return inst;
 }
 
-function b8PatternInstance(pat) {
+async function b8PatternInstance(pat) {
   const main = b8PatternMain(pat.name);
-  const inst = b8CreateInstance(main, pat.variant || {}, pat.name.split("/").pop());
+  const inst = await b8CreateInstance(main, pat.variant || {}, pat.name.split("/").pop());
   inst.setPluginData("aboxB8Reference", pat.name);
   return inst;
 }
 
-function b8ComponentInstance(comp) {
+async function b8ComponentInstance(comp) {
   const main = b8ComponentMain(comp.name);
-  const inst = b8CreateInstance(main, {}, comp.name.split("/").pop());
+  const inst = await b8CreateInstance(main, {}, comp.name.split("/").pop());
   inst.setPluginData("aboxB8Reference", comp.name);
   return inst;
 }
 
 async function b8Card(title, body, source, index) {
-  const card = b7FrameLegacy("state-card", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", w: 300, primarySizing: "FIXED" }, index);
+  const card = await b8Frame("state-card", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", w: 300, primarySizing: "FIXED" }, index);
   card.appendChild(await b7Text("state-title", title, { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   card.appendChild(await b7Text("state-body", body, { size: 13, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   card.appendChild(await b7Text("state-source", source, { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
@@ -47082,7 +47118,7 @@ async function b8Card(title, body, source, index) {
 }
 
 async function b8MetadataRegion(spec, index) {
-  const region = b7FrameLegacy("metadata/source-and-limitations", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("metadata/source-and-limitations", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("experience-name", spec.name, { size: 14, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   region.appendChild(await b7Text("experience-kind", spec.type + " · source-derived reference composition · no B8 properties/prototypes", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(await b7Text("source-list", spec.sources.join("\n"), { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
@@ -47091,32 +47127,32 @@ async function b8MetadataRegion(spec, index) {
 }
 
 async function b8ShellRegion(spec, index) {
-  const region = b7FrameLegacy("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "B7 shell instance", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  region.appendChild(b8ShellInstance(spec));
+  region.appendChild(await b8ShellInstance(spec));
   return region;
 }
 
 async function b8SequenceRegion(spec, index) {
-  const region = b7FrameLegacy("journey-sequence", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("journey-sequence", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Journey states", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  const row = b7FrameLegacy("state-cards", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
+  const row = await b8Frame("state-cards", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
   for (const item of spec.sequence) row.appendChild(await b8Card(item.title, item.body, item.source, index));
   region.appendChild(row);
   return region;
 }
 
 async function b8ContentRegion(spec, index) {
-  const region = b7FrameLegacy("representative-content", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("representative-content", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Existing foundations used", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  const patternRow = b7FrameLegacy("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
-  for (const pat of spec.patterns || []) patternRow.appendChild(b8PatternInstance(pat));
+  const patternRow = await b8Frame("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
+  for (const pat of spec.patterns || []) patternRow.appendChild(await b8PatternInstance(pat));
   if (!(spec.patterns || []).length) patternRow.appendChild(await b7Text("no-b6-pattern", "No B6 pattern applies to this journey; route-local composition remains editable native content.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(patternRow);
-  const componentRow = b7FrameLegacy("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
-  for (const comp of spec.components || []) componentRow.appendChild(b8ComponentInstance(comp));
+  const componentRow = await b8Frame("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
+  for (const comp of spec.components || []) componentRow.appendChild(await b8ComponentInstance(comp));
   region.appendChild(componentRow);
-  const native = b7FrameLegacy("route-composition-notes", { layout: "VERTICAL", gap: 8, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const native = await b8Frame("route-composition-notes", { layout: "VERTICAL", gap: 8, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   native.appendChild(await b7Text("note-title", "Editable route content", { size: 13, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   native.appendChild(await b7Text("note-body", spec.sequence.map((s) => s.title + ": " + s.body).join("\n"), { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(native);
@@ -47136,8 +47172,8 @@ async function b8BuildFrame(spec, placement, index, page) {
   root.resize(ABOX_B8.layout.frameWidth, 1000);
   root.x = placement.x;
   root.y = placement.y;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
-  root.strokeStyleId = b4Style(index, "paint", "ABox/Semantic/hairline").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
+  await root.setStrokeStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/hairline").id);
   root.strokeWeight = 1;
   root.cornerRadius = 24;
   b8SetPluginData(root, spec);
@@ -47174,6 +47210,41 @@ function b8AssertReusable(frame, spec) {
   }
   if (!b8HasRegions(frame)) {
     throw new Error('STOP: LIVE EXPERIENCE STRUCTURE DIFFERS FROM APPROVED B8 REGIONS — "' + spec.name + '". Nothing was overwritten or deleted.');
+  }
+}
+
+/** Rollback guard in the B7 style: on throw, remove only nodes created during this run —
+ *  new approved-name B8 frames on 04 Experiences and transient debris on the active page.
+ *  Never removes a pre-existing node or a COMPONENT / COMPONENT_SET. */
+async function b8Guarded(page, label, fn) {
+  const before = {};
+  for (const child of page.children) before[child.id] = true;
+  const currentBefore = {};
+  if (figma.currentPage) for (const n of figma.currentPage.children) currentBefore[n.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const child of page.children.slice()) {
+      if (before[child.id]) continue;
+      if (child.type === "COMPONENT" || child.type === "COMPONENT_SET") continue;
+      if (b8ApprovedNames().indexOf(child.name) === -1) continue;
+      say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
+      child.remove();
+      removed += 1;
+    }
+    let strays = 0;
+    if (figma.currentPage && figma.currentPage.id !== page.id) {
+      for (const n of figma.currentPage.children.slice()) {
+        if (currentBefore[n.id]) continue;
+        if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+        say("  rollback : removed transient node left on " + figma.currentPage.name + " — " + n.name + "  id=" + n.id);
+        n.remove();
+        strays += 1;
+      }
+    }
+    if (!removed && !strays) say("  (" + label + " left no new node on " + B8_PAGE + ")");
+    throw err;
   }
 }
 
@@ -47221,11 +47292,13 @@ function b8Walk(root, fn) {
   for (const c of root.children || []) b8Walk(c, fn);
 }
 
-function b8InstanceMainNames(root) {
+async function b8InstanceMainNames(root) {
   const names = [];
+  const instances = [];
   b8Walk(root, (n) => {
-    if (n.type === "INSTANCE") names.push(b8MainName(n));
+    if (n.type === "INSTANCE") instances.push(n);
   });
+  for (const inst of instances) names.push(await b8MainName(inst));
   return names;
 }
 
@@ -47252,8 +47325,29 @@ async function verifyB8() {
 
   const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
   add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
-  const emptyPages = figma.root.children.filter((p) => ["00 Foundations", "05 Screens", "06 Documentation"].indexOf(p.name) !== -1);
-  add(emptyPages.every((p) => p.children.length === 0), "00 Foundations, 05 Screens and 06 Documentation remain empty during B8");
+  // "06 Documentation" may hold exactly the approved B10 frames — same allowance verifyB5/verifyB7/verifyB9 already carry.
+  const b8Writable = [B4_PAGE, B6_PAGE, B7_PAGE, B8_PAGE];
+  const b8PageEvidence = [];
+  for (const p of figma.root.children) {
+    if (b8Writable.indexOf(p.name) !== -1) continue;
+    if (p.name === B10_PAGE) {
+      const docNames = p.children.map((n) => n.name);
+      if (docNames.length === 0 || docNames.join("|") === b10ApprovedNames().join("|")) continue;
+    }
+    for (const child of p.children) {
+      if (b8PageEvidence.length >= 40) break;
+      b8PageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
+    }
+  }
+  add(
+    b8PageEvidence.length === 0,
+    "00 Foundations and 05 Screens remain empty; 06 Documentation may hold the approved B10 frames — unexpected nodes: " + b8PageEvidence.length,
+  );
+  if (b8PageEvidence.length) {
+    say("");
+    say("B8 PAGE EVIDENCE");
+    for (const line of b8PageEvidence) say(line);
+  }
 
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const b1Names = ABOX_B1.collections.map((c) => c.name);
@@ -48579,7 +48673,8 @@ figma.ui.onmessage = async (msg) => {
       say("file: " + figma.root.name);
       requireFile(T.library.targetFileName);
       say("");
-      await ensureB8Experiences();
+      await figma.loadAllPagesAsync();
+      await b8Guarded(b8Page(), "Batch B8 — experiences", ensureB8Experiences);
       await verifyB8();
     } else if (msg.type === "b8-verify") {
       say("ABox Phase 55 / Batch B8 — verify only");
