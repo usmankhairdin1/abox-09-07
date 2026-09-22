@@ -624,7 +624,30 @@ Static safety checks run offline after every rebuild:
 `'h' is not defined` rollback — and `node tools/figma-plugin/check-current-app-mobile.mjs`
 executes `currentAppBuildMobile` against all 87 manifest companions with stubbed Figma
 helpers, asserting 390px width, the computed fixed height, frame naming and plugin-data
-stamping. Both must pass before a Figma Desktop attempt.
+stamping. `node tools/figma-plugin/check-current-app-guard.mjs` executes `currentAppGuarded`
+with stubbed pages and proves a transient node left on the active page by a failing run is
+swept, while pre-existing and component nodes are preserved. All three must pass before a
+Figma Desktop attempt.
+
+### 00 Foundations protection (Phase 59)
+
+`figma.createFrame`/`createText` attach new nodes to the active page until they are
+reparented, so a Phase 59 run that threw mid-build could leave debris on whichever page was
+open — which is what made preflight stop with
+`protected page "00 Foundations" count differs`. The importer now pins the working page to
+`07 Current App` before building, and `currentAppGuarded` sweeps transient strays left on the
+entry page. The protected expectation (`00 Foundations: 0`) is unchanged and still checked
+before any write; on mismatch the log prints expected vs actual and every offending node
+name, type, id and owner.
+
+Two evidence-gated commands support recovery:
+**Inspect 00 Foundations (read-only)** reports every top-level node with plugin-data stamps
+and a verdict (`PHASE 59 TRANSIENT DEBRIS`, `B7 REGION ORPHAN`, `UNIDENTIFIED — DO NOT
+REMOVE`), and **Remove Phase 59 debris on 00 Foundations** deletes only nodes verdicted as
+Phase 59 debris. Nothing is ever removed automatically, and `UNIDENTIFIED` nodes are always
+kept for manual review.
+
+
 
 Real evidence requires **Create Current App** → **Verify Current App** → **Create Current
 App** → **Verify Current App** in Figma Desktop, with zero creations on the second run,

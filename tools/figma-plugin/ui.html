@@ -153,6 +153,8 @@
     </p>
     <button id="currentrun">Create Current App</button>
     <button id="currentverify" class="secondary">Verify Current App</button>
+    <button id="currentinspectfoundations" class="secondary">Inspect 00 Foundations (read-only)</button>
+    <button id="currentcleanfoundations" class="secondary">Remove Phase 59 debris on 00 Foundations</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -306,6 +308,14 @@
       document.getElementById("currentverify").onclick = () => {
         log.textContent = "Verifying current application screens…";
         parent.postMessage({ pluginMessage: { type: "current-app-verify" } }, "*");
+      };
+      document.getElementById("currentinspectfoundations").onclick = () => {
+        log.textContent = "Inspecting 00 Foundations…";
+        parent.postMessage({ pluginMessage: { type: "current-app-inspect-foundations" } }, "*");
+      };
+      document.getElementById("currentcleanfoundations").onclick = () => {
+        log.textContent = "Removing Phase 59 debris on 00 Foundations…";
+        parent.postMessage({ pluginMessage: { type: "current-app-cleanup-foundations" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
