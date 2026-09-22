@@ -82,6 +82,7 @@ const ABOX_TOKENS = {
       "05 Screens",
       "06 Documentation",
     ],
+    additivePages: ["07 Current App"],
   },
 };
 

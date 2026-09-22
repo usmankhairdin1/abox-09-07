@@ -593,3 +593,27 @@ Evidence label: REAL FIGMA NOT VERIFIED for the Phase 58 sweep until that sequen
 executed and its per-batch results are recorded here. The B10 documentation frames
 keep their literal "REAL FIGMA NOT VERIFIED" text in Figma — `verifyB10` asserts it —
 so closure evidence is recorded in this repository only, never by editing Figma text.
+
+## Phase 59 — current application fidelity import
+
+Buttons: **Create Current App** (`current-app-run`) and **Verify Current App**
+(`current-app-verify`). `extract-current-app.mjs` derives its inventory from current
+production routes and the closed B9 identity/interaction manifest, then writes
+`tokens-current-app.js`. The result is additive and writes only to `07 Current App`.
+
+The page contains deterministic module group frames with native editable 1440px screen
+compositions and 390px companions only where responsive source evidence exists. Existing
+B4/B5 components, B6 patterns and B7 shells are live instances. Tables, plan cards,
+charts, overlays and other structures without an approved foundation remain route-local
+Frames and Text; they are not promoted to components. Existing B1–B3 styles are resolved
+by live IDs.
+
+All 179 protected B9 identities are cross-referenced, and all 682 deterministic B9
+interactions are remapped between corresponding current-app frames. Runtime, dynamic,
+external or ambiguous behavior remains metadata only. The import creates no variables,
+styles, components, component sets, patterns or shells and never mutates B0–B10 objects.
+
+Real evidence requires **Create Current App** → **Verify Current App** → **Create Current
+App** → **Verify Current App** in Figma Desktop, with zero creations on the second run,
+unchanged IDs/signatures/coordinates, no overlaps or image fills, and a final B0–B10
+verify sweep. Until then the result is `REAL FIGMA NOT VERIFIED`.
