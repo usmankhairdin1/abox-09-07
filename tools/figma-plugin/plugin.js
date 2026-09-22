@@ -440,32 +440,76 @@ async function verifyLibraryPages() {
   const textStyles = await figma.getLocalTextStylesAsync();
   const effectStyles = await figma.getLocalEffectStylesAsync();
   const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const b3Text = typeof ABOX_B3 === "undefined" ? [] : (ABOX_B3.textStyles || []).map((s) => s.name);
+  const b3Effect = typeof ABOX_B3 === "undefined" ? [] : (ABOX_B3.effectStyles || []).map((s) => s.name);
+
+  // Closure-time allowances: B1 collections and the approved B3 style inventory are
+  // required to exist once those batches have run. Anything outside them still fails.
   const unexpectedCollections = collections.filter((c) => b1Names.indexOf(c.name) === -1);
-  say(
-    "  local objects: collections=" +
-      collections.length +
-      " textStyles=" +
-      textStyles.length +
-      " effectStyles=" +
-      effectStyles.length,
-  );
-  add(
-    unexpectedCollections.length === 0 && textStyles.length === 0 && effectStyles.length === 0,
-    "no variables outside the approved B1 collections, and no text or effect styles",
-  );
+  const unexpectedText = textStyles.filter((s) => b3Text.indexOf(s.name) === -1);
+  const unexpectedEffect = effectStyles.filter((s) => b3Effect.indexOf(s.name) === -1);
+  if (unexpectedCollections.length) say("  unexpected collections: " + unexpectedCollections.map((c) => c.name).join(", "));
+  if (unexpectedText.length) say("  unexpected text styles: " + unexpectedText.map((s) => s.name).join(", "));
+  if (unexpectedEffect.length) say("  unexpected effect styles: " + unexpectedEffect.map((s) => s.name).join(", "));
+  add(unexpectedCollections.length === 0, "no variable collections outside the approved B1 inventory");
+  add(unexpectedText.length === 0, "no text styles outside the approved B3 inventory");
+  add(unexpectedEffect.length === 0, "no effect styles outside the approved B3 inventory");
+
+  // Approved component identities: B4 sets and standalone components, B7 shells.
+  const approvedComponents = {};
+  if (typeof ABOX_B4 !== "undefined") {
+    for (const s of ABOX_B4.sets) approvedComponents[s.name] = true;
+    for (const s of ABOX_B4.components) approvedComponents[s.name] = true;
+  }
+  if (typeof ABOX_B7 !== "undefined") {
+    for (const s of ABOX_B7.shells) approvedComponents[s.name] = true;
+  }
 
   let nodeCount = 0;
   let imageFills = 0;
-  let components = 0;
+  let componentTotal = 0;
+  const unexpectedComponents = [];
   for (const page of children) {
     nodeCount += page.children.length;
-    components += page.findAll((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET").length;
+    const found = page.findAll((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET");
+    componentTotal += found.length;
+    for (const n of found) {
+      // Variant children of an approved COMPONENT_SET are part of that approved identity.
+      const owner = n.parent && n.parent.type === "COMPONENT_SET" ? n.parent : null;
+      if (owner && approvedComponents[owner.name] === true) continue;
+      if (approvedComponents[n.name] === true) continue;
+      unexpectedComponents.push("  " + page.name + " › " + n.name + " (" + n.type + ")  id=" + n.id);
+    }
     imageFills += page.findAll(
       (n) => Array.isArray(n.fills) && n.fills.some((f) => f && f.type === "IMAGE"),
     ).length;
   }
-  add(components === 0, "no components or component sets created by this batch");
+  if (unexpectedComponents.length) {
+    say("  B0 COMPONENT EVIDENCE");
+    unexpectedComponents.slice(0, 40).forEach((line) => say(line));
+  }
+  add(
+    unexpectedComponents.length === 0,
+    "no components or component sets outside the approved B4/B5/B7 inventory",
+  );
   add(imageFills === 0, "no image fills anywhere in the file (nothing flattened)");
+
+  say("");
+  say("B0 INVENTORY");
+  say(
+    "  collections=" +
+      collections.length +
+      " textStyles=" +
+      textStyles.length +
+      " effectStyles=" +
+      effectStyles.length +
+      " componentNodes=" +
+      componentTotal,
+  );
+  children.forEach((page) => {
+    const c = page.findAll((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET").length;
+    say("  " + page.name + ": topLevel=" + page.children.length + " componentNodes=" + c);
+  });
   say("  top-level nodes across all pages: " + nodeCount);
 
   say("");
