@@ -1,0 +1,90 @@
+# B7 — read-only diagnosis of the Create-shells idempotency stop
+
+`Create shells` now stops on the existing live `ABox/Shell/Internal` (root `10:58`) with
+`STOP: LIVE SHELL DIFFERS FROM THE APPROVED DEFINITION`. Nothing was created, overwritten or
+deleted. The goal of this batch is a read-only diagnostic that names the exact mismatch.
+
+## What the idempotent path actually compares today
+
+- `b7EnsureStandalone` (plugin.js ~4238) finds the live component, then calls
+  `b7HasRequiredShape(node, expected)` with the Internal region list
+  `desktop-rail, top-bar, page-header, content-region — shell placeholder, assistant-launcher-region`.
+- `b7HasRequiredShape` (~3995) reduces `b7NodePaths(root)` to descendant **path names** and
+  requires every expected name to be present. It compares nothing else — not layout, fills,
+  styles, radii, text, child order, nested component ids or component properties.
+- So the stop can only mean: at least one of those five region names is not found anywhere in the
+  live subtree of `10:58`, under that exact string (the em-dash placeholder name included).
+
+The previous `Verify shells` PASS is consistent with this: `verifyB7` checks the marketplace
+variants with `b7HasRequiredShape` but proves the Internal shell through other assertions, so a
+single missing/renamed region on Internal can pass Verify and still stop Create.
+
+Most probable cause given the last session: the newly added rollback/orphan sweeps removed
+top-level `desktop-rail` frames from `00 Foundations`; if the live shell's own `desktop-rail`
+was one of those transient nodes that had not yet been reparented at sweep time, the live
+Internal shell is now missing that region. The diagnostic must confirm or refute this from
+live evidence rather than assume it.
+
+## Deliverable — one new read-only command
+
+Add `b7DiagnoseInternalShell()` plus a `b7-diagnose-internal-shell` message type and a
+**"Diagnose B7 Internal shell (read-only)"** button in `ui.html`. It performs zero writes: no
+create, no delete, no reparent, no property mutation, no style or text change.
+
+The report prints, for the live `ABox/Shell/Internal`:
+
+1. **Identity** — node id, type, parent page name, whether it is the node the builder resolves.
+2. **Shape verdict** — the approved expected region list, the live descendant name list, and an
+   explicit PRESENT/MISSING line per expected region, plus the exact first missing name. This is
+   the assertion that actually fired.
+3. **Near-miss detection** — for any MISSING region, the closest live names (case-insensitive,
+   whitespace/dash-normalised comparison) so a renamed or dash-variant region is visible rather
+   than reported only as absent.
+4. **Full structural evidence** for the root and every descendant, so a non-shape cause would be
+   visible too: name, type, layoutMode/wrap, primary and counter axis sizing and alignment,
+   padding, itemSpacing/counterAxisSpacing, width/height, cornerRadius, fills/strokes/effects with
+   resolved **style names** (via the live paint/effect style index, not raw ids), stroke weights,
+   `characters` for TEXT nodes, `componentPropertyReferences`, and for INSTANCE nodes the main
+   component name and id via `getMainComponentAsync`.
+5. **Component properties** — `componentPropertyDefinitions` on the live root versus the approved
+   `tokens-b7.js` property list (`pageTitle`, `eyebrow`, `entity`), including each definition's
+   type, default value, and which live node carries the matching reference.
+6. **Classification** — the report ends with one of:
+   - `CLASSIFICATION: GENUINE CONSTRUCTION MISMATCH` — an approved region is absent from the live
+     subtree and no near-miss explains it (the shell lost a node);
+   - `CLASSIFICATION: EXPECTED/GENERATED VALUE MISMATCH` — the region exists but under a different
+     generated name/character than the expected literal;
+   - `CLASSIFICATION: IDEMPOTENCY CONTRACT DEFECT` — all five regions are present and the stop is
+     not reproducible from the live tree, meaning the diff path itself is at fault.
+
+Marketplace and Member shells are read for context only in the page listing; they are not
+compared, mutated or touched.
+
+## Guarantees
+
+- Read-only: the command only reads nodes and the live style index; the existing `b7HasRequiredShape`
+  assertion and `b7EnsureStandalone` stop stay exactly as they are and are not bypassed or weakened.
+- No change to `verifyB7`, B0–B6 logic, `tokens-b7.js`, the approved shell inventory, regions,
+  properties, variants, rollback guard or cleanup commands.
+- No change to `src/**`.
+- Ids `10:58`, `10:113`, `10:188`, `10:242` and all B0–B6 ids are untouched — nothing is written.
+
+## Files touched
+
+- `tools/figma-plugin/plugin.js` — new `b7DiagnoseInternalShell()` near the other B7 inspectors,
+  plus one message-handler case.
+- `tools/figma-plugin/ui.html` — one button in the B7 section.
+- `tools/figma-plugin/code.js` — regenerated by the build step.
+
+## Validation
+
+```
+node --check tools/figma-plugin/plugin.js
+node tools/figma-plugin/build.mjs
+node --check tools/figma-plugin/code.js
+git diff --stat -- src/      # must be empty
+```
+
+Then, after copying `code.js`/`ui.html` locally and reloading the development plugin: run
+**Diagnose B7 Internal shell (read-only)** only, and send the output. No Create, no cleanup, no
+B8 work until the classification is agreed.
