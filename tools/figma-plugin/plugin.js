@@ -4513,13 +4513,21 @@ function b7PaintSummary(paints) {
  * mutates nothing.
  */
 async function b7DiagnoseInternalShell() {
+  await b7DiagnoseShell("ABox/Shell/Internal");
+}
+
+async function b7DiagnoseMemberShell() {
+  await b7DiagnoseShell("ABox/Shell/Member");
+}
+
+async function b7DiagnoseShell(shellName) {
   await figma.loadAllPagesAsync();
-  const shellName = "ABox/Shell/Internal";
   const page = b7Page();
   const index = await b4StyleIndex();
   const shell = ABOX_B7.shells.filter((s) => s.name === shellName)[0] || null;
-  say("B7 INTERNAL SHELL DIAGNOSIS — read-only; nothing is created, modified or deleted.");
+  say("B7 SHELL DIAGNOSIS — " + shellName + " — read-only; nothing is created, modified or deleted.");
   say("  page inventory (" + B7_PAGE + "): " + (page.children.map((n) => n.name + " [" + n.type + "] id=" + n.id).join(", ") || "empty"));
+
 
   const node = b4FindComponent(shellName);
   if (!node) {
@@ -6375,7 +6383,7 @@ figma.ui.onmessage = async (msg) => {
     msg.type === "b6-cleanup-stale-variants" || msg.type === "b6-cleanup-incomplete-patterns";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify" || msg.type === "b7-cleanup-incomplete-shells" ||
     msg.type === "b7-inspect-foundations-orphans" || msg.type === "b7-cleanup-foundations-orphans" ||
-    msg.type === "b7-diagnose-internal-shell";
+    msg.type === "b7-diagnose-internal-shell" || msg.type === "b7-diagnose-member-shell";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
   const b10 = msg.type === "b10-run" || msg.type === "b10-verify";
@@ -6549,6 +6557,13 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b7DiagnoseInternalShell();
+    } else if (msg.type === "b7-diagnose-member-shell") {
+      say("ABox Phase 54 / Batch B7 — diagnose Member shell (read-only)");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b7DiagnoseMemberShell();
+
     } else if (msg.type === "b7-inspect-foundations-orphans") {
       say("ABox Phase 54 / Batch B7 — inspect 00 Foundations orphans (read-only)");
       say("file: " + figma.root.name);

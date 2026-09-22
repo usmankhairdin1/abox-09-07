@@ -117,6 +117,8 @@
     <button id="b7verify" class="secondary">Verify shells</button>
     <button id="b7incomplete" class="secondary">Remove incomplete B7 shell nodes</button>
     <button id="b7diagnose" class="secondary">Diagnose B7 Internal shell (read-only)</button>
+    <button id="b7diagnosemember" class="secondary">Diagnose B7 Member shell (read-only)</button>
+
     <button id="b7inspectfound" class="secondary">Inspect 00 Foundations orphans (read-only)</button>
     <button id="b7cleanfound" class="secondary">Remove B7 orphan frames on 00 Foundations</button>
     <p>
@@ -252,7 +254,12 @@
         log.textContent = "Diagnosing B7 Internal shell…";
         parent.postMessage({ pluginMessage: { type: "b7-diagnose-internal-shell" } }, "*");
       };
+      document.getElementById("b7diagnosemember").onclick = () => {
+        log.textContent = "Diagnosing B7 Member shell…";
+        parent.postMessage({ pluginMessage: { type: "b7-diagnose-member-shell" } }, "*");
+      };
       document.getElementById("b7inspectfound").onclick = () => {
+
         log.textContent = "Inspecting 00 Foundations orphans…";
         parent.postMessage({ pluginMessage: { type: "b7-inspect-foundations-orphans" } }, "*");
       };
