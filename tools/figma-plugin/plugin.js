@@ -5536,10 +5536,10 @@ async function b9MetadataRegion(spec, index) {
 }
 
 async function b9ShellRegion(spec, index) {
-  const region = b7FrameLegacy("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", spec.shell && spec.shell.name ? "B7 shell instance" : "Standalone/public route", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   if (spec.shell && spec.shell.name) {
-    const inst = b9Instance(spec.shell.name, spec.shell.overrides || {}, "shell-reference-instance");
+    const inst = await b9Instance(spec.shell.name, spec.shell.overrides || {}, "shell-reference-instance");
     inst.setPluginData("aboxB9Reference", spec.shell.name);
     region.appendChild(inst);
   } else {
