@@ -6776,7 +6776,8 @@ figma.ui.onmessage = async (msg) => {
       say("file: " + figma.root.name);
       requireFile(T.library.targetFileName);
       say("");
-      await ensureB10Documentation();
+      await figma.loadAllPagesAsync();
+      await b10Guarded(b10Page(), "Batch B10 — documentation", ensureB10Documentation);
       await verifyB10();
     } else if (msg.type === "b10-verify") {
       say("ABox Phase 57 / Batch B10 — verify only");
