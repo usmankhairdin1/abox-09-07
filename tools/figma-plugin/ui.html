@@ -248,6 +248,10 @@
         log.textContent = "Removing incomplete B7 shell nodes…";
         parent.postMessage({ pluginMessage: { type: "b7-cleanup-incomplete-shells" } }, "*");
       };
+      document.getElementById("b7diagnose").onclick = () => {
+        log.textContent = "Diagnosing B7 Internal shell…";
+        parent.postMessage({ pluginMessage: { type: "b7-diagnose-internal-shell" } }, "*");
+      };
       document.getElementById("b7inspectfound").onclick = () => {
         log.textContent = "Inspecting 00 Foundations orphans…";
         parent.postMessage({ pluginMessage: { type: "b7-inspect-foundations-orphans" } }, "*");
