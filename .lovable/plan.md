@@ -16,6 +16,8 @@ Implementation will be limited to the Figma plugin/reference layer. It will not 
 
 The existing B8 five experience frames, B9 179 screen/state reference frames and 682 reactions, and B10 ten documentation frames remain unchanged. New high-fidelity artifacts will go only on a new page appended after the protected pages: **`07 Current App`**. This page is an import workspace, not a foundation page. Its creation and all Figma writes require a later approved implementation phase.
 
+The implementation must version the global page verifier to permit this one appended page while continuing to assert that the first seven pages, their order, approved names, IDs, counts, and signatures are unchanged. This is a new-phase page-manifest extension, not a reopening or mutation of B0–B10 and not a governed “B11” batch.
+
 ## 2. Sources to inspect and extract
 
 The implementation extractor will use these authorities, in this order:
@@ -173,6 +175,7 @@ Expected plugin/reference-layer changes only:
 
 - new `tools/figma-plugin/extract-current-app.mjs`
 - generated `tools/figma-plugin/tokens-current-app.js`
+- `tools/figma-plugin/tokens.js` only to append `07 Current App` to the permitted page manifest
 - `tools/figma-plugin/plugin.js`
 - `tools/figma-plugin/build.mjs`
 - `tools/figma-plugin/ui.html`
