@@ -6700,6 +6700,7 @@ const CURRENT_APP_PAGE = "07 Current App";
 var currentAppCreatedGroups = 0;
 var currentAppCreatedScreens = 0;
 var currentAppCreatedReactions = 0;
+var currentAppCreatedDescendants = 0;
 
 function currentAppApprovedNames() {
   return typeof ABOX_CURRENT_APP === "undefined" ? [] : ABOX_CURRENT_APP.groups.map((g) => g.name);
@@ -6742,12 +6743,14 @@ function currentAppSetData(node, kind, spec) {
 
 async function currentAppText(name, value, opts, index) {
   const text = await b7Text(name, String(value || ""), opts || { size: 14, weight: 400, colorStyle: "ABox/Semantic/foreground" }, index);
+  currentAppCreatedDescendants += 1;
   if (opts && opts.width) { text.resize(opts.width, text.height); text.textAutoResize = "HEIGHT"; }
   return text;
 }
 
 async function currentAppLocalCard(name, title, rows, index, width) {
   const card = await b8Frame(name, { layout: "VERTICAL", gap: 12, px: 20, py: 18, radius: 12, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", w: width || 420, primarySizing: "FIXED" }, index);
+  currentAppCreatedDescendants += 1;
   card.appendChild(await currentAppText("title", title, { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground", width: (width || 420) - 40 }, index));
   const values = rows && rows.length ? rows : ["Source-backed editable content"];
   for (const value of values.slice(0, 8)) card.appendChild(await currentAppText("row", value, { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", width: (width || 420) - 40 }, index));
@@ -6756,12 +6759,14 @@ async function currentAppLocalCard(name, title, rows, index, width) {
 
 async function currentAppInstance(name, props, index) {
   const inst = await b9Instance(name, props || {}, name.split("/").pop() + "-instance");
+  currentAppCreatedDescendants += 1;
   inst.setPluginData("aboxCurrentAppReference", name);
   return inst;
 }
 
 async function currentAppBuildScreen(spec, placement, index) {
   const frame = await b8Frame("desktop/" + spec.key, { layout: "VERTICAL", gap: 20, px: 32, py: 32, radius: 0, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline", w: placement.width, h: placement.height, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
+  currentAppCreatedDescendants += 1;
   frame.name = "desktop/" + spec.name;
   frame.x = placement.x;
   frame.y = placement.y;
@@ -6824,6 +6829,7 @@ async function currentAppBuildMobile(spec, placement, index) {
   const width = ABOX_CURRENT_APP.layout.mobileWidth;
   const height = Math.max(844, Math.round(placement.height * 0.82));
   const frame = await b8Frame("mobile/" + spec.key, { layout: "VERTICAL", gap: 14, px: 20, py: 24, radius: 0, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline", w: width, h, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
+  currentAppCreatedDescendants += 1;
   frame.name = "mobile/" + spec.name;
   frame.x = placement.mobileX;
   frame.y = placement.y;
@@ -6850,6 +6856,7 @@ async function currentAppBuildMobile(spec, placement, index) {
 
 async function currentAppBuildGroup(spec, index) {
   const group = await b8Frame(spec.name, { layout: "NONE", fillStyle: "ABox/Semantic/background", w: spec.width, h: spec.height, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
+  currentAppCreatedDescendants += 1;
   group.x = spec.x;
   group.y = spec.y;
   currentAppSetData(group, "module-group", spec);
@@ -6947,7 +6954,7 @@ async function currentAppPreflight() {
 
 async function ensureCurrentApp() {
   await figma.loadAllPagesAsync();
-  currentAppCreatedGroups = 0; currentAppCreatedScreens = 0; currentAppCreatedReactions = 0;
+  currentAppCreatedGroups = 0; currentAppCreatedScreens = 0; currentAppCreatedReactions = 0; currentAppCreatedDescendants = 0;
   const protectedBefore = currentAppProtectedSnapshot();
   const index = await currentAppPreflight();
   const page = await currentAppPage(true);
@@ -6972,6 +6979,7 @@ async function ensureCurrentApp() {
   say("  groups created this run: " + currentAppCreatedGroups);
   say("  screens created this run: " + currentAppCreatedScreens);
   say("  reactions created this run: " + currentAppCreatedReactions);
+  say("  owned descendants created this run: " + currentAppCreatedDescendants);
 }
 
 async function verifyCurrentApp() {
@@ -6982,7 +6990,7 @@ async function verifyCurrentApp() {
   const groups = page.children;
   add(figma.root.children.map((p) => p.name).join("|") === aboxApprovedPageNames().join("|"), "protected seven pages remain first and 07 Current App is appended");
   add(groups.length === ABOX_CURRENT_APP.counts.groups && groups.map((g) => g.name).join("|") === currentAppApprovedNames().join("|"), "current-app module groups are complete and ordered");
-  let signatures = true, placement = true, screensOk = true, mobileOk = true, mobileCount = 0, images = true, foundations = true, overlaps = true, reactionCount = 0, reactionsOk = true;
+  let signatures = true, placement = true, screensOk = true, mobileOk = true, mobileCount = 0, instanceCount = 0, styleBindings = 0, images = true, foundations = true, overlaps = true, reactionCount = 0, reactionsOk = true;
   const map = currentAppScreenMap(page);
   for (const spec of ABOX_CURRENT_APP.groups) {
     const group = currentAppFindGroup(page, spec);
@@ -6996,7 +7004,7 @@ async function verifyCurrentApp() {
       if (!screen || !screenSpec || !p || screen.getPluginData("aboxCurrentAppSignature") !== screenSpec.signature) { screensOk = false; continue; }
       if (screen.x !== p.x || screen.y !== p.y || Math.round(screen.width) !== p.width || Math.round(screen.height) !== p.height) placement = false;
       rectangles.push(p);
-      currentAppWalk(screen, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; });
+      currentAppWalk(screen, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; if (n.type === "INSTANCE") instanceCount += 1; if (n.fillStyleId) styleBindings += 1; if (n.strokeStyleId) styleBindings += 1; if (n.type === "TEXT" && n.textStyleId) styleBindings += 1; });
     }
     const mobileFrames = group.children.filter((n) => n.getPluginData && n.getPluginData("aboxCurrentAppKind") === "mobile-screen");
     mobileCount += mobileFrames.length;
@@ -7005,7 +7013,7 @@ async function verifyCurrentApp() {
       const screenSpec = ABOX_CURRENT_APP.screens.find((s) => s.key === desktopKey);
       const p = spec.placements.find((x) => x.key === desktopKey);
       if (!screenSpec || !p || screenSpec.viewports.indexOf(ABOX_CURRENT_APP.layout.mobileWidth) === -1 || mobile.x !== p.mobileX || mobile.y !== p.y || Math.round(mobile.width) !== ABOX_CURRENT_APP.layout.mobileWidth) mobileOk = false;
-      currentAppWalk(mobile, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; });
+      currentAppWalk(mobile, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; if (n.type === "INSTANCE") instanceCount += 1; if (n.fillStyleId) styleBindings += 1; if (n.strokeStyleId) styleBindings += 1; if (n.type === "TEXT" && n.textStyleId) styleBindings += 1; });
     }
     for (let a = 0; a < rectangles.length; a += 1) for (let b = a + 1; b < rectangles.length; b += 1) { const x=rectangles[a], y=rectangles[b]; const xw=x.width+x.mobileWidth+(x.mobileWidth ? ABOX_CURRENT_APP.layout.familyGap : 0), yw=y.width+y.mobileWidth+(y.mobileWidth ? ABOX_CURRENT_APP.layout.familyGap : 0); if (x.x < y.x+yw && x.x+xw > y.x && x.y < y.y+y.height && x.y+x.height > y.y) overlaps = false; }
   }
@@ -7023,9 +7031,12 @@ async function verifyCurrentApp() {
   add(mobileOk && mobileCount === ABOX_CURRENT_APP.counts.mobileCompanions, "all source-proven 390px responsive companions are present and placed deterministically");
   add(images, "no screenshots, HTML embeds or image fills exist");
   add(foundations, "the import creates no components or component sets");
+  add(instanceCount === ABOX_CURRENT_APP.counts.nativeInstances, "all approved component/pattern/shell mappings are live instances (" + instanceCount + ")");
+  add(styleBindings >= ABOX_CURRENT_APP.counts.minimumStyleBindings, "existing B3 style bindings are present (" + styleBindings + ", minimum " + ABOX_CURRENT_APP.counts.minimumStyleBindings + ")");
   add(reactionsOk && reactionCount === ABOX_CURRENT_APP.counts.reactions, "all 682 deterministic reactions resolve to current-app targets");
   add(currentAppCreatedGroups === 0 || currentAppCreatedGroups === ABOX_CURRENT_APP.counts.groups, "run bookkeeping groups created = " + currentAppCreatedGroups + " (run 2 must be 0)");
   add(currentAppCreatedReactions === 0 || currentAppCreatedReactions === ABOX_CURRENT_APP.counts.reactions, "run bookkeeping reactions created = " + currentAppCreatedReactions + " (run 2 must be 0)");
+  add(currentAppCreatedGroups !== 0 || currentAppCreatedDescendants === 0, "unchanged rerun creates zero owned descendants");
   say(""); say("CURRENT APP STRUCTURAL CHECK"); checks.forEach((c) => say("  " + c));
   say(""); say("INVENTORY: " + ABOX_CURRENT_APP.counts.groups + " groups · " + ABOX_CURRENT_APP.counts.screens + " screens · " + ABOX_CURRENT_APP.counts.reactions + " reactions");
   say("NOTE: REAL FIGMA NOT VERIFIED until create → verify → recreate → verify completes in Figma Desktop.");
@@ -7035,6 +7046,7 @@ async function verifyCurrentApp() {
 }
 
 async function currentAppGuarded(label, fn) {
+  await figma.loadAllPagesAsync();
   const beforePages = figma.root.children.map((p) => p.id);
   let page = figma.root.children.find((p) => p.name === CURRENT_APP_PAGE);
   const before = page ? page.children.map((n) => n.id) : [];
