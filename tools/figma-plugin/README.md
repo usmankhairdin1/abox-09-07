@@ -647,6 +647,15 @@ REMOVE`), and **Remove Phase 59 debris on 00 Foundations** deletes only nodes ve
 Phase 59 debris. Nothing is ever removed automatically, and `UNIDENTIFIED` nodes are always
 kept for manual review.
 
+A node counts as Phase 59 debris only when it is a FRAME or TEXT, is not used as a main
+component, carries no `aboxBatch`/`aboxKey`, is stamped `aboxCurrentAppOwner = Phase59`, and
+its `aboxCurrentAppKind` is a known Phase 59 kind whose `aboxCurrentAppKey` matches that
+kind's contract (`group:<slug>` for `module-group`, `current:*` for `screen`, `current:*:mobile`
+for `mobile-screen`). Descendant instances do not disprove ownership — a Phase 59 group is
+built out of B4–B7 instances by design — but an unstamped, name-matched stray is still only
+debris when it contains none. The inspector prints an `ownership check` line giving the exact
+pass/fail reason. `check-current-app-verdict.mjs` locks this predicate down offline.
+
 
 
 Real evidence requires **Create Current App** → **Verify Current App** → **Create Current
