@@ -27,7 +27,7 @@ let failures = 0;
 
 for (const file of files) {
   const source = readFileSync(join(here, file), "utf8");
-  const ast = acorn.parse(source, { ecmaVersion: 2022, sourceType: "script", locations: true });
+  const ast = acorn.parse(source, { ecmaVersion: 2022, sourceType: "script", locations: true, ranges: true });
   const scopeManager = analyze(ast, { ecmaVersion: 2022, sourceType: "script" });
   const offenders = [];
   for (const ref of scopeManager.globalScope.through) {
