@@ -5578,7 +5578,7 @@ async function b9PrototypeRegion(spec, index) {
     return region;
   }
   for (const interaction of outgoing) {
-    const link = b7FrameLegacy("prototype-link/" + interaction.id, { layout: "HORIZONTAL", align: "CENTER", gap: 8, px: 10, py: 8, radius: 12, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+    const link = await b8Frame("prototype-link/" + interaction.id, { layout: "HORIZONTAL", align: "CENTER", gap: 8, px: 10, py: 8, radius: 12, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
     link.setPluginData("aboxB9InteractionId", interaction.id);
     link.setPluginData("aboxB9ReactionSignature", interaction.signature);
     link.setPluginData("aboxB9TargetKey", interaction.targetKey);
