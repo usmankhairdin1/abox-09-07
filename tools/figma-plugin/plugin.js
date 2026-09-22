@@ -5088,9 +5088,9 @@ async function b8CreateInstance(main, props, name) {
   return inst;
 }
 
-function b8ShellInstance(spec) {
+async function b8ShellInstance(spec) {
   const main = b8ShellMain(spec.shell.name);
-  const inst = b8CreateInstance(main, spec.shell.overrides || {}, "shell-reference-instance");
+  const inst = await b8CreateInstance(main, spec.shell.overrides || {}, "shell-reference-instance");
   inst.setPluginData("aboxB8Reference", spec.shell.name);
   const meta = [];
   for (const k of Object.keys(spec.shell.overrides || {}).sort()) meta.push(k + "=" + String(spec.shell.overrides[k]));
@@ -5098,16 +5098,16 @@ function b8ShellInstance(spec) {
   return inst;
 }
 
-function b8PatternInstance(pat) {
+async function b8PatternInstance(pat) {
   const main = b8PatternMain(pat.name);
-  const inst = b8CreateInstance(main, pat.variant || {}, pat.name.split("/").pop());
+  const inst = await b8CreateInstance(main, pat.variant || {}, pat.name.split("/").pop());
   inst.setPluginData("aboxB8Reference", pat.name);
   return inst;
 }
 
-function b8ComponentInstance(comp) {
+async function b8ComponentInstance(comp) {
   const main = b8ComponentMain(comp.name);
-  const inst = b8CreateInstance(main, {}, comp.name.split("/").pop());
+  const inst = await b8CreateInstance(main, {}, comp.name.split("/").pop());
   inst.setPluginData("aboxB8Reference", comp.name);
   return inst;
 }
