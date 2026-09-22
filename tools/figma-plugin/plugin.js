@@ -7213,7 +7213,8 @@ figma.ui.onmessage = async (msg) => {
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
   const b10 = msg.type === "b10-run" || msg.type === "b10-verify";
-  const currentApp = msg.type === "current-app-run" || msg.type === "current-app-verify";
+  const currentApp = msg.type === "current-app-run" || msg.type === "current-app-verify" ||
+    msg.type === "current-app-inspect-foundations" || msg.type === "current-app-cleanup-foundations";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
