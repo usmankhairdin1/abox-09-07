@@ -1005,22 +1005,10 @@ async function verifyB1() {
   }
   add(!brandingLeak, "no runtime/tenant/white-label branding values imported");
 
-  // B1 must not create styles, components or page content.
-  const textStyles = await figma.getLocalTextStylesAsync();
-  const effectStyles = await figma.getLocalEffectStylesAsync();
-  add(textStyles.length === 0, "B1 created no text styles");
-  add(effectStyles.length === 0, "B1 created no effect styles");
-  let components = 0;
-  let componentSets = 0;
-  let nodes = 0;
-  for (const page of figma.root.children) {
-    nodes += page.children.length;
-    components += page.findAll((n) => n.type === "COMPONENT").length;
-    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
-  }
-  add(components === 0, "B1 created no components or variants");
-  add(componentSets === 0, "B1 created no component sets");
-  add(nodes === 0, "the seven library pages remain empty");
+  // Closure-time: B1 must not have added styles, components or page content
+  // beyond the governed B2–B10 inventory.
+  await aboxClosureInventoryChecks("B1", add, say, true);
+
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
     "the seven B0 pages remain at indices 0..6 in order",
