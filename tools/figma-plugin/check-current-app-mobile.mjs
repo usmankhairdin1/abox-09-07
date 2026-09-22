@@ -49,6 +49,11 @@ const stubs = {
     node.height = typeof opts.h === "number" ? opts.h : 0;
     return node;
   },
+  currentAppSetData(node, kind, spec) {
+    node.setPluginData("aboxCurrentAppKind", kind);
+    node.setPluginData("aboxCurrentAppKey", spec.key);
+    node.setPluginData("aboxCurrentAppName", spec.name);
+  },
   async currentAppText(name) { return makeNode(name); },
   async currentAppInstance(name) { return makeNode("instance/" + name); },
   async currentAppLocalCard(name) { return makeNode(name); },
