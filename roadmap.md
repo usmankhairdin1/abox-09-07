@@ -235,3 +235,4 @@ export, breadcrumbs / pagination / avatars / charts awaiting real feature use.
 
 - [x] Phase 11 — Governance, canonicalization readiness & Figma readiness audit (reference layer only; 14 open decisions recorded, none selected; application unchanged)
 - [x] Phase 55 / Batch B8 — experiences: 4 approved plugin fixes applied (async b8Frame, async getMainComponentAsync reads, B10 allowance in verifier page check, b8Guarded rollback); code.js rebuilt; offline validation passed; awaiting real-Figma run
+- [x] Phase 57 / Batch B10 — documentation: 4 approved pre-run corrections applied (8 b7FrameLegacy → await b8Frame sites, async root style setters in b10BuildFrame, new b10Guarded rollback, loadAllPagesAsync in the b10-run handler); b7FrameLegacy preserved; code.js rebuilt; offline validation passed; awaiting real-Figma run
