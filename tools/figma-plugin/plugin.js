@@ -5216,6 +5216,41 @@ function b8AssertReusable(frame, spec) {
   }
 }
 
+/** Rollback guard in the B7 style: on throw, remove only nodes created during this run —
+ *  new approved-name B8 frames on 04 Experiences and transient debris on the active page.
+ *  Never removes a pre-existing node or a COMPONENT / COMPONENT_SET. */
+async function b8Guarded(page, label, fn) {
+  const before = {};
+  for (const child of page.children) before[child.id] = true;
+  const currentBefore = {};
+  if (figma.currentPage) for (const n of figma.currentPage.children) currentBefore[n.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const child of page.children.slice()) {
+      if (before[child.id]) continue;
+      if (child.type === "COMPONENT" || child.type === "COMPONENT_SET") continue;
+      if (b8ApprovedNames().indexOf(child.name) === -1) continue;
+      say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
+      child.remove();
+      removed += 1;
+    }
+    let strays = 0;
+    if (figma.currentPage && figma.currentPage.id !== page.id) {
+      for (const n of figma.currentPage.children.slice()) {
+        if (currentBefore[n.id]) continue;
+        if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+        say("  rollback : removed transient node left on " + figma.currentPage.name + " — " + n.name + "  id=" + n.id);
+        n.remove();
+        strays += 1;
+      }
+    }
+    if (!removed && !strays) say("  (" + label + " left no new node on " + B8_PAGE + ")");
+    throw err;
+  }
+}
+
 async function ensureB8Experiences() {
   await figma.loadAllPagesAsync();
   b8Created = 0;
@@ -6641,7 +6676,8 @@ figma.ui.onmessage = async (msg) => {
       say("file: " + figma.root.name);
       requireFile(T.library.targetFileName);
       say("");
-      await ensureB8Experiences();
+      await figma.loadAllPagesAsync();
+      await b8Guarded(b8Page(), "Batch B8 — experiences", ensureB8Experiences);
       await verifyB8();
     } else if (msg.type === "b8-verify") {
       say("ABox Phase 55 / Batch B8 — verify only");
