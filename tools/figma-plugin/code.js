@@ -44716,25 +44716,24 @@ async function verifyB5() {
     figma.root.children.length === 7 && livePageNames.join("|") === wantPages.join("|"),
     "B0 pages unchanged: exactly 7, in the approved order (found " + figma.root.children.length + ": " + livePageNames.join(", ") + ")",
   );
-  // B6 populates "02 Patterns", B7 "03 Shells"; every other non-component page must stay empty,
-  // except "06 Documentation", which may hold exactly the approved B10 frames (see verifyB9).
-  const writable = [B4_PAGE, "02 Patterns", "03 Shells"];
+  // Closure-time: every page may hold only its approved B0-B10 top-level inventory
+  // (00 Foundations has an empty approved list, so it must stay empty).
+  const b5ApprovedTopLevel = aboxApprovedPageTopLevel();
   const b5PageEvidence = [];
+  let b5UnexpectedTopLevel = 0;
   for (const p of figma.root.children) {
-    if (writable.indexOf(p.name) !== -1) continue;
-    if (p.name === "06 Documentation") {
-      const docNames = p.children.map((n) => n.name);
-      if (docNames.length === 0 || docNames.join("|") === b10ApprovedNames().join("|")) continue;
-    }
+    const allowed = b5ApprovedTopLevel[p.name] || {};
     for (const child of p.children) {
-      if (b5PageEvidence.length >= 40) break;
+      if (allowed[child.name] === true) continue;
+      b5UnexpectedTopLevel += 1;
+      if (b5PageEvidence.length >= 40) continue;
       b5PageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
     }
   }
   add(
-    b5PageEvidence.length === 0,
-    "only 01 Components, 02 Patterns and 03 Shells populated (06 Documentation may hold the approved B10 frames); unexpected nodes: " +
-      b5PageEvidence.length,
+    b5UnexpectedTopLevel === 0,
+    "each page holds only its approved B0–B10 top-level inventory (00 Foundations must stay empty); unexpected nodes: " +
+      b5UnexpectedTopLevel,
   );
   if (b5PageEvidence.length) {
     say("");
