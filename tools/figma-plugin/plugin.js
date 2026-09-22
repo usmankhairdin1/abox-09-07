@@ -6905,15 +6905,44 @@ async function currentAppEnsureReaction(source, target, interaction) {
   currentAppCreatedReactions += 1;
 }
 
+function currentAppProtectedExpected() {
+  return { "00 Foundations": 0, "01 Components": 14, "02 Patterns": 3, "03 Shells": 3, "04 Experiences": 5, "05 Screens": 179, "06 Documentation": 10 };
+}
+
+/** Prints the protected-page census. Read-only; never creates, moves or removes a node. */
+function currentAppProtectedCensus() {
+  const expected = currentAppProtectedExpected();
+  say("  protected page census (expected / actual)");
+  for (const name of Object.keys(expected)) {
+    const page = figma.root.children.find((p) => p.name === name);
+    say("    " + name + " : expected " + expected[name] + " / actual " + (page ? page.children.length : "(missing page)"));
+  }
+}
+
 function currentAppAssertProtected() {
   const first = T.library.pages;
   if (!first.every((name, i) => figma.root.children[i] && figma.root.children[i].name === name)) throw new Error("STOP: protected B0-B10 page order differs.");
-  const expected = { "00 Foundations": 0, "01 Components": 14, "02 Patterns": 3, "03 Shells": 3, "04 Experiences": 5, "05 Screens": 179, "06 Documentation": 10 };
+  const expected = currentAppProtectedExpected();
   for (const name of Object.keys(expected)) {
     const page = figma.root.children.find((p) => p.name === name);
-    if (!page || page.children.length !== expected[name]) throw new Error('STOP: protected page "' + name + '" count differs (expected ' + expected[name] + ").");
+    if (!page) throw new Error('STOP: protected page missing — "' + name + '".');
+    if (page.children.length !== expected[name]) {
+      say("");
+      say("PROTECTED PAGE MISMATCH — " + name);
+      say("  expected top-level nodes : " + expected[name]);
+      say("  actual top-level nodes   : " + page.children.length);
+      for (const child of page.children) {
+        say("    " + child.name + " [" + child.type + "] id=" + child.id +
+          " owner=" + (child.getPluginData("aboxCurrentAppOwner") || "(none)") +
+          " batch=" + (child.getPluginData("aboxBatch") || "(none)"));
+      }
+      say("  nothing was created, moved or removed by this check.");
+      say("");
+      throw new Error('STOP: protected page "' + name + '" count differs (expected ' + expected[name] + ", actual " + page.children.length + ").");
+    }
   }
 }
+
 
 function currentAppProtectedSignature(node) {
   if (node.getPluginData("aboxBatch") === "B8") return JSON.stringify(b8PluginSignature(node));
