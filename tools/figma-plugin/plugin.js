@@ -6996,6 +6996,10 @@ async function ensureCurrentApp() {
   const protectedBefore = currentAppProtectedSnapshot();
   const index = await currentAppPreflight();
   const page = await currentAppPage(true);
+  // figma.createFrame/createText attach new nodes to figma.currentPage until they are
+  // reparented, so the working page is pinned to 07 Current App before anything is built.
+  if (!figma.currentPage || figma.currentPage.id !== page.id) await figma.setCurrentPageAsync(page);
+
   for (const child of page.children) if (currentAppApprovedNames().indexOf(child.name) === -1) throw new Error('STOP: unapproved object on 07 Current App — "' + child.name + '".');
   for (const spec of ABOX_CURRENT_APP.groups) {
     const existing = currentAppFindGroup(page, spec);
