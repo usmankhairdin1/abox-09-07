@@ -7458,6 +7458,18 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyCurrentApp();
+    } else if (msg.type === "current-app-inspect-foundations") {
+      say("ABox Phase 59 — inspect 00 Foundations (read-only)");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await currentAppInspectFoundations();
+    } else if (msg.type === "current-app-cleanup-foundations") {
+      say("ABox Phase 59 — remove Phase 59 debris on 00 Foundations");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await currentAppCleanupFoundations();
     }
   } catch (e) {
     say("");
