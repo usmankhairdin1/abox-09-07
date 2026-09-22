@@ -42525,6 +42525,110 @@ async function verifyLibraryPages() {
   return passed;
 }
 
+/* ---------- Phase 58 — shared closure-time inventory checks ----------
+   B1/B2/B3 originally asserted an empty file because they ran first. At closure
+   time the governed B2–B10 inventory legitimately exists, so these checks compare
+   against the approved exact-name inventories instead of zero. Anything outside
+   those inventories still FAILS and is named. No creation contract is touched. */
+function aboxApprovedComponentNames() {
+  const approved = {};
+  if (typeof ABOX_B4 !== "undefined") {
+    for (const s of ABOX_B4.sets) approved[s.name] = true;
+    for (const s of ABOX_B4.components) approved[s.name] = true;
+  }
+  if (typeof ABOX_B6 !== "undefined") for (const p of ABOX_B6.patterns) approved[p.name] = true;
+  if (typeof ABOX_B7 !== "undefined") for (const s of ABOX_B7.shells) approved[s.name] = true;
+  return approved;
+}
+
+function aboxApprovedPageTopLevel() {
+  const names = (arr) => (arr || []).map((x) => x.name);
+  const map = {
+    "00 Foundations": [],
+    "01 Components": typeof ABOX_B4 === "undefined" ? [] : names(ABOX_B4.sets).concat(names(ABOX_B4.components)),
+    "02 Patterns": typeof ABOX_B6 === "undefined" ? [] : names(ABOX_B6.patterns),
+    "03 Shells": typeof ABOX_B7 === "undefined" ? [] : names(ABOX_B7.shells),
+    "04 Experiences": typeof ABOX_B8 === "undefined" ? [] : names(ABOX_B8.experiences),
+    "05 Screens": typeof ABOX_B9 === "undefined" ? [] : names(ABOX_B9.screens),
+    "06 Documentation": typeof ABOX_B10 === "undefined" ? [] : names(ABOX_B10.documents),
+  };
+  const index = {};
+  for (const page of Object.keys(map)) {
+    index[page] = {};
+    for (const n of map[page]) index[page][n] = true;
+  }
+  return index;
+}
+
+// includeStyles=false for B3, which owns its own style-content assertions.
+async function aboxClosureInventoryChecks(batch, add, say, includeStyles) {
+  if (includeStyles) {
+    const textStyles = await figma.getLocalTextStylesAsync();
+    const effectStyles = await figma.getLocalEffectStylesAsync();
+    const b3Text = typeof ABOX_B3 === "undefined" ? [] : (ABOX_B3.textStyles || []).map((s) => s.name);
+    const b3Effect = typeof ABOX_B3 === "undefined" ? [] : (ABOX_B3.effectStyles || []).map((s) => s.name);
+    const badText = textStyles.filter((s) => b3Text.indexOf(s.name) === -1);
+    const badEffect = effectStyles.filter((s) => b3Effect.indexOf(s.name) === -1);
+    if (badText.length) say("  unexpected text styles: " + badText.map((s) => s.name).join(", "));
+    if (badEffect.length) say("  unexpected effect styles: " + badEffect.map((s) => s.name).join(", "));
+    add(badText.length === 0, batch + " created no text styles outside the approved B3 inventory");
+    add(badEffect.length === 0, batch + " created no effect styles outside the approved B3 inventory");
+  }
+
+  const approvedComponents = aboxApprovedComponentNames();
+  const approvedTopLevel = aboxApprovedPageTopLevel();
+  const unexpectedComponents = [];
+  const unexpectedTopLevel = [];
+  let componentNodes = 0;
+  let componentSetNodes = 0;
+  let topLevelTotal = 0;
+  const perPage = [];
+
+  for (const page of figma.root.children) {
+    topLevelTotal += page.children.length;
+    const allowed = approvedTopLevel[page.name] || {};
+    for (const child of page.children) {
+      if (allowed[child.name] !== true) {
+        unexpectedTopLevel.push("  " + page.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
+      }
+    }
+    const found = page.findAll((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET");
+    for (const n of found) {
+      if (n.type === "COMPONENT") componentNodes += 1;
+      else componentSetNodes += 1;
+      const owner = n.parent && n.parent.type === "COMPONENT_SET" ? n.parent : null;
+      if (owner && approvedComponents[owner.name] === true) continue;
+      if (approvedComponents[n.name] === true) continue;
+      unexpectedComponents.push("  " + page.name + " › " + n.name + " (" + n.type + ")  id=" + n.id);
+    }
+    perPage.push("  " + page.name + ": topLevel=" + page.children.length + " componentNodes=" + found.length);
+  }
+
+  if (unexpectedComponents.length) {
+    say("  " + batch + " COMPONENT EVIDENCE");
+    unexpectedComponents.slice(0, 40).forEach((line) => say(line));
+  }
+  if (unexpectedTopLevel.length) {
+    say("  " + batch + " PAGE CONTENT EVIDENCE");
+    unexpectedTopLevel.slice(0, 40).forEach((line) => say(line));
+  }
+  add(
+    unexpectedComponents.length === 0,
+    batch + " created no components or variants outside the approved B4/B5/B6/B7 inventory",
+  );
+  add(
+    unexpectedTopLevel.length === 0,
+    batch + " created no page content outside the approved B4–B10 inventory (00 Foundations must stay empty)",
+  );
+
+  say("");
+  say(batch + " CLOSURE INVENTORY");
+  say("  componentNodes=" + componentNodes + " componentSets=" + componentSetNodes + " topLevelNodes=" + topLevelTotal);
+  perPage.forEach((line) => say(line));
+}
+
+
+
 /* ---------- Phase 52 / Batch B1 — foundation variables ---------- */
 const oklchCss = (v) =>
   "oklch(" + v.L + " " + v.C + " " + v.h + (v.a !== 1 ? " / " + v.a : "") + ")";
@@ -42898,22 +43002,10 @@ async function verifyB1() {
   }
   add(!brandingLeak, "no runtime/tenant/white-label branding values imported");
 
-  // B1 must not create styles, components or page content.
-  const textStyles = await figma.getLocalTextStylesAsync();
-  const effectStyles = await figma.getLocalEffectStylesAsync();
-  add(textStyles.length === 0, "B1 created no text styles");
-  add(effectStyles.length === 0, "B1 created no effect styles");
-  let components = 0;
-  let componentSets = 0;
-  let nodes = 0;
-  for (const page of figma.root.children) {
-    nodes += page.children.length;
-    components += page.findAll((n) => n.type === "COMPONENT").length;
-    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
-  }
-  add(components === 0, "B1 created no components or variants");
-  add(componentSets === 0, "B1 created no component sets");
-  add(nodes === 0, "the seven library pages remain empty");
+  // Closure-time: B1 must not have added styles, components or page content
+  // beyond the governed B2–B10 inventory.
+  await aboxClosureInventoryChecks("B1", add, say, true);
+
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
     "the seven B0 pages remain at indices 0..6 in order",
@@ -43125,22 +43217,9 @@ async function verifyB2() {
   add(b1Ok && ABOX_B1.collections.length === 9, "the nine B1 collections still exist exactly once each");
   add(b1Total === 200, "B1 still holds 200 variables (found " + b1Total + ")");
 
-  // Nothing else created.
-  const textStyles = await figma.getLocalTextStylesAsync();
-  const effectStyles = await figma.getLocalEffectStylesAsync();
-  add(textStyles.length === 0, "B2 created no text styles");
-  add(effectStyles.length === 0, "B2 created no effect styles");
-  let components = 0;
-  let componentSets = 0;
-  let nodes = 0;
-  for (const page of figma.root.children) {
-    nodes += page.children.length;
-    components += page.findAll((n) => n.type === "COMPONENT").length;
-    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
-  }
-  add(components === 0, "B2 created no components or variants");
-  add(componentSets === 0, "B2 created no component sets");
-  add(nodes === 0, "the seven library pages remain empty");
+  // Closure-time: nothing outside the governed B2–B10 inventory.
+  await aboxClosureInventoryChecks("B2", add, say, true);
+
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
     "the seven B0 pages remain at indices 0..6 in order",
@@ -43449,18 +43528,10 @@ async function verifyB3() {
   add(b2c.length === 1 && b2c[0].variableIds.length === 19,
     "B2 still holds 19 variables (found " + (b2c.length === 1 ? b2c[0].variableIds.length : 0) + ")");
 
-  // 14 + 15 — nothing else created.
-  let components = 0;
-  let componentSets = 0;
-  let nodes = 0;
-  for (const page of figma.root.children) {
-    nodes += page.children.length;
-    components += page.findAll((n) => n.type === "COMPONENT").length;
-    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
-  }
-  add(components === 0, "B3 created no components or variants");
-  add(componentSets === 0, "B3 created no component sets");
-  add(nodes === 0, "the seven library pages remain empty");
+  // 14 + 15 — closure-time: nothing outside the governed B4–B10 inventory.
+  // B3 owns its own style-content assertions above, so styles are not re-checked here.
+  await aboxClosureInventoryChecks("B3", add, say, false);
+
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
     "the seven B0 pages remain at indices 0..6 in order",
