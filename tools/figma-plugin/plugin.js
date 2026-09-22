@@ -6185,6 +6185,43 @@ function b10AssertReusable(frame, spec) {
   if (!b10HasRegions(frame)) throw new Error('STOP: LIVE B10 DOCUMENTATION STRUCTURE DIFFERS FROM APPROVED REGIONS — "' + spec.name + '". Nothing was overwritten or deleted.');
 }
 
+/**
+ * Guarded B10 create path — mirrors b8Guarded/b9Guarded. On failure it removes only
+ * approved B10 documentation frames created by this run (plus transient nodes left on the
+ * current page) and never touches pre-existing nodes, components or other batches.
+ */
+async function b10Guarded(page, label, fn) {
+  const before = {};
+  for (const child of page.children) before[child.id] = true;
+  const currentBefore = {};
+  if (figma.currentPage) for (const n of figma.currentPage.children) currentBefore[n.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const child of page.children.slice()) {
+      if (before[child.id]) continue;
+      if (child.type === "COMPONENT" || child.type === "COMPONENT_SET") continue;
+      if (b10ApprovedNames().indexOf(child.name) === -1) continue;
+      say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
+      child.remove();
+      removed += 1;
+    }
+    let strays = 0;
+    if (figma.currentPage && figma.currentPage.id !== page.id) {
+      for (const n of figma.currentPage.children.slice()) {
+        if (currentBefore[n.id]) continue;
+        if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+        say("  rollback : removed transient node left on " + figma.currentPage.name + " — " + n.name + "  id=" + n.id);
+        n.remove();
+        strays += 1;
+      }
+    }
+    if (!removed && !strays) say("  (" + label + " left no new node on " + B10_PAGE + ")");
+    throw err;
+  }
+}
+
 async function ensureB10Documentation() {
   await figma.loadAllPagesAsync();
   b10Created = 0;
