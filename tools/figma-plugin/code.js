@@ -47401,7 +47401,7 @@ async function verifyB8() {
     if (b8HasPrototype(frame)) protoOk = false;
     if (b8HasImageFill(frame)) imageOk = false;
     if (Object.keys(frame.componentPropertyDefinitions || {}).length) propOk = false;
-    const mains = b8InstanceMainNames(frame);
+    const mains = await b8InstanceMainNames(frame);
     if (mains.indexOf(spec.shell.name) === -1) shellOk = false;
     for (const pat of spec.patterns || []) if (mains.indexOf(pat.name) === -1) patternOk = false;
     for (const comp of spec.components || []) if (mains.indexOf(comp.name) === -1) componentsOk = false;
