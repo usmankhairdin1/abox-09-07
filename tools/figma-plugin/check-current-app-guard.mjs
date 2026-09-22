@@ -28,7 +28,7 @@ const stray = makeNode("stray-1", "desktop/current:route:/app");
 const strayText = makeNode("stray-2", "page-title", "TEXT");
 const mainComponent = makeNode("main-1", "ABox/Button", "COMPONENT");
 
-const page = { id: "p0", name: "00 Foundations", children: [preExisting, stray, strayText, mainComponent] };
+const page = { id: "p0", name: "00 Foundations", children: [preExisting] };
 const currentAppPageNode = { id: "p7", name: "07 Current App", children: [] };
 
 const lines = [];
@@ -50,7 +50,11 @@ const runner = new Function(
 
 let threw = false;
 try {
-  await runner("regression", async () => { throw new Error("h is not defined"); });
+  await runner("regression", async () => {
+    // simulates figma.createFrame/createText landing on the active page mid-run
+    page.children.push(stray, strayText, mainComponent);
+    throw new Error("h is not defined");
+  });
 } catch (error) {
   threw = true;
   if (error.message !== "h is not defined") throw new Error("guard swallowed or rewrote the original error: " + error.message);
@@ -66,8 +70,7 @@ if (!lines.some((l) => l.indexOf("guarded rollback completed") !== -1)) throw ne
 // A successful run must remove nothing at all.
 removedIds = [];
 const okStray = makeNode("stray-3", "desktop/ok");
-page.children.push(okStray);
-await runner("regression-ok", async () => "done");
+await runner("regression-ok", async () => { page.children.push(okStray); return "done"; });
 if (removedIds.length) throw new Error("successful run removed nodes: " + removedIds.join(", "));
 
 console.log("OK currentAppGuarded — transient strays on the active page are swept, pre-existing and component nodes are preserved, successful runs remove nothing.");
