@@ -59,7 +59,7 @@ const runner = new Function(
   fnSource + "\nreturn currentAppBuildMobile;"
 )(...Object.values(stubs));
 
-const screens = ABOX_CURRENT_APP.screens.filter((s) => s.mobile);
+const screens = ABOX_CURRENT_APP.screens.filter((s) => s.viewports && s.viewports.indexOf(ABOX_CURRENT_APP.layout.mobileWidth) !== -1);
 if (!screens.length) throw new Error("no mobile companion screens in manifest");
 
 let checked = 0;
