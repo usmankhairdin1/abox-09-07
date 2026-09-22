@@ -6557,6 +6557,13 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b7DiagnoseInternalShell();
+    } else if (msg.type === "b7-diagnose-member-shell") {
+      say("ABox Phase 54 / Batch B7 — diagnose Member shell (read-only)");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b7DiagnoseMemberShell();
+
     } else if (msg.type === "b7-inspect-foundations-orphans") {
       say("ABox Phase 54 / Batch B7 — inspect 00 Foundations orphans (read-only)");
       say("file: " + figma.root.name);
