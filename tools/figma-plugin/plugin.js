@@ -5472,23 +5472,22 @@ async function verifyB8() {
 
   const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
   add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
-  // "06 Documentation" may hold exactly the approved B10 frames — same allowance verifyB5/verifyB7/verifyB9 already carry.
-  const b8Writable = [B4_PAGE, B6_PAGE, B7_PAGE, B8_PAGE];
+  const b8ApprovedTopLevel = aboxApprovedPageTopLevel();
   const b8PageEvidence = [];
+  let b8UnexpectedTopLevel = 0;
   for (const p of figma.root.children) {
-    if (b8Writable.indexOf(p.name) !== -1) continue;
-    if (p.name === B10_PAGE) {
-      const docNames = p.children.map((n) => n.name);
-      if (docNames.length === 0 || docNames.join("|") === b10ApprovedNames().join("|")) continue;
-    }
+    const allowed = b8ApprovedTopLevel[p.name] || {};
     for (const child of p.children) {
-      if (b8PageEvidence.length >= 40) break;
+      if (allowed[child.name] === true) continue;
+      b8UnexpectedTopLevel += 1;
+      if (b8PageEvidence.length >= 40) continue;
       b8PageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
     }
   }
   add(
-    b8PageEvidence.length === 0,
-    "00 Foundations and 05 Screens remain empty; 06 Documentation may hold the approved B10 frames — unexpected nodes: " + b8PageEvidence.length,
+    b8UnexpectedTopLevel === 0,
+    "each page holds only its approved B0–B10 top-level inventory (00 Foundations must stay empty); unexpected nodes: " +
+      b8UnexpectedTopLevel,
   );
   if (b8PageEvidence.length) {
     say("");
