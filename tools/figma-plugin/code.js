@@ -90505,7 +90505,7 @@ async function currentAppBuildScreen(spec, placement, index) {
 async function currentAppBuildMobile(spec, placement, index) {
   const width = ABOX_CURRENT_APP.layout.mobileWidth;
   const height = Math.max(844, Math.round(placement.height * 0.82));
-  const frame = await b8Frame("mobile/" + spec.key, { layout: "VERTICAL", gap: 14, px: 20, py: 24, radius: 0, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline", w: width, h, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
+  const frame = await b8Frame("mobile/" + spec.key, { layout: "VERTICAL", gap: 14, px: 20, py: 24, radius: 0, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline", w: width, h: height, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
   currentAppCreatedDescendants += 1;
   frame.name = "mobile/" + spec.name;
   frame.x = placement.mobileX;
