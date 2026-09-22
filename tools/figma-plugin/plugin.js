@@ -7156,6 +7156,7 @@ async function currentAppInspectFoundations() {
     say("      aboxBatch           : " + (child.getPluginData("aboxBatch") || "(none)"));
     say("      aboxKey             : " + (child.getPluginData("aboxKey") || "(none)"));
     say("      used as main by     : " + (typeof child.getInstancesAsync === "function" ? (await child.getInstancesAsync()).length : 0) + " instance(s)");
+    say("      ownership check : " + currentAppOwnedVerdict(child).reason);
     say("      VERDICT         : " + verdict);
   }
   say("");
