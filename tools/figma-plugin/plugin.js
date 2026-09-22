@@ -5549,16 +5549,16 @@ async function b9ShellRegion(spec, index) {
 }
 
 async function b9FoundationRegion(spec, index) {
-  const region = b7FrameLegacy("foundations-and-states", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("foundations-and-states", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Existing foundations reused", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  const patternRow = b7FrameLegacy("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
-  for (const pat of spec.patterns || []) patternRow.appendChild(b9Instance(pat.name, pat.variant || {}, pat.name.split("/").pop()));
+  const patternRow = await b8Frame("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
+  for (const pat of spec.patterns || []) patternRow.appendChild(await b9Instance(pat.name, pat.variant || {}, pat.name.split("/").pop()));
   if (!(spec.patterns || []).length) patternRow.appendChild(await b7Text("no-pattern", "No B6 pattern applies; this screen is represented as route-local native content.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(patternRow);
-  const compRow = b7FrameLegacy("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
-  for (const name of spec.components || []) compRow.appendChild(b9Instance(name, {}, name.split("/").pop()));
+  const compRow = await b8Frame("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
+  for (const name of spec.components || []) compRow.appendChild(await b9Instance(name, {}, name.split("/").pop()));
   region.appendChild(compRow);
-  const states = b7FrameLegacy("source-backed-states", { layout: "VERTICAL", gap: 6, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const states = await b8Frame("source-backed-states", { layout: "VERTICAL", gap: 6, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   states.appendChild(await b7Text("states-title", "States and responsive evidence", { size: 13, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   states.appendChild(await b7Text("states-list", (spec.states || []).join(", ") + "\n" + (spec.responsive || "canonical desktop"), { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(states);
