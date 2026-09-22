@@ -439,27 +439,33 @@ async function verifyLibraryPages() {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const textStyles = await figma.getLocalTextStylesAsync();
   const effectStyles = await figma.getLocalEffectStylesAsync();
-  const b1Names = ABOX_B1.collections.map((c) => c.name);
+  const approvedCollectionNames = ABOX_B1.collections.map((c) => c.name);
+  if (typeof ABOX_B2 !== "undefined" && ABOX_B2.collection) {
+    approvedCollectionNames.push(ABOX_B2.collection.name);
+  }
   const b3Text = typeof ABOX_B3 === "undefined" ? [] : (ABOX_B3.textStyles || []).map((s) => s.name);
   const b3Effect = typeof ABOX_B3 === "undefined" ? [] : (ABOX_B3.effectStyles || []).map((s) => s.name);
 
-  // Closure-time allowances: B1 collections and the approved B3 style inventory are
+  // Closure-time allowances: B1/B2 collections and the approved B3 style inventory are
   // required to exist once those batches have run. Anything outside them still fails.
-  const unexpectedCollections = collections.filter((c) => b1Names.indexOf(c.name) === -1);
+  const unexpectedCollections = collections.filter((c) => approvedCollectionNames.indexOf(c.name) === -1);
   const unexpectedText = textStyles.filter((s) => b3Text.indexOf(s.name) === -1);
   const unexpectedEffect = effectStyles.filter((s) => b3Effect.indexOf(s.name) === -1);
   if (unexpectedCollections.length) say("  unexpected collections: " + unexpectedCollections.map((c) => c.name).join(", "));
   if (unexpectedText.length) say("  unexpected text styles: " + unexpectedText.map((s) => s.name).join(", "));
   if (unexpectedEffect.length) say("  unexpected effect styles: " + unexpectedEffect.map((s) => s.name).join(", "));
-  add(unexpectedCollections.length === 0, "no variable collections outside the approved B1 inventory");
+  add(unexpectedCollections.length === 0, "no variable collections outside the approved B1/B2 inventory");
   add(unexpectedText.length === 0, "no text styles outside the approved B3 inventory");
   add(unexpectedEffect.length === 0, "no effect styles outside the approved B3 inventory");
 
-  // Approved component identities: B4 sets and standalone components, B7 shells.
+  // Approved component identities: B4/B5 component inventory, B6 patterns, B7 shells.
   const approvedComponents = {};
   if (typeof ABOX_B4 !== "undefined") {
     for (const s of ABOX_B4.sets) approvedComponents[s.name] = true;
     for (const s of ABOX_B4.components) approvedComponents[s.name] = true;
+  }
+  if (typeof ABOX_B6 !== "undefined") {
+    for (const p of ABOX_B6.patterns) approvedComponents[p.name] = true;
   }
   if (typeof ABOX_B7 !== "undefined") {
     for (const s of ABOX_B7.shells) approvedComponents[s.name] = true;
@@ -490,7 +496,7 @@ async function verifyLibraryPages() {
   }
   add(
     unexpectedComponents.length === 0,
-    "no components or component sets outside the approved B4/B5/B7 inventory",
+    "no components or component sets outside the approved B4/B5/B6/B7 inventory",
   );
   add(imageFills === 0, "no image fills anywhere in the file (nothing flattened)");
 
