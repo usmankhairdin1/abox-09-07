@@ -4469,6 +4469,164 @@ async function b7CleanupFoundationsOrphans() {
   say("  nodes removed: " + removed + "; only 00 Foundations was touched; nothing was created or modified.");
 }
 
+/** Normalises a node name for near-miss comparison (case, whitespace and dash variants). */
+function b7NormaliseName(name) {
+  return String(name)
+    .toLowerCase()
+    .replace(/[\u2010-\u2015\u2212]/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function b7NumOrMixed(value) {
+  return value == null ? "n/a" : typeof value === "number" ? String(Math.round(value * 100) / 100) : "mixed";
+}
+
+function b7PaintSummary(paints) {
+  if (paints === figma.mixed) return "mixed";
+  if (!paints || !paints.length) return "none";
+  return paints
+    .map((p) => p.type + (p.type === "SOLID" ? " rgb(" + [p.color.r, p.color.g, p.color.b].map((c) => Math.round(c * 255)).join(",") + ")" : "") + " a=" + (p.opacity == null ? 1 : p.opacity) + (p.visible === false ? " hidden" : ""))
+    .join("; ");
+}
+
+/**
+ * READ-ONLY. Explains exactly why the idempotent Create path considers the live
+ * ABox/Shell/Internal different from the approved definition. Creates, deletes and
+ * mutates nothing.
+ */
+async function b7DiagnoseInternalShell() {
+  await figma.loadAllPagesAsync();
+  const shellName = "ABox/Shell/Internal";
+  const page = b7Page();
+  const index = await b4StyleIndex();
+  const shell = ABOX_B7.shells.filter((s) => s.name === shellName)[0] || null;
+  say("B7 INTERNAL SHELL DIAGNOSIS — read-only; nothing is created, modified or deleted.");
+  say("  page inventory (" + B7_PAGE + "): " + (page.children.map((n) => n.name + " [" + n.type + "] id=" + n.id).join(", ") || "empty"));
+
+  const node = b4FindComponent(shellName);
+  if (!node) {
+    say("");
+    say("  the builder resolves NO live component named " + shellName + ".");
+    say("  CLASSIFICATION: GENUINE CONSTRUCTION MISMATCH — the approved shell does not exist.");
+    return;
+  }
+
+  say("");
+  say("  IDENTITY");
+  say("    node              : " + node.name + "  (" + node.type + ")  id=" + node.id);
+  say("    parent            : " + (node.parent ? node.parent.name + " (" + node.parent.type + ")" : "(none)"));
+  say("    on approved page  : " + (node.parent === page ? "yes" : "NO — " + B7_PAGE + " is expected"));
+  say("    builder resolves  : yes (b4FindComponent returned this node)");
+
+  const expected = b7ExpectedRegions(shellName) || [];
+  const paths = b7NodePaths(node);
+  const liveNames = paths.map((p) => p.split(":")[1].split("|")[0]);
+  const leafNames = liveNames.map((p) => p.split("/").pop());
+  say("");
+  say("  SHAPE VERDICT (this is the assertion that fired: b7HasRequiredShape)");
+  say("    expected regions  : " + expected.join(" | "));
+  say("    live descendants  : " + (liveNames.join(" | ") || "none"));
+  const missing = [];
+  for (const region of expected) {
+    const present = liveNames.indexOf(region) !== -1;
+    if (!present) missing.push(region);
+    say("      " + (present ? "PRESENT" : "MISSING") + " — " + region);
+  }
+  say("    first missing     : " + (missing.length ? missing[0] : "(none — shape check passes)"));
+
+  if (missing.length) {
+    say("");
+    say("  NEAR-MISS DETECTION");
+    for (const region of missing) {
+      const target = b7NormaliseName(region);
+      const near = [];
+      for (let i = 0; i < liveNames.length; i += 1) {
+        const candidate = b7NormaliseName(leafNames[i]);
+        if (candidate === target || candidate.indexOf(target) !== -1 || target.indexOf(candidate) !== -1) {
+          near.push(liveNames[i]);
+        }
+      }
+      say("    " + region + " -> " + (near.length ? "near matches: " + near.join(" | ") : "no comparable live name"));
+    }
+  }
+
+  say("");
+  say("  STRUCTURAL EVIDENCE");
+  const rows = [];
+  (function walk(n, depth, prefix) {
+    for (const c of n.children || []) {
+      const path = prefix ? prefix + "/" + c.name : c.name;
+      rows.push({ node: c, depth: depth, path: path });
+      walk(c, depth + 1, path);
+    }
+  })(node, 1, "");
+  const describe = async (n, label, pad) => {
+    say(pad + label + "  (" + n.type + ")  id=" + n.id);
+    if (n.width != null) say(pad + "    size        : " + b7NumOrMixed(n.width) + " x " + b7NumOrMixed(n.height));
+    if (n.layoutMode !== undefined) {
+      say(pad + "    layout      : mode=" + n.layoutMode + " wrap=" + (n.layoutWrap || "n/a") + " primary=" + (n.primaryAxisSizingMode || "n/a") + "/" + (n.primaryAxisAlignItems || "n/a") + " counter=" + (n.counterAxisSizingMode || "n/a") + "/" + (n.counterAxisAlignItems || "n/a"));
+      say(pad + "    spacing     : gap=" + b7NumOrMixed(n.itemSpacing) + " cgap=" + b7NumOrMixed(n.counterAxisSpacing) + " padding=" + [n.paddingTop, n.paddingRight, n.paddingBottom, n.paddingLeft].map(b7NumOrMixed).join("/"));
+      say(pad + "    radius      : " + b7NumOrMixed(n.cornerRadius));
+    }
+    if (n.fillStyleId !== undefined) say(pad + "    fill        : style=" + b7StyleNameById(index, "paint", n.fillStyleId) + "  raw=" + b7PaintSummary(n.fills));
+    if (n.strokeStyleId !== undefined) say(pad + "    stroke      : style=" + b7StyleNameById(index, "paint", n.strokeStyleId) + "  raw=" + b7PaintSummary(n.strokes) + "  weights=" + [n.strokeTopWeight, n.strokeRightWeight, n.strokeBottomWeight, n.strokeLeftWeight].map(b7NumOrMixed).join("/"));
+    if (n.effectStyleId !== undefined) say(pad + "    effect      : style=" + b7StyleNameById(index, "effect", n.effectStyleId) + "  count=" + ((n.effects && n.effects.length) || 0));
+    if (n.type === "TEXT") {
+      say(pad + "    text        : style=" + b7StyleNameById(index, "text", n.textStyleId) + '  characters="' + n.characters + '"');
+    }
+    if (n.type === "INSTANCE") {
+      const main = await n.getMainComponentAsync();
+      say(pad + "    main        : " + (main ? main.name + "  id=" + main.id : "(unresolved)"));
+    }
+    const refs = n.componentPropertyReferences || {};
+    const refKeys = Object.keys(refs).sort();
+    if (refKeys.length) say(pad + "    refs        : " + refKeys.map((k) => k + "=" + refs[k]).join(", "));
+  };
+  await describe(node, "root " + node.name, "    ");
+  for (const row of rows) {
+    const pad = "    " + new Array(row.depth + 1).join("  ");
+    await describe(row.node, row.path, pad);
+  }
+
+  say("");
+  say("  COMPONENT PROPERTIES");
+  const defs = node.componentPropertyDefinitions || {};
+  const defKeys = Object.keys(defs).sort();
+  say("    live definitions  : " + (defKeys.join(", ") || "none"));
+  for (const key of defKeys) {
+    const def = defs[key];
+    say("      " + key + "  type=" + def.type + '  default="' + def.defaultValue + '"');
+    const carriers = rows
+      .filter((r) => {
+        const refs = r.node.componentPropertyReferences || {};
+        return Object.keys(refs).some((f) => refs[f] === key);
+      })
+      .map((r) => r.path);
+    say("        referenced by : " + (carriers.join(" | ") || "no live node"));
+  }
+  for (const binding of (shell && shell.properties) || []) {
+    const match = defKeys.filter((k) => k.split("#")[0] === binding.name);
+    say("    approved " + binding.name + " (" + binding.type + ", " + binding.field + " on " + binding.target + ") -> " + (match.length ? "live " + match.join(", ") : "NOT DEFINED on the live root"));
+  }
+
+  say("");
+  if (missing.length) {
+    const explained = missing.some((region) => {
+      const target = b7NormaliseName(region);
+      return leafNames.some((leaf) => b7NormaliseName(leaf) === target);
+    });
+    if (explained) {
+      say("  CLASSIFICATION: EXPECTED/GENERATED VALUE MISMATCH — the region exists under a different literal name than the approved expectation.");
+    } else {
+      say("  CLASSIFICATION: GENUINE CONSTRUCTION MISMATCH — " + missing.join(", ") + " is absent from the live subtree with no comparable node.");
+    }
+  } else {
+    say("  CLASSIFICATION: IDEMPOTENCY CONTRACT DEFECT — every approved region is present, so the live-shell diff stop is not reproducible from the live tree.");
+  }
+  say("");
+  say("  nothing was created, modified or deleted by this diagnosis.");
+}
 
 
 async function ensureB7Shells() {
@@ -6199,7 +6357,8 @@ figma.ui.onmessage = async (msg) => {
     msg.type === "b6-signature-diff" ||
     msg.type === "b6-cleanup-stale-variants" || msg.type === "b6-cleanup-incomplete-patterns";
   const b7 = msg.type === "b7-run" || msg.type === "b7-verify" || msg.type === "b7-cleanup-incomplete-shells" ||
-    msg.type === "b7-inspect-foundations-orphans" || msg.type === "b7-cleanup-foundations-orphans";
+    msg.type === "b7-inspect-foundations-orphans" || msg.type === "b7-cleanup-foundations-orphans" ||
+    msg.type === "b7-diagnose-internal-shell";
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
   const b10 = msg.type === "b10-run" || msg.type === "b10-verify";
@@ -6367,6 +6526,12 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await b7CleanupIncompleteShells();
+    } else if (msg.type === "b7-diagnose-internal-shell") {
+      say("ABox Phase 54 / Batch B7 — diagnose Internal shell (read-only)");
+      say("file: " + figma.root.name);
+      requireFile(T.library.targetFileName);
+      say("");
+      await b7DiagnoseInternalShell();
     } else if (msg.type === "b7-inspect-foundations-orphans") {
       say("ABox Phase 54 / Batch B7 — inspect 00 Foundations orphans (read-only)");
       say("file: " + figma.root.name);
