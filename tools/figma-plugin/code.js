@@ -45674,9 +45674,26 @@ async function verifyB6() {
     figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
     "B0 pages unchanged: exactly 7, in the original order",
   );
+  const b6ApprovedTopLevel = aboxApprovedPageTopLevel();
+  const b6PageEvidence = [];
+  let b6UnexpectedTopLevel = 0;
+  for (const p of figma.root.children) {
+    const allowed = b6ApprovedTopLevel[p.name] || {};
+    for (const child of p.children) {
+      if (allowed[child.name] === true) continue;
+      b6UnexpectedTopLevel += 1;
+      if (b6PageEvidence.length >= 40) continue;
+      b6PageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
+    }
+  }
+  if (b6PageEvidence.length) {
+    say("B6 PAGE EVIDENCE");
+    for (const line of b6PageEvidence) say(line);
+  }
   add(
-    figma.root.children.filter((p) => writable.indexOf(p.name) === -1).every((p) => p.children.length === 0),
-    "00 Foundations, 04 Experiences, 05 Screens and 06 Documentation remain empty",
+    b6UnexpectedTopLevel === 0,
+    "each page holds only its approved B0–B10 top-level inventory (00 Foundations must stay empty); unexpected nodes: " +
+      b6UnexpectedTopLevel,
   );
   add(
     page.children.length === C.patterns,
