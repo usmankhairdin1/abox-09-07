@@ -20,11 +20,18 @@ var ABOX_CURRENT_APP = {
     "model": "additive native editable fidelity import; no permanent sync"
   },
   "counts": {
+    "routeDeclarations": 153,
     "groups": 12,
     "screens": 179,
     "desktopFrames": 179,
     "mobileCompanions": 87,
+    "nativeInstances": 1033,
+    "minimumStyleBindings": 1214,
     "reactions": 682,
+    "categoryB": 135,
+    "categoryC": 102,
+    "categoryD": 3,
+    "classifiedInteractions": 922,
     "b1Collections": 9,
     "b1Variables": 200,
     "b2Variables": 19,
@@ -62,6 +69,1121 @@ var ABOX_CURRENT_APP = {
       "sourceBackedVisualStateFrames": 2
     }
   },
+  "routeInventory": [
+    {
+      "route": "/accessibility",
+      "sourceFile": "src/routes/accessibility.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/admin",
+      "sourceFile": "src/routes/admin.tsx",
+      "category": "layout-only",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/agency/downlines/new/activate",
+      "sourceFile": "src/routes/agency.downlines.new.activate.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/downlines/new/administrator",
+      "sourceFile": "src/routes/agency.downlines.new.administrator.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/downlines/new/contacts",
+      "sourceFile": "src/routes/agency.downlines.new.contacts.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/downlines/new/identity",
+      "sourceFile": "src/routes/agency.downlines.new.identity.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/downlines/new/legal",
+      "sourceFile": "src/routes/agency.downlines.new.legal.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/downlines/new/locations",
+      "sourceFile": "src/routes/agency.downlines.new.locations.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/downlines/new/readiness",
+      "sourceFile": "src/routes/agency.downlines.new.readiness.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/downlines/new/settings",
+      "sourceFile": "src/routes/agency.downlines.new.settings.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/marketplace-participation",
+      "sourceFile": "src/routes/agency.marketplace-participation.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/my-organization",
+      "sourceFile": "src/routes/agency.my-organization.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organization-admin",
+      "sourceFile": "src/routes/agency.organization-admin.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organization-defaults/apply",
+      "sourceFile": "src/routes/agency.organization-defaults.apply.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organization-imports/$importJobId",
+      "sourceFile": "src/routes/agency.organization-imports.$importJobId.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "importJobId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organization-imports/",
+      "sourceFile": "src/routes/agency.organization-imports.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organization-structure",
+      "sourceFile": "src/routes/agency.organization-structure.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organization-work",
+      "sourceFile": "src/routes/agency.organization-work.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/contacts",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.contacts.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/ending",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.ending.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/history",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.history.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/identifiers",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.identifiers.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.index.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/lifecycle",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.lifecycle.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/locations",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.locations.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/readiness",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.readiness.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/relationships",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.relationships.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/$organizationId/settings",
+      "sourceFile": "src/routes/agency.organizations.$organizationId.settings.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/organizations/",
+      "sourceFile": "src/routes/agency.organizations.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/reference-organizations/request",
+      "sourceFile": "src/routes/agency.reference-organizations.request.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency",
+      "sourceFile": "src/routes/agency.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/agency/workforce/access",
+      "sourceFile": "src/routes/agency.workforce.access.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/data",
+      "sourceFile": "src/routes/agency.workforce.data.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/",
+      "sourceFile": "src/routes/agency.workforce.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/lifecycle",
+      "sourceFile": "src/routes/agency.workforce.lifecycle.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/onboarding",
+      "sourceFile": "src/routes/agency.workforce.onboarding.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/person",
+      "sourceFile": "src/routes/agency.workforce.person.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/readiness",
+      "sourceFile": "src/routes/agency.workforce.readiness.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/roster",
+      "sourceFile": "src/routes/agency.workforce.roster.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/selling-setup",
+      "sourceFile": "src/routes/agency.workforce.selling-setup.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/settings",
+      "sourceFile": "src/routes/agency.workforce.settings.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/structure",
+      "sourceFile": "src/routes/agency.workforce.structure.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agency/workforce/work",
+      "sourceFile": "src/routes/agency.workforce.work.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/agent-unavailable",
+      "sourceFile": "src/routes/agent-unavailable.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/ai-review",
+      "sourceFile": "src/routes/ai-review.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/admin",
+      "sourceFile": "src/routes/app.admin.tsx",
+      "category": "layout-only",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/app/agency/entities",
+      "sourceFile": "src/routes/app.agency.entities.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/agency/",
+      "sourceFile": "src/routes/app.agency.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/agency/producers",
+      "sourceFile": "src/routes/app.agency.producers.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/agency/revenue",
+      "sourceFile": "src/routes/app.agency.revenue.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/agency/statements",
+      "sourceFile": "src/routes/app.agency.statements.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/agent-profile",
+      "sourceFile": "src/routes/app.agent-profile.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/commissions",
+      "sourceFile": "src/routes/app.commissions.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/communications",
+      "sourceFile": "src/routes/app.communications.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/customers/$id",
+      "sourceFile": "src/routes/app.customers.$id.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "id"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/customers/",
+      "sourceFile": "src/routes/app.customers.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/dashboard",
+      "sourceFile": "src/routes/app.dashboard.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/employer/census",
+      "sourceFile": "src/routes/app.employer.census.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/employer/contribution",
+      "sourceFile": "src/routes/app.employer.contribution.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/employer/ichra",
+      "sourceFile": "src/routes/app.employer.ichra.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/employer/proposal",
+      "sourceFile": "src/routes/app.employer.proposal.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/employer/results",
+      "sourceFile": "src/routes/app.employer.results.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/",
+      "sourceFile": "src/routes/app.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/acl",
+      "sourceFile": "src/routes/app.jet.acl.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/ai-governance",
+      "sourceFile": "src/routes/app.jet.ai-governance.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/appointments",
+      "sourceFile": "src/routes/app.jet.appointments.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/audit",
+      "sourceFile": "src/routes/app.jet.audit.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/branding",
+      "sourceFile": "src/routes/app.jet.branding.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/entitlements",
+      "sourceFile": "src/routes/app.jet.entitlements.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/exceptions",
+      "sourceFile": "src/routes/app.jet.exceptions.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/form-configurator",
+      "sourceFile": "src/routes/app.jet.form-configurator.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/integrations",
+      "sourceFile": "src/routes/app.jet.integrations.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/launch-readiness",
+      "sourceFile": "src/routes/app.jet.launch-readiness.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/module1",
+      "sourceFile": "src/routes/app.jet.module1.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/notifications",
+      "sourceFile": "src/routes/app.jet.notifications.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/platform",
+      "sourceFile": "src/routes/app.jet.platform.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/product-builder",
+      "sourceFile": "src/routes/app.jet.product-builder.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/jet/products",
+      "sourceFile": "src/routes/app.jet.products.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/my-work",
+      "sourceFile": "src/routes/app.my-work.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/object",
+      "sourceFile": "src/routes/app.object.tsx",
+      "category": "layout-only",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/app/off-exchange",
+      "sourceFile": "src/routes/app.off-exchange.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/partner",
+      "sourceFile": "src/routes/app.partner.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/quick-quote",
+      "sourceFile": "src/routes/app.quick-quote.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/schedule",
+      "sourceFile": "src/routes/app.schedule.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/send-quote",
+      "sourceFile": "src/routes/app.send-quote.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app/tasks",
+      "sourceFile": "src/routes/app.tasks.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/app",
+      "sourceFile": "src/routes/app.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/apply",
+      "sourceFile": "src/routes/apply.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/auth",
+      "sourceFile": "src/routes/auth.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/cart",
+      "sourceFile": "src/routes/cart.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/compare",
+      "sourceFile": "src/routes/compare.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/compliance",
+      "sourceFile": "src/routes/compliance.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/coverage",
+      "sourceFile": "src/routes/coverage.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/dashboard",
+      "sourceFile": "src/routes/dashboard.tsx",
+      "category": "layout-only",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/design-guide",
+      "sourceFile": "src/routes/design-guide.tsx",
+      "category": "design-reference",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/design-system",
+      "sourceFile": "src/routes/design-system.tsx",
+      "category": "design-reference",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/faq",
+      "sourceFile": "src/routes/faq.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/handoff",
+      "sourceFile": "src/routes/handoff.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/ichra",
+      "sourceFile": "src/routes/ichra.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/",
+      "sourceFile": "src/routes/index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/journey-choice",
+      "sourceFile": "src/routes/journey-choice.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/activation",
+      "sourceFile": "src/routes/marketplace.admin.activation.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/assets",
+      "sourceFile": "src/routes/marketplace.admin.assets.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/availability/$availabilityEntryId",
+      "sourceFile": "src/routes/marketplace.admin.availability.$availabilityEntryId.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "availabilityEntryId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/availability/",
+      "sourceFile": "src/routes/marketplace.admin.availability.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/brand",
+      "sourceFile": "src/routes/marketplace.admin.brand.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/content",
+      "sourceFile": "src/routes/marketplace.admin.content.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/domains/",
+      "sourceFile": "src/routes/marketplace.admin.domains.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/domains/request",
+      "sourceFile": "src/routes/marketplace.admin.domains.request.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/health",
+      "sourceFile": "src/routes/marketplace.admin.health.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/history",
+      "sourceFile": "src/routes/marketplace.admin.history.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/",
+      "sourceFile": "src/routes/marketplace.admin.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/lifecycle",
+      "sourceFile": "src/routes/marketplace.admin.lifecycle.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/participants/$participantId",
+      "sourceFile": "src/routes/marketplace.admin.participants.$participantId.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "participantId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/participants/",
+      "sourceFile": "src/routes/marketplace.admin.participants.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/preview",
+      "sourceFile": "src/routes/marketplace.admin.preview.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/readiness",
+      "sourceFile": "src/routes/marketplace.admin.readiness.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/referral-links/$referralLinkId",
+      "sourceFile": "src/routes/marketplace.admin.referral-links.$referralLinkId.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "referralLinkId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/referral-links/",
+      "sourceFile": "src/routes/marketplace.admin.referral-links.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/releases/compare",
+      "sourceFile": "src/routes/marketplace.admin.releases.compare.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/releases/review",
+      "sourceFile": "src/routes/marketplace.admin.releases.review.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/releases/schedule",
+      "sourceFile": "src/routes/marketplace.admin.releases.schedule.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/routing-support",
+      "sourceFile": "src/routes/marketplace.admin.routing-support.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace/admin/work",
+      "sourceFile": "src/routes/marketplace.admin.work.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/marketplace",
+      "sourceFile": "src/routes/marketplace.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/member/",
+      "sourceFile": "src/routes/member.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/member/messages",
+      "sourceFile": "src/routes/member.messages.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/member/quotes",
+      "sourceFile": "src/routes/member.quotes.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/member/settings",
+      "sourceFile": "src/routes/member.settings.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/member",
+      "sourceFile": "src/routes/member.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/my-work",
+      "sourceFile": "src/routes/my-work.tsx",
+      "category": "layout-only",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/no-options",
+      "sourceFile": "src/routes/no-options.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/object",
+      "sourceFile": "src/routes/object.tsx",
+      "category": "layout-only",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/plans/$planId",
+      "sourceFile": "src/routes/plans.$planId.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "planId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/plans/",
+      "sourceFile": "src/routes/plans.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/platform/marketplaces/$marketplaceId/override",
+      "sourceFile": "src/routes/platform.marketplaces.$marketplaceId.override.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "marketplaceId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/platform/marketplaces/",
+      "sourceFile": "src/routes/platform.marketplaces.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/platform/organizations/$organizationId/override",
+      "sourceFile": "src/routes/platform.organizations.$organizationId.override.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "organizationId"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/platform/organizations/",
+      "sourceFile": "src/routes/platform.organizations.index.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/platform",
+      "sourceFile": "src/routes/platform.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": false
+    },
+    {
+      "route": "/privacy",
+      "sourceFile": "src/routes/privacy.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/quote",
+      "sourceFile": "src/routes/quote.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/r/$referralToken",
+      "sourceFile": "src/routes/r.$referralToken.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "referralToken"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/review",
+      "sourceFile": "src/routes/review.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/schedule",
+      "sourceFile": "src/routes/schedule.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/select",
+      "sourceFile": "src/routes/select.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/shared/$token",
+      "sourceFile": "src/routes/shared.$token.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "token"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/start/$pathway",
+      "sourceFile": "src/routes/start.$pathway.tsx",
+      "category": "content",
+      "dynamicParameters": [
+        "pathway"
+      ],
+      "headMetadata": true
+    },
+    {
+      "route": "/support",
+      "sourceFile": "src/routes/support.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/terms",
+      "sourceFile": "src/routes/terms.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/unavailable/pathway",
+      "sourceFile": "src/routes/unavailable.pathway.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/unavailable/suspended",
+      "sourceFile": "src/routes/unavailable.suspended.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    },
+    {
+      "route": "/unavailable/unresolved",
+      "sourceFile": "src/routes/unavailable.unresolved.tsx",
+      "category": "content",
+      "dynamicParameters": [],
+      "headMetadata": true
+    }
+  ],
   "layout": {
     "page": "07 Current App",
     "desktopWidth": 1440,
@@ -2104,6 +3226,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.downlines.new.activate.tsx"
       ],
       "order": 0,
+      "b8Refs": [
+        "ABox/Experience/Internal/DownlineAgencyCreation"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "9056a066",
       "structureSignature": "61646876",
       "bindingSignature": "09ddf79f",
@@ -2172,6 +3320,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.downlines.new.administrator.tsx"
       ],
       "order": 1,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "f3ade527",
       "structureSignature": "0e718f81",
       "bindingSignature": "52c9b9bb",
@@ -2256,6 +3428,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.downlines.new.contacts.tsx"
       ],
       "order": 2,
+      "b8Refs": [
+        "ABox/Experience/Internal/DownlineAgencyCreation"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "4f2fedb6",
       "structureSignature": "a515833b",
       "bindingSignature": "52c9b9bb",
@@ -2335,6 +3533,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.downlines.new.identity.tsx"
       ],
       "order": 3,
+      "b8Refs": [
+        "ABox/Experience/Internal/DownlineAgencyCreation"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "ebb098b4",
       "structureSignature": "bd39246b",
       "bindingSignature": "08512c78",
@@ -2415,6 +3639,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.downlines.new.legal.tsx"
       ],
       "order": 4,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "5adc9b1a",
       "structureSignature": "78d31ee6",
       "bindingSignature": "52c9b9bb",
@@ -2497,6 +3745,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.downlines.new.locations.tsx"
       ],
       "order": 5,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "c64435e0",
       "structureSignature": "0889adb8",
       "bindingSignature": "52c9b9bb",
@@ -2563,6 +3835,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.downlines.new.readiness.tsx"
       ],
       "order": 6,
+      "b8Refs": [
+        "ABox/Experience/Internal/DownlineAgencyCreation"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "1a9612a0",
       "structureSignature": "673f38ce",
       "bindingSignature": "7a800b60",
@@ -2629,6 +3927,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.downlines.new.settings.tsx"
       ],
       "order": 7,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "093f6cca",
       "structureSignature": "105d63f4",
       "bindingSignature": "52c9b9bb",
@@ -2713,6 +4035,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.marketplace-participation.tsx"
       ],
       "order": 8,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "7bffb726",
       "structureSignature": "7b6dd16b",
       "bindingSignature": "722cdaa7",
@@ -2799,6 +4145,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.my-organization.tsx"
       ],
       "order": 9,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "c7201d71",
       "structureSignature": "60459bea",
       "bindingSignature": "9d23fc63",
@@ -2908,6 +4278,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organization-admin.tsx"
       ],
       "order": 10,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "30851cae",
       "structureSignature": "8ad92e2b",
       "bindingSignature": "96c6a88c",
@@ -2987,6 +4381,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organization-defaults.apply.tsx"
       ],
       "order": 11,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "b61900fb",
       "structureSignature": "f5ea883c",
       "bindingSignature": "722cdaa7",
@@ -3065,6 +4483,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organization-imports.index.tsx"
       ],
       "order": 12,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "b5e46b14",
       "structureSignature": "5ed376a0",
       "bindingSignature": "722cdaa7",
@@ -3139,6 +4581,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organization-imports.$importJobId.tsx"
       ],
       "order": 13,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "c526c976",
       "structureSignature": "2ad1af6d",
       "bindingSignature": "4eebc29f",
@@ -3199,6 +4665,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organization-structure.tsx"
       ],
       "order": 14,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "8a3466eb",
       "structureSignature": "d76cb513",
       "bindingSignature": "4eebc29f",
@@ -3270,6 +4760,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organization-work.tsx"
       ],
       "order": 15,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "94458a29",
       "structureSignature": "f52f724a",
       "bindingSignature": "722cdaa7",
@@ -3360,6 +4874,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.index.tsx"
       ],
       "order": 16,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a6759746",
       "structureSignature": "77d3aa27",
       "bindingSignature": "e05a0ec2",
@@ -3449,6 +4987,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.index.tsx"
       ],
       "order": 17,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "5552f559",
       "structureSignature": "ca17741e",
       "bindingSignature": "4eebc29f",
@@ -3530,6 +5092,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.contacts.tsx"
       ],
       "order": 18,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "8b30ccae",
       "structureSignature": "b205df9e",
       "bindingSignature": "722cdaa7",
@@ -3598,6 +5184,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.ending.tsx"
       ],
       "order": 19,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "d901a9cd",
       "structureSignature": "b39128ce",
       "bindingSignature": "4eebc29f",
@@ -3668,6 +5278,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.history.tsx"
       ],
       "order": 20,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "6f61fe94",
       "structureSignature": "4123f7f4",
       "bindingSignature": "7ff63f4d",
@@ -3744,6 +5378,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.identifiers.tsx"
       ],
       "order": 21,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "b1796f35",
       "structureSignature": "658fb47d",
       "bindingSignature": "722cdaa7",
@@ -3819,6 +5477,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.lifecycle.tsx"
       ],
       "order": 22,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "3452f6f5",
       "structureSignature": "046fdd6b",
       "bindingSignature": "722cdaa7",
@@ -3898,6 +5580,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.locations.tsx"
       ],
       "order": 23,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "dc7a623e",
       "structureSignature": "b46e55f9",
       "bindingSignature": "722cdaa7",
@@ -3965,6 +5671,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.readiness.tsx"
       ],
       "order": 24,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "6c4ff31c",
       "structureSignature": "75d35a9a",
       "bindingSignature": "7149a947",
@@ -4033,6 +5763,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.relationships.tsx"
       ],
       "order": 25,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "e3ec4db8",
       "structureSignature": "88a7a9f1",
       "bindingSignature": "1c43c18c",
@@ -4112,6 +5866,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.organizations.$organizationId.settings.tsx"
       ],
       "order": 26,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "06eb7fb4",
       "structureSignature": "8aebb107",
       "bindingSignature": "722cdaa7",
@@ -4185,6 +5963,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agency.reference-organizations.request.tsx"
       ],
       "order": 27,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "e677879d",
       "structureSignature": "97620891",
       "bindingSignature": "722cdaa7",
@@ -4277,6 +6079,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.index.tsx"
       ],
       "order": 28,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "6ef238b0",
       "structureSignature": "ee3e095d",
       "bindingSignature": "e09f416c",
@@ -4379,6 +6205,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.employer.census.tsx"
       ],
       "order": 29,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "43b99323",
       "structureSignature": "ec5f2e38",
       "bindingSignature": "281508a2",
@@ -4459,6 +6309,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.employer.contribution.tsx"
       ],
       "order": 30,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "031acd92",
       "structureSignature": "6b79334e",
       "bindingSignature": "90c2a556",
@@ -4542,6 +6416,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.employer.proposal.tsx"
       ],
       "order": 31,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "fdfd2363",
       "structureSignature": "6b0b8d87",
       "bindingSignature": "6374812f",
@@ -4639,6 +6537,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.employer.results.tsx"
       ],
       "order": 32,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "acfd4089",
       "structureSignature": "5bb4cac8",
       "bindingSignature": "e09f416c",
@@ -4732,6 +6654,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.entitlements.tsx"
       ],
       "order": 33,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "b9adfe8e",
       "structureSignature": "09fadb85",
       "bindingSignature": "193565c3",
@@ -4863,6 +6809,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.exceptions.tsx"
       ],
       "order": 34,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "1abc18b7",
       "structureSignature": "7a7b5a91",
       "bindingSignature": "f6615070",
@@ -4941,6 +6911,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.launch-readiness.tsx"
       ],
       "order": 35,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "c67ceea7",
       "structureSignature": "2d91c3d6",
       "bindingSignature": "193565c3",
@@ -5027,6 +7021,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.index.tsx"
       ],
       "order": 36,
+      "b8Refs": [
+        "ABox/Experience/Internal/MarketplaceActivationGovernance"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "b021cf62",
       "structureSignature": "2c4c2b45",
       "bindingSignature": "9d23fc63",
@@ -5085,6 +7105,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.activation.tsx"
       ],
       "order": 37,
+      "b8Refs": [
+        "ABox/Experience/Internal/MarketplaceActivationGovernance"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "375fc5cc",
       "structureSignature": "49d8cdc9",
       "bindingSignature": "4eebc29f",
@@ -5147,6 +7193,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.assets.tsx"
       ],
       "order": 38,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "0f58d81a",
       "structureSignature": "2cc2858d",
       "bindingSignature": "722cdaa7",
@@ -5209,6 +7279,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.availability.index.tsx"
       ],
       "order": 39,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "2b173886",
       "structureSignature": "d4e03dbb",
       "bindingSignature": "4eebc29f",
@@ -5286,6 +7380,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.availability.$availabilityEntryId.tsx"
       ],
       "order": 40,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "64643a7e",
       "structureSignature": "dc8ae774",
       "bindingSignature": "1c43c18c",
@@ -5372,6 +7490,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.brand.tsx"
       ],
       "order": 41,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "dd72e39f",
       "structureSignature": "16a18f36",
       "bindingSignature": "722cdaa7",
@@ -5463,6 +7605,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.content.tsx"
       ],
       "order": 42,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "8c85796f",
       "structureSignature": "d816267e",
       "bindingSignature": "d7586bf4",
@@ -5523,6 +7689,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.domains.index.tsx"
       ],
       "order": 43,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "43390734",
       "structureSignature": "33010a32",
       "bindingSignature": "4eebc29f",
@@ -5599,6 +7789,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.domains.request.tsx"
       ],
       "order": 44,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "c0762cc5",
       "structureSignature": "19f60880",
       "bindingSignature": "d7586bf4",
@@ -5654,6 +7868,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.health.tsx"
       ],
       "order": 45,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a203f93d",
       "structureSignature": "490b66ff",
       "bindingSignature": "1c43c18c",
@@ -5718,6 +7956,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.history.tsx"
       ],
       "order": 46,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "487377b8",
       "structureSignature": "a0ac2b6a",
       "bindingSignature": "7ff63f4d",
@@ -5789,6 +8051,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.lifecycle.tsx"
       ],
       "order": 47,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "511fc1e7",
       "structureSignature": "101edd9e",
       "bindingSignature": "722cdaa7",
@@ -5848,6 +8134,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.participants.index.tsx"
       ],
       "order": 48,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "4bc1eddd",
       "structureSignature": "a86344dd",
       "bindingSignature": "1c43c18c",
@@ -5928,6 +8238,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.participants.$participantId.tsx"
       ],
       "order": 49,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "2846cdd9",
       "structureSignature": "1634893d",
       "bindingSignature": "4eebc29f",
@@ -5996,6 +8330,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.preview.tsx"
       ],
       "order": 50,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "80f93686",
       "structureSignature": "0e9101c6",
       "bindingSignature": "4eebc29f",
@@ -6064,6 +8422,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.readiness.tsx"
       ],
       "order": 51,
+      "b8Refs": [
+        "ABox/Experience/Internal/MarketplaceActivationGovernance"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a6ef6028",
       "structureSignature": "d0f25b59",
       "bindingSignature": "4eebc29f",
@@ -6175,6 +8559,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.referral-links.index.tsx"
       ],
       "order": 52,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a07af6be",
       "structureSignature": "25534299",
       "bindingSignature": "e05a0ec2",
@@ -6255,6 +8663,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.referral-links.$referralLinkId.tsx"
       ],
       "order": 53,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "175bce3e",
       "structureSignature": "2409c156",
       "bindingSignature": "4eebc29f",
@@ -6331,6 +8763,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.releases.compare.tsx"
       ],
       "order": 54,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "8a699312",
       "structureSignature": "672b5796",
       "bindingSignature": "827d9ab1",
@@ -6397,6 +8853,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.releases.review.tsx"
       ],
       "order": 55,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "45a27339",
       "structureSignature": "bb7f7b85",
       "bindingSignature": "4eebc29f",
@@ -6466,6 +8946,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.releases.schedule.tsx"
       ],
       "order": 56,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "9348daf9",
       "structureSignature": "3de44a21",
       "bindingSignature": "722cdaa7",
@@ -6543,6 +9047,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.routing-support.tsx"
       ],
       "order": 57,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "81d1ed01",
       "structureSignature": "3a59adc5",
       "bindingSignature": "1c43c18c",
@@ -6618,6 +9146,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/marketplace.admin.work.tsx"
       ],
       "order": 58,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "14f07208",
       "structureSignature": "cf289762",
       "bindingSignature": "722cdaa7",
@@ -6711,6 +9263,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/platform.marketplaces.index.tsx"
       ],
       "order": 59,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "f383acf2",
       "structureSignature": "85c38f56",
       "bindingSignature": "a860030c",
@@ -6790,6 +9366,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/platform.marketplaces.$marketplaceId.override.tsx"
       ],
       "order": 60,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "2f5c4019",
       "structureSignature": "d8d6a4b9",
       "bindingSignature": "722cdaa7",
@@ -6890,6 +9490,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/platform.organizations.index.tsx"
       ],
       "order": 61,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a849e3ef",
       "structureSignature": "1e7fafe2",
       "bindingSignature": "33ca765b",
@@ -6973,6 +9597,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/platform.organizations.$organizationId.override.tsx"
       ],
       "order": 62,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "19213b03",
       "structureSignature": "fa93a97d",
       "bindingSignature": "722cdaa7",
@@ -7035,6 +9683,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.agency.producers.tsx"
       ],
       "order": 63,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "74beeede",
       "structureSignature": "565e4801",
       "bindingSignature": "4eebc29f",
@@ -7104,6 +9776,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.agency.revenue.tsx"
       ],
       "order": 64,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "24b235b5",
       "structureSignature": "16bfe7e9",
       "bindingSignature": "4eebc29f",
@@ -7186,6 +9882,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.agency.index.tsx"
       ],
       "order": 65,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "071e8040",
       "structureSignature": "13ad6e44",
       "bindingSignature": "e341d46e",
@@ -7245,6 +9965,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.agency.entities.tsx"
       ],
       "order": 66,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "31453f56",
       "structureSignature": "06742f14",
       "bindingSignature": "1c43c18c",
@@ -7332,6 +10076,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.agency.statements.tsx"
       ],
       "order": 67,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "ed2d0366",
       "structureSignature": "4bc20a24",
       "bindingSignature": "a860030c",
@@ -7422,6 +10190,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.commissions.tsx"
       ],
       "order": 68,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "9e5cac17",
       "structureSignature": "cea2b7bc",
       "bindingSignature": "e33cb684",
@@ -7496,6 +10288,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.communications.tsx"
       ],
       "order": 69,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "679e4027",
       "structureSignature": "2f03ef00",
       "bindingSignature": "4eebc29f",
@@ -7605,6 +10421,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.customers.index.tsx"
       ],
       "order": 70,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "89650059",
       "structureSignature": "191ff4b3",
       "bindingSignature": "e05a0ec2",
@@ -7680,6 +10520,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.dashboard.tsx"
       ],
       "order": 71,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "3682651b",
       "structureSignature": "69ab9fe0",
       "bindingSignature": "e341d46e",
@@ -7756,6 +10620,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.my-work.tsx"
       ],
       "order": 72,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "6b23aad0",
       "structureSignature": "4505e0a5",
       "bindingSignature": "9d23fc63",
@@ -7844,6 +10732,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.off-exchange.tsx"
       ],
       "order": 73,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "3b3fb8be",
       "structureSignature": "adc76fb4",
       "bindingSignature": "722cdaa7",
@@ -7939,6 +10851,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.tasks.tsx"
       ],
       "order": 74,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a4a68c75",
       "structureSignature": "cfb17c4a",
       "bindingSignature": "722cdaa7",
@@ -8038,6 +10974,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.quick-quote.tsx"
       ],
       "order": 75,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "f28cc3be",
       "structureSignature": "1be217c5",
       "bindingSignature": "722cdaa7",
@@ -8126,6 +11086,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.send-quote.tsx"
       ],
       "order": 76,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "1baaf690",
       "structureSignature": "a67964ab",
       "bindingSignature": "722cdaa7",
@@ -8214,6 +11198,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.customers.$id.tsx"
       ],
       "order": 77,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "171c5ee8",
       "structureSignature": "91094706",
       "bindingSignature": "4eebc29f",
@@ -8315,6 +11323,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.employer.ichra.tsx"
       ],
       "order": 78,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "59bb6ed3",
       "structureSignature": "fc1a0094",
       "bindingSignature": "1b736b84",
@@ -8376,6 +11408,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.acl.tsx"
       ],
       "order": 79,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "807e1388",
       "structureSignature": "f350320e",
       "bindingSignature": "1c43c18c",
@@ -8443,6 +11499,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.ai-governance.tsx"
       ],
       "order": 80,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a46d8b68",
       "structureSignature": "bbe45347",
       "bindingSignature": "4eebc29f",
@@ -8502,6 +11582,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.appointments.tsx"
       ],
       "order": 81,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "5b23cbf4",
       "structureSignature": "23c31b7a",
       "bindingSignature": "1c43c18c",
@@ -8566,6 +11670,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.audit.tsx"
       ],
       "order": 82,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "1d2b95bb",
       "structureSignature": "387cc484",
       "bindingSignature": "4eebc29f",
@@ -8645,6 +11773,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.branding.tsx"
       ],
       "order": 83,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "46a507ee",
       "structureSignature": "92643b25",
       "bindingSignature": "14faf66e",
@@ -8721,6 +11873,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.form-configurator.tsx"
       ],
       "order": 84,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "d90c1ceb",
       "structureSignature": "18cf591c",
       "bindingSignature": "722cdaa7",
@@ -8784,6 +11960,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.integrations.tsx"
       ],
       "order": 85,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "e4c5280f",
       "structureSignature": "9d6b44be",
       "bindingSignature": "4eebc29f",
@@ -8843,6 +12043,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.notifications.tsx"
       ],
       "order": 86,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "e5c5a1f1",
       "structureSignature": "2dec7e03",
       "bindingSignature": "1c43c18c",
@@ -8917,6 +12141,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.product-builder.tsx"
       ],
       "order": 87,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "1582c0e2",
       "structureSignature": "b73e9645",
       "bindingSignature": "1c43c18c",
@@ -9013,6 +12261,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.products.tsx"
       ],
       "order": 88,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "dc66605a",
       "structureSignature": "1689aa39",
       "bindingSignature": "ff6fa227",
@@ -9129,6 +12401,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.platform.tsx"
       ],
       "order": 89,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "029f2f54",
       "structureSignature": "4bef4a5d",
       "bindingSignature": "c2b33fed",
@@ -9213,6 +12509,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.jet.module1.tsx"
       ],
       "order": 90,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "d6c1a83b",
       "structureSignature": "adb4d696",
       "bindingSignature": "d7586bf4",
@@ -9280,6 +12600,30 @@ var ABOX_CURRENT_APP = {
         "AgencyAdministrationHome"
       ],
       "order": 91,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "63515b02",
       "structureSignature": "7cdad3a2",
       "bindingSignature": "baca08f5",
@@ -9347,6 +12691,30 @@ var ABOX_CURRENT_APP = {
         "AgencyRoster"
       ],
       "order": 92,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "d002d83c",
       "structureSignature": "cc5ffce1",
       "bindingSignature": "baca08f5",
@@ -9414,6 +12782,30 @@ var ABOX_CURRENT_APP = {
         "AgentProfile"
       ],
       "order": 93,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "006da8c2",
       "structureSignature": "63538fbf",
       "bindingSignature": "baca08f5",
@@ -9481,6 +12873,30 @@ var ABOX_CURRENT_APP = {
         "AgencyProfile"
       ],
       "order": 94,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "7e4e16a6",
       "structureSignature": "6b52acb7",
       "bindingSignature": "baca08f5",
@@ -9548,6 +12964,30 @@ var ABOX_CURRENT_APP = {
         "AddPersonWizard"
       ],
       "order": 95,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "8aae8879",
       "structureSignature": "50ce9f74",
       "bindingSignature": "baca08f5",
@@ -9615,6 +13055,30 @@ var ABOX_CURRENT_APP = {
         "AddPersonWizard"
       ],
       "order": 96,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "8aae8879",
       "structureSignature": "31c450d0",
       "bindingSignature": "baca08f5",
@@ -9682,6 +13146,30 @@ var ABOX_CURRENT_APP = {
         "RosterOnlyConversion"
       ],
       "order": 97,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "4a966a47",
       "structureSignature": "98173a19",
       "bindingSignature": "baca08f5",
@@ -9749,6 +13237,30 @@ var ABOX_CURRENT_APP = {
         "RolesAndAccessHome"
       ],
       "order": 98,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a67614b1",
       "structureSignature": "dc3f27ff",
       "bindingSignature": "baca08f5",
@@ -9816,6 +13328,30 @@ var ABOX_CURRENT_APP = {
         "SystemRoleDetail"
       ],
       "order": 99,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "d5606894",
       "structureSignature": "6f072e0a",
       "bindingSignature": "baca08f5",
@@ -9883,6 +13419,30 @@ var ABOX_CURRENT_APP = {
         "CustomRoleBuilder"
       ],
       "order": 100,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "c4216048",
       "structureSignature": "6bd6b56c",
       "bindingSignature": "baca08f5",
@@ -9950,6 +13510,30 @@ var ABOX_CURRENT_APP = {
         "RoleVersionCompare"
       ],
       "order": 101,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a5e3b4f5",
       "structureSignature": "ddb61ff4",
       "bindingSignature": "baca08f5",
@@ -10017,6 +13601,30 @@ var ABOX_CURRENT_APP = {
         "RoleAssignments"
       ],
       "order": 102,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "0ad81554",
       "structureSignature": "b75b3153",
       "bindingSignature": "baca08f5",
@@ -10084,6 +13692,30 @@ var ABOX_CURRENT_APP = {
         "EffectiveAccessInspector"
       ],
       "order": 103,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "4ea2f7c4",
       "structureSignature": "d063c05a",
       "bindingSignature": "baca08f5",
@@ -10151,6 +13783,30 @@ var ABOX_CURRENT_APP = {
         "AccessAudit"
       ],
       "order": 104,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "eed3a825",
       "structureSignature": "959db46b",
       "bindingSignature": "baca08f5",
@@ -10218,6 +13874,30 @@ var ABOX_CURRENT_APP = {
         "BusinessUnits"
       ],
       "order": 105,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "405c29c9",
       "structureSignature": "557f4b17",
       "bindingSignature": "baca08f5",
@@ -10285,6 +13965,30 @@ var ABOX_CURRENT_APP = {
         "BusinessUnitDetail"
       ],
       "order": 106,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "0abde2fb",
       "structureSignature": "b4d7a0f2",
       "bindingSignature": "baca08f5",
@@ -10352,6 +14056,30 @@ var ABOX_CURRENT_APP = {
         "Teams"
       ],
       "order": 107,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "369fffcc",
       "structureSignature": "6b4adbca",
       "bindingSignature": "baca08f5",
@@ -10419,6 +14147,30 @@ var ABOX_CURRENT_APP = {
         "TeamDetail"
       ],
       "order": 108,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "58eab63c",
       "structureSignature": "77e0b3f5",
       "bindingSignature": "baca08f5",
@@ -10486,6 +14238,30 @@ var ABOX_CURRENT_APP = {
         "OnboardingCases"
       ],
       "order": 109,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "9d6be9b4",
       "structureSignature": "990ab06b",
       "bindingSignature": "baca08f5",
@@ -10553,6 +14329,30 @@ var ABOX_CURRENT_APP = {
         "TransferCase"
       ],
       "order": 110,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "71e2553d",
       "structureSignature": "cacaf85f",
       "bindingSignature": "baca08f5",
@@ -10620,6 +14420,30 @@ var ABOX_CURRENT_APP = {
         "OffboardingCase"
       ],
       "order": 111,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "20ef3a8d",
       "structureSignature": "fcaa2585",
       "bindingSignature": "baca08f5",
@@ -10687,6 +14511,30 @@ var ABOX_CURRENT_APP = {
         "TasksAndExceptions"
       ],
       "order": 112,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "b7379447",
       "structureSignature": "daeac560",
       "bindingSignature": "baca08f5",
@@ -10754,6 +14602,30 @@ var ABOX_CURRENT_APP = {
         "ReadinessDetail"
       ],
       "order": 113,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "93e3e731",
       "structureSignature": "1944dabd",
       "bindingSignature": "baca08f5",
@@ -10821,6 +14693,30 @@ var ABOX_CURRENT_APP = {
         "OperationalEligibilityDetail"
       ],
       "order": 114,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "17b8ed40",
       "structureSignature": "0f783a0c",
       "bindingSignature": "baca08f5",
@@ -10888,6 +14784,30 @@ var ABOX_CURRENT_APP = {
         "ReferralLinkComponent"
       ],
       "order": 115,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "3302c286",
       "structureSignature": "369dfcf8",
       "bindingSignature": "baca08f5",
@@ -10955,6 +14875,30 @@ var ABOX_CURRENT_APP = {
         "CredentialSellingSetup"
       ],
       "order": 116,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "521ae3e0",
       "structureSignature": "74fe806f",
       "bindingSignature": "baca08f5",
@@ -11022,6 +14966,30 @@ var ABOX_CURRENT_APP = {
         "ImportRoster"
       ],
       "order": 117,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "21940176",
       "structureSignature": "9897aba1",
       "bindingSignature": "baca08f5",
@@ -11089,6 +15057,30 @@ var ABOX_CURRENT_APP = {
         "ImportResults"
       ],
       "order": 118,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "0f4c602d",
       "structureSignature": "927bc6a7",
       "bindingSignature": "baca08f5",
@@ -11156,6 +15148,30 @@ var ABOX_CURRENT_APP = {
         "ExportRequest"
       ],
       "order": 119,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "b48d19d7",
       "structureSignature": "f73dc0db",
       "bindingSignature": "baca08f5",
@@ -11223,6 +15239,30 @@ var ABOX_CURRENT_APP = {
         "FixedReports"
       ],
       "order": 120,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "10a715f7",
       "structureSignature": "55bed599",
       "bindingSignature": "baca08f5",
@@ -11290,6 +15330,30 @@ var ABOX_CURRENT_APP = {
         "NotificationPreferences"
       ],
       "order": 121,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "25a835b7",
       "structureSignature": "d89217f6",
       "bindingSignature": "baca08f5",
@@ -11357,6 +15421,30 @@ var ABOX_CURRENT_APP = {
         "SupportContext"
       ],
       "order": 122,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "3d7896b2",
       "structureSignature": "4610f637",
       "bindingSignature": "baca08f5",
@@ -11424,6 +15512,30 @@ var ABOX_CURRENT_APP = {
         "DuplicateReview"
       ],
       "order": 123,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "8f1917d1",
       "structureSignature": "f72272c5",
       "bindingSignature": "baca08f5",
@@ -11491,6 +15603,30 @@ var ABOX_CURRENT_APP = {
         "AgencyDefaults"
       ],
       "order": 124,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "75e5daff",
       "structureSignature": "215d1ff3",
       "bindingSignature": "baca08f5",
@@ -11558,6 +15694,30 @@ var ABOX_CURRENT_APP = {
         "AgentWorkspace"
       ],
       "order": 125,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "ca51964e",
       "structureSignature": "34018ba3",
       "bindingSignature": "baca08f5",
@@ -11622,6 +15782,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup"
       ],
       "order": 126,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "bde59c16",
       "structureSignature": "6e23ff64",
       "bindingSignature": "baca08f5",
@@ -11686,6 +15870,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup/where-i-can-sell"
       ],
       "order": 127,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "401149e0",
       "structureSignature": "8b1ab4cd",
       "bindingSignature": "baca08f5",
@@ -11750,6 +15958,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup/blockers"
       ],
       "order": 128,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "dd0a9cca",
       "structureSignature": "d5ab1659",
       "bindingSignature": "baca08f5",
@@ -11814,6 +16046,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup/licenses/{licenseId}"
       ],
       "order": 129,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "c4d67562",
       "structureSignature": "d1137784",
       "bindingSignature": "baca08f5",
@@ -11878,6 +16134,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup/appointments/{appointmentId}"
       ],
       "order": 130,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "f685163e",
       "structureSignature": "2fdbc9d4",
       "bindingSignature": "baca08f5",
@@ -11942,6 +16222,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup/product-authority/{grantId}"
       ],
       "order": 131,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "dcc3d2fe",
       "structureSignature": "153e651f",
       "bindingSignature": "baca08f5",
@@ -12006,6 +16310,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup/eo"
       ],
       "order": 132,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "ed26abb3",
       "structureSignature": "55d37522",
       "bindingSignature": "baca08f5",
@@ -12070,6 +16398,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup/training"
       ],
       "order": 133,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "1f7bc031",
       "structureSignature": "f7e27cb3",
       "bindingSignature": "baca08f5",
@@ -12134,6 +16486,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup/documents"
       ],
       "order": 134,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "c0eabc1d",
       "structureSignature": "2ee2af07",
       "bindingSignature": "baca08f5",
@@ -12198,6 +16574,30 @@ var ABOX_CURRENT_APP = {
         "/people/{personId}/selling-setup/npn"
       ],
       "order": 135,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "caca044b",
       "structureSignature": "275b52c0",
       "bindingSignature": "baca08f5",
@@ -12272,6 +16672,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/accessibility.tsx"
       ],
       "order": 136,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "ea1a5daa",
       "structureSignature": "11cd0fe5",
       "bindingSignature": "0cf8eaf1",
@@ -12343,6 +16767,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/agent-unavailable.tsx"
       ],
       "order": 137,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "34fa8eab",
       "structureSignature": "61b7088e",
       "bindingSignature": "fd5cbe25",
@@ -12424,6 +16872,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/auth.tsx"
       ],
       "order": 138,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "95025e4f",
       "structureSignature": "57118cc0",
       "bindingSignature": "3f190e3f",
@@ -12495,6 +16967,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/compliance.tsx"
       ],
       "order": 139,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "42f9e57d",
       "structureSignature": "93938941",
       "bindingSignature": "8e75b1b2",
@@ -12565,6 +17061,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/faq.tsx"
       ],
       "order": 140,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "98906630",
       "structureSignature": "bf757fc5",
       "bindingSignature": "b6e42376",
@@ -12629,6 +17149,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/ichra.tsx"
       ],
       "order": 141,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "b8c5f5ef",
       "structureSignature": "25e0e200",
       "bindingSignature": "fd5cbe25",
@@ -12693,6 +17237,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/journey-choice.tsx"
       ],
       "order": 142,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "dc2ca318",
       "structureSignature": "38dc81d8",
       "bindingSignature": "b6e42376",
@@ -12758,6 +17326,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/no-options.tsx"
       ],
       "order": 143,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "405e59e9",
       "structureSignature": "1e3a066b",
       "bindingSignature": "fd5cbe25",
@@ -12822,6 +17414,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/privacy.tsx"
       ],
       "order": 144,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a3633a84",
       "structureSignature": "804b1386",
       "bindingSignature": "fd5cbe25",
@@ -12886,6 +17502,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/r.$referralToken.tsx"
       ],
       "order": 145,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "e84e45c0",
       "structureSignature": "c54aa5c0",
       "bindingSignature": "b6e42376",
@@ -12980,6 +17620,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/index.tsx"
       ],
       "order": 146,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "3e133334",
       "structureSignature": "c9369706",
       "bindingSignature": "0258b2e3",
@@ -13035,6 +17699,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/start.$pathway.tsx"
       ],
       "order": 147,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "4c3f563a",
       "structureSignature": "91b36273",
       "bindingSignature": "fd5cbe25",
@@ -13090,6 +17778,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/support.tsx"
       ],
       "order": 148,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "7e1e02fe",
       "structureSignature": "0094748d",
       "bindingSignature": "fd5cbe25",
@@ -13154,6 +17866,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/terms.tsx"
       ],
       "order": 149,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "f1d5f35e",
       "structureSignature": "f4314df2",
       "bindingSignature": "fd5cbe25",
@@ -13217,6 +17953,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/unavailable.pathway.tsx"
       ],
       "order": 150,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "d182de05",
       "structureSignature": "a287ef66",
       "bindingSignature": "fd5cbe25",
@@ -13268,6 +18028,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/unavailable.suspended.tsx"
       ],
       "order": 151,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "3c45b818",
       "structureSignature": "ffa2341a",
       "bindingSignature": "fd5cbe25",
@@ -13327,6 +18111,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/unavailable.unresolved.tsx"
       ],
       "order": 152,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "86e2ffe4",
       "structureSignature": "53c4250f",
       "bindingSignature": "fd5cbe25",
@@ -13415,6 +18223,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/apply.tsx"
       ],
       "order": 153,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/EnrollmentReviewAndSubmission"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "6fcb248d",
       "structureSignature": "06d7bb9e",
       "bindingSignature": "9ee57d74",
@@ -13483,6 +18317,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/select.tsx"
       ],
       "order": 154,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "d025be26",
       "structureSignature": "8374d0e8",
       "bindingSignature": "b6e42376",
@@ -13588,6 +18448,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/quote.tsx"
       ],
       "order": 155,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "7b597a28",
       "structureSignature": "45259a3e",
       "bindingSignature": "1957733b",
@@ -13693,6 +18579,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/quote.tsx"
       ],
       "order": 156,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "66022117",
       "structureSignature": "45259a3e",
       "bindingSignature": "1957733b",
@@ -13798,6 +18710,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/quote.tsx"
       ],
       "order": 157,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "4be754d9",
       "structureSignature": "45259a3e",
       "bindingSignature": "1957733b",
@@ -13903,6 +18841,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/quote.tsx"
       ],
       "order": 158,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "83f8b882",
       "structureSignature": "45259a3e",
       "bindingSignature": "1957733b",
@@ -14008,6 +18972,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/quote.tsx"
       ],
       "order": 159,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "9b0cb75a",
       "structureSignature": "45259a3e",
       "bindingSignature": "1957733b",
@@ -14113,6 +19103,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/quote.tsx"
       ],
       "order": 160,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "2fab812f",
       "structureSignature": "45259a3e",
       "bindingSignature": "1957733b",
@@ -14237,6 +19253,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/plans.index.tsx"
       ],
       "order": 161,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "ad9f4a0c",
       "structureSignature": "4b17cdc4",
       "bindingSignature": "b8de37f0",
@@ -14327,6 +19369,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/plans.$planId.tsx"
       ],
       "order": 162,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "c78f0fdc",
       "structureSignature": "547a02fe",
       "bindingSignature": "ba507587",
@@ -14395,6 +19461,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/compare.tsx"
       ],
       "order": 163,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "8931b575",
       "structureSignature": "f7421e96",
       "bindingSignature": "9ee57d74",
@@ -14466,6 +19556,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/coverage.tsx"
       ],
       "order": 164,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "64d6e7d9",
       "structureSignature": "9346cf2f",
       "bindingSignature": "b6e42376",
@@ -14560,6 +19674,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/cart.tsx"
       ],
       "order": 165,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/EnrollmentReviewAndSubmission"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "bfd874bb",
       "structureSignature": "aa375b74",
       "bindingSignature": "559a4364",
@@ -14631,6 +19771,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/review.tsx"
       ],
       "order": 166,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/EnrollmentReviewAndSubmission"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "5cc8b3da",
       "structureSignature": "f8b47445",
       "bindingSignature": "54977850",
@@ -14715,6 +19881,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/shared.$token.tsx"
       ],
       "order": 167,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "6bac22dd",
       "structureSignature": "7f8b3d93",
       "bindingSignature": "31b29e83",
@@ -14773,6 +19963,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.schedule.tsx"
       ],
       "order": 168,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "d6ae74a7",
       "structureSignature": "72e60dc7",
       "bindingSignature": "1c43c18c",
@@ -14855,6 +20069,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/schedule.tsx"
       ],
       "order": 169,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "b5278e70",
       "structureSignature": "8725b44a",
       "bindingSignature": "3f190e3f",
@@ -14924,6 +20162,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/handoff.tsx"
       ],
       "order": 170,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/EnrollmentReviewAndSubmission"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "f914f307",
       "structureSignature": "31cbc9e4",
       "bindingSignature": "31b29e83",
@@ -15002,6 +20266,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/ai-review.tsx"
       ],
       "order": 171,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "2030338b",
       "structureSignature": "2a900a32",
       "bindingSignature": "f7ef69a3",
@@ -15059,6 +20347,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/member.messages.tsx"
       ],
       "order": 172,
+      "b8Refs": [
+        "ABox/Experience/Member/ContinuationWorkspace"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "desktop-only",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "37c40182",
       "structureSignature": "d05a1612",
       "bindingSignature": "032439f7",
@@ -15138,6 +20452,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/member.quotes.tsx"
       ],
       "order": 173,
+      "b8Refs": [
+        "ABox/Experience/Member/ContinuationWorkspace"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "a0a2dbbd",
       "structureSignature": "320091f3",
       "bindingSignature": "2658d87c",
@@ -15219,6 +20559,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/member.settings.tsx"
       ],
       "order": 174,
+      "b8Refs": [
+        "ABox/Experience/Member/ContinuationWorkspace"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "2781ea04",
       "structureSignature": "fe000045",
       "bindingSignature": "9fe7b19f",
@@ -15300,6 +20666,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/member.index.tsx"
       ],
       "order": 175,
+      "b8Refs": [
+        "ABox/Experience/Member/ContinuationWorkspace"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "1557c79d",
       "structureSignature": "2c704509",
       "bindingSignature": "30673f77",
@@ -15399,6 +20791,30 @@ var ABOX_CURRENT_APP = {
         "src/routes/app.partner.tsx"
       ],
       "order": 176,
+      "b8Refs": [],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "7edfd0f3",
       "structureSignature": "618e458e",
       "bindingSignature": "c9e6bce3",
@@ -15521,6 +20937,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/plans.index.tsx"
       ],
       "order": 177,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "74a137d6",
       "structureSignature": "4b17cdc4",
       "bindingSignature": "b8de37f0",
@@ -15643,6 +21085,32 @@ var ABOX_CURRENT_APP = {
         "src/routes/plans.index.tsx"
       ],
       "order": 178,
+      "b8Refs": [
+        "ABox/Experience/Marketplace/PlanAIShoppingPath"
+      ],
+      "bindings": {
+        "paintStyles": [
+          "ABox/Semantic/background",
+          "ABox/Semantic/foreground",
+          "ABox/Semantic/surface",
+          "ABox/Semantic/card",
+          "ABox/Semantic/muted-foreground",
+          "ABox/Semantic/hairline"
+        ],
+        "textStyles": [
+          "ABox/Text/serial"
+        ],
+        "literalFallbacks": [
+          "source-derived dimensions",
+          "source-unmapped spacing",
+          "unsupported responsive values"
+        ]
+      },
+      "evidenceQuality": {
+        "structure": "source-static",
+        "responsive": "breakpoint-candidate",
+        "interactions": "B9-governed"
+      },
       "sourceSignature": "dc30f045",
       "structureSignature": "4b17cdc4",
       "bindingSignature": "b8de37f0",
@@ -36199,8 +41667,11 @@ var ABOX_CURRENT_APP = {
   },
   "limitations": [
     "Native editable reconstruction only; no screenshots, image fills, HTML embeds or flattened imports.",
+    "Static source analysis preserves visible literals and source hierarchy evidence but does not execute recursive React rendering.",
+    "Responsive breakpoint detection marks candidates; it does not claim runtime-measured hierarchy equivalence.",
     "Unsupported production values remain literal editable properties with source metadata; equality is not treated as token evidence.",
     "Runtime authentication, data, pricing, subsidy, persistence, validation and generated values are metadata only.",
+    "Dynamic, external and ambiguous destinations remain Category C/D metadata and receive no reaction.",
     "Route-local compositions do not become new Figma foundations.",
     "REAL FIGMA NOT VERIFIED until create, verify, recreate and verify run in Figma Desktop."
   ]
