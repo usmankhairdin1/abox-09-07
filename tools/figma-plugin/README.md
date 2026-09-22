@@ -618,6 +618,14 @@ interactions are remapped between corresponding current-app frames. Runtime, dyn
 external or ambiguous behavior remains metadata only. The import creates no variables,
 styles, components, component sets, patterns or shells and never mutates B0–B10 objects.
 
+Static safety checks run offline after every rebuild:
+`node tools/figma-plugin/check-globals.mjs` scans the generated bundle for free
+(undeclared) identifier references — the exact failure class behind the
+`'h' is not defined` rollback — and `node tools/figma-plugin/check-current-app-mobile.mjs`
+executes `currentAppBuildMobile` against all 87 manifest companions with stubbed Figma
+helpers, asserting 390px width, the computed fixed height, frame naming and plugin-data
+stamping. Both must pass before a Figma Desktop attempt.
+
 Real evidence requires **Create Current App** → **Verify Current App** → **Create Current
 App** → **Verify Current App** in Figma Desktop, with zero creations on the second run,
 unchanged IDs/signatures/coordinates, no overlaps or image fills, and a final B0–B10
