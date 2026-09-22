@@ -254,7 +254,12 @@
         log.textContent = "Diagnosing B7 Internal shell…";
         parent.postMessage({ pluginMessage: { type: "b7-diagnose-internal-shell" } }, "*");
       };
+      document.getElementById("b7diagnosemember").onclick = () => {
+        log.textContent = "Diagnosing B7 Member shell…";
+        parent.postMessage({ pluginMessage: { type: "b7-diagnose-member-shell" } }, "*");
+      };
       document.getElementById("b7inspectfound").onclick = () => {
+
         log.textContent = "Inspecting 00 Foundations orphans…";
         parent.postMessage({ pluginMessage: { type: "b7-inspect-foundations-orphans" } }, "*");
       };
