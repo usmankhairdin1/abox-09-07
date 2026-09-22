@@ -44120,15 +44120,25 @@ async function verifyB4() {
     figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
     "B0 pages unchanged: exactly 7, in order, none created/renamed/reordered",
   );
-  // "02 Patterns" is B6's page; every other non-component page must stay empty.
-  const others = figma.root.children.filter((p) => p.name !== B4_PAGE && p.name !== "02 Patterns");
+  // Closure-time: every page other than "01 Components" (checked exactly below)
+  // may hold only its approved later-batch top-level inventory; 00 Foundations stays empty.
+  const others = figma.root.children.filter((p) => p.name !== B4_PAGE);
   const pageEvidence = [];
+  const approvedTopLevelB4 = aboxApprovedPageTopLevel();
+  let unexpectedOtherPages = 0;
   for (const p of others) {
+    const allowed = approvedTopLevelB4[p.name] || {};
     for (const child of p.children) {
+      if (allowed[child.name] === true) continue;
+      unexpectedOtherPages += 1;
       pageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
     }
   }
-  add(others.every((p) => p.children.length === 0), "pages 00, 03, 04, 05, 06 remain empty (02 Patterns is B6-owned)");
+  add(
+    unexpectedOtherPages === 0,
+    "pages 00, 02–06 hold only their approved B6–B10 inventory (00 Foundations must stay empty)",
+  );
+
   const expectedOnPage = sets.concat(standalone).filter((n) => n.parent && n.parent.id === page.id);
   const extras = page.children.filter((n) => !expectedOnPage.some((e) => e.id === n.id));
   const missing = sets.concat(standalone).filter((n) => !n.parent || n.parent.id !== page.id);
