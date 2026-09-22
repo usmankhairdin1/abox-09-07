@@ -234,3 +234,4 @@ export, breadcrumbs / pagination / avatars / charts awaiting real feature use.
 - [x] Phase 10 — Pattern & experience architecture specification (reference layer only; `/design-system` and `/design-guide` extended, application unchanged)
 
 - [x] Phase 11 — Governance, canonicalization readiness & Figma readiness audit (reference layer only; 14 open decisions recorded, none selected; application unchanged)
+- [x] Phase 55 / Batch B8 — experiences: 4 approved plugin fixes applied (async b8Frame, async getMainComponentAsync reads, B10 allowance in verifier page check, b8Guarded rollback); code.js rebuilt; offline validation passed; awaiting real-Figma run
