@@ -27,4 +27,4 @@ const out = [
 
 writeFileSync(join(here, "code.js"), out);
 console.log("wrote code.js (" + out.length + " bytes)");
-console.log("next: node tools/figma-plugin/check-globals.mjs && node tools/figma-plugin/check-current-app-mobile.mjs");
+console.log("next: node tools/figma-plugin/check-globals.mjs && node tools/figma-plugin/check-current-app-mobile.mjs && node tools/figma-plugin/check-current-app-guard.mjs");
