@@ -6938,8 +6938,9 @@ async function currentAppPreflight() {
   if (ABOX_CURRENT_APP.counts.screens !== 179 || ABOX_CURRENT_APP.counts.reactions !== 682 || ABOX_CURRENT_APP.counts.classifiedInteractions !== 922) throw new Error("STOP: current-app inventory arithmetic differs from the approved baseline.");
   const keys = {}, names = {};
   for (const screen of ABOX_CURRENT_APP.screens) {
-    if (keys[screen.key] || names[screen.name]) throw new Error('STOP: duplicate current-app identity — "' + screen.key + '".');
-    keys[screen.key] = true; names[screen.name] = true;
+    if (keys[screen.key]) throw new Error('STOP: duplicate current-app identity (stable key) — "' + screen.key + '" collides with "' + keys[screen.key] + '".');
+    if (names[screen.name]) throw new Error('STOP: duplicate current-app identity (screen name) — "' + screen.name + '" used by "' + names[screen.name] + '" and "' + screen.key + '".');
+    keys[screen.key] = screen.key; names[screen.name] = screen.key;
     if (!screen.signature || !screen.structureSignature || !screen.bindingSignature) throw new Error('STOP: incomplete current-app signature — "' + screen.key + '".');
   }
   for (const group of ABOX_CURRENT_APP.groups) {

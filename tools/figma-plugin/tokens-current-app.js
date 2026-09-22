@@ -3173,7 +3173,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/downlines/new/activate",
       "b9Key": "route:/agency/downlines/new/activate",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-downlines-new-activate",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-downlines-new-activate",
       "title": "Activate",
       "route": "/agency/downlines/new/activate",
       "sourceFile": "src/routes/agency.downlines.new.activate.tsx",
@@ -3260,7 +3260,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/downlines/new/administrator",
       "b9Key": "route:/agency/downlines/new/administrator",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-downlines-new-administrator",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-downlines-new-administrator",
       "title": "Administrator",
       "route": "/agency/downlines/new/administrator",
       "sourceFile": "src/routes/agency.downlines.new.administrator.tsx",
@@ -3352,7 +3352,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/downlines/new/contacts",
       "b9Key": "route:/agency/downlines/new/contacts",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-downlines-new-contacts",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-downlines-new-contacts",
       "title": "Contacts",
       "route": "/agency/downlines/new/contacts",
       "sourceFile": "src/routes/agency.downlines.new.contacts.tsx",
@@ -3462,7 +3462,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/downlines/new/identity",
       "b9Key": "route:/agency/downlines/new/identity",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-downlines-new-identity",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-downlines-new-identity",
       "title": "Identity",
       "route": "/agency/downlines/new/identity",
       "sourceFile": "src/routes/agency.downlines.new.identity.tsx",
@@ -3567,7 +3567,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/downlines/new/legal",
       "b9Key": "route:/agency/downlines/new/legal",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-downlines-new-legal",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-downlines-new-legal",
       "title": "Legal",
       "route": "/agency/downlines/new/legal",
       "sourceFile": "src/routes/agency.downlines.new.legal.tsx",
@@ -3671,7 +3671,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/downlines/new/locations",
       "b9Key": "route:/agency/downlines/new/locations",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-downlines-new-locations",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-downlines-new-locations",
       "title": "Locations",
       "route": "/agency/downlines/new/locations",
       "sourceFile": "src/routes/agency.downlines.new.locations.tsx",
@@ -3777,7 +3777,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/downlines/new/readiness",
       "b9Key": "route:/agency/downlines/new/readiness",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-downlines-new-readiness",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-downlines-new-readiness",
       "title": "Readiness",
       "route": "/agency/downlines/new/readiness",
       "sourceFile": "src/routes/agency.downlines.new.readiness.tsx",
@@ -3869,7 +3869,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/downlines/new/settings",
       "b9Key": "route:/agency/downlines/new/settings",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-downlines-new-settings",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-downlines-new-settings",
       "title": "Settings",
       "route": "/agency/downlines/new/settings",
       "sourceFile": "src/routes/agency.downlines.new.settings.tsx",
@@ -3959,7 +3959,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/marketplace-participation",
       "b9Key": "route:/agency/marketplace-participation",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-marketplace-participation",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-marketplace-participation",
       "title": "Marketplace Participation",
       "route": "/agency/marketplace-participation",
       "sourceFile": "src/routes/agency.marketplace-participation.tsx",
@@ -4067,7 +4067,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/my-organization",
       "b9Key": "route:/agency/my-organization",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-my-organization",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-my-organization",
       "title": "My Organization",
       "route": "/agency/my-organization",
       "sourceFile": "src/routes/agency.my-organization.tsx",
@@ -4177,7 +4177,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organization-admin",
       "b9Key": "route:/agency/organization-admin",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organization-admin",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organization-admin",
       "title": "Organization Admin",
       "route": "/agency/organization-admin",
       "sourceFile": "src/routes/agency.organization-admin.tsx",
@@ -4310,7 +4310,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organization-defaults/apply",
       "b9Key": "route:/agency/organization-defaults/apply",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organization-defaults-apply",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organization-defaults-apply",
       "title": "Apply",
       "route": "/agency/organization-defaults/apply",
       "sourceFile": "src/routes/agency.organization-defaults.apply.tsx",
@@ -4413,7 +4413,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organization-imports",
       "b9Key": "route:/agency/organization-imports",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organization-imports",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organization-imports",
       "title": "Organization Imports",
       "route": "/agency/organization-imports/",
       "sourceFile": "src/routes/agency.organization-imports.index.tsx",
@@ -4515,7 +4515,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organization-imports/$importJobId",
       "b9Key": "route:/agency/organization-imports/$importJobId",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organization-imports-param-importJobId",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organization-imports-param-importJobId",
       "title": "ImportJobId",
       "route": "/agency/organization-imports/$importJobId",
       "sourceFile": "src/routes/agency.organization-imports.$importJobId.tsx",
@@ -4613,7 +4613,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organization-structure",
       "b9Key": "route:/agency/organization-structure",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organization-structure",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organization-structure",
       "title": "Organization Structure",
       "route": "/agency/organization-structure",
       "sourceFile": "src/routes/agency.organization-structure.tsx",
@@ -4697,7 +4697,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organization-work",
       "b9Key": "route:/agency/organization-work",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organization-work",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organization-work",
       "title": "Organization Work",
       "route": "/agency/organization-work",
       "sourceFile": "src/routes/agency.organization-work.tsx",
@@ -4792,7 +4792,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations",
       "b9Key": "route:/agency/organizations",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations",
       "title": "Organizations",
       "route": "/agency/organizations/",
       "sourceFile": "src/routes/agency.organizations.index.tsx",
@@ -4906,7 +4906,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId",
       "b9Key": "route:/agency/organizations/$organizationId",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId",
       "title": "OrganizationId",
       "route": "/agency/organizations/$organizationId/",
       "sourceFile": "src/routes/agency.organizations.$organizationId.index.tsx",
@@ -5019,7 +5019,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId/contacts",
       "b9Key": "route:/agency/organizations/$organizationId/contacts",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId-contacts",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId-contacts",
       "title": "Contacts",
       "route": "/agency/organizations/$organizationId/contacts",
       "sourceFile": "src/routes/agency.organizations.$organizationId.contacts.tsx",
@@ -5124,7 +5124,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId/ending",
       "b9Key": "route:/agency/organizations/$organizationId/ending",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId-ending",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId-ending",
       "title": "Ending",
       "route": "/agency/organizations/$organizationId/ending",
       "sourceFile": "src/routes/agency.organizations.$organizationId.ending.tsx",
@@ -5216,7 +5216,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId/history",
       "b9Key": "route:/agency/organizations/$organizationId/history",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId-history",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId-history",
       "title": "History",
       "route": "/agency/organizations/$organizationId/history",
       "sourceFile": "src/routes/agency.organizations.$organizationId.history.tsx",
@@ -5310,7 +5310,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId/identifiers",
       "b9Key": "route:/agency/organizations/$organizationId/identifiers",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId-identifiers",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId-identifiers",
       "title": "Identifiers",
       "route": "/agency/organizations/$organizationId/identifiers",
       "sourceFile": "src/routes/agency.organizations.$organizationId.identifiers.tsx",
@@ -5410,7 +5410,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId/lifecycle",
       "b9Key": "route:/agency/organizations/$organizationId/lifecycle",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId-lifecycle",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId-lifecycle",
       "title": "Lifecycle",
       "route": "/agency/organizations/$organizationId/lifecycle",
       "sourceFile": "src/routes/agency.organizations.$organizationId.lifecycle.tsx",
@@ -5509,7 +5509,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId/locations",
       "b9Key": "route:/agency/organizations/$organizationId/locations",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId-locations",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId-locations",
       "title": "Locations",
       "route": "/agency/organizations/$organizationId/locations",
       "sourceFile": "src/routes/agency.organizations.$organizationId.locations.tsx",
@@ -5612,7 +5612,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId/readiness",
       "b9Key": "route:/agency/organizations/$organizationId/readiness",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId-readiness",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId-readiness",
       "title": "Readiness",
       "route": "/agency/organizations/$organizationId/readiness",
       "sourceFile": "src/routes/agency.organizations.$organizationId.readiness.tsx",
@@ -5703,7 +5703,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId/relationships",
       "b9Key": "route:/agency/organizations/$organizationId/relationships",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId-relationships",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId-relationships",
       "title": "Relationships",
       "route": "/agency/organizations/$organizationId/relationships",
       "sourceFile": "src/routes/agency.organizations.$organizationId.relationships.tsx",
@@ -5795,7 +5795,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/organizations/$organizationId/settings",
       "b9Key": "route:/agency/organizations/$organizationId/settings",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-organizations-param-organizationId-settings",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-organizations-param-organizationId-settings",
       "title": "Settings",
       "route": "/agency/organizations/$organizationId/settings",
       "sourceFile": "src/routes/agency.organizations.$organizationId.settings.tsx",
@@ -5898,7 +5898,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agency/reference-organizations/request",
       "b9Key": "route:/agency/reference-organizations/request",
-      "name": "ABox/CurrentApp/Agency & Organization/agency-reference-organizations-request",
+      "name": "ABox/CurrentApp/Agency & Organization/route-agency-reference-organizations-request",
       "title": "Request",
       "route": "/agency/reference-organizations/request",
       "sourceFile": "src/routes/agency.reference-organizations.request.tsx",
@@ -5995,7 +5995,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app",
       "b9Key": "route:/app",
-      "name": "ABox/CurrentApp/Agent Workspace/app",
+      "name": "ABox/CurrentApp/Agent Workspace/route-app",
       "title": "App",
       "route": "/app/",
       "sourceFile": "src/routes/app.index.tsx",
@@ -6111,7 +6111,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/employer/census",
       "b9Key": "route:/app/employer/census",
-      "name": "ABox/CurrentApp/Employer & ICHRA/app-employer-census",
+      "name": "ABox/CurrentApp/Employer & ICHRA/route-app-employer-census",
       "title": "Census",
       "route": "/app/employer/census",
       "sourceFile": "src/routes/app.employer.census.tsx",
@@ -6237,7 +6237,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/employer/contribution",
       "b9Key": "route:/app/employer/contribution",
-      "name": "ABox/CurrentApp/Employer & ICHRA/app-employer-contribution",
+      "name": "ABox/CurrentApp/Employer & ICHRA/route-app-employer-contribution",
       "title": "Contribution",
       "route": "/app/employer/contribution",
       "sourceFile": "src/routes/app.employer.contribution.tsx",
@@ -6341,7 +6341,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/employer/proposal",
       "b9Key": "route:/app/employer/proposal",
-      "name": "ABox/CurrentApp/Employer & ICHRA/app-employer-proposal",
+      "name": "ABox/CurrentApp/Employer & ICHRA/route-app-employer-proposal",
       "title": "Proposal",
       "route": "/app/employer/proposal",
       "sourceFile": "src/routes/app.employer.proposal.tsx",
@@ -6448,7 +6448,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/employer/results",
       "b9Key": "route:/app/employer/results",
-      "name": "ABox/CurrentApp/Employer & ICHRA/app-employer-results",
+      "name": "ABox/CurrentApp/Employer & ICHRA/route-app-employer-results",
       "title": "Results",
       "route": "/app/employer/results",
       "sourceFile": "src/routes/app.employer.results.tsx",
@@ -6569,7 +6569,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/entitlements",
       "b9Key": "route:/app/jet/entitlements",
-      "name": "ABox/CurrentApp/JET Platform/app-jet-entitlements",
+      "name": "ABox/CurrentApp/JET Platform/route-app-jet-entitlements",
       "title": "Entitlements",
       "route": "/app/jet/entitlements",
       "sourceFile": "src/routes/app.jet.entitlements.tsx",
@@ -6686,7 +6686,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/exceptions",
       "b9Key": "route:/app/jet/exceptions",
-      "name": "ABox/CurrentApp/JET Platform/app-jet-exceptions",
+      "name": "ABox/CurrentApp/JET Platform/route-app-jet-exceptions",
       "title": "Exceptions",
       "route": "/app/jet/exceptions",
       "sourceFile": "src/routes/app.jet.exceptions.tsx",
@@ -6841,7 +6841,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/launch-readiness",
       "b9Key": "route:/app/jet/launch-readiness",
-      "name": "ABox/CurrentApp/JET Platform/app-jet-launch-readiness",
+      "name": "ABox/CurrentApp/JET Platform/route-app-jet-launch-readiness",
       "title": "Launch Readiness",
       "route": "/app/jet/launch-readiness",
       "sourceFile": "src/routes/app.jet.launch-readiness.tsx",
@@ -6943,7 +6943,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin",
       "b9Key": "route:/marketplace/admin",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin",
       "title": "Admin",
       "route": "/marketplace/admin/",
       "sourceFile": "src/routes/marketplace.admin.index.tsx",
@@ -7055,7 +7055,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/activation",
       "b9Key": "route:/marketplace/admin/activation",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-activation",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-activation",
       "title": "Activation",
       "route": "/marketplace/admin/activation",
       "sourceFile": "src/routes/marketplace.admin.activation.tsx",
@@ -7139,7 +7139,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/assets",
       "b9Key": "route:/marketplace/admin/assets",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-assets",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-assets",
       "title": "Assets",
       "route": "/marketplace/admin/assets",
       "sourceFile": "src/routes/marketplace.admin.assets.tsx",
@@ -7225,7 +7225,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/availability",
       "b9Key": "route:/marketplace/admin/availability",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-availability",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-availability",
       "title": "Availability",
       "route": "/marketplace/admin/availability/",
       "sourceFile": "src/routes/marketplace.admin.availability.index.tsx",
@@ -7311,7 +7311,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/availability/$availabilityEntryId",
       "b9Key": "route:/marketplace/admin/availability/$availabilityEntryId",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-availability-param-availabilityEntryId",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-availability-param-availabilityEntryId",
       "title": "AvailabilityEntryId",
       "route": "/marketplace/admin/availability/$availabilityEntryId",
       "sourceFile": "src/routes/marketplace.admin.availability.$availabilityEntryId.tsx",
@@ -7412,7 +7412,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/brand",
       "b9Key": "route:/marketplace/admin/brand",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-brand",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-brand",
       "title": "Brand",
       "route": "/marketplace/admin/brand",
       "sourceFile": "src/routes/marketplace.admin.brand.tsx",
@@ -7522,7 +7522,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/content",
       "b9Key": "route:/marketplace/admin/content",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-content",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-content",
       "title": "Content",
       "route": "/marketplace/admin/content",
       "sourceFile": "src/routes/marketplace.admin.content.tsx",
@@ -7637,7 +7637,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/domains",
       "b9Key": "route:/marketplace/admin/domains",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-domains",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-domains",
       "title": "Domains",
       "route": "/marketplace/admin/domains/",
       "sourceFile": "src/routes/marketplace.admin.domains.index.tsx",
@@ -7721,7 +7721,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/domains/request",
       "b9Key": "route:/marketplace/admin/domains/request",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-domains-request",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-domains-request",
       "title": "Request",
       "route": "/marketplace/admin/domains/request",
       "sourceFile": "src/routes/marketplace.admin.domains.request.tsx",
@@ -7821,7 +7821,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/health",
       "b9Key": "route:/marketplace/admin/health",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-health",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-health",
       "title": "Health",
       "route": "/marketplace/admin/health",
       "sourceFile": "src/routes/marketplace.admin.health.tsx",
@@ -7900,7 +7900,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/history",
       "b9Key": "route:/marketplace/admin/history",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-history",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-history",
       "title": "History",
       "route": "/marketplace/admin/history",
       "sourceFile": "src/routes/marketplace.admin.history.tsx",
@@ -7988,7 +7988,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/lifecycle",
       "b9Key": "route:/marketplace/admin/lifecycle",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-lifecycle",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-lifecycle",
       "title": "Lifecycle",
       "route": "/marketplace/admin/lifecycle",
       "sourceFile": "src/routes/marketplace.admin.lifecycle.tsx",
@@ -8083,7 +8083,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/participants",
       "b9Key": "route:/marketplace/admin/participants",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-participants",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-participants",
       "title": "Participants",
       "route": "/marketplace/admin/participants/",
       "sourceFile": "src/routes/marketplace.admin.participants.index.tsx",
@@ -8166,7 +8166,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/participants/$participantId",
       "b9Key": "route:/marketplace/admin/participants/$participantId",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-participants-param-participantId",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-participants-param-participantId",
       "title": "ParticipantId",
       "route": "/marketplace/admin/participants/$participantId",
       "sourceFile": "src/routes/marketplace.admin.participants.$participantId.tsx",
@@ -8270,7 +8270,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/preview",
       "b9Key": "route:/marketplace/admin/preview",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-preview",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-preview",
       "title": "Preview",
       "route": "/marketplace/admin/preview",
       "sourceFile": "src/routes/marketplace.admin.preview.tsx",
@@ -8362,7 +8362,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/readiness",
       "b9Key": "route:/marketplace/admin/readiness",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-readiness",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-readiness",
       "title": "Readiness",
       "route": "/marketplace/admin/readiness",
       "sourceFile": "src/routes/marketplace.admin.readiness.tsx",
@@ -8456,7 +8456,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/referral-links",
       "b9Key": "route:/marketplace/admin/referral-links",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-referral-links",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-referral-links",
       "title": "Referral Links",
       "route": "/marketplace/admin/referral-links/",
       "sourceFile": "src/routes/marketplace.admin.referral-links.index.tsx",
@@ -8591,7 +8591,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/referral-links/$referralLinkId",
       "b9Key": "route:/marketplace/admin/referral-links/$referralLinkId",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-referral-links-param-referralLinkId",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-referral-links-param-referralLinkId",
       "title": "ReferralLinkId",
       "route": "/marketplace/admin/referral-links/$referralLinkId",
       "sourceFile": "src/routes/marketplace.admin.referral-links.$referralLinkId.tsx",
@@ -8695,7 +8695,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/releases/compare",
       "b9Key": "route:/marketplace/admin/releases/compare",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-releases-compare",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-releases-compare",
       "title": "Compare",
       "route": "/marketplace/admin/releases/compare",
       "sourceFile": "src/routes/marketplace.admin.releases.compare.tsx",
@@ -8795,7 +8795,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/releases/review",
       "b9Key": "route:/marketplace/admin/releases/review",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-releases-review",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-releases-review",
       "title": "Review",
       "route": "/marketplace/admin/releases/review",
       "sourceFile": "src/routes/marketplace.admin.releases.review.tsx",
@@ -8885,7 +8885,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/releases/schedule",
       "b9Key": "route:/marketplace/admin/releases/schedule",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-releases-schedule",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-releases-schedule",
       "title": "Schedule",
       "route": "/marketplace/admin/releases/schedule",
       "sourceFile": "src/routes/marketplace.admin.releases.schedule.tsx",
@@ -8978,7 +8978,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/routing-support",
       "b9Key": "route:/marketplace/admin/routing-support",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-routing-support",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-routing-support",
       "title": "Routing Support",
       "route": "/marketplace/admin/routing-support",
       "sourceFile": "src/routes/marketplace.admin.routing-support.tsx",
@@ -9079,7 +9079,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/marketplace/admin/work",
       "b9Key": "route:/marketplace/admin/work",
-      "name": "ABox/CurrentApp/Marketplace Administration/marketplace-admin-work",
+      "name": "ABox/CurrentApp/Marketplace Administration/route-marketplace-admin-work",
       "title": "Work",
       "route": "/marketplace/admin/work",
       "sourceFile": "src/routes/marketplace.admin.work.tsx",
@@ -9178,7 +9178,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/platform/marketplaces",
       "b9Key": "route:/platform/marketplaces",
-      "name": "ABox/CurrentApp/Platform Governance/platform-marketplaces",
+      "name": "ABox/CurrentApp/Platform Governance/route-platform-marketplaces",
       "title": "Marketplaces",
       "route": "/platform/marketplaces/",
       "sourceFile": "src/routes/platform.marketplaces.index.tsx",
@@ -9295,7 +9295,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/platform/marketplaces/$marketplaceId/override",
       "b9Key": "route:/platform/marketplaces/$marketplaceId/override",
-      "name": "ABox/CurrentApp/Platform Governance/platform-marketplaces-param-marketplaceId-override",
+      "name": "ABox/CurrentApp/Platform Governance/route-platform-marketplaces-param-marketplaceId-override",
       "title": "Override",
       "route": "/platform/marketplaces/$marketplaceId/override",
       "sourceFile": "src/routes/platform.marketplaces.$marketplaceId.override.tsx",
@@ -9398,7 +9398,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/platform/organizations",
       "b9Key": "route:/platform/organizations",
-      "name": "ABox/CurrentApp/Platform Governance/platform-organizations",
+      "name": "ABox/CurrentApp/Platform Governance/route-platform-organizations",
       "title": "Organizations",
       "route": "/platform/organizations/",
       "sourceFile": "src/routes/platform.organizations.index.tsx",
@@ -9522,7 +9522,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/platform/organizations/$organizationId/override",
       "b9Key": "route:/platform/organizations/$organizationId/override",
-      "name": "ABox/CurrentApp/Platform Governance/platform-organizations-param-organizationId-override",
+      "name": "ABox/CurrentApp/Platform Governance/route-platform-organizations-param-organizationId-override",
       "title": "Override",
       "route": "/platform/organizations/$organizationId/override",
       "sourceFile": "src/routes/platform.organizations.$organizationId.override.tsx",
@@ -9629,7 +9629,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/agency/producers",
       "b9Key": "route:/app/agency/producers",
-      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-PRODUCERS",
+      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-PRODUCERS/route-app-agency-producers",
       "title": "Producers & Licenses",
       "route": "/app/agency/producers",
       "sourceFile": "src/routes/app.agency.producers.tsx",
@@ -9715,7 +9715,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/agency/revenue",
       "b9Key": "route:/app/agency/revenue",
-      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-REVENUE",
+      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-REVENUE/route-app-agency-revenue",
       "title": "Revenue Splits & Referrals",
       "route": "/app/agency/revenue",
       "sourceFile": "src/routes/app.agency.revenue.tsx",
@@ -9808,7 +9808,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/agency",
       "b9Key": "route:/app/agency",
-      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-SETUP",
+      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-SETUP/route-app-agency",
       "title": "Agency & Entity Setup",
       "route": "/app/agency/",
       "sourceFile": "src/routes/app.agency.index.tsx",
@@ -9914,7 +9914,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/agency/entities",
       "b9Key": "route:/app/agency/entities",
-      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-SETUP",
+      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-SETUP/route-app-agency-entities",
       "title": "Agency & Entity Setup",
       "route": "/app/agency/entities",
       "sourceFile": "src/routes/app.agency.entities.tsx",
@@ -9997,7 +9997,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/agency/statements",
       "b9Key": "route:/app/agency/statements",
-      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-STATEMENTS",
+      "name": "ABox/CurrentApp/Agency Operations/SCR-AGENCY-STATEMENTS/route-app-agency-statements",
       "title": "Agency Statements",
       "route": "/app/agency/statements",
       "sourceFile": "src/routes/app.agency.statements.tsx",
@@ -10108,7 +10108,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/commissions",
       "b9Key": "route:/app/commissions",
-      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-COMMISSIONS",
+      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-COMMISSIONS/route-app-commissions",
       "title": "Commissions",
       "route": "/app/commissions",
       "sourceFile": "src/routes/app.commissions.tsx",
@@ -10222,7 +10222,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/communications",
       "b9Key": "route:/app/communications",
-      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-COMMUNICATIONS",
+      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-COMMUNICATIONS/route-app-communications",
       "title": "Communications",
       "route": "/app/communications",
       "sourceFile": "src/routes/app.communications.tsx",
@@ -10320,7 +10320,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/customers",
       "b9Key": "route:/app/customers",
-      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-CUSTOMERS",
+      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-CUSTOMERS/route-app-customers",
       "title": "Customers & Leads",
       "route": "/app/customers/",
       "sourceFile": "src/routes/app.customers.index.tsx",
@@ -10453,7 +10453,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/dashboard",
       "b9Key": "route:/app/dashboard",
-      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-DASHBOARD",
+      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-DASHBOARD/route-app-dashboard",
       "title": "Performance Dashboard",
       "route": "/app/dashboard",
       "sourceFile": "src/routes/app.dashboard.tsx",
@@ -10552,7 +10552,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/my-work",
       "b9Key": "route:/app/my-work",
-      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-MY-WORK",
+      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-MY-WORK/route-app-my-work",
       "title": "My Work",
       "route": "/app/my-work",
       "sourceFile": "src/routes/app.my-work.tsx",
@@ -10652,7 +10652,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/off-exchange",
       "b9Key": "route:/app/off-exchange",
-      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-OFF-EXCHANGE",
+      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-OFF-EXCHANGE/route-app-off-exchange",
       "title": "Off-Exchange Enrollment",
       "route": "/app/off-exchange",
       "sourceFile": "src/routes/app.off-exchange.tsx",
@@ -10764,7 +10764,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/tasks",
       "b9Key": "route:/app/tasks",
-      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-TASKS",
+      "name": "ABox/CurrentApp/Agent Workspace/SCR-APP-TASKS/route-app-tasks",
       "title": "Tasks",
       "route": "/app/tasks",
       "sourceFile": "src/routes/app.tasks.tsx",
@@ -10883,7 +10883,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/quick-quote",
       "b9Key": "route:/app/quick-quote",
-      "name": "ABox/CurrentApp/Agent Workspace/UX-017",
+      "name": "ABox/CurrentApp/Agent Workspace/UX-017/route-app-quick-quote",
       "title": "Agent Quick Quote — Start",
       "route": "/app/quick-quote",
       "sourceFile": "src/routes/app.quick-quote.tsx",
@@ -11006,7 +11006,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/send-quote",
       "b9Key": "route:/app/send-quote",
-      "name": "ABox/CurrentApp/Agent Workspace/UX-019",
+      "name": "ABox/CurrentApp/Agent Workspace/UX-019/route-app-send-quote",
       "title": "Agent Send Quote",
       "route": "/app/send-quote",
       "sourceFile": "src/routes/app.send-quote.tsx",
@@ -11118,7 +11118,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/customers/$id",
       "b9Key": "route:/app/customers/$id",
-      "name": "ABox/CurrentApp/Agent Workspace/UX-021",
+      "name": "ABox/CurrentApp/Agent Workspace/UX-021/route-app-customers-param-id",
       "title": "Lead Timeline & Milestones",
       "route": "/app/customers/$id",
       "sourceFile": "src/routes/app.customers.$id.tsx",
@@ -11230,7 +11230,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/employer/ichra",
       "b9Key": "route:/app/employer/ichra",
-      "name": "ABox/CurrentApp/Employer & ICHRA/SCR-EMPLOYER-ICHRA",
+      "name": "ABox/CurrentApp/Employer & ICHRA/SCR-EMPLOYER-ICHRA/route-app-employer-ichra",
       "title": "ICHRA Quote",
       "route": "/app/employer/ichra",
       "sourceFile": "src/routes/app.employer.ichra.tsx",
@@ -11355,7 +11355,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/acl",
       "b9Key": "route:/app/jet/acl",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-ACL",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-ACL/route-app-jet-acl",
       "title": "ACL Configuration",
       "route": "/app/jet/acl",
       "sourceFile": "src/routes/app.jet.acl.tsx",
@@ -11440,7 +11440,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/ai-governance",
       "b9Key": "route:/app/jet/ai-governance",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-AI-GOV",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-AI-GOV/route-app-jet-ai-governance",
       "title": "AI / PlanAI Governance",
       "route": "/app/jet/ai-governance",
       "sourceFile": "src/routes/app.jet.ai-governance.tsx",
@@ -11531,7 +11531,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/appointments",
       "b9Key": "route:/app/jet/appointments",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-APPOINTMENTS",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-APPOINTMENTS/route-app-jet-appointments",
       "title": "Carrier Appointments",
       "route": "/app/jet/appointments",
       "sourceFile": "src/routes/app.jet.appointments.tsx",
@@ -11614,7 +11614,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/audit",
       "b9Key": "route:/app/jet/audit",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-AUDIT",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-AUDIT/route-app-jet-audit",
       "title": "Audit Log",
       "route": "/app/jet/audit",
       "sourceFile": "src/routes/app.jet.audit.tsx",
@@ -11702,7 +11702,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/branding",
       "b9Key": "route:/app/jet/branding",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-BRANDING",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-BRANDING/route-app-jet-branding",
       "title": "Branding & White-Label",
       "route": "/app/jet/branding",
       "sourceFile": "src/routes/app.jet.branding.tsx",
@@ -11805,7 +11805,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/form-configurator",
       "b9Key": "route:/app/jet/form-configurator",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-FORM-CONFIG",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-FORM-CONFIG/route-app-jet-form-configurator",
       "title": "Form Configurator",
       "route": "/app/jet/form-configurator",
       "sourceFile": "src/routes/app.jet.form-configurator.tsx",
@@ -11905,7 +11905,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/integrations",
       "b9Key": "route:/app/jet/integrations",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-INTEGRATIONS",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-INTEGRATIONS/route-app-jet-integrations",
       "title": "Integrations",
       "route": "/app/jet/integrations",
       "sourceFile": "src/routes/app.jet.integrations.tsx",
@@ -11992,7 +11992,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/notifications",
       "b9Key": "route:/app/jet/notifications",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-NOTIFICATIONS",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-NOTIFICATIONS/route-app-jet-notifications",
       "title": "Notification Scheduler",
       "route": "/app/jet/notifications",
       "sourceFile": "src/routes/app.jet.notifications.tsx",
@@ -12075,7 +12075,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/product-builder",
       "b9Key": "route:/app/jet/product-builder",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-PRODUCT-BUILDER",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-PRODUCT-BUILDER/route-app-jet-product-builder",
       "title": "Product Builder",
       "route": "/app/jet/product-builder",
       "sourceFile": "src/routes/app.jet.product-builder.tsx",
@@ -12173,7 +12173,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/products",
       "b9Key": "route:/app/jet/products",
-      "name": "ABox/CurrentApp/JET Platform/SCR-JET-PRODUCTS",
+      "name": "ABox/CurrentApp/JET Platform/SCR-JET-PRODUCTS/route-app-jet-products",
       "title": "Product Catalog",
       "route": "/app/jet/products",
       "sourceFile": "src/routes/app.jet.products.tsx",
@@ -12293,7 +12293,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/platform",
       "b9Key": "route:/app/jet/platform",
-      "name": "ABox/CurrentApp/JET Platform/SCR-PLATFORM-HOME",
+      "name": "ABox/CurrentApp/JET Platform/SCR-PLATFORM-HOME/route-app-jet-platform",
       "title": "Platform Foundation (M00)",
       "route": "/app/jet/platform",
       "sourceFile": "src/routes/app.jet.platform.tsx",
@@ -12433,7 +12433,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/jet/module1",
       "b9Key": "route:/app/jet/module1",
-      "name": "ABox/CurrentApp/JET Platform/UX-024",
+      "name": "ABox/CurrentApp/JET Platform/UX-024/route-app-jet-module1",
       "title": "Module 1 Config — Branding & Products",
       "route": "/app/jet/module1",
       "sourceFile": "src/routes/app.jet.module1.tsx",
@@ -12541,7 +12541,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-001",
       "b9Key": "m06:SCR-M06-001",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-001",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-001/m06-SCR-M06-001",
       "title": "Agency Administration Home",
       "route": "/agency/agency-administration-home",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -12632,7 +12632,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-002",
       "b9Key": "m06:SCR-M06-002",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-002",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-002/m06-SCR-M06-002",
       "title": "Agency Roster",
       "route": "/agency/agency-roster",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -12723,7 +12723,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-003",
       "b9Key": "m06:SCR-M06-003",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-003",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-003/m06-SCR-M06-003",
       "title": "Agent Profile",
       "route": "/agency/agent-profile",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -12814,7 +12814,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-004",
       "b9Key": "m06:SCR-M06-004",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-004",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-004/m06-SCR-M06-004",
       "title": "Agency Profile",
       "route": "/agency/agency-profile",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -12905,7 +12905,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-005",
       "b9Key": "m06:SCR-M06-005",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-005",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-005/m06-SCR-M06-005",
       "title": "Add Agent Wizard",
       "route": "/agency/add-agent-wizard",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -12996,7 +12996,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-006",
       "b9Key": "m06:SCR-M06-006",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-006",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-006/m06-SCR-M06-006",
       "title": "Add Staff Wizard",
       "route": "/agency/add-staff-wizard",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13087,7 +13087,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-007",
       "b9Key": "m06:SCR-M06-007",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-007",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-007/m06-SCR-M06-007",
       "title": "Roster-only Conversion",
       "route": "/agency/roster-only-conversion",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13178,7 +13178,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-008",
       "b9Key": "m06:SCR-M06-008",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-008",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-008/m06-SCR-M06-008",
       "title": "Roles and Access Home",
       "route": "/agency/roles-and-access-home",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13269,7 +13269,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-009",
       "b9Key": "m06:SCR-M06-009",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-009",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-009/m06-SCR-M06-009",
       "title": "System Role Detail",
       "route": "/agency/system-role-detail",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13360,7 +13360,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-010",
       "b9Key": "m06:SCR-M06-010",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-010",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-010/m06-SCR-M06-010",
       "title": "Custom Role Builder",
       "route": "/agency/custom-role-builder",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13451,7 +13451,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-011",
       "b9Key": "m06:SCR-M06-011",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-011",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-011/m06-SCR-M06-011",
       "title": "Role Version Compare",
       "route": "/agency/role-version-compare",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13542,7 +13542,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-012",
       "b9Key": "m06:SCR-M06-012",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-012",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-012/m06-SCR-M06-012",
       "title": "Role Assignments",
       "route": "/agency/role-assignments",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13633,7 +13633,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-013",
       "b9Key": "m06:SCR-M06-013",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-013",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-013/m06-SCR-M06-013",
       "title": "Effective Access Inspector",
       "route": "/agency/effective-access-inspector",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13724,7 +13724,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-014",
       "b9Key": "m06:SCR-M06-014",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-014",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-014/m06-SCR-M06-014",
       "title": "Access Audit",
       "route": "/agency/access-audit",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13815,7 +13815,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-015",
       "b9Key": "m06:SCR-M06-015",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-015",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-015/m06-SCR-M06-015",
       "title": "Business Units",
       "route": "/agency/business-units",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13906,7 +13906,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-016",
       "b9Key": "m06:SCR-M06-016",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-016",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-016/m06-SCR-M06-016",
       "title": "Business Unit Detail",
       "route": "/agency/business-unit-detail",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -13997,7 +13997,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-017",
       "b9Key": "m06:SCR-M06-017",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-017",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-017/m06-SCR-M06-017",
       "title": "Teams",
       "route": "/agency/teams",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14088,7 +14088,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-018",
       "b9Key": "m06:SCR-M06-018",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-018",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-018/m06-SCR-M06-018",
       "title": "Team Detail",
       "route": "/agency/team-detail",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14179,7 +14179,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-019",
       "b9Key": "m06:SCR-M06-019",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-019",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-019/m06-SCR-M06-019",
       "title": "Onboarding Cases",
       "route": "/agency/onboarding-cases",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14270,7 +14270,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-020",
       "b9Key": "m06:SCR-M06-020",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-020",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-020/m06-SCR-M06-020",
       "title": "Transfer Case",
       "route": "/agency/transfer-case",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14361,7 +14361,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-021",
       "b9Key": "m06:SCR-M06-021",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-021",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-021/m06-SCR-M06-021",
       "title": "Offboarding Case",
       "route": "/agency/offboarding-case",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14452,7 +14452,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-022",
       "b9Key": "m06:SCR-M06-022",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-022",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-022/m06-SCR-M06-022",
       "title": "Tasks and Exceptions",
       "route": "/agency/tasks-and-exceptions",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14543,7 +14543,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-023",
       "b9Key": "m06:SCR-M06-023",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-023",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-023/m06-SCR-M06-023",
       "title": "Readiness Detail",
       "route": "/agency/readiness-detail",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14634,7 +14634,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-024",
       "b9Key": "m06:SCR-M06-024",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-024",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-024/m06-SCR-M06-024",
       "title": "Operational Eligibility Detail",
       "route": "/agency/operational-eligibility-detail",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14725,7 +14725,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-025",
       "b9Key": "m06:SCR-M06-025",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-025",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-025/m06-SCR-M06-025",
       "title": "Referral Link Component",
       "route": "/agency/referral-link-component",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14816,7 +14816,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-026",
       "b9Key": "m06:SCR-M06-026",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-026",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-026/m06-SCR-M06-026",
       "title": "Credential Selling Setup Component",
       "route": "/agency/credential-selling-setup-component",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14907,7 +14907,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-027",
       "b9Key": "m06:SCR-M06-027",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-027",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-027/m06-SCR-M06-027",
       "title": "Import Roster",
       "route": "/agency/import-roster",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -14998,7 +14998,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-028",
       "b9Key": "m06:SCR-M06-028",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-028",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-028/m06-SCR-M06-028",
       "title": "Import Results",
       "route": "/agency/import-results",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -15089,7 +15089,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-029",
       "b9Key": "m06:SCR-M06-029",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-029",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-029/m06-SCR-M06-029",
       "title": "Export Request",
       "route": "/agency/export-request",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -15180,7 +15180,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-030",
       "b9Key": "m06:SCR-M06-030",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-030",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-030/m06-SCR-M06-030",
       "title": "Fixed Reports",
       "route": "/agency/fixed-reports",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -15271,7 +15271,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-031",
       "b9Key": "m06:SCR-M06-031",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-031",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-031/m06-SCR-M06-031",
       "title": "Notification Preferences Projection",
       "route": "/agency/notification-preferences-projection",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -15362,7 +15362,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-032",
       "b9Key": "m06:SCR-M06-032",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-032",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-032/m06-SCR-M06-032",
       "title": "Support Context",
       "route": "/agency/support-context",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -15453,7 +15453,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-033",
       "b9Key": "m06:SCR-M06-033",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-033",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-033/m06-SCR-M06-033",
       "title": "Duplicate Review",
       "route": "/agency/duplicate-review",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -15544,7 +15544,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-034",
       "b9Key": "m06:SCR-M06-034",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-034",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-034/m06-SCR-M06-034",
       "title": "Agency Defaults",
       "route": "/agency/agency-defaults",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -15635,7 +15635,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m06:SCR-M06-035",
       "b9Key": "m06:SCR-M06-035",
-      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-035",
+      "name": "ABox/CurrentApp/M06 Workforce/SCR-M06-035/m06-SCR-M06-035",
       "title": "Agent Workspace",
       "route": "/agency/agent-workspace",
       "sourceFile": "src/lib/governed/m06.index.ts",
@@ -15726,7 +15726,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-001",
       "b9Key": "m08:SCR-M08-001",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-001",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-001/m08-SCR-M08-001",
       "title": "Selling Setup overview",
       "route": "/people/{personId}/selling-setup",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -15814,7 +15814,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-002",
       "b9Key": "m08:SCR-M08-002",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-002",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-002/m08-SCR-M08-002",
       "title": "Where I can sell",
       "route": "/people/{personId}/selling-setup/where-i-can-sell",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -15902,7 +15902,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-003",
       "b9Key": "m08:SCR-M08-003",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-003",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-003/m08-SCR-M08-003",
       "title": "What is blocking me",
       "route": "/people/{personId}/selling-setup/blockers",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -15990,7 +15990,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-004",
       "b9Key": "m08:SCR-M08-004",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-004",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-004/m08-SCR-M08-004",
       "title": "Licences",
       "route": "/people/{personId}/selling-setup/licenses/{licenseId}",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -16078,7 +16078,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-005",
       "b9Key": "m08:SCR-M08-005",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-005",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-005/m08-SCR-M08-005",
       "title": "Appointments",
       "route": "/people/{personId}/selling-setup/appointments/{appointmentId}",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -16166,7 +16166,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-006",
       "b9Key": "m08:SCR-M08-006",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-006",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-006/m08-SCR-M08-006",
       "title": "Product authority",
       "route": "/people/{personId}/selling-setup/product-authority/{grantId}",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -16254,7 +16254,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-007",
       "b9Key": "m08:SCR-M08-007",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-007",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-007/m08-SCR-M08-007",
       "title": "E&O coverage",
       "route": "/people/{personId}/selling-setup/eo",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -16342,7 +16342,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-008",
       "b9Key": "m08:SCR-M08-008",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-008",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-008/m08-SCR-M08-008",
       "title": "Training and marketplace information",
       "route": "/people/{personId}/selling-setup/training",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -16430,7 +16430,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-009",
       "b9Key": "m08:SCR-M08-009",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-009",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-009/m08-SCR-M08-009",
       "title": "Credential documents",
       "route": "/people/{personId}/selling-setup/documents",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -16518,7 +16518,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:m08:SCR-M08-010",
       "b9Key": "m08:SCR-M08-010",
-      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-010",
+      "name": "ABox/CurrentApp/M08 Selling Setup/SCR-M08-010/m08-SCR-M08-010",
       "title": "NPN attribution summary",
       "route": "/people/{personId}/selling-setup/npn",
       "sourceFile": "src/lib/m08/registry.ts",
@@ -16606,7 +16606,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/accessibility",
       "b9Key": "route:/accessibility",
-      "name": "ABox/CurrentApp/Public & Marketplace/accessibility",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-accessibility",
       "title": "Accessibility",
       "route": "/accessibility",
       "sourceFile": "src/routes/accessibility.tsx",
@@ -16704,7 +16704,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/agent-unavailable",
       "b9Key": "route:/agent-unavailable",
-      "name": "ABox/CurrentApp/Public & Marketplace/agent-unavailable",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-agent-unavailable",
       "title": "Agent Unavailable",
       "route": "/agent-unavailable",
       "sourceFile": "src/routes/agent-unavailable.tsx",
@@ -16799,7 +16799,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/auth",
       "b9Key": "route:/auth",
-      "name": "ABox/CurrentApp/Public & Marketplace/auth",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-auth",
       "title": "Auth",
       "route": "/auth",
       "sourceFile": "src/routes/auth.tsx",
@@ -16904,7 +16904,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/compliance",
       "b9Key": "route:/compliance",
-      "name": "ABox/CurrentApp/Public & Marketplace/compliance",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-compliance",
       "title": "Compliance",
       "route": "/compliance",
       "sourceFile": "src/routes/compliance.tsx",
@@ -16999,7 +16999,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/faq",
       "b9Key": "route:/faq",
-      "name": "ABox/CurrentApp/Public & Marketplace/faq",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-faq",
       "title": "Faq",
       "route": "/faq",
       "sourceFile": "src/routes/faq.tsx",
@@ -17093,7 +17093,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/ichra",
       "b9Key": "route:/ichra",
-      "name": "ABox/CurrentApp/Public & Marketplace/ichra",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-ichra",
       "title": "Ichra",
       "route": "/ichra",
       "sourceFile": "src/routes/ichra.tsx",
@@ -17181,7 +17181,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/journey-choice",
       "b9Key": "route:/journey-choice",
-      "name": "ABox/CurrentApp/Public & Marketplace/journey-choice",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-journey-choice",
       "title": "Journey Choice",
       "route": "/journey-choice",
       "sourceFile": "src/routes/journey-choice.tsx",
@@ -17269,7 +17269,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/no-options",
       "b9Key": "route:/no-options",
-      "name": "ABox/CurrentApp/Public & Marketplace/no-options",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-no-options",
       "title": "No Options",
       "route": "/no-options",
       "sourceFile": "src/routes/no-options.tsx",
@@ -17358,7 +17358,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/privacy",
       "b9Key": "route:/privacy",
-      "name": "ABox/CurrentApp/Public & Marketplace/privacy",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-privacy",
       "title": "Privacy",
       "route": "/privacy",
       "sourceFile": "src/routes/privacy.tsx",
@@ -17446,7 +17446,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/r/$referralToken",
       "b9Key": "route:/r/$referralToken",
-      "name": "ABox/CurrentApp/Public & Marketplace/r-param-referralToken",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-r-param-referralToken",
       "title": "ReferralToken",
       "route": "/r/$referralToken",
       "sourceFile": "src/routes/r.$referralToken.tsx",
@@ -17534,7 +17534,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/",
       "b9Key": "route:/",
-      "name": "ABox/CurrentApp/Public & Marketplace/screen",
+      "name": "ABox/CurrentApp/Public & Marketplace/route",
       "title": "Marketplace Landing",
       "route": "/",
       "sourceFile": "src/routes/index.tsx",
@@ -17652,7 +17652,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/start/$pathway",
       "b9Key": "route:/start/$pathway",
-      "name": "ABox/CurrentApp/Public & Marketplace/start-param-pathway",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-start-param-pathway",
       "title": "Pathway",
       "route": "/start/$pathway",
       "sourceFile": "src/routes/start.$pathway.tsx",
@@ -17731,7 +17731,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/support",
       "b9Key": "route:/support",
-      "name": "ABox/CurrentApp/Public & Marketplace/support",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-support",
       "title": "Support",
       "route": "/support",
       "sourceFile": "src/routes/support.tsx",
@@ -17810,7 +17810,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/terms",
       "b9Key": "route:/terms",
-      "name": "ABox/CurrentApp/Public & Marketplace/terms",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-terms",
       "title": "Terms",
       "route": "/terms",
       "sourceFile": "src/routes/terms.tsx",
@@ -17898,7 +17898,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/unavailable/pathway",
       "b9Key": "route:/unavailable/pathway",
-      "name": "ABox/CurrentApp/Public & Marketplace/unavailable-pathway",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-unavailable-pathway",
       "title": "Pathway",
       "route": "/unavailable/pathway",
       "sourceFile": "src/routes/unavailable.pathway.tsx",
@@ -17985,7 +17985,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/unavailable/suspended",
       "b9Key": "route:/unavailable/suspended",
-      "name": "ABox/CurrentApp/Public & Marketplace/unavailable-suspended",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-unavailable-suspended",
       "title": "Suspended",
       "route": "/unavailable/suspended",
       "sourceFile": "src/routes/unavailable.suspended.tsx",
@@ -18060,7 +18060,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/unavailable/unresolved",
       "b9Key": "route:/unavailable/unresolved",
-      "name": "ABox/CurrentApp/Public & Marketplace/unavailable-unresolved",
+      "name": "ABox/CurrentApp/Public & Marketplace/route-unavailable-unresolved",
       "title": "Unresolved",
       "route": "/unavailable/unresolved",
       "sourceFile": "src/routes/unavailable.unresolved.tsx",
@@ -18143,7 +18143,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/apply",
       "b9Key": "route:/apply",
-      "name": "ABox/CurrentApp/Agent Workspace/SCR-OFFEX-APPLICATION",
+      "name": "ABox/CurrentApp/Agent Workspace/SCR-OFFEX-APPLICATION/route-apply",
       "title": "Off-Exchange Application",
       "route": "/apply",
       "sourceFile": "src/routes/apply.tsx",
@@ -18257,7 +18257,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/select",
       "b9Key": "route:/select",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-002",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-002/route-select",
       "title": "Product Selection & Path Choice",
       "route": "/select",
       "sourceFile": "src/routes/select.tsx",
@@ -18351,7 +18351,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:quote:1",
       "b9Key": "quote:1",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-003",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-003/quote-1",
       "title": "Quote Wizard — ZIP & Effective Date",
       "route": "/quote?step=1",
       "sourceFile": "src/routes/quote.tsx",
@@ -18482,7 +18482,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:quote:2",
       "b9Key": "quote:2",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-004",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-004/quote-2",
       "title": "Quote Wizard — Household Members",
       "route": "/quote?step=2",
       "sourceFile": "src/routes/quote.tsx",
@@ -18613,7 +18613,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:quote:3",
       "b9Key": "quote:3",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-005",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-005/quote-3",
       "title": "PlanAI — Goals & Usage",
       "route": "/quote?step=3",
       "sourceFile": "src/routes/quote.tsx",
@@ -18744,7 +18744,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:quote:4",
       "b9Key": "quote:4",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-006",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-006/quote-4",
       "title": "Provider & Drug Optional Lookup",
       "route": "/quote?step=4",
       "sourceFile": "src/routes/quote.tsx",
@@ -18875,7 +18875,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:quote:5",
       "b9Key": "quote:5",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-007",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-007/quote-5",
       "title": "Optional Subsidy Check",
       "route": "/quote?step=5",
       "sourceFile": "src/routes/quote.tsx",
@@ -19006,7 +19006,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:quote:6",
       "b9Key": "quote:6",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-008",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-008/quote-6",
       "title": "Subsidy Estimate & Education",
       "route": "/quote?step=6",
       "sourceFile": "src/routes/quote.tsx",
@@ -19137,7 +19137,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/plans",
       "b9Key": "route:/plans",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-009",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-009/route-plans",
       "title": "Plan Results",
       "route": "/plans/",
       "sourceFile": "src/routes/plans.index.tsx",
@@ -19287,7 +19287,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/plans/$planId",
       "b9Key": "route:/plans/$planId",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-010",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-010/route-plans-param-planId",
       "title": "Plan Detail",
       "route": "/plans/$planId",
       "sourceFile": "src/routes/plans.$planId.tsx",
@@ -19401,7 +19401,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/compare",
       "b9Key": "route:/compare",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-011",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-011/route-compare",
       "title": "Plan Comparison",
       "route": "/compare",
       "sourceFile": "src/routes/compare.tsx",
@@ -19493,7 +19493,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/coverage",
       "b9Key": "route:/coverage",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-012",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-012/route-coverage",
       "title": "More Coverage & Ancillary Cards",
       "route": "/coverage",
       "sourceFile": "src/routes/coverage.tsx",
@@ -19588,7 +19588,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/cart",
       "b9Key": "route:/cart",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-013",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-013/route-cart",
       "title": "Cart Drawer",
       "route": "/cart",
       "sourceFile": "src/routes/cart.tsx",
@@ -19708,7 +19708,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/review",
       "b9Key": "route:/review",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-014",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-014/route-review",
       "title": "Review & Enroll Gate",
       "route": "/review",
       "sourceFile": "src/routes/review.tsx",
@@ -19805,7 +19805,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/shared/$token",
       "b9Key": "route:/shared/$token",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-020",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-020/route-shared-param-token",
       "title": "Token",
       "route": "/shared/$token",
       "sourceFile": "src/routes/shared.$token.tsx",
@@ -19913,7 +19913,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/schedule",
       "b9Key": "route:/app/schedule",
-      "name": "ABox/CurrentApp/Agent Workspace/UX-022",
+      "name": "ABox/CurrentApp/Agent Workspace/UX-022/route-app-schedule",
       "title": "Schedule Time / Request Call",
       "route": "/app/schedule",
       "sourceFile": "src/routes/app.schedule.tsx",
@@ -19995,7 +19995,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/schedule",
       "b9Key": "route:/schedule",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-022",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-022/route-schedule",
       "title": "Schedule Time / Request Call",
       "route": "/schedule",
       "sourceFile": "src/routes/schedule.tsx",
@@ -20101,7 +20101,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/handoff",
       "b9Key": "route:/handoff",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-023",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-023/route-handoff",
       "title": "JET Handoff Confirmation",
       "route": "/handoff",
       "sourceFile": "src/routes/handoff.tsx",
@@ -20196,7 +20196,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/ai-review",
       "b9Key": "route:/ai-review",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-026",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-026/route-ai-review",
       "title": "AI Review & Confirmation",
       "route": "/ai-review",
       "sourceFile": "src/routes/ai-review.tsx",
@@ -20298,7 +20298,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/member/messages",
       "b9Key": "route:/member/messages",
-      "name": "ABox/CurrentApp/Member/member-messages",
+      "name": "ABox/CurrentApp/Member/route-member-messages",
       "title": "Messages",
       "route": "/member/messages",
       "sourceFile": "src/routes/member.messages.tsx",
@@ -20381,7 +20381,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/member/quotes",
       "b9Key": "route:/member/quotes",
-      "name": "ABox/CurrentApp/Member/member-quotes",
+      "name": "ABox/CurrentApp/Member/route-member-quotes",
       "title": "Quotes",
       "route": "/member/quotes",
       "sourceFile": "src/routes/member.quotes.tsx",
@@ -20486,7 +20486,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/member/settings",
       "b9Key": "route:/member/settings",
-      "name": "ABox/CurrentApp/Member/member-settings",
+      "name": "ABox/CurrentApp/Member/route-member-settings",
       "title": "Settings",
       "route": "/member/settings",
       "sourceFile": "src/routes/member.settings.tsx",
@@ -20593,7 +20593,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/member",
       "b9Key": "route:/member",
-      "name": "ABox/CurrentApp/Member/UX-016",
+      "name": "ABox/CurrentApp/Member/UX-016/route-member",
       "title": "Consumer Dashboard",
       "route": "/member/",
       "sourceFile": "src/routes/member.index.tsx",
@@ -20700,7 +20700,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:route:/app/partner",
       "b9Key": "route:/app/partner",
-      "name": "ABox/CurrentApp/Partner/SCR-PARTNER-HOME",
+      "name": "ABox/CurrentApp/Partner/SCR-PARTNER-HOME/route-app-partner",
       "title": "Partner / Referral Home",
       "route": "/app/partner",
       "sourceFile": "src/routes/app.partner.tsx",
@@ -20823,7 +20823,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:state:plans:filters",
       "b9Key": "state:plans:filters",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-009",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-009/state-plans-filters",
       "title": "Plan Results — Filters open",
       "route": "/plans#filters",
       "sourceFile": "src/routes/plans.index.tsx",
@@ -20971,7 +20971,7 @@ var ABOX_CURRENT_APP = {
     {
       "key": "current:state:plans:edit-quote",
       "b9Key": "state:plans:edit-quote",
-      "name": "ABox/CurrentApp/Public & Marketplace/UX-009",
+      "name": "ABox/CurrentApp/Public & Marketplace/UX-009/state-plans-edit-quote",
       "title": "Plan Results — Edit quote open",
       "route": "/plans#edit-quote",
       "sourceFile": "src/routes/plans.index.tsx",
