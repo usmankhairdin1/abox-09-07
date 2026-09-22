@@ -5048,20 +5048,20 @@ function b8ComponentMain(name) {
   throw new Error('STOP: MISSING B4/B5 COMPONENT — "' + name + '" not found. Run B4/B5 first.');
 }
 
-function b8MainName(inst) {
-  const main = inst.mainComponent;
+async function b8MainName(inst) {
+  const main = await inst.getMainComponentAsync();
   if (!main) return "MISSING";
   if (main.parent && main.parent.type === "COMPONENT_SET") return main.parent.name;
   return main.name;
 }
 
-function b8SetInstanceProps(inst, props) {
+async function b8SetInstanceProps(inst, props) {
   const defs = inst.componentProperties || {};
   const out = {};
   for (const name of Object.keys(props || {})) {
     if (name === "product") continue; // B7 records product as metadata only.
     const keys = Object.keys(defs).filter((k) => k.split("#")[0] === name);
-    if (keys.length === 0) throw new Error('STOP: MISSING INSTANCE PROPERTY — "' + name + '" is not available on "' + b8MainName(inst) + '".');
+    if (keys.length === 0) throw new Error('STOP: MISSING INSTANCE PROPERTY — "' + name + '" is not available on "' + (await b8MainName(inst)) + '".');
     if (keys.length > 1) throw new Error('STOP: instance property "' + name + '" resolves to ' + keys.length + " definitions.");
     out[keys[0]] = props[name];
   }
@@ -5080,10 +5080,10 @@ function b8VariantChild(main, props) {
   return main.defaultVariant || main.children[0];
 }
 
-function b8CreateInstance(main, props, name) {
+async function b8CreateInstance(main, props, name) {
   const source = b8VariantChild(main, props || {});
   const inst = source.createInstance();
-  b8SetInstanceProps(inst, props || {});
+  await b8SetInstanceProps(inst, props || {});
   inst.name = name || main.name.split("/").pop();
   return inst;
 }
