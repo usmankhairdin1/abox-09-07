@@ -601,6 +601,11 @@ Buttons: **Create Current App** (`current-app-run`) and **Verify Current App**
 production routes and the closed B9 identity/interaction manifest, then writes
 `tokens-current-app.js`. The result is additive and writes only to `07 Current App`.
 
+Screen frame names follow `ABox/CurrentApp/<Module>/<governed-id>/<stable-identity>`, derived
+from the unique stable key, because governed screen IDs are legitimately shared across routes
+and states. The extractor asserts zero duplicate keys, screen names, frame names and group
+names before writing the manifest, so no duplicate identity can reach Figma.
+
 The page contains deterministic module group frames with native editable 1440px screen
 compositions and 390px companions only where responsive source evidence exists. Existing
 B4/B5 components, B6 patterns and B7 shells are live instances. Tables, plan cards,
