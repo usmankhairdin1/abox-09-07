@@ -1531,18 +1531,10 @@ async function verifyB3() {
   add(b2c.length === 1 && b2c[0].variableIds.length === 19,
     "B2 still holds 19 variables (found " + (b2c.length === 1 ? b2c[0].variableIds.length : 0) + ")");
 
-  // 14 + 15 — nothing else created.
-  let components = 0;
-  let componentSets = 0;
-  let nodes = 0;
-  for (const page of figma.root.children) {
-    nodes += page.children.length;
-    components += page.findAll((n) => n.type === "COMPONENT").length;
-    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
-  }
-  add(components === 0, "B3 created no components or variants");
-  add(componentSets === 0, "B3 created no component sets");
-  add(nodes === 0, "the seven library pages remain empty");
+  // 14 + 15 — closure-time: nothing outside the governed B4–B10 inventory.
+  // B3 owns its own style-content assertions above, so styles are not re-checked here.
+  await aboxClosureInventoryChecks("B3", add, say, false);
+
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
     "the seven B0 pages remain at indices 0..6 in order",
