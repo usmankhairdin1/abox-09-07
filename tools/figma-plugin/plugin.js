@@ -4513,13 +4513,21 @@ function b7PaintSummary(paints) {
  * mutates nothing.
  */
 async function b7DiagnoseInternalShell() {
+  await b7DiagnoseShell("ABox/Shell/Internal");
+}
+
+async function b7DiagnoseMemberShell() {
+  await b7DiagnoseShell("ABox/Shell/Member");
+}
+
+async function b7DiagnoseShell(shellName) {
   await figma.loadAllPagesAsync();
-  const shellName = "ABox/Shell/Internal";
   const page = b7Page();
   const index = await b4StyleIndex();
   const shell = ABOX_B7.shells.filter((s) => s.name === shellName)[0] || null;
-  say("B7 INTERNAL SHELL DIAGNOSIS — read-only; nothing is created, modified or deleted.");
+  say("B7 SHELL DIAGNOSIS — " + shellName + " — read-only; nothing is created, modified or deleted.");
   say("  page inventory (" + B7_PAGE + "): " + (page.children.map((n) => n.name + " [" + n.type + "] id=" + n.id).join(", ") || "empty"));
+
 
   const node = b4FindComponent(shellName);
   if (!node) {
