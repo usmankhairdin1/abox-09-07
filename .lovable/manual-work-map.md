@@ -1475,3 +1475,19 @@ B10 preserves the evidence distinction used by prior batches: offline extractor/
 ### Re-import and ownership boundary
 
 Re-import is explicit and user-triggered through the plugin. There is no permanent Lovable-to-Figma sync. Production source remains the authority for runtime behavior, routing, data, auth, pricing, subsidy, uploads and governed business logic; the Figma file remains a standalone documentation and prototype reference artifact.
+
+---
+
+## Phase 59 — Current application fidelity import (additive plugin layer)
+
+Phase 59 adds only `07 Current App`. It derives 179 fidelity artifacts from current route,
+governed-screen and B9 identities, grouped deterministically by product/module. Every
+artifact is native editable Figma structure; screenshots, HTML, rasterized screens and
+detached copies of approved components are forbidden.
+
+Existing B1–B3 bindings and B4–B7 instances are reused by live ID. Structures without an
+approved foundation remain route-local editable composition and do not become components.
+The 682 deterministic source-backed B9 interactions are remapped within this additive
+layer; runtime and ambiguous behavior remains metadata. B0–B10 names, IDs, counts and
+signatures are protected and reverified. Re-import is explicit, signature-guarded and
+must create zero objects on its second unchanged run. Real-Figma evidence is pending.
