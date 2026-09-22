@@ -5293,8 +5293,29 @@ async function verifyB8() {
 
   const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
   add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
-  const emptyPages = figma.root.children.filter((p) => ["00 Foundations", "05 Screens", "06 Documentation"].indexOf(p.name) !== -1);
-  add(emptyPages.every((p) => p.children.length === 0), "00 Foundations, 05 Screens and 06 Documentation remain empty during B8");
+  // "06 Documentation" may hold exactly the approved B10 frames — same allowance verifyB5/verifyB7/verifyB9 already carry.
+  const b8Writable = [B4_PAGE, B6_PAGE, B7_PAGE, B8_PAGE];
+  const b8PageEvidence = [];
+  for (const p of figma.root.children) {
+    if (b8Writable.indexOf(p.name) !== -1) continue;
+    if (p.name === B10_PAGE) {
+      const docNames = p.children.map((n) => n.name);
+      if (docNames.length === 0 || docNames.join("|") === b10ApprovedNames().join("|")) continue;
+    }
+    for (const child of p.children) {
+      if (b8PageEvidence.length >= 40) break;
+      b8PageEvidence.push("  " + p.name + " › " + child.name + " (" + child.type + ")  id=" + child.id);
+    }
+  }
+  add(
+    b8PageEvidence.length === 0,
+    "00 Foundations and 05 Screens remain empty; 06 Documentation may hold the approved B10 frames — unexpected nodes: " + b8PageEvidence.length,
+  );
+  if (b8PageEvidence.length) {
+    say("");
+    say("B8 PAGE EVIDENCE");
+    for (const line of b8PageEvidence) say(line);
+  }
 
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const b1Names = ABOX_B1.collections.map((c) => c.name);
