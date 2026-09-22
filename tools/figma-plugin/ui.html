@@ -309,6 +309,14 @@
         log.textContent = "Verifying current application screens…";
         parent.postMessage({ pluginMessage: { type: "current-app-verify" } }, "*");
       };
+      document.getElementById("currentinspectfoundations").onclick = () => {
+        log.textContent = "Inspecting 00 Foundations…";
+        parent.postMessage({ pluginMessage: { type: "current-app-inspect-foundations" } }, "*");
+      };
+      document.getElementById("currentcleanfoundations").onclick = () => {
+        log.textContent = "Removing Phase 59 debris on 00 Foundations…";
+        parent.postMessage({ pluginMessage: { type: "current-app-cleanup-foundations" } }, "*");
+      };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;
         if (msg && msg.type === "report") log.textContent = msg.text;
