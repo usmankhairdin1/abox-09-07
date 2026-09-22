@@ -6725,7 +6725,8 @@ figma.ui.onmessage = async (msg) => {
       say("file: " + figma.root.name);
       requireFile(T.library.targetFileName);
       say("");
-      await ensureB9Screens();
+      await figma.loadAllPagesAsync();
+      await b9Guarded(b9Page(), "Batch B9 — screens", ensureB9Screens);
       await verifyB9();
     } else if (msg.type === "b9-verify") {
       say("ABox Phase 56 / Batch B9 — verify only");
