@@ -571,3 +571,25 @@ B10 records the source-of-truth hierarchy: production source remains authoritati
 Idempotency is strict: Run 1 creates the 10 approved documentation frames; Run 2 must create zero frames with identical ids. Existing B10 frames are reused only when their plugin data, source list, deterministic signature and four approved child regions match exactly. Any duplicate, wrong type, unapproved object on `06 Documentation`, missing B1-B9 reference, changed protected B0-B9 count or conflicting signature stops without overwriting or deleting live objects.
 
 Offline/static validation is not native Figma evidence. Real evidence requires running **Create documentation** → **Verify documentation** → **Create documentation** → **Verify documentation** in Figma Desktop and confirming real ids with zero creations on the second run. Unless that native sequence is executed, B10 must be reported as `REAL FIGMA NOT VERIFIED`.
+
+## Phase 58 — library closure & evidence finalization
+
+B10 is the final creation batch; there is no Batch B11. Phase 58 creates nothing in
+Figma. It is a read-only verification sweep of the whole library plus the recorded
+library publishing check.
+
+Run in Figma Desktop, in this order, all must PASS:
+Verify B0 → Verify B1 → Verify B2 → Verify B3 → Verify B4 → Verify B5 → Verify B6 →
+Verify shells → Verify B8 → Verify All Screens → Verify documentation, then the
+Assets-panel publishing check.
+
+Expected protected inventory: 7 pages; 9 collections / 200 variables; 19 typography
+variables; 79 styles; 11 component sets + 3 standalone (59 physical nodes, 19
+non-variant properties, 1 exposed nested instance); 3 patterns / 4 nodes; 3 shells /
+4 nodes; 5 experience frames; 179 screen frames with 682 Category-A reactions; 10
+documentation frames.
+
+Evidence label: REAL FIGMA NOT VERIFIED for the Phase 58 sweep until that sequence is
+executed and its per-batch results are recorded here. The B10 documentation frames
+keep their literal "REAL FIGMA NOT VERIFIED" text in Figma — `verifyB10` asserts it —
+so closure evidence is recorded in this repository only, never by editing Figma text.
