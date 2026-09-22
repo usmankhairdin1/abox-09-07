@@ -6772,8 +6772,8 @@ async function currentAppBuildScreen(spec, placement, index) {
   frame.y = placement.y;
   currentAppSetData(frame, "screen", spec);
   frame.setPluginData("aboxViewport", "1440");
-  frame.setPluginData("aboxStructureSignature", spec.structureSignature);
-  frame.setPluginData("aboxBindingSignature", spec.bindingSignature);
+  frame.setPluginData("aboxCurrentAppStructureSignature", spec.structureSignature);
+  frame.setPluginData("aboxCurrentAppBindingSignature", spec.bindingSignature);
   frame.setPluginData("aboxCurrentAppBindings", JSON.stringify(spec.bindings || {}));
   frame.setPluginData("aboxCurrentAppLimitations", ABOX_CURRENT_APP.limitations.join("|"));
   frame.appendChild(await currentAppText("route-label", (spec.screenId || "ROUTE") + " · " + (spec.route || "no route"), { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", width: 1376 }, index));
@@ -6815,9 +6815,9 @@ async function currentAppBuildScreen(spec, placement, index) {
   for (const interaction of outgoing) {
     const node = await b8Frame("prototype-control/" + interaction.id, { layout: "HORIZONTAL", align: "CENTER", px: 10, py: 6, radius: 9999, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
     node.appendChild(await currentAppText("control-label", interaction.control || interaction.action || "Open", { size: 11, weight: 500, colorStyle: "ABox/Semantic/foreground" }, index));
-    node.setPluginData("aboxCurrentInteractionId", interaction.id);
-    node.setPluginData("aboxCurrentReactionSignature", interaction.signature);
-    node.setPluginData("aboxCurrentTargetKey", interaction.targetKey);
+    node.setPluginData("aboxCurrentAppInteractionId", interaction.id);
+    node.setPluginData("aboxCurrentAppReactionSignature", interaction.signature);
+    node.setPluginData("aboxCurrentAppTargetKey", interaction.targetKey);
     hotspots.appendChild(node);
   }
   frame.appendChild(hotspots);
@@ -6835,7 +6835,7 @@ async function currentAppBuildMobile(spec, placement, index) {
   frame.y = placement.y;
   currentAppSetData(frame, "mobile-screen", { ...spec, key: spec.key + ":mobile", name: "mobile/" + spec.name });
   frame.setPluginData("aboxViewport", String(width));
-  frame.setPluginData("aboxDesktopKey", spec.key);
+  frame.setPluginData("aboxCurrentAppDesktopKey", spec.key);
   frame.appendChild(await currentAppText("route-label", (spec.screenId || "ROUTE") + " · " + (spec.route || "no route"), { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", width: width - 40 }, index));
   frame.appendChild(await currentAppText("page-title", spec.title, { size: 28, weight: 600, colorStyle: "ABox/Semantic/foreground", width: width - 40 }, index));
   if (spec.shell && spec.shell.name) {
@@ -6885,7 +6885,7 @@ function currentAppScreenMap(page) {
 }
 function currentAppHotspot(frame, interaction) {
   const found = [];
-  currentAppWalk(frame, (n) => { if (n.getPluginData && n.getPluginData("aboxCurrentInteractionId") === interaction.id) found.push(n); });
+  currentAppWalk(frame, (n) => { if (n.getPluginData && n.getPluginData("aboxCurrentAppInteractionId") === interaction.id) found.push(n); });
   if (found.length !== 1) throw new Error('STOP: current-app hotspot "' + interaction.id + '" resolved to ' + found.length + " nodes.");
   return found[0];
 }
@@ -6895,13 +6895,13 @@ async function currentAppEnsureReaction(source, target, interaction) {
   if (reactions.length > 1) throw new Error('STOP: duplicate current-app reactions for "' + interaction.id + '".');
   if (reactions.length === 1) {
     const action = (reactions[0].actions || [reactions[0].action])[0] || {};
-    if (node.getPluginData("aboxCurrentReactionSignature") !== interaction.signature || action.destinationId !== target.id) throw new Error('STOP: conflicting current-app prototype mapping "' + interaction.id + '".');
+    if (node.getPluginData("aboxCurrentAppReactionSignature") !== interaction.signature || action.destinationId !== target.id) throw new Error('STOP: conflicting current-app prototype mapping "' + interaction.id + '".');
     return;
   }
   if (typeof node.setReactionsAsync !== "function") throw new Error("STOP: Figma host cannot write prototype reactions.");
   const action = { type: "NODE", destinationId: target.id, navigation: interaction.navigation || "NAVIGATE", transition: b9TransitionPayload(interaction), resetScrollPosition: true };
   await node.setReactionsAsync([{ trigger: b9TriggerPayload(interaction), action, actions: [action] }]);
-  node.setPluginData("aboxCurrentReactionSignature", interaction.signature);
+  node.setPluginData("aboxCurrentAppReactionSignature", interaction.signature);
   currentAppCreatedReactions += 1;
 }
 
@@ -7009,7 +7009,7 @@ async function verifyCurrentApp() {
     const mobileFrames = group.children.filter((n) => n.getPluginData && n.getPluginData("aboxCurrentAppKind") === "mobile-screen");
     mobileCount += mobileFrames.length;
     for (const mobile of mobileFrames) {
-      const desktopKey = mobile.getPluginData("aboxDesktopKey");
+      const desktopKey = mobile.getPluginData("aboxCurrentAppDesktopKey");
       const screenSpec = ABOX_CURRENT_APP.screens.find((s) => s.key === desktopKey);
       const p = spec.placements.find((x) => x.key === desktopKey);
       if (!screenSpec || !p || screenSpec.viewports.indexOf(ABOX_CURRENT_APP.layout.mobileWidth) === -1 || mobile.x !== p.mobileX || mobile.y !== p.y || Math.round(mobile.width) !== ABOX_CURRENT_APP.layout.mobileWidth) mobileOk = false;
@@ -7023,7 +7023,7 @@ async function verifyCurrentApp() {
     const node = currentAppHotspot(source, interaction), rs = node.reactions || [];
     reactionCount += rs.length;
     const action = rs[0] ? (rs[0].actions || [rs[0].action])[0] || {} : {};
-    if (rs.length !== 1 || action.destinationId !== target.id || node.getPluginData("aboxCurrentReactionSignature") !== interaction.signature) reactionsOk = false;
+    if (rs.length !== 1 || action.destinationId !== target.id || node.getPluginData("aboxCurrentAppReactionSignature") !== interaction.signature) reactionsOk = false;
   }
   add(signatures, "all module and screen signatures match the source-derived manifest");
   add(placement && overlaps, "deterministic four-column placement has zero screen overlaps");
