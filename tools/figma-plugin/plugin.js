@@ -5521,13 +5521,13 @@ function b9Main(name, batch) {
   throw new Error('STOP: MISSING ' + batch + ' DEPENDENCY — "' + name + '" not found. Run the required prior batch first.');
 }
 
-function b9Instance(name, props, label) {
+async function b9Instance(name, props, label) {
   const main = b9Main(name, name.indexOf("/Shell/") !== -1 ? "B7 SHELL" : name.indexOf("/Pattern/") !== -1 ? "B6 PATTERN" : "B4/B5 COMPONENT");
-  return b8CreateInstance(main, props || {}, label || name.split("/").pop());
+  return await b8CreateInstance(main, props || {}, label || name.split("/").pop());
 }
 
 async function b9MetadataRegion(spec, index) {
-  const region = b7FrameLegacy("metadata/source-and-identity", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("metadata/source-and-identity", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("screen-title", spec.title || spec.name, { size: 18, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   region.appendChild(await b7Text("screen-route", (spec.id || "route") + " · " + (spec.route || "no-route") + " · " + spec.sourceType, { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(await b7Text("screen-purpose", spec.purpose || "Source-backed screen composition.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
@@ -5536,10 +5536,10 @@ async function b9MetadataRegion(spec, index) {
 }
 
 async function b9ShellRegion(spec, index) {
-  const region = b7FrameLegacy("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", spec.shell && spec.shell.name ? "B7 shell instance" : "Standalone/public route", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   if (spec.shell && spec.shell.name) {
-    const inst = b9Instance(spec.shell.name, spec.shell.overrides || {}, "shell-reference-instance");
+    const inst = await b9Instance(spec.shell.name, spec.shell.overrides || {}, "shell-reference-instance");
     inst.setPluginData("aboxB9Reference", spec.shell.name);
     region.appendChild(inst);
   } else {
@@ -5549,16 +5549,16 @@ async function b9ShellRegion(spec, index) {
 }
 
 async function b9FoundationRegion(spec, index) {
-  const region = b7FrameLegacy("foundations-and-states", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("foundations-and-states", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Existing foundations reused", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  const patternRow = b7FrameLegacy("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
-  for (const pat of spec.patterns || []) patternRow.appendChild(b9Instance(pat.name, pat.variant || {}, pat.name.split("/").pop()));
+  const patternRow = await b8Frame("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
+  for (const pat of spec.patterns || []) patternRow.appendChild(await b9Instance(pat.name, pat.variant || {}, pat.name.split("/").pop()));
   if (!(spec.patterns || []).length) patternRow.appendChild(await b7Text("no-pattern", "No B6 pattern applies; this screen is represented as route-local native content.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(patternRow);
-  const compRow = b7FrameLegacy("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
-  for (const name of spec.components || []) compRow.appendChild(b9Instance(name, {}, name.split("/").pop()));
+  const compRow = await b8Frame("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
+  for (const name of spec.components || []) compRow.appendChild(await b9Instance(name, {}, name.split("/").pop()));
   region.appendChild(compRow);
-  const states = b7FrameLegacy("source-backed-states", { layout: "VERTICAL", gap: 6, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const states = await b8Frame("source-backed-states", { layout: "VERTICAL", gap: 6, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   states.appendChild(await b7Text("states-title", "States and responsive evidence", { size: 13, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
   states.appendChild(await b7Text("states-list", (spec.states || []).join(", ") + "\n" + (spec.responsive || "canonical desktop"), { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(states);
@@ -5570,7 +5570,7 @@ function b9Outgoing(spec) {
 }
 
 async function b9PrototypeRegion(spec, index) {
-  const region = b7FrameLegacy("prototype-links", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("prototype-links", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Source-backed prototype reactions", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   const outgoing = b9Outgoing(spec);
   if (!outgoing.length) {
@@ -5578,7 +5578,7 @@ async function b9PrototypeRegion(spec, index) {
     return region;
   }
   for (const interaction of outgoing) {
-    const link = b7FrameLegacy("prototype-link/" + interaction.id, { layout: "HORIZONTAL", align: "CENTER", gap: 8, px: 10, py: 8, radius: 12, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+    const link = await b8Frame("prototype-link/" + interaction.id, { layout: "HORIZONTAL", align: "CENTER", gap: 8, px: 10, py: 8, radius: 12, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
     link.setPluginData("aboxB9InteractionId", interaction.id);
     link.setPluginData("aboxB9ReactionSignature", interaction.signature);
     link.setPluginData("aboxB9TargetKey", interaction.targetKey);
@@ -5595,7 +5595,7 @@ async function b9RuntimeRegion(spec, index) {
   const b = ABOX_B9.interactionClassification.B.filter((i) => i.sourceKey === spec.key).length;
   const c = ABOX_B9.interactionClassification.C.filter((i) => i.sourceKey === spec.key).length;
   const d = ABOX_B9.interactionClassification.D.filter((i) => i.sourceKey === spec.key).length;
-  const region = b7FrameLegacy("runtime-boundaries", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("runtime-boundaries", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "B/C/D classifications", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(await b7Text("classification-counts", "B component-state mappings: " + b + "\nC runtime/business-logic metadata: " + c + "\nD unsupported/ambiguous metadata: " + d, { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   return region;
@@ -5614,8 +5614,8 @@ async function b9BuildFrame(spec, placement, index, page) {
   root.resize(ABOX_B9.layout.frameWidth, 1000);
   root.x = placement.x;
   root.y = placement.y;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
-  root.strokeStyleId = b4Style(index, "paint", "ABox/Semantic/hairline").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
+  await root.setStrokeStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/hairline").id);
   root.strokeWeight = 1;
   root.cornerRadius = 24;
   b9SetPluginData(root, spec);
@@ -5749,6 +5749,41 @@ function b9HasImageFill(root) {
   return bad;
 }
 
+// Mirrors b8Guarded: on failure, removes only approved B9 nodes created by this run.
+async function b9Guarded(page, label, fn) {
+  const before = {};
+  for (const child of page.children) before[child.id] = true;
+  const currentBefore = {};
+  if (figma.currentPage) for (const n of figma.currentPage.children) currentBefore[n.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const child of page.children.slice()) {
+      if (before[child.id]) continue;
+      if (child.type === "COMPONENT" || child.type === "COMPONENT_SET") continue;
+      if (b9ApprovedNames().indexOf(child.name) === -1) continue;
+      say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
+      child.remove();
+      removed += 1;
+    }
+    let strays = 0;
+    if (figma.currentPage && figma.currentPage.id !== page.id) {
+      for (const n of figma.currentPage.children.slice()) {
+        if (currentBefore[n.id]) continue;
+        if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+        say("  rollback : removed transient node left on " + figma.currentPage.name + " — " + n.name + "  id=" + n.id);
+        n.remove();
+        strays += 1;
+      }
+    }
+    if (!removed && !strays) say("  (" + label + " left no new node on " + B9_PAGE + ")");
+    throw err;
+  }
+}
+
+
+
 async function ensureB9Screens() {
   await figma.loadAllPagesAsync();
   b9CreatedFrames = 0;
@@ -5859,7 +5894,7 @@ async function verifyB9() {
     if (!b9HasRegions(frame)) regionsOk = false;
     if (b9HasImageFill(frame)) imageOk = false;
     if (Object.keys(frame.componentPropertyDefinitions || {}).length) propOk = false;
-    const mains = b8InstanceMainNames(frame);
+    const mains = await b8InstanceMainNames(frame);
     if (spec.shell && spec.shell.name && mains.indexOf(spec.shell.name) === -1) shellOk = false;
     for (const pat of spec.patterns || []) if (mains.indexOf(pat.name) === -1) dependencyOk = false;
     for (const comp of spec.components || []) if (mains.indexOf(comp) === -1) dependencyOk = false;
@@ -6690,7 +6725,8 @@ figma.ui.onmessage = async (msg) => {
       say("file: " + figma.root.name);
       requireFile(T.library.targetFileName);
       say("");
-      await ensureB9Screens();
+      await figma.loadAllPagesAsync();
+      await b9Guarded(b9Page(), "Batch B9 — screens", ensureB9Screens);
       await verifyB9();
     } else if (msg.type === "b9-verify") {
       say("ABox Phase 56 / Batch B9 — verify only");
