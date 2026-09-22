@@ -6086,7 +6086,7 @@ async function b10Text(name, text, opts, index) {
 }
 
 async function b10MetaRegion(spec, index) {
-  const region = b7FrameLegacy("metadata/source-and-purpose", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("metadata/source-and-purpose", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b10Text("doc-title", spec.title, { size: 24, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
   region.appendChild(await b10Text("doc-purpose", spec.purpose, { size: 13, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
   region.appendChild(await b10Text("source-list", spec.sources.join("\n"), { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
@@ -6094,16 +6094,16 @@ async function b10MetaRegion(spec, index) {
 }
 
 async function b10ReferenceRegion(spec, index) {
-  const region = b7FrameLegacy("reference-links", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("reference-links", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b10Text("region-label", "Native reference links", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
-  const refs = b7FrameLegacy("reference-grid", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
+  const refs = await b8Frame("reference-grid", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
   const seen = {};
   for (const ref of spec.references || []) {
     const key = b10ReferenceKey(ref);
     if (seen[key]) continue;
     seen[key] = true;
     const target = b10RequireReference(ref);
-    const chip = b7FrameLegacy("reference/" + ref.kind + "/" + String(ref.name).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 10, py: 8, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+    const chip = await b8Frame("reference/" + ref.kind + "/" + String(ref.name).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 10, py: 8, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
     chip.setPluginData("aboxB10ReferenceKind", ref.kind);
     chip.setPluginData("aboxB10ReferenceName", ref.name);
     chip.setPluginData("aboxB10ReferenceId", target.id || ref.name);
@@ -6116,7 +6116,7 @@ async function b10ReferenceRegion(spec, index) {
 }
 
 async function b10RowNode(row, index) {
-  const item = b7FrameLegacy("row/" + String(row.label).slice(0, 64).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 12, py: 10, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const item = await b8Frame("row/" + String(row.label).slice(0, 64).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 12, py: 10, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   item.setPluginData("aboxB10RowLabel", row.label);
   item.appendChild(await b10Text("label", row.label, { size: 11, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
   item.appendChild(await b10Text("value", row.value, { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
@@ -6127,7 +6127,7 @@ async function b10RowNode(row, index) {
 }
 
 async function b10SectionNode(section, index) {
-  const wrapper = b7FrameLegacy("section/" + section.key, { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 16, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const wrapper = await b8Frame("section/" + section.key, { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 16, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   wrapper.setPluginData("aboxB10SectionKey", section.key);
   wrapper.appendChild(await b10Text("section-title", section.title, { size: 15, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
   for (const r of section.rows) wrapper.appendChild(await b10RowNode(r, index));
@@ -6135,13 +6135,13 @@ async function b10SectionNode(section, index) {
 }
 
 async function b10SectionsRegion(spec, index) {
-  const region = b7FrameLegacy("documentation-sections", { layout: "VERTICAL", gap: 12, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("documentation-sections", { layout: "VERTICAL", gap: 12, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   for (const section of spec.sections) region.appendChild(await b10SectionNode(section, index));
   return region;
 }
 
 async function b10EvidenceRegion(spec, index) {
-  const region = b7FrameLegacy("evidence-and-boundaries", { layout: "VERTICAL", gap: 8, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("evidence-and-boundaries", { layout: "VERTICAL", gap: 8, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b10Text("region-label", "Evidence and boundaries", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
   region.appendChild(await b10Text("evidence", ABOX_B10.evidenceStatus.map((e) => e.phase + ": " + e.status + " · " + e.realFigma).join("\n"), { size: 11, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
   region.appendChild(await b10Text("signature", "B10 signature " + spec.signature + " · no screenshots/HTML/flattening · no production app changes · no permanent sync", { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
@@ -6161,8 +6161,8 @@ async function b10BuildFrame(spec, placement, index, page) {
   root.resize(ABOX_B10.layout.frameWidth, 1000);
   root.x = placement.x;
   root.y = placement.y;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
-  root.strokeStyleId = b4Style(index, "paint", "ABox/Semantic/hairline").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
+  await root.setStrokeStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/hairline").id);
   root.strokeWeight = 1;
   root.cornerRadius = 24;
   b10SetPluginData(root, spec);
