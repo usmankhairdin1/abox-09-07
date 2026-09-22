@@ -5595,7 +5595,7 @@ async function b9RuntimeRegion(spec, index) {
   const b = ABOX_B9.interactionClassification.B.filter((i) => i.sourceKey === spec.key).length;
   const c = ABOX_B9.interactionClassification.C.filter((i) => i.sourceKey === spec.key).length;
   const d = ABOX_B9.interactionClassification.D.filter((i) => i.sourceKey === spec.key).length;
-  const region = b7FrameLegacy("runtime-boundaries", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("runtime-boundaries", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "B/C/D classifications", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(await b7Text("classification-counts", "B component-state mappings: " + b + "\nC runtime/business-logic metadata: " + c + "\nD unsupported/ambiguous metadata: " + d, { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   return region;
