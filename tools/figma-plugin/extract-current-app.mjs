@@ -118,7 +118,7 @@ const screens = B9.screens.map((screen, index) => {
   const spec = {
     key: stableId,
     b9Key: screen.key,
-    name: "ABox/CurrentApp/" + moduleLabels[module] + "/" + slug(screen.id || screen.route || screen.title),
+    name: "ABox/CurrentApp/" + moduleLabels[module] + "/" + (screen.id ? slug(screen.id) + "/" : "") + slug(stableId.replace(/^current:/, "")),
     title: screen.title,
     route: screen.route,
     sourceFile: screen.sourceFile,
