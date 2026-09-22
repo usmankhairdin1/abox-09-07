@@ -5132,7 +5132,7 @@ async function b8MetadataRegion(spec, index) {
 async function b8ShellRegion(spec, index) {
   const region = await b8Frame("shell-reference", { layout: "VERTICAL", gap: 10, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "B7 shell instance", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
-  region.appendChild(b8ShellInstance(spec));
+  region.appendChild(await b8ShellInstance(spec));
   return region;
 }
 
@@ -5149,11 +5149,11 @@ async function b8ContentRegion(spec, index) {
   const region = await b8Frame("representative-content", { layout: "VERTICAL", gap: 12, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Existing foundations used", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   const patternRow = await b8Frame("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
-  for (const pat of spec.patterns || []) patternRow.appendChild(b8PatternInstance(pat));
+  for (const pat of spec.patterns || []) patternRow.appendChild(await b8PatternInstance(pat));
   if (!(spec.patterns || []).length) patternRow.appendChild(await b7Text("no-b6-pattern", "No B6 pattern applies to this journey; route-local composition remains editable native content.", { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground" }, index));
   region.appendChild(patternRow);
   const componentRow = await b8Frame("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
-  for (const comp of spec.components || []) componentRow.appendChild(b8ComponentInstance(comp));
+  for (const comp of spec.components || []) componentRow.appendChild(await b8ComponentInstance(comp));
   region.appendChild(componentRow);
   const native = await b8Frame("route-composition-notes", { layout: "VERTICAL", gap: 8, px: 12, py: 12, radius: 12, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   native.appendChild(await b7Text("note-title", "Editable route content", { size: 13, weight: 600, colorStyle: "ABox/Semantic/foreground" }, index));
@@ -5175,8 +5175,8 @@ async function b8BuildFrame(spec, placement, index, page) {
   root.resize(ABOX_B8.layout.frameWidth, 1000);
   root.x = placement.x;
   root.y = placement.y;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
-  root.strokeStyleId = b4Style(index, "paint", "ABox/Semantic/hairline").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
+  await root.setStrokeStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/hairline").id);
   root.strokeWeight = 1;
   root.cornerRadius = 24;
   b8SetPluginData(root, spec);
@@ -5260,11 +5260,13 @@ function b8Walk(root, fn) {
   for (const c of root.children || []) b8Walk(c, fn);
 }
 
-function b8InstanceMainNames(root) {
+async function b8InstanceMainNames(root) {
   const names = [];
+  const instances = [];
   b8Walk(root, (n) => {
-    if (n.type === "INSTANCE") names.push(b8MainName(n));
+    if (n.type === "INSTANCE") instances.push(n);
   });
+  for (const inst of instances) names.push(await b8MainName(inst));
   return names;
 }
 
