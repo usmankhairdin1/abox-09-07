@@ -48083,7 +48083,7 @@ async function b10Text(name, text, opts, index) {
 }
 
 async function b10MetaRegion(spec, index) {
-  const region = b7FrameLegacy("metadata/source-and-purpose", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("metadata/source-and-purpose", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b10Text("doc-title", spec.title, { size: 24, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
   region.appendChild(await b10Text("doc-purpose", spec.purpose, { size: 13, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
   region.appendChild(await b10Text("source-list", spec.sources.join("\n"), { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
@@ -48091,16 +48091,16 @@ async function b10MetaRegion(spec, index) {
 }
 
 async function b10ReferenceRegion(spec, index) {
-  const region = b7FrameLegacy("reference-links", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("reference-links", { layout: "VERTICAL", gap: 10, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b10Text("region-label", "Native reference links", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
-  const refs = b7FrameLegacy("reference-grid", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
+  const refs = await b8Frame("reference-grid", { layout: "HORIZONTAL", wrap: "WRAP", gap: 8, counterGap: 8 }, index);
   const seen = {};
   for (const ref of spec.references || []) {
     const key = b10ReferenceKey(ref);
     if (seen[key]) continue;
     seen[key] = true;
     const target = b10RequireReference(ref);
-    const chip = b7FrameLegacy("reference/" + ref.kind + "/" + String(ref.name).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 10, py: 8, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+    const chip = await b8Frame("reference/" + ref.kind + "/" + String(ref.name).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 10, py: 8, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
     chip.setPluginData("aboxB10ReferenceKind", ref.kind);
     chip.setPluginData("aboxB10ReferenceName", ref.name);
     chip.setPluginData("aboxB10ReferenceId", target.id || ref.name);
@@ -48113,7 +48113,7 @@ async function b10ReferenceRegion(spec, index) {
 }
 
 async function b10RowNode(row, index) {
-  const item = b7FrameLegacy("row/" + String(row.label).slice(0, 64).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 12, py: 10, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const item = await b8Frame("row/" + String(row.label).slice(0, 64).replace(/[^A-Za-z0-9_-]+/g, "-"), { layout: "VERTICAL", gap: 4, px: 12, py: 10, radius: 10, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   item.setPluginData("aboxB10RowLabel", row.label);
   item.appendChild(await b10Text("label", row.label, { size: 11, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
   item.appendChild(await b10Text("value", row.value, { size: 10, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
@@ -48124,7 +48124,7 @@ async function b10RowNode(row, index) {
 }
 
 async function b10SectionNode(section, index) {
-  const wrapper = b7FrameLegacy("section/" + section.key, { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 16, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const wrapper = await b8Frame("section/" + section.key, { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 16, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline" }, index);
   wrapper.setPluginData("aboxB10SectionKey", section.key);
   wrapper.appendChild(await b10Text("section-title", section.title, { size: 15, weight: 600, colorStyle: "ABox/Semantic/foreground", w: 1280 }, index));
   for (const r of section.rows) wrapper.appendChild(await b10RowNode(r, index));
@@ -48132,13 +48132,13 @@ async function b10SectionNode(section, index) {
 }
 
 async function b10SectionsRegion(spec, index) {
-  const region = b7FrameLegacy("documentation-sections", { layout: "VERTICAL", gap: 12, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("documentation-sections", { layout: "VERTICAL", gap: 12, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   for (const section of spec.sections) region.appendChild(await b10SectionNode(section, index));
   return region;
 }
 
 async function b10EvidenceRegion(spec, index) {
-  const region = b7FrameLegacy("evidence-and-boundaries", { layout: "VERTICAL", gap: 8, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("evidence-and-boundaries", { layout: "VERTICAL", gap: 8, px: 18, py: 16, radius: 18, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b10Text("region-label", "Evidence and boundaries", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
   region.appendChild(await b10Text("evidence", ABOX_B10.evidenceStatus.map((e) => e.phase + ": " + e.status + " · " + e.realFigma).join("\n"), { size: 11, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
   region.appendChild(await b10Text("signature", "B10 signature " + spec.signature + " · no screenshots/HTML/flattening · no production app changes · no permanent sync", { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", w: 1280 }, index));
@@ -48158,8 +48158,8 @@ async function b10BuildFrame(spec, placement, index, page) {
   root.resize(ABOX_B10.layout.frameWidth, 1000);
   root.x = placement.x;
   root.y = placement.y;
-  root.fillStyleId = b4Style(index, "paint", "ABox/Semantic/background").id;
-  root.strokeStyleId = b4Style(index, "paint", "ABox/Semantic/hairline").id;
+  await root.setFillStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/background").id);
+  await root.setStrokeStyleIdAsync(b4Style(index, "paint", "ABox/Semantic/hairline").id);
   root.strokeWeight = 1;
   root.cornerRadius = 24;
   b10SetPluginData(root, spec);
@@ -48180,6 +48180,43 @@ function b10AssertReusable(frame, spec) {
     throw new Error('STOP: LIVE B10 DOCUMENTATION DIFFERS FROM APPROVED SIGNATURE — "' + spec.name + '". Nothing was overwritten or deleted.');
   }
   if (!b10HasRegions(frame)) throw new Error('STOP: LIVE B10 DOCUMENTATION STRUCTURE DIFFERS FROM APPROVED REGIONS — "' + spec.name + '". Nothing was overwritten or deleted.');
+}
+
+/**
+ * Guarded B10 create path — mirrors b8Guarded/b9Guarded. On failure it removes only
+ * approved B10 documentation frames created by this run (plus transient nodes left on the
+ * current page) and never touches pre-existing nodes, components or other batches.
+ */
+async function b10Guarded(page, label, fn) {
+  const before = {};
+  for (const child of page.children) before[child.id] = true;
+  const currentBefore = {};
+  if (figma.currentPage) for (const n of figma.currentPage.children) currentBefore[n.id] = true;
+  try {
+    return await fn();
+  } catch (err) {
+    let removed = 0;
+    for (const child of page.children.slice()) {
+      if (before[child.id]) continue;
+      if (child.type === "COMPONENT" || child.type === "COMPONENT_SET") continue;
+      if (b10ApprovedNames().indexOf(child.name) === -1) continue;
+      say("  rollback : removed node created this run — " + child.name + "  id=" + child.id);
+      child.remove();
+      removed += 1;
+    }
+    let strays = 0;
+    if (figma.currentPage && figma.currentPage.id !== page.id) {
+      for (const n of figma.currentPage.children.slice()) {
+        if (currentBefore[n.id]) continue;
+        if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") continue;
+        say("  rollback : removed transient node left on " + figma.currentPage.name + " — " + n.name + "  id=" + n.id);
+        n.remove();
+        strays += 1;
+      }
+    }
+    if (!removed && !strays) say("  (" + label + " left no new node on " + B10_PAGE + ")");
+    throw err;
+  }
 }
 
 async function ensureB10Documentation() {
@@ -48736,7 +48773,8 @@ figma.ui.onmessage = async (msg) => {
       say("file: " + figma.root.name);
       requireFile(T.library.targetFileName);
       say("");
-      await ensureB10Documentation();
+      await figma.loadAllPagesAsync();
+      await b10Guarded(b10Page(), "Batch B10 — documentation", ensureB10Documentation);
       await verifyB10();
     } else if (msg.type === "b10-verify") {
       say("ABox Phase 57 / Batch B10 — verify only");
