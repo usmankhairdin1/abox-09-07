@@ -4277,15 +4277,16 @@ function b7ExpectedRegions(name) {
 
 /**
  * Approved exact descendant paths per shell, as produced by b7NodePaths.
- * Internal nests four regions under workspace-column/; the other shells keep
- * every region as a direct child. Exact-match only — no substring/leaf logic.
+ * Internal nests four regions under workspace-column/; Member nests two regions
+ * under member-body/; the remaining shells keep every region as a direct child.
+ * Exact-match only — no substring/leaf logic.
  */
 function b7ExpectedPaths(name) {
   if (name === "ABox/Shell/Internal") {
     return ["desktop-rail", "workspace-column/top-bar", "workspace-column/page-header", "workspace-column/content-region — shell placeholder", "workspace-column/assistant-launcher-region"];
   }
   if (name === "ABox/Shell/Member") {
-    return ["header-pill", "member-body", "member-nav", "content-region — shell placeholder", "assistant-launcher-region"];
+    return ["header-pill", "member-body", "member-body/member-nav", "member-body/content-region — shell placeholder", "assistant-launcher-region"];
   }
   if (name === "variant=flow") {
     return ["header-pill", "product-switcher-region", "content-region — shell placeholder", "footer-plate", "assistant-launcher-region"];
