@@ -6963,6 +6963,7 @@ function currentAppProtectedSnapshot() {
 
 async function currentAppPreflight() {
   await figma.loadAllPagesAsync();
+  currentAppProtectedCensus();
   currentAppAssertProtected();
   if (ABOX_CURRENT_APP.counts.screens !== 179 || ABOX_CURRENT_APP.counts.reactions !== 682 || ABOX_CURRENT_APP.counts.classifiedInteractions !== 922) throw new Error("STOP: current-app inventory arithmetic differs from the approved baseline.");
   const keys = {}, names = {};
