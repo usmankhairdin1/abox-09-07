@@ -4958,6 +4958,42 @@ async function verifyB7() {
 const B8_PAGE = "04 Experiences";
 var b8Created = 0;
 
+// Async frame helper for B8 only — documentAccess: dynamic-page forbids the
+// synchronous style-id setters used by b7FrameLegacy (which stays untouched for
+// the B9/B10 builders).
+async function b8Frame(name, opts, index) {
+  const node = figma.createFrame();
+  node.name = name;
+  node.layoutMode = opts.layout || "VERTICAL";
+  node.layoutWrap = opts.wrap || "NO_WRAP";
+  node.primaryAxisSizingMode = opts.primarySizing || "AUTO";
+  node.counterAxisSizingMode = opts.counterSizing || "AUTO";
+  node.primaryAxisAlignItems = opts.justify || "MIN";
+  node.counterAxisAlignItems = opts.align || "MIN";
+  node.itemSpacing = opts.gap || 0;
+  if (node.layoutWrap === "WRAP") node.counterAxisSpacing = opts.counterGap || 0;
+  node.paddingLeft = opts.pl != null ? opts.pl : opts.px || 0;
+  node.paddingRight = opts.pr != null ? opts.pr : opts.px || 0;
+  node.paddingTop = opts.pt != null ? opts.pt : opts.py || 0;
+  node.paddingBottom = opts.pb != null ? opts.pb : opts.py || 0;
+  node.cornerRadius = opts.radius || 0;
+  if (opts.fillStyle) await node.setFillStyleIdAsync(b4Style(index, "paint", opts.fillStyle).id);
+  else node.fills = [];
+  if (opts.strokeStyle) {
+    await node.setStrokeStyleIdAsync(b4Style(index, "paint", opts.strokeStyle).id);
+    node.strokeWeight = opts.strokeWeight || 1;
+  } else {
+    node.strokes = [];
+  }
+  if (opts.effectStyle) await node.setEffectStyleIdAsync(b4Style(index, "effect", opts.effectStyle).id);
+  if (opts.w || opts.h) {
+    node.resize(opts.w || node.width, opts.h || node.height);
+    if (opts.w) node.primaryAxisSizingMode = opts.primarySizing || node.primaryAxisSizingMode;
+    if (opts.h) node.counterAxisSizingMode = opts.counterSizing || node.counterAxisSizingMode;
+  }
+  return node;
+}
+
 function b8Page() {
   const page = figma.root.children.filter((p) => p.name === B8_PAGE);
   if (page.length !== 1) {
