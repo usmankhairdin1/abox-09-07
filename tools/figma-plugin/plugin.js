@@ -1220,22 +1220,9 @@ async function verifyB2() {
   add(b1Ok && ABOX_B1.collections.length === 9, "the nine B1 collections still exist exactly once each");
   add(b1Total === 200, "B1 still holds 200 variables (found " + b1Total + ")");
 
-  // Nothing else created.
-  const textStyles = await figma.getLocalTextStylesAsync();
-  const effectStyles = await figma.getLocalEffectStylesAsync();
-  add(textStyles.length === 0, "B2 created no text styles");
-  add(effectStyles.length === 0, "B2 created no effect styles");
-  let components = 0;
-  let componentSets = 0;
-  let nodes = 0;
-  for (const page of figma.root.children) {
-    nodes += page.children.length;
-    components += page.findAll((n) => n.type === "COMPONENT").length;
-    componentSets += page.findAll((n) => n.type === "COMPONENT_SET").length;
-  }
-  add(components === 0, "B2 created no components or variants");
-  add(componentSets === 0, "B2 created no component sets");
-  add(nodes === 0, "the seven library pages remain empty");
+  // Closure-time: nothing outside the governed B2–B10 inventory.
+  await aboxClosureInventoryChecks("B2", add, say, true);
+
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
     "the seven B0 pages remain at indices 0..6 in order",
