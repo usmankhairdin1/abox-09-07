@@ -421,7 +421,7 @@ async function verifyLibraryPages() {
   const children = figma.root.children;
   add(
     T.library.pages.every((name) => children.filter((p) => p.name === name).length === 1) &&
-      children.filter((p) => name === (typeof ABOX_CURRENT_APP === "undefined" ? "" : ABOX_CURRENT_APP.meta.page)).length <= 1,
+      children.filter((p) => p.name === (typeof ABOX_CURRENT_APP === "undefined" ? "" : ABOX_CURRENT_APP.meta.page)).length <= 1,
     "each protected page exists exactly once and the additive page exists at most once",
   );
   add(
@@ -6729,14 +6729,15 @@ function currentAppFindGroup(page, spec) {
 }
 
 function currentAppSetData(node, kind, spec) {
-  node.setPluginData("aboxBatch", "CURRENT_APP");
-  node.setPluginData("aboxKind", kind);
-  node.setPluginData("aboxName", spec.name || spec.key);
-  node.setPluginData("aboxKey", spec.key);
-  node.setPluginData("aboxSignature", spec.signature || "");
-  node.setPluginData("aboxSources", (spec.sources || []).slice().sort().join("|"));
-  if (spec.route) node.setPluginData("aboxRoute", spec.route);
-  if (spec.b9Key) node.setPluginData("aboxB9Key", spec.b9Key);
+  node.setPluginData("aboxCurrentAppOwner", "Phase59");
+  node.setPluginData("aboxCurrentAppKind", kind);
+  node.setPluginData("aboxCurrentAppName", spec.name || spec.key);
+  node.setPluginData("aboxCurrentAppKey", spec.key);
+  node.setPluginData("aboxCurrentAppSignature", spec.signature || "");
+  node.setPluginData("aboxCurrentAppSources", (spec.sources || []).slice().sort().join("|"));
+  if (spec.route) node.setPluginData("aboxCurrentAppRoute", spec.route);
+  if (spec.b9Key) node.setPluginData("aboxCurrentAppB9Key", spec.b9Key);
+  if (spec.b8Refs) node.setPluginData("aboxCurrentAppB8Refs", spec.b8Refs.join("|"));
 }
 
 async function currentAppText(name, value, opts, index) {
@@ -6768,6 +6769,8 @@ async function currentAppBuildScreen(spec, placement, index) {
   frame.setPluginData("aboxViewport", "1440");
   frame.setPluginData("aboxStructureSignature", spec.structureSignature);
   frame.setPluginData("aboxBindingSignature", spec.bindingSignature);
+  frame.setPluginData("aboxCurrentAppBindings", JSON.stringify(spec.bindings || {}));
+  frame.setPluginData("aboxCurrentAppLimitations", ABOX_CURRENT_APP.limitations.join("|"));
   frame.appendChild(await currentAppText("route-label", (spec.screenId || "ROUTE") + " · " + (spec.route || "no route"), { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", width: 1376 }, index));
   frame.appendChild(await currentAppText("page-title", spec.title, { size: 36, weight: 600, colorStyle: "ABox/Semantic/foreground", width: 1376 }, index));
 
@@ -6802,11 +6805,11 @@ async function currentAppBuildScreen(spec, placement, index) {
   frame.appendChild(content);
   const runtime = await currentAppText("runtime-boundaries", "Route-local: " + ((spec.routeLocal || []).join(", ") || "none") + " · States: " + ((spec.states || []).join(", ") || "ready") + " · Runtime behavior remains metadata only.", { size: 11, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", width: 1376 }, index);
   frame.appendChild(runtime);
-  const hotspots = await b8Frame("prototype-hotspots", { layout: "HORIZONTAL", wrap: "WRAP", gap: 6, counterGap: 6 }, index);
+  const hotspots = await b8Frame("prototype-controls", { layout: "HORIZONTAL", wrap: "WRAP", gap: 6, counterGap: 6, w: 1376, primarySizing: "FIXED" }, index);
   const outgoing = ABOX_CURRENT_APP.interactions.filter((i) => i.sourceKey === spec.key);
-  hotspots.visible = false;
   for (const interaction of outgoing) {
-    const node = await b8Frame("hotspot/" + interaction.id, { layout: "HORIZONTAL", px: 2, py: 2, w: 8, h: 8, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
+    const node = await b8Frame("prototype-control/" + interaction.id, { layout: "HORIZONTAL", align: "CENTER", px: 10, py: 6, radius: 9999, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+    node.appendChild(await currentAppText("control-label", interaction.control || interaction.action || "Open", { size: 11, weight: 500, colorStyle: "ABox/Semantic/foreground" }, index));
     node.setPluginData("aboxCurrentInteractionId", interaction.id);
     node.setPluginData("aboxCurrentReactionSignature", interaction.signature);
     node.setPluginData("aboxCurrentTargetKey", interaction.targetKey);
@@ -6870,7 +6873,7 @@ async function currentAppBuildGroup(spec, index) {
 function currentAppWalk(root, fn) { fn(root); for (const child of root.children || []) currentAppWalk(child, fn); }
 function currentAppScreenMap(page) {
   const map = {};
-  for (const group of page.children) currentAppWalk(group, (node) => { const key = node.getPluginData && node.getPluginData("aboxKind") === "screen" ? node.getPluginData("aboxKey") : ""; if (key) { if (map[key]) throw new Error('STOP: duplicate current-app screen key "' + key + '".'); map[key] = node; } });
+  for (const group of page.children) currentAppWalk(group, (node) => { const key = node.getPluginData && node.getPluginData("aboxCurrentAppKind") === "screen" ? node.getPluginData("aboxCurrentAppKey") : ""; if (key) { if (map[key]) throw new Error('STOP: duplicate current-app screen key "' + key + '".'); map[key] = node; } });
   return map;
 }
 function currentAppHotspot(frame, interaction) {
@@ -6896,7 +6899,7 @@ async function currentAppEnsureReaction(source, target, interaction) {
 }
 
 function currentAppAssertProtected() {
-  const first = T.library.pages.slice(0, 7);
+  const first = T.library.pages;
   if (!first.every((name, i) => figma.root.children[i] && figma.root.children[i].name === name)) throw new Error("STOP: protected B0-B10 page order differs.");
   const expected = { "00 Foundations": 0, "01 Components": 14, "02 Patterns": 3, "03 Shells": 3, "04 Experiences": 5, "05 Screens": 179, "06 Documentation": 10 };
   for (const name of Object.keys(expected)) {
@@ -6905,17 +6908,54 @@ function currentAppAssertProtected() {
   }
 }
 
+function currentAppProtectedSnapshot() {
+  const snapshot = [];
+  for (const pageName of T.library.pages) {
+    const page = figma.root.children.find((candidate) => candidate.name === pageName);
+    if (!page) throw new Error('STOP: protected page missing — "' + pageName + '".');
+    snapshot.push(page.id + ":" + page.name + ":" + page.children.map((node) => [node.id, node.name, node.type, node.getPluginData("aboxSignature"), node.getPluginData("aboxKey"), node.getPluginData("aboxBatch"), (node.reactions || []).length].join("~")).join("|"));
+  }
+  return snapshot.join("||");
+}
+
+async function currentAppPreflight() {
+  await figma.loadAllPagesAsync();
+  currentAppAssertProtected();
+  if (ABOX_CURRENT_APP.counts.screens !== 179 || ABOX_CURRENT_APP.counts.reactions !== 682 || ABOX_CURRENT_APP.counts.classifiedInteractions !== 922) throw new Error("STOP: current-app inventory arithmetic differs from the approved baseline.");
+  const keys = {}, names = {};
+  for (const screen of ABOX_CURRENT_APP.screens) {
+    if (keys[screen.key] || names[screen.name]) throw new Error('STOP: duplicate current-app identity — "' + screen.key + '".');
+    keys[screen.key] = true; names[screen.name] = true;
+    if (!screen.signature || !screen.structureSignature || !screen.bindingSignature) throw new Error('STOP: incomplete current-app signature — "' + screen.key + '".');
+  }
+  for (const group of ABOX_CURRENT_APP.groups) {
+    if (!Number.isFinite(group.x) || !Number.isFinite(group.y) || !Number.isFinite(group.width) || !Number.isFinite(group.height)) throw new Error('STOP: non-finite current-app group geometry — "' + group.name + '".');
+  }
+  for (const interaction of ABOX_CURRENT_APP.interactions) if (!keys[interaction.sourceKey] || !keys[interaction.targetKey]) throw new Error('STOP: unresolved current-app prototype target — "' + interaction.id + '".');
+  const dependencies = {};
+  for (const screen of ABOX_CURRENT_APP.screens) {
+    if (screen.shell && screen.shell.name) dependencies[screen.shell.name] = true;
+    for (const pattern of screen.patterns || []) dependencies[pattern.name] = true;
+    for (const component of screen.components || []) dependencies[component] = true;
+  }
+  for (const name of Object.keys(dependencies)) b9Main(name, "CURRENT APP");
+  const styles = await b4StyleIndex();
+  for (const name of ["ABox/Semantic/background", "ABox/Semantic/foreground", "ABox/Semantic/surface", "ABox/Semantic/card", "ABox/Semantic/muted-foreground", "ABox/Semantic/hairline"]) b4Style(styles, "paint", name);
+  b4Style(styles, "text", "ABox/Text/serial");
+  return styles;
+}
+
 async function ensureCurrentApp() {
   await figma.loadAllPagesAsync();
   currentAppCreatedGroups = 0; currentAppCreatedScreens = 0; currentAppCreatedReactions = 0;
-  currentAppAssertProtected();
+  const protectedBefore = currentAppProtectedSnapshot();
+  const index = await currentAppPreflight();
   const page = await currentAppPage(true);
-  const index = await b4StyleIndex();
   for (const child of page.children) if (currentAppApprovedNames().indexOf(child.name) === -1) throw new Error('STOP: unapproved object on 07 Current App — "' + child.name + '".');
   for (const spec of ABOX_CURRENT_APP.groups) {
     const existing = currentAppFindGroup(page, spec);
     if (existing) {
-      if (existing.type !== "FRAME" || existing.getPluginData("aboxBatch") !== "CURRENT_APP" || existing.getPluginData("aboxSignature") !== spec.signature) throw new Error('STOP: live current-app group differs — "' + spec.name + '". Nothing was overwritten.');
+      if (existing.type !== "FRAME" || existing.getPluginData("aboxCurrentAppOwner") !== "Phase59" || existing.getPluginData("aboxCurrentAppSignature") !== spec.signature) throw new Error('STOP: live current-app group differs — "' + spec.name + '". Nothing was overwritten.');
       say("  group reused  : " + spec.name + "  id=" + existing.id);
     } else {
       const group = await currentAppBuildGroup(spec, index);
@@ -6923,6 +6963,7 @@ async function ensureCurrentApp() {
       say("  group created : " + spec.name + "  id=" + group.id);
     }
   }
+  if (currentAppProtectedSnapshot() !== protectedBefore) throw new Error("STOP: protected B0-B10 IDs, signatures, or top-level reactions changed during import.");
   const map = currentAppScreenMap(page);
   for (const interaction of ABOX_CURRENT_APP.interactions) {
     if (!map[interaction.sourceKey] || !map[interaction.targetKey]) throw new Error('STOP: unresolved current-app prototype target "' + interaction.id + '".');
@@ -6945,19 +6986,19 @@ async function verifyCurrentApp() {
   const map = currentAppScreenMap(page);
   for (const spec of ABOX_CURRENT_APP.groups) {
     const group = currentAppFindGroup(page, spec);
-    if (!group || group.getPluginData("aboxSignature") !== spec.signature) { signatures = false; continue; }
+    if (!group || group.getPluginData("aboxCurrentAppOwner") !== "Phase59" || group.getPluginData("aboxCurrentAppSignature") !== spec.signature) { signatures = false; continue; }
     if (group.x !== spec.x || group.y !== spec.y || Math.round(group.width) !== spec.width || Math.round(group.height) !== spec.height) placement = false;
     const rectangles = [];
     for (const key of spec.screenKeys) {
       const screen = map[key];
       const screenSpec = ABOX_CURRENT_APP.screens.find((s) => s.key === key);
       const p = spec.placements.find((x) => x.key === key);
-      if (!screen || !screenSpec || !p || screen.getPluginData("aboxSignature") !== screenSpec.signature) { screensOk = false; continue; }
+      if (!screen || !screenSpec || !p || screen.getPluginData("aboxCurrentAppSignature") !== screenSpec.signature) { screensOk = false; continue; }
       if (screen.x !== p.x || screen.y !== p.y || Math.round(screen.width) !== p.width || Math.round(screen.height) !== p.height) placement = false;
       rectangles.push(p);
       currentAppWalk(screen, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; });
     }
-    const mobileFrames = group.children.filter((n) => n.getPluginData && n.getPluginData("aboxKind") === "mobile-screen");
+    const mobileFrames = group.children.filter((n) => n.getPluginData && n.getPluginData("aboxCurrentAppKind") === "mobile-screen");
     mobileCount += mobileFrames.length;
     for (const mobile of mobileFrames) {
       const desktopKey = mobile.getPluginData("aboxDesktopKey");

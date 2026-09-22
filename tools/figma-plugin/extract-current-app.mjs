@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Phase 59 — Current Application Fidelity Import extractor.
 // Reads current production routes plus the closed B9 manifest and emits a separate additive import manifest.
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -11,6 +11,7 @@ const read = (path) => readFileSync(join(root, path), "utf8");
 const evalToken = (file, name) => eval(readFileSync(join(here, file), "utf8") + ";" + name);
 const B9 = evalToken("tokens-b9.js", "ABOX_B9");
 const B10 = evalToken("tokens-b10.js", "ABOX_B10");
+const B8 = evalToken("tokens-b8.js", "ABOX_B8");
 
 if (B9.counts.topLevelFrames !== 179 || B9.counts.categoryAPrototypeReactions !== 682) throw new Error("STOP: protected B9 baseline drifted.");
 if (B10.counts.documentationFrames !== 10) throw new Error("STOP: protected B10 baseline drifted.");
@@ -23,6 +24,28 @@ const hash = (value) => {
   for (let i = 0; i < value.length; i += 1) { h ^= value.charCodeAt(i); h = Math.imul(h, 16777619); }
   return (h >>> 0).toString(16).padStart(8, "0");
 };
+
+function filesBelow(path) {
+  const absolute = join(root, path);
+  return readdirSync(absolute, { withFileTypes: true }).flatMap((entry) => {
+    const relative = path + "/" + entry.name;
+    return entry.isDirectory() ? filesBelow(relative) : [relative];
+  });
+}
+const routeInventory = filesBelow("src/routes").filter((file) => file.endsWith(".tsx")).flatMap((sourceFile) => {
+  const text = read(sourceFile);
+  const match = text.match(/createFileRoute\(\s*["'`]([^"'`]+)["'`]\s*\)/);
+  if (!match) return [];
+  const route = match[1];
+  const category = sourceFile.endsWith("/__root.tsx") ? "root"
+    : /beforeLoad\s*:|<Outlet\s*\/?\s*>/.test(text) && !/component\s*:/.test(text) ? "layout-only"
+      : /throw\s+redirect|redirect\s*\(/.test(text) ? "redirect-or-alias"
+        : /design-(?:guide|system)/.test(sourceFile) ? "design-reference"
+          : "content";
+  return [{ route, sourceFile, category, dynamicParameters: [...route.matchAll(/\$([A-Za-z0-9_]+)/g)].map((item) => item[1]), headMetadata: /\bhead\s*:/.test(text) }];
+});
+if (routeInventory.length !== B9.counts.routeDeclarations) throw new Error("STOP: route declaration inventory drifted (expected " + B9.counts.routeDeclarations + ", found " + routeInventory.length + ").");
+if (unique(routeInventory.map((item) => item.sourceFile)).length !== routeInventory.length) throw new Error("STOP: duplicate route source identity.");
 
 const moduleOrder = ["public", "agency", "m06", "m08", "agency-operations", "agent", "jet", "employer", "marketplace-admin", "member", "platform", "partner"];
 const moduleLabels = {
@@ -114,6 +137,13 @@ const screens = B9.screens.map((screen, index) => {
     desktopHeight: estimatedHeight,
     sources: unique([...(screen.sources || []), screen.sourceFile]),
     order: index,
+    b8Refs: B8.experiences.filter((experience) => (experience.sources || []).some((source) => String(source).split(":")[0] === screen.sourceFile)).map((experience) => experience.name),
+    bindings: {
+      paintStyles: ["ABox/Semantic/background", "ABox/Semantic/foreground", "ABox/Semantic/surface", "ABox/Semantic/card", "ABox/Semantic/muted-foreground", "ABox/Semantic/hairline"],
+      textStyles: ["ABox/Text/serial"],
+      literalFallbacks: ["source-derived dimensions", "source-unmapped spacing", "unsupported responsive values"],
+    },
+    evidenceQuality: { structure: "source-static", responsive: responsive ? "breakpoint-candidate" : "desktop-only", interactions: "B9-governed" },
   };
   spec.sourceSignature = hash(spec.sources.slice().sort().join("|") + "|" + hash(text));
   spec.structureSignature = hash(JSON.stringify([spec.sections, spec.components, spec.patterns, spec.routeLocal, spec.viewports]));
@@ -166,16 +196,20 @@ const classified = {
   C: B9.interactionClassification.C.map((i) => ({ ...i, sourceKey: byB9[i.sourceKey] ? byB9[i.sourceKey].key : i.sourceKey })),
   D: B9.interactionClassification.D.map((i) => ({ ...i, sourceKey: byB9[i.sourceKey] ? byB9[i.sourceKey].key : i.sourceKey })),
 };
+const expectedInstances = screens.reduce((count, screen) => count + (screen.shell && screen.shell.name ? 1 : 0) + screen.patterns.length + screen.components.length + (screen.viewports.includes(390) && screen.shell && screen.shell.name ? 1 : 0), 0);
+const expectedStyleBindings = screens.reduce((count, screen) => count + 2 + screen.sections.length * 2 + (screen.viewports.includes(390) ? 2 + screen.sections.length * 2 : 0), 0) + groups.length * 2;
 const manifest = {
   meta: { phase: "Phase 59 — Current Application Fidelity Import", page: "07 Current App", generatedBy: "tools/figma-plugin/extract-current-app.mjs", protects: ["B0","B1","B2","B3","B4","B5","B6","B7","B8","B9","B10"], model: "additive native editable fidelity import; no permanent sync" },
-  counts: { groups: groups.length, screens: screens.length, desktopFrames: screens.length, mobileCompanions: screens.filter((s) => s.viewports.includes(390)).length, reactions: interactions.length, b1Collections: 9, b1Variables: 200, b2Variables: 19, b3Styles: 79, b4Sets: 11, b4Standalone: 3, b5Variants: 56, b5Physical: 59, b6TopLevel: 3, b6PhysicalNodes: 4, b7TopLevel: 3, b7PhysicalNodes: 4, b8TopLevelFrames: 5, b9TopLevelFrames: 179, b9Reactions: 682, b10DocumentationFrames: 10, newVariables: 0, newStyles: 0, newComponents: 0, newComponentSets: 0, newPatterns: 0, newShells: 0 },
+  counts: { routeDeclarations: routeInventory.length, groups: groups.length, screens: screens.length, desktopFrames: screens.length, mobileCompanions: screens.filter((s) => s.viewports.includes(390)).length, nativeInstances: expectedInstances, minimumStyleBindings: expectedStyleBindings, reactions: interactions.length, categoryB: classified.B.length, categoryC: classified.C.length, categoryD: classified.D.length, classifiedInteractions: interactions.length + classified.B.length + classified.C.length + classified.D.length, b1Collections: 9, b1Variables: 200, b2Variables: 19, b3Styles: 79, b4Sets: 11, b4Standalone: 3, b5Variants: 56, b5Physical: 59, b6TopLevel: 3, b6PhysicalNodes: 4, b7TopLevel: 3, b7PhysicalNodes: 4, b8TopLevelFrames: 5, b9TopLevelFrames: 179, b9Reactions: 682, b10DocumentationFrames: 10, newVariables: 0, newStyles: 0, newComponents: 0, newComponentSets: 0, newPatterns: 0, newShells: 0 },
   arithmetic: B9.arithmetic,
+  routeInventory,
   layout: { page: "07 Current App", desktopWidth: 1440, desktopMinHeight: 1024, mobileWidth: 390, headingHeight: 96, groupPadding: 160, familyGap: 80, columnGap: 160, rowGap: 240, groupGap: 640, columns: 4 },
   groups, screens, interactions, interactionClassification: classified,
-  limitations: ["Native editable reconstruction only; no screenshots, image fills, HTML embeds or flattened imports.", "Unsupported production values remain literal editable properties with source metadata; equality is not treated as token evidence.", "Runtime authentication, data, pricing, subsidy, persistence, validation and generated values are metadata only.", "Route-local compositions do not become new Figma foundations.", "REAL FIGMA NOT VERIFIED until create, verify, recreate and verify run in Figma Desktop."],
+  limitations: ["Native editable reconstruction only; no screenshots, image fills, HTML embeds or flattened imports.", "Static source analysis preserves visible literals and source hierarchy evidence but does not execute recursive React rendering.", "Responsive breakpoint detection marks candidates; it does not claim runtime-measured hierarchy equivalence.", "Unsupported production values remain literal editable properties with source metadata; equality is not treated as token evidence.", "Runtime authentication, data, pricing, subsidy, persistence, validation and generated values are metadata only.", "Dynamic, external and ambiguous destinations remain Category C/D metadata and receive no reaction.", "Route-local compositions do not become new Figma foundations.", "REAL FIGMA NOT VERIFIED until create, verify, recreate and verify run in Figma Desktop."],
 };
 if (screens.length !== 179) throw new Error("STOP: expected 179 current-app screen identities, found " + screens.length);
 if (interactions.length !== 682) throw new Error("STOP: expected 682 deterministic interactions, found " + interactions.length);
+if (classified.B.length !== 135 || classified.C.length !== 102 || classified.D.length !== 3) throw new Error("STOP: interaction classification baseline drifted.");
 const out = "// GENERATED by tools/figma-plugin/extract-current-app.mjs — do not hand-edit.\nvar ABOX_CURRENT_APP = " + JSON.stringify(manifest, null, 2) + ";\n";
 writeFileSync(join(here, "tokens-current-app.js"), out);
 console.log("wrote tools/figma-plugin/tokens-current-app.js (" + out.length + " bytes, " + groups.length + " groups, " + screens.length + " screens, " + interactions.length + " reactions)");
