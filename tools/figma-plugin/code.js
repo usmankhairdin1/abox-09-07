@@ -45669,7 +45669,6 @@ async function verifyB6() {
 
   /* ---------- page scope ---------- */
   const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
-  const writable = [B4_PAGE, B6_PAGE, B7_PAGE];
   add(
     figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
     "B0 pages unchanged: exactly 7, in the original order",
