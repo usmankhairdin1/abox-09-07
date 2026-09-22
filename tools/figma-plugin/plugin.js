@@ -5570,7 +5570,7 @@ function b9Outgoing(spec) {
 }
 
 async function b9PrototypeRegion(spec, index) {
-  const region = b7FrameLegacy("prototype-links", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
+  const region = await b8Frame("prototype-links", { layout: "VERTICAL", gap: 8, px: 16, py: 14, radius: 18, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline" }, index);
   region.appendChild(await b7Text("region-label", "Source-backed prototype reactions", { textStyle: "ABox/Text/eyebrow", colorStyle: "ABox/Semantic/muted-foreground" }, index));
   const outgoing = b9Outgoing(spec);
   if (!outgoing.length) {
