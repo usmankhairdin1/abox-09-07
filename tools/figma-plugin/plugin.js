@@ -418,7 +418,7 @@ async function verifyLibraryPages() {
   const children = figma.root.children;
   add(
     names.every((name) => children.filter((p) => p.name === name).length === 1),
-    "each approved page exists exactly once",
+    "each of the seven pages exists exactly once",
   );
   add(
     names.every((name) => {
@@ -429,7 +429,7 @@ async function verifyLibraryPages() {
   );
   add(
     names.every((name, index) => children[index] && children[index].name === name),
-    "pages occupy their declared indices in order",
+    "pages occupy indices 0..6 in the declared order",
   );
 
   const strays = children.filter((p) => names.indexOf(p.name) === -1);
@@ -554,7 +554,6 @@ function aboxApprovedPageTopLevel() {
     "04 Experiences": typeof ABOX_B8 === "undefined" ? [] : names(ABOX_B8.experiences),
     "05 Screens": typeof ABOX_B9 === "undefined" ? [] : names(ABOX_B9.screens),
     "06 Documentation": typeof ABOX_B10 === "undefined" ? [] : names(ABOX_B10.documents),
-    "07 Current App": typeof ABOX_CURRENT_APP === "undefined" ? [] : names(ABOX_CURRENT_APP.groups),
   };
   const index = {};
   for (const page of Object.keys(map)) {
@@ -1012,7 +1011,7 @@ async function verifyB1() {
 
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
-    "the protected B0 pages remain first and the approved import page is appended",
+    "the seven B0 pages remain at indices 0..6 in order",
   );
 
   // Inventory evidence for the FINAL REPORT.
@@ -1226,7 +1225,7 @@ async function verifyB2() {
 
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
-    "the protected B0 pages remain first and the approved import page is appended",
+    "the seven B0 pages remain at indices 0..6 in order",
   );
 
   // Inventory evidence for the FINAL REPORT.
@@ -1538,7 +1537,7 @@ async function verifyB3() {
 
   add(
     T.library.pages.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n),
-    "the protected B0 pages remain first and the approved import page is appended",
+    "the seven B0 pages remain at indices 0..6 in order",
   );
 
   // Inventory evidence for the FINAL REPORT.
@@ -2119,10 +2118,10 @@ async function verifyB4() {
   );
 
   // 19-20 — pages.
-  const wantPages = T.library.pages;
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
   add(
-    figma.root.children.length === wantPages.length && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
-    "protected B0 pages remain first and the approved import page is appended",
+    figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
+    "B0 pages unchanged: exactly 7, in order, none created/renamed/reordered",
   );
   // Closure-time: every page other than "01 Components" (checked exactly below)
   // may hold only its approved later-batch top-level inventory; 00 Foundations stays empty.
@@ -2714,11 +2713,11 @@ async function verifyB5() {
     paints.length === 72 && tstyles.length === 2 && effects.length === 5,
     "B3 unchanged: 72 colour + 2 text + 5 effect styles (found " + paints.length + " / " + tstyles.length + " / " + effects.length + ")",
   );
-  const wantPages = T.library.pages;
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
   const livePageNames = figma.root.children.map((p) => p.name);
   add(
-    figma.root.children.length === wantPages.length && livePageNames.join("|") === wantPages.join("|"),
-    "protected B0 pages plus approved import page remain in order (found " + figma.root.children.length + ": " + livePageNames.join(", ") + ")",
+    figma.root.children.length === 7 && livePageNames.join("|") === wantPages.join("|"),
+    "B0 pages unchanged: exactly 7, in the approved order (found " + figma.root.children.length + ": " + livePageNames.join(", ") + ")",
   );
   // Closure-time: every page may hold only its approved B0-B10 top-level inventory
   // (00 Foundations has an empty approved list, so it must stay empty).
@@ -3458,8 +3457,7 @@ async function b6StaleVariants() {
     name.indexOf("ABox/Shell/") === 0 ||
     name.indexOf("ABox/Screen/") === 0 ||
     name.indexOf("ABox/ScreenState/") === 0 ||
-    name.indexOf("ABox/Doc/") === 0 ||
-    name.indexOf("ABox/CurrentAppGroup/") === 0;
+    name.indexOf("ABox/Doc/") === 0;
   const owners = b6VariantOwners();
 
   say("B6 STALE VARIANT CLEANUP");
@@ -3673,10 +3671,10 @@ async function verifyB6() {
   add(primSets.length === C.b4Sets, "no new B4/B5 Component Set created");
 
   /* ---------- page scope ---------- */
-  const wantPages = T.library.pages;
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
   add(
-    figma.root.children.length === wantPages.length && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
-    "protected B0 pages remain first and the approved import page is appended",
+    figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"),
+    "B0 pages unchanged: exactly 7, in the original order",
   );
   const b6ApprovedTopLevel = aboxApprovedPageTopLevel();
   const b6PageEvidence = [];
@@ -4932,8 +4930,8 @@ async function verifyB7() {
   const patternNodes = patternPage ? b6PatternNodes(patternPage) : [];
   add(patternPage && patternPage.children.length === C.b6TopLevel && patternNodes.length === C.b6PhysicalNodes, "B6 unchanged: 3 top-level pattern objects / 4 physical ComponentNodes");
 
-  const wantPages = T.library.pages;
-  add(figma.root.children.length === wantPages.length && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages unchanged: exactly 7, in original order");
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages unchanged: exactly 7, in original order");
   const b7ApprovedTopLevel = aboxApprovedPageTopLevel();
   const b7PageEvidence = [];
   let b7UnexpectedTopLevel = 0;
@@ -5472,8 +5470,8 @@ async function verifyB8() {
   const C = ABOX_B8.counts;
   const page = b8Page();
 
-  const wantPages = T.library.pages;
-  add(figma.root.children.length === wantPages.length && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "protected B0 pages remain first and the approved import page is appended");
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
   const b8ApprovedTopLevel = aboxApprovedPageTopLevel();
   const b8PageEvidence = [];
   let b8UnexpectedTopLevel = 0;
@@ -5982,8 +5980,8 @@ async function verifyB9() {
   const C = ABOX_B9.counts;
   const page = b9Page();
 
-  const wantPages = T.library.pages;
-  add(figma.root.children.length === wantPages.length && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "protected B0 pages remain first and the approved import page is appended");
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  add(figma.root.children.length === 7 && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
   const docsPageForB9 = figma.root.children.filter((p) => p.name === "06 Documentation")[0];
   const b9DocsOk = docsPageForB9 && (docsPageForB9.children.length === 0 || docsPageForB9.children.map((n) => n.name).join("|") === b10ApprovedNames().join("|"));
   add(figma.root.children.filter((p) => p.name === "00 Foundations").every((p) => p.children.length === 0) && b9DocsOk, "00 Foundations remains empty and 06 Documentation is empty or contains only approved B10 documentation during B9");
@@ -6426,8 +6424,8 @@ async function verifyB10() {
   const page = b10Page();
   await b10PrepareReferenceIndexes();
 
-  const wantPages = T.library.pages;
-  add(figma.root.children.length === wantPages.length && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "protected B0 pages remain first and the approved import page is appended");
+  const wantPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells", "04 Experiences", "05 Screens", "06 Documentation"];
+  add(figma.root.children.length === C.b0Pages && figma.root.children.map((p) => p.name).join("|") === wantPages.join("|"), "B0 pages exist exactly once and remain in original order");
   const foundationsPage = figma.root.children.filter((p) => p.name === "00 Foundations")[0];
   add(foundationsPage && foundationsPage.children.length === 0, "00 Foundations remains empty");
 
@@ -6549,7 +6547,7 @@ async function b4CleanupOrphans() {
   const libraryPages = ["00 Foundations", "01 Components", "02 Patterns", "03 Shells",
     "04 Experiences", "05 Screens", "06 Documentation"];
   const approved = {};
-  for (const list of [b8ApprovedNames(), b9ApprovedNames(), b10ApprovedNames(), currentAppApprovedNames()]) {
+  for (const list of [b8ApprovedNames(), b9ApprovedNames(), b10ApprovedNames()]) {
     for (const name of list || []) approved[name] = true;
   }
   const owned = (name) =>
@@ -6558,8 +6556,7 @@ async function b4CleanupOrphans() {
     name.indexOf("ABox/Shell/") === 0 ||
     name.indexOf("ABox/Screen/") === 0 ||
     name.indexOf("ABox/ScreenState/") === 0 ||
-    name.indexOf("ABox/Doc/") === 0 ||
-    name.indexOf("ABox/CurrentAppGroup/") === 0;
+    name.indexOf("ABox/Doc/") === 0;
 
   const doomed = [];
   for (const page of figma.root.children) {
@@ -6599,7 +6596,7 @@ async function b4StaleVariants() {
   const page = b4Page();
 
   const approved = {};
-  for (const list of [b8ApprovedNames(), b9ApprovedNames(), b10ApprovedNames(), currentAppApprovedNames()]) {
+  for (const list of [b8ApprovedNames(), b9ApprovedNames(), b10ApprovedNames()]) {
     for (const name of list || []) approved[name] = true;
   }
   for (const spec of ABOX_B4.components) approved[spec.name] = true;
@@ -6609,8 +6606,7 @@ async function b4StaleVariants() {
     name.indexOf("ABox/Shell/") === 0 ||
     name.indexOf("ABox/Screen/") === 0 ||
     name.indexOf("ABox/ScreenState/") === 0 ||
-    name.indexOf("ABox/Doc/") === 0 ||
-    name.indexOf("ABox/CurrentAppGroup/") === 0;
+    name.indexOf("ABox/Doc/") === 0;
 
   // condition 4: map every approved B4 variant name to its owning set spec
   const variantOwner = {};
@@ -6678,279 +6674,6 @@ async function b4StaleVariants() {
 }
 
 
-
-/* =====================  Phase 59 — current application fidelity import  ===================== */
-const CURRENT_APP_PAGE = "07 Current App";
-var currentAppCreatedGroups = 0;
-var currentAppCreatedScreens = 0;
-var currentAppCreatedReactions = 0;
-
-function currentAppApprovedNames() {
-  return typeof ABOX_CURRENT_APP === "undefined" ? [] : ABOX_CURRENT_APP.groups.map((g) => g.name);
-}
-
-async function currentAppPage(create) {
-  await figma.loadAllPagesAsync();
-  const found = figma.root.children.filter((p) => p.name === CURRENT_APP_PAGE);
-  if (found.length > 1) throw new Error('STOP: DUPLICATE CURRENT APP PAGE — "' + CURRENT_APP_PAGE + '" exists ' + found.length + " times.");
-  if (found.length === 1) return found[0];
-  if (!create) throw new Error('STOP: current-app page "' + CURRENT_APP_PAGE + '" does not exist. Run Create Current App first.');
-  const protectedNames = T.library.pages.slice(0, 7);
-  if (figma.root.children.length !== 7 || !protectedNames.every((n, i) => figma.root.children[i] && figma.root.children[i].name === n)) {
-    throw new Error("STOP: protected B0-B10 page inventory differs; current-app page was not created.");
-  }
-  const page = figma.createPage();
-  page.name = CURRENT_APP_PAGE;
-  figma.root.insertChild(7, page);
-  say("page created : " + CURRENT_APP_PAGE + "  id=" + page.id);
-  return page;
-}
-
-function currentAppFindGroup(page, spec) {
-  const found = page.children.filter((n) => n.name === spec.name);
-  if (found.length > 1) throw new Error('STOP: DUPLICATE CURRENT APP GROUP — "' + spec.name + '" exists ' + found.length + " times.");
-  return found[0] || null;
-}
-
-function currentAppSetData(node, kind, spec) {
-  node.setPluginData("aboxBatch", "CURRENT_APP");
-  node.setPluginData("aboxKind", kind);
-  node.setPluginData("aboxName", spec.name || spec.key);
-  node.setPluginData("aboxKey", spec.key);
-  node.setPluginData("aboxSignature", spec.signature || "");
-  node.setPluginData("aboxSources", (spec.sources || []).slice().sort().join("|"));
-  if (spec.route) node.setPluginData("aboxRoute", spec.route);
-  if (spec.b9Key) node.setPluginData("aboxB9Key", spec.b9Key);
-}
-
-async function currentAppText(name, value, opts, index) {
-  const text = await b7Text(name, String(value || ""), opts || { size: 14, weight: 400, colorStyle: "ABox/Semantic/foreground" }, index);
-  if (opts && opts.width) { text.resize(opts.width, text.height); text.textAutoResize = "HEIGHT"; }
-  return text;
-}
-
-async function currentAppLocalCard(name, title, rows, index, width) {
-  const card = await b8Frame(name, { layout: "VERTICAL", gap: 12, px: 20, py: 18, radius: 12, fillStyle: "ABox/Semantic/card", strokeStyle: "ABox/Semantic/hairline", w: width || 420, primarySizing: "FIXED" }, index);
-  card.appendChild(await currentAppText("title", title, { size: 16, weight: 600, colorStyle: "ABox/Semantic/foreground", width: (width || 420) - 40 }, index));
-  const values = rows && rows.length ? rows : ["Source-backed editable content"];
-  for (const value of values.slice(0, 8)) card.appendChild(await currentAppText("row", value, { size: 12, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", width: (width || 420) - 40 }, index));
-  return card;
-}
-
-async function currentAppInstance(name, index) {
-  const inst = await b9Instance(name, {}, name.split("/").pop() + "-instance");
-  inst.setPluginData("aboxCurrentAppReference", name);
-  return inst;
-}
-
-async function currentAppBuildScreen(spec, placement, index) {
-  const frame = await b8Frame("desktop/" + spec.key, { layout: "VERTICAL", gap: 20, px: 32, py: 32, radius: 0, fillStyle: "ABox/Semantic/background", strokeStyle: "ABox/Semantic/hairline", w: placement.width, h: placement.height, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
-  frame.name = "desktop/" + spec.name;
-  frame.x = placement.x;
-  frame.y = placement.y;
-  currentAppSetData(frame, "screen", spec);
-  frame.setPluginData("aboxViewport", "1440");
-  frame.setPluginData("aboxStructureSignature", spec.structureSignature);
-  frame.setPluginData("aboxBindingSignature", spec.bindingSignature);
-  frame.appendChild(await currentAppText("route-label", (spec.screenId || "ROUTE") + " · " + (spec.route || "no route"), { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", width: 1376 }, index));
-  frame.appendChild(await currentAppText("page-title", spec.title, { size: 36, weight: 600, colorStyle: "ABox/Semantic/foreground", width: 1376 }, index));
-
-  if (spec.shell && spec.shell.name) {
-    const shell = await currentAppInstance(spec.shell.name, index);
-    shell.name = "shell-instance";
-    frame.appendChild(shell);
-  }
-  if ((spec.patterns || []).length) {
-    const row = await b8Frame("pattern-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 12, counterGap: 12 }, index);
-    for (const pattern of spec.patterns) row.appendChild(await currentAppInstance(pattern.name, index));
-    frame.appendChild(row);
-  }
-  if ((spec.components || []).length) {
-    const row = await b8Frame("component-instances", { layout: "HORIZONTAL", wrap: "WRAP", gap: 10, counterGap: 10 }, index);
-    for (const name of spec.components) row.appendChild(await currentAppInstance(name, index));
-    frame.appendChild(row);
-  }
-  const content = await b8Frame("route-local-content", { layout: "VERTICAL", gap: 18, w: 1376, primarySizing: "FIXED" }, index);
-  for (const section of spec.sections || []) {
-    const sectionFrame = await b8Frame("section/" + section.key, { layout: "VERTICAL", gap: 12, px: 20, py: 20, radius: 12, fillStyle: "ABox/Semantic/surface", strokeStyle: "ABox/Semantic/hairline", w: 1376, primarySizing: "FIXED" }, index);
-    sectionFrame.setPluginData("aboxRouteLocalKind", section.kind);
-    sectionFrame.appendChild(await currentAppText("section-title", section.title, { size: 20, weight: 600, colorStyle: "ABox/Semantic/foreground", width: 1336 }, index));
-    const row = await b8Frame("section-grid", { layout: "HORIZONTAL", wrap: "WRAP", gap: 16, counterGap: 16, w: 1336, primarySizing: "FIXED" }, index);
-    const cols = Math.max(1, Math.min(4, section.columns || 1));
-    const cardWidth = Math.floor((1336 - (cols - 1) * 16) / cols);
-    const cardCount = Math.max(1, Math.min(cols, (section.rows || []).length || 1));
-    for (let i = 0; i < cardCount; i += 1) row.appendChild(await currentAppLocalCard("item-" + (i + 1), (section.rows || [])[i] || section.title, (section.rows || []).slice(i + 1, i + 4), index, cardWidth));
-    sectionFrame.appendChild(row);
-    content.appendChild(sectionFrame);
-  }
-  frame.appendChild(content);
-  const runtime = await currentAppText("runtime-boundaries", "Route-local: " + ((spec.routeLocal || []).join(", ") || "none") + " · States: " + ((spec.states || []).join(", ") || "ready") + " · Runtime behavior remains metadata only.", { size: 11, weight: 400, colorStyle: "ABox/Semantic/muted-foreground", width: 1376 }, index);
-  frame.appendChild(runtime);
-  const hotspots = await b8Frame("prototype-hotspots", { layout: "HORIZONTAL", wrap: "WRAP", gap: 6, counterGap: 6 }, index);
-  const outgoing = ABOX_CURRENT_APP.interactions.filter((i) => i.sourceKey === spec.key);
-  hotspots.visible = false;
-  for (const interaction of outgoing) {
-    const node = await b8Frame("hotspot/" + interaction.id, { layout: "HORIZONTAL", px: 2, py: 2, w: 8, h: 8, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
-    node.setPluginData("aboxCurrentInteractionId", interaction.id);
-    node.setPluginData("aboxCurrentReactionSignature", interaction.signature);
-    node.setPluginData("aboxCurrentTargetKey", interaction.targetKey);
-    hotspots.appendChild(node);
-  }
-  frame.appendChild(hotspots);
-  currentAppCreatedScreens += 1;
-  return frame;
-}
-
-async function currentAppBuildGroup(spec, index) {
-  const group = await b8Frame(spec.name, { layout: "NONE", fillStyle: "ABox/Semantic/background", w: spec.width, h: spec.height, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
-  group.x = spec.x;
-  group.y = spec.y;
-  currentAppSetData(group, "module-group", spec);
-  const heading = await b8Frame("module-heading", { layout: "VERTICAL", gap: 8, px: 0, py: 0, w: spec.width - 320, h: 96, primarySizing: "FIXED", counterSizing: "FIXED" }, index);
-  heading.x = 160; heading.y = 80;
-  heading.appendChild(await currentAppText("module-title", spec.title, { size: 32, weight: 600, colorStyle: "ABox/Semantic/foreground", width: spec.width - 320 }, index));
-  heading.appendChild(await currentAppText("module-count", spec.screenKeys.length + " source-backed screens", { textStyle: "ABox/Text/serial", colorStyle: "ABox/Semantic/muted-foreground", width: spec.width - 320 }, index));
-  group.appendChild(heading);
-  for (const placement of spec.placements) {
-    const screen = ABOX_CURRENT_APP.screens.find((s) => s.key === placement.key);
-    if (!screen) throw new Error('STOP: current-app placement target missing — "' + placement.key + '".');
-    group.appendChild(await currentAppBuildScreen(screen, placement, index));
-  }
-  currentAppCreatedGroups += 1;
-  return group;
-}
-
-function currentAppWalk(root, fn) { fn(root); for (const child of root.children || []) currentAppWalk(child, fn); }
-function currentAppScreenMap(page) {
-  const map = {};
-  for (const group of page.children) currentAppWalk(group, (node) => { const key = node.getPluginData && node.getPluginData("aboxKind") === "screen" ? node.getPluginData("aboxKey") : ""; if (key) { if (map[key]) throw new Error('STOP: duplicate current-app screen key "' + key + '".'); map[key] = node; } });
-  return map;
-}
-function currentAppHotspot(frame, interaction) {
-  const found = [];
-  currentAppWalk(frame, (n) => { if (n.getPluginData && n.getPluginData("aboxCurrentInteractionId") === interaction.id) found.push(n); });
-  if (found.length !== 1) throw new Error('STOP: current-app hotspot "' + interaction.id + '" resolved to ' + found.length + " nodes.");
-  return found[0];
-}
-async function currentAppEnsureReaction(source, target, interaction) {
-  const node = currentAppHotspot(source, interaction);
-  const reactions = node.reactions || [];
-  if (reactions.length > 1) throw new Error('STOP: duplicate current-app reactions for "' + interaction.id + '".');
-  if (reactions.length === 1) {
-    const action = (reactions[0].actions || [reactions[0].action])[0] || {};
-    if (node.getPluginData("aboxCurrentReactionSignature") !== interaction.signature || action.destinationId !== target.id) throw new Error('STOP: conflicting current-app prototype mapping "' + interaction.id + '".');
-    return;
-  }
-  if (typeof node.setReactionsAsync !== "function") throw new Error("STOP: Figma host cannot write prototype reactions.");
-  const action = { type: "NODE", destinationId: target.id, navigation: interaction.navigation || "NAVIGATE", transition: b9TransitionPayload(interaction), resetScrollPosition: true };
-  await node.setReactionsAsync([{ trigger: b9TriggerPayload(interaction), action, actions: [action] }]);
-  node.setPluginData("aboxCurrentReactionSignature", interaction.signature);
-  currentAppCreatedReactions += 1;
-}
-
-function currentAppAssertProtected() {
-  const first = T.library.pages.slice(0, 7);
-  if (!first.every((name, i) => figma.root.children[i] && figma.root.children[i].name === name)) throw new Error("STOP: protected B0-B10 page order differs.");
-  const expected = { "00 Foundations": 0, "01 Components": 14, "02 Patterns": 3, "03 Shells": 3, "04 Experiences": 5, "05 Screens": 179, "06 Documentation": 10 };
-  for (const name of Object.keys(expected)) {
-    const page = figma.root.children.find((p) => p.name === name);
-    if (!page || page.children.length !== expected[name]) throw new Error('STOP: protected page "' + name + '" count differs (expected ' + expected[name] + ").");
-  }
-}
-
-async function ensureCurrentApp() {
-  await figma.loadAllPagesAsync();
-  currentAppCreatedGroups = 0; currentAppCreatedScreens = 0; currentAppCreatedReactions = 0;
-  currentAppAssertProtected();
-  const page = await currentAppPage(true);
-  const index = await b4StyleIndex();
-  for (const child of page.children) if (currentAppApprovedNames().indexOf(child.name) === -1) throw new Error('STOP: unapproved object on 07 Current App — "' + child.name + '".');
-  for (const spec of ABOX_CURRENT_APP.groups) {
-    const existing = currentAppFindGroup(page, spec);
-    if (existing) {
-      if (existing.type !== "FRAME" || existing.getPluginData("aboxBatch") !== "CURRENT_APP" || existing.getPluginData("aboxSignature") !== spec.signature) throw new Error('STOP: live current-app group differs — "' + spec.name + '". Nothing was overwritten.');
-      say("  group reused  : " + spec.name + "  id=" + existing.id);
-    } else {
-      const group = await currentAppBuildGroup(spec, index);
-      page.appendChild(group);
-      say("  group created : " + spec.name + "  id=" + group.id);
-    }
-  }
-  const map = currentAppScreenMap(page);
-  for (const interaction of ABOX_CURRENT_APP.interactions) {
-    if (!map[interaction.sourceKey] || !map[interaction.targetKey]) throw new Error('STOP: unresolved current-app prototype target "' + interaction.id + '".');
-    await currentAppEnsureReaction(map[interaction.sourceKey], map[interaction.targetKey], interaction);
-  }
-  say("  groups created this run: " + currentAppCreatedGroups);
-  say("  screens created this run: " + currentAppCreatedScreens);
-  say("  reactions created this run: " + currentAppCreatedReactions);
-}
-
-async function verifyCurrentApp() {
-  await figma.loadAllPagesAsync();
-  const checks = [], add = (ok, label) => checks.push((ok ? "PASS  " : "FAIL  ") + label);
-  currentAppAssertProtected();
-  const page = await currentAppPage(false);
-  const groups = page.children;
-  add(figma.root.children.length === 8 && figma.root.children.map((p) => p.name).join("|") === T.library.pages.join("|"), "protected seven pages remain first and 07 Current App is appended");
-  add(groups.length === ABOX_CURRENT_APP.counts.groups && groups.map((g) => g.name).join("|") === currentAppApprovedNames().join("|"), "current-app module groups are complete and ordered");
-  let signatures = true, placement = true, screensOk = true, images = true, foundations = true, overlaps = true, reactionCount = 0, reactionsOk = true;
-  const map = currentAppScreenMap(page);
-  for (const spec of ABOX_CURRENT_APP.groups) {
-    const group = currentAppFindGroup(page, spec);
-    if (!group || group.getPluginData("aboxSignature") !== spec.signature) { signatures = false; continue; }
-    if (group.x !== spec.x || group.y !== spec.y || Math.round(group.width) !== spec.width || Math.round(group.height) !== spec.height) placement = false;
-    const rectangles = [];
-    for (const key of spec.screenKeys) {
-      const screen = map[key];
-      const screenSpec = ABOX_CURRENT_APP.screens.find((s) => s.key === key);
-      const p = spec.placements.find((x) => x.key === key);
-      if (!screen || !screenSpec || !p || screen.getPluginData("aboxSignature") !== screenSpec.signature) { screensOk = false; continue; }
-      if (screen.x !== p.x || screen.y !== p.y || Math.round(screen.width) !== p.width || Math.round(screen.height) !== p.height) placement = false;
-      rectangles.push(p);
-      currentAppWalk(screen, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; });
-    }
-    for (let a = 0; a < rectangles.length; a += 1) for (let b = a + 1; b < rectangles.length; b += 1) { const x=rectangles[a], y=rectangles[b]; if (x.x < y.x+y.width && x.x+x.width > y.x && x.y < y.y+y.height && x.y+x.height > y.y) overlaps = false; }
-  }
-  for (const interaction of ABOX_CURRENT_APP.interactions) {
-    const source = map[interaction.sourceKey], target = map[interaction.targetKey];
-    if (!source || !target) { reactionsOk = false; continue; }
-    const node = currentAppHotspot(source, interaction), rs = node.reactions || [];
-    reactionCount += rs.length;
-    const action = rs[0] ? (rs[0].actions || [rs[0].action])[0] || {} : {};
-    if (rs.length !== 1 || action.destinationId !== target.id || node.getPluginData("aboxCurrentReactionSignature") !== interaction.signature) reactionsOk = false;
-  }
-  add(signatures, "all module and screen signatures match the source-derived manifest");
-  add(placement && overlaps, "deterministic four-column placement has zero screen overlaps");
-  add(Object.keys(map).length === ABOX_CURRENT_APP.counts.screens && screensOk, "all 179 current screen/state identities are native editable frames");
-  add(images, "no screenshots, HTML embeds or image fills exist");
-  add(foundations, "the import creates no components or component sets");
-  add(reactionsOk && reactionCount === ABOX_CURRENT_APP.counts.reactions, "all 682 deterministic reactions resolve to current-app targets");
-  add(currentAppCreatedGroups === 0 || currentAppCreatedGroups === ABOX_CURRENT_APP.counts.groups, "run bookkeeping groups created = " + currentAppCreatedGroups + " (run 2 must be 0)");
-  add(currentAppCreatedReactions === 0 || currentAppCreatedReactions === ABOX_CURRENT_APP.counts.reactions, "run bookkeeping reactions created = " + currentAppCreatedReactions + " (run 2 must be 0)");
-  say(""); say("CURRENT APP STRUCTURAL CHECK"); checks.forEach((c) => say("  " + c));
-  say(""); say("INVENTORY: " + ABOX_CURRENT_APP.counts.groups + " groups · " + ABOX_CURRENT_APP.counts.screens + " screens · " + ABOX_CURRENT_APP.counts.reactions + " reactions");
-  say("NOTE: REAL FIGMA NOT VERIFIED until create → verify → recreate → verify completes in Figma Desktop.");
-  const passed = checks.every((c) => c.indexOf("PASS") === 0);
-  say(""); say(passed ? "RESULT: CURRENT APP PASSED" : "RESULT: CURRENT APP FAILED — do not use import evidence.");
-  return passed;
-}
-
-async function currentAppGuarded(label, fn) {
-  const beforePages = figma.root.children.map((p) => p.id);
-  let page = figma.root.children.find((p) => p.name === CURRENT_APP_PAGE);
-  const before = page ? page.children.map((n) => n.id) : [];
-  try { return await fn(); }
-  catch (error) {
-    page = figma.root.children.find((p) => p.name === CURRENT_APP_PAGE);
-    if (page) for (const child of page.children.slice()) if (before.indexOf(child.id) === -1 && currentAppApprovedNames().indexOf(child.name) !== -1) child.remove();
-    if (page && beforePages.indexOf(page.id) === -1 && page.children.length === 0 && figma.currentPage.id !== page.id) page.remove();
-    say("  guarded rollback completed for " + label);
-    throw error;
-  }
-}
-
-
 /* ---------- entry ---------- */
 
 
@@ -6974,7 +6697,6 @@ figma.ui.onmessage = async (msg) => {
   const b8 = msg.type === "b8-run" || msg.type === "b8-verify";
   const b9 = msg.type === "b9-run" || msg.type === "b9-verify";
   const b10 = msg.type === "b10-run" || msg.type === "b10-verify";
-  const currentApp = msg.type === "current-app-run" || msg.type === "current-app-verify";
   try {
     if (msg.type === "run") {
       say("ABox Figma Proof — creating native objects");
@@ -7206,19 +6928,6 @@ figma.ui.onmessage = async (msg) => {
       requireFile(T.library.targetFileName);
       say("");
       await verifyB10();
-    } else if (msg.type === "current-app-run") {
-      say("ABox Phase 59 — current application fidelity import");
-      say("file: " + figma.root.name);
-      requireFile(T.library.targetFileName);
-      say("");
-      await currentAppGuarded("Phase 59 — current app", ensureCurrentApp);
-      await verifyCurrentApp();
-    } else if (msg.type === "current-app-verify") {
-      say("ABox Phase 59 — verify current application import");
-      say("file: " + figma.root.name);
-      requireFile(T.library.targetFileName);
-      say("");
-      await verifyCurrentApp();
     }
   } catch (e) {
     say("");

@@ -146,13 +146,6 @@
     </p>
     <button id="b10run">Create documentation</button>
     <button id="b10verify" class="secondary">Verify documentation</button>
-    <p>
-      <strong>Phase 59 — current application fidelity import</strong><br />
-      Creates source-derived native editable screen compositions on <code>07 Current App</code>.
-      Reuses B1–B7 assets and leaves B0–B10 unchanged.
-    </p>
-    <button id="currentrun">Create Current App</button>
-    <button id="currentverify" class="secondary">Verify Current App</button>
     <pre id="log">Ready.</pre>
     <script>
       const log = document.getElementById("log");
@@ -298,14 +291,6 @@
       document.getElementById("b10verify").onclick = () => {
         log.textContent = "Verifying documentation…";
         parent.postMessage({ pluginMessage: { type: "b10-verify" } }, "*");
-      };
-      document.getElementById("currentrun").onclick = () => {
-        log.textContent = "Creating current application screens…";
-        parent.postMessage({ pluginMessage: { type: "current-app-run" } }, "*");
-      };
-      document.getElementById("currentverify").onclick = () => {
-        log.textContent = "Verifying current application screens…";
-        parent.postMessage({ pluginMessage: { type: "current-app-verify" } }, "*");
       };
       onmessage = (e) => {
         const msg = e.data.pluginMessage;

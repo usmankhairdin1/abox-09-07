@@ -81,7 +81,6 @@ const ABOX_TOKENS = {
       "04 Experiences",
       "05 Screens",
       "06 Documentation",
-      "07 Current App",
     ],
   },
 };
