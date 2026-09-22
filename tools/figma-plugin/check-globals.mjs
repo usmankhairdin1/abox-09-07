@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as acorn from "acorn";
-import eslintScope from "eslint-scope";
+import { analyze } from "eslint-scope";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
