@@ -19,17 +19,27 @@ No activity modifies the existing application.
 
 ## 1. Non-touch boundaries (absolute)
 
-Phase 0 writes **nothing** to any of the following:
-- `src/**`
+Phase 0 must not modify any existing governed screen, route, navigation configuration, registry, Figma artifact, packet, or existing application behavior. In particular it writes **nothing** to:
+- any existing file under `src/**`; existing pages, components, routes and libraries stay byte-identical
 - `public/registers/*`
 - `src/lib/governed/*`
 - `screens.ts`, `m08/registry.ts`, `nav-config.ts`
-- route files
+- existing route files
 - `tools/figma-plugin/**` (including token files and manifests)
 - Figma B0–B10 and page 07
 - packet JSON
 - change logs
 - the existing `m00.*` / `public.*` tables and functions
+
+**Allowed exception — isolated Phase 0 infrastructure.** Phase 0 may add only *new* governance infrastructure:
+- the `gov_stage` staging schema (§8);
+- new, self-contained files for the read-only extractor and matcher;
+- a new, isolated **Phase 0 Reconciliation Workspace** (§15).
+
+This infrastructure is separate from the governed application screens:
+- It is not a governed screen and is not part of the screen population. It is excluded from its own extraction.
+- It does not change the existing screen population or navigation semantics.
+- Removing it restores the application exactly.
 
 Phase 0 also does not:
 - issue GSIDs;
@@ -38,7 +48,7 @@ Phase 0 also does not:
 - emit `m00_emit` events (candidate history stays in staging, per Rev. 3 §17);
 - settle ownership or screen boundaries without a human decision.
 
-All Phase 0 output lives in an isolated staging area (§8). Deleting that area returns the project exactly to its pre-Phase 0 state.
+All Phase 0 output lives in this isolated infrastructure. Removing it returns the project exactly to its pre-Phase 0 state.
 
 ## 2. Sources inspected (R)
 
@@ -118,38 +128,66 @@ Extraction is read-only and deterministic: the same snapshot always gives byte-i
 - **Empty values:** empty string and "TBD" → null, flagged as MISSING_*.
 - **Figma:** signatures are copied exactly as they are and never interpreted.
 
-## 5. Candidate formation rules (M, P)
+## 5. Candidate formation rules (F, M, P)
 
 Candidates are clusters of SourceRecords that *may* be one logical screen. They are never authoritative.
 
+**Principle: a route is evidence of identity, not identity by itself.**
+
+**Fixed processing order.** No candidate is ever merged first and classified as shared afterwards.
+
+```text
+1. Extract and normalize all SourceRecords                         (E, N)
+2. Conflict pre-pass: detect shared IDs, shared routes,
+   conflicting alias ownership, conflicting screen-defining metadata (F)
+3. Mark affected aliases/routes PROTECTED from automatic union     (F)
+4. Deterministic candidate union (rules below)                     (M)
+5. PROTECTED aliases stay unresolved until a human decision (§10)  (H)
+```
+
+`SCR_AGENCY_SETUP` and `UX-009` are always PROTECTED by the pre-pass, whatever the scan detects.
+
+Rules:
 1. **Seed:** each SourceRecord from a *screen-defining* source (SRC-01…04, 08, 09, 11) starts as a singleton.
-2. **Deterministic union**, applied only on **hard evidence**:
-   - (a) the same normalized ID in two sources; or
-   - (b) the same normalized route + state, where neither side is flagged SHARED_ALIAS.
+2. **Deterministic union** happens only when one of these is true:
+   - (a) **Hard identity evidence:** the same normalized, non-PROTECTED ID appears in two sources.
+   - (b) **Route evidence:** the same normalized route and state, **and all** of the following:
+     - no conflicting identity evidence (no different IDs of the same kind);
+     - no conflicting alias ownership;
+     - no conflicting screen-defining metadata (name, module, purpose);
+     - neither the route nor any involved alias is PROTECTED or shared.
+
+   If any of these conditions fails, the records are not merged; a review issue is raised instead (BOUNDARY_DECISION or POSSIBLE_DUPLICATE).
 3. **Evidence-only attachment:** these attach to the cluster(s) they reference but **never create or merge clusters**:
    - SRC-10 nav links, SRC-12/13 Figma records, SRC-06 references and SRC-14 samples.
-4. **Stop rule:** a union that would put two different IDs **of the same alias_kind** into one cluster (e.g. two SCR-M06 IDs) is refused. Instead a POSSIBLE_DUPLICATE or BOUNDARY_DECISION issue is raised.
-5. **Shared aliases:** an ID or route that already links to 2+ records with distinct routes or states is marked SHARED_ALIAS. It does not merge them. Each side stays a separate candidate linked to the shared alias.
-6. **Numbering:** `CAND-######`, issued in a fixed order (source order, then record locator) so reruns on the same snapshot reproduce the same numbers. Candidate IDs are valid only within a run (Rev. 3 §6).
+4. **Stop rule:** a union that would put two different IDs **of the same alias_kind** into one cluster (e.g. two SCR-M06 IDs) is refused, and a POSSIBLE_DUPLICATE or BOUNDARY_DECISION issue is raised.
+5. **Shared aliases:** an alias marked PROTECTED in step 3 never merges records. Each side stays a separate candidate linked to the unresolved shared alias.
+6. **Numbering:** `CAND-######`, issued in a fixed order (source order, then record locator), so reruns on the same snapshot reproduce the same numbers. Candidate IDs are valid only within a run (Rev. 3 §6).
 
 ## 6. Matching logic (M)
 
-Signals S1–S10 are those defined in Rev. 3 §14, computed for every candidate pair that shares any signal:
+**Naming used in this plan:**
+- `SIG-01`–`SIG-10` are the Rev. 3 §14 detection signals (S1–S10 in Rev. 3), renamed only for clarity.
+- `SEM-01`–`SEM-07` are the Phase 0 semantic reconciliation decisions (§11).
+
+The architecture itself is unchanged.
+
+Signals are computed for every candidate pair that shares any signal:
 
 | Signal | Computation |
 |---|---|
-| S1 | Equal normalized ID |
-| S2 | Equal normalized route (+ state) |
-| S3 | Equal Figma key or node |
-| S4 | Name similarity: token Jaccard ≥ 0.8 **or** normalized Levenshtein ≤ 0.15 (initial threshold, I3) |
-| S5 | Equal module |
-| S6 | Requirement-ID overlap ≥ 1 |
-| S7 | Purpose token Jaccard ≥ 0.6 |
-| S8 | Primary-action overlap ≥ 50% |
-| S9 | Shared components (from the Phase 59 mapping) ≥ 50% |
-| S10 | Equal structure signature |
+| SIG-01 | Equal normalized ID |
+| SIG-02 | Equal normalized route (+ state) |
+| SIG-03 | Equal Figma key or node |
+| SIG-04 | Name similarity: token Jaccard ≥ 0.8 **or** normalized Levenshtein ≤ 0.15 (initial threshold, I3) |
+| SIG-05 | Equal module |
+| SIG-06 | Requirement-ID overlap ≥ 1 |
+| SIG-07 | Purpose token Jaccard ≥ 0.6 |
+| SIG-08 | Primary-action overlap ≥ 50% |
+| SIG-09 | Shared components (from the Phase 59 mapping) ≥ 50% |
+| SIG-10 | Equal structure signature |
 
-Classification follows the Rev. 3 §14 table without change: EXACT / STRONG / POSSIBLE / NONE / CONFLICT. **Every result stores the signal vector and the evidence records behind it.** Nothing is accepted automatically in Phase 0, and every non-singleton result needs a human decision.
+Classification follows the Rev. 3 §14 table without change: EXACT / STRONG / POSSIBLE / NONE / CONFLICT. **Every result stores its signal vector and the evidence records behind it.** Nothing is accepted automatically in Phase 0, and every non-singleton result needs a human decision.
 
 ## 7. Issue detection (F)
 
@@ -168,7 +206,7 @@ Classification follows the Rev. 3 §14 table without change: EXACT / STRONG / PO
 | FIGMA_MISMATCH | Figma screen with no candidate; a candidate whose route has no Figma screen; different signatures on one key |
 | UNKNOWN_ID | ID matches no alias pattern |
 
-Each issue records: issue_id, type, severity (Blocking / Review / Info), the affected candidates and records, the evidence, and the S-decision it relates to (if any). Blocking issues must be decided before exit.
+Each issue records: issue_id, type, severity (Blocking / Review / Info), the affected candidates and records, the evidence, and the SEM decision it relates to (if any). Blocking issues must be decided before exit.
 
 ## 8. Staging model (P)
 
@@ -197,11 +235,11 @@ Rules:
 
 | Registry | Handling |
 |---|---|
-| M00 (SRC-01) | No routes. Candidates formed on ID only; every row gets MISSING_ROUTE; SRC-08/10/11 routes are proposed as evidence (S4/S6), never attached automatically. SRC-14 is used only for COUNT_DISCREPANCY. |
+| M00 (SRC-01) | No routes. Candidates formed on ID only; every row gets MISSING_ROUTE. SRC-08/10/11 routes are proposed as evidence (SIG-04/SIG-06) and never attached automatically. SRC-14 is used only for COUNT_DISCREPANCY. |
 | M04 / M05 | Route + ID seeds; check against SRC-08/11; ROUTE_DISCREPANCY where they differ. |
-| M06 | `m06.json` routes are used as observed. `CONF-M06-002` is recorded as a contradicting claim → ROUTE_DISCREPANCY (S3 decision). |
+| M06 | `m06.json` routes are used as observed. `CONF-M06-002` is recorded as a contradicting claim → ROUTE_DISCREPANCY (SEM-03). |
 | M08 (SRC-09) | Seeds by SCR-M08 ID + route; check against SRC-11/12. |
-| `screens.ts` | UX/SCR_* seeds; cross-kind matches to SCR_MODULE/M08 raised as POSSIBLE_DUPLICATE or STRONG (S5 decision). |
+| `screens.ts` | UX/SCR_* seeds; cross-kind matches to SCR_MODULE/M08 are raised as POSSIBLE_DUPLICATE or STRONG (SEM-05). |
 | Governed indexes | Approval-status evidence per module; the status is copied into candidate evidence. |
 | Impact/delta registers | Module-level evidence only (they contain no screen IDs); never used to form candidates. |
 
@@ -233,17 +271,17 @@ APPROVED → SUPERSEDED (only by a later approved decision)
 - **No overwriting:** decisions are never edited, and every state change is stored as a new row.
 - **Carry-forward:** on a rerun, an earlier decision applies only if the hashes of its evidence records are unchanged, and it still needs a confirming click. Otherwise it is re-opened.
 
-## 11. S1–S7 handling
+## 11. SEM-01–SEM-07 handling
 
-| S | Captured as | Required evidence shown |
+| SEM | Captured as | Required evidence shown |
 |---|---|---|
-| S1 `SCR_AGENCY_SETUP` | SHARED_ALIAS + BOUNDARY_DECISION → boundary decision + alias owner | nav-config lines, both route files, Figma keys, register rows |
-| S2 `UX-009` | SHARED_ALIAS + BOUNDARY_DECISION (states `filters`, `edit-quote`) | screens.ts entry, Figma state frames, route |
-| S3 M06 routes | ROUTE_DISCREPANCY → ACCEPT_DISCREPANCY_WITH_REASON (which source is observed truth) | change-log text vs 35 JSON routes vs live routes |
-| S4 M00 | 34× MISSING_ROUTE + COUNT_DISCREPANCY → per-screen route assignment or DEFER; one decision explaining 52 vs 34 | proposed matches with signal scores |
-| S5 Cross-registry | POSSIBLE_DUPLICATE/STRONG → DUPLICATE_CONFLICT or DISTINCT_SCREENS | side-by-side record comparison |
-| S6 Ownership | MISSING_OWNER / CONFLICTING_METADATA → ASSIGN_OWNER_MODULE | module signals |
-| S7 New findings | Any issue not listed above | as generated |
+| SEM-01 `SCR_AGENCY_SETUP` | PROTECTED + SHARED_ALIAS + BOUNDARY_DECISION → boundary decision + alias owner | nav-config lines, both route files, Figma keys, register rows |
+| SEM-02 `UX-009` | PROTECTED + SHARED_ALIAS + BOUNDARY_DECISION (states `filters`, `edit-quote`) | screens.ts entry, Figma state frames, route |
+| SEM-03 M06 routes | ROUTE_DISCREPANCY → ACCEPT_DISCREPANCY_WITH_REASON (which source is observed truth) | change-log text vs 35 JSON routes vs live routes |
+| SEM-04 M00 | 34× MISSING_ROUTE + COUNT_DISCREPANCY → a route assignment or DEFER per screen, plus one decision explaining 52 vs 34 | proposed matches with signal scores |
+| SEM-05 Cross-registry | POSSIBLE_DUPLICATE/STRONG → DUPLICATE_CONFLICT or DISTINCT_SCREENS | side-by-side record comparison |
+| SEM-06 Ownership | MISSING_OWNER / CONFLICTING_METADATA → ASSIGN_OWNER_MODULE | module signals |
+| SEM-07 New findings | Any issue not listed above, including new PROTECTED aliases found by the pre-pass | as generated |
 
 The plan decides none of these. They are made only in the workflow above.
 
@@ -251,11 +289,16 @@ The plan decides none of these. They are made only in the workflow above.
 
 - Figma records are **evidence**. They never seed a candidate and never supply an identity (Rev. 3 §25).
 - They contribute:
-  - the S3 and S10 signals;
+  - the SIG-03 and SIG-10 signals;
   - FIGMA_KEY and FIGMA_NODE alias observations;
   - FIGMA_MISMATCH issues;
   - the fingerprint that is passed to Phase 1.
-- The 179-screen Phase 59 formula is reconciled line by line against the candidates, as a cross-check of the population.
+- The Phase 59 formula for its 179 screens is reconciled line by line against the candidates, as a cross-check of the population.
+- **Fingerprints passed to Phase 1** are evidence attached to the reconciled logical screen and its version/evidence set. They must never:
+  - create a GSID;
+  - redefine logical screen identity;
+  - silently change a governed definition;
+  - override a human reconciliation decision.
 - Figma is read from token files only. Figma Desktop is not opened and no plugin is run.
 
 ## 13. Proving the logical screen population
@@ -271,7 +314,15 @@ Cross-check = reconcile Population vs 179 Figma screens, 154 route files, and ea
               with every difference explained by a decision or issue ID.
 ```
 
-**Approved Reconciliation Set:** the frozen, hashed list of APPROVED_SCREEN candidates. Each carries:
+The proof must also show that:
+- every source record is accounted for;
+- every candidate reaches a terminal state;
+- every shared or duplicate ID (including every PROTECTED alias) is explained by a decision;
+- every route conflict is explained by a decision;
+- every M00/M04/M05/M06/M08 discrepancy is resolved or explicitly deferred with a reason;
+- every Figma difference is explained.
+
+**Approved Reconciliation Set:** the frozen, hashed list of APPROVED_SCREEN candidates, independently approved. Each carries:
 - its alias set (with PRIMARY/SECONDARY/VARIANT roles as decided);
 - its routes and owner module;
 - its Figma fingerprint;
@@ -297,27 +348,36 @@ Each report can be exported as CSV/JSON and is stamped with the run_id and snaps
 
 ## 15. Phase 0 workflow and UI
 
-- A minimal admin-only **Reconciliation workspace** (JET admin, platform-admin gated), reading from staging only:
-  - Run view: snapshot and counts.
-  - Issue queue, filterable by type, severity and S-decision.
-  - Candidate detail: side-by-side source records, signals, and Figma/route evidence.
-  - Decision form: type, outcome, rationale, evidence.
-  - Approval queue.
-  - Reports and exports.
-  - Approved-set review and sign-off.
+- A new, isolated **Phase 0 Reconciliation Workspace**:
+  - It is new governance infrastructure (§1), not a governed application screen.
+  - It is platform-admin gated and reads from staging only.
+  - Contents:
+    - Run view: snapshot and counts.
+    - Issue queue, filterable by type, severity and SEM decision.
+    - Candidate detail: source records side by side, signals, and Figma/route evidence.
+    - Decision form: type, outcome, rationale, evidence.
+    - Approval queue.
+    - Reports and exports.
+    - Approved-set review and sign-off.
 - A read-only **extraction/matching runner** that reads source files and writes only to staging. It can be re-run at any time.
-- No existing page, route or navigation changes, apart from adding this new admin-only workspace entry.
+- No existing page, route, navigation configuration or behavior changes:
+  - The workspace is reached only through its own new, isolated entry point.
+  - It is excluded from the screen population and from extraction.
 
 ## 16. Exit criteria
 
 1. Snapshot hashes are recorded, and a re-run on the same snapshot gives identical candidates and matches.
 2. Every source balances to zero remainder (§13).
 3. Zero open Blocking issues. Every Review issue is decided or deferred with a reason.
-4. S1–S7 are each decided or explicitly deferred (a deferral excludes the affected screens from the set).
-5. Every candidate is in a terminal state.
-6. Every Population Proof cross-check difference is explained.
-7. The Approved Reconciliation Set is frozen, hashed and approved by two people.
-8. A non-touch verification passes: the git diff of the protected paths (§1) is empty, and the existing tables are unchanged.
+4. SEM-01–SEM-07 are each decided or explicitly deferred (a deferral excludes the affected screens from the set).
+5. Every PROTECTED alias has a human decision or an explicit deferral.
+6. Every candidate is in a terminal state.
+7. Every Population Proof cross-check difference is explained.
+8. The Approved Reconciliation Set is frozen, hashed and approved by two people.
+9. A non-touch verification passes:
+   - the git diff shows no change to any existing file on the §1 list;
+   - only new Phase 0 infrastructure files were added;
+   - the existing tables are unchanged.
 
 ## 17. Artifacts handed to Phase 1
 
@@ -325,7 +385,7 @@ Each report can be exported as CSV/JSON and is stamped with the run_id and snaps
 - The alias set per approved screen, with its roles and the decision that set them.
 - Explicit UNRESOLVED_SHARED aliases that remain.
 - Route ownership map; owner-module map.
-- Figma fingerprint per screen.
+- Figma fingerprints per screen, as evidence only (§12).
 - Relationship proposals made in decisions (VARIANT_OF, REPLACES).
 - Deferred-item list with reasons.
 - Full report pack and decision log.
@@ -335,10 +395,10 @@ Each report can be exported as CSV/JSON and is stamped with the run_id and snaps
 
 ## Technical details
 
-- **Build steps once this plan is approved** (each a separate, reviewable step):
+- **Build steps after this plan is approved** (each a separate, reviewable step; none starts before approval):
   1. A migration that creates only the `gov_stage` schema and tables, with grants for the service role and platform admin only, and RLS enabled.
-  2. A read-only extractor/matcher module (server-side), plus unit tests for the normalization, union and stop rules, and a determinism test.
-  3. The admin workspace under the existing JET admin area.
+  2. A read-only extractor/matcher in new files, with unit tests for normalization, pre-pass protection, the union and stop rules, the `SCR_AGENCY_SETUP`/`UX-009` protection, and determinism.
+  3. The isolated Phase 0 Reconciliation Workspace (new files only; no edits to existing files).
   4. Report exports.
-- **Initial thresholds (I3):** S4 0.8 / 0.15 and S7 0.6. They are tuned only through a recorded decision that includes a reason.
-- **Rollback:** drop `gov_stage` and remove the workspace entry. No existing data is affected.
+- **Initial thresholds (I3):** SIG-04 0.8 / 0.15 and SIG-07 0.6. They can be changed only through a recorded decision that gives a reason.
+- **Rollback:** drop `gov_stage` and remove the isolated workspace files. No existing data or files are affected.
