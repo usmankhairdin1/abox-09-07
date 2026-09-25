@@ -246,5 +246,6 @@ export, breadcrumbs / pagination / avatars / charts awaiting real feature use.
 - [x] Screen Governance — Architecture Rev. 3 approved (design only).
 - [x] Phase 0 step 1 — isolated `gov_stage` staging schema (append-only evidence/decisions, separation-of-duties checks, RLS on, service role only).
 - [x] Phase 0 step 2 — read-only extractor/matcher `tools/governance/phase0-*.mjs` + tests; first deterministic run: 663 records / 285 candidates / 245 issues, all sources balance, 0 GSIDs.
-- [ ] Phase 0 step 3 — isolated Reconciliation Workspace (load run into `gov_stage`, issue queue, decisions, two-person approval).
+- [x] Phase 0 F1–F9 extractor corrections; corrected run 1,897 records / 277 candidates / 2,917 issues, byte-identical rerun.
+- [ ] Phase 0 step 3 — isolated Reconciliation Workspace (blocked: awaiting user approval of corrected scan results).
 - [ ] Phase 0 step 4 — report exports + Population Proof sign-off. Human SEM-01–SEM-07 decisions pending.
