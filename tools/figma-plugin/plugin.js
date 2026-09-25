@@ -6878,6 +6878,7 @@ async function currentAppBuildGroup(spec, index) {
 }
 
 function currentAppWalk(root, fn) { fn(root); for (const child of root.children || []) currentAppWalk(child, fn); }
+function currentAppInsideInstance(node) { for (let p = node.parent; p; p = p.parent) if (p.type === "INSTANCE") return true; return false; }
 function currentAppScreenMap(page) {
   const map = {};
   for (const group of page.children) currentAppWalk(group, (node) => { const key = node.getPluginData && node.getPluginData("aboxCurrentAppKind") === "screen" ? node.getPluginData("aboxCurrentAppKey") : ""; if (key) { if (map[key]) throw new Error('STOP: duplicate current-app screen key "' + key + '".'); map[key] = node; } });
@@ -7047,7 +7048,7 @@ async function verifyCurrentApp() {
       if (screen.getPluginData("aboxCurrentAppB9Key") !== screenSpec.b9Key || screen.getPluginData("aboxCurrentAppB8Refs") !== (screenSpec.b8Refs || []).join("|")) refsOk = false;
       if (screen.x !== p.x || screen.y !== p.y || Math.round(screen.width) !== p.width || Math.round(screen.height) !== p.height) placement = false;
       rectangles.push(p);
-      currentAppWalk(screen, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; if (n.type === "INSTANCE") instanceCount += 1; if (n.fillStyleId) styleBindings += 1; if (n.strokeStyleId) styleBindings += 1; if (n.type === "TEXT" && n.textStyleId) styleBindings += 1; });
+      currentAppWalk(screen, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; if (n.type === "INSTANCE" && !currentAppInsideInstance(n)) instanceCount += 1; if (n.fillStyleId) styleBindings += 1; if (n.strokeStyleId) styleBindings += 1; if (n.type === "TEXT" && n.textStyleId) styleBindings += 1; });
     }
     const mobileFrames = group.children.filter((n) => n.getPluginData && n.getPluginData("aboxCurrentAppKind") === "mobile-screen");
     mobileCount += mobileFrames.length;
@@ -7056,7 +7057,7 @@ async function verifyCurrentApp() {
       const screenSpec = ABOX_CURRENT_APP.screens.find((s) => s.key === desktopKey);
       const p = spec.placements.find((x) => x.key === desktopKey);
       if (!screenSpec || !p || screenSpec.viewports.indexOf(ABOX_CURRENT_APP.layout.mobileWidth) === -1 || mobile.x !== p.mobileX || mobile.y !== p.y || Math.round(mobile.width) !== ABOX_CURRENT_APP.layout.mobileWidth) mobileOk = false;
-      currentAppWalk(mobile, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; if (n.type === "INSTANCE") instanceCount += 1; if (n.fillStyleId) styleBindings += 1; if (n.strokeStyleId) styleBindings += 1; if (n.type === "TEXT" && n.textStyleId) styleBindings += 1; });
+      currentAppWalk(mobile, (n) => { for (const f of n.fills || []) if (f.type === "IMAGE") images = false; if (n.type === "COMPONENT" || n.type === "COMPONENT_SET") foundations = false; if (n.type === "INSTANCE" && !currentAppInsideInstance(n)) instanceCount += 1; if (n.fillStyleId) styleBindings += 1; if (n.strokeStyleId) styleBindings += 1; if (n.type === "TEXT" && n.textStyleId) styleBindings += 1; });
     }
     for (let a = 0; a < rectangles.length; a += 1) for (let b = a + 1; b < rectangles.length; b += 1) { const x=rectangles[a], y=rectangles[b]; const xw=x.width+x.mobileWidth+(x.mobileWidth ? ABOX_CURRENT_APP.layout.familyGap : 0), yw=y.width+y.mobileWidth+(y.mobileWidth ? ABOX_CURRENT_APP.layout.familyGap : 0); if (x.x < y.x+yw && x.x+xw > y.x && x.y < y.y+y.height && x.y+x.height > y.y) overlaps = false; }
   }
