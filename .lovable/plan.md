@@ -134,7 +134,7 @@ Corrections are to the read-only files in `tools/governance/` only. No existing 
 
 | # | Gap | Correction |
 |---|---|---|
-| F1 | `screens.ts` has no route field, so all 119 records get MISSING_ROUTE, and shared routes for `SCR_AGENCY_SETUP`/`UX-009` are invisible to the pre-pass | Extract the route → screen-ID annotation from route files and nav-config as screen-defining *route evidence*. Include it in the pre-pass (not in union) so shared-alias detection works from data. Downgrade `screens.ts` MISSING_ROUTE to Info when a route is known from evidence. |
+| F1 | `screens.ts` has no route field, so all 119 records get MISSING_ROUTE, and shared routes for `SCR_AGENCY_SETUP`/`UX-009` are invisible to the pre-pass | Extract the route → screen-ID annotation from route files and nav-config as *route evidence*. It feeds the pre-pass only (never union), so shared-alias detection works from data. Nothing is downgraded; each record carries a route status of one of three separate values: **SOURCE_MISSING_ROUTE** (the record itself has no route; the issue stays open), **ROUTE_EVIDENCE_AVAILABLE** (another source offers a possible route, listed as evidence), **ROUTE_RECONCILED** (set only by a later human decision; never set by the scan). |
 | F2 | Matching only indexes exact tokens, so there are no STRONG/POSSIBLE matches | Compare candidate pairs within a module and across registries using SIG-04 fuzzy name similarity, and implement SIG-06–SIG-09 from the extracted fields. Raise POSSIBLE_DUPLICATE issues. |
 | F3 | All 35 M06 and 10 M08 register routes don't match live route files, and this isn't flagged | New issue class under ROUTE_DISCREPANCY, "register route not live", linked to SEM-03 (M06) and SEM-07 (M08). It stays evidence; nothing is auto-linked. |
 | F4 | Layout-only and design-reference route files are counted as screens | Reuse the Phase 59 classification (6 layout-only, 2 design-reference) as evidence. Those files become proposed NOT_A_SCREEN issues, still requiring a decision. |
@@ -142,6 +142,27 @@ Corrections are to the read-only files in `tools/governance/` only. No existing 
 | F6 | SRC-05/06/07/13 are not extracted | Add them as evidence-only (approval status, requirement edges, `CONF-M06-002`, B9 IDs). Compute SIG-03/SIG-10 from Figma keys and signatures. |
 | F7 | The M00 sample count is wrong (6) | Count screen entries structurally. Recompute COUNT_DISCREPANCY. |
 | F8 | ORPHAN_ROUTE has no SEM link | Link it to SEM-07. |
-| F9 | The disposition list isn't explicit in the output | Add a per-record `disposition` field: ATTACHED, EVIDENCE_LINKED, EVIDENCE_UNLINKED, or ORPHAN_CANDIDATE. |
+| F9 | The disposition list isn't explicit in the output | Two separate fields. **Technical disposition** per record: CANDIDATE_MEMBER, EVIDENCE_LINKED, EVIDENCE_UNLINKED, ORPHAN_CANDIDATE. **Human reconciliation status** per candidate: always UNREVIEWED in this scan; APPROVED_SCREEN, MERGED_INTO, VARIANT_OF, NOT_A_SCREEN and DEFERRED are set only by later human decisions. Technical attachment never implies reconciliation. |
 
-After the corrections, re-run twice, confirm determinism, and return an updated validation summary. Step 3 still waits for your separate approval.
+**Scope of this step:**
+- **Allowed:** F1–F9 only, in the read-only `tools/governance/` files.
+- **Not included:**
+  - the Reconciliation Workspace;
+  - loading results into `gov_stage`;
+  - decisions;
+  - GSIDs;
+  - changes to existing artifacts.
+- **Unchanged:** the architecture (GSID, candidate, alias, version, Matrix, Ledger, the SIG-01–SIG-10 definitions, SEM-01–SEM-07, relationships, the Phase 0/1 boundary).
+
+**After the corrections:**
+1. Run the scan twice against the same snapshot and confirm the output is byte-identical.
+2. Return an updated validation report:
+   - source inventory, candidate count and issue count;
+   - the full issue breakdown;
+   - SIG-01–SIG-10 coverage;
+   - the M00 sample count;
+   - the protected/shared alias list;
+   - the candidate integrity summary;
+   - all new STRONG/POSSIBLE/CONFLICT matches;
+   - any gaps that remain.
+3. Stop. Step 3 waits for your separate approval.
