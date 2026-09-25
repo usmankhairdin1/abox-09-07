@@ -287,7 +287,7 @@ export function classifyFull(s, { differ, prot }) {
   const soft = ["SIG-04", "SIG-06", "SIG-07", "SIG-08", "SIG-09"].filter((k) => s[k]).length;
   const any = s["SIG-01"] || hard || soft >= 2 || (s["SIG-04"] && s["SIG-05"]);
   if (!any) return "NONE";
-  if (prot || (differ && (hard || s["SIG-04"]))) return "CONFLICT";
+  if (prot || (differ && hard)) return "CONFLICT";
   if (s["SIG-01"] || (hard && s["SIG-04"]) || (s["SIG-04"] && soft >= 3)) return "STRONG";
   return "POSSIBLE";
 }
