@@ -101,7 +101,11 @@ export function formCandidates(records, pre) {
   for (const [, rs] of [...byRoute].sort()) for (let i = 1; i < rs.length; i++) {
     const a = rs[0], b = rs[i];
     if ([a, b].some((x) => x.norm_id && pre.protectedIds.has(x.norm_id))) { refused.push({ a: a.source_record_id, b: b.source_record_id, reason: "PROTECTED_ALIAS" }); continue; }
-    if (a.norm_name && b.norm_name && a.norm_name !== b.norm_name && jaccard(a.norm_name, b.norm_name) < 0.5) { refused.push({ a: a.source_record_id, b: b.source_record_id, reason: "CONFLICTING_NAME" }); continue; }
+    const cluster = members(find(a.source_record_id));
+    const clash = cluster.find((m) => m.norm_name && b.norm_name && m.norm_name !== b.norm_name && jaccard(m.norm_name, b.norm_name) < 0.5);
+    if (clash) { refused.push({ a: clash.source_record_id, b: b.source_record_id, reason: "CONFLICTING_NAME" }); continue; }
+    const modClash = cluster.find((m) => m.raw_module && b.raw_module && m.alias_kind === b.alias_kind && m.raw_module !== b.raw_module);
+    if (modClash) { refused.push({ a: modClash.source_record_id, b: b.source_record_id, reason: "CONFLICTING_MODULE" }); continue; }
     tryUnion(a, b, "SAME_ROUTE");
   }
   const groups = new Map();
