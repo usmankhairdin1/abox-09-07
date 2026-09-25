@@ -161,3 +161,133 @@ export function classify(s, conflict) {
   if (weak >= 2 || s["SIG-02"]) return "POSSIBLE";
   return "NONE";
 }
+
+// ───────────────────────── F1–F9 corrections (Phase 0, read-only) ─────────────────────────
+export const ROUTE_STATES = ["SOURCE_MISSING_ROUTE", "ROUTE_EVIDENCE_AVAILABLE", "ROUTE_RECONCILED"]; // last is human-only
+export const HUMAN_STATUS_INITIAL = "UNREVIEWED";
+export const SCREEN_ID_RE = /\b(?:UX-\d{3}|SCR-M0\d-\d{3}|SCR_[A-Z0-9_]+)\b/g;
+
+export function levenshteinNorm(a, b) {
+  a = String(a); b = String(b);
+  if (a === b) return 0;
+  const m = a.length, n = b.length; if (!m || !n) return 1;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[n] / Math.max(m, n);
+}
+
+export function splitList(v) {
+  if (v == null) return [];
+  if (Array.isArray(v)) return v.map(String);
+  const s = String(v).trim(); if (!s) return [];
+  if (s.startsWith("[")) { try { const a = JSON.parse(s); if (Array.isArray(a)) return a.map(String); } catch {} }
+  return s.split(/\s*[|;,]\s*/).filter(Boolean);
+}
+const tokens = (s) => new Set((normName(s) ?? "").split(" ").filter(Boolean));
+const setJaccard = (A, B) => { if (!A.size || !B.size) return 0; const i = [...A].filter((x) => B.has(x)).length; return i / (A.size + B.size - i); };
+const overlapRatio = (A, B) => { if (!A.size || !B.size) return 0; const i = [...A].filter((x) => B.has(x)).length; return i / Math.min(A.size, B.size); };
+
+// F5 — every navigation entry, with or without scrId.
+export function parseNav(text) {
+  const out = [];
+  for (const m of text.matchAll(/\{[^{}]*?\bto:\s*"([^"]+)"[^{}]*\}/g)) {
+    const body = m[0];
+    out.push({ label: body.match(/label:\s*"([^"]+)"/)?.[1] ?? null, to: m[1], scrId: body.match(/scrId:\s*"([^"]+)"/)?.[1] ?? null });
+  }
+  return out;
+}
+
+// F7 — structural M00 sample population (entries of M00_SNAPSHOT.screens), plus the stated count.
+export function m00Structural(text) {
+  const start = text.search(/\n\s*screens:\s*\[/);
+  let structural = 0;
+  if (start >= 0) {
+    let i = text.indexOf("[", start), depth = 0, objDepth = 0;
+    for (; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === "[") depth++;
+      else if (ch === "]") { depth--; if (depth === 0) break; }
+      else if (ch === "{") { if (objDepth === 0 && depth === 1) structural++; objDepth++; }
+      else if (ch === "}") objDepth--;
+    }
+  }
+  const stated = Number(text.match(/counts:\s*\{[\s\S]*?\bscreens:\s*(\d+)/)?.[1] ?? NaN);
+  return { structural, stated: Number.isFinite(stated) ? stated : null };
+}
+
+// F6/SRC-07 — change-log conflict entries and affected screen IDs (ranges expanded).
+export function parseChangeLog(text) {
+  const out = [];
+  for (const line of text.split("\n")) {
+    const conf = line.match(/CONF-M\d{2}-\d{3}/); if (!conf || !line.startsWith("|")) continue;
+    const ids = new Set([...line.matchAll(SCREEN_ID_RE)].map((m) => m[0]));
+    for (const r of line.matchAll(/(SCR-M0\d)-(\d{3})\.\.(\d{3})/g)) for (let k = +r[2]; k <= +r[3]; k++) ids.add(`${r[1]}-${String(k).padStart(3, "0")}`);
+    const cells = line.split("|").map((c) => c.trim());
+    out.push({ entry: cells[1], conf: conf[0], claim: cells[4] ?? "", status: cells[5] ?? "", screen_ids: [...ids].sort() });
+  }
+  return out;
+}
+
+// F4 — route-file classification from the Phase 59 route inventory (evidence only).
+export function classifyRouteFile(file, inventoryByFile) {
+  const rel = file.replace(/^src\/routes\//, "").replace(/\.tsx$/, "");
+  const last = rel.split(/[./]/).pop();
+  const inv = inventoryByFile.get(file)?.category ?? null;
+  if (inv === "layout-only" || inv === "design-reference") return inv;
+  if (last === "route" || last.startsWith("_")) return "layout-only";
+  return "content";
+}
+
+// F1 — route status. ROUTE_RECONCILED is never produced here.
+export function routeStatus(rec, routeEvidence) {
+  if (rec.norm_route) return { source_route_fact: "SOURCE_ROUTE_PRESENT", route_status: null };
+  return { source_route_fact: "SOURCE_MISSING_ROUTE", route_status: routeEvidence.length ? "ROUTE_EVIDENCE_AVAILABLE" : "SOURCE_MISSING_ROUTE" };
+}
+
+// F3 — register routes that do not resolve to a live route file (evidence; no auto-link).
+export function registerRoutesNotLive(records, liveRoutes) {
+  return records.filter((r) => (r.source_id === "SRC-04" || r.source_id === "SRC-09") && r.norm_route && !liveRoutes.has(r.norm_route))
+    .map((r) => ({ record_id: r.source_record_id, source_id: r.source_id, route: r.norm_route, sem_ref: r.source_id === "SRC-04" ? "SEM-03" : "SEM-07" }));
+}
+
+// F9 — technical disposition (machine) is independent of human reconciliation status.
+export function candidateDisposition(c, protectedIds) {
+  if (c.recs.some((r) => r.norm_id && protectedIds.has(r.norm_id))) return "BLOCKED_PROTECTED_ALIAS";
+  if (c.recs.every((r) => r.source_id === "SRC-11")) return "ORPHAN_ROUTE_ONLY";
+  return c.recs.length > 1 ? "MULTI_SOURCE_GROUPED" : "SINGLE_SOURCE";
+}
+
+// F2/F6 — full SIG-01..SIG-10 over candidate features.
+export function signalsFull(a, b) {
+  const inter = (x, y) => [...x].some((v) => y.has(v));
+  const fa = a.feat, fb = b.feat;
+  let bestJ = 0, bestL = 1;
+  for (const x of fa.names) for (const y of fb.names) { bestJ = Math.max(bestJ, jaccard(x, y)); bestL = Math.min(bestL, levenshteinNorm(x, y)); }
+  let purpose = 0; for (const x of fa.purposes) for (const y of fb.purposes) purpose = Math.max(purpose, setJaccard(tokens(x), tokens(y)));
+  return {
+    "SIG-01": inter(fa.ids, fb.ids), "SIG-02": inter(fa.routes, fb.routes), "SIG-03": inter(fa.figmaKeys, fb.figmaKeys),
+    "SIG-04": bestJ >= 0.8 || bestL <= 0.15, "SIG-05": inter(fa.modules, fb.modules), "SIG-06": inter(fa.reqs, fb.reqs),
+    "SIG-07": purpose >= 0.6, "SIG-08": overlapRatio(fa.actions, fb.actions) >= 0.5,
+    "SIG-09": overlapRatio(fa.components, fb.components) >= 0.5, "SIG-10": inter(fa.structSigs, fb.structSigs),
+  };
+}
+export function identityConflict(a, b, protectedIds) {
+  const kinds = (c) => { const m = new Map(); for (const r of c.recs) if (r.norm_id) (m.get(r.alias_kind) ?? m.set(r.alias_kind, new Set()).get(r.alias_kind)).add(r.norm_id); return m; };
+  const ka = kinds(a), kb = kinds(b);
+  const differ = [...ka].some(([k, ids]) => kb.has(k) && ![...ids].some((i) => kb.get(k).has(i)));
+  const prot = [...a.recs, ...b.recs].some((r) => r.norm_id && protectedIds.has(r.norm_id));
+  return { differ, prot };
+}
+export function classifyFull(s, { differ, prot }) {
+  const hard = s["SIG-02"] || s["SIG-03"] || s["SIG-10"];
+  const soft = ["SIG-04", "SIG-06", "SIG-07", "SIG-08", "SIG-09"].filter((k) => s[k]).length;
+  const any = s["SIG-01"] || hard || soft >= 2 || (s["SIG-04"] && s["SIG-05"]);
+  if (!any) return "NONE";
+  if (prot || (differ && (hard || s["SIG-04"]))) return "CONFLICT";
+  if (s["SIG-01"] || (hard && s["SIG-04"]) || (s["SIG-04"] && soft >= 3)) return "STRONG";
+  return "POSSIBLE";
+}
