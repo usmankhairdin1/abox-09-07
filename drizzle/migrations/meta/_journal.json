@@ -15,6 +15,13 @@
       "when": 1790363516577,
       "tag": "0001_step3_workspace",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790364164868,
+      "tag": "0002_step3_workspace_objects",
+      "breakpoints": true
     }
   ]
 }
