@@ -8,3 +8,4 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+- Screen Governance Phase 0 lives only in `tools/governance/` (read-only extractor, output in `tools/governance/out/`) and the isolated `gov_stage` schema; it never edits existing app sources, registers, Figma tokens or tables — why: Phase 0 must be non-authoritative and fully discardable (Rev. 3 §19).
