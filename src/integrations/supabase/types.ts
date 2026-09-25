@@ -35,6 +35,63 @@ export type Database = {
         }
         Returns: undefined
       }
+      gov_recon_candidate: {
+        Args: { p_cand: string; p_run: string }
+        Returns: Json
+      }
+      gov_recon_decisions: {
+        Args: { p_issue: string; p_run: string; p_state: string }
+        Returns: Json
+      }
+      gov_recon_load: {
+        Args: {
+          p_file_hash: string
+          p_m00: Json
+          p_m00_hash: string
+          p_run: Json
+        }
+        Returns: Json
+      }
+      gov_recon_me: { Args: never; Returns: Json }
+      gov_recon_overview: { Args: never; Returns: Json }
+      gov_recon_propose: {
+        Args: {
+          p_cand_ids: string[]
+          p_evidence_refs: Json
+          p_idem: string
+          p_issue_ids: string[]
+          p_outcome: Json
+          p_rationale: string
+          p_run: string
+          p_type: string
+        }
+        Returns: Json
+      }
+      gov_recon_queue: {
+        Args: {
+          p_limit: number
+          p_offset: number
+          p_run: string
+          p_search: string
+          p_sem: string
+          p_severity: string
+          p_type: string
+        }
+        Returns: Json
+      }
+      gov_recon_review: {
+        Args: {
+          p_action: string
+          p_decision: string
+          p_idem: string
+          p_rationale: string
+        }
+        Returns: Json
+      }
+      gov_recon_set: {
+        Args: { p_action: string; p_idem: string; p_run: string; p_set: string }
+        Returns: Json
+      }
       lucie_m06_api: {
         Args: {
           p_is_platform_admin?: boolean
