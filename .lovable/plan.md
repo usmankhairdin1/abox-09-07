@@ -109,3 +109,7 @@ No Reconciliation Workspace, database writes, decisions, GSIDs, architecture cha
 ## Confirmation
 
 This diagnostic was read-only. It did not rerun the scan and made no project, database, Figma, application or generated-output changes. F1–F9 remain unimplemented pending approval of this remediation.
+
+## Execution note
+
+Approving this card switches the session from planning to building. That is the one step that has been missing: earlier approval cards were cancelled because a new message arrived while they were still pending. After approval, F1–F9 will be implemented in the four approved locations only, tested, run twice for byte-identical output, and reported. Work will stop before Step 3.
