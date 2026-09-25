@@ -1,450 +1,631 @@
-# Screen Governance and Screen-Level Traceability — Architecture and Design
+# Screen Governance and Screen-Level Traceability — Final Architecture Specification
 
-Design only. Approving this plan approves the architecture, not implementation. It creates no code, tables, migrations, UI or ID changes. Each implementation phase below will get its own plan for approval.
+This document is design only. Approving it approves the architecture; it does not start any work. It creates or changes no code, tables, migrations, UI, IDs, registers or Figma. Phase 0 will get its own plan for approval.
 
 ---
 
 ## 1. Executive Summary
 
-ABox gets a new, **additive governance layer** that wraps the existing screen sources without replacing them:
+ABox gets an additive governance layer made of seven parts:
 
-- A **Canonical Screen Registry**: one row per logical screen.
-- An **append-only Screen Impact Ledger**: every packet × screen decision.
-- **Screen Versions**: each approved change gives the same screen a new version.
-- A **governed Build Packet consumption workflow** that ends in human approval.
+- **Canonical Screen Registry** — one row per logical screen.
+- **Governance Screen ID (GSID)** — a permanent internal ID for each screen.
+- **Alias model** — every existing ID keeps working, and aliases that several screens currently share can stay in an unresolved state until a person decides.
+- **Screen Versions** — each approved change adds a version to the same screen.
+- **Screen Impact Matrix** — what a packet proposes to change right now.
+- **Screen Impact Ledger** — the permanent history of what happened.
+- **Impact Scope** — which aspects of a screen an impact touches.
 
-Every existing ID (UX-###, SCR_*, SCR-M0x-###, Figma keys) is kept exactly as it is and registered as an **alias** of an internal Governance ID (recommended Option B). History is written through the existing `m00_emit` → `m00.audit_event` / `m00.outbox_event` plumbing, so no new audit system is needed. Figma signatures act as evidence, never as identity. Enforcement arrives gradually: report-only first, CI gates last.
+Existing sources keep running unchanged during the transition. At the end, the registry becomes the single source of truth for screen identity, governance and lineage. Events go through the existing `m00_emit` → `m00.audit_event` / `m00.outbox_event` path. Figma is evidence only, never identity. Enforcement tightens gradually: Report → Warn → Review → Block.
 
-## 2. Current-State Constraints
+## 2. Architecture Refinements From the Previous Design
 
-Confirmed by the two assessments and a fresh read:
+| # | Change |
+|---|---|
+| 1 | The alias model now has an explicit **UNRESOLVED_SHARED** state: one alias, several candidate screens, visible until a person resolves it. |
+| 2 | SCR_AGENCY_SETUP and UX-009 are **no longer pre-decided**. They become Phase 0 reconciliation decisions. |
+| 3 | **ID Reservation, Identity Lock and Definition editability** are separated into different mechanisms. |
+| 4 | **Transitional and target sources of truth** are defined separately. |
+| 5 | A new **Screen Impact Matrix** (a working proposal) sits apart from the Ledger (history). |
+| 6 | A new **Impact Scope** model, where several scopes can apply at once. |
+| 7 | **Explicit detection rules** per class: evidence, confidence, what happens automatically, whether it can create a screen or a version. |
+| 8 | **Explicit version-creation rules** by scope. |
+| 9 | **Out-of-band change** gets five defined outcomes. |
+| 10 | The **lifecycle is split** into four independent state dimensions; "MODIFIED" is removed as a state. |
+| 11 | Ledger fields are final, with explicit rules for immutability, compensation, rejection, withdrawal and revert. |
+| 12 | Event model detailed to implementation level. The one possible schema change to the event infrastructure is flagged as a decision. |
+| 13 | Phase 0 is fully specified as a read-only staging step with a defined output. |
 
-- **Four separate ID spaces:**
-  - `src/lib/screens.ts` (`SCREENS`, UX-### and SCR_*).
-  - `src/lib/governed/*.index.ts` together with `public/registers/m0x.json` → `Screen_Register` (M04 36, M05 30, M06 35, all SCR-M0x-###; M00 34, SCR_* format, every route empty).
-  - `src/lib/m08/registry.ts` (SCR-M08-###).
-  - Figma `tokens-b9.js` / `tokens-current-app.js` (keys like `current:route:/plans`, plus signatures).
-- **Shared IDs exist today:**
+## 3. Current-State Constraints (verified)
+
+- **Four ID spaces:**
+  - `src/lib/screens.ts` — UX-### and SCR_*.
+  - `src/lib/governed/*.index.ts` plus `public/registers/m0x.json` → Screen_Register:
+    - M04: 36 screens; M05: 30; M06: 35 — all in the SCR-M0x-### format.
+    - M00: 34 screens in SCR_* format, with no routes.
+  - `src/lib/m08/registry.ts` — SCR-M08-###.
+  - Figma tokens — keys such as `current:route:/plans`, plus signatures.
+- **Shared aliases:**
   - `SCR_AGENCY_SETUP` is used by `/app/agency` and `/app/agency/entities` (`nav-config.ts:120,166`).
-  - `UX-009` is used by `/plans`, plus the Figma states `plans#filters` and `plans#edit-quote`.
-- **Conflicting source data:**
-  - `m00-foundation.ts` reports 52 M00 screens; the M00 register has 34.
-  - The M06 change log (`CONF-M06-002`) says routes are empty; `m06.json` has routes on all 35 rows.
-- **Delta and impact registers** track changes at module and requirement level only. They never name a screen.
-- **Reusable infrastructure:**
-  - `m00.audit_event`, `m00.outbox_event` and `public.m00_emit(...)`.
-  - `lucie_m05.event_outbox` (aggregate_version, causation_id).
-  - `m00.role_template`, `permission_definition`, `role_assignment`; `m00.is_platform_admin()`.
-- **Figma protection:** B0–B10 frames, 682 prototype links and the Phase 59 import must keep working. They are keyed off today's IDs and routes.
-- `scripts/governance-report.mjs` runs by hand only, is report-only, and does not read screen registers.
+  - `UX-009` is used by `/plans` and by the Figma states `plans#filters` and `plans#edit-quote`.
+- **Data discrepancies:**
+  - M00 has 52 screens in `m00-foundation.ts` but 34 in its register.
+  - The M06 change log `CONF-M06-002` says routes are empty, but `m06.json` has routes for all 35 screens.
+- **Delta/impact registers** carry `originating_packet` and `impacted_module` but no screen IDs.
+- **Existing infrastructure to reuse:**
+  - `public.m00_emit(event_name, aggregate_type, aggregate_id, tenant_id, payload, audit_code, actor, correlation)`.
+  - `m00.audit_event`: event_code, actor, correlation_id, payload_hash, metadata.
+  - `m00.outbox_event`: aggregate_type, aggregate_id, correlation_id, payload — **no causation column**.
+  - `m00.role_template`, `permission_definition`, `role_assignment`; `m00.is_platform_admin()`; role code `JET_PLATFORM_ADMIN`.
+- **Protected:** Figma B0–B10, the 682 prototype links, Phase 59 import idempotency, and all existing routes.
 
-## 3. Design Principles
+## 4. Final Design Principles
 
-1. **Additive:** the registry references existing sources and never rewrites them.
-2. **Identity is permanent:** once issued, an ID is never renamed, reused or deleted.
-3. **Identity is separate from definition:** locking the ID does not freeze the screen's content.
-4. **Append-only history:** ledger rows and versions are never updated in place; corrections are new rows.
-5. **Evidence, not identity:** routes, names and signatures are only matching signals.
-6. **A person decides ambiguity:** the system never merges, splits or resolves a conflict silently.
-7. **Reuse audit plumbing:** one event bus, one audit table.
-8. **Gradual enforcement:** report → warn → block.
+1. **Additive.** Nothing existing is rewritten to make governance cleaner.
+2. **Identity is permanent; definition evolves.** A lock applies to identity, never to content.
+3. **Append-only history.** Corrections are new records pointing back to the original.
+4. **No silent semantic decisions.** Screen boundaries, merges, splits and alias moves require a person.
+5. **Evidence is not identity.** Routes, names and signatures are only matching signals.
+6. **One audit bus.** Reuse `m00_emit`.
+7. **One owner per fact.** No governance data is kept in two places for good.
+8. **Enforcement tightens gradually:** Report → Warn → Review → Block.
 
-## 4. Target Architecture
+## 5. Final Target Architecture (A)
 
 ```text
- Build Packet (document_control + Screen_Register + Delta registers)
-        |
-        v
- [Intake & Parse] -> Packet Record (packet_id, version, module, hash)
-        |
-        v
- [Screen Identification] -> Candidate list (one per packet screen row)
-        |
-        v
- [Detection Engine] -- reads --> Canonical Registry + Aliases + Figma signatures
-        |   classification: EXACT / STRONG / POSSIBLE / NONE / CONFLICT
-        v
- [Impact Proposal] -> Proposed Ledger rows (NEW / MODIFIED / REFERENCED / RETIRED ...)
-        |
-        v
- [Human Review UI] -- approve / reject / reclassify / link
-        |
-        v
- [Commit]  -> Registry row (new) or Screen Version (existing)
-           -> Ledger rows marked APPROVED / REJECTED
-           -> m00_emit(...) -> m00.audit_event + m00.outbox_event
-        |
-        v
- [Traceability Views]  Packet -> Screens   |   Screen -> Packets
-        ^
-        |  (report-only, later CI) governance-report screen analyzers
+ Existing sources (read-only inputs)            Build Packet
+ screens.ts | governed/* | registers/*.json          |
+ m08/registry | Figma tokens | nav-config            v
+        |                                      [Intake] -> Packet Run
+        v                                            |
+ [Phase 0 Staging + Reconciliation Queue]            v
+        | (human decisions)                   [Detection Engine]
+        v                                            |
+ +----------------- Canonical Screen Registry -------+-----+
+ | Screen (GSID) -- Alias -- Version -- Fingerprint        |
+ +--------^-------------------------^----------------------+
+          |                         |
+   [Commit on approval]     [Screen Impact Matrix]  <- review UI
+          |                         |
+          +------> [Screen Impact Ledger] (append-only)
+          |
+          +------> m00_emit -> m00.audit_event + m00.outbox_event
+          |
+ [Traceability Views]  Packet->Screens | Screen->Packets
+ [Drift Scanner] Figma/code/route -> OUT_OF_BAND_CHANGE
+ [governance-report analyzers] -> Report / Warn / Block
 ```
 
-## 5. Canonical Screen Registry Design
+## 6. Canonical Screen Registry (B)
 
-### Option A vs Option B
-
-| | A: existing ID is the canonical ID | B: internal Governance ID + existing IDs as aliases |
+| Group | Fields | Owned by the registry |
 |---|---|---|
-| Multiple formats | 4 formats become "canonical" side by side | One format internally; all 4 kept as aliases |
-| Shared IDs (SCR_AGENCY_SETUP) | Cannot be split without renaming | Resolved by attaching aliases to one or more Governance IDs |
-| M00 SCR_* vs SCR-M0x | Mixed forever | Kept as aliases; no rename |
-| Screens with no ID yet (new, or Figma-only) | Must invent an ID in some legacy format | Issued a Governance ID at once |
-| Risk to Figma / routes | None | None; aliases preserve every lookup |
-| Complexity | Lower | One lookup table more |
+| Identity | gsid, created_at, created_by, created_by_packet_run, identity_state | Yes |
+| Display | primary_display_alias_id, name, slug | Yes |
+| Ownership | owning_module, owner_role, steward_user | Yes |
+| Governance | governance_state, id_locked, locked_at, locked_by | Yes |
+| Conflict | conflict_state, open_conflict_ids[] | Yes (derived from the conflict queue) |
+| Version pointer | current_version_no | Yes |
+| Lineage | superseded_by[], split_from, merged_into | Yes |
+| Audit summary (derived) | last_impact_id, last_modified_at/by/packet | Yes (computed from the Ledger) |
 
-**Recommendation: Option B.**
+Definition content (routes, purpose, roles, permissions, actions, requirements) lives on the **Version**, not on the Screen row.
 
-- **The problem it solves:** today's IDs are neither unique (shared IDs) nor in a single format, and some screens exist only in Figma. A neutral internal ID (`GSID`, e.g. `GS-000123`, issued in sequence and never reused) lets ABox govern all of them without renaming anything.
-- **Display rule:** users keep seeing their familiar ID. Each screen has one alias marked **primary display ID** (e.g. `SCR-M06-014`), so the GSID stays mostly invisible.
+### Source of truth
 
-### Registry entity (conceptual)
+| Concern | Transitional (Phases 0–5) | Target (after Phase 6) |
+|---|---|---|
+| Screen identity, GSID, aliases | Registry (new) | **Registry** |
+| Governance state, lock, lifecycle | Registry | **Registry** |
+| Ownership | Registry (seeded from the packet `owning_module`) | **Registry** |
+| Packet lineage, impact history | Registry (Ledger) | **Registry** |
+| Current governed version | Registry | **Registry** |
+| Route implementation (the files under `src/routes`) | Code | **Code** (the registry records the expected route; a mismatch counts as drift) |
+| Display strings used by pages (`SCREENS` in `screens.ts`) | `screens.ts` | Generated from the registry, or checked against it (decision D5) |
+| Packet specification content (Screen_Register rows) | Packet JSON | **Packet JSON** stays the historical record of what each packet said; the registry records what was *approved* |
+| Figma nodes, signatures, prototype links | Figma tokens | **Figma tokens** (the registry stores the fingerprint snapshot per version as evidence) |
+| M08 screen metadata | `m08/registry.ts` | Checked against the registry, or generated from it (D5) |
 
-| Group | Fields |
-|---|---|
-| **Identity** | gsid, primary_display_id, name, slug, owning_module, created_at, created_by, created_by_packet, retired_at, superseded_by_gsid[] |
-| **Aliases** (child) | alias_value, alias_kind (UX / SCR_LEGACY / SCR_MODULE / M08 / FIGMA_KEY / FIGMA_NODE / ROUTE), source_system, is_primary, valid_from, valid_to |
-| **Governance** | governance_state, id_locked (bool), id_locked_at/by, owner (role/team), steward, open_conflicts_count |
-| **Current definition** (points to version) | current_version_no, route(s), purpose, roles, permissions, primary_actions, requirement_ids[], current_source_artifact |
-| **Technical fingerprint** (per version) | figma_key, figma_node_id, source_signature, structure_signature, binding_signature, captured_at |
-| **Audit summary** (derived) | last_modified_at, last_modified_by, last_modified_by_packet |
+Rule: the registry never *copies* a governance fact that another system also maintains. Where a copy is unavoidable during transition, the registry holds it, and the source is checked against it by the governance report.
 
-Routes live on the version, as a list, because one screen can have several routes and routes can change.
+## 7. GSID and Alias Governance (C)
 
-## 6. Screen Identity and ID Governance
+**GSID:** `GS-######`, issued in sequence, never reused, and never shown in place of the familiar ID unless no alias exists.
 
-| Topic | Rule |
-|---|---|
-| Persistent / immutable | A GSID is permanent from issue. Aliases can be added, or ended with `valid_to`, but never deleted. |
-| Locking | `id_locked=true` freezes the GSID, primary display ID and alias bindings. Content still changes through versions. |
-| No reuse | Issued GSIDs and every alias value ever used are reserved forever, retired ones included. Reusing one is a hard block. |
-| Legacy formats | UX-###, SCR_*, SCR-M0x-###, SCR-M08-### and Figma keys are imported unchanged as aliases with their `alias_kind`. |
-| Shared IDs | Imported as **UNRESOLVED_SHARED** conflicts. A reviewer chooses one of: (a) one logical screen with several routes, (b) separate screens, where the shared legacy ID stays on one and the others get new GSIDs with the old ID as a secondary alias, or (c) a variant/state of a parent screen (for example `plans#filters`). |
-| Route change | New version with the new route; the old route stays as an ended ROUTE alias for redirect and trace purposes. |
-| Rename | New version; GSID and display ID unchanged. |
-| Duplicate | Detected at intake (§9); resolved by link or reject, never auto-merged. |
-| Split | The original stays (or is retired). New screens get GSIDs with `split_from` lineage; ledger type SPLIT. |
-| Merge | The surviving GSID continues. The others are retired with `superseded_by`; their aliases move to the survivor with an end date recorded; ledger type MERGED. |
-| Retire | State RETIRED. The ID stays reserved and history stays readable. |
+**Alias entity:**
+- alias_id, alias_value, alias_kind (UX | SCR_LEGACY | SCR_MODULE | M08 | FIGMA_KEY | FIGMA_NODE | ROUTE), source_system, source_ref.
+- binding_state (BOUND | UNRESOLVED_SHARED | ENDED).
+- valid_from, valid_to.
+- Each alias links to its screen through an **AliasBinding** record: binding_id, alias_id, gsid (nullable while unresolved), candidate_gsids[], role (PRIMARY | SECONDARY | VARIANT), valid_from, valid_to, decided_by, decision_ref.
 
-**The two known shared IDs are not decided here.** They go into the Phase 0 conflict queue for your decision.
+```text
+Normal:        alias --BOUND--> GS-000123
+Unresolved:    alias --UNRESOLVED_SHARED--> {candidate GS-000123, candidate GS-000124}
+Re-mapped:     alias --ENDED (valid_to=t)--> GS-000123
+               alias --BOUND (valid_from=t)--> GS-000124   (human-approved)
+```
 
-## 7. Screen Impact / Traceability Ledger
+**Rules:**
+- **Immutable fields:** once created, the alias *value* and *kind* never change. Bindings are never edited, only ended and replaced.
+- **Validity periods:** yes, on every binding. Historical lookups use the binding that was valid at the event's time.
+- **Moving an alias:** allowed only through an approved reconciliation or merge/split decision. It is recorded as ALIAS_REBOUND in the Ledger and emitted as an event.
+- **Past references:** ledger rows and events keep the alias value *and* the gsid that was valid at the time, so old records stay correct after a move.
+- **Uniqueness:** at most one BOUND PRIMARY or SECONDARY binding per alias at any moment. VARIANT bindings can share a GSID. UNRESOLVED_SHARED blocks governance actions on its candidate screens until resolved.
 
-An append-only entity called **ScreenImpact**. Its fields:
+**How the logical boundary is decided** (Phase 0 and review — always a human decision). A reviewer picks one of:
 
-- impact_id, gsid (or proposed_gsid), packet_id, packet_version, module
-- impact_type, description, requirement_refs[], source_artifact (register + row id)
-- previous_version_no, resulting_version_no
+| Outcome | Meaning | Result |
+|---|---|---|
+| ONE_SCREEN_MULTI_ROUTE | Same screen reachable by several routes | 1 GSID; one ROUTE alias per route; version routes[] lists all |
+| MULTIPLE_SCREENS_SHARED_LEGACY_ID | Distinct screens that shared a legacy ID | N GSIDs; the shared alias stays PRIMARY on one and becomes SECONDARY on the others |
+| ONE_SCREEN_VARIANTS | UI states of one screen (e.g. filters, edit) | 1 GSID; variant aliases with role VARIANT |
+| DUPLICATE_CONFLICT | The same screen registered twice | Merge (§14) with lineage |
+
+The system shows evidence (routes, nav entries, Figma frames, purposes) but never proposes an outcome as a default.
+
+## 8. Screen Version Model (D)
+
+`ScreenVersion`:
+- gsid, version_no, created_by_impact_id, created_at
+- definition (json: name, purpose, roles, permissions, primary_actions, states, regions)
+- routes[], requirement_ids[], scope_mask (the scopes that changed, relative to the previous version)
+- fingerprint_id (nullable), status (CURRENT | SUPERSEDED | REVERTED_FROM)
+
+```text
+GS-000123 (alias SCR-M06-014)
+  v1  created  M06 BP v1.0   scopes: all
+  v2  modified M07 BP v1.0   scopes: Behavior, Data
+  v3  modified M09 BP v1.2   scopes: Navigation
+```
+
+**Version-creation rules:**
+
+| Change | Creates a version? | Why |
+|---|---|---|
+| New screen | GSID + v1 | — |
+| UI / Layout, Content, Navigation/Route, Workflow | Yes, vN+1 | These change the governed definition |
+| Behavior-only, Validation-only | Yes, vN+1 | They change the screen's functional contract (flagged as non-visual) |
+| Data-only | Yes if it changes the fields or regions shown; otherwise No (a ledger row with scope Data) | Only changes to the screen's contract create a version |
+| Permission-only | Yes if roles or permissions on the definition change | Access is part of the contract |
+| Referenced / No UI impact | No | A ledger row only |
+| Figma drift without a packet | No; OUT_OF_BAND_CHANGE | Evidence, not a decision |
+| Alias added or re-bound | No | Identity metadata only |
+| Revert | Yes, a new version restoring the old definition | History is never rewritten |
+
+## 9. Screen Impact Ledger (E)
+
+The Ledger is append-only. Its final fields:
+- impact_id, gsid (nullable until registered), proposed_gsid
+- alias_value_at_time, packet_id, packet_version, packet_run_id, module
+- impact_type, impact_scope[], requirement_refs[]
 - detection_class, detection_evidence (json)
-- before_snapshot, after_snapshot (json diff of the definition)
-- proposed_by, proposed_at, approval_state (PROPOSED / APPROVED / REJECTED / WITHDRAWN / REVERTED), approved_by, approved_at, decision_note
-- correlation_id (the packet run), causation_id (the triggering impact)
+- source_artifact (register, row id, file hash)
+- previous_version_no, resulting_version_no
+- before_ref, after_ref (version pointers), diff (json)
+- proposed_by, proposed_at
+- approval_state (PROPOSED | APPROVED | REJECTED | WITHDRAWN | REVERTED), approved_by, approved_at, decision_note
+- correlation_id (packet run), causation_id (the impact or matrix row that led to this one)
+- compensates_impact_id
 
 **Impact types:**
-- Required: NEW, MODIFIED, REFERENCED (unchanged), RETIRED, SUPERSEDED.
-- Also recommended:
-  - SPLIT / MERGED, for lineage.
-  - ROUTE_CHANGED, as a subtype of MODIFIED for quick filtering.
-  - ALIAS_ADDED, for reconciliation, no content change.
-  - REVERTED, a compensating row.
-  - OUT_OF_BAND_CHANGE, a change detected with no packet behind it.
+- NEW, MODIFIED, REFERENCED, RETIRED, SUPERSEDED
+- SPLIT, MERGED
+- ALIAS_ADDED, ALIAS_REBOUND
+- OUT_OF_BAND_CHANGE, OUT_OF_BAND_ADOPTED
+- REVERTED
 
-Rows are never edited. A correction is a new row whose causation points at the earlier one.
+**Immutable:** every field of a written row. Only the move from `approval_state` PROPOSED to a final state is allowed, and it is recorded as a decision event, not an in-place edit of evidence.
 
-## 8. Build Packet Consumption Workflow
+**Corrected through a compensating record:**
+- A wrong classification: a new row with `compensates_impact_id`.
+- A mistaken approval: a REVERTED row plus a restoring version.
+- A wrong alias binding: ALIAS_REBOUND.
 
-| Step | System does | Output | Automatic | Human | Reject / Revise / Revert |
+**What happens in each case:**
+- **Rejected:** the row stays as REJECTED with a reason. No registry change. A GSID reserved for a NEW proposal is burned, never reused.
+- **Packet withdrawn** before approval: every PROPOSED row becomes WITHDRAWN and the matrix is closed. No registry change.
+- **Approved change reverted:** a REVERTED row per impact. MODIFIED → a new version equal to the prior definition. NEW → RETIRED, with the GSID kept reserved. Alias changes → the binding is ended and restored.
+
+## 10. Screen Impact Matrix (F)
+
+**Purpose:** the working proposal for one packet run, answering "what does this packet propose right now". The Ledger records what happened; the Matrix is what the review works through.
+
+**Generated** by the Detection Engine at intake: one row per candidate screen (packet Screen_Register rows, screens named in delta `affected_artifacts`, and registered screens that share requirement IDs).
+
+**Row fields:**
+- matrix_row_id, packet_run_id, candidate_ref
+- matched_gsid, existing_or_new
+- proposed_impact_type, impact_scope[], requirement_refs[]
+- current_version_no, proposed_version_no
+- detection_class, evidence summary, blocking flags
+- reviewer_decision (APPROVE | REJECT | RECLASSIFY | LINK | MARK_VARIANT | DEFER), decided_by, note
+
+| Screen | Existing/New | Impact | Scope | Requirement | Current | Proposed | Detection | Evidence | Decision |
+|---|---|---|---|---|--:|--:|---|---|---|
+| SCR-M06-014 | Existing | MODIFIED | Behavior, Data | REQ-031 | 2 | 3 | EXACT | alias+route | Approve |
+| SCR-M06-017 | Existing | REFERENCED | none | REQ-044 | 1 | — | EXACT | alias+route | Auto |
+| SCR-M07-001 | New | NEW | all | REQ-050 | — | 1 | NONE | no match | Approve |
+| SCR-M06-020 | Existing? | CONFLICT | — | REQ-052 | 4 | — | POSSIBLE | name similarity | Review |
+
+- **Persisted:** yes, per packet run, so review can span several sessions and revisions can be compared.
+- **Relationship to ScreenImpact:** a matrix row is a proposal. On packet approval, each decided row writes exactly one Ledger row (causation_id = matrix_row_id).
+- **Source of the review UI:** the Matrix *is* the review UI's data.
+- **After a decision:** the matrix is frozen (read-only) and linked from the packet run. A revised packet creates a new matrix and shows the differences against the previous one.
+
+## 11. Impact Scope Model
+
+**Scopes:**
+- UI_LAYOUT
+- BEHAVIOR
+- DATA
+- PERMISSIONS
+- NAVIGATION_ROUTE
+- VALIDATION
+- CONTENT_COPY
+- WORKFLOW
+- NO_UI_IMPACT
+
+**Rules:**
+- Scope is stored on the Matrix row and on the Ledger row.
+- Several scopes can apply at once. NO_UI_IMPACT cannot be combined with any other.
+- Scope drives version creation through the §8 table. A packet can affect a screen with no new version (e.g. REFERENCED + NO_UI_IMPACT, or DATA without a contract change).
+- The scope is taken from the packet's delta and requirement text, and confirmed by the reviewer. It is never final without review, except for REFERENCED + NO_UI_IMPACT.
+
+**How it appears in the UI:** a scope chip row on each matrix and ledger line, for example:
+
+```text
+SCR-M06-014  MODIFIED  [Behavior] [Data] [Validation]  (Layout -)(Navigation -)
+```
+
+The version history lets users filter by scope.
+
+## 12. Build Packet Consumption Workflow (G)
+
+```text
+Intake -> Identify -> Detect -> Build Matrix -> Review -> Approve/Reject
+   -> Commit (Registry + Versions + Ledger + Events) -> Lock -> Trace
+```
+
+| Step | System | Data produced | Automatic | Human | Reject / Revise / Revert |
 |---|---|---|---|---|---|
-| 1 Intake | Parse `document_control`, Screen_Register, delta and impact registers; hash the file | Packet record (id, version, module, hash) | Yes | none | A duplicate hash with the same version is refused |
-| 2 Identify | One candidate per packet screen row, plus screens named in `affected_artifacts` | Candidate list | Yes | none | — |
-| 3 Existing/New | Detection engine (§9) | Classification + evidence per candidate | Yes | none | — |
-| 4 Impact proposal | Infer type: exact match with a changed definition → MODIFIED; unchanged → REFERENCED; no match → NEW; delta says remove → RETIRED | Ledger rows in PROPOSED state | Yes | none | — |
-| 5 Review | Reviewer sees grouped buckets (§13) | Decisions | — | **Required** for NEW, POSSIBLE, CONFLICT, RETIRED, SPLIT/MERGE. Can be skipped for EXACT+REFERENCED | A rejected row becomes REJECTED (kept, with reason); the packet continues |
-| 6 Approve | The packet approver signs the whole packet run | Approval record | — | **Required** | Rejecting the whole packet makes every row REJECTED; the registry is untouched |
-| 7 Commit | Create GSIDs for NEW, versions for MODIFIED, state changes for RETIRED; emit events | Registry and version rows, events | Yes (after approval) | none | — |
-| 8 Lock | Newly registered screens enter REGISTERED and become LOCKED when their owner confirms (or automatically, per the decision in §24) | Lock event | Configurable | Optional | — |
-| 9 Trace | Views refresh from the ledger | — | Yes | none | — |
+| Intake | Parse document_control, registers; hash the file | Packet Run | Yes | — | Same packet + version + hash → refused as a duplicate |
+| Identify | Build the candidate list | Candidates | Yes | — | — |
+| Detect | Classify per §13 | Detection results | Yes | — | — |
+| Matrix | Propose type and scope | Matrix rows | Yes | — | — |
+| Review | Per-row decisions | Decisions | EXACT+REFERENCED+NO_UI only | All other rows | A rejected row is excluded; the packet continues |
+| Approve | Packet-level sign-off (a different person from the proposer) | Approval | — | Yes | Whole packet rejected → all rows REJECTED; nothing committed |
+| Commit | Issue GSIDs, write versions, alias bindings, ledger rows, events | Registry changes | Yes | — | Atomic per packet run |
+| Lock | Identity lock on newly registered screens (D3) | Lock event | Per decision | Optional | — |
+| Trace | Views update | — | Yes | — | — |
 
-- **Revised packet** (same packet_id, higher version): the workflow reruns, diffing against the previous run. Unchanged approved rows carry forward as REFERENCED-to-prior-decision; changed rows need fresh review. Earlier rows are kept.
-- **Reverted packet:** each approved row gets a compensating REVERTED row. MODIFIED screens get a *new* version restoring the prior definition (history is never deleted). NEW screens become RETIRED, and their GSIDs stay reserved.
+- **Revised packet:** a new run and a new matrix, compared with the previous one. Rows identical to already-approved decisions are pre-marked "carried forward" and still need one-click confirmation. Changed rows are reviewed again.
+- **Reverted packet:** compensating REVERTED rows per §9.
 
-## 9. Existing vs New Screen Detection
+## 13. Existing vs New Detection (H)
 
-**Signals, from strongest to weakest:**
-1. Exact alias match (any ID format).
-2. Exact route match (current or ended).
-3. Figma key or node ID match.
-4. Slug or name similarity.
-5. Owning-module match.
-6. Overlap in requirement IDs.
-7. Structure-signature similarity.
-8. Purpose and primary-action text similarity.
-9. Shared components or routes.
+**Signals:**
+- S1 alias exact
+- S2 route exact (current or ended)
+- S3 Figma key/node
+- S4 name/slug normalized equality or similarity at least 0.85
+- S5 module = owning_module
+- S6 requirement overlap
+- S7 purpose text similarity
+- S8 primary actions overlap
+- S9 shared components
+- S10 structure signature equal
 
-| Class | Rule (examples) | Action |
-|---|---|---|
-| **EXACT** | Alias match **and** (route or module agrees), with no contradicting signal | Auto-accept the link. REFERENCED needs no review; MODIFIED goes to review. |
-| **STRONG** | Route + name/slug match, or alias match with a different module | Warn and require review (one click) |
-| **POSSIBLE** | Only weak signals: name similarity, requirement overlap, similar structure | Require review |
-| **NONE** | No signal above threshold | Propose NEW; review required |
-| **CONFLICT** | Alias maps to two or more GSIDs; route owned by another active GSID; packet declares NEW for an existing alias; reserved or retired ID reused | **Hard block** until resolved |
+The thresholds are deterministic and configurable. There is no free-form AI decision.
 
-No single signal besides an exact alias can produce EXACT. Even an alias needs a corroborating signal, which stops a mis-typed ID from linking silently.
+| Class | Qualifying evidence | Confidence | Automatic behavior | Review | Can create a screen? | Can create a version? |
+|---|---|---|---|---|---|---|
+| **EXACT** | S1 plus at least one of S2/S3/S5, and no contradicting signal | High | Link to the GSID | Only if the proposed type is not REFERENCED+NO_UI | No | Yes (after review) |
+| **STRONG** | S2+S4, or S3+S4, or S1 with a contradicting module | Medium-high | Suggest the link | Required (one click) | No | Yes (after review) |
+| **POSSIBLE** | Any two of S4, S6, S7, S8, S9, S10 without S1/S2/S3 | Low | Show the candidates | Required | Only after the reviewer rejects the candidates | Only if linked |
+| **NONE** | No signal above threshold | — | Propose NEW | Required | Yes (after approval) | v1 only |
+| **CONFLICT** | S1 hits an alias that is UNRESOLVED_SHARED, ENDED on a retired screen, or bound to 2+ GSIDs; or S2 hits a route active on another GSID; or the packet declares NEW for a BOUND alias | — | Hard block on that row | Must be resolved | No | No |
 
 ```text
 candidate
-  -> alias hit? --no--> route/figma/name signals? --none--> NEW
-       |yes                    |weak--> POSSIBLE
-       v                       |strong-> STRONG
-  alias -> >1 GSID or reserved/retired? --yes--> CONFLICT (block)
-       |no
-  route/module agree? --no--> STRONG (review)
-       |yes
-  definition changed? --yes--> EXACT + MODIFIED (review)
-                      --no---> EXACT + REFERENCED (auto)
+ |- S1 alias hit?
+ |    |- alias UNRESOLVED / retired / multi-bound -> CONFLICT
+ |    |- packet says NEW                           -> CONFLICT
+ |    |- corroborated (S2|S3|S5) & no contradiction -> EXACT
+ |    '- otherwise                                  -> STRONG
+ |- no S1: S2+S4 or S3+S4                          -> STRONG
+ |          route active on other GSID             -> CONFLICT
+ |- two weak signals                               -> POSSIBLE
+ '- none                                           -> NONE (propose NEW)
+then: EXACT & unchanged & NO_UI -> REFERENCED (auto); else -> review
 ```
 
-## 10. Screen Versioning Model
+## 14. Governance and Locking Lifecycle (I)
 
-- **Identity:** the GSID (plus aliases), permanent.
-- **Version:** `ScreenVersion(gsid, version_no, definition json, routes[], requirement_ids[], fingerprint, created_by_impact_id, created_at)`. Immutable. `version_no` rises one step per screen (v1, v2, v3).
-- **Governance state:** stored on the registry row and changed only by lifecycle transitions.
-- **Technical signature:** attached to a version as evidence, and also captured on its own by Figma scans.
+There are four independent dimensions, so no state overlaps another.
 
-For example, `SCR-M06-014` stays `SCR-M06-014`: M06 BP v1.0 creates v1, M07 BP v1.0 creates v2, M09 BP v1.2 creates v3. The registry's `current_version_no` points at the latest approved version.
-
-## 11. Governance and Locking Lifecycle
+**Identity state:** RESERVED → ACTIVE → RETIRED
 
 ```text
-DISCOVERED --> PROPOSED --> REGISTERED --> GOVERNED(LOCKED) --> RETIRED
-     |            |              ^   |          |   ^
-     |         REJECTED          |   +--(new version via approved impact)--+
-     +--> CONFLICTED ------------+            SUPERSEDED (merge/split)
+ RESERVED (GSID issued on proposal; never reusable)
+    |-- proposal rejected --> BURNED (reserved forever, never active)
+    '-- approved --> ACTIVE --> RETIRED (reserved forever)
 ```
 
-| Transition | Trigger | Actor | Approval | ID immutable? | New version? |
-|---|---|---|---|---|---|
-| → DISCOVERED | Reconciliation import or Figma scan | System | No | Reserved, not locked | No |
-| → PROPOSED | A packet impact proposes NEW | System | No | GSID reserved | No |
-| → REGISTERED | Impact approved | Packet approver | Yes | Yes (never reusable) | v1 |
-| → GOVERNED (LOCKED) | Owner confirms, or auto on registration (decision) | Screen owner | Yes | Yes + aliases frozen | No |
-| GOVERNED → GOVERNED | Approved MODIFIED impact | Packet approver | Yes | Unchanged | vN+1 |
-| → CONFLICTED | Detection conflict | System | — | Unchanged | No |
-| → RETIRED / SUPERSEDED | Approved RETIRED / MERGED impact | Governance admin | Yes (elevated) | Reserved forever | No |
-| → REJECTED | Proposal rejected | Reviewer | — | GSID burned, not reused | No |
+**Governance state:** DISCOVERED → PROPOSED → REGISTERED → GOVERNED
 
-**MODIFIED is not a state.** A screen stays GOVERNED while it gains versions.
+- DISCOVERED: imported by Phase 0 or found by a drift scan; no approval yet.
+- PROPOSED: in a matrix awaiting a decision.
+- REGISTERED: approved; identity lock applied according to D3.
+- GOVERNED: owner confirmed. Content changes happen **only** through approved impacts.
+- A screen stays GOVERNED across versions. **MODIFIED is not a state; it is a Ledger impact type.**
 
-Every transition records: actor, time, packet, impact_id, correlation_id and a reason.
+**Version state** (per version): CURRENT | SUPERSEDED | REVERTED_FROM
 
-- **The ID lock** stops changes to identity: GSID, primary display ID and aliases.
-- **Definition editability** is controlled separately. A GOVERNED screen's content can change only through an approved ledger impact, never by direct edit.
+**Conflict state** (overlay): NONE | OPEN (blocks lock, merge, retire and NEW-over) | RESOLVED
 
-## 12. Audit / Event Architecture
+**The three mechanisms kept apart:**
 
-**Reuse, and add no new audit tables:**
-- Call `public.m00_emit(event_name, aggregate_type, aggregate_id, tenant_id, payload, audit_code, actor, correlation)`. It writes both `m00.audit_event` and `m00.outbox_event`.
-- Leave `lucie_m05.event_outbox` alone; it belongs to the M05 domain.
+| Mechanism | Takes effect | Freezes | Does NOT freeze |
+|---|---|---|---|
+| ID Reservation | When the GSID is issued (on proposal) | The GSID value can never be reused | Anything else |
+| Identity Lock | On REGISTERED (D3) | GSID, primary display alias, alias bindings (changes only via approved re-bind) | The definition |
+| Definition governance | On GOVERNED | Direct edits | Versioned changes through approved impacts |
 
-**Events:**
-- `abox.gov.screen.discovered.v1`, `.proposed.v1`, `.registered.v1`, `.locked.v1`, `.versioned.v1`
-- `abox.gov.screen.alias_added.v1`, `.retired.v1`, `.superseded.v1`, `.conflict_raised.v1`, `.conflict_resolved.v1`
-- `abox.gov.packet.ingested.v1`, `.impact_proposed.v1`, `.impact_decided.v1`, `.packet_approved.v1`, `.packet_reverted.v1`
+**Transitions:**
 
-**Structure:**
-- aggregate_type `screen`, aggregate_id = GSID. Packet events use aggregate `build_packet`.
-- Payload: `{version_no, packet_id, packet_version, module, impact_id, impact_type, before, after, causation_id}`.
-- Actor = `p_actor`; correlation = the packet run ID.
+| Transition | Trigger | Actor | Approval | Identity immutable | New version | Audit |
+|---|---|---|---|---|---|---|
+| → DISCOVERED | Phase 0 import or drift scan | System | No | Reserved | No | discovered event |
+| → PROPOSED | Matrix NEW row | System | No | Reserved | No | proposed |
+| → REGISTERED | Packet approved | Approver | Yes | Yes (lock) | v1 | registered, locked |
+| → GOVERNED | Owner confirms | Owner / governor | Yes | Yes | No | governed |
+| GOVERNED (new version) | Approved MODIFIED | Approver | Yes | Yes | vN+1 | versioned |
+| → RETIRED | Approved RETIRED / MERGED | Governance admin | Yes (elevated) | Stays reserved | No | retired / superseded |
+| Conflict OPEN / RESOLVED | Detection / resolution | System / reconciler | Resolution needs approval | Unchanged | No | conflict_raised / resolved |
 
-**Reconstruction:** a screen's history is the ordered set of its ScreenImpact rows plus its ScreenVersion rows. The audit events are an independent tamper-evident copy (`payload_hash`). A causation ID needs a payload field because `m00.outbox_event` has no causation column. Adding a nullable column is optional; the choice is left to engineering.
+## 15. Out-of-Band Change Governance
 
-## 13. Existing Registry Reconciliation and Migration
+**Detectors:**
+- Figma signature drift, compared with the current version's fingerprint.
+- Code route changes: a file under `src/routes` added, removed or renamed without a matching version route.
+- Screen metadata changes in `screens.ts`, `governed/*` or registers that differ from the current version.
+- Direct UI edits made in Lovable, which surface through the code or signature detectors.
 
-| Source | Authoritative for | Becomes |
+Each detection writes an **OUT_OF_BAND_CHANGE** ledger row with the evidence, raises a warning, and **never changes the governed version**.
+
+**Outcomes** (decided by the owner or a governor):
+
+| Outcome | Effect |
+|---|---|
+| Adopt as a governed change | OUT_OF_BAND_ADOPTED + new version (requires an approver, not the person who adopts) |
+| Reject as unauthorized | Ledger note; creates a restore task |
+| Associate with an existing packet | Links to that packet run as a late matrix row → normal review |
+| Create a corrective packet / impact | Opens a new packet run pre-filled with the drift |
+| Restore the governed state | Task to revert the source; closes when the drift clears |
+
+## 16. Audit / Event Architecture
+
+All events go through `public.m00_emit`. No second audit system is created.
+
+- **Naming:** `abox.gov.<aggregate>.<verb>.v1`
+  - Screen: discovered, proposed, registered, locked, governed, versioned, retired, superseded, split, merged, alias_added, alias_rebound, conflict_raised, conflict_resolved, oob_detected, oob_resolved.
+  - Packet run: ingested, matrix_built, row_decided, approved, rejected, withdrawn, reverted.
+- **aggregate_type:** `screen` (aggregate_id = GSID) or `packet_run` (aggregate_id = packet_run_id).
+- **correlation:** packet_run_id, or reconciliation_run_id in Phase 0.
+- **actor:** `p_actor` (auth user). System-initiated events use the workload identity.
+- **payload:** `{ packet_id, packet_version, impact_id, matrix_row_id, version_no, previous_version_no, before_ref, after_ref, alias_value, gsid, scope[], causation_id }`. Before and after are stored as **references** to versions, with only small diffs inline.
+- **Causation:** `m00.outbox_event` has no causation column. Default: carry `causation_id` inside the payload. Adding a nullable causation column is decision D7; it is not assumed.
+- **Rebuilding history:** Ledger rows ordered by time, joined to Versions, give the full screen story. Audit events are the independent tamper-evident copy (`payload_hash`).
+
+## 17. Existing Registry Reconciliation
+
+| Source | Authoritative (transitional) for | Imported as |
 |---|---|---|
-| Packet Screen_Register (M04/M05/M06 json) | Module screen ID, name, route, roles, purpose, owning module | v1 definition + SCR_MODULE alias |
-| M00 Screen_Register | Screen ID, name, workspace, requirement_ids (**not routes**) | v1 without route + SCR_LEGACY alias, flagged `MISSING_ROUTE` |
-| `governed/*.index.ts` | Same IDs as the json, plus approval status | Cross-check only |
-| `src/lib/screens.ts` | App display name / purpose for UX-### and SCR_* | UX / SCR_LEGACY aliases |
-| `m08/registry.ts` | SCR-M08-### | M08 aliases |
-| Figma tokens | Figma key, node ID, signatures, prototype links | FIGMA aliases + fingerprint |
-| `nav-config.ts` routes | Current live route per nav entry | ROUTE aliases |
-| `m00-foundation.ts` | Nothing (sample data) | Not imported; its 52-screen count is logged as a data-quality note |
-
-**Conflicts become records, not guesses.** Each one is a `ReconciliationConflict(kind, sources[], values[], status, resolver, resolution)`. Kinds:
-- `SHARED_ID`: SCR_AGENCY_SETUP, UX-009.
-- `ROUTE_DISAGREEMENT`: the M06 change log vs json.
-- `COUNT_MISMATCH`: M00 52 vs 34.
-- `MISSING_ROUTE`: M00 ×34.
-- `CROSS_REGISTRY_MATCH`: likely the same screen in two ID spaces.
-
-**Always reviewed by a person:** every conflict kind, and every cross-registry link.
+| M04/M05/M06 Screen_Register (json) | Module screen ID, name, route, roles, purpose, owning module | SCR_MODULE alias + candidate v1 |
+| M00 Screen_Register | ID, name, workspace, requirement_ids (not routes) | SCR_LEGACY alias + candidate v1 flagged MISSING_ROUTE |
+| `governed/*.index.ts` | Approval status per packet | Cross-check only |
+| `screens.ts` | App display name and purpose | UX / SCR_LEGACY alias |
+| `m08/registry.ts` | SCR-M08-### | M08 alias |
+| Figma tokens | Key, node, signatures, prototype links | FIGMA aliases + fingerprint |
+| `nav-config.ts` + `src/routes` | Live routes | ROUTE aliases |
+| `m00-foundation.ts` | Nothing (sample data) | Not imported; the count gap is logged |
 
 **Never overwritten automatically:**
-- The source files: registers, `screens.ts`, governed indexes, M08 and Figma tokens. They stay read-only inputs.
-- Figma prototype links and the B0–B10 pages.
+- Any source file.
+- Figma pages B0–B10 and prototype links.
+- Phase 59 manifests.
+- Existing routes.
+- The M06 change log.
 
-## 14. Duplicate Detection and Enforcement
+## 18. Phase 0 Reconciliation Design (J)
 
-| Rule | Level | Why |
+**Read-only** against every source. It writes only to a new staging area.
+
+```text
+Extract (all sources) -> Normalize -> Cross-match -> Detect issues
+   -> Staging snapshot (immutable, hashed) -> Review queue
+   -> Human decisions -> Approved reconciliation set (input to Phase 1)
+```
+
+**Phase 0 produces:**
+1. A **Source inventory**: every record from every source, with its source_ref and a file hash.
+2. **Candidate screens**: proposed logical groupings. Nothing is decided.
+3. An **Alias inventory**: every ID and route, with kind and source.
+4. A **Cross-match report**: STRONG / POSSIBLE matches across the ID spaces.
+5. **Issues**, each one a review item:
+   - SHARED_ALIAS: SCR_AGENCY_SETUP, UX-009, and any others found.
+   - BOUNDARY_DECISION: one screen with several routes, several screens, variants, or duplicate.
+   - MISSING_ROUTE: 34 M00 screens.
+   - ROUTE_DISCREPANCY: M06 change log vs json.
+   - COUNT_DISCREPANCY: M00 52 vs 34.
+   - MISSING_OWNER, MISSING_PURPOSE.
+   - CONFLICTING_METADATA: e.g. names that differ across sources.
+   - FIGMA_MISMATCH: a Figma key with no registry candidate, or the reverse.
+   - ORPHAN_ROUTE: a route with no screen record.
+6. A **Reconciliation report** with counts per source, per issue kind, and resolved/open.
+7. An **Approved reconciliation set**, frozen when you sign off; it is Phase 1's only input.
+
+**Exit criteria:** every issue is decided or explicitly deferred, the counts balance, and you have signed off.
+
+## 19. Duplicate Detection and Enforcement
+
+| Rule | Final level | Phase 1–5 level |
 |---|---|---|
-| Same alias bound to two or more active GSIDs | Hard block | Identity must be unique |
-| Reuse of a reserved or retired ID | Hard block | No-reuse guarantee |
-| Packet declares NEW for an existing alias | Hard block | Would duplicate a screen |
-| Same route active on two GSIDs (not declared variants) | Human review | Could be legitimate state variants |
-| Cross-registry likely match | Human review | Could be the same screen, or a coincidence |
-| Owning-module conflict (packet module differs from registry owner) | Human review | Ownership is a business decision |
-| Figma key maps to another GSID | Human review | Figma naming may lag |
-| Missing route / purpose / owner | Warning | Data quality; doesn't threaten identity |
-| Signature drift without a packet | Warning (+ OUT_OF_BAND ledger row) | Evidence of change outside the workflow |
-| Unresolved PROPOSED impacts older than N days | Warning | Hygiene |
+| GSID reuse | Hard block | Hard block (built into the registry) |
+| Alias bound to more than one governed GSID | Hard block | Hard block |
+| Retired identity reused | Hard block | Hard block |
+| Unresolved identity conflict affecting an action | Hard block | Hard block |
+| Packet declares NEW for an existing governed screen | Hard block | Hard block |
+| Duplicate active route where uniqueness applies (not VARIANT / multi-route) | Hard block | Review |
+| Likely duplicate (STRONG / POSSIBLE) | Review | Review |
+| Module ownership conflict | Review | Review |
+| Figma identity conflict | Review | Review |
+| Route ambiguity / boundary ambiguity | Review | Review |
+| Missing metadata / incomplete legacy data | Warning | Warning |
+| Out-of-band drift | Warning (then review of the outcome) | Warning |
+| Proposal stale for more than N days | Warning | Warning |
 
-## 15. Proposed UI / UX
+Registry-internal integrity rules block from day one because they protect the new data. Rules that apply to code and repository content start as report-only (§23).
 
-All screens live in a new "Screen Governance" area within the existing JET admin workspace.
+## 20. Governance UI / UX
 
-- **Screen Registry:** a table with display ID, name, module, route(s), state badge, version, owner, last impacted by (packet), last updated and a conflict icon. Filters by module, state and conflicts; search by any alias.
-- **Screen Detail:** tabs for Identity (GSID, aliases by kind), Definition (current version), Governance (state, lock, owner, conflicts), Figma (keys, signatures, prototype link count), Requirements, Related routes and artifacts.
-- **Version History:** version, packet, module, change summary, date, actor, approver, signatures, and a diff between any two versions.
-- **Impact History:** every ledger row for the screen, rejected and reverted ones included, with a filter.
-- **Build Packet Impact Review:** a packet header, then buckets — Impacted, Referenced-unchanged, New, Conflicts (blocking), Possible duplicates, Needs review. Each row shows candidate, match class, evidence chips and actions (approve, reject, reclassify, link-to-existing, mark variant). A final "Approve packet" is enabled only when no blocking conflicts remain.
-- **New Screen Registration:** reached from a NEW row. It confirms the name, owning module and route, shows the closest existing matches, issues a GSID and sets the primary display ID (keeping the packet's ID).
+All screens live under the JET admin workspace ("Screen Governance").
+
+- **Registry list:** display ID, name, module, routes, governance state, identity lock, version, owner, last impacted by, last updated, conflict / drift indicators. Filters and search cover any alias.
+- **Screen detail:** Identity (GSID, aliases with bindings and validity), Definition (current version), Governance (states, lock, owner), Conflicts, Figma (fingerprint, prototype count), Requirements, Routes, Related artifacts.
+- **Version history:** version, packet, module, scope chips, change summary, date, actor, approver, signatures, and a diff between any two versions.
+- **Impact history:** every ledger row, including rejected, withdrawn, reverted and out-of-band ones.
+- **Packet impact review:** built on the Matrix. Grouped as Impacted, Referenced, New, Conflicts (blocking), Possible duplicates, Needs review. Each row has evidence and scope chips and the actions approve / reject / reclassify / link / mark variant / defer. "Approve packet" is disabled while blocking rows remain, and for the proposer.
+- **New screen registration:** confirm name, owning module, routes and primary display alias; see the nearest matches; a GSID is issued when approved.
+- **Reconciliation workspace (Phase 0):** a queue of issues with side-by-side source evidence and the boundary-decision picker.
 - **Actions by state:**
   - PROPOSED: approve / reject.
-  - REGISTERED: lock / edit metadata / retire.
-  - GOVERNED: add alias / propose retire / view.
-  - CONFLICTED: resolve.
+  - REGISTERED: confirm governance / edit metadata.
+  - GOVERNED: add alias / propose retire / resolve drift.
+  - CONFLICT OPEN: resolve.
   - RETIRED: view only.
 
-## 16. Traceability Views
+## 21. Traceability Views (K, L)
 
-**Packet → Screens.** The packet header shows id, version, module, ingested and approved dates, and approver. Then one line per screen:
-
-```text
-M07 BP v1.0
-  SCR-M06-014  Agent Roster      IMPACTED   v2 -> v3  REQ-M07-031  approved J.Doe 2026-10-02
-  SCR-M06-017  Agent Detail      IMPACTED   v1 -> v2  REQ-M07-044  approved J.Doe
-  SCR-M04-009  Marketplace Home  REFERENCED v4        REQ-M07-002  auto
-  SCR-M07-001  Commission Setup  NEW        v1        REQ-M07-050  approved J.Doe
-  (rejected) SCR-M07-003 ...     NEW        —         reason: duplicate of SCR-M06-020
-```
-
-**Screen → Packets.** The screen header shows display ID, GSID, state, current version and owner. Then one line per packet:
+**Packet → Screens (K).** The header shows packet, version, module, ingested and approved dates, approver, and row counts by bucket.
 
 ```text
-SCR-M06-014
-  v1  Created by   M06 BP v1.0  M06  2026-08-31  approved A.B
-  v2  Modified by  M07 BP v1.0  M07  change: +bulk action  REQ-M07-031
-  v3  Modified by  M09 BP v1.2  M09  change: route /agents -> /network/agents
+M07 BP v1.0  (approved 2026-10-02 by J.Doe)
+  SCR-M06-014  Agent Roster      MODIFIED    v2->v3  [Behavior][Data]  REQ-M07-031  approved
+  SCR-M06-017  Agent Detail      REFERENCED  v1      [No UI]           REQ-M07-044  auto
+  SCR-M07-001  Commission Setup  NEW         v1      [all]             REQ-M07-050  approved
+  SCR-M07-003  (proposed)        REJECTED    —                         reason: duplicate of SCR-M06-020
 ```
 
-## 17. Figma Integration
+**Screen → Packets (L).** The header shows display ID, GSID, aliases, state, lock, current version and owner.
 
-- The extractor's `key`, `sourceSignature`, `structureSignature` and `bindingSignature` are recorded per version as the **fingerprint**. They are used for:
-  - Detection: a supporting signal.
-  - Validation: after commit, the Figma frame should exist for GOVERNED screens.
-  - Version comparison: structure changes show up in the diff.
-  - Change evidence and audit evidence.
-- They are never used as identity.
-- The Figma import path, B0–B10 and the 682 prototype links are unchanged. The registry only *reads* the tokens files.
-- **Figma changes with no packet:** a scheduled or manual "Figma scan" compares signatures to the current version. Drift creates an OUT_OF_BAND_CHANGE ledger row (a warning) that the owner either adopts as a new version or flags for correction. It never changes the screen automatically.
+```text
+SCR-M06-014  (GS-000123)  GOVERNED  locked  v3
+  v1  NEW       M06 BP v1.0  M06  2026-08-31  [all]         approved A.B
+  v2  MODIFIED  M07 BP v1.0  M07  2026-10-02  [Behavior]    REQ-M07-031  approved J.Doe
+  --  OOB       Figma drift  —    2026-10-10  warning -> adopted as v3?
+  v3  MODIFIED  M09 BP v1.2  M09  2026-11-15  [Navigation]  route /agents -> /network/agents
+```
 
-## 18. Governance Report / CI Integration
+## 22. Figma Integration
 
-Extend `scripts/governance-report.mjs` with new analyzers. They read the registry export plus the source files.
+- **Identity:** never taken from Figma alone. FIGMA_KEY and FIGMA_NODE are only alias kinds.
+- **Detection:** S3 (key/node) and S10 (structure signature) are supporting signals.
+- **Versioning:** a Figma change is evidence only; it never creates a version by itself.
+- **Drift:** unapproved signature changes produce OUT_OF_BAND_CHANGE.
+- **Audit:** a fingerprint (key, node, source, structure and binding signatures, prototype link count) is captured per version.
+- **Preservation:** the registry *reads* the tokens files. The extractor, plugin, B0–B10 pages, 682 links and Phase 59 behavior are unchanged.
 
-| Check | Phase 1–5 | Later gate |
-|---|---|---|
-| Duplicate alias across sources | Report | CI block |
-| Duplicate active route | Report | Review-required gate |
-| Screen route in `src/routes` with no GSID alias | Report | CI block for new routes only |
-| Reuse of retired ID in code or registers | Report | CI block |
-| Registry conflicts open | Report | Release gate |
-| Missing governance metadata | Report | Warning |
-| PROPOSED impacts unresolved | Report | Release gate |
+## 23. Governance Report / CI
 
-Gates are introduced only after the conflict backlog is cleared, so the build is never blocked by legacy data.
+New analyzers are added to `scripts/governance-report.mjs`, reading a registry export plus the source files.
 
-## 19. Permissions and Roles
+| Check | Report | Warn | Review | Block (Phase 6+) |
+|---|---|---|---|---|
+| Duplicate alias across sources | P1 | — | — | Yes |
+| Route in `src/routes` with no registered screen | P1 | P3 | P4 | New routes only |
+| Retired ID used in code or registers | P1 | — | — | Yes |
+| Source value differs from the governed version | P1 | P5 | P5 | No (drift workflow) |
+| Open conflicts | P1 | — | — | Release gate |
+| Unresolved PROPOSED rows | P3 | P4 | — | Release gate |
+| Missing governance metadata | P1 | P2 | — | No |
 
-Built on the existing `m00.role_template` / `permission_definition` / `role_assignment`, with a new permission set:
+## 24. Security and Permissions
 
-| Action | Permission | Elevated? |
-|---|---|---|
-| View registry and history | `screen.read` | No |
-| Propose a new screen / ingest packet | `screen.propose` | No |
-| Review impacts (per module) | `screen.review` | No |
-| Approve impact / packet | `screen.approve` | Yes (module owner) |
-| Reject impact | `screen.review` | No |
-| Register screen / lock ID | `screen.govern` | Yes |
-| Edit governance metadata (owner, aliases) | `screen.govern` | Yes |
-| Retire / merge / split | `screen.govern.admin` | Yes |
-| Override a hard-block conflict | `screen.override` | Yes, platform admin only (`m00.is_platform_admin()`), with a reason |
+Built on `m00.role_template` / `permission_definition` / `role_assignment`. New permission codes:
 
-Proposer and approver must be different people for the same packet (separation of duties).
+| Capability | Permission | Default role | Elevated |
+|---|---|---|---|
+| View | `screen.read` | All internal | No |
+| Propose / ingest packet | `screen.propose` | Module leads | No |
+| Review matrix rows | `screen.review` | Module leads, designers | No |
+| Approve impacts / packet | `screen.approve` | Module owner | Yes |
+| Govern (confirm, edit metadata, add alias) | `screen.govern` | Screen governance team | Yes |
+| Retire / merge / split / re-bind alias | `screen.govern.admin` | Governance admin | Yes |
+| Reconcile legacy conflicts (Phase 0) | `screen.reconcile` | Governance admin | Yes |
+| Override a hard block | `screen.override` | `JET_PLATFORM_ADMIN` only, with a reason | Yes |
 
-## 20. Migration Plan and Recommended Phases
+**Separation of duties:** proposer ≠ approver on the same packet run, and adopter ≠ approver for out-of-band changes. An override is the only exception; it is audited, and a second admin must acknowledge it within N days.
+
+## 25. Migration / Implementation Phases
 
 | Phase | Scope | Depends on | Data | Risk | Rollback | Exit |
 |---|---|---|---|---|---|---|
-| 0 Reconcile | Read-only import into a staging area; conflict list; your decisions on shared IDs, M00 routes, the M06 route source | — | None written to the registry | Low | Discard staging | Every conflict has a decision |
-| 1 Registry | Registry + alias + version tables; import approved staging as DISCOVERED/REGISTERED v1; read-only UI | 0 | ~135 packet screens + screens.ts + M08 + Figma aliases | Alias mapping errors | Drop new tables; sources untouched | Counts reconcile; every alias resolves |
-| 2 ID governance | Lock, reservation, no-reuse, state machine, events via `m00_emit` | 1 | Lock existing approved screens | Over-locking | Unlock via event | Reuse attempts blocked in tests |
-| 3 Ledger | ScreenImpact append-only table; backfill "created by" from packet `document_control` | 2 | Seed CREATED rows | Wrong seed attribution | Compensating rows | Screen→Packet view shows origin for all |
-| 4 Packet workflow | Intake, detection, review UI, commit, revise/revert | 3 | — | False matches | Reject run | One real packet processed end-to-end |
-| 5 Figma evidence | Fingerprints on versions; drift scan | 4 | Attach current signatures | Noise from drift | Disable scan | Drift raises warnings only |
-| 6 Enforcement | governance-report analyzers → CI gates | 5 | — | Blocking builds | Flip gates back to report | Zero open conflicts; gates green |
+| 0 Reconcile | Staging, issue queue, reconciliation UI | — | Read-only extracts | Low | Discard staging | All issues decided; sign-off |
+| 1 Registry | Screen, Alias, Binding, Version tables; import the approved set; read-only views | 0 | Approved set | Mapping errors | Drop the new tables; sources untouched | Every alias resolves; counts match |
+| 2 Identity governance | Reservation, lock, state machine, events | 1 | Lock approved screens | Over-locking | Unlock by event | Reuse blocked in tests |
+| 3 Ledger | Ledger + seed NEW rows from packet document_control | 2 | Seed rows | Wrong attribution | Compensating rows | Screen→Packet shows the origin for every screen |
+| 4 Matrix + workflow | Intake, detection, matrix, review, commit, revise / revert | 3 | — | False matches | Reject the run | One real packet processed end to end |
+| 5 Drift + Figma | Fingerprints, drift scanner, out-of-band outcomes | 4 | Current signatures | Noise | Disable the scanner | Drift shows only as warnings |
+| 6 Enforcement | Report analyzers → CI / release gates | 5 | — | Build blockage | Revert gate to report | Zero open conflicts; gates green |
 
-## 21. Edge Cases
+## 26. Edge Cases
 
 | Case | Behavior |
 |---|---|
-| One ID, many routes | Reviewer picks: one screen with a routes list, variants, or a split (§6) |
-| Route change | New version; old route kept as an ended alias |
-| Rename | New version; ID unchanged |
-| Split / merge | SPLIT / MERGED impacts with lineage; retired IDs stay reserved |
-| Referenced, no UI change | REFERENCED row, no new version |
-| New screen resembles an existing one | POSSIBLE / STRONG → review; link or register |
-| Same screen, many packets | Versions in approval order; concurrent proposals against the same base version → the second must rebase (review) |
-| Packet revision | Rerun with a diff; unchanged approvals carry forward |
-| Rejected impact | Kept as REJECTED; no registry change |
-| Revert | Compensating rows; restoring version; NEW → RETIRED |
-| Retired screen referenced by a new packet | Hard block unless it is reinstated (elevated) |
-| Ownership conflict | Review; the owning module changes only by governance admin |
-| Figma / manual / out-of-workflow change | OUT_OF_BAND_CHANGE warning; owner adopts or rejects |
+| One ID, many routes | BOUNDARY_DECISION (§7); never automatic |
+| Route change | MODIFIED [Navigation]; old ROUTE alias ended |
+| Rename | MODIFIED [Content]; aliases unchanged |
+| Split | SPLIT impact; new GSIDs with `split_from`; aliases re-bound by decision |
+| Merge | MERGED; the survivor keeps its GSID; others RETIRED with `superseded_by`; aliases re-bound |
+| Referenced, no change | REFERENCED + NO_UI_IMPACT; no version |
+| New screen resembling an existing one | POSSIBLE / STRONG → review |
+| Several packets touch one screen | Versions in approval order; a stale base version → rebase review |
+| Packet revision | New matrix, compared with the previous one; carry-forward confirmation |
+| Rejected impact | REJECTED row; burned GSID stays reserved |
+| Revert | Compensating rows; restoring version |
+| Retired screen referenced again | CONFLICT; reinstatement needs `screen.govern.admin` |
+| Conflicting ownership | Review; owner changes only through `screen.govern` |
+| Figma, manual or code change outside the workflow | OUT_OF_BAND_CHANGE + the five outcomes |
 
-## 22. Risks and Mitigations
+## 27. Risks and Trade-offs
 
-- **Breaking Figma / prototype links:** the registry is read-only toward Figma and aliases keep every key. Mitigation: never rewrite sources.
-- **Registry duplicating the source files:** the registry is authoritative only for governance data; sources stay authoritative for their content until a later decision.
-- **False duplicate detection:** multi-signal matching with the corroboration rule; reviewers can reclassify.
-- **Too much approval:** EXACT+REFERENCED auto-passes; reviews are bundled per packet.
-- **Audit growth:** events are small (with a diff, not full snapshots); snapshots live on versions only.
-- **Too many versions:** a version is created only on an approved MODIFIED impact, not on signature drift.
-- **Poor legacy data quality:** Phase 0 conflicts are resolved before import, and warnings are tracked.
-- **Performance:** alias lookups use indexes; the registry holds under 1k screens.
-- **Migration complexity:** phased delivery, each phase reversible.
+| Risk | Mitigation | Alternative considered |
+|---|---|---|
+| Breaking Figma / prototype links | Registry is read-only toward Figma; aliases keep every key | Renaming IDs — rejected |
+| Governance facts kept in two places | Registry is the target owner; sources are checked against it | Keeping sources authoritative forever — rejected (permanent duplication) |
+| False duplicate matches | Corroboration rule; deterministic thresholds; reclassify action | ML similarity — deferred |
+| Too much approval work | Auto-pass for EXACT+REFERENCED+NO_UI; per-packet batching; carry-forward | Review everything — slower |
+| Too many versions | Version only on contract-changing scopes | A version per impact — noisy |
+| Audit data growth | Before/after by reference; diffs are small | Full snapshots in events — rejected |
+| Poor legacy data | Phase 0 queue; warnings tracked | Auto-cleaning — rejected |
+| Too rigid | Report → Warn → Review → Block | Immediate CI gates — rejected |
+| Migration complexity | Seven reversible phases | Big-bang — rejected |
+| Performance | Under 1k screens; indexed alias and route lookups | — |
 
-## 23. Open Questions
+## 28. Final Decisions Required Before Implementation
 
-- Which source is authoritative for M06 routes (the change log or `m06.json`)?
-- Should M00's 34 routeless screens be mapped to live routes from `nav-config.ts`, or stay routeless?
-- Is the 52 in `m00-foundation.ts` just stale sample data? (Recommended: yes, ignore it.)
-- Should the Figma B9 state screens (`plans#filters`, `#edit-quote`) be governed as their own screens or as variants?
+Screen boundaries are **not** listed here. Whether `SCR_AGENCY_SETUP` is one screen or two, and whether `UX-009` is one screen with variants, are **Phase 0 reconciliation decisions**.
 
----
-
-## 24. Decisions I Need to Approve Before Implementation
-
-| Decision | Options | Recommended | Why | Consequences |
-|---|---|---|---|---|
-| 1. Canonical identity | A: existing IDs canonical · B: internal GSID + aliases | **B** | Handles shared IDs, mixed formats and Figma-only screens without renaming | A: shared IDs cannot be split without renames. B: one extra lookup; users still see their familiar IDs |
-| 2. Shared IDs (SCR_AGENCY_SETUP, UX-009) | One screen with several routes · separate screens · variants | **SCR_AGENCY_SETUP = 2 separate screens** (Agency Home, Entities); **UX-009 = 1 screen with 2 state variants** | Different pages vs. states of one page | Separate screens: the second page gets a new GSID with the old ID kept as a secondary alias. Variants: one version history covers both |
-| 3. Where the registry lives | Database (Lovable Cloud) · versioned JSON files in the repo | **Database** | Needs approvals, locking, actors and events; reuses `m00_emit` | Database: needs roles and UI. Files: simpler, but no enforceable approval or audit |
-| 4. Source-of-truth after migration | Registry authoritative for governance only · registry becomes authoritative for all screen metadata | **Governance only (for now)** | Keeps packets, `screens.ts` and Figma working unchanged | Governance only: two places hold definitions until a later decision. Full: a larger refactor of the pages and extractors |
-| 5. Lock timing | Automatic on registration · explicit owner lock | **Automatic on registration** | Stops reuse at once; content can still change through versions | Automatic: less control, safer. Explicit: flexible, with a window for accidental reuse |
-| 6. Review burden | Review everything · auto-accept EXACT+REFERENCED only | **Auto-accept EXACT+REFERENCED** | Removes the bulk of trivial reviews | Review everything: slower, maximum control |
-| 7. Enforcement timing | CI gates in Phase 1 · report-only until Phase 6 | **Report-only until Phase 6** | Legacy conflicts would otherwise block builds | Early gates: stricter, but likely blocked work |
-| 8. Separation of duties | Proposer may approve · proposer ≠ approver | **Proposer ≠ approver** | Standard governance control | Same person allowed: faster, weaker audit |
-| 9. M06 route authority and M00 routes | Change log vs json; map M00 from nav-config vs leave blank | **`m06.json` authoritative; map M00 routes in Phase 0 review** | The json is the newer packet artifact; nav-config has the live routes | Wrong choice → wrong routes on v1 (fixable by versioning) |
+| # | Decision | Options | Recommended | Reason | Consequences |
+|---|---|---|---|---|---|
+| D1 | Canonical identity | A: existing IDs · B: GSID + aliases | **B** | Handles shared aliases, mixed formats and Figma-only screens without renames | A: shared aliases cannot be resolved without renames · B: one extra lookup layer |
+| D2 | Registry storage | Database (Lovable Cloud) · versioned JSON in the repo | **Database** | Approvals, locks, actors and events need enforcement; reuses `m00_emit` | Database: needs roles and UI · JSON: no enforceable approvals or audit |
+| D3 | Identity lock timing | Automatic on REGISTERED · explicit owner action | **Automatic on REGISTERED** | Closes the reuse window at once; the definition still evolves | Auto: less manual control · Explicit: risk of accidental re-binding before the lock |
+| D4 | Auto-accept scope | None · EXACT+REFERENCED+NO_UI only | **EXACT+REFERENCED+NO_UI** | Removes trivial reviews safely | None: maximum control, slower packets |
+| D5 | Target handling of `screens.ts` and the M08 registry | Generate from the registry · validate against the registry · leave as is | **Validate in Phases 1–5, then generate from the registry** | Removes duplication in the end without breaking pages now | Generate early: page refactor risk · Leave: permanent duplication |
+| D6 | Version rule for Data / Permission-only changes | Always version · version only when the contract changes · never | **Only when the contract changes** | Keeps versions meaningful | Always: too many versions · Never: permission history lost |
+| D7 | Causation storage | Payload field · add a nullable `causation_id` column to `m00.outbox_event` | **Payload field** (no change to existing infrastructure) | Avoids changing shared M00 tables | Column: easier to query, but changes M00 infrastructure |
+| D8 | Enforcement timeline | Gates in Phase 1 · report until Phase 6 | **Report until Phase 6** (registry integrity blocks from Phase 1) | Legacy conflicts would otherwise block builds | Early gates: stricter, likely stalled work |
+| D9 | Separation of duties | Allow self-approval · proposer ≠ approver with an audited override | **Proposer ≠ approver + override** | Standard control with an escape hatch | Self-approval: faster, weaker audit |
+| D10 | Out-of-band adoption | Owner can adopt alone · adopt needs a separate approver | **Separate approver** | Keeps drift from bypassing review | Owner alone: faster, weaker control |
