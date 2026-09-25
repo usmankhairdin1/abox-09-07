@@ -34,6 +34,8 @@ For every candidate the reviewer must choose one of:
 
 NEW screens can only become APPROVED_SCREEN with a rationale explaining why no register row applies. Matches may point to possible existing screens, but the choice is always human.
 
+EXISTING/NEW is required only for APPROVED_SCREEN, MERGED_INTO and VARIANT_OF. NOT_A_SCREEN and DEFERRED can be chosen on their own, without an EXISTING/NEW classification.
+
 ## 4. Outcomes (the final states already defined in Phase 0)
 
 | Outcome | Meaning | Required fields |
@@ -76,8 +78,12 @@ These are enforced in the database, not only in the screens:
 
 ## 8. Specific cases
 
-- **SCR-M06-003 vs SCR-M06-004 (STRONG):** shown with its known limitation (template-generated purpose and action text). It needs its own DUPLICATE_CONFLICT decision. The expected but not predetermined answer is DISTINCT_SCREENS. Bulk closure is refused for it.
-- **M00 34 / 52 / 3:** three separate items of evidence: 34 register rows, a stated count of 52, and 3 actual sample entries. The SEM-04 decision must deal with each number separately. It cannot reconcile the numbers by adding them up.
+- **SCR-M06-003 vs SCR-M06-004 (STRONG):** needs its own human DUPLICATE_CONFLICT decision. The evidence is shown neutrally, and no outcome is preselected, defaulted or suggested. Bulk closure is refused for it.
+- **M00 34 / 52 / 3:** three separate items of evidence: 34 register rows, a stated count of 52, and 3 actual sample entries. The SEM-04 decision must deal with each number separately and cannot reconcile them by adding them up.
+  - The 3 sample entries (SCR_PLATFORM_HOME, SCR_AUDIT_LOG, SCR_ACL_MATRIX) are viewable individually.
+  - At load time they are read from the source file, which is checked against the hash in the baseline manifest.
+  - They are stored as evidence rows in `gov_stage.m00_sample_entry`.
+  - The Phase 0 scanner is not changed.
 - **Figma (179 Phase 59 + 179 B9 records):** displayed as evidence only. They can never be the subject of a decision, and they are never enough for APPROVED_SCREEN or MERGED_INTO on their own. At least one screen-defining record must support the decision.
 
 ## 9. Decision, approval and audit model
@@ -85,6 +91,7 @@ These are enforced in the database, not only in the screens:
 Changes planned for a later migration (`gov_stage` only):
 
 - **Fix a design conflict in the existing schema.** `decision` already has an `approved_by` column, but its trigger blocks all updates, so approval could never be written. The fix is a new append-only table `decision_event (event_id, decision_id, event_type[PROPOSED|APPROVED|REJECTED|WITHDRAWN|SUPERSEDED], actor, rationale, at)`. The existing `approved_by` column is left null.
+- New append-only table `m00_sample_entry (run_id, entry_index, screen_id, name, payload, source_hash)`. It holds evidence only and is never a candidate.
 - New table `gov_role (user_id, role[gov_reviewer|gov_approver|gov_operator])`, separate from profiles. It is checked by a security-definer function `gov_stage.has_gov_role`.
 - New `audit_event`: an append-only, hash-chained log (`prev_hash`, `hash`) of loads, views of protected items, proposals, approvals and exports.
 - Every write goes through security-definer functions:
@@ -139,7 +146,7 @@ It must also create no GSIDs and no registry or ledger records.
 
 ## 14. Proposed files (later build turn)
 
-- `drizzle/migrations/0001_step3_workspace.sql`: `decision_event`, `gov_role`, `audit_event`, the functions and grants (§9–12).
+- `drizzle/migrations/0001_step3_workspace.sql`: `decision_event`, `gov_role`, `audit_event`, `m00_sample_entry`, the functions and grants (§9–12).
 - `tools/governance/step3-load.mjs`: hash-verified baseline loader.
 - `src/lib/governance/recon.functions.ts`: server functions (queue, detail, propose, approve, reject, withdraw, set).
 - `src/lib/governance/recon.server.ts`: helpers that call the database functions.
@@ -147,7 +154,7 @@ It must also create no GSIDs and no registry or ledger records.
 - `tools/governance/step3.test.mjs` plus database tests.
 - Updates to `AGENTS.md` and `roadmap.md`.
 
-**Decision needed (D1):** the approved rule says Phase 0 lives only in `tools/governance` and `gov_stage` and never edits existing app sources. The pages above are **new files only**; no existing file is edited. You need to confirm that adding new isolated `/governance/*` pages is allowed. The alternative is a local-only tool with no pages in the app.
+**D1 (approved):** new isolated `/governance/*` pages are allowed as dedicated governance tooling, as new files only. No existing screen, route, nav item, Figma file, register, M08 file, M00 source data or other protected artifact is modified. `src/routeTree.gen.ts` regenerates automatically when pages are added and is not edited by hand. The Phase 0 scanner and its output files are not touched.
 
 ## 15. Tests and acceptance criteria
 
@@ -163,6 +170,10 @@ It must also create no GSIDs and no registry or ledger records.
 10. Users without a governance role get 403 on every server function; anonymous users cannot reach `gov_stage`.
 11. The approved set can be frozen only when all candidates are terminal and all Blocking issues are decided, with a second approver; the frozen set's hash is recorded.
 12. Checks show no changes to protected files (§13).
+13. NOT_A_SCREEN and DEFERRED can be recorded without EXISTING/NEW. APPROVED_SCREEN, MERGED_INTO and VARIANT_OF are refused without it.
+14. All 3 M00 sample entries can be viewed individually. The loader refuses them if the source file hash differs from the baseline manifest.
+15. Bulk closure of POSSIBLE matches leaves candidate membership and outcomes unchanged.
+16. The M06-003/004 decision screen has no preselected or default outcome.
 
 ## 16. When GSIDs become allowed
 
