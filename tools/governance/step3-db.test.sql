@@ -140,7 +140,7 @@ BEGIN
   -- T9: append-only baseline, decisions, events and audit; audit chain verifies
   total := total + 1; res := pg_temp.expect_err(format($$UPDATE gov_stage.source_record SET raw_name = 'x' WHERE run_id = %L$$, v_run), 'append-only'); IF res IS NULL THEN passed := passed + 1; ELSE fails := fails || ('T9a ' || res); END IF;
   total := total + 1; res := pg_temp.expect_err(format($$DELETE FROM gov_stage.decision WHERE run_id = %L$$, v_run), 'append-only'); IF res IS NULL THEN passed := passed + 1; ELSE fails := fails || ('T9b ' || res); END IF;
-  total := total + 1; res := pg_temp.expect_err($$DELETE FROM gov_stage.decision_event$$, 'append-only'); IF res IS NULL THEN passed := passed + 1; ELSE fails := fails || ('T9c ' || res); END IF;
+  total := total + 1; res := pg_temp.expect_err(format($$DELETE FROM gov_stage.decision_event WHERE decision_row_id = %L$$, v_dec), 'append-only'); IF res IS NULL THEN passed := passed + 1; ELSE fails := fails || ('T9c ' || res); END IF;
   total := total + 1; res := pg_temp.expect_err($$UPDATE gov_stage.audit_event SET action = 'x'$$, 'append-only'); IF res IS NULL THEN passed := passed + 1; ELSE fails := fails || ('T9d ' || res); END IF;
   total := total + 1; res := pg_temp.expect_err(format($$DELETE FROM gov_stage.candidate_member WHERE run_id = %L$$, v_run), 'append-only'); IF res IS NULL THEN passed := passed + 1; ELSE fails := fails || ('T9e ' || res); END IF;
   total := total + 1; res := pg_temp.expect_err(format($$UPDATE gov_stage.recon_run SET snapshot_hash = 'x' WHERE run_id = %L$$, v_run), 'immutable'); IF res IS NULL THEN passed := passed + 1; ELSE fails := fails || ('T9f ' || res); END IF;
